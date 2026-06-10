@@ -67,21 +67,6 @@ export type Category = Prisma.CategoryModel
  */
 export type ProductCategory = Prisma.ProductCategoryModel
 /**
- * Model MediaAsset
- * 
- */
-export type MediaAsset = Prisma.MediaAssetModel
-/**
- * Model MediaVariant
- * 
- */
-export type MediaVariant = Prisma.MediaVariantModel
-/**
- * Model MediaReference
- * 
- */
-export type MediaReference = Prisma.MediaReferenceModel
-/**
  * Model PriceList
  * 
  */
@@ -207,46 +192,6 @@ export type OrderShippingSelection = Prisma.OrderShippingSelectionModel
  */
 export type OrderStatusHistory = Prisma.OrderStatusHistoryModel
 /**
- * Model BlogCategory
- * 
- */
-export type BlogCategory = Prisma.BlogCategoryModel
-/**
- * Model BlogPost
- * 
- */
-export type BlogPost = Prisma.BlogPostModel
-/**
- * Model BlogPostCategory
- * 
- */
-export type BlogPostCategory = Prisma.BlogPostCategoryModel
-/**
- * Model Homepage
- * 
- */
-export type Homepage = Prisma.HomepageModel
-/**
- * Model HomepageSection
- * 
- */
-export type HomepageSection = Prisma.HomepageSectionModel
-/**
- * Model HomepageFeaturedProduct
- * 
- */
-export type HomepageFeaturedProduct = Prisma.HomepageFeaturedProductModel
-/**
- * Model HomepageFeaturedCategory
- * 
- */
-export type HomepageFeaturedCategory = Prisma.HomepageFeaturedCategoryModel
-/**
- * Model HomepageFeaturedBlogPost
- * 
- */
-export type HomepageFeaturedBlogPost = Prisma.HomepageFeaturedBlogPostModel
-/**
  * Model Page
  * 
  */
@@ -261,11 +206,6 @@ export type PageSection = Prisma.PageSectionModel
  * 
  */
 export type PageBlock = Prisma.PageBlockModel
-/**
- * Model SeoMetadata
- * 
- */
-export type SeoMetadata = Prisma.SeoMetadataModel
 /**
  * Model ApiClient
  * 
@@ -386,6 +326,11 @@ export type ObservabilitySignal = Prisma.ObservabilitySignalModel
  * 
  */
 export type ObservabilitySignalEvent = Prisma.ObservabilitySignalEventModel
+/**
+ * Model SeoMetadata
+ * 
+ */
+export type SeoMetadata = Prisma.SeoMetadataModel
 /**
  * Model AiProvider
  * 
@@ -637,6 +582,21 @@ export type BehaviorProfile = Prisma.BehaviorProfileModel
  */
 export type BehaviorProfileSegment = Prisma.BehaviorProfileSegmentModel
 /**
+ * Model BlogCategory
+ * 
+ */
+export type BlogCategory = Prisma.BlogCategoryModel
+/**
+ * Model BlogPost
+ * 
+ */
+export type BlogPost = Prisma.BlogPostModel
+/**
+ * Model BlogPostCategory
+ * 
+ */
+export type BlogPostCategory = Prisma.BlogPostCategoryModel
+/**
  * Model ConversionFlow
  * 
  */
@@ -721,6 +681,31 @@ export type SupportTicket = Prisma.SupportTicketModel
  * 
  */
 export type SupportMessage = Prisma.SupportMessageModel
+/**
+ * Model Homepage
+ * 
+ */
+export type Homepage = Prisma.HomepageModel
+/**
+ * Model HomepageSection
+ * 
+ */
+export type HomepageSection = Prisma.HomepageSectionModel
+/**
+ * Model HomepageFeaturedProduct
+ * 
+ */
+export type HomepageFeaturedProduct = Prisma.HomepageFeaturedProductModel
+/**
+ * Model HomepageFeaturedCategory
+ * 
+ */
+export type HomepageFeaturedCategory = Prisma.HomepageFeaturedCategoryModel
+/**
+ * Model HomepageFeaturedBlogPost
+ * 
+ */
+export type HomepageFeaturedBlogPost = Prisma.HomepageFeaturedBlogPostModel
 /**
  * Model ApprovalRequest
  * 
@@ -891,6 +876,21 @@ export type ChannelProductStatus = Prisma.ChannelProductStatusModel
  * 
  */
 export type ChannelVariantStatus = Prisma.ChannelVariantStatusModel
+/**
+ * Model MediaAsset
+ * 
+ */
+export type MediaAsset = Prisma.MediaAssetModel
+/**
+ * Model MediaVariant
+ * 
+ */
+export type MediaVariant = Prisma.MediaVariantModel
+/**
+ * Model MediaReference
+ * 
+ */
+export type MediaReference = Prisma.MediaReferenceModel
 /**
  * Model SearchDocument
  * 

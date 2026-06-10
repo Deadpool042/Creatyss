@@ -36,6 +36,7 @@ model Store {
   supportEmail String?
   supportPhone String?
   shippingReturnsPolicy String?
+  orderNumberPrefix     String?
 
   defaultLocaleCode String
   defaultCurrency   CurrencyCode @default(EUR)

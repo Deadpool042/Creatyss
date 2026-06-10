@@ -702,6 +702,60 @@ export type SeoMetadataMinOrderByAggregateInput = {
   archivedAt?: Prisma.SortOrder
 }
 
+export type SeoMetadataCreateNestedManyWithoutStoreInput = {
+  create?: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput> | Prisma.SeoMetadataCreateWithoutStoreInput[] | Prisma.SeoMetadataUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.SeoMetadataCreateOrConnectWithoutStoreInput | Prisma.SeoMetadataCreateOrConnectWithoutStoreInput[]
+  createMany?: Prisma.SeoMetadataCreateManyStoreInputEnvelope
+  connect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+}
+
+export type SeoMetadataUncheckedCreateNestedManyWithoutStoreInput = {
+  create?: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput> | Prisma.SeoMetadataCreateWithoutStoreInput[] | Prisma.SeoMetadataUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.SeoMetadataCreateOrConnectWithoutStoreInput | Prisma.SeoMetadataCreateOrConnectWithoutStoreInput[]
+  createMany?: Prisma.SeoMetadataCreateManyStoreInputEnvelope
+  connect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+}
+
+export type SeoMetadataUpdateManyWithoutStoreNestedInput = {
+  create?: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput> | Prisma.SeoMetadataCreateWithoutStoreInput[] | Prisma.SeoMetadataUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.SeoMetadataCreateOrConnectWithoutStoreInput | Prisma.SeoMetadataCreateOrConnectWithoutStoreInput[]
+  upsert?: Prisma.SeoMetadataUpsertWithWhereUniqueWithoutStoreInput | Prisma.SeoMetadataUpsertWithWhereUniqueWithoutStoreInput[]
+  createMany?: Prisma.SeoMetadataCreateManyStoreInputEnvelope
+  set?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+  disconnect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+  delete?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+  connect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+  update?: Prisma.SeoMetadataUpdateWithWhereUniqueWithoutStoreInput | Prisma.SeoMetadataUpdateWithWhereUniqueWithoutStoreInput[]
+  updateMany?: Prisma.SeoMetadataUpdateManyWithWhereWithoutStoreInput | Prisma.SeoMetadataUpdateManyWithWhereWithoutStoreInput[]
+  deleteMany?: Prisma.SeoMetadataScalarWhereInput | Prisma.SeoMetadataScalarWhereInput[]
+}
+
+export type SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput = {
+  create?: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput> | Prisma.SeoMetadataCreateWithoutStoreInput[] | Prisma.SeoMetadataUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.SeoMetadataCreateOrConnectWithoutStoreInput | Prisma.SeoMetadataCreateOrConnectWithoutStoreInput[]
+  upsert?: Prisma.SeoMetadataUpsertWithWhereUniqueWithoutStoreInput | Prisma.SeoMetadataUpsertWithWhereUniqueWithoutStoreInput[]
+  createMany?: Prisma.SeoMetadataCreateManyStoreInputEnvelope
+  set?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+  disconnect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+  delete?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+  connect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+  update?: Prisma.SeoMetadataUpdateWithWhereUniqueWithoutStoreInput | Prisma.SeoMetadataUpdateWithWhereUniqueWithoutStoreInput[]
+  updateMany?: Prisma.SeoMetadataUpdateManyWithWhereWithoutStoreInput | Prisma.SeoMetadataUpdateManyWithWhereWithoutStoreInput[]
+  deleteMany?: Prisma.SeoMetadataScalarWhereInput | Prisma.SeoMetadataScalarWhereInput[]
+}
+
+export type EnumSeoSubjectTypeFieldUpdateOperationsInput = {
+  set?: $Enums.SeoSubjectType
+}
+
+export type EnumSeoStatusFieldUpdateOperationsInput = {
+  set?: $Enums.SeoStatus
+}
+
+export type EnumSeoIndexingModeFieldUpdateOperationsInput = {
+  set?: $Enums.SeoIndexingMode
+}
+
 export type SeoMetadataCreateNestedManyWithoutOpenGraphImageInput = {
   create?: Prisma.XOR<Prisma.SeoMetadataCreateWithoutOpenGraphImageInput, Prisma.SeoMetadataUncheckedCreateWithoutOpenGraphImageInput> | Prisma.SeoMetadataCreateWithoutOpenGraphImageInput[] | Prisma.SeoMetadataUncheckedCreateWithoutOpenGraphImageInput[]
   connectOrCreate?: Prisma.SeoMetadataCreateOrConnectWithoutOpenGraphImageInput | Prisma.SeoMetadataCreateOrConnectWithoutOpenGraphImageInput[]
@@ -786,58 +840,106 @@ export type SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput = {
   deleteMany?: Prisma.SeoMetadataScalarWhereInput | Prisma.SeoMetadataScalarWhereInput[]
 }
 
-export type EnumSeoSubjectTypeFieldUpdateOperationsInput = {
-  set?: $Enums.SeoSubjectType
+export type SeoMetadataCreateWithoutStoreInput = {
+  id?: string
+  subjectType: $Enums.SeoSubjectType
+  subjectId: string
+  status?: $Enums.SeoStatus
+  metaTitle?: string | null
+  metaDescription?: string | null
+  metaKeywords?: string | null
+  canonicalUrl?: string | null
+  canonicalPath?: string | null
+  indexingMode?: $Enums.SeoIndexingMode
+  sitemapIncluded?: boolean
+  openGraphTitle?: string | null
+  openGraphDescription?: string | null
+  twitterTitle?: string | null
+  twitterDescription?: string | null
+  structuredDataJson?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  openGraphImage?: Prisma.MediaAssetCreateNestedOneWithoutSeoOpenGraphForInput
+  twitterImage?: Prisma.MediaAssetCreateNestedOneWithoutSeoTwitterForInput
 }
 
-export type EnumSeoStatusFieldUpdateOperationsInput = {
-  set?: $Enums.SeoStatus
+export type SeoMetadataUncheckedCreateWithoutStoreInput = {
+  id?: string
+  subjectType: $Enums.SeoSubjectType
+  subjectId: string
+  status?: $Enums.SeoStatus
+  metaTitle?: string | null
+  metaDescription?: string | null
+  metaKeywords?: string | null
+  canonicalUrl?: string | null
+  canonicalPath?: string | null
+  indexingMode?: $Enums.SeoIndexingMode
+  sitemapIncluded?: boolean
+  openGraphTitle?: string | null
+  openGraphDescription?: string | null
+  openGraphImageId?: string | null
+  twitterTitle?: string | null
+  twitterDescription?: string | null
+  twitterImageId?: string | null
+  structuredDataJson?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
 }
 
-export type EnumSeoIndexingModeFieldUpdateOperationsInput = {
-  set?: $Enums.SeoIndexingMode
+export type SeoMetadataCreateOrConnectWithoutStoreInput = {
+  where: Prisma.SeoMetadataWhereUniqueInput
+  create: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput>
 }
 
-export type SeoMetadataCreateNestedManyWithoutStoreInput = {
-  create?: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput> | Prisma.SeoMetadataCreateWithoutStoreInput[] | Prisma.SeoMetadataUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.SeoMetadataCreateOrConnectWithoutStoreInput | Prisma.SeoMetadataCreateOrConnectWithoutStoreInput[]
-  createMany?: Prisma.SeoMetadataCreateManyStoreInputEnvelope
-  connect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+export type SeoMetadataCreateManyStoreInputEnvelope = {
+  data: Prisma.SeoMetadataCreateManyStoreInput | Prisma.SeoMetadataCreateManyStoreInput[]
+  skipDuplicates?: boolean
 }
 
-export type SeoMetadataUncheckedCreateNestedManyWithoutStoreInput = {
-  create?: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput> | Prisma.SeoMetadataCreateWithoutStoreInput[] | Prisma.SeoMetadataUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.SeoMetadataCreateOrConnectWithoutStoreInput | Prisma.SeoMetadataCreateOrConnectWithoutStoreInput[]
-  createMany?: Prisma.SeoMetadataCreateManyStoreInputEnvelope
-  connect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
+export type SeoMetadataUpsertWithWhereUniqueWithoutStoreInput = {
+  where: Prisma.SeoMetadataWhereUniqueInput
+  update: Prisma.XOR<Prisma.SeoMetadataUpdateWithoutStoreInput, Prisma.SeoMetadataUncheckedUpdateWithoutStoreInput>
+  create: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput>
 }
 
-export type SeoMetadataUpdateManyWithoutStoreNestedInput = {
-  create?: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput> | Prisma.SeoMetadataCreateWithoutStoreInput[] | Prisma.SeoMetadataUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.SeoMetadataCreateOrConnectWithoutStoreInput | Prisma.SeoMetadataCreateOrConnectWithoutStoreInput[]
-  upsert?: Prisma.SeoMetadataUpsertWithWhereUniqueWithoutStoreInput | Prisma.SeoMetadataUpsertWithWhereUniqueWithoutStoreInput[]
-  createMany?: Prisma.SeoMetadataCreateManyStoreInputEnvelope
-  set?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
-  disconnect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
-  delete?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
-  connect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
-  update?: Prisma.SeoMetadataUpdateWithWhereUniqueWithoutStoreInput | Prisma.SeoMetadataUpdateWithWhereUniqueWithoutStoreInput[]
-  updateMany?: Prisma.SeoMetadataUpdateManyWithWhereWithoutStoreInput | Prisma.SeoMetadataUpdateManyWithWhereWithoutStoreInput[]
-  deleteMany?: Prisma.SeoMetadataScalarWhereInput | Prisma.SeoMetadataScalarWhereInput[]
+export type SeoMetadataUpdateWithWhereUniqueWithoutStoreInput = {
+  where: Prisma.SeoMetadataWhereUniqueInput
+  data: Prisma.XOR<Prisma.SeoMetadataUpdateWithoutStoreInput, Prisma.SeoMetadataUncheckedUpdateWithoutStoreInput>
 }
 
-export type SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput = {
-  create?: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput> | Prisma.SeoMetadataCreateWithoutStoreInput[] | Prisma.SeoMetadataUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.SeoMetadataCreateOrConnectWithoutStoreInput | Prisma.SeoMetadataCreateOrConnectWithoutStoreInput[]
-  upsert?: Prisma.SeoMetadataUpsertWithWhereUniqueWithoutStoreInput | Prisma.SeoMetadataUpsertWithWhereUniqueWithoutStoreInput[]
-  createMany?: Prisma.SeoMetadataCreateManyStoreInputEnvelope
-  set?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
-  disconnect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
-  delete?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
-  connect?: Prisma.SeoMetadataWhereUniqueInput | Prisma.SeoMetadataWhereUniqueInput[]
-  update?: Prisma.SeoMetadataUpdateWithWhereUniqueWithoutStoreInput | Prisma.SeoMetadataUpdateWithWhereUniqueWithoutStoreInput[]
-  updateMany?: Prisma.SeoMetadataUpdateManyWithWhereWithoutStoreInput | Prisma.SeoMetadataUpdateManyWithWhereWithoutStoreInput[]
-  deleteMany?: Prisma.SeoMetadataScalarWhereInput | Prisma.SeoMetadataScalarWhereInput[]
+export type SeoMetadataUpdateManyWithWhereWithoutStoreInput = {
+  where: Prisma.SeoMetadataScalarWhereInput
+  data: Prisma.XOR<Prisma.SeoMetadataUpdateManyMutationInput, Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreInput>
+}
+
+export type SeoMetadataScalarWhereInput = {
+  AND?: Prisma.SeoMetadataScalarWhereInput | Prisma.SeoMetadataScalarWhereInput[]
+  OR?: Prisma.SeoMetadataScalarWhereInput[]
+  NOT?: Prisma.SeoMetadataScalarWhereInput | Prisma.SeoMetadataScalarWhereInput[]
+  id?: Prisma.StringFilter<"SeoMetadata"> | string
+  storeId?: Prisma.StringFilter<"SeoMetadata"> | string
+  subjectType?: Prisma.EnumSeoSubjectTypeFilter<"SeoMetadata"> | $Enums.SeoSubjectType
+  subjectId?: Prisma.StringFilter<"SeoMetadata"> | string
+  status?: Prisma.EnumSeoStatusFilter<"SeoMetadata"> | $Enums.SeoStatus
+  metaTitle?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  metaDescription?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  metaKeywords?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  canonicalUrl?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  canonicalPath?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  indexingMode?: Prisma.EnumSeoIndexingModeFilter<"SeoMetadata"> | $Enums.SeoIndexingMode
+  sitemapIncluded?: Prisma.BoolFilter<"SeoMetadata"> | boolean
+  openGraphTitle?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  openGraphDescription?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  openGraphImageId?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  twitterTitle?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  twitterDescription?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  twitterImageId?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  structuredDataJson?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"SeoMetadata"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"SeoMetadata"> | Date | string
+  archivedAt?: Prisma.DateTimeNullableFilter<"SeoMetadata"> | Date | string | null
 }
 
 export type SeoMetadataCreateWithoutOpenGraphImageInput = {
@@ -972,34 +1074,6 @@ export type SeoMetadataUpdateManyWithWhereWithoutOpenGraphImageInput = {
   data: Prisma.XOR<Prisma.SeoMetadataUpdateManyMutationInput, Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageInput>
 }
 
-export type SeoMetadataScalarWhereInput = {
-  AND?: Prisma.SeoMetadataScalarWhereInput | Prisma.SeoMetadataScalarWhereInput[]
-  OR?: Prisma.SeoMetadataScalarWhereInput[]
-  NOT?: Prisma.SeoMetadataScalarWhereInput | Prisma.SeoMetadataScalarWhereInput[]
-  id?: Prisma.StringFilter<"SeoMetadata"> | string
-  storeId?: Prisma.StringFilter<"SeoMetadata"> | string
-  subjectType?: Prisma.EnumSeoSubjectTypeFilter<"SeoMetadata"> | $Enums.SeoSubjectType
-  subjectId?: Prisma.StringFilter<"SeoMetadata"> | string
-  status?: Prisma.EnumSeoStatusFilter<"SeoMetadata"> | $Enums.SeoStatus
-  metaTitle?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  metaDescription?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  metaKeywords?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  canonicalUrl?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  canonicalPath?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  indexingMode?: Prisma.EnumSeoIndexingModeFilter<"SeoMetadata"> | $Enums.SeoIndexingMode
-  sitemapIncluded?: Prisma.BoolFilter<"SeoMetadata"> | boolean
-  openGraphTitle?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  openGraphDescription?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  openGraphImageId?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  twitterTitle?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  twitterDescription?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  twitterImageId?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  structuredDataJson?: Prisma.StringNullableFilter<"SeoMetadata"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"SeoMetadata"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"SeoMetadata"> | Date | string
-  archivedAt?: Prisma.DateTimeNullableFilter<"SeoMetadata"> | Date | string | null
-}
-
 export type SeoMetadataUpsertWithWhereUniqueWithoutTwitterImageInput = {
   where: Prisma.SeoMetadataWhereUniqueInput
   update: Prisma.XOR<Prisma.SeoMetadataUpdateWithoutTwitterImageInput, Prisma.SeoMetadataUncheckedUpdateWithoutTwitterImageInput>
@@ -1016,31 +1090,7 @@ export type SeoMetadataUpdateManyWithWhereWithoutTwitterImageInput = {
   data: Prisma.XOR<Prisma.SeoMetadataUpdateManyMutationInput, Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageInput>
 }
 
-export type SeoMetadataCreateWithoutStoreInput = {
-  id?: string
-  subjectType: $Enums.SeoSubjectType
-  subjectId: string
-  status?: $Enums.SeoStatus
-  metaTitle?: string | null
-  metaDescription?: string | null
-  metaKeywords?: string | null
-  canonicalUrl?: string | null
-  canonicalPath?: string | null
-  indexingMode?: $Enums.SeoIndexingMode
-  sitemapIncluded?: boolean
-  openGraphTitle?: string | null
-  openGraphDescription?: string | null
-  twitterTitle?: string | null
-  twitterDescription?: string | null
-  structuredDataJson?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  archivedAt?: Date | string | null
-  openGraphImage?: Prisma.MediaAssetCreateNestedOneWithoutSeoOpenGraphForInput
-  twitterImage?: Prisma.MediaAssetCreateNestedOneWithoutSeoTwitterForInput
-}
-
-export type SeoMetadataUncheckedCreateWithoutStoreInput = {
+export type SeoMetadataCreateManyStoreInput = {
   id?: string
   subjectType: $Enums.SeoSubjectType
   subjectId: string
@@ -1064,30 +1114,76 @@ export type SeoMetadataUncheckedCreateWithoutStoreInput = {
   archivedAt?: Date | string | null
 }
 
-export type SeoMetadataCreateOrConnectWithoutStoreInput = {
-  where: Prisma.SeoMetadataWhereUniqueInput
-  create: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput>
+export type SeoMetadataUpdateWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectType?: Prisma.EnumSeoSubjectTypeFieldUpdateOperationsInput | $Enums.SeoSubjectType
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSeoStatusFieldUpdateOperationsInput | $Enums.SeoStatus
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canonicalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canonicalPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  indexingMode?: Prisma.EnumSeoIndexingModeFieldUpdateOperationsInput | $Enums.SeoIndexingMode
+  sitemapIncluded?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  openGraphTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openGraphDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitterTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitterDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  structuredDataJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  openGraphImage?: Prisma.MediaAssetUpdateOneWithoutSeoOpenGraphForNestedInput
+  twitterImage?: Prisma.MediaAssetUpdateOneWithoutSeoTwitterForNestedInput
 }
 
-export type SeoMetadataCreateManyStoreInputEnvelope = {
-  data: Prisma.SeoMetadataCreateManyStoreInput | Prisma.SeoMetadataCreateManyStoreInput[]
-  skipDuplicates?: boolean
+export type SeoMetadataUncheckedUpdateWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectType?: Prisma.EnumSeoSubjectTypeFieldUpdateOperationsInput | $Enums.SeoSubjectType
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSeoStatusFieldUpdateOperationsInput | $Enums.SeoStatus
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canonicalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canonicalPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  indexingMode?: Prisma.EnumSeoIndexingModeFieldUpdateOperationsInput | $Enums.SeoIndexingMode
+  sitemapIncluded?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  openGraphTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openGraphDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openGraphImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitterTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitterDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitterImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  structuredDataJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
-export type SeoMetadataUpsertWithWhereUniqueWithoutStoreInput = {
-  where: Prisma.SeoMetadataWhereUniqueInput
-  update: Prisma.XOR<Prisma.SeoMetadataUpdateWithoutStoreInput, Prisma.SeoMetadataUncheckedUpdateWithoutStoreInput>
-  create: Prisma.XOR<Prisma.SeoMetadataCreateWithoutStoreInput, Prisma.SeoMetadataUncheckedCreateWithoutStoreInput>
-}
-
-export type SeoMetadataUpdateWithWhereUniqueWithoutStoreInput = {
-  where: Prisma.SeoMetadataWhereUniqueInput
-  data: Prisma.XOR<Prisma.SeoMetadataUpdateWithoutStoreInput, Prisma.SeoMetadataUncheckedUpdateWithoutStoreInput>
-}
-
-export type SeoMetadataUpdateManyWithWhereWithoutStoreInput = {
-  where: Prisma.SeoMetadataScalarWhereInput
-  data: Prisma.XOR<Prisma.SeoMetadataUpdateManyMutationInput, Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreInput>
+export type SeoMetadataUncheckedUpdateManyWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectType?: Prisma.EnumSeoSubjectTypeFieldUpdateOperationsInput | $Enums.SeoSubjectType
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumSeoStatusFieldUpdateOperationsInput | $Enums.SeoStatus
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canonicalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  canonicalPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  indexingMode?: Prisma.EnumSeoIndexingModeFieldUpdateOperationsInput | $Enums.SeoIndexingMode
+  sitemapIncluded?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  openGraphTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openGraphDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openGraphImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitterTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitterDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitterImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  structuredDataJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type SeoMetadataCreateManyOpenGraphImageInput = {
@@ -1276,102 +1372,6 @@ export type SeoMetadataUncheckedUpdateManyWithoutTwitterImageInput = {
   openGraphImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twitterTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   twitterDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  structuredDataJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-}
-
-export type SeoMetadataCreateManyStoreInput = {
-  id?: string
-  subjectType: $Enums.SeoSubjectType
-  subjectId: string
-  status?: $Enums.SeoStatus
-  metaTitle?: string | null
-  metaDescription?: string | null
-  metaKeywords?: string | null
-  canonicalUrl?: string | null
-  canonicalPath?: string | null
-  indexingMode?: $Enums.SeoIndexingMode
-  sitemapIncluded?: boolean
-  openGraphTitle?: string | null
-  openGraphDescription?: string | null
-  openGraphImageId?: string | null
-  twitterTitle?: string | null
-  twitterDescription?: string | null
-  twitterImageId?: string | null
-  structuredDataJson?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  archivedAt?: Date | string | null
-}
-
-export type SeoMetadataUpdateWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  subjectType?: Prisma.EnumSeoSubjectTypeFieldUpdateOperationsInput | $Enums.SeoSubjectType
-  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumSeoStatusFieldUpdateOperationsInput | $Enums.SeoStatus
-  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  canonicalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  canonicalPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  indexingMode?: Prisma.EnumSeoIndexingModeFieldUpdateOperationsInput | $Enums.SeoIndexingMode
-  sitemapIncluded?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  openGraphTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openGraphDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twitterTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twitterDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  structuredDataJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  openGraphImage?: Prisma.MediaAssetUpdateOneWithoutSeoOpenGraphForNestedInput
-  twitterImage?: Prisma.MediaAssetUpdateOneWithoutSeoTwitterForNestedInput
-}
-
-export type SeoMetadataUncheckedUpdateWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  subjectType?: Prisma.EnumSeoSubjectTypeFieldUpdateOperationsInput | $Enums.SeoSubjectType
-  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumSeoStatusFieldUpdateOperationsInput | $Enums.SeoStatus
-  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  canonicalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  canonicalPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  indexingMode?: Prisma.EnumSeoIndexingModeFieldUpdateOperationsInput | $Enums.SeoIndexingMode
-  sitemapIncluded?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  openGraphTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openGraphDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openGraphImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twitterTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twitterDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twitterImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  structuredDataJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-}
-
-export type SeoMetadataUncheckedUpdateManyWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  subjectType?: Prisma.EnumSeoSubjectTypeFieldUpdateOperationsInput | $Enums.SeoSubjectType
-  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumSeoStatusFieldUpdateOperationsInput | $Enums.SeoStatus
-  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  metaKeywords?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  canonicalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  canonicalPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  indexingMode?: Prisma.EnumSeoIndexingModeFieldUpdateOperationsInput | $Enums.SeoIndexingMode
-  sitemapIncluded?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  openGraphTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openGraphDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  openGraphImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twitterTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twitterDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  twitterImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   structuredDataJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string

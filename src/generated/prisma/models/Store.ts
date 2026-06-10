@@ -34,6 +34,7 @@ export type StoreMinAggregateOutputType = {
   supportEmail: string | null
   supportPhone: string | null
   shippingReturnsPolicy: string | null
+  orderNumberPrefix: string | null
   defaultLocaleCode: string | null
   defaultCurrency: $Enums.CurrencyCode | null
   timezone: string | null
@@ -54,6 +55,7 @@ export type StoreMaxAggregateOutputType = {
   supportEmail: string | null
   supportPhone: string | null
   shippingReturnsPolicy: string | null
+  orderNumberPrefix: string | null
   defaultLocaleCode: string | null
   defaultCurrency: $Enums.CurrencyCode | null
   timezone: string | null
@@ -74,6 +76,7 @@ export type StoreCountAggregateOutputType = {
   supportEmail: number
   supportPhone: number
   shippingReturnsPolicy: number
+  orderNumberPrefix: number
   defaultLocaleCode: number
   defaultCurrency: number
   timezone: number
@@ -96,6 +99,7 @@ export type StoreMinAggregateInputType = {
   supportEmail?: true
   supportPhone?: true
   shippingReturnsPolicy?: true
+  orderNumberPrefix?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -116,6 +120,7 @@ export type StoreMaxAggregateInputType = {
   supportEmail?: true
   supportPhone?: true
   shippingReturnsPolicy?: true
+  orderNumberPrefix?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -136,6 +141,7 @@ export type StoreCountAggregateInputType = {
   supportEmail?: true
   supportPhone?: true
   shippingReturnsPolicy?: true
+  orderNumberPrefix?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -229,6 +235,7 @@ export type StoreGroupByOutputType = {
   supportEmail: string | null
   supportPhone: string | null
   shippingReturnsPolicy: string | null
+  orderNumberPrefix: string | null
   defaultLocaleCode: string
   defaultCurrency: $Enums.CurrencyCode
   timezone: string
@@ -270,6 +277,7 @@ export type StoreWhereInput = {
   supportEmail?: Prisma.StringNullableFilter<"Store"> | string | null
   supportPhone?: Prisma.StringNullableFilter<"Store"> | string | null
   shippingReturnsPolicy?: Prisma.StringNullableFilter<"Store"> | string | null
+  orderNumberPrefix?: Prisma.StringNullableFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringFilter<"Store"> | string
@@ -366,6 +374,7 @@ export type StoreOrderByWithRelationInput = {
   supportEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   supportPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrderInput | Prisma.SortOrder
+  orderNumberPrefix?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -465,6 +474,7 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   supportEmail?: Prisma.StringNullableFilter<"Store"> | string | null
   supportPhone?: Prisma.StringNullableFilter<"Store"> | string | null
   shippingReturnsPolicy?: Prisma.StringNullableFilter<"Store"> | string | null
+  orderNumberPrefix?: Prisma.StringNullableFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringFilter<"Store"> | string
@@ -561,6 +571,7 @@ export type StoreOrderByWithAggregationInput = {
   supportEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   supportPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrderInput | Prisma.SortOrder
+  orderNumberPrefix?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -587,6 +598,7 @@ export type StoreScalarWhereWithAggregatesInput = {
   supportEmail?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   supportPhone?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   shippingReturnsPolicy?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
+  orderNumberPrefix?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringWithAggregatesFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeWithAggregatesFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringWithAggregatesFilter<"Store"> | string
@@ -607,6 +619,7 @@ export type StoreCreateInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -703,6 +716,7 @@ export type StoreUncheckedCreateInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -799,6 +813,7 @@ export type StoreUpdateInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -895,6 +910,7 @@ export type StoreUncheckedUpdateInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -991,6 +1007,7 @@ export type StoreCreateManyInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -1011,6 +1028,7 @@ export type StoreUpdateManyMutationInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1031,6 +1049,7 @@ export type StoreUncheckedUpdateManyInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1061,6 +1080,7 @@ export type StoreCountOrderByAggregateInput = {
   supportEmail?: Prisma.SortOrder
   supportPhone?: Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrder
+  orderNumberPrefix?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -1081,6 +1101,7 @@ export type StoreMaxOrderByAggregateInput = {
   supportEmail?: Prisma.SortOrder
   supportPhone?: Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrder
+  orderNumberPrefix?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -1101,6 +1122,7 @@ export type StoreMinOrderByAggregateInput = {
   supportEmail?: Prisma.SortOrder
   supportPhone?: Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrder
+  orderNumberPrefix?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -1137,22 +1159,6 @@ export type StoreUpdateOneRequiredWithoutCategoriesNestedInput = {
   upsert?: Prisma.StoreUpsertWithoutCategoriesInput
   connect?: Prisma.StoreWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutCategoriesInput, Prisma.StoreUpdateWithoutCategoriesInput>, Prisma.StoreUncheckedUpdateWithoutCategoriesInput>
-}
-
-export type StoreCreateNestedOneWithoutMediaAssetsInput = {
-  create?: Prisma.XOR<Prisma.StoreCreateWithoutMediaAssetsInput, Prisma.StoreUncheckedCreateWithoutMediaAssetsInput>
-  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutMediaAssetsInput
-  connect?: Prisma.StoreWhereUniqueInput
-}
-
-export type StoreUpdateOneWithoutMediaAssetsNestedInput = {
-  create?: Prisma.XOR<Prisma.StoreCreateWithoutMediaAssetsInput, Prisma.StoreUncheckedCreateWithoutMediaAssetsInput>
-  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutMediaAssetsInput
-  upsert?: Prisma.StoreUpsertWithoutMediaAssetsInput
-  disconnect?: Prisma.StoreWhereInput | boolean
-  delete?: Prisma.StoreWhereInput | boolean
-  connect?: Prisma.StoreWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutMediaAssetsInput, Prisma.StoreUpdateWithoutMediaAssetsInput>, Prisma.StoreUncheckedUpdateWithoutMediaAssetsInput>
 }
 
 export type StoreCreateNestedOneWithoutPriceListsInput = {
@@ -1255,48 +1261,6 @@ export type StoreUpdateOneRequiredWithoutOrdersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutOrdersInput, Prisma.StoreUpdateWithoutOrdersInput>, Prisma.StoreUncheckedUpdateWithoutOrdersInput>
 }
 
-export type StoreCreateNestedOneWithoutBlogCategoriesInput = {
-  create?: Prisma.XOR<Prisma.StoreCreateWithoutBlogCategoriesInput, Prisma.StoreUncheckedCreateWithoutBlogCategoriesInput>
-  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutBlogCategoriesInput
-  connect?: Prisma.StoreWhereUniqueInput
-}
-
-export type StoreUpdateOneRequiredWithoutBlogCategoriesNestedInput = {
-  create?: Prisma.XOR<Prisma.StoreCreateWithoutBlogCategoriesInput, Prisma.StoreUncheckedCreateWithoutBlogCategoriesInput>
-  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutBlogCategoriesInput
-  upsert?: Prisma.StoreUpsertWithoutBlogCategoriesInput
-  connect?: Prisma.StoreWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutBlogCategoriesInput, Prisma.StoreUpdateWithoutBlogCategoriesInput>, Prisma.StoreUncheckedUpdateWithoutBlogCategoriesInput>
-}
-
-export type StoreCreateNestedOneWithoutBlogPostsInput = {
-  create?: Prisma.XOR<Prisma.StoreCreateWithoutBlogPostsInput, Prisma.StoreUncheckedCreateWithoutBlogPostsInput>
-  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutBlogPostsInput
-  connect?: Prisma.StoreWhereUniqueInput
-}
-
-export type StoreUpdateOneRequiredWithoutBlogPostsNestedInput = {
-  create?: Prisma.XOR<Prisma.StoreCreateWithoutBlogPostsInput, Prisma.StoreUncheckedCreateWithoutBlogPostsInput>
-  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutBlogPostsInput
-  upsert?: Prisma.StoreUpsertWithoutBlogPostsInput
-  connect?: Prisma.StoreWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutBlogPostsInput, Prisma.StoreUpdateWithoutBlogPostsInput>, Prisma.StoreUncheckedUpdateWithoutBlogPostsInput>
-}
-
-export type StoreCreateNestedOneWithoutHomepagesInput = {
-  create?: Prisma.XOR<Prisma.StoreCreateWithoutHomepagesInput, Prisma.StoreUncheckedCreateWithoutHomepagesInput>
-  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutHomepagesInput
-  connect?: Prisma.StoreWhereUniqueInput
-}
-
-export type StoreUpdateOneRequiredWithoutHomepagesNestedInput = {
-  create?: Prisma.XOR<Prisma.StoreCreateWithoutHomepagesInput, Prisma.StoreUncheckedCreateWithoutHomepagesInput>
-  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutHomepagesInput
-  upsert?: Prisma.StoreUpsertWithoutHomepagesInput
-  connect?: Prisma.StoreWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutHomepagesInput, Prisma.StoreUpdateWithoutHomepagesInput>, Prisma.StoreUncheckedUpdateWithoutHomepagesInput>
-}
-
 export type StoreCreateNestedOneWithoutPagesInput = {
   create?: Prisma.XOR<Prisma.StoreCreateWithoutPagesInput, Prisma.StoreUncheckedCreateWithoutPagesInput>
   connectOrCreate?: Prisma.StoreCreateOrConnectWithoutPagesInput
@@ -1309,20 +1273,6 @@ export type StoreUpdateOneRequiredWithoutPagesNestedInput = {
   upsert?: Prisma.StoreUpsertWithoutPagesInput
   connect?: Prisma.StoreWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutPagesInput, Prisma.StoreUpdateWithoutPagesInput>, Prisma.StoreUncheckedUpdateWithoutPagesInput>
-}
-
-export type StoreCreateNestedOneWithoutSeoMetadataInput = {
-  create?: Prisma.XOR<Prisma.StoreCreateWithoutSeoMetadataInput, Prisma.StoreUncheckedCreateWithoutSeoMetadataInput>
-  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutSeoMetadataInput
-  connect?: Prisma.StoreWhereUniqueInput
-}
-
-export type StoreUpdateOneRequiredWithoutSeoMetadataNestedInput = {
-  create?: Prisma.XOR<Prisma.StoreCreateWithoutSeoMetadataInput, Prisma.StoreUncheckedCreateWithoutSeoMetadataInput>
-  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutSeoMetadataInput
-  upsert?: Prisma.StoreUpsertWithoutSeoMetadataInput
-  connect?: Prisma.StoreWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutSeoMetadataInput, Prisma.StoreUpdateWithoutSeoMetadataInput>, Prisma.StoreUncheckedUpdateWithoutSeoMetadataInput>
 }
 
 export type StoreCreateNestedOneWithoutApiClientsInput = {
@@ -1467,6 +1417,20 @@ export type StoreUpdateOneWithoutObservabilitySignalsNestedInput = {
   delete?: Prisma.StoreWhereInput | boolean
   connect?: Prisma.StoreWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutObservabilitySignalsInput, Prisma.StoreUpdateWithoutObservabilitySignalsInput>, Prisma.StoreUncheckedUpdateWithoutObservabilitySignalsInput>
+}
+
+export type StoreCreateNestedOneWithoutSeoMetadataInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutSeoMetadataInput, Prisma.StoreUncheckedCreateWithoutSeoMetadataInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutSeoMetadataInput
+  connect?: Prisma.StoreWhereUniqueInput
+}
+
+export type StoreUpdateOneRequiredWithoutSeoMetadataNestedInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutSeoMetadataInput, Prisma.StoreUncheckedCreateWithoutSeoMetadataInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutSeoMetadataInput
+  upsert?: Prisma.StoreUpsertWithoutSeoMetadataInput
+  connect?: Prisma.StoreWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutSeoMetadataInput, Prisma.StoreUpdateWithoutSeoMetadataInput>, Prisma.StoreUncheckedUpdateWithoutSeoMetadataInput>
 }
 
 export type StoreCreateNestedOneWithoutAiProvidersInput = {
@@ -1803,6 +1767,34 @@ export type StoreUpdateOneWithoutBehaviorProfilesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutBehaviorProfilesInput, Prisma.StoreUpdateWithoutBehaviorProfilesInput>, Prisma.StoreUncheckedUpdateWithoutBehaviorProfilesInput>
 }
 
+export type StoreCreateNestedOneWithoutBlogCategoriesInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutBlogCategoriesInput, Prisma.StoreUncheckedCreateWithoutBlogCategoriesInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutBlogCategoriesInput
+  connect?: Prisma.StoreWhereUniqueInput
+}
+
+export type StoreUpdateOneRequiredWithoutBlogCategoriesNestedInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutBlogCategoriesInput, Prisma.StoreUncheckedCreateWithoutBlogCategoriesInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutBlogCategoriesInput
+  upsert?: Prisma.StoreUpsertWithoutBlogCategoriesInput
+  connect?: Prisma.StoreWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutBlogCategoriesInput, Prisma.StoreUpdateWithoutBlogCategoriesInput>, Prisma.StoreUncheckedUpdateWithoutBlogCategoriesInput>
+}
+
+export type StoreCreateNestedOneWithoutBlogPostsInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutBlogPostsInput, Prisma.StoreUncheckedCreateWithoutBlogPostsInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutBlogPostsInput
+  connect?: Prisma.StoreWhereUniqueInput
+}
+
+export type StoreUpdateOneRequiredWithoutBlogPostsNestedInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutBlogPostsInput, Prisma.StoreUncheckedCreateWithoutBlogPostsInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutBlogPostsInput
+  upsert?: Prisma.StoreUpsertWithoutBlogPostsInput
+  connect?: Prisma.StoreWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutBlogPostsInput, Prisma.StoreUpdateWithoutBlogPostsInput>, Prisma.StoreUncheckedUpdateWithoutBlogPostsInput>
+}
+
 export type StoreCreateNestedOneWithoutConversionFlowsInput = {
   create?: Prisma.XOR<Prisma.StoreCreateWithoutConversionFlowsInput, Prisma.StoreUncheckedCreateWithoutConversionFlowsInput>
   connectOrCreate?: Prisma.StoreCreateOrConnectWithoutConversionFlowsInput
@@ -1935,6 +1927,20 @@ export type StoreUpdateOneWithoutSupportTicketsNestedInput = {
   delete?: Prisma.StoreWhereInput | boolean
   connect?: Prisma.StoreWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutSupportTicketsInput, Prisma.StoreUpdateWithoutSupportTicketsInput>, Prisma.StoreUncheckedUpdateWithoutSupportTicketsInput>
+}
+
+export type StoreCreateNestedOneWithoutHomepagesInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutHomepagesInput, Prisma.StoreUncheckedCreateWithoutHomepagesInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutHomepagesInput
+  connect?: Prisma.StoreWhereUniqueInput
+}
+
+export type StoreUpdateOneRequiredWithoutHomepagesNestedInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutHomepagesInput, Prisma.StoreUncheckedCreateWithoutHomepagesInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutHomepagesInput
+  upsert?: Prisma.StoreUpsertWithoutHomepagesInput
+  connect?: Prisma.StoreWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutHomepagesInput, Prisma.StoreUpdateWithoutHomepagesInput>, Prisma.StoreUncheckedUpdateWithoutHomepagesInput>
 }
 
 export type StoreCreateNestedOneWithoutApprovalRequestsInput = {
@@ -2239,6 +2245,22 @@ export type StoreUpdateOneRequiredWithoutChannelsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutChannelsInput, Prisma.StoreUpdateWithoutChannelsInput>, Prisma.StoreUncheckedUpdateWithoutChannelsInput>
 }
 
+export type StoreCreateNestedOneWithoutMediaAssetsInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutMediaAssetsInput, Prisma.StoreUncheckedCreateWithoutMediaAssetsInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutMediaAssetsInput
+  connect?: Prisma.StoreWhereUniqueInput
+}
+
+export type StoreUpdateOneWithoutMediaAssetsNestedInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutMediaAssetsInput, Prisma.StoreUncheckedCreateWithoutMediaAssetsInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutMediaAssetsInput
+  upsert?: Prisma.StoreUpsertWithoutMediaAssetsInput
+  disconnect?: Prisma.StoreWhereInput | boolean
+  delete?: Prisma.StoreWhereInput | boolean
+  connect?: Prisma.StoreWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutMediaAssetsInput, Prisma.StoreUpdateWithoutMediaAssetsInput>, Prisma.StoreUncheckedUpdateWithoutMediaAssetsInput>
+}
+
 export type StoreCreateNestedOneWithoutSearchDocumentsInput = {
   create?: Prisma.XOR<Prisma.StoreCreateWithoutSearchDocumentsInput, Prisma.StoreUncheckedCreateWithoutSearchDocumentsInput>
   connectOrCreate?: Prisma.StoreCreateOrConnectWithoutSearchDocumentsInput
@@ -2263,6 +2285,7 @@ export type StoreCreateWithoutAvailabilityRecordsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2358,6 +2381,7 @@ export type StoreUncheckedCreateWithoutAvailabilityRecordsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2469,6 +2493,7 @@ export type StoreUpdateWithoutAvailabilityRecordsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2564,6 +2589,7 @@ export type StoreUncheckedUpdateWithoutAvailabilityRecordsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2659,6 +2685,7 @@ export type StoreCreateWithoutCategoriesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2754,6 +2781,7 @@ export type StoreUncheckedCreateWithoutCategoriesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2865,6 +2893,7 @@ export type StoreUpdateWithoutCategoriesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2960,6 +2989,7 @@ export type StoreUncheckedUpdateWithoutCategoriesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3045,402 +3075,6 @@ export type StoreUncheckedUpdateWithoutCategoriesInput = {
   fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
 }
 
-export type StoreCreateWithoutMediaAssetsInput = {
-  id?: string
-  code: string
-  name: string
-  slug: string
-  status?: $Enums.StoreStatus
-  legalName?: string | null
-  supportEmail?: string | null
-  supportPhone?: string | null
-  shippingReturnsPolicy?: string | null
-  defaultLocaleCode: string
-  defaultCurrency?: $Enums.CurrencyCode
-  timezone?: string
-  isProduction?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  activatedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
-  users?: Prisma.UserCreateNestedManyWithoutStoreInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
-  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
-  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
-  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
-  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
-  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
-  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
-  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
-  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
-  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
-  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
-  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
-  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
-  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
-  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
-  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
-  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
-  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
-  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
-  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
-  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
-  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
-  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
-  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
-  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
-  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
-  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
-  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
-  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
-  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
-  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
-  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
-  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
-  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
-  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
-  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
-  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
-  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
-  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
-  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
-  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
-  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
-  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
-  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
-  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
-  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
-  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
-  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
-  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
-  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
-  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
-  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
-  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
-  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
-  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
-  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
-  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
-  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
-  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
-  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
-  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
-  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
-  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
-  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
-  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
-  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
-}
-
-export type StoreUncheckedCreateWithoutMediaAssetsInput = {
-  id?: string
-  code: string
-  name: string
-  slug: string
-  status?: $Enums.StoreStatus
-  legalName?: string | null
-  supportEmail?: string | null
-  supportPhone?: string | null
-  shippingReturnsPolicy?: string | null
-  defaultLocaleCode: string
-  defaultCurrency?: $Enums.CurrencyCode
-  timezone?: string
-  isProduction?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  activatedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
-  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
-  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
-  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
-  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
-  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
-  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
-  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
-  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
-  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
-  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
-  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
-  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
-  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
-  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
-  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
-  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
-  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
-  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
-  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
-  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
-  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
-  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
-  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
-  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
-  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
-  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
-  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
-  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
-  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
-  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
-  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
-  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
-  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
-  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
-  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
-  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
-  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
-  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
-  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
-  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
-  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
-  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
-  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
-  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
-  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
-  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
-  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
-  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
-  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
-  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
-  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
-  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
-  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
-  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
-  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
-  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
-  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
-  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
-  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
-  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
-}
-
-export type StoreCreateOrConnectWithoutMediaAssetsInput = {
-  where: Prisma.StoreWhereUniqueInput
-  create: Prisma.XOR<Prisma.StoreCreateWithoutMediaAssetsInput, Prisma.StoreUncheckedCreateWithoutMediaAssetsInput>
-}
-
-export type StoreUpsertWithoutMediaAssetsInput = {
-  update: Prisma.XOR<Prisma.StoreUpdateWithoutMediaAssetsInput, Prisma.StoreUncheckedUpdateWithoutMediaAssetsInput>
-  create: Prisma.XOR<Prisma.StoreCreateWithoutMediaAssetsInput, Prisma.StoreUncheckedCreateWithoutMediaAssetsInput>
-  where?: Prisma.StoreWhereInput
-}
-
-export type StoreUpdateToOneWithWhereWithoutMediaAssetsInput = {
-  where?: Prisma.StoreWhereInput
-  data: Prisma.XOR<Prisma.StoreUpdateWithoutMediaAssetsInput, Prisma.StoreUncheckedUpdateWithoutMediaAssetsInput>
-}
-
-export type StoreUpdateWithoutMediaAssetsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
-  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
-  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
-  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
-  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
-  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
-  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
-  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
-  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
-  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
-  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
-  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
-  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
-  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
-  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
-  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
-  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
-  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
-  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
-  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
-  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
-  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
-  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
-  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
-  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
-  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
-  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
-  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
-  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
-  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
-  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
-  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
-  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
-  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
-  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
-  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
-  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
-  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
-  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
-  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
-  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
-  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
-  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
-  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
-  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
-  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
-  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
-  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
-  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
-  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
-  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
-  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
-  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
-  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
-  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
-  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
-  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
-  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
-  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
-  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
-  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
-  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
-  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
-  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
-  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
-}
-
-export type StoreUncheckedUpdateWithoutMediaAssetsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
-  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
-  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
-  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
-  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
-  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
-  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
-  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
-  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
-  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
-  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
-  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
-  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
-  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
-  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
-  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
-  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
-  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
-  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
-  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
-  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
-  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
-  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
-  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
-  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
-  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
-  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
-  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
-  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
-  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
-  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
-  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
-  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
-  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
-  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
-  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
-  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
-  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
-  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
-  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
-  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
-  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
-  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
-  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
-  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
-  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
-  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
-  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
-  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
-  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
-  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
-  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
-  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
-  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
-  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
-  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
-  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
-  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
-  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
-  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
-  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
-  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
-}
-
 export type StoreCreateWithoutPriceListsInput = {
   id?: string
   code: string
@@ -3451,6 +3085,7 @@ export type StoreCreateWithoutPriceListsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3546,6 +3181,7 @@ export type StoreUncheckedCreateWithoutPriceListsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3657,6 +3293,7 @@ export type StoreUpdateWithoutPriceListsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3752,6 +3389,7 @@ export type StoreUncheckedUpdateWithoutPriceListsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3847,6 +3485,7 @@ export type StoreCreateWithoutProductTypesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3942,6 +3581,7 @@ export type StoreUncheckedCreateWithoutProductTypesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4053,6 +3693,7 @@ export type StoreUpdateWithoutProductTypesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4148,6 +3789,7 @@ export type StoreUncheckedUpdateWithoutProductTypesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4243,6 +3885,7 @@ export type StoreCreateWithoutProductsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4338,6 +3981,7 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4449,6 +4093,7 @@ export type StoreUpdateWithoutProductsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4544,6 +4189,7 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4639,6 +4285,7 @@ export type StoreCreateWithoutCartsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4734,6 +4381,7 @@ export type StoreUncheckedCreateWithoutCartsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4845,6 +4493,7 @@ export type StoreUpdateWithoutCartsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4940,6 +4589,7 @@ export type StoreUncheckedUpdateWithoutCartsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5035,6 +4685,7 @@ export type StoreCreateWithoutCheckoutsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5130,6 +4781,7 @@ export type StoreUncheckedCreateWithoutCheckoutsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5241,6 +4893,7 @@ export type StoreUpdateWithoutCheckoutsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5336,6 +4989,7 @@ export type StoreUncheckedUpdateWithoutCheckoutsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5431,6 +5085,7 @@ export type StoreCreateWithoutCustomersInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5526,6 +5181,7 @@ export type StoreUncheckedCreateWithoutCustomersInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5637,6 +5293,7 @@ export type StoreUpdateWithoutCustomersInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5732,6 +5389,7 @@ export type StoreUncheckedUpdateWithoutCustomersInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5827,6 +5485,7 @@ export type StoreCreateWithoutOrdersInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5922,6 +5581,7 @@ export type StoreUncheckedCreateWithoutOrdersInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6033,6 +5693,7 @@ export type StoreUpdateWithoutOrdersInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6128,6 +5789,7 @@ export type StoreUncheckedUpdateWithoutOrdersInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6159,1194 +5821,6 @@ export type StoreUncheckedUpdateWithoutOrdersInput = {
   blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
   blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
   homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
-  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
-  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
-  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
-  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
-  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
-  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
-  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
-  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
-  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
-  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
-  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
-  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
-  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
-  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
-  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
-  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
-  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
-  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
-  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
-  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
-  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
-  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
-  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
-  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
-  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
-  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
-  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
-  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
-  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
-  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
-  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
-  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
-  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
-  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
-  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
-  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
-  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
-  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
-  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
-  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
-  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
-  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
-}
-
-export type StoreCreateWithoutBlogCategoriesInput = {
-  id?: string
-  code: string
-  name: string
-  slug: string
-  status?: $Enums.StoreStatus
-  legalName?: string | null
-  supportEmail?: string | null
-  supportPhone?: string | null
-  shippingReturnsPolicy?: string | null
-  defaultLocaleCode: string
-  defaultCurrency?: $Enums.CurrencyCode
-  timezone?: string
-  isProduction?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  activatedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
-  users?: Prisma.UserCreateNestedManyWithoutStoreInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
-  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
-  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
-  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
-  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
-  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
-  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
-  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
-  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
-  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
-  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
-  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
-  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
-  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
-  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
-  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
-  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
-  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
-  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
-  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
-  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
-  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
-  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
-  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
-  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
-  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
-  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
-  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
-  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
-  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
-  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
-  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
-  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
-  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
-  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
-  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
-  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
-  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
-  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
-  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
-  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
-  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
-  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
-  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
-  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
-  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
-  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
-  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
-  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
-  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
-  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
-  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
-  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
-  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
-  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
-  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
-  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
-  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
-  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
-  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
-  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
-  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
-  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
-  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
-  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
-  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
-}
-
-export type StoreUncheckedCreateWithoutBlogCategoriesInput = {
-  id?: string
-  code: string
-  name: string
-  slug: string
-  status?: $Enums.StoreStatus
-  legalName?: string | null
-  supportEmail?: string | null
-  supportPhone?: string | null
-  shippingReturnsPolicy?: string | null
-  defaultLocaleCode: string
-  defaultCurrency?: $Enums.CurrencyCode
-  timezone?: string
-  isProduction?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  activatedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
-  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
-  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
-  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
-  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
-  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
-  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
-  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
-  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
-  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
-  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
-  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
-  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
-  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
-  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
-  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
-  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
-  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
-  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
-  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
-  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
-  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
-  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
-  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
-  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
-  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
-  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
-  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
-  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
-  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
-  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
-  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
-  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
-  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
-  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
-  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
-  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
-  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
-  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
-  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
-  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
-  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
-  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
-  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
-  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
-  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
-  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
-  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
-  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
-  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
-  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
-  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
-  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
-  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
-  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
-  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
-  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
-  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
-  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
-  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
-  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
-}
-
-export type StoreCreateOrConnectWithoutBlogCategoriesInput = {
-  where: Prisma.StoreWhereUniqueInput
-  create: Prisma.XOR<Prisma.StoreCreateWithoutBlogCategoriesInput, Prisma.StoreUncheckedCreateWithoutBlogCategoriesInput>
-}
-
-export type StoreUpsertWithoutBlogCategoriesInput = {
-  update: Prisma.XOR<Prisma.StoreUpdateWithoutBlogCategoriesInput, Prisma.StoreUncheckedUpdateWithoutBlogCategoriesInput>
-  create: Prisma.XOR<Prisma.StoreCreateWithoutBlogCategoriesInput, Prisma.StoreUncheckedCreateWithoutBlogCategoriesInput>
-  where?: Prisma.StoreWhereInput
-}
-
-export type StoreUpdateToOneWithWhereWithoutBlogCategoriesInput = {
-  where?: Prisma.StoreWhereInput
-  data: Prisma.XOR<Prisma.StoreUpdateWithoutBlogCategoriesInput, Prisma.StoreUncheckedUpdateWithoutBlogCategoriesInput>
-}
-
-export type StoreUpdateWithoutBlogCategoriesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
-  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
-  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
-  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
-  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
-  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
-  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
-  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
-  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
-  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
-  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
-  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
-  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
-  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
-  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
-  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
-  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
-  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
-  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
-  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
-  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
-  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
-  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
-  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
-  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
-  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
-  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
-  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
-  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
-  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
-  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
-  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
-  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
-  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
-  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
-  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
-  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
-  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
-  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
-  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
-  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
-  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
-  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
-  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
-  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
-  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
-  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
-  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
-  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
-  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
-  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
-  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
-  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
-  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
-  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
-  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
-  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
-  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
-  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
-  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
-  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
-  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
-  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
-  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
-  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
-}
-
-export type StoreUncheckedUpdateWithoutBlogCategoriesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
-  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
-  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
-  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
-  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
-  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
-  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
-  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
-  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
-  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
-  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
-  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
-  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
-  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
-  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
-  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
-  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
-  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
-  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
-  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
-  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
-  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
-  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
-  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
-  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
-  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
-  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
-  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
-  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
-  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
-  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
-  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
-  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
-  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
-  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
-  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
-  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
-  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
-  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
-  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
-  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
-  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
-  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
-  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
-  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
-  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
-  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
-  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
-  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
-  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
-  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
-  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
-  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
-  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
-  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
-  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
-  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
-  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
-  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
-  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
-  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
-  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
-}
-
-export type StoreCreateWithoutBlogPostsInput = {
-  id?: string
-  code: string
-  name: string
-  slug: string
-  status?: $Enums.StoreStatus
-  legalName?: string | null
-  supportEmail?: string | null
-  supportPhone?: string | null
-  shippingReturnsPolicy?: string | null
-  defaultLocaleCode: string
-  defaultCurrency?: $Enums.CurrencyCode
-  timezone?: string
-  isProduction?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  activatedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
-  users?: Prisma.UserCreateNestedManyWithoutStoreInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
-  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
-  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
-  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
-  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
-  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
-  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
-  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
-  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
-  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
-  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
-  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
-  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
-  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
-  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
-  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
-  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
-  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
-  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
-  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
-  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
-  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
-  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
-  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
-  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
-  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
-  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
-  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
-  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
-  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
-  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
-  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
-  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
-  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
-  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
-  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
-  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
-  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
-  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
-  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
-  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
-  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
-  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
-  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
-  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
-  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
-  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
-  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
-  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
-  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
-  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
-  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
-  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
-  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
-  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
-  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
-  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
-  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
-  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
-  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
-  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
-  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
-  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
-  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
-  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
-  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
-}
-
-export type StoreUncheckedCreateWithoutBlogPostsInput = {
-  id?: string
-  code: string
-  name: string
-  slug: string
-  status?: $Enums.StoreStatus
-  legalName?: string | null
-  supportEmail?: string | null
-  supportPhone?: string | null
-  shippingReturnsPolicy?: string | null
-  defaultLocaleCode: string
-  defaultCurrency?: $Enums.CurrencyCode
-  timezone?: string
-  isProduction?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  activatedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
-  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
-  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
-  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
-  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
-  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
-  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
-  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
-  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
-  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
-  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
-  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
-  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
-  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
-  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
-  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
-  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
-  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
-  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
-  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
-  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
-  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
-  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
-  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
-  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
-  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
-  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
-  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
-  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
-  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
-  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
-  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
-  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
-  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
-  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
-  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
-  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
-  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
-  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
-  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
-  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
-  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
-  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
-  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
-  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
-  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
-  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
-  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
-  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
-  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
-  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
-  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
-  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
-  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
-  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
-  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
-  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
-  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
-  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
-  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
-  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
-}
-
-export type StoreCreateOrConnectWithoutBlogPostsInput = {
-  where: Prisma.StoreWhereUniqueInput
-  create: Prisma.XOR<Prisma.StoreCreateWithoutBlogPostsInput, Prisma.StoreUncheckedCreateWithoutBlogPostsInput>
-}
-
-export type StoreUpsertWithoutBlogPostsInput = {
-  update: Prisma.XOR<Prisma.StoreUpdateWithoutBlogPostsInput, Prisma.StoreUncheckedUpdateWithoutBlogPostsInput>
-  create: Prisma.XOR<Prisma.StoreCreateWithoutBlogPostsInput, Prisma.StoreUncheckedCreateWithoutBlogPostsInput>
-  where?: Prisma.StoreWhereInput
-}
-
-export type StoreUpdateToOneWithWhereWithoutBlogPostsInput = {
-  where?: Prisma.StoreWhereInput
-  data: Prisma.XOR<Prisma.StoreUpdateWithoutBlogPostsInput, Prisma.StoreUncheckedUpdateWithoutBlogPostsInput>
-}
-
-export type StoreUpdateWithoutBlogPostsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
-  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
-  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
-  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
-  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
-  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
-  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
-  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
-  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
-  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
-  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
-  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
-  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
-  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
-  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
-  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
-  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
-  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
-  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
-  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
-  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
-  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
-  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
-  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
-  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
-  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
-  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
-  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
-  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
-  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
-  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
-  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
-  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
-  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
-  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
-  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
-  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
-  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
-  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
-  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
-  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
-  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
-  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
-  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
-  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
-  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
-  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
-  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
-  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
-  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
-  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
-  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
-  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
-  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
-  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
-  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
-  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
-  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
-  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
-  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
-  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
-  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
-  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
-  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
-  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
-}
-
-export type StoreUncheckedUpdateWithoutBlogPostsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
-  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
-  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
-  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
-  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
-  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
-  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
-  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
-  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
-  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
-  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
-  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
-  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
-  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
-  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
-  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
-  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
-  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
-  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
-  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
-  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
-  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
-  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
-  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
-  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
-  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
-  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
-  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
-  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
-  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
-  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
-  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
-  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
-  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
-  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
-  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
-  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
-  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
-  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
-  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
-  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
-  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
-  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
-  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
-  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
-  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
-  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
-  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
-  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
-  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
-  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
-  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
-  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
-  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
-  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
-  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
-  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
-  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
-  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
-  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
-  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
-  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
-}
-
-export type StoreCreateWithoutHomepagesInput = {
-  id?: string
-  code: string
-  name: string
-  slug: string
-  status?: $Enums.StoreStatus
-  legalName?: string | null
-  supportEmail?: string | null
-  supportPhone?: string | null
-  shippingReturnsPolicy?: string | null
-  defaultLocaleCode: string
-  defaultCurrency?: $Enums.CurrencyCode
-  timezone?: string
-  isProduction?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  activatedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
-  users?: Prisma.UserCreateNestedManyWithoutStoreInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
-  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
-  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
-  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
-  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
-  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
-  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
-  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
-  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
-  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
-  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
-  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
-  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
-  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
-  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
-  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
-  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
-  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
-  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
-  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
-  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
-  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
-  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
-  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
-  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
-  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
-  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
-  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
-  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
-  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
-  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
-  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
-  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
-  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
-  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
-  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
-  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
-  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
-  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
-  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
-  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
-  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
-  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
-  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
-  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
-  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
-  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
-  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
-  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
-  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
-  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
-  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
-  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
-  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
-  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
-  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
-  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
-  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
-  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
-  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
-  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
-  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
-  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
-  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
-  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
-  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
-}
-
-export type StoreUncheckedCreateWithoutHomepagesInput = {
-  id?: string
-  code: string
-  name: string
-  slug: string
-  status?: $Enums.StoreStatus
-  legalName?: string | null
-  supportEmail?: string | null
-  supportPhone?: string | null
-  shippingReturnsPolicy?: string | null
-  defaultLocaleCode: string
-  defaultCurrency?: $Enums.CurrencyCode
-  timezone?: string
-  isProduction?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  activatedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
-  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
-  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
-  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
-  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
-  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
-  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
-  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
-  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
-  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
-  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
-  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
-  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
-  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
-  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
-  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
-  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
-  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
-  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
-  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
-  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
-  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
-  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
-  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
-  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
-  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
-  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
-  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
-  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
-  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
-  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
-  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
-  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
-  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
-  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
-  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
-  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
-  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
-  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
-  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
-  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
-  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
-  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
-  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
-  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
-  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
-  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
-  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
-  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
-  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
-  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
-  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
-  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
-  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
-  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
-  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
-  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
-  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
-  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
-  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
-  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
-}
-
-export type StoreCreateOrConnectWithoutHomepagesInput = {
-  where: Prisma.StoreWhereUniqueInput
-  create: Prisma.XOR<Prisma.StoreCreateWithoutHomepagesInput, Prisma.StoreUncheckedCreateWithoutHomepagesInput>
-}
-
-export type StoreUpsertWithoutHomepagesInput = {
-  update: Prisma.XOR<Prisma.StoreUpdateWithoutHomepagesInput, Prisma.StoreUncheckedUpdateWithoutHomepagesInput>
-  create: Prisma.XOR<Prisma.StoreCreateWithoutHomepagesInput, Prisma.StoreUncheckedCreateWithoutHomepagesInput>
-  where?: Prisma.StoreWhereInput
-}
-
-export type StoreUpdateToOneWithWhereWithoutHomepagesInput = {
-  where?: Prisma.StoreWhereInput
-  data: Prisma.XOR<Prisma.StoreUpdateWithoutHomepagesInput, Prisma.StoreUncheckedUpdateWithoutHomepagesInput>
-}
-
-export type StoreUpdateWithoutHomepagesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
-  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
-  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
-  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
-  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
-  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
-  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
-  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
-  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
-  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
-  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
-  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
-  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
-  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
-  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
-  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
-  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
-  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
-  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
-  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
-  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
-  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
-  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
-  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
-  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
-  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
-  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
-  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
-  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
-  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
-  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
-  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
-  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
-  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
-  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
-  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
-  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
-  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
-  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
-  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
-  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
-  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
-  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
-  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
-  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
-  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
-  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
-  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
-  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
-  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
-  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
-  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
-  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
-  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
-  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
-  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
-  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
-  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
-  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
-  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
-  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
-  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
-  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
-  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
-  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
-}
-
-export type StoreUncheckedUpdateWithoutHomepagesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
-  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
-  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
-  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
-  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
-  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
-  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
-  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
-  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
-  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
-  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
-  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
-  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
-  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
-  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
-  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
-  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
-  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
-  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
-  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
   seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
   apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
@@ -7411,6 +5885,7 @@ export type StoreCreateWithoutPagesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7506,6 +5981,7 @@ export type StoreUncheckedCreateWithoutPagesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7617,6 +6093,7 @@ export type StoreUpdateWithoutPagesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7712,6 +6189,7 @@ export type StoreUncheckedUpdateWithoutPagesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7797,402 +6275,6 @@ export type StoreUncheckedUpdateWithoutPagesInput = {
   fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
 }
 
-export type StoreCreateWithoutSeoMetadataInput = {
-  id?: string
-  code: string
-  name: string
-  slug: string
-  status?: $Enums.StoreStatus
-  legalName?: string | null
-  supportEmail?: string | null
-  supportPhone?: string | null
-  shippingReturnsPolicy?: string | null
-  defaultLocaleCode: string
-  defaultCurrency?: $Enums.CurrencyCode
-  timezone?: string
-  isProduction?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  activatedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
-  users?: Prisma.UserCreateNestedManyWithoutStoreInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
-  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
-  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
-  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
-  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
-  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
-  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
-  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
-  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
-  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
-  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
-  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
-  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
-  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
-  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
-  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
-  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
-  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
-  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
-  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
-  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
-  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
-  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
-  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
-  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
-  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
-  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
-  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
-  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
-  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
-  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
-  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
-  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
-  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
-  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
-  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
-  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
-  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
-  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
-  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
-  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
-  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
-  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
-  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
-  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
-  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
-  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
-  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
-  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
-  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
-  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
-  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
-  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
-  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
-  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
-  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
-  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
-  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
-  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
-  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
-  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
-  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
-  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
-  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
-  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
-  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
-}
-
-export type StoreUncheckedCreateWithoutSeoMetadataInput = {
-  id?: string
-  code: string
-  name: string
-  slug: string
-  status?: $Enums.StoreStatus
-  legalName?: string | null
-  supportEmail?: string | null
-  supportPhone?: string | null
-  shippingReturnsPolicy?: string | null
-  defaultLocaleCode: string
-  defaultCurrency?: $Enums.CurrencyCode
-  timezone?: string
-  isProduction?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  activatedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
-  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
-  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
-  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
-  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
-  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
-  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
-  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
-  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
-  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
-  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
-  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
-  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
-  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
-  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
-  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
-  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
-  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
-  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
-  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
-  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
-  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
-  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
-  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
-  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
-  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
-  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
-  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
-  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
-  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
-  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
-  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
-  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
-  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
-  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
-  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
-  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
-  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
-  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
-  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
-  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
-  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
-  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
-  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
-  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
-  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
-  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
-  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
-  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
-  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
-  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
-  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
-  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
-  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
-  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
-  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
-  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
-  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
-  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
-  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
-  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
-  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
-  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
-}
-
-export type StoreCreateOrConnectWithoutSeoMetadataInput = {
-  where: Prisma.StoreWhereUniqueInput
-  create: Prisma.XOR<Prisma.StoreCreateWithoutSeoMetadataInput, Prisma.StoreUncheckedCreateWithoutSeoMetadataInput>
-}
-
-export type StoreUpsertWithoutSeoMetadataInput = {
-  update: Prisma.XOR<Prisma.StoreUpdateWithoutSeoMetadataInput, Prisma.StoreUncheckedUpdateWithoutSeoMetadataInput>
-  create: Prisma.XOR<Prisma.StoreCreateWithoutSeoMetadataInput, Prisma.StoreUncheckedCreateWithoutSeoMetadataInput>
-  where?: Prisma.StoreWhereInput
-}
-
-export type StoreUpdateToOneWithWhereWithoutSeoMetadataInput = {
-  where?: Prisma.StoreWhereInput
-  data: Prisma.XOR<Prisma.StoreUpdateWithoutSeoMetadataInput, Prisma.StoreUncheckedUpdateWithoutSeoMetadataInput>
-}
-
-export type StoreUpdateWithoutSeoMetadataInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
-  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
-  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
-  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
-  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
-  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
-  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
-  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
-  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
-  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
-  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
-  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
-  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
-  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
-  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
-  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
-  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
-  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
-  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
-  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
-  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
-  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
-  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
-  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
-  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
-  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
-  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
-  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
-  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
-  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
-  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
-  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
-  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
-  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
-  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
-  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
-  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
-  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
-  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
-  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
-  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
-  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
-  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
-  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
-  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
-  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
-  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
-  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
-  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
-  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
-  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
-  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
-  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
-  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
-  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
-  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
-  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
-  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
-  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
-  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
-  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
-  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
-  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
-  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
-  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
-  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
-}
-
-export type StoreUncheckedUpdateWithoutSeoMetadataInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
-  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
-  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
-  timezone?: Prisma.StringFieldUpdateOperationsInput | string
-  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
-  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
-  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
-  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
-  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
-  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
-  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
-  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
-  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
-  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
-  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
-  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
-  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
-  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
-  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
-  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
-  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
-  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
-  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
-  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
-  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
-  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
-  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
-  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
-  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
-  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
-  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
-  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
-  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
-  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
-  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
-  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
-  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
-  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
-  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
-  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
-  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
-  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
-  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
-  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
-  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
-  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
-  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
-  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
-  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
-  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
-  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
-  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
-  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
-  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
-  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
-  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
-  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
-  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
-  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
-  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
-  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
-  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
-  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
-  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
-  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
-  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
-  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
-  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
-  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
-  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
-  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
-  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
-  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
-  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
-  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
-}
-
 export type StoreCreateWithoutApiClientsInput = {
   id?: string
   code: string
@@ -8203,6 +6285,7 @@ export type StoreCreateWithoutApiClientsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8298,6 +6381,7 @@ export type StoreUncheckedCreateWithoutApiClientsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8409,6 +6493,7 @@ export type StoreUpdateWithoutApiClientsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8504,6 +6589,7 @@ export type StoreUncheckedUpdateWithoutApiClientsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8599,6 +6685,7 @@ export type StoreCreateWithoutUsersInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8694,6 +6781,7 @@ export type StoreUncheckedCreateWithoutUsersInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8805,6 +6893,7 @@ export type StoreUpdateWithoutUsersInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8900,6 +6989,7 @@ export type StoreUncheckedUpdateWithoutUsersInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8995,6 +7085,7 @@ export type StoreCreateWithoutDomainsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9090,6 +7181,7 @@ export type StoreUncheckedCreateWithoutDomainsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9201,6 +7293,7 @@ export type StoreUpdateWithoutDomainsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9296,6 +7389,7 @@ export type StoreUncheckedUpdateWithoutDomainsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9391,6 +7485,7 @@ export type StoreCreateWithoutAuditLogsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9486,6 +7581,7 @@ export type StoreUncheckedCreateWithoutAuditLogsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9597,6 +7693,7 @@ export type StoreUpdateWithoutAuditLogsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9692,6 +7789,7 @@ export type StoreUncheckedUpdateWithoutAuditLogsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9787,6 +7885,7 @@ export type StoreCreateWithoutDomainEventsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9882,6 +7981,7 @@ export type StoreUncheckedCreateWithoutDomainEventsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9993,6 +8093,7 @@ export type StoreUpdateWithoutDomainEventsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10088,6 +8189,7 @@ export type StoreUncheckedUpdateWithoutDomainEventsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10183,6 +8285,7 @@ export type StoreCreateWithoutFeatureFlagsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10278,6 +8381,7 @@ export type StoreUncheckedCreateWithoutFeatureFlagsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10389,6 +8493,7 @@ export type StoreUpdateWithoutFeatureFlagsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10484,6 +8589,7 @@ export type StoreUncheckedUpdateWithoutFeatureFlagsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10579,6 +8685,7 @@ export type StoreCreateWithoutJobsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10674,6 +8781,7 @@ export type StoreUncheckedCreateWithoutJobsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10785,6 +8893,7 @@ export type StoreUpdateWithoutJobsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10880,6 +8989,7 @@ export type StoreUncheckedUpdateWithoutJobsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10975,6 +9085,7 @@ export type StoreCreateWithoutMonitoringChecksInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11070,6 +9181,7 @@ export type StoreUncheckedCreateWithoutMonitoringChecksInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11181,6 +9293,7 @@ export type StoreUpdateWithoutMonitoringChecksInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11276,6 +9389,7 @@ export type StoreUncheckedUpdateWithoutMonitoringChecksInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11371,6 +9485,7 @@ export type StoreCreateWithoutObservabilitySignalsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11466,6 +9581,7 @@ export type StoreUncheckedCreateWithoutObservabilitySignalsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11577,6 +9693,7 @@ export type StoreUpdateWithoutObservabilitySignalsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11672,6 +9789,7 @@ export type StoreUncheckedUpdateWithoutObservabilitySignalsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11757,6 +9875,406 @@ export type StoreUncheckedUpdateWithoutObservabilitySignalsInput = {
   fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
 }
 
+export type StoreCreateWithoutSeoMetadataInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
+}
+
+export type StoreUncheckedCreateWithoutSeoMetadataInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
+}
+
+export type StoreCreateOrConnectWithoutSeoMetadataInput = {
+  where: Prisma.StoreWhereUniqueInput
+  create: Prisma.XOR<Prisma.StoreCreateWithoutSeoMetadataInput, Prisma.StoreUncheckedCreateWithoutSeoMetadataInput>
+}
+
+export type StoreUpsertWithoutSeoMetadataInput = {
+  update: Prisma.XOR<Prisma.StoreUpdateWithoutSeoMetadataInput, Prisma.StoreUncheckedUpdateWithoutSeoMetadataInput>
+  create: Prisma.XOR<Prisma.StoreCreateWithoutSeoMetadataInput, Prisma.StoreUncheckedCreateWithoutSeoMetadataInput>
+  where?: Prisma.StoreWhereInput
+}
+
+export type StoreUpdateToOneWithWhereWithoutSeoMetadataInput = {
+  where?: Prisma.StoreWhereInput
+  data: Prisma.XOR<Prisma.StoreUpdateWithoutSeoMetadataInput, Prisma.StoreUncheckedUpdateWithoutSeoMetadataInput>
+}
+
+export type StoreUpdateWithoutSeoMetadataInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreUncheckedUpdateWithoutSeoMetadataInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
+}
+
 export type StoreCreateWithoutAiProvidersInput = {
   id?: string
   code: string
@@ -11767,6 +10285,7 @@ export type StoreCreateWithoutAiProvidersInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11862,6 +10381,7 @@ export type StoreUncheckedCreateWithoutAiProvidersInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11973,6 +10493,7 @@ export type StoreUpdateWithoutAiProvidersInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12068,6 +10589,7 @@ export type StoreUncheckedUpdateWithoutAiProvidersInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12163,6 +10685,7 @@ export type StoreCreateWithoutAiTasksInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12258,6 +10781,7 @@ export type StoreUncheckedCreateWithoutAiTasksInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12369,6 +10893,7 @@ export type StoreUpdateWithoutAiTasksInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12464,6 +10989,7 @@ export type StoreUncheckedUpdateWithoutAiTasksInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12559,6 +11085,7 @@ export type StoreCreateWithoutBundlesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12654,6 +11181,7 @@ export type StoreUncheckedCreateWithoutBundlesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12765,6 +11293,7 @@ export type StoreUpdateWithoutBundlesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12860,6 +11389,7 @@ export type StoreUncheckedUpdateWithoutBundlesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12955,6 +11485,7 @@ export type StoreCreateWithoutDiscountsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13050,6 +11581,7 @@ export type StoreUncheckedCreateWithoutDiscountsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13161,6 +11693,7 @@ export type StoreUpdateWithoutDiscountsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13256,6 +11789,7 @@ export type StoreUncheckedUpdateWithoutDiscountsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13351,6 +11885,7 @@ export type StoreCreateWithoutDocumentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13446,6 +11981,7 @@ export type StoreUncheckedCreateWithoutDocumentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13557,6 +12093,7 @@ export type StoreUpdateWithoutDocumentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13652,6 +12189,7 @@ export type StoreUncheckedUpdateWithoutDocumentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13747,6 +12285,7 @@ export type StoreCreateWithoutFulfillmentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13842,6 +12381,7 @@ export type StoreUncheckedCreateWithoutFulfillmentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13953,6 +12493,7 @@ export type StoreUpdateWithoutFulfillmentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14048,6 +12589,7 @@ export type StoreUncheckedUpdateWithoutFulfillmentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14143,6 +12685,7 @@ export type StoreCreateWithoutGiftCardsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14238,6 +12781,7 @@ export type StoreUncheckedCreateWithoutGiftCardsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14349,6 +12893,7 @@ export type StoreUpdateWithoutGiftCardsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14444,6 +12989,7 @@ export type StoreUncheckedUpdateWithoutGiftCardsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14539,6 +13085,7 @@ export type StoreCreateWithoutGiftRequestsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14634,6 +13181,7 @@ export type StoreUncheckedCreateWithoutGiftRequestsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14745,6 +13293,7 @@ export type StoreUpdateWithoutGiftRequestsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14840,6 +13389,7 @@ export type StoreUncheckedUpdateWithoutGiftRequestsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14935,6 +13485,7 @@ export type StoreCreateWithoutInventoryItemsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15030,6 +13581,7 @@ export type StoreUncheckedCreateWithoutInventoryItemsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15141,6 +13693,7 @@ export type StoreUpdateWithoutInventoryItemsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15236,6 +13789,7 @@ export type StoreUncheckedUpdateWithoutInventoryItemsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15331,6 +13885,7 @@ export type StoreCreateWithoutLoyaltyAccountsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15426,6 +13981,7 @@ export type StoreUncheckedCreateWithoutLoyaltyAccountsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15537,6 +14093,7 @@ export type StoreUpdateWithoutLoyaltyAccountsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15632,6 +14189,7 @@ export type StoreUncheckedUpdateWithoutLoyaltyAccountsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15727,6 +14285,7 @@ export type StoreCreateWithoutPaymentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15822,6 +14381,7 @@ export type StoreUncheckedCreateWithoutPaymentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15933,6 +14493,7 @@ export type StoreUpdateWithoutPaymentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16028,6 +14589,7 @@ export type StoreUncheckedUpdateWithoutPaymentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16123,6 +14685,7 @@ export type StoreCreateWithoutReturnRequestsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16218,6 +14781,7 @@ export type StoreUncheckedCreateWithoutReturnRequestsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16329,6 +14893,7 @@ export type StoreUpdateWithoutReturnRequestsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16424,6 +14989,7 @@ export type StoreUncheckedUpdateWithoutReturnRequestsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16519,6 +15085,7 @@ export type StoreCreateWithoutSalesPoliciesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16614,6 +15181,7 @@ export type StoreUncheckedCreateWithoutSalesPoliciesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16725,6 +15293,7 @@ export type StoreUpdateWithoutSalesPoliciesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16820,6 +15389,7 @@ export type StoreUncheckedUpdateWithoutSalesPoliciesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16915,6 +15485,7 @@ export type StoreCreateWithoutSellabilityDecisionsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17010,6 +15581,7 @@ export type StoreUncheckedCreateWithoutSellabilityDecisionsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17121,6 +15693,7 @@ export type StoreUpdateWithoutSellabilityDecisionsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17216,6 +15789,7 @@ export type StoreUncheckedUpdateWithoutSellabilityDecisionsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17311,6 +15885,7 @@ export type StoreCreateWithoutShippingZonesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17406,6 +15981,7 @@ export type StoreUncheckedCreateWithoutShippingZonesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17517,6 +16093,7 @@ export type StoreUpdateWithoutShippingZonesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17612,6 +16189,7 @@ export type StoreUncheckedUpdateWithoutShippingZonesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17707,6 +16285,7 @@ export type StoreCreateWithoutShippingMethodsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17802,6 +16381,7 @@ export type StoreUncheckedCreateWithoutShippingMethodsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17913,6 +16493,7 @@ export type StoreUpdateWithoutShippingMethodsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18008,6 +16589,7 @@ export type StoreUncheckedUpdateWithoutShippingMethodsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18103,6 +16685,7 @@ export type StoreCreateWithoutShipmentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18198,6 +16781,7 @@ export type StoreUncheckedCreateWithoutShipmentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18309,6 +16893,7 @@ export type StoreUpdateWithoutShipmentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18404,6 +16989,7 @@ export type StoreUncheckedUpdateWithoutShipmentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18499,6 +17085,7 @@ export type StoreCreateWithoutSubscriptionsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18594,6 +17181,7 @@ export type StoreUncheckedCreateWithoutSubscriptionsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18705,6 +17293,7 @@ export type StoreUpdateWithoutSubscriptionsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18800,6 +17389,7 @@ export type StoreUncheckedUpdateWithoutSubscriptionsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18895,6 +17485,7 @@ export type StoreCreateWithoutTaxRulesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18990,6 +17581,7 @@ export type StoreUncheckedCreateWithoutTaxRulesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19101,6 +17693,7 @@ export type StoreUpdateWithoutTaxRulesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19196,6 +17789,7 @@ export type StoreUncheckedUpdateWithoutTaxRulesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19291,6 +17885,7 @@ export type StoreCreateWithoutAnalyticsMetricsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19386,6 +17981,7 @@ export type StoreUncheckedCreateWithoutAnalyticsMetricsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19497,6 +18093,7 @@ export type StoreUpdateWithoutAnalyticsMetricsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19592,6 +18189,7 @@ export type StoreUncheckedUpdateWithoutAnalyticsMetricsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19687,6 +18285,7 @@ export type StoreCreateWithoutAttributionModelsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19782,6 +18381,7 @@ export type StoreUncheckedCreateWithoutAttributionModelsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19893,6 +18493,7 @@ export type StoreUpdateWithoutAttributionModelsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19988,6 +18589,7 @@ export type StoreUncheckedUpdateWithoutAttributionModelsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20083,6 +18685,7 @@ export type StoreCreateWithoutBehaviorSegmentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20178,6 +18781,7 @@ export type StoreUncheckedCreateWithoutBehaviorSegmentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20289,6 +18893,7 @@ export type StoreUpdateWithoutBehaviorSegmentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20384,6 +18989,7 @@ export type StoreUncheckedUpdateWithoutBehaviorSegmentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20479,6 +19085,7 @@ export type StoreCreateWithoutBehaviorProfilesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20574,6 +19181,7 @@ export type StoreUncheckedCreateWithoutBehaviorProfilesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20685,6 +19293,7 @@ export type StoreUpdateWithoutBehaviorProfilesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20780,6 +19389,7 @@ export type StoreUncheckedUpdateWithoutBehaviorProfilesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20865,6 +19475,806 @@ export type StoreUncheckedUpdateWithoutBehaviorProfilesInput = {
   fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
 }
 
+export type StoreCreateWithoutBlogCategoriesInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
+}
+
+export type StoreUncheckedCreateWithoutBlogCategoriesInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
+}
+
+export type StoreCreateOrConnectWithoutBlogCategoriesInput = {
+  where: Prisma.StoreWhereUniqueInput
+  create: Prisma.XOR<Prisma.StoreCreateWithoutBlogCategoriesInput, Prisma.StoreUncheckedCreateWithoutBlogCategoriesInput>
+}
+
+export type StoreUpsertWithoutBlogCategoriesInput = {
+  update: Prisma.XOR<Prisma.StoreUpdateWithoutBlogCategoriesInput, Prisma.StoreUncheckedUpdateWithoutBlogCategoriesInput>
+  create: Prisma.XOR<Prisma.StoreCreateWithoutBlogCategoriesInput, Prisma.StoreUncheckedCreateWithoutBlogCategoriesInput>
+  where?: Prisma.StoreWhereInput
+}
+
+export type StoreUpdateToOneWithWhereWithoutBlogCategoriesInput = {
+  where?: Prisma.StoreWhereInput
+  data: Prisma.XOR<Prisma.StoreUpdateWithoutBlogCategoriesInput, Prisma.StoreUncheckedUpdateWithoutBlogCategoriesInput>
+}
+
+export type StoreUpdateWithoutBlogCategoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreUncheckedUpdateWithoutBlogCategoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreCreateWithoutBlogPostsInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
+}
+
+export type StoreUncheckedCreateWithoutBlogPostsInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
+}
+
+export type StoreCreateOrConnectWithoutBlogPostsInput = {
+  where: Prisma.StoreWhereUniqueInput
+  create: Prisma.XOR<Prisma.StoreCreateWithoutBlogPostsInput, Prisma.StoreUncheckedCreateWithoutBlogPostsInput>
+}
+
+export type StoreUpsertWithoutBlogPostsInput = {
+  update: Prisma.XOR<Prisma.StoreUpdateWithoutBlogPostsInput, Prisma.StoreUncheckedUpdateWithoutBlogPostsInput>
+  create: Prisma.XOR<Prisma.StoreCreateWithoutBlogPostsInput, Prisma.StoreUncheckedCreateWithoutBlogPostsInput>
+  where?: Prisma.StoreWhereInput
+}
+
+export type StoreUpdateToOneWithWhereWithoutBlogPostsInput = {
+  where?: Prisma.StoreWhereInput
+  data: Prisma.XOR<Prisma.StoreUpdateWithoutBlogPostsInput, Prisma.StoreUncheckedUpdateWithoutBlogPostsInput>
+}
+
+export type StoreUpdateWithoutBlogPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreUncheckedUpdateWithoutBlogPostsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
+}
+
 export type StoreCreateWithoutConversionFlowsInput = {
   id?: string
   code: string
@@ -20875,6 +20285,7 @@ export type StoreCreateWithoutConversionFlowsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20970,6 +20381,7 @@ export type StoreUncheckedCreateWithoutConversionFlowsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21081,6 +20493,7 @@ export type StoreUpdateWithoutConversionFlowsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21176,6 +20589,7 @@ export type StoreUncheckedUpdateWithoutConversionFlowsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21271,6 +20685,7 @@ export type StoreCreateWithoutCrmContactsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21366,6 +20781,7 @@ export type StoreUncheckedCreateWithoutCrmContactsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21477,6 +20893,7 @@ export type StoreUpdateWithoutCrmContactsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21572,6 +20989,7 @@ export type StoreUncheckedUpdateWithoutCrmContactsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21667,6 +21085,7 @@ export type StoreCreateWithoutCrmTagsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21762,6 +21181,7 @@ export type StoreUncheckedCreateWithoutCrmTagsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21873,6 +21293,7 @@ export type StoreUpdateWithoutCrmTagsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21968,6 +21389,7 @@ export type StoreUncheckedUpdateWithoutCrmTagsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22063,6 +21485,7 @@ export type StoreCreateWithoutNewsletterSubscribersInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22158,6 +21581,7 @@ export type StoreUncheckedCreateWithoutNewsletterSubscribersInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22269,6 +21693,7 @@ export type StoreUpdateWithoutNewsletterSubscribersInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22364,6 +21789,7 @@ export type StoreUncheckedUpdateWithoutNewsletterSubscribersInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22459,6 +21885,7 @@ export type StoreCreateWithoutNewsletterCampaignsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22554,6 +21981,7 @@ export type StoreUncheckedCreateWithoutNewsletterCampaignsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22665,6 +22093,7 @@ export type StoreUpdateWithoutNewsletterCampaignsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22760,6 +22189,7 @@ export type StoreUncheckedUpdateWithoutNewsletterCampaignsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22855,6 +22285,7 @@ export type StoreCreateWithoutPublicEventsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22950,6 +22381,7 @@ export type StoreUncheckedCreateWithoutPublicEventsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23061,6 +22493,7 @@ export type StoreUpdateWithoutPublicEventsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23156,6 +22589,7 @@ export type StoreUncheckedUpdateWithoutPublicEventsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23251,6 +22685,7 @@ export type StoreCreateWithoutRecommendationRulesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23346,6 +22781,7 @@ export type StoreUncheckedCreateWithoutRecommendationRulesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23457,6 +22893,7 @@ export type StoreUpdateWithoutRecommendationRulesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23552,6 +22989,7 @@ export type StoreUncheckedUpdateWithoutRecommendationRulesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23647,6 +23085,7 @@ export type StoreCreateWithoutSocialPublicationsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23742,6 +23181,7 @@ export type StoreUncheckedCreateWithoutSocialPublicationsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23853,6 +23293,7 @@ export type StoreUpdateWithoutSocialPublicationsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23948,6 +23389,7 @@ export type StoreUncheckedUpdateWithoutSocialPublicationsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24043,6 +23485,7 @@ export type StoreCreateWithoutSupportTicketsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24138,6 +23581,7 @@ export type StoreUncheckedCreateWithoutSupportTicketsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24249,6 +23693,7 @@ export type StoreUpdateWithoutSupportTicketsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24344,6 +23789,7 @@ export type StoreUncheckedUpdateWithoutSupportTicketsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24429,6 +23875,406 @@ export type StoreUncheckedUpdateWithoutSupportTicketsInput = {
   fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
 }
 
+export type StoreCreateWithoutHomepagesInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
+}
+
+export type StoreUncheckedCreateWithoutHomepagesInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
+}
+
+export type StoreCreateOrConnectWithoutHomepagesInput = {
+  where: Prisma.StoreWhereUniqueInput
+  create: Prisma.XOR<Prisma.StoreCreateWithoutHomepagesInput, Prisma.StoreUncheckedCreateWithoutHomepagesInput>
+}
+
+export type StoreUpsertWithoutHomepagesInput = {
+  update: Prisma.XOR<Prisma.StoreUpdateWithoutHomepagesInput, Prisma.StoreUncheckedUpdateWithoutHomepagesInput>
+  create: Prisma.XOR<Prisma.StoreCreateWithoutHomepagesInput, Prisma.StoreUncheckedCreateWithoutHomepagesInput>
+  where?: Prisma.StoreWhereInput
+}
+
+export type StoreUpdateToOneWithWhereWithoutHomepagesInput = {
+  where?: Prisma.StoreWhereInput
+  data: Prisma.XOR<Prisma.StoreUpdateWithoutHomepagesInput, Prisma.StoreUncheckedUpdateWithoutHomepagesInput>
+}
+
+export type StoreUpdateWithoutHomepagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreUncheckedUpdateWithoutHomepagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
+}
+
 export type StoreCreateWithoutApprovalRequestsInput = {
   id?: string
   code: string
@@ -24439,6 +24285,7 @@ export type StoreCreateWithoutApprovalRequestsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24534,6 +24381,7 @@ export type StoreUncheckedCreateWithoutApprovalRequestsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24645,6 +24493,7 @@ export type StoreUpdateWithoutApprovalRequestsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24740,6 +24589,7 @@ export type StoreUncheckedUpdateWithoutApprovalRequestsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24835,6 +24685,7 @@ export type StoreCreateWithoutConsentPurposesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24930,6 +24781,7 @@ export type StoreUncheckedCreateWithoutConsentPurposesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25041,6 +24893,7 @@ export type StoreUpdateWithoutConsentPurposesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25136,6 +24989,7 @@ export type StoreUncheckedUpdateWithoutConsentPurposesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25231,6 +25085,7 @@ export type StoreCreateWithoutConsentRecordsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25326,6 +25181,7 @@ export type StoreUncheckedCreateWithoutConsentRecordsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25437,6 +25293,7 @@ export type StoreUpdateWithoutConsentRecordsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25532,6 +25389,7 @@ export type StoreUncheckedUpdateWithoutConsentRecordsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25627,6 +25485,7 @@ export type StoreCreateWithoutEmailMessagesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25722,6 +25581,7 @@ export type StoreUncheckedCreateWithoutEmailMessagesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25833,6 +25693,7 @@ export type StoreUpdateWithoutEmailMessagesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25928,6 +25789,7 @@ export type StoreUncheckedUpdateWithoutEmailMessagesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26023,6 +25885,7 @@ export type StoreCreateWithoutExportDefinitionsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26118,6 +25981,7 @@ export type StoreUncheckedCreateWithoutExportDefinitionsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26229,6 +26093,7 @@ export type StoreUpdateWithoutExportDefinitionsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26324,6 +26189,7 @@ export type StoreUncheckedUpdateWithoutExportDefinitionsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26419,6 +26285,7 @@ export type StoreCreateWithoutExportRequestsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26514,6 +26381,7 @@ export type StoreUncheckedCreateWithoutExportRequestsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26625,6 +26493,7 @@ export type StoreUpdateWithoutExportRequestsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26720,6 +26589,7 @@ export type StoreUncheckedUpdateWithoutExportRequestsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26815,6 +26685,7 @@ export type StoreCreateWithoutFraudRiskAssessmentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26910,6 +26781,7 @@ export type StoreUncheckedCreateWithoutFraudRiskAssessmentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27021,6 +26893,7 @@ export type StoreUpdateWithoutFraudRiskAssessmentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27116,6 +26989,7 @@ export type StoreUncheckedUpdateWithoutFraudRiskAssessmentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27211,6 +27085,7 @@ export type StoreCreateWithoutImportDefinitionsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27306,6 +27181,7 @@ export type StoreUncheckedCreateWithoutImportDefinitionsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27417,6 +27293,7 @@ export type StoreUpdateWithoutImportDefinitionsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27512,6 +27389,7 @@ export type StoreUncheckedUpdateWithoutImportDefinitionsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27607,6 +27485,7 @@ export type StoreCreateWithoutImportRequestsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27702,6 +27581,7 @@ export type StoreUncheckedCreateWithoutImportRequestsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27813,6 +27693,7 @@ export type StoreUpdateWithoutImportRequestsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27908,6 +27789,7 @@ export type StoreUncheckedUpdateWithoutImportRequestsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28003,6 +27885,7 @@ export type StoreCreateWithoutIntegrationsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28098,6 +27981,7 @@ export type StoreUncheckedCreateWithoutIntegrationsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28209,6 +28093,7 @@ export type StoreUpdateWithoutIntegrationsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28304,6 +28189,7 @@ export type StoreUncheckedUpdateWithoutIntegrationsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28399,6 +28285,7 @@ export type StoreCreateWithoutLocalizationLocalesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28494,6 +28381,7 @@ export type StoreUncheckedCreateWithoutLocalizationLocalesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28605,6 +28493,7 @@ export type StoreUpdateWithoutLocalizationLocalesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28700,6 +28589,7 @@ export type StoreUncheckedUpdateWithoutLocalizationLocalesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28795,6 +28685,7 @@ export type StoreCreateWithoutLocalizedValuesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28890,6 +28781,7 @@ export type StoreUncheckedCreateWithoutLocalizedValuesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29001,6 +28893,7 @@ export type StoreUpdateWithoutLocalizedValuesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29096,6 +28989,7 @@ export type StoreUncheckedUpdateWithoutLocalizedValuesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29191,6 +29085,7 @@ export type StoreCreateWithoutNotificationsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29286,6 +29181,7 @@ export type StoreUncheckedCreateWithoutNotificationsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29397,6 +29293,7 @@ export type StoreUpdateWithoutNotificationsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29492,6 +29389,7 @@ export type StoreUncheckedUpdateWithoutNotificationsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29587,6 +29485,7 @@ export type StoreCreateWithoutNotificationPreferencesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29682,6 +29581,7 @@ export type StoreUncheckedCreateWithoutNotificationPreferencesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29793,6 +29693,7 @@ export type StoreUpdateWithoutNotificationPreferencesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29888,6 +29789,7 @@ export type StoreUncheckedUpdateWithoutNotificationPreferencesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29983,6 +29885,7 @@ export type StoreCreateWithoutSchedulePlansInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30078,6 +29981,7 @@ export type StoreUncheckedCreateWithoutSchedulePlansInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30189,6 +30093,7 @@ export type StoreUpdateWithoutSchedulePlansInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30284,6 +30189,7 @@ export type StoreUncheckedUpdateWithoutSchedulePlansInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30379,6 +30285,7 @@ export type StoreCreateWithoutWebhookEndpointsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30474,6 +30381,7 @@ export type StoreUncheckedCreateWithoutWebhookEndpointsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30585,6 +30493,7 @@ export type StoreUpdateWithoutWebhookEndpointsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30680,6 +30589,7 @@ export type StoreUncheckedUpdateWithoutWebhookEndpointsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30775,6 +30685,7 @@ export type StoreCreateWithoutWorkflowDefinitionsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30870,6 +30781,7 @@ export type StoreUncheckedCreateWithoutWorkflowDefinitionsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30981,6 +30893,7 @@ export type StoreUpdateWithoutWorkflowDefinitionsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31076,6 +30989,7 @@ export type StoreUncheckedUpdateWithoutWorkflowDefinitionsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31171,6 +31085,7 @@ export type StoreCreateWithoutWorkflowInstancesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31266,6 +31181,7 @@ export type StoreUncheckedCreateWithoutWorkflowInstancesInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31377,6 +31293,7 @@ export type StoreUpdateWithoutWorkflowInstancesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31472,6 +31389,7 @@ export type StoreUncheckedUpdateWithoutWorkflowInstancesInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31567,6 +31485,7 @@ export type StoreCreateWithoutChannelsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31662,6 +31581,7 @@ export type StoreUncheckedCreateWithoutChannelsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31773,6 +31693,7 @@ export type StoreUpdateWithoutChannelsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31868,6 +31789,7 @@ export type StoreUncheckedUpdateWithoutChannelsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31953,6 +31875,406 @@ export type StoreUncheckedUpdateWithoutChannelsInput = {
   fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
 }
 
+export type StoreCreateWithoutMediaAssetsInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
+}
+
+export type StoreUncheckedCreateWithoutMediaAssetsInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
+}
+
+export type StoreCreateOrConnectWithoutMediaAssetsInput = {
+  where: Prisma.StoreWhereUniqueInput
+  create: Prisma.XOR<Prisma.StoreCreateWithoutMediaAssetsInput, Prisma.StoreUncheckedCreateWithoutMediaAssetsInput>
+}
+
+export type StoreUpsertWithoutMediaAssetsInput = {
+  update: Prisma.XOR<Prisma.StoreUpdateWithoutMediaAssetsInput, Prisma.StoreUncheckedUpdateWithoutMediaAssetsInput>
+  create: Prisma.XOR<Prisma.StoreCreateWithoutMediaAssetsInput, Prisma.StoreUncheckedCreateWithoutMediaAssetsInput>
+  where?: Prisma.StoreWhereInput
+}
+
+export type StoreUpdateToOneWithWhereWithoutMediaAssetsInput = {
+  where?: Prisma.StoreWhereInput
+  data: Prisma.XOR<Prisma.StoreUpdateWithoutMediaAssetsInput, Prisma.StoreUncheckedUpdateWithoutMediaAssetsInput>
+}
+
+export type StoreUpdateWithoutMediaAssetsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreUncheckedUpdateWithoutMediaAssetsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
+}
+
 export type StoreCreateWithoutSearchDocumentsInput = {
   id?: string
   code: string
@@ -31963,6 +32285,7 @@ export type StoreCreateWithoutSearchDocumentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -32058,6 +32381,7 @@ export type StoreUncheckedCreateWithoutSearchDocumentsInput = {
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
+  orderNumberPrefix?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -32169,6 +32493,7 @@ export type StoreUpdateWithoutSearchDocumentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -32264,6 +32589,7 @@ export type StoreUncheckedUpdateWithoutSearchDocumentsInput = {
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -33065,6 +33391,7 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   supportEmail?: boolean
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
+  orderNumberPrefix?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -33162,6 +33489,7 @@ export type StoreSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   supportEmail?: boolean
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
+  orderNumberPrefix?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -33182,6 +33510,7 @@ export type StoreSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   supportEmail?: boolean
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
+  orderNumberPrefix?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -33202,6 +33531,7 @@ export type StoreSelectScalar = {
   supportEmail?: boolean
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
+  orderNumberPrefix?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -33212,7 +33542,7 @@ export type StoreSelectScalar = {
   archivedAt?: boolean
 }
 
-export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "supportEmail" | "supportPhone" | "shippingReturnsPolicy" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
+export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "supportEmail" | "supportPhone" | "shippingReturnsPolicy" | "orderNumberPrefix" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
 export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   domains?: boolean | Prisma.Store$domainsArgs<ExtArgs>
   users?: boolean | Prisma.Store$usersArgs<ExtArgs>
@@ -33385,6 +33715,7 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     supportEmail: string | null
     supportPhone: string | null
     shippingReturnsPolicy: string | null
+    orderNumberPrefix: string | null
     defaultLocaleCode: string
     defaultCurrency: $Enums.CurrencyCode
     timezone: string
@@ -33901,6 +34232,7 @@ export interface StoreFieldRefs {
   readonly supportEmail: Prisma.FieldRef<"Store", 'String'>
   readonly supportPhone: Prisma.FieldRef<"Store", 'String'>
   readonly shippingReturnsPolicy: Prisma.FieldRef<"Store", 'String'>
+  readonly orderNumberPrefix: Prisma.FieldRef<"Store", 'String'>
   readonly defaultLocaleCode: Prisma.FieldRef<"Store", 'String'>
   readonly defaultCurrency: Prisma.FieldRef<"Store", 'CurrencyCode'>
   readonly timezone: Prisma.FieldRef<"Store", 'String'>

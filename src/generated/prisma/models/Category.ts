@@ -771,104 +771,6 @@ export type CategoryUpdateOneRequiredWithoutProductLinksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutProductLinksInput, Prisma.CategoryUpdateWithoutProductLinksInput>, Prisma.CategoryUncheckedUpdateWithoutProductLinksInput>
 }
 
-export type CategoryCreateNestedManyWithoutPrimaryImageInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput> | Prisma.CategoryCreateWithoutPrimaryImageInput[] | Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput | Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput[]
-  createMany?: Prisma.CategoryCreateManyPrimaryImageInputEnvelope
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-}
-
-export type CategoryCreateNestedManyWithoutCoverImageInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput> | Prisma.CategoryCreateWithoutCoverImageInput[] | Prisma.CategoryUncheckedCreateWithoutCoverImageInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCoverImageInput | Prisma.CategoryCreateOrConnectWithoutCoverImageInput[]
-  createMany?: Prisma.CategoryCreateManyCoverImageInputEnvelope
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-}
-
-export type CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput> | Prisma.CategoryCreateWithoutPrimaryImageInput[] | Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput | Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput[]
-  createMany?: Prisma.CategoryCreateManyPrimaryImageInputEnvelope
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-}
-
-export type CategoryUncheckedCreateNestedManyWithoutCoverImageInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput> | Prisma.CategoryCreateWithoutCoverImageInput[] | Prisma.CategoryUncheckedCreateWithoutCoverImageInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCoverImageInput | Prisma.CategoryCreateOrConnectWithoutCoverImageInput[]
-  createMany?: Prisma.CategoryCreateManyCoverImageInputEnvelope
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-}
-
-export type CategoryUpdateManyWithoutPrimaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput> | Prisma.CategoryCreateWithoutPrimaryImageInput[] | Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput | Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput[]
-  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.CategoryUpsertWithWhereUniqueWithoutPrimaryImageInput[]
-  createMany?: Prisma.CategoryCreateManyPrimaryImageInputEnvelope
-  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.CategoryUpdateWithWhereUniqueWithoutPrimaryImageInput[]
-  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.CategoryUpdateManyWithWhereWithoutPrimaryImageInput[]
-  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
-}
-
-export type CategoryUpdateManyWithoutCoverImageNestedInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput> | Prisma.CategoryCreateWithoutCoverImageInput[] | Prisma.CategoryUncheckedCreateWithoutCoverImageInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCoverImageInput | Prisma.CategoryCreateOrConnectWithoutCoverImageInput[]
-  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutCoverImageInput | Prisma.CategoryUpsertWithWhereUniqueWithoutCoverImageInput[]
-  createMany?: Prisma.CategoryCreateManyCoverImageInputEnvelope
-  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutCoverImageInput | Prisma.CategoryUpdateWithWhereUniqueWithoutCoverImageInput[]
-  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutCoverImageInput | Prisma.CategoryUpdateManyWithWhereWithoutCoverImageInput[]
-  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
-}
-
-export type CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput> | Prisma.CategoryCreateWithoutPrimaryImageInput[] | Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput | Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput[]
-  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.CategoryUpsertWithWhereUniqueWithoutPrimaryImageInput[]
-  createMany?: Prisma.CategoryCreateManyPrimaryImageInputEnvelope
-  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.CategoryUpdateWithWhereUniqueWithoutPrimaryImageInput[]
-  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.CategoryUpdateManyWithWhereWithoutPrimaryImageInput[]
-  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
-}
-
-export type CategoryUncheckedUpdateManyWithoutCoverImageNestedInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput> | Prisma.CategoryCreateWithoutCoverImageInput[] | Prisma.CategoryUncheckedCreateWithoutCoverImageInput[]
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCoverImageInput | Prisma.CategoryCreateOrConnectWithoutCoverImageInput[]
-  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutCoverImageInput | Prisma.CategoryUpsertWithWhereUniqueWithoutCoverImageInput[]
-  createMany?: Prisma.CategoryCreateManyCoverImageInputEnvelope
-  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
-  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutCoverImageInput | Prisma.CategoryUpdateWithWhereUniqueWithoutCoverImageInput[]
-  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutCoverImageInput | Prisma.CategoryUpdateManyWithWhereWithoutCoverImageInput[]
-  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
-}
-
-export type CategoryCreateNestedOneWithoutHomepageFeaturedInInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedCreateWithoutHomepageFeaturedInInput>
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutHomepageFeaturedInInput
-  connect?: Prisma.CategoryWhereUniqueInput
-}
-
-export type CategoryUpdateOneRequiredWithoutHomepageFeaturedInNestedInput = {
-  create?: Prisma.XOR<Prisma.CategoryCreateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedCreateWithoutHomepageFeaturedInInput>
-  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutHomepageFeaturedInInput
-  upsert?: Prisma.CategoryUpsertWithoutHomepageFeaturedInInput
-  connect?: Prisma.CategoryWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutHomepageFeaturedInInput, Prisma.CategoryUpdateWithoutHomepageFeaturedInInput>, Prisma.CategoryUncheckedUpdateWithoutHomepageFeaturedInInput>
-}
-
 export type CategoryCreateNestedManyWithoutStoreInput = {
   create?: Prisma.XOR<Prisma.CategoryCreateWithoutStoreInput, Prisma.CategoryUncheckedCreateWithoutStoreInput> | Prisma.CategoryCreateWithoutStoreInput[] | Prisma.CategoryUncheckedCreateWithoutStoreInput[]
   connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutStoreInput | Prisma.CategoryCreateOrConnectWithoutStoreInput[]
@@ -951,6 +853,104 @@ export type CategoryUpdateOneRequiredWithoutTaxRuleCategoryTargetsNestedInput = 
   upsert?: Prisma.CategoryUpsertWithoutTaxRuleCategoryTargetsInput
   connect?: Prisma.CategoryWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutTaxRuleCategoryTargetsInput, Prisma.CategoryUpdateWithoutTaxRuleCategoryTargetsInput>, Prisma.CategoryUncheckedUpdateWithoutTaxRuleCategoryTargetsInput>
+}
+
+export type CategoryCreateNestedOneWithoutHomepageFeaturedInInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedCreateWithoutHomepageFeaturedInInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutHomepageFeaturedInInput
+  connect?: Prisma.CategoryWhereUniqueInput
+}
+
+export type CategoryUpdateOneRequiredWithoutHomepageFeaturedInNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedCreateWithoutHomepageFeaturedInInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutHomepageFeaturedInInput
+  upsert?: Prisma.CategoryUpsertWithoutHomepageFeaturedInInput
+  connect?: Prisma.CategoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutHomepageFeaturedInInput, Prisma.CategoryUpdateWithoutHomepageFeaturedInInput>, Prisma.CategoryUncheckedUpdateWithoutHomepageFeaturedInInput>
+}
+
+export type CategoryCreateNestedManyWithoutPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput> | Prisma.CategoryCreateWithoutPrimaryImageInput[] | Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput | Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput[]
+  createMany?: Prisma.CategoryCreateManyPrimaryImageInputEnvelope
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+}
+
+export type CategoryCreateNestedManyWithoutCoverImageInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput> | Prisma.CategoryCreateWithoutCoverImageInput[] | Prisma.CategoryUncheckedCreateWithoutCoverImageInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCoverImageInput | Prisma.CategoryCreateOrConnectWithoutCoverImageInput[]
+  createMany?: Prisma.CategoryCreateManyCoverImageInputEnvelope
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+}
+
+export type CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput> | Prisma.CategoryCreateWithoutPrimaryImageInput[] | Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput | Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput[]
+  createMany?: Prisma.CategoryCreateManyPrimaryImageInputEnvelope
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+}
+
+export type CategoryUncheckedCreateNestedManyWithoutCoverImageInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput> | Prisma.CategoryCreateWithoutCoverImageInput[] | Prisma.CategoryUncheckedCreateWithoutCoverImageInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCoverImageInput | Prisma.CategoryCreateOrConnectWithoutCoverImageInput[]
+  createMany?: Prisma.CategoryCreateManyCoverImageInputEnvelope
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+}
+
+export type CategoryUpdateManyWithoutPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput> | Prisma.CategoryCreateWithoutPrimaryImageInput[] | Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput | Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput[]
+  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.CategoryUpsertWithWhereUniqueWithoutPrimaryImageInput[]
+  createMany?: Prisma.CategoryCreateManyPrimaryImageInputEnvelope
+  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.CategoryUpdateWithWhereUniqueWithoutPrimaryImageInput[]
+  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.CategoryUpdateManyWithWhereWithoutPrimaryImageInput[]
+  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+}
+
+export type CategoryUpdateManyWithoutCoverImageNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput> | Prisma.CategoryCreateWithoutCoverImageInput[] | Prisma.CategoryUncheckedCreateWithoutCoverImageInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCoverImageInput | Prisma.CategoryCreateOrConnectWithoutCoverImageInput[]
+  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutCoverImageInput | Prisma.CategoryUpsertWithWhereUniqueWithoutCoverImageInput[]
+  createMany?: Prisma.CategoryCreateManyCoverImageInputEnvelope
+  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutCoverImageInput | Prisma.CategoryUpdateWithWhereUniqueWithoutCoverImageInput[]
+  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutCoverImageInput | Prisma.CategoryUpdateManyWithWhereWithoutCoverImageInput[]
+  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+}
+
+export type CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput> | Prisma.CategoryCreateWithoutPrimaryImageInput[] | Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput | Prisma.CategoryCreateOrConnectWithoutPrimaryImageInput[]
+  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.CategoryUpsertWithWhereUniqueWithoutPrimaryImageInput[]
+  createMany?: Prisma.CategoryCreateManyPrimaryImageInputEnvelope
+  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.CategoryUpdateWithWhereUniqueWithoutPrimaryImageInput[]
+  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.CategoryUpdateManyWithWhereWithoutPrimaryImageInput[]
+  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+}
+
+export type CategoryUncheckedUpdateManyWithoutCoverImageNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput> | Prisma.CategoryCreateWithoutCoverImageInput[] | Prisma.CategoryUncheckedCreateWithoutCoverImageInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutCoverImageInput | Prisma.CategoryCreateOrConnectWithoutCoverImageInput[]
+  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutCoverImageInput | Prisma.CategoryUpsertWithWhereUniqueWithoutCoverImageInput[]
+  createMany?: Prisma.CategoryCreateManyCoverImageInputEnvelope
+  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutCoverImageInput | Prisma.CategoryUpdateWithWhereUniqueWithoutCoverImageInput[]
+  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutCoverImageInput | Prisma.CategoryUpdateManyWithWhereWithoutCoverImageInput[]
+  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
 }
 
 export type CategoryCreateWithoutChildrenInput = {
@@ -1279,274 +1279,6 @@ export type CategoryUncheckedUpdateWithoutProductLinksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.CategoryUncheckedUpdateManyWithoutParentNestedInput
   homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryUncheckedUpdateManyWithoutCategoryNestedInput
-  discountCategoryTargets?: Prisma.DiscountCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
-  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
-  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
-}
-
-export type CategoryCreateWithoutPrimaryImageInput = {
-  id?: string
-  code: string
-  slug: string
-  name: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.CategoryStatus
-  isFeatured?: boolean
-  sortOrder?: number
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store: Prisma.StoreCreateNestedOneWithoutCategoriesInput
-  parent?: Prisma.CategoryCreateNestedOneWithoutChildrenInput
-  children?: Prisma.CategoryCreateNestedManyWithoutParentInput
-  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutCategoriesAsCoverImageInput
-  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryCreateNestedManyWithoutCategoryInput
-  productLinks?: Prisma.ProductCategoryCreateNestedManyWithoutCategoryInput
-  discountCategoryTargets?: Prisma.DiscountCategoryTargetCreateNestedManyWithoutCategoryInput
-  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetCreateNestedManyWithoutCategoryInput
-  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetCreateNestedManyWithoutCategoryInput
-}
-
-export type CategoryUncheckedCreateWithoutPrimaryImageInput = {
-  id?: string
-  storeId: string
-  parentId?: string | null
-  code: string
-  slug: string
-  name: string
-  shortDescription?: string | null
-  description?: string | null
-  coverImageId?: string | null
-  status?: $Enums.CategoryStatus
-  isFeatured?: boolean
-  sortOrder?: number
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  children?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentInput
-  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryUncheckedCreateNestedManyWithoutCategoryInput
-  productLinks?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
-  discountCategoryTargets?: Prisma.DiscountCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
-  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
-  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
-}
-
-export type CategoryCreateOrConnectWithoutPrimaryImageInput = {
-  where: Prisma.CategoryWhereUniqueInput
-  create: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput>
-}
-
-export type CategoryCreateManyPrimaryImageInputEnvelope = {
-  data: Prisma.CategoryCreateManyPrimaryImageInput | Prisma.CategoryCreateManyPrimaryImageInput[]
-  skipDuplicates?: boolean
-}
-
-export type CategoryCreateWithoutCoverImageInput = {
-  id?: string
-  code: string
-  slug: string
-  name: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.CategoryStatus
-  isFeatured?: boolean
-  sortOrder?: number
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store: Prisma.StoreCreateNestedOneWithoutCategoriesInput
-  parent?: Prisma.CategoryCreateNestedOneWithoutChildrenInput
-  children?: Prisma.CategoryCreateNestedManyWithoutParentInput
-  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutCategoriesAsPrimaryImageInput
-  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryCreateNestedManyWithoutCategoryInput
-  productLinks?: Prisma.ProductCategoryCreateNestedManyWithoutCategoryInput
-  discountCategoryTargets?: Prisma.DiscountCategoryTargetCreateNestedManyWithoutCategoryInput
-  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetCreateNestedManyWithoutCategoryInput
-  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetCreateNestedManyWithoutCategoryInput
-}
-
-export type CategoryUncheckedCreateWithoutCoverImageInput = {
-  id?: string
-  storeId: string
-  parentId?: string | null
-  code: string
-  slug: string
-  name: string
-  shortDescription?: string | null
-  description?: string | null
-  primaryImageId?: string | null
-  status?: $Enums.CategoryStatus
-  isFeatured?: boolean
-  sortOrder?: number
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  children?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentInput
-  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryUncheckedCreateNestedManyWithoutCategoryInput
-  productLinks?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
-  discountCategoryTargets?: Prisma.DiscountCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
-  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
-  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
-}
-
-export type CategoryCreateOrConnectWithoutCoverImageInput = {
-  where: Prisma.CategoryWhereUniqueInput
-  create: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput>
-}
-
-export type CategoryCreateManyCoverImageInputEnvelope = {
-  data: Prisma.CategoryCreateManyCoverImageInput | Prisma.CategoryCreateManyCoverImageInput[]
-  skipDuplicates?: boolean
-}
-
-export type CategoryUpsertWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.CategoryWhereUniqueInput
-  update: Prisma.XOR<Prisma.CategoryUpdateWithoutPrimaryImageInput, Prisma.CategoryUncheckedUpdateWithoutPrimaryImageInput>
-  create: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput>
-}
-
-export type CategoryUpdateWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.CategoryWhereUniqueInput
-  data: Prisma.XOR<Prisma.CategoryUpdateWithoutPrimaryImageInput, Prisma.CategoryUncheckedUpdateWithoutPrimaryImageInput>
-}
-
-export type CategoryUpdateManyWithWhereWithoutPrimaryImageInput = {
-  where: Prisma.CategoryScalarWhereInput
-  data: Prisma.XOR<Prisma.CategoryUpdateManyMutationInput, Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageInput>
-}
-
-export type CategoryUpsertWithWhereUniqueWithoutCoverImageInput = {
-  where: Prisma.CategoryWhereUniqueInput
-  update: Prisma.XOR<Prisma.CategoryUpdateWithoutCoverImageInput, Prisma.CategoryUncheckedUpdateWithoutCoverImageInput>
-  create: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput>
-}
-
-export type CategoryUpdateWithWhereUniqueWithoutCoverImageInput = {
-  where: Prisma.CategoryWhereUniqueInput
-  data: Prisma.XOR<Prisma.CategoryUpdateWithoutCoverImageInput, Prisma.CategoryUncheckedUpdateWithoutCoverImageInput>
-}
-
-export type CategoryUpdateManyWithWhereWithoutCoverImageInput = {
-  where: Prisma.CategoryScalarWhereInput
-  data: Prisma.XOR<Prisma.CategoryUpdateManyMutationInput, Prisma.CategoryUncheckedUpdateManyWithoutCoverImageInput>
-}
-
-export type CategoryCreateWithoutHomepageFeaturedInInput = {
-  id?: string
-  code: string
-  slug: string
-  name: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.CategoryStatus
-  isFeatured?: boolean
-  sortOrder?: number
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store: Prisma.StoreCreateNestedOneWithoutCategoriesInput
-  parent?: Prisma.CategoryCreateNestedOneWithoutChildrenInput
-  children?: Prisma.CategoryCreateNestedManyWithoutParentInput
-  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutCategoriesAsPrimaryImageInput
-  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutCategoriesAsCoverImageInput
-  productLinks?: Prisma.ProductCategoryCreateNestedManyWithoutCategoryInput
-  discountCategoryTargets?: Prisma.DiscountCategoryTargetCreateNestedManyWithoutCategoryInput
-  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetCreateNestedManyWithoutCategoryInput
-  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetCreateNestedManyWithoutCategoryInput
-}
-
-export type CategoryUncheckedCreateWithoutHomepageFeaturedInInput = {
-  id?: string
-  storeId: string
-  parentId?: string | null
-  code: string
-  slug: string
-  name: string
-  shortDescription?: string | null
-  description?: string | null
-  primaryImageId?: string | null
-  coverImageId?: string | null
-  status?: $Enums.CategoryStatus
-  isFeatured?: boolean
-  sortOrder?: number
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  children?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentInput
-  productLinks?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
-  discountCategoryTargets?: Prisma.DiscountCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
-  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
-  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
-}
-
-export type CategoryCreateOrConnectWithoutHomepageFeaturedInInput = {
-  where: Prisma.CategoryWhereUniqueInput
-  create: Prisma.XOR<Prisma.CategoryCreateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedCreateWithoutHomepageFeaturedInInput>
-}
-
-export type CategoryUpsertWithoutHomepageFeaturedInInput = {
-  update: Prisma.XOR<Prisma.CategoryUpdateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedUpdateWithoutHomepageFeaturedInInput>
-  create: Prisma.XOR<Prisma.CategoryCreateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedCreateWithoutHomepageFeaturedInInput>
-  where?: Prisma.CategoryWhereInput
-}
-
-export type CategoryUpdateToOneWithWhereWithoutHomepageFeaturedInInput = {
-  where?: Prisma.CategoryWhereInput
-  data: Prisma.XOR<Prisma.CategoryUpdateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedUpdateWithoutHomepageFeaturedInInput>
-}
-
-export type CategoryUpdateWithoutHomepageFeaturedInInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumCategoryStatusFieldUpdateOperationsInput | $Enums.CategoryStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  store?: Prisma.StoreUpdateOneRequiredWithoutCategoriesNestedInput
-  parent?: Prisma.CategoryUpdateOneWithoutChildrenNestedInput
-  children?: Prisma.CategoryUpdateManyWithoutParentNestedInput
-  primaryImage?: Prisma.MediaAssetUpdateOneWithoutCategoriesAsPrimaryImageNestedInput
-  coverImage?: Prisma.MediaAssetUpdateOneWithoutCategoriesAsCoverImageNestedInput
-  productLinks?: Prisma.ProductCategoryUpdateManyWithoutCategoryNestedInput
-  discountCategoryTargets?: Prisma.DiscountCategoryTargetUpdateManyWithoutCategoryNestedInput
-  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUpdateManyWithoutCategoryNestedInput
-  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUpdateManyWithoutCategoryNestedInput
-}
-
-export type CategoryUncheckedUpdateWithoutHomepageFeaturedInInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.StringFieldUpdateOperationsInput | string
-  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumCategoryStatusFieldUpdateOperationsInput | $Enums.CategoryStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  children?: Prisma.CategoryUncheckedUpdateManyWithoutParentNestedInput
-  productLinks?: Prisma.ProductCategoryUncheckedUpdateManyWithoutCategoryNestedInput
   discountCategoryTargets?: Prisma.DiscountCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
   taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
   salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
@@ -1976,6 +1708,274 @@ export type CategoryUncheckedUpdateWithoutTaxRuleCategoryTargetsInput = {
   salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
 }
 
+export type CategoryCreateWithoutHomepageFeaturedInInput = {
+  id?: string
+  code: string
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.CategoryStatus
+  isFeatured?: boolean
+  sortOrder?: number
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutCategoriesInput
+  parent?: Prisma.CategoryCreateNestedOneWithoutChildrenInput
+  children?: Prisma.CategoryCreateNestedManyWithoutParentInput
+  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutCategoriesAsPrimaryImageInput
+  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutCategoriesAsCoverImageInput
+  productLinks?: Prisma.ProductCategoryCreateNestedManyWithoutCategoryInput
+  discountCategoryTargets?: Prisma.DiscountCategoryTargetCreateNestedManyWithoutCategoryInput
+  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetCreateNestedManyWithoutCategoryInput
+  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryUncheckedCreateWithoutHomepageFeaturedInInput = {
+  id?: string
+  storeId: string
+  parentId?: string | null
+  code: string
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  primaryImageId?: string | null
+  coverImageId?: string | null
+  status?: $Enums.CategoryStatus
+  isFeatured?: boolean
+  sortOrder?: number
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  children?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentInput
+  productLinks?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
+  discountCategoryTargets?: Prisma.DiscountCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
+  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
+  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryCreateOrConnectWithoutHomepageFeaturedInInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedCreateWithoutHomepageFeaturedInInput>
+}
+
+export type CategoryUpsertWithoutHomepageFeaturedInInput = {
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedUpdateWithoutHomepageFeaturedInInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedCreateWithoutHomepageFeaturedInInput>
+  where?: Prisma.CategoryWhereInput
+}
+
+export type CategoryUpdateToOneWithWhereWithoutHomepageFeaturedInInput = {
+  where?: Prisma.CategoryWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutHomepageFeaturedInInput, Prisma.CategoryUncheckedUpdateWithoutHomepageFeaturedInInput>
+}
+
+export type CategoryUpdateWithoutHomepageFeaturedInInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCategoryStatusFieldUpdateOperationsInput | $Enums.CategoryStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneRequiredWithoutCategoriesNestedInput
+  parent?: Prisma.CategoryUpdateOneWithoutChildrenNestedInput
+  children?: Prisma.CategoryUpdateManyWithoutParentNestedInput
+  primaryImage?: Prisma.MediaAssetUpdateOneWithoutCategoriesAsPrimaryImageNestedInput
+  coverImage?: Prisma.MediaAssetUpdateOneWithoutCategoriesAsCoverImageNestedInput
+  productLinks?: Prisma.ProductCategoryUpdateManyWithoutCategoryNestedInput
+  discountCategoryTargets?: Prisma.DiscountCategoryTargetUpdateManyWithoutCategoryNestedInput
+  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUpdateManyWithoutCategoryNestedInput
+  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutHomepageFeaturedInInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCategoryStatusFieldUpdateOperationsInput | $Enums.CategoryStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  children?: Prisma.CategoryUncheckedUpdateManyWithoutParentNestedInput
+  productLinks?: Prisma.ProductCategoryUncheckedUpdateManyWithoutCategoryNestedInput
+  discountCategoryTargets?: Prisma.DiscountCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
+  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
+  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryCreateWithoutPrimaryImageInput = {
+  id?: string
+  code: string
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.CategoryStatus
+  isFeatured?: boolean
+  sortOrder?: number
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutCategoriesInput
+  parent?: Prisma.CategoryCreateNestedOneWithoutChildrenInput
+  children?: Prisma.CategoryCreateNestedManyWithoutParentInput
+  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutCategoriesAsCoverImageInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryCreateNestedManyWithoutCategoryInput
+  productLinks?: Prisma.ProductCategoryCreateNestedManyWithoutCategoryInput
+  discountCategoryTargets?: Prisma.DiscountCategoryTargetCreateNestedManyWithoutCategoryInput
+  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetCreateNestedManyWithoutCategoryInput
+  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryUncheckedCreateWithoutPrimaryImageInput = {
+  id?: string
+  storeId: string
+  parentId?: string | null
+  code: string
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  coverImageId?: string | null
+  status?: $Enums.CategoryStatus
+  isFeatured?: boolean
+  sortOrder?: number
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  children?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryUncheckedCreateNestedManyWithoutCategoryInput
+  productLinks?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
+  discountCategoryTargets?: Prisma.DiscountCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
+  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
+  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryCreateOrConnectWithoutPrimaryImageInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput>
+}
+
+export type CategoryCreateManyPrimaryImageInputEnvelope = {
+  data: Prisma.CategoryCreateManyPrimaryImageInput | Prisma.CategoryCreateManyPrimaryImageInput[]
+  skipDuplicates?: boolean
+}
+
+export type CategoryCreateWithoutCoverImageInput = {
+  id?: string
+  code: string
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.CategoryStatus
+  isFeatured?: boolean
+  sortOrder?: number
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutCategoriesInput
+  parent?: Prisma.CategoryCreateNestedOneWithoutChildrenInput
+  children?: Prisma.CategoryCreateNestedManyWithoutParentInput
+  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutCategoriesAsPrimaryImageInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryCreateNestedManyWithoutCategoryInput
+  productLinks?: Prisma.ProductCategoryCreateNestedManyWithoutCategoryInput
+  discountCategoryTargets?: Prisma.DiscountCategoryTargetCreateNestedManyWithoutCategoryInput
+  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetCreateNestedManyWithoutCategoryInput
+  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryUncheckedCreateWithoutCoverImageInput = {
+  id?: string
+  storeId: string
+  parentId?: string | null
+  code: string
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  primaryImageId?: string | null
+  status?: $Enums.CategoryStatus
+  isFeatured?: boolean
+  sortOrder?: number
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  children?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryUncheckedCreateNestedManyWithoutCategoryInput
+  productLinks?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
+  discountCategoryTargets?: Prisma.DiscountCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
+  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
+  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedCreateNestedManyWithoutCategoryInput
+}
+
+export type CategoryCreateOrConnectWithoutCoverImageInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput>
+}
+
+export type CategoryCreateManyCoverImageInputEnvelope = {
+  data: Prisma.CategoryCreateManyCoverImageInput | Prisma.CategoryCreateManyCoverImageInput[]
+  skipDuplicates?: boolean
+}
+
+export type CategoryUpsertWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutPrimaryImageInput, Prisma.CategoryUncheckedUpdateWithoutPrimaryImageInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutPrimaryImageInput, Prisma.CategoryUncheckedCreateWithoutPrimaryImageInput>
+}
+
+export type CategoryUpdateWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutPrimaryImageInput, Prisma.CategoryUncheckedUpdateWithoutPrimaryImageInput>
+}
+
+export type CategoryUpdateManyWithWhereWithoutPrimaryImageInput = {
+  where: Prisma.CategoryScalarWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateManyMutationInput, Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageInput>
+}
+
+export type CategoryUpsertWithWhereUniqueWithoutCoverImageInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutCoverImageInput, Prisma.CategoryUncheckedUpdateWithoutCoverImageInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutCoverImageInput, Prisma.CategoryUncheckedCreateWithoutCoverImageInput>
+}
+
+export type CategoryUpdateWithWhereUniqueWithoutCoverImageInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutCoverImageInput, Prisma.CategoryUncheckedUpdateWithoutCoverImageInput>
+}
+
+export type CategoryUpdateManyWithWhereWithoutCoverImageInput = {
+  where: Prisma.CategoryScalarWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateManyMutationInput, Prisma.CategoryUncheckedUpdateManyWithoutCoverImageInput>
+}
+
 export type CategoryCreateManyParentInput = {
   id?: string
   storeId: string
@@ -2048,6 +2048,94 @@ export type CategoryUncheckedUpdateWithoutParentInput = {
 export type CategoryUncheckedUpdateManyWithoutParentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCategoryStatusFieldUpdateOperationsInput | $Enums.CategoryStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type CategoryCreateManyStoreInput = {
+  id?: string
+  parentId?: string | null
+  code: string
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  primaryImageId?: string | null
+  coverImageId?: string | null
+  status?: $Enums.CategoryStatus
+  isFeatured?: boolean
+  sortOrder?: number
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type CategoryUpdateWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCategoryStatusFieldUpdateOperationsInput | $Enums.CategoryStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parent?: Prisma.CategoryUpdateOneWithoutChildrenNestedInput
+  children?: Prisma.CategoryUpdateManyWithoutParentNestedInput
+  primaryImage?: Prisma.MediaAssetUpdateOneWithoutCategoriesAsPrimaryImageNestedInput
+  coverImage?: Prisma.MediaAssetUpdateOneWithoutCategoriesAsCoverImageNestedInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryUpdateManyWithoutCategoryNestedInput
+  productLinks?: Prisma.ProductCategoryUpdateManyWithoutCategoryNestedInput
+  discountCategoryTargets?: Prisma.DiscountCategoryTargetUpdateManyWithoutCategoryNestedInput
+  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUpdateManyWithoutCategoryNestedInput
+  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCategoryStatusFieldUpdateOperationsInput | $Enums.CategoryStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  children?: Prisma.CategoryUncheckedUpdateManyWithoutParentNestedInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryUncheckedUpdateManyWithoutCategoryNestedInput
+  productLinks?: Prisma.ProductCategoryUncheckedUpdateManyWithoutCategoryNestedInput
+  discountCategoryTargets?: Prisma.DiscountCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
+  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
+  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
+}
+
+export type CategoryUncheckedUpdateManyWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   code?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2231,94 +2319,6 @@ export type CategoryUncheckedUpdateManyWithoutCoverImageInput = {
   shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumCategoryStatusFieldUpdateOperationsInput | $Enums.CategoryStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type CategoryCreateManyStoreInput = {
-  id?: string
-  parentId?: string | null
-  code: string
-  slug: string
-  name: string
-  shortDescription?: string | null
-  description?: string | null
-  primaryImageId?: string | null
-  coverImageId?: string | null
-  status?: $Enums.CategoryStatus
-  isFeatured?: boolean
-  sortOrder?: number
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type CategoryUpdateWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumCategoryStatusFieldUpdateOperationsInput | $Enums.CategoryStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  parent?: Prisma.CategoryUpdateOneWithoutChildrenNestedInput
-  children?: Prisma.CategoryUpdateManyWithoutParentNestedInput
-  primaryImage?: Prisma.MediaAssetUpdateOneWithoutCategoriesAsPrimaryImageNestedInput
-  coverImage?: Prisma.MediaAssetUpdateOneWithoutCategoriesAsCoverImageNestedInput
-  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryUpdateManyWithoutCategoryNestedInput
-  productLinks?: Prisma.ProductCategoryUpdateManyWithoutCategoryNestedInput
-  discountCategoryTargets?: Prisma.DiscountCategoryTargetUpdateManyWithoutCategoryNestedInput
-  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUpdateManyWithoutCategoryNestedInput
-  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUpdateManyWithoutCategoryNestedInput
-}
-
-export type CategoryUncheckedUpdateWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumCategoryStatusFieldUpdateOperationsInput | $Enums.CategoryStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  children?: Prisma.CategoryUncheckedUpdateManyWithoutParentNestedInput
-  homepageFeaturedIn?: Prisma.HomepageFeaturedCategoryUncheckedUpdateManyWithoutCategoryNestedInput
-  productLinks?: Prisma.ProductCategoryUncheckedUpdateManyWithoutCategoryNestedInput
-  discountCategoryTargets?: Prisma.DiscountCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
-  taxRuleCategoryTargets?: Prisma.TaxRuleCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
-  salesPolicyCategoryTargets?: Prisma.SalesPolicyCategoryTargetUncheckedUpdateManyWithoutCategoryNestedInput
-}
-
-export type CategoryUncheckedUpdateManyWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumCategoryStatusFieldUpdateOperationsInput | $Enums.CategoryStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number

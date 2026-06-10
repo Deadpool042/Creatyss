@@ -50,56 +50,6 @@ export const CategoryStatus = {
 export type CategoryStatus = (typeof CategoryStatus)[keyof typeof CategoryStatus]
 
 
-export const MediaAssetStatus = {
-  DRAFT: 'DRAFT',
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  ARCHIVED: 'ARCHIVED'
-} as const
-
-export type MediaAssetStatus = (typeof MediaAssetStatus)[keyof typeof MediaAssetStatus]
-
-
-export const MediaAssetKind = {
-  IMAGE: 'IMAGE',
-  VIDEO: 'VIDEO',
-  DOCUMENT: 'DOCUMENT',
-  OTHER: 'OTHER'
-} as const
-
-export type MediaAssetKind = (typeof MediaAssetKind)[keyof typeof MediaAssetKind]
-
-
-export const MediaReferenceSubjectType = {
-  PRODUCT: 'PRODUCT',
-  PRODUCT_VARIANT: 'PRODUCT_VARIANT',
-  CATEGORY: 'CATEGORY',
-  PAGE: 'PAGE',
-  BLOG_POST: 'BLOG_POST',
-  HOMEPAGE: 'HOMEPAGE',
-  HOMEPAGE_SECTION: 'HOMEPAGE_SECTION',
-  PUBLIC_EVENT: 'PUBLIC_EVENT',
-  EMAIL_TEMPLATE: 'EMAIL_TEMPLATE',
-  OTHER: 'OTHER'
-} as const
-
-export type MediaReferenceSubjectType = (typeof MediaReferenceSubjectType)[keyof typeof MediaReferenceSubjectType]
-
-
-export const MediaReferenceRole = {
-  PRIMARY: 'PRIMARY',
-  COVER: 'COVER',
-  GALLERY: 'GALLERY',
-  THUMBNAIL: 'THUMBNAIL',
-  HERO: 'HERO',
-  INLINE: 'INLINE',
-  ATTACHMENT: 'ATTACHMENT',
-  OTHER: 'OTHER'
-} as const
-
-export type MediaReferenceRole = (typeof MediaReferenceRole)[keyof typeof MediaReferenceRole]
-
-
 export const PriceListStatus = {
   DRAFT: 'DRAFT',
   ACTIVE: 'ACTIVE',
@@ -228,49 +178,6 @@ export const OrderAddressType = {
 export type OrderAddressType = (typeof OrderAddressType)[keyof typeof OrderAddressType]
 
 
-export const BlogPostStatus = {
-  DRAFT: 'DRAFT',
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  ARCHIVED: 'ARCHIVED'
-} as const
-
-export type BlogPostStatus = (typeof BlogPostStatus)[keyof typeof BlogPostStatus]
-
-
-export const BlogCategoryStatus = {
-  DRAFT: 'DRAFT',
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  ARCHIVED: 'ARCHIVED'
-} as const
-
-export type BlogCategoryStatus = (typeof BlogCategoryStatus)[keyof typeof BlogCategoryStatus]
-
-
-export const HomepageStatus = {
-  DRAFT: 'DRAFT',
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  ARCHIVED: 'ARCHIVED'
-} as const
-
-export type HomepageStatus = (typeof HomepageStatus)[keyof typeof HomepageStatus]
-
-
-export const HomepageSectionType = {
-  HERO: 'HERO',
-  RICH_TEXT: 'RICH_TEXT',
-  FEATURED_PRODUCTS: 'FEATURED_PRODUCTS',
-  FEATURED_CATEGORIES: 'FEATURED_CATEGORIES',
-  EDITORIAL: 'EDITORIAL',
-  BLOG_POSTS: 'BLOG_POSTS',
-  CTA: 'CTA'
-} as const
-
-export type HomepageSectionType = (typeof HomepageSectionType)[keyof typeof HomepageSectionType]
-
-
 export const PageStatus = {
   DRAFT: 'DRAFT',
   ACTIVE: 'ACTIVE',
@@ -292,40 +199,6 @@ export const PageBlockType = {
 } as const
 
 export type PageBlockType = (typeof PageBlockType)[keyof typeof PageBlockType]
-
-
-export const SeoStatus = {
-  DRAFT: 'DRAFT',
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  ARCHIVED: 'ARCHIVED'
-} as const
-
-export type SeoStatus = (typeof SeoStatus)[keyof typeof SeoStatus]
-
-
-export const SeoSubjectType = {
-  PAGE: 'PAGE',
-  BLOG_POST: 'BLOG_POST',
-  BLOG_CATEGORY: 'BLOG_CATEGORY',
-  PRODUCT: 'PRODUCT',
-  PRODUCT_VARIANT: 'PRODUCT_VARIANT',
-  CATEGORY: 'CATEGORY',
-  HOMEPAGE: 'HOMEPAGE',
-  PUBLIC_EVENT: 'PUBLIC_EVENT'
-} as const
-
-export type SeoSubjectType = (typeof SeoSubjectType)[keyof typeof SeoSubjectType]
-
-
-export const SeoIndexingMode = {
-  INDEX_FOLLOW: 'INDEX_FOLLOW',
-  INDEX_NOFOLLOW: 'INDEX_NOFOLLOW',
-  NOINDEX_FOLLOW: 'NOINDEX_FOLLOW',
-  NOINDEX_NOFOLLOW: 'NOINDEX_NOFOLLOW'
-} as const
-
-export type SeoIndexingMode = (typeof SeoIndexingMode)[keyof typeof SeoIndexingMode]
 
 
 export const ApiClientStatus = {
@@ -523,6 +396,40 @@ export const ObservabilitySignalStatus = {
 } as const
 
 export type ObservabilitySignalStatus = (typeof ObservabilitySignalStatus)[keyof typeof ObservabilitySignalStatus]
+
+
+export const SeoStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type SeoStatus = (typeof SeoStatus)[keyof typeof SeoStatus]
+
+
+export const SeoSubjectType = {
+  PAGE: 'PAGE',
+  BLOG_POST: 'BLOG_POST',
+  BLOG_CATEGORY: 'BLOG_CATEGORY',
+  PRODUCT: 'PRODUCT',
+  PRODUCT_VARIANT: 'PRODUCT_VARIANT',
+  CATEGORY: 'CATEGORY',
+  HOMEPAGE: 'HOMEPAGE',
+  PUBLIC_EVENT: 'PUBLIC_EVENT'
+} as const
+
+export type SeoSubjectType = (typeof SeoSubjectType)[keyof typeof SeoSubjectType]
+
+
+export const SeoIndexingMode = {
+  INDEX_FOLLOW: 'INDEX_FOLLOW',
+  INDEX_NOFOLLOW: 'INDEX_NOFOLLOW',
+  NOINDEX_FOLLOW: 'NOINDEX_FOLLOW',
+  NOINDEX_NOFOLLOW: 'NOINDEX_NOFOLLOW'
+} as const
+
+export type SeoIndexingMode = (typeof SeoIndexingMode)[keyof typeof SeoIndexingMode]
 
 
 export const AiProviderStatus = {
@@ -954,6 +861,26 @@ export const BehaviorProfileStatus = {
 export type BehaviorProfileStatus = (typeof BehaviorProfileStatus)[keyof typeof BehaviorProfileStatus]
 
 
+export const BlogPostStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type BlogPostStatus = (typeof BlogPostStatus)[keyof typeof BlogPostStatus]
+
+
+export const BlogCategoryStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type BlogCategoryStatus = (typeof BlogCategoryStatus)[keyof typeof BlogCategoryStatus]
+
+
 export const ConversionFlowStatus = {
   DRAFT: 'DRAFT',
   ACTIVE: 'ACTIVE',
@@ -1109,6 +1036,29 @@ export const SupportMessageAuthorType = {
 } as const
 
 export type SupportMessageAuthorType = (typeof SupportMessageAuthorType)[keyof typeof SupportMessageAuthorType]
+
+
+export const HomepageStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type HomepageStatus = (typeof HomepageStatus)[keyof typeof HomepageStatus]
+
+
+export const HomepageSectionType = {
+  HERO: 'HERO',
+  RICH_TEXT: 'RICH_TEXT',
+  FEATURED_PRODUCTS: 'FEATURED_PRODUCTS',
+  FEATURED_CATEGORIES: 'FEATURED_CATEGORIES',
+  EDITORIAL: 'EDITORIAL',
+  BLOG_POSTS: 'BLOG_POSTS',
+  CTA: 'CTA'
+} as const
+
+export type HomepageSectionType = (typeof HomepageSectionType)[keyof typeof HomepageSectionType]
 
 
 export const ApprovalRequestStatus = {
@@ -1459,6 +1409,56 @@ export const ChannelPublicationStatus = {
 } as const
 
 export type ChannelPublicationStatus = (typeof ChannelPublicationStatus)[keyof typeof ChannelPublicationStatus]
+
+
+export const MediaAssetStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type MediaAssetStatus = (typeof MediaAssetStatus)[keyof typeof MediaAssetStatus]
+
+
+export const MediaAssetKind = {
+  IMAGE: 'IMAGE',
+  VIDEO: 'VIDEO',
+  DOCUMENT: 'DOCUMENT',
+  OTHER: 'OTHER'
+} as const
+
+export type MediaAssetKind = (typeof MediaAssetKind)[keyof typeof MediaAssetKind]
+
+
+export const MediaReferenceSubjectType = {
+  PRODUCT: 'PRODUCT',
+  PRODUCT_VARIANT: 'PRODUCT_VARIANT',
+  CATEGORY: 'CATEGORY',
+  PAGE: 'PAGE',
+  BLOG_POST: 'BLOG_POST',
+  HOMEPAGE: 'HOMEPAGE',
+  HOMEPAGE_SECTION: 'HOMEPAGE_SECTION',
+  PUBLIC_EVENT: 'PUBLIC_EVENT',
+  EMAIL_TEMPLATE: 'EMAIL_TEMPLATE',
+  OTHER: 'OTHER'
+} as const
+
+export type MediaReferenceSubjectType = (typeof MediaReferenceSubjectType)[keyof typeof MediaReferenceSubjectType]
+
+
+export const MediaReferenceRole = {
+  PRIMARY: 'PRIMARY',
+  COVER: 'COVER',
+  GALLERY: 'GALLERY',
+  THUMBNAIL: 'THUMBNAIL',
+  HERO: 'HERO',
+  INLINE: 'INLINE',
+  ATTACHMENT: 'ATTACHMENT',
+  OTHER: 'OTHER'
+} as const
+
+export type MediaReferenceRole = (typeof MediaReferenceRole)[keyof typeof MediaReferenceRole]
 
 
 export const SearchDocumentStatus = {

@@ -1,6 +1,6 @@
 import { db } from "@/core/db";
 import { normalizeMoneyString } from "@/core/money";
-import { createOrderReference } from "@/entities/order/order-reference";
+import { createOrderReference, isValidOrderReference } from "@/entities/order/order-reference";
 import {
   toAppOrderStatus,
   toAppPaymentStatus,
@@ -31,7 +31,6 @@ export {
 type CreatedOrderRow = { id: string; reference: string };
 type PostgreSqlErrorLike = Error & { code: string; constraint?: string };
 
-function isValidOrderReference(value: string): boolean { return /^CRY-[A-Z0-9]{10}$/.test(value); }
 
 function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
   if (!(error instanceof Error)) return false;
@@ -189,9 +188,15 @@ export async function createOrderFromGuestCartToken(
 
     const shippingAddress = checkout.addresses.find((a) => a.type === "SHIPPING") ?? null;
 
+    const storeSettings = await tx.store.findUnique({
+      where: { id: cart.storeId },
+      select: { orderNumberPrefix: true },
+    });
+    const orderPrefix = storeSettings?.orderNumberPrefix ?? undefined;
+
     let createdOrder: CreatedOrderRow | undefined;
     for (let attempt = 0; attempt < 3; attempt += 1) {
-      const orderNumber = createOrderReference();
+      const orderNumber = createOrderReference(orderPrefix);
       try {
         const order = await tx.order.create({
           data: {

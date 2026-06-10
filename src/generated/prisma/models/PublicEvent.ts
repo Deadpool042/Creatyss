@@ -682,6 +682,84 @@ export type PublicEventScalarRelationFilter = {
   isNot?: Prisma.PublicEventWhereInput
 }
 
+export type PublicEventCreateNestedManyWithoutStoreInput = {
+  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutStoreInput, Prisma.PublicEventUncheckedCreateWithoutStoreInput> | Prisma.PublicEventCreateWithoutStoreInput[] | Prisma.PublicEventUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutStoreInput | Prisma.PublicEventCreateOrConnectWithoutStoreInput[]
+  createMany?: Prisma.PublicEventCreateManyStoreInputEnvelope
+  connect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
+}
+
+export type PublicEventUncheckedCreateNestedManyWithoutStoreInput = {
+  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutStoreInput, Prisma.PublicEventUncheckedCreateWithoutStoreInput> | Prisma.PublicEventCreateWithoutStoreInput[] | Prisma.PublicEventUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutStoreInput | Prisma.PublicEventCreateOrConnectWithoutStoreInput[]
+  createMany?: Prisma.PublicEventCreateManyStoreInputEnvelope
+  connect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
+}
+
+export type PublicEventUpdateManyWithoutStoreNestedInput = {
+  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutStoreInput, Prisma.PublicEventUncheckedCreateWithoutStoreInput> | Prisma.PublicEventCreateWithoutStoreInput[] | Prisma.PublicEventUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutStoreInput | Prisma.PublicEventCreateOrConnectWithoutStoreInput[]
+  upsert?: Prisma.PublicEventUpsertWithWhereUniqueWithoutStoreInput | Prisma.PublicEventUpsertWithWhereUniqueWithoutStoreInput[]
+  createMany?: Prisma.PublicEventCreateManyStoreInputEnvelope
+  set?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
+  disconnect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
+  delete?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
+  connect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
+  update?: Prisma.PublicEventUpdateWithWhereUniqueWithoutStoreInput | Prisma.PublicEventUpdateWithWhereUniqueWithoutStoreInput[]
+  updateMany?: Prisma.PublicEventUpdateManyWithWhereWithoutStoreInput | Prisma.PublicEventUpdateManyWithWhereWithoutStoreInput[]
+  deleteMany?: Prisma.PublicEventScalarWhereInput | Prisma.PublicEventScalarWhereInput[]
+}
+
+export type PublicEventUncheckedUpdateManyWithoutStoreNestedInput = {
+  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutStoreInput, Prisma.PublicEventUncheckedCreateWithoutStoreInput> | Prisma.PublicEventCreateWithoutStoreInput[] | Prisma.PublicEventUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutStoreInput | Prisma.PublicEventCreateOrConnectWithoutStoreInput[]
+  upsert?: Prisma.PublicEventUpsertWithWhereUniqueWithoutStoreInput | Prisma.PublicEventUpsertWithWhereUniqueWithoutStoreInput[]
+  createMany?: Prisma.PublicEventCreateManyStoreInputEnvelope
+  set?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
+  disconnect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
+  delete?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
+  connect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
+  update?: Prisma.PublicEventUpdateWithWhereUniqueWithoutStoreInput | Prisma.PublicEventUpdateWithWhereUniqueWithoutStoreInput[]
+  updateMany?: Prisma.PublicEventUpdateManyWithWhereWithoutStoreInput | Prisma.PublicEventUpdateManyWithWhereWithoutStoreInput[]
+  deleteMany?: Prisma.PublicEventScalarWhereInput | Prisma.PublicEventScalarWhereInput[]
+}
+
+export type EnumPublicEventStatusFieldUpdateOperationsInput = {
+  set?: $Enums.PublicEventStatus
+}
+
+export type EnumEventAudienceStatusFieldUpdateOperationsInput = {
+  set?: $Enums.EventAudienceStatus
+}
+
+export type PublicEventCreateNestedOneWithoutRegistrationsInput = {
+  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutRegistrationsInput, Prisma.PublicEventUncheckedCreateWithoutRegistrationsInput>
+  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutRegistrationsInput
+  connect?: Prisma.PublicEventWhereUniqueInput
+}
+
+export type PublicEventUpdateOneRequiredWithoutRegistrationsNestedInput = {
+  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutRegistrationsInput, Prisma.PublicEventUncheckedCreateWithoutRegistrationsInput>
+  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutRegistrationsInput
+  upsert?: Prisma.PublicEventUpsertWithoutRegistrationsInput
+  connect?: Prisma.PublicEventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PublicEventUpdateToOneWithWhereWithoutRegistrationsInput, Prisma.PublicEventUpdateWithoutRegistrationsInput>, Prisma.PublicEventUncheckedUpdateWithoutRegistrationsInput>
+}
+
+export type PublicEventCreateNestedOneWithoutReservationsInput = {
+  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutReservationsInput, Prisma.PublicEventUncheckedCreateWithoutReservationsInput>
+  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutReservationsInput
+  connect?: Prisma.PublicEventWhereUniqueInput
+}
+
+export type PublicEventUpdateOneRequiredWithoutReservationsNestedInput = {
+  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutReservationsInput, Prisma.PublicEventUncheckedCreateWithoutReservationsInput>
+  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutReservationsInput
+  upsert?: Prisma.PublicEventUpsertWithoutReservationsInput
+  connect?: Prisma.PublicEventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PublicEventUpdateToOneWithWhereWithoutReservationsInput, Prisma.PublicEventUpdateWithoutReservationsInput>, Prisma.PublicEventUncheckedUpdateWithoutReservationsInput>
+}
+
 export type PublicEventCreateNestedManyWithoutPrimaryImageInput = {
   create?: Prisma.XOR<Prisma.PublicEventCreateWithoutPrimaryImageInput, Prisma.PublicEventUncheckedCreateWithoutPrimaryImageInput> | Prisma.PublicEventCreateWithoutPrimaryImageInput[] | Prisma.PublicEventUncheckedCreateWithoutPrimaryImageInput[]
   connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutPrimaryImageInput | Prisma.PublicEventCreateOrConnectWithoutPrimaryImageInput[]
@@ -766,258 +844,6 @@ export type PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput = {
   deleteMany?: Prisma.PublicEventScalarWhereInput | Prisma.PublicEventScalarWhereInput[]
 }
 
-export type PublicEventCreateNestedManyWithoutStoreInput = {
-  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutStoreInput, Prisma.PublicEventUncheckedCreateWithoutStoreInput> | Prisma.PublicEventCreateWithoutStoreInput[] | Prisma.PublicEventUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutStoreInput | Prisma.PublicEventCreateOrConnectWithoutStoreInput[]
-  createMany?: Prisma.PublicEventCreateManyStoreInputEnvelope
-  connect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
-}
-
-export type PublicEventUncheckedCreateNestedManyWithoutStoreInput = {
-  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutStoreInput, Prisma.PublicEventUncheckedCreateWithoutStoreInput> | Prisma.PublicEventCreateWithoutStoreInput[] | Prisma.PublicEventUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutStoreInput | Prisma.PublicEventCreateOrConnectWithoutStoreInput[]
-  createMany?: Prisma.PublicEventCreateManyStoreInputEnvelope
-  connect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
-}
-
-export type PublicEventUpdateManyWithoutStoreNestedInput = {
-  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutStoreInput, Prisma.PublicEventUncheckedCreateWithoutStoreInput> | Prisma.PublicEventCreateWithoutStoreInput[] | Prisma.PublicEventUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutStoreInput | Prisma.PublicEventCreateOrConnectWithoutStoreInput[]
-  upsert?: Prisma.PublicEventUpsertWithWhereUniqueWithoutStoreInput | Prisma.PublicEventUpsertWithWhereUniqueWithoutStoreInput[]
-  createMany?: Prisma.PublicEventCreateManyStoreInputEnvelope
-  set?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
-  disconnect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
-  delete?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
-  connect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
-  update?: Prisma.PublicEventUpdateWithWhereUniqueWithoutStoreInput | Prisma.PublicEventUpdateWithWhereUniqueWithoutStoreInput[]
-  updateMany?: Prisma.PublicEventUpdateManyWithWhereWithoutStoreInput | Prisma.PublicEventUpdateManyWithWhereWithoutStoreInput[]
-  deleteMany?: Prisma.PublicEventScalarWhereInput | Prisma.PublicEventScalarWhereInput[]
-}
-
-export type PublicEventUncheckedUpdateManyWithoutStoreNestedInput = {
-  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutStoreInput, Prisma.PublicEventUncheckedCreateWithoutStoreInput> | Prisma.PublicEventCreateWithoutStoreInput[] | Prisma.PublicEventUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutStoreInput | Prisma.PublicEventCreateOrConnectWithoutStoreInput[]
-  upsert?: Prisma.PublicEventUpsertWithWhereUniqueWithoutStoreInput | Prisma.PublicEventUpsertWithWhereUniqueWithoutStoreInput[]
-  createMany?: Prisma.PublicEventCreateManyStoreInputEnvelope
-  set?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
-  disconnect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
-  delete?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
-  connect?: Prisma.PublicEventWhereUniqueInput | Prisma.PublicEventWhereUniqueInput[]
-  update?: Prisma.PublicEventUpdateWithWhereUniqueWithoutStoreInput | Prisma.PublicEventUpdateWithWhereUniqueWithoutStoreInput[]
-  updateMany?: Prisma.PublicEventUpdateManyWithWhereWithoutStoreInput | Prisma.PublicEventUpdateManyWithWhereWithoutStoreInput[]
-  deleteMany?: Prisma.PublicEventScalarWhereInput | Prisma.PublicEventScalarWhereInput[]
-}
-
-export type EnumPublicEventStatusFieldUpdateOperationsInput = {
-  set?: $Enums.PublicEventStatus
-}
-
-export type EnumEventAudienceStatusFieldUpdateOperationsInput = {
-  set?: $Enums.EventAudienceStatus
-}
-
-export type PublicEventCreateNestedOneWithoutRegistrationsInput = {
-  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutRegistrationsInput, Prisma.PublicEventUncheckedCreateWithoutRegistrationsInput>
-  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutRegistrationsInput
-  connect?: Prisma.PublicEventWhereUniqueInput
-}
-
-export type PublicEventUpdateOneRequiredWithoutRegistrationsNestedInput = {
-  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutRegistrationsInput, Prisma.PublicEventUncheckedCreateWithoutRegistrationsInput>
-  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutRegistrationsInput
-  upsert?: Prisma.PublicEventUpsertWithoutRegistrationsInput
-  connect?: Prisma.PublicEventWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PublicEventUpdateToOneWithWhereWithoutRegistrationsInput, Prisma.PublicEventUpdateWithoutRegistrationsInput>, Prisma.PublicEventUncheckedUpdateWithoutRegistrationsInput>
-}
-
-export type PublicEventCreateNestedOneWithoutReservationsInput = {
-  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutReservationsInput, Prisma.PublicEventUncheckedCreateWithoutReservationsInput>
-  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutReservationsInput
-  connect?: Prisma.PublicEventWhereUniqueInput
-}
-
-export type PublicEventUpdateOneRequiredWithoutReservationsNestedInput = {
-  create?: Prisma.XOR<Prisma.PublicEventCreateWithoutReservationsInput, Prisma.PublicEventUncheckedCreateWithoutReservationsInput>
-  connectOrCreate?: Prisma.PublicEventCreateOrConnectWithoutReservationsInput
-  upsert?: Prisma.PublicEventUpsertWithoutReservationsInput
-  connect?: Prisma.PublicEventWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PublicEventUpdateToOneWithWhereWithoutReservationsInput, Prisma.PublicEventUpdateWithoutReservationsInput>, Prisma.PublicEventUncheckedUpdateWithoutReservationsInput>
-}
-
-export type PublicEventCreateWithoutPrimaryImageInput = {
-  id?: string
-  code: string
-  slug: string
-  title: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.PublicEventStatus
-  startsAt: Date | string
-  endsAt?: Date | string | null
-  locationName?: string | null
-  locationAddress?: string | null
-  audienceStatus?: $Enums.EventAudienceStatus
-  publishedAt?: Date | string | null
-  cancelledAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store: Prisma.StoreCreateNestedOneWithoutPublicEventsInput
-  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutPublicEventsAsCoverImageInput
-  registrations?: Prisma.EventRegistrationCreateNestedManyWithoutPublicEventInput
-  reservations?: Prisma.EventReservationCreateNestedManyWithoutPublicEventInput
-}
-
-export type PublicEventUncheckedCreateWithoutPrimaryImageInput = {
-  id?: string
-  storeId: string
-  code: string
-  slug: string
-  title: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.PublicEventStatus
-  startsAt: Date | string
-  endsAt?: Date | string | null
-  locationName?: string | null
-  locationAddress?: string | null
-  audienceStatus?: $Enums.EventAudienceStatus
-  coverImageId?: string | null
-  publishedAt?: Date | string | null
-  cancelledAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  registrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutPublicEventInput
-  reservations?: Prisma.EventReservationUncheckedCreateNestedManyWithoutPublicEventInput
-}
-
-export type PublicEventCreateOrConnectWithoutPrimaryImageInput = {
-  where: Prisma.PublicEventWhereUniqueInput
-  create: Prisma.XOR<Prisma.PublicEventCreateWithoutPrimaryImageInput, Prisma.PublicEventUncheckedCreateWithoutPrimaryImageInput>
-}
-
-export type PublicEventCreateManyPrimaryImageInputEnvelope = {
-  data: Prisma.PublicEventCreateManyPrimaryImageInput | Prisma.PublicEventCreateManyPrimaryImageInput[]
-  skipDuplicates?: boolean
-}
-
-export type PublicEventCreateWithoutCoverImageInput = {
-  id?: string
-  code: string
-  slug: string
-  title: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.PublicEventStatus
-  startsAt: Date | string
-  endsAt?: Date | string | null
-  locationName?: string | null
-  locationAddress?: string | null
-  audienceStatus?: $Enums.EventAudienceStatus
-  publishedAt?: Date | string | null
-  cancelledAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store: Prisma.StoreCreateNestedOneWithoutPublicEventsInput
-  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutPublicEventsAsPrimaryImageInput
-  registrations?: Prisma.EventRegistrationCreateNestedManyWithoutPublicEventInput
-  reservations?: Prisma.EventReservationCreateNestedManyWithoutPublicEventInput
-}
-
-export type PublicEventUncheckedCreateWithoutCoverImageInput = {
-  id?: string
-  storeId: string
-  code: string
-  slug: string
-  title: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.PublicEventStatus
-  startsAt: Date | string
-  endsAt?: Date | string | null
-  locationName?: string | null
-  locationAddress?: string | null
-  audienceStatus?: $Enums.EventAudienceStatus
-  primaryImageId?: string | null
-  publishedAt?: Date | string | null
-  cancelledAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  registrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutPublicEventInput
-  reservations?: Prisma.EventReservationUncheckedCreateNestedManyWithoutPublicEventInput
-}
-
-export type PublicEventCreateOrConnectWithoutCoverImageInput = {
-  where: Prisma.PublicEventWhereUniqueInput
-  create: Prisma.XOR<Prisma.PublicEventCreateWithoutCoverImageInput, Prisma.PublicEventUncheckedCreateWithoutCoverImageInput>
-}
-
-export type PublicEventCreateManyCoverImageInputEnvelope = {
-  data: Prisma.PublicEventCreateManyCoverImageInput | Prisma.PublicEventCreateManyCoverImageInput[]
-  skipDuplicates?: boolean
-}
-
-export type PublicEventUpsertWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.PublicEventWhereUniqueInput
-  update: Prisma.XOR<Prisma.PublicEventUpdateWithoutPrimaryImageInput, Prisma.PublicEventUncheckedUpdateWithoutPrimaryImageInput>
-  create: Prisma.XOR<Prisma.PublicEventCreateWithoutPrimaryImageInput, Prisma.PublicEventUncheckedCreateWithoutPrimaryImageInput>
-}
-
-export type PublicEventUpdateWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.PublicEventWhereUniqueInput
-  data: Prisma.XOR<Prisma.PublicEventUpdateWithoutPrimaryImageInput, Prisma.PublicEventUncheckedUpdateWithoutPrimaryImageInput>
-}
-
-export type PublicEventUpdateManyWithWhereWithoutPrimaryImageInput = {
-  where: Prisma.PublicEventScalarWhereInput
-  data: Prisma.XOR<Prisma.PublicEventUpdateManyMutationInput, Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageInput>
-}
-
-export type PublicEventScalarWhereInput = {
-  AND?: Prisma.PublicEventScalarWhereInput | Prisma.PublicEventScalarWhereInput[]
-  OR?: Prisma.PublicEventScalarWhereInput[]
-  NOT?: Prisma.PublicEventScalarWhereInput | Prisma.PublicEventScalarWhereInput[]
-  id?: Prisma.StringFilter<"PublicEvent"> | string
-  storeId?: Prisma.StringFilter<"PublicEvent"> | string
-  code?: Prisma.StringFilter<"PublicEvent"> | string
-  slug?: Prisma.StringFilter<"PublicEvent"> | string
-  title?: Prisma.StringFilter<"PublicEvent"> | string
-  shortDescription?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
-  description?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
-  status?: Prisma.EnumPublicEventStatusFilter<"PublicEvent"> | $Enums.PublicEventStatus
-  startsAt?: Prisma.DateTimeFilter<"PublicEvent"> | Date | string
-  endsAt?: Prisma.DateTimeNullableFilter<"PublicEvent"> | Date | string | null
-  locationName?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
-  locationAddress?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
-  audienceStatus?: Prisma.EnumEventAudienceStatusFilter<"PublicEvent"> | $Enums.EventAudienceStatus
-  primaryImageId?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
-  coverImageId?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
-  publishedAt?: Prisma.DateTimeNullableFilter<"PublicEvent"> | Date | string | null
-  cancelledAt?: Prisma.DateTimeNullableFilter<"PublicEvent"> | Date | string | null
-  archivedAt?: Prisma.DateTimeNullableFilter<"PublicEvent"> | Date | string | null
-  createdAt?: Prisma.DateTimeFilter<"PublicEvent"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PublicEvent"> | Date | string
-}
-
-export type PublicEventUpsertWithWhereUniqueWithoutCoverImageInput = {
-  where: Prisma.PublicEventWhereUniqueInput
-  update: Prisma.XOR<Prisma.PublicEventUpdateWithoutCoverImageInput, Prisma.PublicEventUncheckedUpdateWithoutCoverImageInput>
-  create: Prisma.XOR<Prisma.PublicEventCreateWithoutCoverImageInput, Prisma.PublicEventUncheckedCreateWithoutCoverImageInput>
-}
-
-export type PublicEventUpdateWithWhereUniqueWithoutCoverImageInput = {
-  where: Prisma.PublicEventWhereUniqueInput
-  data: Prisma.XOR<Prisma.PublicEventUpdateWithoutCoverImageInput, Prisma.PublicEventUncheckedUpdateWithoutCoverImageInput>
-}
-
-export type PublicEventUpdateManyWithWhereWithoutCoverImageInput = {
-  where: Prisma.PublicEventScalarWhereInput
-  data: Prisma.XOR<Prisma.PublicEventUpdateManyMutationInput, Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageInput>
-}
-
 export type PublicEventCreateWithoutStoreInput = {
   id?: string
   code: string
@@ -1090,6 +916,32 @@ export type PublicEventUpdateWithWhereUniqueWithoutStoreInput = {
 export type PublicEventUpdateManyWithWhereWithoutStoreInput = {
   where: Prisma.PublicEventScalarWhereInput
   data: Prisma.XOR<Prisma.PublicEventUpdateManyMutationInput, Prisma.PublicEventUncheckedUpdateManyWithoutStoreInput>
+}
+
+export type PublicEventScalarWhereInput = {
+  AND?: Prisma.PublicEventScalarWhereInput | Prisma.PublicEventScalarWhereInput[]
+  OR?: Prisma.PublicEventScalarWhereInput[]
+  NOT?: Prisma.PublicEventScalarWhereInput | Prisma.PublicEventScalarWhereInput[]
+  id?: Prisma.StringFilter<"PublicEvent"> | string
+  storeId?: Prisma.StringFilter<"PublicEvent"> | string
+  code?: Prisma.StringFilter<"PublicEvent"> | string
+  slug?: Prisma.StringFilter<"PublicEvent"> | string
+  title?: Prisma.StringFilter<"PublicEvent"> | string
+  shortDescription?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
+  description?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
+  status?: Prisma.EnumPublicEventStatusFilter<"PublicEvent"> | $Enums.PublicEventStatus
+  startsAt?: Prisma.DateTimeFilter<"PublicEvent"> | Date | string
+  endsAt?: Prisma.DateTimeNullableFilter<"PublicEvent"> | Date | string | null
+  locationName?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
+  locationAddress?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
+  audienceStatus?: Prisma.EnumEventAudienceStatusFilter<"PublicEvent"> | $Enums.EventAudienceStatus
+  primaryImageId?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
+  coverImageId?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
+  publishedAt?: Prisma.DateTimeNullableFilter<"PublicEvent"> | Date | string | null
+  cancelledAt?: Prisma.DateTimeNullableFilter<"PublicEvent"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"PublicEvent"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"PublicEvent"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PublicEvent"> | Date | string
 }
 
 export type PublicEventCreateWithoutRegistrationsInput = {
@@ -1316,6 +1168,246 @@ export type PublicEventUncheckedUpdateWithoutReservationsInput = {
   registrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutPublicEventNestedInput
 }
 
+export type PublicEventCreateWithoutPrimaryImageInput = {
+  id?: string
+  code: string
+  slug: string
+  title: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.PublicEventStatus
+  startsAt: Date | string
+  endsAt?: Date | string | null
+  locationName?: string | null
+  locationAddress?: string | null
+  audienceStatus?: $Enums.EventAudienceStatus
+  publishedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutPublicEventsInput
+  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutPublicEventsAsCoverImageInput
+  registrations?: Prisma.EventRegistrationCreateNestedManyWithoutPublicEventInput
+  reservations?: Prisma.EventReservationCreateNestedManyWithoutPublicEventInput
+}
+
+export type PublicEventUncheckedCreateWithoutPrimaryImageInput = {
+  id?: string
+  storeId: string
+  code: string
+  slug: string
+  title: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.PublicEventStatus
+  startsAt: Date | string
+  endsAt?: Date | string | null
+  locationName?: string | null
+  locationAddress?: string | null
+  audienceStatus?: $Enums.EventAudienceStatus
+  coverImageId?: string | null
+  publishedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  registrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutPublicEventInput
+  reservations?: Prisma.EventReservationUncheckedCreateNestedManyWithoutPublicEventInput
+}
+
+export type PublicEventCreateOrConnectWithoutPrimaryImageInput = {
+  where: Prisma.PublicEventWhereUniqueInput
+  create: Prisma.XOR<Prisma.PublicEventCreateWithoutPrimaryImageInput, Prisma.PublicEventUncheckedCreateWithoutPrimaryImageInput>
+}
+
+export type PublicEventCreateManyPrimaryImageInputEnvelope = {
+  data: Prisma.PublicEventCreateManyPrimaryImageInput | Prisma.PublicEventCreateManyPrimaryImageInput[]
+  skipDuplicates?: boolean
+}
+
+export type PublicEventCreateWithoutCoverImageInput = {
+  id?: string
+  code: string
+  slug: string
+  title: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.PublicEventStatus
+  startsAt: Date | string
+  endsAt?: Date | string | null
+  locationName?: string | null
+  locationAddress?: string | null
+  audienceStatus?: $Enums.EventAudienceStatus
+  publishedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutPublicEventsInput
+  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutPublicEventsAsPrimaryImageInput
+  registrations?: Prisma.EventRegistrationCreateNestedManyWithoutPublicEventInput
+  reservations?: Prisma.EventReservationCreateNestedManyWithoutPublicEventInput
+}
+
+export type PublicEventUncheckedCreateWithoutCoverImageInput = {
+  id?: string
+  storeId: string
+  code: string
+  slug: string
+  title: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.PublicEventStatus
+  startsAt: Date | string
+  endsAt?: Date | string | null
+  locationName?: string | null
+  locationAddress?: string | null
+  audienceStatus?: $Enums.EventAudienceStatus
+  primaryImageId?: string | null
+  publishedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  registrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutPublicEventInput
+  reservations?: Prisma.EventReservationUncheckedCreateNestedManyWithoutPublicEventInput
+}
+
+export type PublicEventCreateOrConnectWithoutCoverImageInput = {
+  where: Prisma.PublicEventWhereUniqueInput
+  create: Prisma.XOR<Prisma.PublicEventCreateWithoutCoverImageInput, Prisma.PublicEventUncheckedCreateWithoutCoverImageInput>
+}
+
+export type PublicEventCreateManyCoverImageInputEnvelope = {
+  data: Prisma.PublicEventCreateManyCoverImageInput | Prisma.PublicEventCreateManyCoverImageInput[]
+  skipDuplicates?: boolean
+}
+
+export type PublicEventUpsertWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.PublicEventWhereUniqueInput
+  update: Prisma.XOR<Prisma.PublicEventUpdateWithoutPrimaryImageInput, Prisma.PublicEventUncheckedUpdateWithoutPrimaryImageInput>
+  create: Prisma.XOR<Prisma.PublicEventCreateWithoutPrimaryImageInput, Prisma.PublicEventUncheckedCreateWithoutPrimaryImageInput>
+}
+
+export type PublicEventUpdateWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.PublicEventWhereUniqueInput
+  data: Prisma.XOR<Prisma.PublicEventUpdateWithoutPrimaryImageInput, Prisma.PublicEventUncheckedUpdateWithoutPrimaryImageInput>
+}
+
+export type PublicEventUpdateManyWithWhereWithoutPrimaryImageInput = {
+  where: Prisma.PublicEventScalarWhereInput
+  data: Prisma.XOR<Prisma.PublicEventUpdateManyMutationInput, Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageInput>
+}
+
+export type PublicEventUpsertWithWhereUniqueWithoutCoverImageInput = {
+  where: Prisma.PublicEventWhereUniqueInput
+  update: Prisma.XOR<Prisma.PublicEventUpdateWithoutCoverImageInput, Prisma.PublicEventUncheckedUpdateWithoutCoverImageInput>
+  create: Prisma.XOR<Prisma.PublicEventCreateWithoutCoverImageInput, Prisma.PublicEventUncheckedCreateWithoutCoverImageInput>
+}
+
+export type PublicEventUpdateWithWhereUniqueWithoutCoverImageInput = {
+  where: Prisma.PublicEventWhereUniqueInput
+  data: Prisma.XOR<Prisma.PublicEventUpdateWithoutCoverImageInput, Prisma.PublicEventUncheckedUpdateWithoutCoverImageInput>
+}
+
+export type PublicEventUpdateManyWithWhereWithoutCoverImageInput = {
+  where: Prisma.PublicEventScalarWhereInput
+  data: Prisma.XOR<Prisma.PublicEventUpdateManyMutationInput, Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageInput>
+}
+
+export type PublicEventCreateManyStoreInput = {
+  id?: string
+  code: string
+  slug: string
+  title: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.PublicEventStatus
+  startsAt: Date | string
+  endsAt?: Date | string | null
+  locationName?: string | null
+  locationAddress?: string | null
+  audienceStatus?: $Enums.EventAudienceStatus
+  primaryImageId?: string | null
+  coverImageId?: string | null
+  publishedAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PublicEventUpdateWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPublicEventStatusFieldUpdateOperationsInput | $Enums.PublicEventStatus
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  primaryImage?: Prisma.MediaAssetUpdateOneWithoutPublicEventsAsPrimaryImageNestedInput
+  coverImage?: Prisma.MediaAssetUpdateOneWithoutPublicEventsAsCoverImageNestedInput
+  registrations?: Prisma.EventRegistrationUpdateManyWithoutPublicEventNestedInput
+  reservations?: Prisma.EventReservationUpdateManyWithoutPublicEventNestedInput
+}
+
+export type PublicEventUncheckedUpdateWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPublicEventStatusFieldUpdateOperationsInput | $Enums.PublicEventStatus
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  registrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutPublicEventNestedInput
+  reservations?: Prisma.EventReservationUncheckedUpdateManyWithoutPublicEventNestedInput
+}
+
+export type PublicEventUncheckedUpdateManyWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPublicEventStatusFieldUpdateOperationsInput | $Enums.PublicEventStatus
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type PublicEventCreateManyPrimaryImageInput = {
   id?: string
   storeId: string
@@ -1493,98 +1585,6 @@ export type PublicEventUncheckedUpdateManyWithoutCoverImageInput = {
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type PublicEventCreateManyStoreInput = {
-  id?: string
-  code: string
-  slug: string
-  title: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.PublicEventStatus
-  startsAt: Date | string
-  endsAt?: Date | string | null
-  locationName?: string | null
-  locationAddress?: string | null
-  audienceStatus?: $Enums.EventAudienceStatus
-  primaryImageId?: string | null
-  coverImageId?: string | null
-  publishedAt?: Date | string | null
-  cancelledAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type PublicEventUpdateWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumPublicEventStatusFieldUpdateOperationsInput | $Enums.PublicEventStatus
-  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  primaryImage?: Prisma.MediaAssetUpdateOneWithoutPublicEventsAsPrimaryImageNestedInput
-  coverImage?: Prisma.MediaAssetUpdateOneWithoutPublicEventsAsCoverImageNestedInput
-  registrations?: Prisma.EventRegistrationUpdateManyWithoutPublicEventNestedInput
-  reservations?: Prisma.EventReservationUpdateManyWithoutPublicEventNestedInput
-}
-
-export type PublicEventUncheckedUpdateWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumPublicEventStatusFieldUpdateOperationsInput | $Enums.PublicEventStatus
-  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  registrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutPublicEventNestedInput
-  reservations?: Prisma.EventReservationUncheckedUpdateManyWithoutPublicEventNestedInput
-}
-
-export type PublicEventUncheckedUpdateManyWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumPublicEventStatusFieldUpdateOperationsInput | $Enums.PublicEventStatus
-  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null

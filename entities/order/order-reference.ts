@@ -31,3 +31,7 @@ export function formatOrderReferenceFromBytes(
 export function createOrderReference(prefix = DEFAULT_ORDER_REFERENCE_PREFIX): string {
   return formatOrderReferenceFromBytes(randomBytes(ORDER_REFERENCE_LENGTH), prefix);
 }
+
+export function isValidOrderReference(ref: string): boolean {
+  return /^[A-Z0-9]{1,10}-[A-Z0-9]{10}$/.test(ref);
+}

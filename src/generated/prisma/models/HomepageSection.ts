@@ -639,90 +639,6 @@ export type HomepageSectionScalarRelationFilter = {
   isNot?: Prisma.HomepageSectionWhereInput
 }
 
-export type HomepageSectionCreateNestedManyWithoutPrimaryImageInput = {
-  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput> | Prisma.HomepageSectionCreateWithoutPrimaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput[]
-  createMany?: Prisma.HomepageSectionCreateManyPrimaryImageInputEnvelope
-  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-}
-
-export type HomepageSectionCreateNestedManyWithoutSecondaryImageInput = {
-  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput> | Prisma.HomepageSectionCreateWithoutSecondaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput[]
-  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput[]
-  createMany?: Prisma.HomepageSectionCreateManySecondaryImageInputEnvelope
-  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-}
-
-export type HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput = {
-  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput> | Prisma.HomepageSectionCreateWithoutPrimaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput[]
-  createMany?: Prisma.HomepageSectionCreateManyPrimaryImageInputEnvelope
-  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-}
-
-export type HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput = {
-  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput> | Prisma.HomepageSectionCreateWithoutSecondaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput[]
-  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput[]
-  createMany?: Prisma.HomepageSectionCreateManySecondaryImageInputEnvelope
-  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-}
-
-export type HomepageSectionUpdateManyWithoutPrimaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput> | Prisma.HomepageSectionCreateWithoutPrimaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput[]
-  upsert?: Prisma.HomepageSectionUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.HomepageSectionUpsertWithWhereUniqueWithoutPrimaryImageInput[]
-  createMany?: Prisma.HomepageSectionCreateManyPrimaryImageInputEnvelope
-  set?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  disconnect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  delete?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  update?: Prisma.HomepageSectionUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.HomepageSectionUpdateWithWhereUniqueWithoutPrimaryImageInput[]
-  updateMany?: Prisma.HomepageSectionUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.HomepageSectionUpdateManyWithWhereWithoutPrimaryImageInput[]
-  deleteMany?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
-}
-
-export type HomepageSectionUpdateManyWithoutSecondaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput> | Prisma.HomepageSectionCreateWithoutSecondaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput[]
-  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput[]
-  upsert?: Prisma.HomepageSectionUpsertWithWhereUniqueWithoutSecondaryImageInput | Prisma.HomepageSectionUpsertWithWhereUniqueWithoutSecondaryImageInput[]
-  createMany?: Prisma.HomepageSectionCreateManySecondaryImageInputEnvelope
-  set?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  disconnect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  delete?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  update?: Prisma.HomepageSectionUpdateWithWhereUniqueWithoutSecondaryImageInput | Prisma.HomepageSectionUpdateWithWhereUniqueWithoutSecondaryImageInput[]
-  updateMany?: Prisma.HomepageSectionUpdateManyWithWhereWithoutSecondaryImageInput | Prisma.HomepageSectionUpdateManyWithWhereWithoutSecondaryImageInput[]
-  deleteMany?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
-}
-
-export type HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput> | Prisma.HomepageSectionCreateWithoutPrimaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput[]
-  upsert?: Prisma.HomepageSectionUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.HomepageSectionUpsertWithWhereUniqueWithoutPrimaryImageInput[]
-  createMany?: Prisma.HomepageSectionCreateManyPrimaryImageInputEnvelope
-  set?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  disconnect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  delete?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  update?: Prisma.HomepageSectionUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.HomepageSectionUpdateWithWhereUniqueWithoutPrimaryImageInput[]
-  updateMany?: Prisma.HomepageSectionUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.HomepageSectionUpdateManyWithWhereWithoutPrimaryImageInput[]
-  deleteMany?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
-}
-
-export type HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput> | Prisma.HomepageSectionCreateWithoutSecondaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput[]
-  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput[]
-  upsert?: Prisma.HomepageSectionUpsertWithWhereUniqueWithoutSecondaryImageInput | Prisma.HomepageSectionUpsertWithWhereUniqueWithoutSecondaryImageInput[]
-  createMany?: Prisma.HomepageSectionCreateManySecondaryImageInputEnvelope
-  set?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  disconnect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  delete?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
-  update?: Prisma.HomepageSectionUpdateWithWhereUniqueWithoutSecondaryImageInput | Prisma.HomepageSectionUpdateWithWhereUniqueWithoutSecondaryImageInput[]
-  updateMany?: Prisma.HomepageSectionUpdateManyWithWhereWithoutSecondaryImageInput | Prisma.HomepageSectionUpdateManyWithWhereWithoutSecondaryImageInput[]
-  deleteMany?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
-}
-
 export type HomepageSectionCreateNestedManyWithoutHomepageInput = {
   create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutHomepageInput, Prisma.HomepageSectionUncheckedCreateWithoutHomepageInput> | Prisma.HomepageSectionCreateWithoutHomepageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutHomepageInput[]
   connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutHomepageInput | Prisma.HomepageSectionCreateOrConnectWithoutHomepageInput[]
@@ -811,162 +727,88 @@ export type HomepageSectionUpdateOneRequiredWithoutFeaturedPostsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.HomepageSectionUpdateToOneWithWhereWithoutFeaturedPostsInput, Prisma.HomepageSectionUpdateWithoutFeaturedPostsInput>, Prisma.HomepageSectionUncheckedUpdateWithoutFeaturedPostsInput>
 }
 
-export type HomepageSectionCreateWithoutPrimaryImageInput = {
-  id?: string
-  code: string
-  type: $Enums.HomepageSectionType
-  title?: string | null
-  subtitle?: string | null
-  body?: string | null
-  ctaLabel?: string | null
-  ctaHref?: string | null
-  sortOrder?: number
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  archivedAt?: Date | string | null
-  homepage: Prisma.HomepageCreateNestedOneWithoutSectionsInput
-  secondaryImage?: Prisma.MediaAssetCreateNestedOneWithoutHomepageSectionsAsSecondaryImageInput
-  featuredProducts?: Prisma.HomepageFeaturedProductCreateNestedManyWithoutHomepageSectionInput
-  featuredCategories?: Prisma.HomepageFeaturedCategoryCreateNestedManyWithoutHomepageSectionInput
-  featuredPosts?: Prisma.HomepageFeaturedBlogPostCreateNestedManyWithoutHomepageSectionInput
+export type HomepageSectionCreateNestedManyWithoutPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput> | Prisma.HomepageSectionCreateWithoutPrimaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput[]
+  createMany?: Prisma.HomepageSectionCreateManyPrimaryImageInputEnvelope
+  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
 }
 
-export type HomepageSectionUncheckedCreateWithoutPrimaryImageInput = {
-  id?: string
-  homepageId: string
-  code: string
-  type: $Enums.HomepageSectionType
-  title?: string | null
-  subtitle?: string | null
-  body?: string | null
-  secondaryImageId?: string | null
-  ctaLabel?: string | null
-  ctaHref?: string | null
-  sortOrder?: number
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  archivedAt?: Date | string | null
-  featuredProducts?: Prisma.HomepageFeaturedProductUncheckedCreateNestedManyWithoutHomepageSectionInput
-  featuredCategories?: Prisma.HomepageFeaturedCategoryUncheckedCreateNestedManyWithoutHomepageSectionInput
-  featuredPosts?: Prisma.HomepageFeaturedBlogPostUncheckedCreateNestedManyWithoutHomepageSectionInput
+export type HomepageSectionCreateNestedManyWithoutSecondaryImageInput = {
+  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput> | Prisma.HomepageSectionCreateWithoutSecondaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput[]
+  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput[]
+  createMany?: Prisma.HomepageSectionCreateManySecondaryImageInputEnvelope
+  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
 }
 
-export type HomepageSectionCreateOrConnectWithoutPrimaryImageInput = {
-  where: Prisma.HomepageSectionWhereUniqueInput
-  create: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput>
+export type HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput> | Prisma.HomepageSectionCreateWithoutPrimaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput[]
+  createMany?: Prisma.HomepageSectionCreateManyPrimaryImageInputEnvelope
+  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
 }
 
-export type HomepageSectionCreateManyPrimaryImageInputEnvelope = {
-  data: Prisma.HomepageSectionCreateManyPrimaryImageInput | Prisma.HomepageSectionCreateManyPrimaryImageInput[]
-  skipDuplicates?: boolean
+export type HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput = {
+  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput> | Prisma.HomepageSectionCreateWithoutSecondaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput[]
+  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput[]
+  createMany?: Prisma.HomepageSectionCreateManySecondaryImageInputEnvelope
+  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
 }
 
-export type HomepageSectionCreateWithoutSecondaryImageInput = {
-  id?: string
-  code: string
-  type: $Enums.HomepageSectionType
-  title?: string | null
-  subtitle?: string | null
-  body?: string | null
-  ctaLabel?: string | null
-  ctaHref?: string | null
-  sortOrder?: number
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  archivedAt?: Date | string | null
-  homepage: Prisma.HomepageCreateNestedOneWithoutSectionsInput
-  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutHomepageSectionsAsPrimaryImageInput
-  featuredProducts?: Prisma.HomepageFeaturedProductCreateNestedManyWithoutHomepageSectionInput
-  featuredCategories?: Prisma.HomepageFeaturedCategoryCreateNestedManyWithoutHomepageSectionInput
-  featuredPosts?: Prisma.HomepageFeaturedBlogPostCreateNestedManyWithoutHomepageSectionInput
+export type HomepageSectionUpdateManyWithoutPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput> | Prisma.HomepageSectionCreateWithoutPrimaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput[]
+  upsert?: Prisma.HomepageSectionUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.HomepageSectionUpsertWithWhereUniqueWithoutPrimaryImageInput[]
+  createMany?: Prisma.HomepageSectionCreateManyPrimaryImageInputEnvelope
+  set?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  disconnect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  delete?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  update?: Prisma.HomepageSectionUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.HomepageSectionUpdateWithWhereUniqueWithoutPrimaryImageInput[]
+  updateMany?: Prisma.HomepageSectionUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.HomepageSectionUpdateManyWithWhereWithoutPrimaryImageInput[]
+  deleteMany?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
 }
 
-export type HomepageSectionUncheckedCreateWithoutSecondaryImageInput = {
-  id?: string
-  homepageId: string
-  code: string
-  type: $Enums.HomepageSectionType
-  title?: string | null
-  subtitle?: string | null
-  body?: string | null
-  primaryImageId?: string | null
-  ctaLabel?: string | null
-  ctaHref?: string | null
-  sortOrder?: number
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  archivedAt?: Date | string | null
-  featuredProducts?: Prisma.HomepageFeaturedProductUncheckedCreateNestedManyWithoutHomepageSectionInput
-  featuredCategories?: Prisma.HomepageFeaturedCategoryUncheckedCreateNestedManyWithoutHomepageSectionInput
-  featuredPosts?: Prisma.HomepageFeaturedBlogPostUncheckedCreateNestedManyWithoutHomepageSectionInput
+export type HomepageSectionUpdateManyWithoutSecondaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput> | Prisma.HomepageSectionCreateWithoutSecondaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput[]
+  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput[]
+  upsert?: Prisma.HomepageSectionUpsertWithWhereUniqueWithoutSecondaryImageInput | Prisma.HomepageSectionUpsertWithWhereUniqueWithoutSecondaryImageInput[]
+  createMany?: Prisma.HomepageSectionCreateManySecondaryImageInputEnvelope
+  set?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  disconnect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  delete?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  update?: Prisma.HomepageSectionUpdateWithWhereUniqueWithoutSecondaryImageInput | Prisma.HomepageSectionUpdateWithWhereUniqueWithoutSecondaryImageInput[]
+  updateMany?: Prisma.HomepageSectionUpdateManyWithWhereWithoutSecondaryImageInput | Prisma.HomepageSectionUpdateManyWithWhereWithoutSecondaryImageInput[]
+  deleteMany?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
 }
 
-export type HomepageSectionCreateOrConnectWithoutSecondaryImageInput = {
-  where: Prisma.HomepageSectionWhereUniqueInput
-  create: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput>
+export type HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput> | Prisma.HomepageSectionCreateWithoutPrimaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutPrimaryImageInput[]
+  upsert?: Prisma.HomepageSectionUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.HomepageSectionUpsertWithWhereUniqueWithoutPrimaryImageInput[]
+  createMany?: Prisma.HomepageSectionCreateManyPrimaryImageInputEnvelope
+  set?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  disconnect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  delete?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  update?: Prisma.HomepageSectionUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.HomepageSectionUpdateWithWhereUniqueWithoutPrimaryImageInput[]
+  updateMany?: Prisma.HomepageSectionUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.HomepageSectionUpdateManyWithWhereWithoutPrimaryImageInput[]
+  deleteMany?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
 }
 
-export type HomepageSectionCreateManySecondaryImageInputEnvelope = {
-  data: Prisma.HomepageSectionCreateManySecondaryImageInput | Prisma.HomepageSectionCreateManySecondaryImageInput[]
-  skipDuplicates?: boolean
-}
-
-export type HomepageSectionUpsertWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.HomepageSectionWhereUniqueInput
-  update: Prisma.XOR<Prisma.HomepageSectionUpdateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedUpdateWithoutPrimaryImageInput>
-  create: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput>
-}
-
-export type HomepageSectionUpdateWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.HomepageSectionWhereUniqueInput
-  data: Prisma.XOR<Prisma.HomepageSectionUpdateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedUpdateWithoutPrimaryImageInput>
-}
-
-export type HomepageSectionUpdateManyWithWhereWithoutPrimaryImageInput = {
-  where: Prisma.HomepageSectionScalarWhereInput
-  data: Prisma.XOR<Prisma.HomepageSectionUpdateManyMutationInput, Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageInput>
-}
-
-export type HomepageSectionScalarWhereInput = {
-  AND?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
-  OR?: Prisma.HomepageSectionScalarWhereInput[]
-  NOT?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
-  id?: Prisma.StringFilter<"HomepageSection"> | string
-  homepageId?: Prisma.StringFilter<"HomepageSection"> | string
-  code?: Prisma.StringFilter<"HomepageSection"> | string
-  type?: Prisma.EnumHomepageSectionTypeFilter<"HomepageSection"> | $Enums.HomepageSectionType
-  title?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
-  subtitle?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
-  body?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
-  primaryImageId?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
-  secondaryImageId?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
-  ctaLabel?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
-  ctaHref?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
-  sortOrder?: Prisma.IntFilter<"HomepageSection"> | number
-  isActive?: Prisma.BoolFilter<"HomepageSection"> | boolean
-  createdAt?: Prisma.DateTimeFilter<"HomepageSection"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"HomepageSection"> | Date | string
-  archivedAt?: Prisma.DateTimeNullableFilter<"HomepageSection"> | Date | string | null
-}
-
-export type HomepageSectionUpsertWithWhereUniqueWithoutSecondaryImageInput = {
-  where: Prisma.HomepageSectionWhereUniqueInput
-  update: Prisma.XOR<Prisma.HomepageSectionUpdateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedUpdateWithoutSecondaryImageInput>
-  create: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput>
-}
-
-export type HomepageSectionUpdateWithWhereUniqueWithoutSecondaryImageInput = {
-  where: Prisma.HomepageSectionWhereUniqueInput
-  data: Prisma.XOR<Prisma.HomepageSectionUpdateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedUpdateWithoutSecondaryImageInput>
-}
-
-export type HomepageSectionUpdateManyWithWhereWithoutSecondaryImageInput = {
-  where: Prisma.HomepageSectionScalarWhereInput
-  data: Prisma.XOR<Prisma.HomepageSectionUpdateManyMutationInput, Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageInput>
+export type HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput> | Prisma.HomepageSectionCreateWithoutSecondaryImageInput[] | Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput[]
+  connectOrCreate?: Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput | Prisma.HomepageSectionCreateOrConnectWithoutSecondaryImageInput[]
+  upsert?: Prisma.HomepageSectionUpsertWithWhereUniqueWithoutSecondaryImageInput | Prisma.HomepageSectionUpsertWithWhereUniqueWithoutSecondaryImageInput[]
+  createMany?: Prisma.HomepageSectionCreateManySecondaryImageInputEnvelope
+  set?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  disconnect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  delete?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  connect?: Prisma.HomepageSectionWhereUniqueInput | Prisma.HomepageSectionWhereUniqueInput[]
+  update?: Prisma.HomepageSectionUpdateWithWhereUniqueWithoutSecondaryImageInput | Prisma.HomepageSectionUpdateWithWhereUniqueWithoutSecondaryImageInput[]
+  updateMany?: Prisma.HomepageSectionUpdateManyWithWhereWithoutSecondaryImageInput | Prisma.HomepageSectionUpdateManyWithWhereWithoutSecondaryImageInput[]
+  deleteMany?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
 }
 
 export type HomepageSectionCreateWithoutHomepageInput = {
@@ -1035,6 +877,28 @@ export type HomepageSectionUpdateWithWhereUniqueWithoutHomepageInput = {
 export type HomepageSectionUpdateManyWithWhereWithoutHomepageInput = {
   where: Prisma.HomepageSectionScalarWhereInput
   data: Prisma.XOR<Prisma.HomepageSectionUpdateManyMutationInput, Prisma.HomepageSectionUncheckedUpdateManyWithoutHomepageInput>
+}
+
+export type HomepageSectionScalarWhereInput = {
+  AND?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
+  OR?: Prisma.HomepageSectionScalarWhereInput[]
+  NOT?: Prisma.HomepageSectionScalarWhereInput | Prisma.HomepageSectionScalarWhereInput[]
+  id?: Prisma.StringFilter<"HomepageSection"> | string
+  homepageId?: Prisma.StringFilter<"HomepageSection"> | string
+  code?: Prisma.StringFilter<"HomepageSection"> | string
+  type?: Prisma.EnumHomepageSectionTypeFilter<"HomepageSection"> | $Enums.HomepageSectionType
+  title?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
+  subtitle?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
+  body?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
+  primaryImageId?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
+  secondaryImageId?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
+  ctaLabel?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
+  ctaHref?: Prisma.StringNullableFilter<"HomepageSection"> | string | null
+  sortOrder?: Prisma.IntFilter<"HomepageSection"> | number
+  isActive?: Prisma.BoolFilter<"HomepageSection"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"HomepageSection"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"HomepageSection"> | Date | string
+  archivedAt?: Prisma.DateTimeNullableFilter<"HomepageSection"> | Date | string | null
 }
 
 export type HomepageSectionCreateWithoutFeaturedProductsInput = {
@@ -1337,6 +1201,220 @@ export type HomepageSectionUncheckedUpdateWithoutFeaturedPostsInput = {
   featuredCategories?: Prisma.HomepageFeaturedCategoryUncheckedUpdateManyWithoutHomepageSectionNestedInput
 }
 
+export type HomepageSectionCreateWithoutPrimaryImageInput = {
+  id?: string
+  code: string
+  type: $Enums.HomepageSectionType
+  title?: string | null
+  subtitle?: string | null
+  body?: string | null
+  ctaLabel?: string | null
+  ctaHref?: string | null
+  sortOrder?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  homepage: Prisma.HomepageCreateNestedOneWithoutSectionsInput
+  secondaryImage?: Prisma.MediaAssetCreateNestedOneWithoutHomepageSectionsAsSecondaryImageInput
+  featuredProducts?: Prisma.HomepageFeaturedProductCreateNestedManyWithoutHomepageSectionInput
+  featuredCategories?: Prisma.HomepageFeaturedCategoryCreateNestedManyWithoutHomepageSectionInput
+  featuredPosts?: Prisma.HomepageFeaturedBlogPostCreateNestedManyWithoutHomepageSectionInput
+}
+
+export type HomepageSectionUncheckedCreateWithoutPrimaryImageInput = {
+  id?: string
+  homepageId: string
+  code: string
+  type: $Enums.HomepageSectionType
+  title?: string | null
+  subtitle?: string | null
+  body?: string | null
+  secondaryImageId?: string | null
+  ctaLabel?: string | null
+  ctaHref?: string | null
+  sortOrder?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  featuredProducts?: Prisma.HomepageFeaturedProductUncheckedCreateNestedManyWithoutHomepageSectionInput
+  featuredCategories?: Prisma.HomepageFeaturedCategoryUncheckedCreateNestedManyWithoutHomepageSectionInput
+  featuredPosts?: Prisma.HomepageFeaturedBlogPostUncheckedCreateNestedManyWithoutHomepageSectionInput
+}
+
+export type HomepageSectionCreateOrConnectWithoutPrimaryImageInput = {
+  where: Prisma.HomepageSectionWhereUniqueInput
+  create: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput>
+}
+
+export type HomepageSectionCreateManyPrimaryImageInputEnvelope = {
+  data: Prisma.HomepageSectionCreateManyPrimaryImageInput | Prisma.HomepageSectionCreateManyPrimaryImageInput[]
+  skipDuplicates?: boolean
+}
+
+export type HomepageSectionCreateWithoutSecondaryImageInput = {
+  id?: string
+  code: string
+  type: $Enums.HomepageSectionType
+  title?: string | null
+  subtitle?: string | null
+  body?: string | null
+  ctaLabel?: string | null
+  ctaHref?: string | null
+  sortOrder?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  homepage: Prisma.HomepageCreateNestedOneWithoutSectionsInput
+  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutHomepageSectionsAsPrimaryImageInput
+  featuredProducts?: Prisma.HomepageFeaturedProductCreateNestedManyWithoutHomepageSectionInput
+  featuredCategories?: Prisma.HomepageFeaturedCategoryCreateNestedManyWithoutHomepageSectionInput
+  featuredPosts?: Prisma.HomepageFeaturedBlogPostCreateNestedManyWithoutHomepageSectionInput
+}
+
+export type HomepageSectionUncheckedCreateWithoutSecondaryImageInput = {
+  id?: string
+  homepageId: string
+  code: string
+  type: $Enums.HomepageSectionType
+  title?: string | null
+  subtitle?: string | null
+  body?: string | null
+  primaryImageId?: string | null
+  ctaLabel?: string | null
+  ctaHref?: string | null
+  sortOrder?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  featuredProducts?: Prisma.HomepageFeaturedProductUncheckedCreateNestedManyWithoutHomepageSectionInput
+  featuredCategories?: Prisma.HomepageFeaturedCategoryUncheckedCreateNestedManyWithoutHomepageSectionInput
+  featuredPosts?: Prisma.HomepageFeaturedBlogPostUncheckedCreateNestedManyWithoutHomepageSectionInput
+}
+
+export type HomepageSectionCreateOrConnectWithoutSecondaryImageInput = {
+  where: Prisma.HomepageSectionWhereUniqueInput
+  create: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput>
+}
+
+export type HomepageSectionCreateManySecondaryImageInputEnvelope = {
+  data: Prisma.HomepageSectionCreateManySecondaryImageInput | Prisma.HomepageSectionCreateManySecondaryImageInput[]
+  skipDuplicates?: boolean
+}
+
+export type HomepageSectionUpsertWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.HomepageSectionWhereUniqueInput
+  update: Prisma.XOR<Prisma.HomepageSectionUpdateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedUpdateWithoutPrimaryImageInput>
+  create: Prisma.XOR<Prisma.HomepageSectionCreateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutPrimaryImageInput>
+}
+
+export type HomepageSectionUpdateWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.HomepageSectionWhereUniqueInput
+  data: Prisma.XOR<Prisma.HomepageSectionUpdateWithoutPrimaryImageInput, Prisma.HomepageSectionUncheckedUpdateWithoutPrimaryImageInput>
+}
+
+export type HomepageSectionUpdateManyWithWhereWithoutPrimaryImageInput = {
+  where: Prisma.HomepageSectionScalarWhereInput
+  data: Prisma.XOR<Prisma.HomepageSectionUpdateManyMutationInput, Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageInput>
+}
+
+export type HomepageSectionUpsertWithWhereUniqueWithoutSecondaryImageInput = {
+  where: Prisma.HomepageSectionWhereUniqueInput
+  update: Prisma.XOR<Prisma.HomepageSectionUpdateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedUpdateWithoutSecondaryImageInput>
+  create: Prisma.XOR<Prisma.HomepageSectionCreateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedCreateWithoutSecondaryImageInput>
+}
+
+export type HomepageSectionUpdateWithWhereUniqueWithoutSecondaryImageInput = {
+  where: Prisma.HomepageSectionWhereUniqueInput
+  data: Prisma.XOR<Prisma.HomepageSectionUpdateWithoutSecondaryImageInput, Prisma.HomepageSectionUncheckedUpdateWithoutSecondaryImageInput>
+}
+
+export type HomepageSectionUpdateManyWithWhereWithoutSecondaryImageInput = {
+  where: Prisma.HomepageSectionScalarWhereInput
+  data: Prisma.XOR<Prisma.HomepageSectionUpdateManyMutationInput, Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageInput>
+}
+
+export type HomepageSectionCreateManyHomepageInput = {
+  id?: string
+  code: string
+  type: $Enums.HomepageSectionType
+  title?: string | null
+  subtitle?: string | null
+  body?: string | null
+  primaryImageId?: string | null
+  secondaryImageId?: string | null
+  ctaLabel?: string | null
+  ctaHref?: string | null
+  sortOrder?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+}
+
+export type HomepageSectionUpdateWithoutHomepageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHomepageSectionTypeFieldUpdateOperationsInput | $Enums.HomepageSectionType
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  primaryImage?: Prisma.MediaAssetUpdateOneWithoutHomepageSectionsAsPrimaryImageNestedInput
+  secondaryImage?: Prisma.MediaAssetUpdateOneWithoutHomepageSectionsAsSecondaryImageNestedInput
+  featuredProducts?: Prisma.HomepageFeaturedProductUpdateManyWithoutHomepageSectionNestedInput
+  featuredCategories?: Prisma.HomepageFeaturedCategoryUpdateManyWithoutHomepageSectionNestedInput
+  featuredPosts?: Prisma.HomepageFeaturedBlogPostUpdateManyWithoutHomepageSectionNestedInput
+}
+
+export type HomepageSectionUncheckedUpdateWithoutHomepageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHomepageSectionTypeFieldUpdateOperationsInput | $Enums.HomepageSectionType
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  featuredProducts?: Prisma.HomepageFeaturedProductUncheckedUpdateManyWithoutHomepageSectionNestedInput
+  featuredCategories?: Prisma.HomepageFeaturedCategoryUncheckedUpdateManyWithoutHomepageSectionNestedInput
+  featuredPosts?: Prisma.HomepageFeaturedBlogPostUncheckedUpdateManyWithoutHomepageSectionNestedInput
+}
+
+export type HomepageSectionUncheckedUpdateManyWithoutHomepageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumHomepageSectionTypeFieldUpdateOperationsInput | $Enums.HomepageSectionType
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
 export type HomepageSectionCreateManyPrimaryImageInput = {
   id?: string
   homepageId: string
@@ -1484,84 +1562,6 @@ export type HomepageSectionUncheckedUpdateManyWithoutSecondaryImageInput = {
   subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-}
-
-export type HomepageSectionCreateManyHomepageInput = {
-  id?: string
-  code: string
-  type: $Enums.HomepageSectionType
-  title?: string | null
-  subtitle?: string | null
-  body?: string | null
-  primaryImageId?: string | null
-  secondaryImageId?: string | null
-  ctaLabel?: string | null
-  ctaHref?: string | null
-  sortOrder?: number
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  archivedAt?: Date | string | null
-}
-
-export type HomepageSectionUpdateWithoutHomepageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumHomepageSectionTypeFieldUpdateOperationsInput | $Enums.HomepageSectionType
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  primaryImage?: Prisma.MediaAssetUpdateOneWithoutHomepageSectionsAsPrimaryImageNestedInput
-  secondaryImage?: Prisma.MediaAssetUpdateOneWithoutHomepageSectionsAsSecondaryImageNestedInput
-  featuredProducts?: Prisma.HomepageFeaturedProductUpdateManyWithoutHomepageSectionNestedInput
-  featuredCategories?: Prisma.HomepageFeaturedCategoryUpdateManyWithoutHomepageSectionNestedInput
-  featuredPosts?: Prisma.HomepageFeaturedBlogPostUpdateManyWithoutHomepageSectionNestedInput
-}
-
-export type HomepageSectionUncheckedUpdateWithoutHomepageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumHomepageSectionTypeFieldUpdateOperationsInput | $Enums.HomepageSectionType
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  secondaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  featuredProducts?: Prisma.HomepageFeaturedProductUncheckedUpdateManyWithoutHomepageSectionNestedInput
-  featuredCategories?: Prisma.HomepageFeaturedCategoryUncheckedUpdateManyWithoutHomepageSectionNestedInput
-  featuredPosts?: Prisma.HomepageFeaturedBlogPostUncheckedUpdateManyWithoutHomepageSectionNestedInput
-}
-
-export type HomepageSectionUncheckedUpdateManyWithoutHomepageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumHomepageSectionTypeFieldUpdateOperationsInput | $Enums.HomepageSectionType
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  secondaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number

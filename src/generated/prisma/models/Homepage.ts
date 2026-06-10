@@ -386,6 +386,16 @@ export type HomepageUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type HomepageListRelationFilter = {
+  every?: Prisma.HomepageWhereInput
+  some?: Prisma.HomepageWhereInput
+  none?: Prisma.HomepageWhereInput
+}
+
+export type HomepageOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type HomepageStoreIdCodeCompoundUniqueInput = {
   storeId: string
   code: string
@@ -435,34 +445,6 @@ export type HomepageScalarRelationFilter = {
   isNot?: Prisma.HomepageWhereInput
 }
 
-export type HomepageListRelationFilter = {
-  every?: Prisma.HomepageWhereInput
-  some?: Prisma.HomepageWhereInput
-  none?: Prisma.HomepageWhereInput
-}
-
-export type HomepageOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
-export type EnumHomepageStatusFieldUpdateOperationsInput = {
-  set?: $Enums.HomepageStatus
-}
-
-export type HomepageCreateNestedOneWithoutSectionsInput = {
-  create?: Prisma.XOR<Prisma.HomepageCreateWithoutSectionsInput, Prisma.HomepageUncheckedCreateWithoutSectionsInput>
-  connectOrCreate?: Prisma.HomepageCreateOrConnectWithoutSectionsInput
-  connect?: Prisma.HomepageWhereUniqueInput
-}
-
-export type HomepageUpdateOneRequiredWithoutSectionsNestedInput = {
-  create?: Prisma.XOR<Prisma.HomepageCreateWithoutSectionsInput, Prisma.HomepageUncheckedCreateWithoutSectionsInput>
-  connectOrCreate?: Prisma.HomepageCreateOrConnectWithoutSectionsInput
-  upsert?: Prisma.HomepageUpsertWithoutSectionsInput
-  connect?: Prisma.HomepageWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.HomepageUpdateToOneWithWhereWithoutSectionsInput, Prisma.HomepageUpdateWithoutSectionsInput>, Prisma.HomepageUncheckedUpdateWithoutSectionsInput>
-}
-
 export type HomepageCreateNestedManyWithoutStoreInput = {
   create?: Prisma.XOR<Prisma.HomepageCreateWithoutStoreInput, Prisma.HomepageUncheckedCreateWithoutStoreInput> | Prisma.HomepageCreateWithoutStoreInput[] | Prisma.HomepageUncheckedCreateWithoutStoreInput[]
   connectOrCreate?: Prisma.HomepageCreateOrConnectWithoutStoreInput | Prisma.HomepageCreateOrConnectWithoutStoreInput[]
@@ -505,72 +487,22 @@ export type HomepageUncheckedUpdateManyWithoutStoreNestedInput = {
   deleteMany?: Prisma.HomepageScalarWhereInput | Prisma.HomepageScalarWhereInput[]
 }
 
-export type HomepageCreateWithoutSectionsInput = {
-  id?: string
-  code: string
-  title?: string | null
-  status?: $Enums.HomepageStatus
-  isDefault?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store: Prisma.StoreCreateNestedOneWithoutHomepagesInput
+export type EnumHomepageStatusFieldUpdateOperationsInput = {
+  set?: $Enums.HomepageStatus
 }
 
-export type HomepageUncheckedCreateWithoutSectionsInput = {
-  id?: string
-  storeId: string
-  code: string
-  title?: string | null
-  status?: $Enums.HomepageStatus
-  isDefault?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
+export type HomepageCreateNestedOneWithoutSectionsInput = {
+  create?: Prisma.XOR<Prisma.HomepageCreateWithoutSectionsInput, Prisma.HomepageUncheckedCreateWithoutSectionsInput>
+  connectOrCreate?: Prisma.HomepageCreateOrConnectWithoutSectionsInput
+  connect?: Prisma.HomepageWhereUniqueInput
 }
 
-export type HomepageCreateOrConnectWithoutSectionsInput = {
-  where: Prisma.HomepageWhereUniqueInput
-  create: Prisma.XOR<Prisma.HomepageCreateWithoutSectionsInput, Prisma.HomepageUncheckedCreateWithoutSectionsInput>
-}
-
-export type HomepageUpsertWithoutSectionsInput = {
-  update: Prisma.XOR<Prisma.HomepageUpdateWithoutSectionsInput, Prisma.HomepageUncheckedUpdateWithoutSectionsInput>
-  create: Prisma.XOR<Prisma.HomepageCreateWithoutSectionsInput, Prisma.HomepageUncheckedCreateWithoutSectionsInput>
-  where?: Prisma.HomepageWhereInput
-}
-
-export type HomepageUpdateToOneWithWhereWithoutSectionsInput = {
-  where?: Prisma.HomepageWhereInput
-  data: Prisma.XOR<Prisma.HomepageUpdateWithoutSectionsInput, Prisma.HomepageUncheckedUpdateWithoutSectionsInput>
-}
-
-export type HomepageUpdateWithoutSectionsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumHomepageStatusFieldUpdateOperationsInput | $Enums.HomepageStatus
-  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  store?: Prisma.StoreUpdateOneRequiredWithoutHomepagesNestedInput
-}
-
-export type HomepageUncheckedUpdateWithoutSectionsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumHomepageStatusFieldUpdateOperationsInput | $Enums.HomepageStatus
-  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type HomepageUpdateOneRequiredWithoutSectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.HomepageCreateWithoutSectionsInput, Prisma.HomepageUncheckedCreateWithoutSectionsInput>
+  connectOrCreate?: Prisma.HomepageCreateOrConnectWithoutSectionsInput
+  upsert?: Prisma.HomepageUpsertWithoutSectionsInput
+  connect?: Prisma.HomepageWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.HomepageUpdateToOneWithWhereWithoutSectionsInput, Prisma.HomepageUpdateWithoutSectionsInput>, Prisma.HomepageUncheckedUpdateWithoutSectionsInput>
 }
 
 export type HomepageCreateWithoutStoreInput = {
@@ -639,6 +571,74 @@ export type HomepageScalarWhereInput = {
   archivedAt?: Prisma.DateTimeNullableFilter<"Homepage"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Homepage"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Homepage"> | Date | string
+}
+
+export type HomepageCreateWithoutSectionsInput = {
+  id?: string
+  code: string
+  title?: string | null
+  status?: $Enums.HomepageStatus
+  isDefault?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutHomepagesInput
+}
+
+export type HomepageUncheckedCreateWithoutSectionsInput = {
+  id?: string
+  storeId: string
+  code: string
+  title?: string | null
+  status?: $Enums.HomepageStatus
+  isDefault?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type HomepageCreateOrConnectWithoutSectionsInput = {
+  where: Prisma.HomepageWhereUniqueInput
+  create: Prisma.XOR<Prisma.HomepageCreateWithoutSectionsInput, Prisma.HomepageUncheckedCreateWithoutSectionsInput>
+}
+
+export type HomepageUpsertWithoutSectionsInput = {
+  update: Prisma.XOR<Prisma.HomepageUpdateWithoutSectionsInput, Prisma.HomepageUncheckedUpdateWithoutSectionsInput>
+  create: Prisma.XOR<Prisma.HomepageCreateWithoutSectionsInput, Prisma.HomepageUncheckedCreateWithoutSectionsInput>
+  where?: Prisma.HomepageWhereInput
+}
+
+export type HomepageUpdateToOneWithWhereWithoutSectionsInput = {
+  where?: Prisma.HomepageWhereInput
+  data: Prisma.XOR<Prisma.HomepageUpdateWithoutSectionsInput, Prisma.HomepageUncheckedUpdateWithoutSectionsInput>
+}
+
+export type HomepageUpdateWithoutSectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumHomepageStatusFieldUpdateOperationsInput | $Enums.HomepageStatus
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneRequiredWithoutHomepagesNestedInput
+}
+
+export type HomepageUncheckedUpdateWithoutSectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumHomepageStatusFieldUpdateOperationsInput | $Enums.HomepageStatus
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type HomepageCreateManyStoreInput = {

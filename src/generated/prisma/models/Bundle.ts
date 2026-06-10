@@ -519,48 +519,6 @@ export type BundleScalarRelationFilter = {
   isNot?: Prisma.BundleWhereInput
 }
 
-export type BundleCreateNestedManyWithoutPrimaryImageInput = {
-  create?: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput> | Prisma.BundleCreateWithoutPrimaryImageInput[] | Prisma.BundleUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.BundleCreateOrConnectWithoutPrimaryImageInput | Prisma.BundleCreateOrConnectWithoutPrimaryImageInput[]
-  createMany?: Prisma.BundleCreateManyPrimaryImageInputEnvelope
-  connect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
-}
-
-export type BundleUncheckedCreateNestedManyWithoutPrimaryImageInput = {
-  create?: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput> | Prisma.BundleCreateWithoutPrimaryImageInput[] | Prisma.BundleUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.BundleCreateOrConnectWithoutPrimaryImageInput | Prisma.BundleCreateOrConnectWithoutPrimaryImageInput[]
-  createMany?: Prisma.BundleCreateManyPrimaryImageInputEnvelope
-  connect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
-}
-
-export type BundleUpdateManyWithoutPrimaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput> | Prisma.BundleCreateWithoutPrimaryImageInput[] | Prisma.BundleUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.BundleCreateOrConnectWithoutPrimaryImageInput | Prisma.BundleCreateOrConnectWithoutPrimaryImageInput[]
-  upsert?: Prisma.BundleUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.BundleUpsertWithWhereUniqueWithoutPrimaryImageInput[]
-  createMany?: Prisma.BundleCreateManyPrimaryImageInputEnvelope
-  set?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
-  disconnect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
-  delete?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
-  connect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
-  update?: Prisma.BundleUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.BundleUpdateWithWhereUniqueWithoutPrimaryImageInput[]
-  updateMany?: Prisma.BundleUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.BundleUpdateManyWithWhereWithoutPrimaryImageInput[]
-  deleteMany?: Prisma.BundleScalarWhereInput | Prisma.BundleScalarWhereInput[]
-}
-
-export type BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput> | Prisma.BundleCreateWithoutPrimaryImageInput[] | Prisma.BundleUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.BundleCreateOrConnectWithoutPrimaryImageInput | Prisma.BundleCreateOrConnectWithoutPrimaryImageInput[]
-  upsert?: Prisma.BundleUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.BundleUpsertWithWhereUniqueWithoutPrimaryImageInput[]
-  createMany?: Prisma.BundleCreateManyPrimaryImageInputEnvelope
-  set?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
-  disconnect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
-  delete?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
-  connect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
-  update?: Prisma.BundleUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.BundleUpdateWithWhereUniqueWithoutPrimaryImageInput[]
-  updateMany?: Prisma.BundleUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.BundleUpdateManyWithWhereWithoutPrimaryImageInput[]
-  deleteMany?: Prisma.BundleScalarWhereInput | Prisma.BundleScalarWhereInput[]
-}
-
 export type BundleCreateNestedManyWithoutStoreInput = {
   create?: Prisma.XOR<Prisma.BundleCreateWithoutStoreInput, Prisma.BundleUncheckedCreateWithoutStoreInput> | Prisma.BundleCreateWithoutStoreInput[] | Prisma.BundleUncheckedCreateWithoutStoreInput[]
   connectOrCreate?: Prisma.BundleCreateOrConnectWithoutStoreInput | Prisma.BundleCreateOrConnectWithoutStoreInput[]
@@ -621,81 +579,46 @@ export type BundleUpdateOneRequiredWithoutItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BundleUpdateToOneWithWhereWithoutItemsInput, Prisma.BundleUpdateWithoutItemsInput>, Prisma.BundleUncheckedUpdateWithoutItemsInput>
 }
 
-export type BundleCreateWithoutPrimaryImageInput = {
-  id?: string
-  code: string
-  slug: string
-  name: string
-  description?: string | null
-  status?: $Enums.BundleStatus
-  isFeatured?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  store: Prisma.StoreCreateNestedOneWithoutBundlesInput
-  items?: Prisma.BundleItemCreateNestedManyWithoutBundleInput
+export type BundleCreateNestedManyWithoutPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput> | Prisma.BundleCreateWithoutPrimaryImageInput[] | Prisma.BundleUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.BundleCreateOrConnectWithoutPrimaryImageInput | Prisma.BundleCreateOrConnectWithoutPrimaryImageInput[]
+  createMany?: Prisma.BundleCreateManyPrimaryImageInputEnvelope
+  connect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
 }
 
-export type BundleUncheckedCreateWithoutPrimaryImageInput = {
-  id?: string
-  storeId: string
-  code: string
-  slug: string
-  name: string
-  description?: string | null
-  status?: $Enums.BundleStatus
-  isFeatured?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  items?: Prisma.BundleItemUncheckedCreateNestedManyWithoutBundleInput
+export type BundleUncheckedCreateNestedManyWithoutPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput> | Prisma.BundleCreateWithoutPrimaryImageInput[] | Prisma.BundleUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.BundleCreateOrConnectWithoutPrimaryImageInput | Prisma.BundleCreateOrConnectWithoutPrimaryImageInput[]
+  createMany?: Prisma.BundleCreateManyPrimaryImageInputEnvelope
+  connect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
 }
 
-export type BundleCreateOrConnectWithoutPrimaryImageInput = {
-  where: Prisma.BundleWhereUniqueInput
-  create: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput>
+export type BundleUpdateManyWithoutPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput> | Prisma.BundleCreateWithoutPrimaryImageInput[] | Prisma.BundleUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.BundleCreateOrConnectWithoutPrimaryImageInput | Prisma.BundleCreateOrConnectWithoutPrimaryImageInput[]
+  upsert?: Prisma.BundleUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.BundleUpsertWithWhereUniqueWithoutPrimaryImageInput[]
+  createMany?: Prisma.BundleCreateManyPrimaryImageInputEnvelope
+  set?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
+  disconnect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
+  delete?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
+  connect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
+  update?: Prisma.BundleUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.BundleUpdateWithWhereUniqueWithoutPrimaryImageInput[]
+  updateMany?: Prisma.BundleUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.BundleUpdateManyWithWhereWithoutPrimaryImageInput[]
+  deleteMany?: Prisma.BundleScalarWhereInput | Prisma.BundleScalarWhereInput[]
 }
 
-export type BundleCreateManyPrimaryImageInputEnvelope = {
-  data: Prisma.BundleCreateManyPrimaryImageInput | Prisma.BundleCreateManyPrimaryImageInput[]
-  skipDuplicates?: boolean
-}
-
-export type BundleUpsertWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.BundleWhereUniqueInput
-  update: Prisma.XOR<Prisma.BundleUpdateWithoutPrimaryImageInput, Prisma.BundleUncheckedUpdateWithoutPrimaryImageInput>
-  create: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput>
-}
-
-export type BundleUpdateWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.BundleWhereUniqueInput
-  data: Prisma.XOR<Prisma.BundleUpdateWithoutPrimaryImageInput, Prisma.BundleUncheckedUpdateWithoutPrimaryImageInput>
-}
-
-export type BundleUpdateManyWithWhereWithoutPrimaryImageInput = {
-  where: Prisma.BundleScalarWhereInput
-  data: Prisma.XOR<Prisma.BundleUpdateManyMutationInput, Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageInput>
-}
-
-export type BundleScalarWhereInput = {
-  AND?: Prisma.BundleScalarWhereInput | Prisma.BundleScalarWhereInput[]
-  OR?: Prisma.BundleScalarWhereInput[]
-  NOT?: Prisma.BundleScalarWhereInput | Prisma.BundleScalarWhereInput[]
-  id?: Prisma.StringFilter<"Bundle"> | string
-  storeId?: Prisma.StringFilter<"Bundle"> | string
-  code?: Prisma.StringFilter<"Bundle"> | string
-  slug?: Prisma.StringFilter<"Bundle"> | string
-  name?: Prisma.StringFilter<"Bundle"> | string
-  description?: Prisma.StringNullableFilter<"Bundle"> | string | null
-  status?: Prisma.EnumBundleStatusFilter<"Bundle"> | $Enums.BundleStatus
-  primaryImageId?: Prisma.StringNullableFilter<"Bundle"> | string | null
-  isFeatured?: Prisma.BoolFilter<"Bundle"> | boolean
-  createdAt?: Prisma.DateTimeFilter<"Bundle"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Bundle"> | Date | string
-  publishedAt?: Prisma.DateTimeNullableFilter<"Bundle"> | Date | string | null
-  archivedAt?: Prisma.DateTimeNullableFilter<"Bundle"> | Date | string | null
+export type BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput> | Prisma.BundleCreateWithoutPrimaryImageInput[] | Prisma.BundleUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.BundleCreateOrConnectWithoutPrimaryImageInput | Prisma.BundleCreateOrConnectWithoutPrimaryImageInput[]
+  upsert?: Prisma.BundleUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.BundleUpsertWithWhereUniqueWithoutPrimaryImageInput[]
+  createMany?: Prisma.BundleCreateManyPrimaryImageInputEnvelope
+  set?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
+  disconnect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
+  delete?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
+  connect?: Prisma.BundleWhereUniqueInput | Prisma.BundleWhereUniqueInput[]
+  update?: Prisma.BundleUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.BundleUpdateWithWhereUniqueWithoutPrimaryImageInput[]
+  updateMany?: Prisma.BundleUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.BundleUpdateManyWithWhereWithoutPrimaryImageInput[]
+  deleteMany?: Prisma.BundleScalarWhereInput | Prisma.BundleScalarWhereInput[]
 }
 
 export type BundleCreateWithoutStoreInput = {
@@ -754,6 +677,25 @@ export type BundleUpdateWithWhereUniqueWithoutStoreInput = {
 export type BundleUpdateManyWithWhereWithoutStoreInput = {
   where: Prisma.BundleScalarWhereInput
   data: Prisma.XOR<Prisma.BundleUpdateManyMutationInput, Prisma.BundleUncheckedUpdateManyWithoutStoreInput>
+}
+
+export type BundleScalarWhereInput = {
+  AND?: Prisma.BundleScalarWhereInput | Prisma.BundleScalarWhereInput[]
+  OR?: Prisma.BundleScalarWhereInput[]
+  NOT?: Prisma.BundleScalarWhereInput | Prisma.BundleScalarWhereInput[]
+  id?: Prisma.StringFilter<"Bundle"> | string
+  storeId?: Prisma.StringFilter<"Bundle"> | string
+  code?: Prisma.StringFilter<"Bundle"> | string
+  slug?: Prisma.StringFilter<"Bundle"> | string
+  name?: Prisma.StringFilter<"Bundle"> | string
+  description?: Prisma.StringNullableFilter<"Bundle"> | string | null
+  status?: Prisma.EnumBundleStatusFilter<"Bundle"> | $Enums.BundleStatus
+  primaryImageId?: Prisma.StringNullableFilter<"Bundle"> | string | null
+  isFeatured?: Prisma.BoolFilter<"Bundle"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Bundle"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Bundle"> | Date | string
+  publishedAt?: Prisma.DateTimeNullableFilter<"Bundle"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"Bundle"> | Date | string | null
 }
 
 export type BundleCreateWithoutItemsInput = {
@@ -836,7 +778,23 @@ export type BundleUncheckedUpdateWithoutItemsInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
-export type BundleCreateManyPrimaryImageInput = {
+export type BundleCreateWithoutPrimaryImageInput = {
+  id?: string
+  code: string
+  slug: string
+  name: string
+  description?: string | null
+  status?: $Enums.BundleStatus
+  isFeatured?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  store: Prisma.StoreCreateNestedOneWithoutBundlesInput
+  items?: Prisma.BundleItemCreateNestedManyWithoutBundleInput
+}
+
+export type BundleUncheckedCreateWithoutPrimaryImageInput = {
   id?: string
   storeId: string
   code: string
@@ -849,53 +807,33 @@ export type BundleCreateManyPrimaryImageInput = {
   updatedAt?: Date | string
   publishedAt?: Date | string | null
   archivedAt?: Date | string | null
+  items?: Prisma.BundleItemUncheckedCreateNestedManyWithoutBundleInput
 }
 
-export type BundleUpdateWithoutPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumBundleStatusFieldUpdateOperationsInput | $Enums.BundleStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  store?: Prisma.StoreUpdateOneRequiredWithoutBundlesNestedInput
-  items?: Prisma.BundleItemUpdateManyWithoutBundleNestedInput
+export type BundleCreateOrConnectWithoutPrimaryImageInput = {
+  where: Prisma.BundleWhereUniqueInput
+  create: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput>
 }
 
-export type BundleUncheckedUpdateWithoutPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumBundleStatusFieldUpdateOperationsInput | $Enums.BundleStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  items?: Prisma.BundleItemUncheckedUpdateManyWithoutBundleNestedInput
+export type BundleCreateManyPrimaryImageInputEnvelope = {
+  data: Prisma.BundleCreateManyPrimaryImageInput | Prisma.BundleCreateManyPrimaryImageInput[]
+  skipDuplicates?: boolean
 }
 
-export type BundleUncheckedUpdateManyWithoutPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumBundleStatusFieldUpdateOperationsInput | $Enums.BundleStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+export type BundleUpsertWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.BundleWhereUniqueInput
+  update: Prisma.XOR<Prisma.BundleUpdateWithoutPrimaryImageInput, Prisma.BundleUncheckedUpdateWithoutPrimaryImageInput>
+  create: Prisma.XOR<Prisma.BundleCreateWithoutPrimaryImageInput, Prisma.BundleUncheckedCreateWithoutPrimaryImageInput>
+}
+
+export type BundleUpdateWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.BundleWhereUniqueInput
+  data: Prisma.XOR<Prisma.BundleUpdateWithoutPrimaryImageInput, Prisma.BundleUncheckedUpdateWithoutPrimaryImageInput>
+}
+
+export type BundleUpdateManyWithWhereWithoutPrimaryImageInput = {
+  where: Prisma.BundleScalarWhereInput
+  data: Prisma.XOR<Prisma.BundleUpdateManyMutationInput, Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageInput>
 }
 
 export type BundleCreateManyStoreInput = {
@@ -953,6 +891,68 @@ export type BundleUncheckedUpdateManyWithoutStoreInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumBundleStatusFieldUpdateOperationsInput | $Enums.BundleStatus
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type BundleCreateManyPrimaryImageInput = {
+  id?: string
+  storeId: string
+  code: string
+  slug: string
+  name: string
+  description?: string | null
+  status?: $Enums.BundleStatus
+  isFeatured?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+}
+
+export type BundleUpdateWithoutPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBundleStatusFieldUpdateOperationsInput | $Enums.BundleStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  store?: Prisma.StoreUpdateOneRequiredWithoutBundlesNestedInput
+  items?: Prisma.BundleItemUpdateManyWithoutBundleNestedInput
+}
+
+export type BundleUncheckedUpdateWithoutPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBundleStatusFieldUpdateOperationsInput | $Enums.BundleStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  items?: Prisma.BundleItemUncheckedUpdateManyWithoutBundleNestedInput
+}
+
+export type BundleUncheckedUpdateManyWithoutPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBundleStatusFieldUpdateOperationsInput | $Enums.BundleStatus
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string

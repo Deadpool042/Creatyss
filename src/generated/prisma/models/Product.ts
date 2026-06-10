@@ -873,48 +873,6 @@ export type ProductUpdateOneRequiredWithoutProductCategoriesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProductUpdateToOneWithWhereWithoutProductCategoriesInput, Prisma.ProductUpdateWithoutProductCategoriesInput>, Prisma.ProductUncheckedUpdateWithoutProductCategoriesInput>
 }
 
-export type ProductCreateNestedManyWithoutPrimaryImageInput = {
-  create?: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput> | Prisma.ProductCreateWithoutPrimaryImageInput[] | Prisma.ProductUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutPrimaryImageInput | Prisma.ProductCreateOrConnectWithoutPrimaryImageInput[]
-  createMany?: Prisma.ProductCreateManyPrimaryImageInputEnvelope
-  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
-}
-
-export type ProductUncheckedCreateNestedManyWithoutPrimaryImageInput = {
-  create?: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput> | Prisma.ProductCreateWithoutPrimaryImageInput[] | Prisma.ProductUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutPrimaryImageInput | Prisma.ProductCreateOrConnectWithoutPrimaryImageInput[]
-  createMany?: Prisma.ProductCreateManyPrimaryImageInputEnvelope
-  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
-}
-
-export type ProductUpdateManyWithoutPrimaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput> | Prisma.ProductCreateWithoutPrimaryImageInput[] | Prisma.ProductUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutPrimaryImageInput | Prisma.ProductCreateOrConnectWithoutPrimaryImageInput[]
-  upsert?: Prisma.ProductUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.ProductUpsertWithWhereUniqueWithoutPrimaryImageInput[]
-  createMany?: Prisma.ProductCreateManyPrimaryImageInputEnvelope
-  set?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
-  disconnect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
-  delete?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
-  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
-  update?: Prisma.ProductUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.ProductUpdateWithWhereUniqueWithoutPrimaryImageInput[]
-  updateMany?: Prisma.ProductUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.ProductUpdateManyWithWhereWithoutPrimaryImageInput[]
-  deleteMany?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
-}
-
-export type ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput> | Prisma.ProductCreateWithoutPrimaryImageInput[] | Prisma.ProductUncheckedCreateWithoutPrimaryImageInput[]
-  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutPrimaryImageInput | Prisma.ProductCreateOrConnectWithoutPrimaryImageInput[]
-  upsert?: Prisma.ProductUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.ProductUpsertWithWhereUniqueWithoutPrimaryImageInput[]
-  createMany?: Prisma.ProductCreateManyPrimaryImageInputEnvelope
-  set?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
-  disconnect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
-  delete?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
-  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
-  update?: Prisma.ProductUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.ProductUpdateWithWhereUniqueWithoutPrimaryImageInput[]
-  updateMany?: Prisma.ProductUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.ProductUpdateManyWithWhereWithoutPrimaryImageInput[]
-  deleteMany?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
-}
-
 export type ProductCreateNestedOneWithoutPricesInput = {
   create?: Prisma.XOR<Prisma.ProductCreateWithoutPricesInput, Prisma.ProductUncheckedCreateWithoutPricesInput>
   connectOrCreate?: Prisma.ProductCreateOrConnectWithoutPricesInput
@@ -983,6 +941,14 @@ export type ProductUpdateOneRequiredWithoutCharacteristicsNestedInput = {
   upsert?: Prisma.ProductUpsertWithoutCharacteristicsInput
   connect?: Prisma.ProductWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProductUpdateToOneWithWhereWithoutCharacteristicsInput, Prisma.ProductUpdateWithoutCharacteristicsInput>, Prisma.ProductUncheckedUpdateWithoutCharacteristicsInput>
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type NullableEnumCurrencyCodeFieldUpdateOperationsInput = {
@@ -1081,20 +1047,6 @@ export type ProductUpdateOneWithoutOrderLinesNestedInput = {
   delete?: Prisma.ProductWhereInput | boolean
   connect?: Prisma.ProductWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProductUpdateToOneWithWhereWithoutOrderLinesInput, Prisma.ProductUpdateWithoutOrderLinesInput>, Prisma.ProductUncheckedUpdateWithoutOrderLinesInput>
-}
-
-export type ProductCreateNestedOneWithoutHomepageFeaturedInInput = {
-  create?: Prisma.XOR<Prisma.ProductCreateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedCreateWithoutHomepageFeaturedInInput>
-  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutHomepageFeaturedInInput
-  connect?: Prisma.ProductWhereUniqueInput
-}
-
-export type ProductUpdateOneRequiredWithoutHomepageFeaturedInNestedInput = {
-  create?: Prisma.XOR<Prisma.ProductCreateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedCreateWithoutHomepageFeaturedInInput>
-  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutHomepageFeaturedInInput
-  upsert?: Prisma.ProductUpsertWithoutHomepageFeaturedInInput
-  connect?: Prisma.ProductWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ProductUpdateToOneWithWhereWithoutHomepageFeaturedInInput, Prisma.ProductUpdateWithoutHomepageFeaturedInInput>, Prisma.ProductUncheckedUpdateWithoutHomepageFeaturedInInput>
 }
 
 export type ProductCreateNestedManyWithoutStoreInput = {
@@ -1243,6 +1195,20 @@ export type ProductUpdateOneRequiredWithoutConversionFlowLinksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProductUpdateToOneWithWhereWithoutConversionFlowLinksInput, Prisma.ProductUpdateWithoutConversionFlowLinksInput>, Prisma.ProductUncheckedUpdateWithoutConversionFlowLinksInput>
 }
 
+export type ProductCreateNestedOneWithoutHomepageFeaturedInInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedCreateWithoutHomepageFeaturedInInput>
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutHomepageFeaturedInInput
+  connect?: Prisma.ProductWhereUniqueInput
+}
+
+export type ProductUpdateOneRequiredWithoutHomepageFeaturedInNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedCreateWithoutHomepageFeaturedInInput>
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutHomepageFeaturedInInput
+  upsert?: Prisma.ProductUpsertWithoutHomepageFeaturedInInput
+  connect?: Prisma.ProductWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProductUpdateToOneWithWhereWithoutHomepageFeaturedInInput, Prisma.ProductUpdateWithoutHomepageFeaturedInInput>, Prisma.ProductUncheckedUpdateWithoutHomepageFeaturedInInput>
+}
+
 export type ProductCreateNestedOneWithoutChannelStatusesInput = {
   create?: Prisma.XOR<Prisma.ProductCreateWithoutChannelStatusesInput, Prisma.ProductUncheckedCreateWithoutChannelStatusesInput>
   connectOrCreate?: Prisma.ProductCreateOrConnectWithoutChannelStatusesInput
@@ -1255,6 +1221,48 @@ export type ProductUpdateOneRequiredWithoutChannelStatusesNestedInput = {
   upsert?: Prisma.ProductUpsertWithoutChannelStatusesInput
   connect?: Prisma.ProductWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProductUpdateToOneWithWhereWithoutChannelStatusesInput, Prisma.ProductUpdateWithoutChannelStatusesInput>, Prisma.ProductUncheckedUpdateWithoutChannelStatusesInput>
+}
+
+export type ProductCreateNestedManyWithoutPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput> | Prisma.ProductCreateWithoutPrimaryImageInput[] | Prisma.ProductUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutPrimaryImageInput | Prisma.ProductCreateOrConnectWithoutPrimaryImageInput[]
+  createMany?: Prisma.ProductCreateManyPrimaryImageInputEnvelope
+  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+}
+
+export type ProductUncheckedCreateNestedManyWithoutPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput> | Prisma.ProductCreateWithoutPrimaryImageInput[] | Prisma.ProductUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutPrimaryImageInput | Prisma.ProductCreateOrConnectWithoutPrimaryImageInput[]
+  createMany?: Prisma.ProductCreateManyPrimaryImageInputEnvelope
+  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+}
+
+export type ProductUpdateManyWithoutPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput> | Prisma.ProductCreateWithoutPrimaryImageInput[] | Prisma.ProductUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutPrimaryImageInput | Prisma.ProductCreateOrConnectWithoutPrimaryImageInput[]
+  upsert?: Prisma.ProductUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.ProductUpsertWithWhereUniqueWithoutPrimaryImageInput[]
+  createMany?: Prisma.ProductCreateManyPrimaryImageInputEnvelope
+  set?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  disconnect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  delete?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  update?: Prisma.ProductUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.ProductUpdateWithWhereUniqueWithoutPrimaryImageInput[]
+  updateMany?: Prisma.ProductUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.ProductUpdateManyWithWhereWithoutPrimaryImageInput[]
+  deleteMany?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
+}
+
+export type ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput> | Prisma.ProductCreateWithoutPrimaryImageInput[] | Prisma.ProductUncheckedCreateWithoutPrimaryImageInput[]
+  connectOrCreate?: Prisma.ProductCreateOrConnectWithoutPrimaryImageInput | Prisma.ProductCreateOrConnectWithoutPrimaryImageInput[]
+  upsert?: Prisma.ProductUpsertWithWhereUniqueWithoutPrimaryImageInput | Prisma.ProductUpsertWithWhereUniqueWithoutPrimaryImageInput[]
+  createMany?: Prisma.ProductCreateManyPrimaryImageInputEnvelope
+  set?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  disconnect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  delete?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  connect?: Prisma.ProductWhereUniqueInput | Prisma.ProductWhereUniqueInput[]
+  update?: Prisma.ProductUpdateWithWhereUniqueWithoutPrimaryImageInput | Prisma.ProductUpdateWithWhereUniqueWithoutPrimaryImageInput[]
+  updateMany?: Prisma.ProductUpdateManyWithWhereWithoutPrimaryImageInput | Prisma.ProductUpdateManyWithWhereWithoutPrimaryImageInput[]
+  deleteMany?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
 }
 
 export type ProductCreateWithoutProductCategoriesInput = {
@@ -1435,141 +1443,6 @@ export type ProductUncheckedUpdateWithoutProductCategoriesInput = {
   taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
   salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
   characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
-}
-
-export type ProductCreateWithoutPrimaryImageInput = {
-  id?: string
-  skuRoot?: string | null
-  slug: string
-  name: string
-  marketingHook?: string | null
-  shortDescription?: string | null
-  description?: string | null
-  careInstructions?: string | null
-  catalogPriceCents?: number | null
-  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
-  catalogPriceSource?: $Enums.PriceTargetType | null
-  status?: $Enums.ProductStatus
-  isFeatured?: boolean
-  isStandalone?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  prices?: Prisma.ProductPriceCreateNestedManyWithoutProductInput
-  cartLines?: Prisma.CartLineCreateNestedManyWithoutProductInput
-  checkoutLines?: Prisma.CheckoutLineCreateNestedManyWithoutProductInput
-  orderLines?: Prisma.OrderLineCreateNestedManyWithoutProductInput
-  store: Prisma.StoreCreateNestedOneWithoutProductsInput
-  productType?: Prisma.ProductTypeCreateNestedOneWithoutProductsInput
-  variants?: Prisma.ProductVariantCreateNestedManyWithoutProductInput
-  relatedFrom?: Prisma.RelatedProductCreateNestedManyWithoutSourceProductInput
-  relatedTo?: Prisma.RelatedProductCreateNestedManyWithoutTargetProductInput
-  homepageFeaturedIn?: Prisma.HomepageFeaturedProductCreateNestedManyWithoutProductInput
-  productCategories?: Prisma.ProductCategoryCreateNestedManyWithoutProductInput
-  conversionFlowLinks?: Prisma.ConversionFlowProductCreateNestedManyWithoutProductInput
-  channelStatuses?: Prisma.ChannelProductStatusCreateNestedManyWithoutProductInput
-  giftRequestItems?: Prisma.GiftRequestItemCreateNestedManyWithoutProductInput
-  bundleItems?: Prisma.BundleItemCreateNestedManyWithoutProductInput
-  subscriptionItems?: Prisma.SubscriptionItemCreateNestedManyWithoutProductInput
-  discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
-  taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
-  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
-  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
-}
-
-export type ProductUncheckedCreateWithoutPrimaryImageInput = {
-  id?: string
-  storeId: string
-  productTypeId?: string | null
-  skuRoot?: string | null
-  slug: string
-  name: string
-  marketingHook?: string | null
-  shortDescription?: string | null
-  description?: string | null
-  careInstructions?: string | null
-  catalogPriceCents?: number | null
-  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
-  catalogPriceSource?: $Enums.PriceTargetType | null
-  status?: $Enums.ProductStatus
-  isFeatured?: boolean
-  isStandalone?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  prices?: Prisma.ProductPriceUncheckedCreateNestedManyWithoutProductInput
-  cartLines?: Prisma.CartLineUncheckedCreateNestedManyWithoutProductInput
-  checkoutLines?: Prisma.CheckoutLineUncheckedCreateNestedManyWithoutProductInput
-  orderLines?: Prisma.OrderLineUncheckedCreateNestedManyWithoutProductInput
-  variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutProductInput
-  relatedFrom?: Prisma.RelatedProductUncheckedCreateNestedManyWithoutSourceProductInput
-  relatedTo?: Prisma.RelatedProductUncheckedCreateNestedManyWithoutTargetProductInput
-  homepageFeaturedIn?: Prisma.HomepageFeaturedProductUncheckedCreateNestedManyWithoutProductInput
-  productCategories?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutProductInput
-  conversionFlowLinks?: Prisma.ConversionFlowProductUncheckedCreateNestedManyWithoutProductInput
-  channelStatuses?: Prisma.ChannelProductStatusUncheckedCreateNestedManyWithoutProductInput
-  giftRequestItems?: Prisma.GiftRequestItemUncheckedCreateNestedManyWithoutProductInput
-  bundleItems?: Prisma.BundleItemUncheckedCreateNestedManyWithoutProductInput
-  subscriptionItems?: Prisma.SubscriptionItemUncheckedCreateNestedManyWithoutProductInput
-  discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
-  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
-  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
-  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
-}
-
-export type ProductCreateOrConnectWithoutPrimaryImageInput = {
-  where: Prisma.ProductWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput>
-}
-
-export type ProductCreateManyPrimaryImageInputEnvelope = {
-  data: Prisma.ProductCreateManyPrimaryImageInput | Prisma.ProductCreateManyPrimaryImageInput[]
-  skipDuplicates?: boolean
-}
-
-export type ProductUpsertWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.ProductWhereUniqueInput
-  update: Prisma.XOR<Prisma.ProductUpdateWithoutPrimaryImageInput, Prisma.ProductUncheckedUpdateWithoutPrimaryImageInput>
-  create: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput>
-}
-
-export type ProductUpdateWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.ProductWhereUniqueInput
-  data: Prisma.XOR<Prisma.ProductUpdateWithoutPrimaryImageInput, Prisma.ProductUncheckedUpdateWithoutPrimaryImageInput>
-}
-
-export type ProductUpdateManyWithWhereWithoutPrimaryImageInput = {
-  where: Prisma.ProductScalarWhereInput
-  data: Prisma.XOR<Prisma.ProductUpdateManyMutationInput, Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageInput>
-}
-
-export type ProductScalarWhereInput = {
-  AND?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
-  OR?: Prisma.ProductScalarWhereInput[]
-  NOT?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
-  id?: Prisma.StringFilter<"Product"> | string
-  storeId?: Prisma.StringFilter<"Product"> | string
-  productTypeId?: Prisma.StringNullableFilter<"Product"> | string | null
-  primaryImageId?: Prisma.StringNullableFilter<"Product"> | string | null
-  skuRoot?: Prisma.StringNullableFilter<"Product"> | string | null
-  slug?: Prisma.StringFilter<"Product"> | string
-  name?: Prisma.StringFilter<"Product"> | string
-  marketingHook?: Prisma.StringNullableFilter<"Product"> | string | null
-  shortDescription?: Prisma.StringNullableFilter<"Product"> | string | null
-  description?: Prisma.StringNullableFilter<"Product"> | string | null
-  careInstructions?: Prisma.StringNullableFilter<"Product"> | string | null
-  catalogPriceCents?: Prisma.IntNullableFilter<"Product"> | number | null
-  catalogPriceCurrencyCode?: Prisma.EnumCurrencyCodeNullableFilter<"Product"> | $Enums.CurrencyCode | null
-  catalogPriceSource?: Prisma.EnumPriceTargetTypeNullableFilter<"Product"> | $Enums.PriceTargetType | null
-  status?: Prisma.EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
-  isFeatured?: Prisma.BoolFilter<"Product"> | boolean
-  isStandalone?: Prisma.BoolFilter<"Product"> | boolean
-  publishedAt?: Prisma.DateTimeNullableFilter<"Product"> | Date | string | null
-  archivedAt?: Prisma.DateTimeNullableFilter<"Product"> | Date | string | null
-  createdAt?: Prisma.DateTimeFilter<"Product"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Product"> | Date | string
 }
 
 export type ProductCreateWithoutPricesInput = {
@@ -1858,6 +1731,33 @@ export type ProductUpdateWithWhereUniqueWithoutProductTypeInput = {
 export type ProductUpdateManyWithWhereWithoutProductTypeInput = {
   where: Prisma.ProductScalarWhereInput
   data: Prisma.XOR<Prisma.ProductUpdateManyMutationInput, Prisma.ProductUncheckedUpdateManyWithoutProductTypeInput>
+}
+
+export type ProductScalarWhereInput = {
+  AND?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
+  OR?: Prisma.ProductScalarWhereInput[]
+  NOT?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
+  id?: Prisma.StringFilter<"Product"> | string
+  storeId?: Prisma.StringFilter<"Product"> | string
+  productTypeId?: Prisma.StringNullableFilter<"Product"> | string | null
+  primaryImageId?: Prisma.StringNullableFilter<"Product"> | string | null
+  skuRoot?: Prisma.StringNullableFilter<"Product"> | string | null
+  slug?: Prisma.StringFilter<"Product"> | string
+  name?: Prisma.StringFilter<"Product"> | string
+  marketingHook?: Prisma.StringNullableFilter<"Product"> | string | null
+  shortDescription?: Prisma.StringNullableFilter<"Product"> | string | null
+  description?: Prisma.StringNullableFilter<"Product"> | string | null
+  careInstructions?: Prisma.StringNullableFilter<"Product"> | string | null
+  catalogPriceCents?: Prisma.IntNullableFilter<"Product"> | number | null
+  catalogPriceCurrencyCode?: Prisma.EnumCurrencyCodeNullableFilter<"Product"> | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.EnumPriceTargetTypeNullableFilter<"Product"> | $Enums.PriceTargetType | null
+  status?: Prisma.EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
+  isFeatured?: Prisma.BoolFilter<"Product"> | boolean
+  isStandalone?: Prisma.BoolFilter<"Product"> | boolean
+  publishedAt?: Prisma.DateTimeNullableFilter<"Product"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"Product"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"Product"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Product"> | Date | string
 }
 
 export type ProductCreateWithoutCharacteristicsInput = {
@@ -3108,186 +3008,6 @@ export type ProductUncheckedUpdateWithoutOrderLinesInput = {
   relatedFrom?: Prisma.RelatedProductUncheckedUpdateManyWithoutSourceProductNestedInput
   relatedTo?: Prisma.RelatedProductUncheckedUpdateManyWithoutTargetProductNestedInput
   homepageFeaturedIn?: Prisma.HomepageFeaturedProductUncheckedUpdateManyWithoutProductNestedInput
-  productCategories?: Prisma.ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
-  conversionFlowLinks?: Prisma.ConversionFlowProductUncheckedUpdateManyWithoutProductNestedInput
-  channelStatuses?: Prisma.ChannelProductStatusUncheckedUpdateManyWithoutProductNestedInput
-  giftRequestItems?: Prisma.GiftRequestItemUncheckedUpdateManyWithoutProductNestedInput
-  bundleItems?: Prisma.BundleItemUncheckedUpdateManyWithoutProductNestedInput
-  subscriptionItems?: Prisma.SubscriptionItemUncheckedUpdateManyWithoutProductNestedInput
-  discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
-  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
-  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
-  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
-}
-
-export type ProductCreateWithoutHomepageFeaturedInInput = {
-  id?: string
-  skuRoot?: string | null
-  slug: string
-  name: string
-  marketingHook?: string | null
-  shortDescription?: string | null
-  description?: string | null
-  careInstructions?: string | null
-  catalogPriceCents?: number | null
-  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
-  catalogPriceSource?: $Enums.PriceTargetType | null
-  status?: $Enums.ProductStatus
-  isFeatured?: boolean
-  isStandalone?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  prices?: Prisma.ProductPriceCreateNestedManyWithoutProductInput
-  cartLines?: Prisma.CartLineCreateNestedManyWithoutProductInput
-  checkoutLines?: Prisma.CheckoutLineCreateNestedManyWithoutProductInput
-  orderLines?: Prisma.OrderLineCreateNestedManyWithoutProductInput
-  store: Prisma.StoreCreateNestedOneWithoutProductsInput
-  productType?: Prisma.ProductTypeCreateNestedOneWithoutProductsInput
-  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutProductsAsPrimaryImageInput
-  variants?: Prisma.ProductVariantCreateNestedManyWithoutProductInput
-  relatedFrom?: Prisma.RelatedProductCreateNestedManyWithoutSourceProductInput
-  relatedTo?: Prisma.RelatedProductCreateNestedManyWithoutTargetProductInput
-  productCategories?: Prisma.ProductCategoryCreateNestedManyWithoutProductInput
-  conversionFlowLinks?: Prisma.ConversionFlowProductCreateNestedManyWithoutProductInput
-  channelStatuses?: Prisma.ChannelProductStatusCreateNestedManyWithoutProductInput
-  giftRequestItems?: Prisma.GiftRequestItemCreateNestedManyWithoutProductInput
-  bundleItems?: Prisma.BundleItemCreateNestedManyWithoutProductInput
-  subscriptionItems?: Prisma.SubscriptionItemCreateNestedManyWithoutProductInput
-  discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
-  taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
-  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
-  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
-}
-
-export type ProductUncheckedCreateWithoutHomepageFeaturedInInput = {
-  id?: string
-  storeId: string
-  productTypeId?: string | null
-  primaryImageId?: string | null
-  skuRoot?: string | null
-  slug: string
-  name: string
-  marketingHook?: string | null
-  shortDescription?: string | null
-  description?: string | null
-  careInstructions?: string | null
-  catalogPriceCents?: number | null
-  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
-  catalogPriceSource?: $Enums.PriceTargetType | null
-  status?: $Enums.ProductStatus
-  isFeatured?: boolean
-  isStandalone?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  prices?: Prisma.ProductPriceUncheckedCreateNestedManyWithoutProductInput
-  cartLines?: Prisma.CartLineUncheckedCreateNestedManyWithoutProductInput
-  checkoutLines?: Prisma.CheckoutLineUncheckedCreateNestedManyWithoutProductInput
-  orderLines?: Prisma.OrderLineUncheckedCreateNestedManyWithoutProductInput
-  variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutProductInput
-  relatedFrom?: Prisma.RelatedProductUncheckedCreateNestedManyWithoutSourceProductInput
-  relatedTo?: Prisma.RelatedProductUncheckedCreateNestedManyWithoutTargetProductInput
-  productCategories?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutProductInput
-  conversionFlowLinks?: Prisma.ConversionFlowProductUncheckedCreateNestedManyWithoutProductInput
-  channelStatuses?: Prisma.ChannelProductStatusUncheckedCreateNestedManyWithoutProductInput
-  giftRequestItems?: Prisma.GiftRequestItemUncheckedCreateNestedManyWithoutProductInput
-  bundleItems?: Prisma.BundleItemUncheckedCreateNestedManyWithoutProductInput
-  subscriptionItems?: Prisma.SubscriptionItemUncheckedCreateNestedManyWithoutProductInput
-  discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
-  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
-  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
-  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
-}
-
-export type ProductCreateOrConnectWithoutHomepageFeaturedInInput = {
-  where: Prisma.ProductWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProductCreateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedCreateWithoutHomepageFeaturedInInput>
-}
-
-export type ProductUpsertWithoutHomepageFeaturedInInput = {
-  update: Prisma.XOR<Prisma.ProductUpdateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedUpdateWithoutHomepageFeaturedInInput>
-  create: Prisma.XOR<Prisma.ProductCreateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedCreateWithoutHomepageFeaturedInInput>
-  where?: Prisma.ProductWhereInput
-}
-
-export type ProductUpdateToOneWithWhereWithoutHomepageFeaturedInInput = {
-  where?: Prisma.ProductWhereInput
-  data: Prisma.XOR<Prisma.ProductUpdateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedUpdateWithoutHomepageFeaturedInInput>
-}
-
-export type ProductUpdateWithoutHomepageFeaturedInInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
-  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
-  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  prices?: Prisma.ProductPriceUpdateManyWithoutProductNestedInput
-  cartLines?: Prisma.CartLineUpdateManyWithoutProductNestedInput
-  checkoutLines?: Prisma.CheckoutLineUpdateManyWithoutProductNestedInput
-  orderLines?: Prisma.OrderLineUpdateManyWithoutProductNestedInput
-  store?: Prisma.StoreUpdateOneRequiredWithoutProductsNestedInput
-  productType?: Prisma.ProductTypeUpdateOneWithoutProductsNestedInput
-  primaryImage?: Prisma.MediaAssetUpdateOneWithoutProductsAsPrimaryImageNestedInput
-  variants?: Prisma.ProductVariantUpdateManyWithoutProductNestedInput
-  relatedFrom?: Prisma.RelatedProductUpdateManyWithoutSourceProductNestedInput
-  relatedTo?: Prisma.RelatedProductUpdateManyWithoutTargetProductNestedInput
-  productCategories?: Prisma.ProductCategoryUpdateManyWithoutProductNestedInput
-  conversionFlowLinks?: Prisma.ConversionFlowProductUpdateManyWithoutProductNestedInput
-  channelStatuses?: Prisma.ChannelProductStatusUpdateManyWithoutProductNestedInput
-  giftRequestItems?: Prisma.GiftRequestItemUpdateManyWithoutProductNestedInput
-  bundleItems?: Prisma.BundleItemUpdateManyWithoutProductNestedInput
-  subscriptionItems?: Prisma.SubscriptionItemUpdateManyWithoutProductNestedInput
-  discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
-  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
-  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
-  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
-}
-
-export type ProductUncheckedUpdateWithoutHomepageFeaturedInInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.StringFieldUpdateOperationsInput | string
-  productTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
-  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
-  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  prices?: Prisma.ProductPriceUncheckedUpdateManyWithoutProductNestedInput
-  cartLines?: Prisma.CartLineUncheckedUpdateManyWithoutProductNestedInput
-  checkoutLines?: Prisma.CheckoutLineUncheckedUpdateManyWithoutProductNestedInput
-  orderLines?: Prisma.OrderLineUncheckedUpdateManyWithoutProductNestedInput
-  variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutProductNestedInput
-  relatedFrom?: Prisma.RelatedProductUncheckedUpdateManyWithoutSourceProductNestedInput
-  relatedTo?: Prisma.RelatedProductUncheckedUpdateManyWithoutTargetProductNestedInput
   productCategories?: Prisma.ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
   conversionFlowLinks?: Prisma.ConversionFlowProductUncheckedUpdateManyWithoutProductNestedInput
   channelStatuses?: Prisma.ChannelProductStatusUncheckedUpdateManyWithoutProductNestedInput
@@ -4668,6 +4388,186 @@ export type ProductUncheckedUpdateWithoutConversionFlowLinksInput = {
   characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
+export type ProductCreateWithoutHomepageFeaturedInInput = {
+  id?: string
+  skuRoot?: string | null
+  slug: string
+  name: string
+  marketingHook?: string | null
+  shortDescription?: string | null
+  description?: string | null
+  careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
+  status?: $Enums.ProductStatus
+  isFeatured?: boolean
+  isStandalone?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prices?: Prisma.ProductPriceCreateNestedManyWithoutProductInput
+  cartLines?: Prisma.CartLineCreateNestedManyWithoutProductInput
+  checkoutLines?: Prisma.CheckoutLineCreateNestedManyWithoutProductInput
+  orderLines?: Prisma.OrderLineCreateNestedManyWithoutProductInput
+  store: Prisma.StoreCreateNestedOneWithoutProductsInput
+  productType?: Prisma.ProductTypeCreateNestedOneWithoutProductsInput
+  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutProductsAsPrimaryImageInput
+  variants?: Prisma.ProductVariantCreateNestedManyWithoutProductInput
+  relatedFrom?: Prisma.RelatedProductCreateNestedManyWithoutSourceProductInput
+  relatedTo?: Prisma.RelatedProductCreateNestedManyWithoutTargetProductInput
+  productCategories?: Prisma.ProductCategoryCreateNestedManyWithoutProductInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductCreateNestedManyWithoutProductInput
+  channelStatuses?: Prisma.ChannelProductStatusCreateNestedManyWithoutProductInput
+  giftRequestItems?: Prisma.GiftRequestItemCreateNestedManyWithoutProductInput
+  bundleItems?: Prisma.BundleItemCreateNestedManyWithoutProductInput
+  subscriptionItems?: Prisma.SubscriptionItemCreateNestedManyWithoutProductInput
+  discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
+}
+
+export type ProductUncheckedCreateWithoutHomepageFeaturedInInput = {
+  id?: string
+  storeId: string
+  productTypeId?: string | null
+  primaryImageId?: string | null
+  skuRoot?: string | null
+  slug: string
+  name: string
+  marketingHook?: string | null
+  shortDescription?: string | null
+  description?: string | null
+  careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
+  status?: $Enums.ProductStatus
+  isFeatured?: boolean
+  isStandalone?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prices?: Prisma.ProductPriceUncheckedCreateNestedManyWithoutProductInput
+  cartLines?: Prisma.CartLineUncheckedCreateNestedManyWithoutProductInput
+  checkoutLines?: Prisma.CheckoutLineUncheckedCreateNestedManyWithoutProductInput
+  orderLines?: Prisma.OrderLineUncheckedCreateNestedManyWithoutProductInput
+  variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutProductInput
+  relatedFrom?: Prisma.RelatedProductUncheckedCreateNestedManyWithoutSourceProductInput
+  relatedTo?: Prisma.RelatedProductUncheckedCreateNestedManyWithoutTargetProductInput
+  productCategories?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutProductInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductUncheckedCreateNestedManyWithoutProductInput
+  channelStatuses?: Prisma.ChannelProductStatusUncheckedCreateNestedManyWithoutProductInput
+  giftRequestItems?: Prisma.GiftRequestItemUncheckedCreateNestedManyWithoutProductInput
+  bundleItems?: Prisma.BundleItemUncheckedCreateNestedManyWithoutProductInput
+  subscriptionItems?: Prisma.SubscriptionItemUncheckedCreateNestedManyWithoutProductInput
+  discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
+}
+
+export type ProductCreateOrConnectWithoutHomepageFeaturedInInput = {
+  where: Prisma.ProductWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProductCreateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedCreateWithoutHomepageFeaturedInInput>
+}
+
+export type ProductUpsertWithoutHomepageFeaturedInInput = {
+  update: Prisma.XOR<Prisma.ProductUpdateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedUpdateWithoutHomepageFeaturedInInput>
+  create: Prisma.XOR<Prisma.ProductCreateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedCreateWithoutHomepageFeaturedInInput>
+  where?: Prisma.ProductWhereInput
+}
+
+export type ProductUpdateToOneWithWhereWithoutHomepageFeaturedInInput = {
+  where?: Prisma.ProductWhereInput
+  data: Prisma.XOR<Prisma.ProductUpdateWithoutHomepageFeaturedInInput, Prisma.ProductUncheckedUpdateWithoutHomepageFeaturedInInput>
+}
+
+export type ProductUpdateWithoutHomepageFeaturedInInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
+  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prices?: Prisma.ProductPriceUpdateManyWithoutProductNestedInput
+  cartLines?: Prisma.CartLineUpdateManyWithoutProductNestedInput
+  checkoutLines?: Prisma.CheckoutLineUpdateManyWithoutProductNestedInput
+  orderLines?: Prisma.OrderLineUpdateManyWithoutProductNestedInput
+  store?: Prisma.StoreUpdateOneRequiredWithoutProductsNestedInput
+  productType?: Prisma.ProductTypeUpdateOneWithoutProductsNestedInput
+  primaryImage?: Prisma.MediaAssetUpdateOneWithoutProductsAsPrimaryImageNestedInput
+  variants?: Prisma.ProductVariantUpdateManyWithoutProductNestedInput
+  relatedFrom?: Prisma.RelatedProductUpdateManyWithoutSourceProductNestedInput
+  relatedTo?: Prisma.RelatedProductUpdateManyWithoutTargetProductNestedInput
+  productCategories?: Prisma.ProductCategoryUpdateManyWithoutProductNestedInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductUpdateManyWithoutProductNestedInput
+  channelStatuses?: Prisma.ChannelProductStatusUpdateManyWithoutProductNestedInput
+  giftRequestItems?: Prisma.GiftRequestItemUpdateManyWithoutProductNestedInput
+  bundleItems?: Prisma.BundleItemUpdateManyWithoutProductNestedInput
+  subscriptionItems?: Prisma.SubscriptionItemUpdateManyWithoutProductNestedInput
+  discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
+}
+
+export type ProductUncheckedUpdateWithoutHomepageFeaturedInInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  productTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
+  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prices?: Prisma.ProductPriceUncheckedUpdateManyWithoutProductNestedInput
+  cartLines?: Prisma.CartLineUncheckedUpdateManyWithoutProductNestedInput
+  checkoutLines?: Prisma.CheckoutLineUncheckedUpdateManyWithoutProductNestedInput
+  orderLines?: Prisma.OrderLineUncheckedUpdateManyWithoutProductNestedInput
+  variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutProductNestedInput
+  relatedFrom?: Prisma.RelatedProductUncheckedUpdateManyWithoutSourceProductNestedInput
+  relatedTo?: Prisma.RelatedProductUncheckedUpdateManyWithoutTargetProductNestedInput
+  productCategories?: Prisma.ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductUncheckedUpdateManyWithoutProductNestedInput
+  channelStatuses?: Prisma.ChannelProductStatusUncheckedUpdateManyWithoutProductNestedInput
+  giftRequestItems?: Prisma.GiftRequestItemUncheckedUpdateManyWithoutProductNestedInput
+  bundleItems?: Prisma.BundleItemUncheckedUpdateManyWithoutProductNestedInput
+  subscriptionItems?: Prisma.SubscriptionItemUncheckedUpdateManyWithoutProductNestedInput
+  discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
+}
+
 export type ProductCreateWithoutChannelStatusesInput = {
   id?: string
   skuRoot?: string | null
@@ -4848,7 +4748,48 @@ export type ProductUncheckedUpdateWithoutChannelStatusesInput = {
   characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
 }
 
-export type ProductCreateManyPrimaryImageInput = {
+export type ProductCreateWithoutPrimaryImageInput = {
+  id?: string
+  skuRoot?: string | null
+  slug: string
+  name: string
+  marketingHook?: string | null
+  shortDescription?: string | null
+  description?: string | null
+  careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
+  status?: $Enums.ProductStatus
+  isFeatured?: boolean
+  isStandalone?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  prices?: Prisma.ProductPriceCreateNestedManyWithoutProductInput
+  cartLines?: Prisma.CartLineCreateNestedManyWithoutProductInput
+  checkoutLines?: Prisma.CheckoutLineCreateNestedManyWithoutProductInput
+  orderLines?: Prisma.OrderLineCreateNestedManyWithoutProductInput
+  store: Prisma.StoreCreateNestedOneWithoutProductsInput
+  productType?: Prisma.ProductTypeCreateNestedOneWithoutProductsInput
+  variants?: Prisma.ProductVariantCreateNestedManyWithoutProductInput
+  relatedFrom?: Prisma.RelatedProductCreateNestedManyWithoutSourceProductInput
+  relatedTo?: Prisma.RelatedProductCreateNestedManyWithoutTargetProductInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedProductCreateNestedManyWithoutProductInput
+  productCategories?: Prisma.ProductCategoryCreateNestedManyWithoutProductInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductCreateNestedManyWithoutProductInput
+  channelStatuses?: Prisma.ChannelProductStatusCreateNestedManyWithoutProductInput
+  giftRequestItems?: Prisma.GiftRequestItemCreateNestedManyWithoutProductInput
+  bundleItems?: Prisma.BundleItemCreateNestedManyWithoutProductInput
+  subscriptionItems?: Prisma.SubscriptionItemCreateNestedManyWithoutProductInput
+  discountProductTargets?: Prisma.DiscountProductTargetCreateNestedManyWithoutProductInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetCreateNestedManyWithoutProductInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicCreateNestedManyWithoutProductInput
+}
+
+export type ProductUncheckedCreateWithoutPrimaryImageInput = {
   id?: string
   storeId: string
   productTypeId?: string | null
@@ -4869,111 +4810,50 @@ export type ProductCreateManyPrimaryImageInput = {
   archivedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  prices?: Prisma.ProductPriceUncheckedCreateNestedManyWithoutProductInput
+  cartLines?: Prisma.CartLineUncheckedCreateNestedManyWithoutProductInput
+  checkoutLines?: Prisma.CheckoutLineUncheckedCreateNestedManyWithoutProductInput
+  orderLines?: Prisma.OrderLineUncheckedCreateNestedManyWithoutProductInput
+  variants?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutProductInput
+  relatedFrom?: Prisma.RelatedProductUncheckedCreateNestedManyWithoutSourceProductInput
+  relatedTo?: Prisma.RelatedProductUncheckedCreateNestedManyWithoutTargetProductInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedProductUncheckedCreateNestedManyWithoutProductInput
+  productCategories?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutProductInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductUncheckedCreateNestedManyWithoutProductInput
+  channelStatuses?: Prisma.ChannelProductStatusUncheckedCreateNestedManyWithoutProductInput
+  giftRequestItems?: Prisma.GiftRequestItemUncheckedCreateNestedManyWithoutProductInput
+  bundleItems?: Prisma.BundleItemUncheckedCreateNestedManyWithoutProductInput
+  subscriptionItems?: Prisma.SubscriptionItemUncheckedCreateNestedManyWithoutProductInput
+  discountProductTargets?: Prisma.DiscountProductTargetUncheckedCreateNestedManyWithoutProductInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedCreateNestedManyWithoutProductInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedCreateNestedManyWithoutProductInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedCreateNestedManyWithoutProductInput
 }
 
-export type ProductUpdateWithoutPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
-  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
-  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  prices?: Prisma.ProductPriceUpdateManyWithoutProductNestedInput
-  cartLines?: Prisma.CartLineUpdateManyWithoutProductNestedInput
-  checkoutLines?: Prisma.CheckoutLineUpdateManyWithoutProductNestedInput
-  orderLines?: Prisma.OrderLineUpdateManyWithoutProductNestedInput
-  store?: Prisma.StoreUpdateOneRequiredWithoutProductsNestedInput
-  productType?: Prisma.ProductTypeUpdateOneWithoutProductsNestedInput
-  variants?: Prisma.ProductVariantUpdateManyWithoutProductNestedInput
-  relatedFrom?: Prisma.RelatedProductUpdateManyWithoutSourceProductNestedInput
-  relatedTo?: Prisma.RelatedProductUpdateManyWithoutTargetProductNestedInput
-  homepageFeaturedIn?: Prisma.HomepageFeaturedProductUpdateManyWithoutProductNestedInput
-  productCategories?: Prisma.ProductCategoryUpdateManyWithoutProductNestedInput
-  conversionFlowLinks?: Prisma.ConversionFlowProductUpdateManyWithoutProductNestedInput
-  channelStatuses?: Prisma.ChannelProductStatusUpdateManyWithoutProductNestedInput
-  giftRequestItems?: Prisma.GiftRequestItemUpdateManyWithoutProductNestedInput
-  bundleItems?: Prisma.BundleItemUpdateManyWithoutProductNestedInput
-  subscriptionItems?: Prisma.SubscriptionItemUpdateManyWithoutProductNestedInput
-  discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
-  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
-  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
-  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
+export type ProductCreateOrConnectWithoutPrimaryImageInput = {
+  where: Prisma.ProductWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput>
 }
 
-export type ProductUncheckedUpdateWithoutPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.StringFieldUpdateOperationsInput | string
-  productTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
-  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
-  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  prices?: Prisma.ProductPriceUncheckedUpdateManyWithoutProductNestedInput
-  cartLines?: Prisma.CartLineUncheckedUpdateManyWithoutProductNestedInput
-  checkoutLines?: Prisma.CheckoutLineUncheckedUpdateManyWithoutProductNestedInput
-  orderLines?: Prisma.OrderLineUncheckedUpdateManyWithoutProductNestedInput
-  variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutProductNestedInput
-  relatedFrom?: Prisma.RelatedProductUncheckedUpdateManyWithoutSourceProductNestedInput
-  relatedTo?: Prisma.RelatedProductUncheckedUpdateManyWithoutTargetProductNestedInput
-  homepageFeaturedIn?: Prisma.HomepageFeaturedProductUncheckedUpdateManyWithoutProductNestedInput
-  productCategories?: Prisma.ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
-  conversionFlowLinks?: Prisma.ConversionFlowProductUncheckedUpdateManyWithoutProductNestedInput
-  channelStatuses?: Prisma.ChannelProductStatusUncheckedUpdateManyWithoutProductNestedInput
-  giftRequestItems?: Prisma.GiftRequestItemUncheckedUpdateManyWithoutProductNestedInput
-  bundleItems?: Prisma.BundleItemUncheckedUpdateManyWithoutProductNestedInput
-  subscriptionItems?: Prisma.SubscriptionItemUncheckedUpdateManyWithoutProductNestedInput
-  discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
-  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
-  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
-  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
+export type ProductCreateManyPrimaryImageInputEnvelope = {
+  data: Prisma.ProductCreateManyPrimaryImageInput | Prisma.ProductCreateManyPrimaryImageInput[]
+  skipDuplicates?: boolean
 }
 
-export type ProductUncheckedUpdateManyWithoutPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.StringFieldUpdateOperationsInput | string
-  productTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
-  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
-  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type ProductUpsertWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.ProductWhereUniqueInput
+  update: Prisma.XOR<Prisma.ProductUpdateWithoutPrimaryImageInput, Prisma.ProductUncheckedUpdateWithoutPrimaryImageInput>
+  create: Prisma.XOR<Prisma.ProductCreateWithoutPrimaryImageInput, Prisma.ProductUncheckedCreateWithoutPrimaryImageInput>
+}
+
+export type ProductUpdateWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.ProductWhereUniqueInput
+  data: Prisma.XOR<Prisma.ProductUpdateWithoutPrimaryImageInput, Prisma.ProductUncheckedUpdateWithoutPrimaryImageInput>
+}
+
+export type ProductUpdateManyWithWhereWithoutPrimaryImageInput = {
+  where: Prisma.ProductScalarWhereInput
+  data: Prisma.XOR<Prisma.ProductUpdateManyMutationInput, Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageInput>
 }
 
 export type ProductCreateManyProductTypeInput = {
@@ -5213,6 +5093,134 @@ export type ProductUncheckedUpdateManyWithoutStoreInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   productTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
+  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ProductCreateManyPrimaryImageInput = {
+  id?: string
+  storeId: string
+  productTypeId?: string | null
+  skuRoot?: string | null
+  slug: string
+  name: string
+  marketingHook?: string | null
+  shortDescription?: string | null
+  description?: string | null
+  careInstructions?: string | null
+  catalogPriceCents?: number | null
+  catalogPriceCurrencyCode?: $Enums.CurrencyCode | null
+  catalogPriceSource?: $Enums.PriceTargetType | null
+  status?: $Enums.ProductStatus
+  isFeatured?: boolean
+  isStandalone?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ProductUpdateWithoutPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
+  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prices?: Prisma.ProductPriceUpdateManyWithoutProductNestedInput
+  cartLines?: Prisma.CartLineUpdateManyWithoutProductNestedInput
+  checkoutLines?: Prisma.CheckoutLineUpdateManyWithoutProductNestedInput
+  orderLines?: Prisma.OrderLineUpdateManyWithoutProductNestedInput
+  store?: Prisma.StoreUpdateOneRequiredWithoutProductsNestedInput
+  productType?: Prisma.ProductTypeUpdateOneWithoutProductsNestedInput
+  variants?: Prisma.ProductVariantUpdateManyWithoutProductNestedInput
+  relatedFrom?: Prisma.RelatedProductUpdateManyWithoutSourceProductNestedInput
+  relatedTo?: Prisma.RelatedProductUpdateManyWithoutTargetProductNestedInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedProductUpdateManyWithoutProductNestedInput
+  productCategories?: Prisma.ProductCategoryUpdateManyWithoutProductNestedInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductUpdateManyWithoutProductNestedInput
+  channelStatuses?: Prisma.ChannelProductStatusUpdateManyWithoutProductNestedInput
+  giftRequestItems?: Prisma.GiftRequestItemUpdateManyWithoutProductNestedInput
+  bundleItems?: Prisma.BundleItemUpdateManyWithoutProductNestedInput
+  subscriptionItems?: Prisma.SubscriptionItemUpdateManyWithoutProductNestedInput
+  discountProductTargets?: Prisma.DiscountProductTargetUpdateManyWithoutProductNestedInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUpdateManyWithoutProductNestedInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUpdateManyWithoutProductNestedInput
+}
+
+export type ProductUncheckedUpdateWithoutPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  productTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  marketingHook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  careInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  catalogPriceCents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  catalogPriceCurrencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  catalogPriceSource?: Prisma.NullableEnumPriceTargetTypeFieldUpdateOperationsInput | $Enums.PriceTargetType | null
+  status?: Prisma.EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isStandalone?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  prices?: Prisma.ProductPriceUncheckedUpdateManyWithoutProductNestedInput
+  cartLines?: Prisma.CartLineUncheckedUpdateManyWithoutProductNestedInput
+  checkoutLines?: Prisma.CheckoutLineUncheckedUpdateManyWithoutProductNestedInput
+  orderLines?: Prisma.OrderLineUncheckedUpdateManyWithoutProductNestedInput
+  variants?: Prisma.ProductVariantUncheckedUpdateManyWithoutProductNestedInput
+  relatedFrom?: Prisma.RelatedProductUncheckedUpdateManyWithoutSourceProductNestedInput
+  relatedTo?: Prisma.RelatedProductUncheckedUpdateManyWithoutTargetProductNestedInput
+  homepageFeaturedIn?: Prisma.HomepageFeaturedProductUncheckedUpdateManyWithoutProductNestedInput
+  productCategories?: Prisma.ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
+  conversionFlowLinks?: Prisma.ConversionFlowProductUncheckedUpdateManyWithoutProductNestedInput
+  channelStatuses?: Prisma.ChannelProductStatusUncheckedUpdateManyWithoutProductNestedInput
+  giftRequestItems?: Prisma.GiftRequestItemUncheckedUpdateManyWithoutProductNestedInput
+  bundleItems?: Prisma.BundleItemUncheckedUpdateManyWithoutProductNestedInput
+  subscriptionItems?: Prisma.SubscriptionItemUncheckedUpdateManyWithoutProductNestedInput
+  discountProductTargets?: Prisma.DiscountProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  taxRuleProductTargets?: Prisma.TaxRuleProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  salesPolicyProductTargets?: Prisma.SalesPolicyProductTargetUncheckedUpdateManyWithoutProductNestedInput
+  characteristics?: Prisma.ProductCharacteristicUncheckedUpdateManyWithoutProductNestedInput
+}
+
+export type ProductUncheckedUpdateManyWithoutPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  productTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skuRoot?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string

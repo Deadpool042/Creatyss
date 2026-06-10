@@ -56,9 +56,6 @@ export const ModelName = {
   AvailabilityOverride: 'AvailabilityOverride',
   Category: 'Category',
   ProductCategory: 'ProductCategory',
-  MediaAsset: 'MediaAsset',
-  MediaVariant: 'MediaVariant',
-  MediaReference: 'MediaReference',
   PriceList: 'PriceList',
   ProductPrice: 'ProductPrice',
   ProductVariantPrice: 'ProductVariantPrice',
@@ -84,18 +81,9 @@ export const ModelName = {
   OrderAddress: 'OrderAddress',
   OrderShippingSelection: 'OrderShippingSelection',
   OrderStatusHistory: 'OrderStatusHistory',
-  BlogCategory: 'BlogCategory',
-  BlogPost: 'BlogPost',
-  BlogPostCategory: 'BlogPostCategory',
-  Homepage: 'Homepage',
-  HomepageSection: 'HomepageSection',
-  HomepageFeaturedProduct: 'HomepageFeaturedProduct',
-  HomepageFeaturedCategory: 'HomepageFeaturedCategory',
-  HomepageFeaturedBlogPost: 'HomepageFeaturedBlogPost',
   Page: 'Page',
   PageSection: 'PageSection',
   PageBlock: 'PageBlock',
-  SeoMetadata: 'SeoMetadata',
   ApiClient: 'ApiClient',
   ApiClientSecret: 'ApiClientSecret',
   ApiClientPermission: 'ApiClientPermission',
@@ -120,6 +108,7 @@ export const ModelName = {
   MonitoringCheckResult: 'MonitoringCheckResult',
   ObservabilitySignal: 'ObservabilitySignal',
   ObservabilitySignalEvent: 'ObservabilitySignalEvent',
+  SeoMetadata: 'SeoMetadata',
   AiProvider: 'AiProvider',
   AiTask: 'AiTask',
   Bundle: 'Bundle',
@@ -170,6 +159,9 @@ export const ModelName = {
   BehaviorSegment: 'BehaviorSegment',
   BehaviorProfile: 'BehaviorProfile',
   BehaviorProfileSegment: 'BehaviorProfileSegment',
+  BlogCategory: 'BlogCategory',
+  BlogPost: 'BlogPost',
+  BlogPostCategory: 'BlogPostCategory',
   ConversionFlow: 'ConversionFlow',
   ConversionFlowProduct: 'ConversionFlowProduct',
   CrmContact: 'CrmContact',
@@ -187,6 +179,11 @@ export const ModelName = {
   SocialPublicationAsset: 'SocialPublicationAsset',
   SupportTicket: 'SupportTicket',
   SupportMessage: 'SupportMessage',
+  Homepage: 'Homepage',
+  HomepageSection: 'HomepageSection',
+  HomepageFeaturedProduct: 'HomepageFeaturedProduct',
+  HomepageFeaturedCategory: 'HomepageFeaturedCategory',
+  HomepageFeaturedBlogPost: 'HomepageFeaturedBlogPost',
   ApprovalRequest: 'ApprovalRequest',
   ApprovalDecision: 'ApprovalDecision',
   ConsentPurpose: 'ConsentPurpose',
@@ -221,6 +218,9 @@ export const ModelName = {
   Channel: 'Channel',
   ChannelProductStatus: 'ChannelProductStatus',
   ChannelVariantStatus: 'ChannelVariantStatus',
+  MediaAsset: 'MediaAsset',
+  MediaVariant: 'MediaVariant',
+  MediaReference: 'MediaReference',
   SearchDocument: 'SearchDocument'
 } as const
 
@@ -331,71 +331,6 @@ export const ProductCategoryScalarFieldEnum = {
 } as const
 
 export type ProductCategoryScalarFieldEnum = (typeof ProductCategoryScalarFieldEnum)[keyof typeof ProductCategoryScalarFieldEnum]
-
-
-export const MediaAssetScalarFieldEnum = {
-  id: 'id',
-  storeId: 'storeId',
-  kind: 'kind',
-  status: 'status',
-  slug: 'slug',
-  title: 'title',
-  altText: 'altText',
-  caption: 'caption',
-  description: 'description',
-  originalFilename: 'originalFilename',
-  mimeType: 'mimeType',
-  extension: 'extension',
-  storageKey: 'storageKey',
-  publicUrl: 'publicUrl',
-  widthPx: 'widthPx',
-  heightPx: 'heightPx',
-  sizeBytes: 'sizeBytes',
-  checksumSha256: 'checksumSha256',
-  isPublic: 'isPublic',
-  publishedAt: 'publishedAt',
-  archivedAt: 'archivedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type MediaAssetScalarFieldEnum = (typeof MediaAssetScalarFieldEnum)[keyof typeof MediaAssetScalarFieldEnum]
-
-
-export const MediaVariantScalarFieldEnum = {
-  id: 'id',
-  assetId: 'assetId',
-  key: 'key',
-  label: 'label',
-  storageKey: 'storageKey',
-  publicUrl: 'publicUrl',
-  mimeType: 'mimeType',
-  extension: 'extension',
-  widthPx: 'widthPx',
-  heightPx: 'heightPx',
-  sizeBytes: 'sizeBytes',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type MediaVariantScalarFieldEnum = (typeof MediaVariantScalarFieldEnum)[keyof typeof MediaVariantScalarFieldEnum]
-
-
-export const MediaReferenceScalarFieldEnum = {
-  id: 'id',
-  assetId: 'assetId',
-  subjectType: 'subjectType',
-  subjectId: 'subjectId',
-  role: 'role',
-  sortOrder: 'sortOrder',
-  isPrimary: 'isPrimary',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  archivedAt: 'archivedAt'
-} as const
-
-export type MediaReferenceScalarFieldEnum = (typeof MediaReferenceScalarFieldEnum)[keyof typeof MediaReferenceScalarFieldEnum]
 
 
 export const PriceListScalarFieldEnum = {
@@ -865,137 +800,6 @@ export const OrderStatusHistoryScalarFieldEnum = {
 export type OrderStatusHistoryScalarFieldEnum = (typeof OrderStatusHistoryScalarFieldEnum)[keyof typeof OrderStatusHistoryScalarFieldEnum]
 
 
-export const BlogCategoryScalarFieldEnum = {
-  id: 'id',
-  storeId: 'storeId',
-  code: 'code',
-  slug: 'slug',
-  name: 'name',
-  shortDescription: 'shortDescription',
-  description: 'description',
-  status: 'status',
-  sortOrder: 'sortOrder',
-  isFeatured: 'isFeatured',
-  primaryImageId: 'primaryImageId',
-  coverImageId: 'coverImageId',
-  publishedAt: 'publishedAt',
-  archivedAt: 'archivedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type BlogCategoryScalarFieldEnum = (typeof BlogCategoryScalarFieldEnum)[keyof typeof BlogCategoryScalarFieldEnum]
-
-
-export const BlogPostScalarFieldEnum = {
-  id: 'id',
-  storeId: 'storeId',
-  slug: 'slug',
-  title: 'title',
-  excerpt: 'excerpt',
-  body: 'body',
-  status: 'status',
-  isFeatured: 'isFeatured',
-  authorName: 'authorName',
-  readingTimeMinutes: 'readingTimeMinutes',
-  primaryImageId: 'primaryImageId',
-  coverImageId: 'coverImageId',
-  publishedAt: 'publishedAt',
-  archivedAt: 'archivedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type BlogPostScalarFieldEnum = (typeof BlogPostScalarFieldEnum)[keyof typeof BlogPostScalarFieldEnum]
-
-
-export const BlogPostCategoryScalarFieldEnum = {
-  id: 'id',
-  blogPostId: 'blogPostId',
-  blogCategoryId: 'blogCategoryId',
-  isPrimary: 'isPrimary',
-  sortOrder: 'sortOrder',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type BlogPostCategoryScalarFieldEnum = (typeof BlogPostCategoryScalarFieldEnum)[keyof typeof BlogPostCategoryScalarFieldEnum]
-
-
-export const HomepageScalarFieldEnum = {
-  id: 'id',
-  storeId: 'storeId',
-  code: 'code',
-  title: 'title',
-  status: 'status',
-  isDefault: 'isDefault',
-  publishedAt: 'publishedAt',
-  archivedAt: 'archivedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type HomepageScalarFieldEnum = (typeof HomepageScalarFieldEnum)[keyof typeof HomepageScalarFieldEnum]
-
-
-export const HomepageSectionScalarFieldEnum = {
-  id: 'id',
-  homepageId: 'homepageId',
-  code: 'code',
-  type: 'type',
-  title: 'title',
-  subtitle: 'subtitle',
-  body: 'body',
-  primaryImageId: 'primaryImageId',
-  secondaryImageId: 'secondaryImageId',
-  ctaLabel: 'ctaLabel',
-  ctaHref: 'ctaHref',
-  sortOrder: 'sortOrder',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  archivedAt: 'archivedAt'
-} as const
-
-export type HomepageSectionScalarFieldEnum = (typeof HomepageSectionScalarFieldEnum)[keyof typeof HomepageSectionScalarFieldEnum]
-
-
-export const HomepageFeaturedProductScalarFieldEnum = {
-  id: 'id',
-  homepageSectionId: 'homepageSectionId',
-  productId: 'productId',
-  sortOrder: 'sortOrder',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type HomepageFeaturedProductScalarFieldEnum = (typeof HomepageFeaturedProductScalarFieldEnum)[keyof typeof HomepageFeaturedProductScalarFieldEnum]
-
-
-export const HomepageFeaturedCategoryScalarFieldEnum = {
-  id: 'id',
-  homepageSectionId: 'homepageSectionId',
-  categoryId: 'categoryId',
-  sortOrder: 'sortOrder',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type HomepageFeaturedCategoryScalarFieldEnum = (typeof HomepageFeaturedCategoryScalarFieldEnum)[keyof typeof HomepageFeaturedCategoryScalarFieldEnum]
-
-
-export const HomepageFeaturedBlogPostScalarFieldEnum = {
-  id: 'id',
-  homepageSectionId: 'homepageSectionId',
-  blogPostId: 'blogPostId',
-  sortOrder: 'sortOrder',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type HomepageFeaturedBlogPostScalarFieldEnum = (typeof HomepageFeaturedBlogPostScalarFieldEnum)[keyof typeof HomepageFeaturedBlogPostScalarFieldEnum]
-
-
 export const PageScalarFieldEnum = {
   id: 'id',
   storeId: 'storeId',
@@ -1057,34 +861,6 @@ export const PageBlockScalarFieldEnum = {
 } as const
 
 export type PageBlockScalarFieldEnum = (typeof PageBlockScalarFieldEnum)[keyof typeof PageBlockScalarFieldEnum]
-
-
-export const SeoMetadataScalarFieldEnum = {
-  id: 'id',
-  storeId: 'storeId',
-  subjectType: 'subjectType',
-  subjectId: 'subjectId',
-  status: 'status',
-  metaTitle: 'metaTitle',
-  metaDescription: 'metaDescription',
-  metaKeywords: 'metaKeywords',
-  canonicalUrl: 'canonicalUrl',
-  canonicalPath: 'canonicalPath',
-  indexingMode: 'indexingMode',
-  sitemapIncluded: 'sitemapIncluded',
-  openGraphTitle: 'openGraphTitle',
-  openGraphDescription: 'openGraphDescription',
-  openGraphImageId: 'openGraphImageId',
-  twitterTitle: 'twitterTitle',
-  twitterDescription: 'twitterDescription',
-  twitterImageId: 'twitterImageId',
-  structuredDataJson: 'structuredDataJson',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  archivedAt: 'archivedAt'
-} as const
-
-export type SeoMetadataScalarFieldEnum = (typeof SeoMetadataScalarFieldEnum)[keyof typeof SeoMetadataScalarFieldEnum]
 
 
 export const ApiClientScalarFieldEnum = {
@@ -1263,6 +1039,7 @@ export const StoreScalarFieldEnum = {
   supportEmail: 'supportEmail',
   supportPhone: 'supportPhone',
   shippingReturnsPolicy: 'shippingReturnsPolicy',
+  orderNumberPrefix: 'orderNumberPrefix',
   defaultLocaleCode: 'defaultLocaleCode',
   defaultCurrency: 'defaultCurrency',
   timezone: 'timezone',
@@ -1518,6 +1295,34 @@ export const ObservabilitySignalEventScalarFieldEnum = {
 } as const
 
 export type ObservabilitySignalEventScalarFieldEnum = (typeof ObservabilitySignalEventScalarFieldEnum)[keyof typeof ObservabilitySignalEventScalarFieldEnum]
+
+
+export const SeoMetadataScalarFieldEnum = {
+  id: 'id',
+  storeId: 'storeId',
+  subjectType: 'subjectType',
+  subjectId: 'subjectId',
+  status: 'status',
+  metaTitle: 'metaTitle',
+  metaDescription: 'metaDescription',
+  metaKeywords: 'metaKeywords',
+  canonicalUrl: 'canonicalUrl',
+  canonicalPath: 'canonicalPath',
+  indexingMode: 'indexingMode',
+  sitemapIncluded: 'sitemapIncluded',
+  openGraphTitle: 'openGraphTitle',
+  openGraphDescription: 'openGraphDescription',
+  openGraphImageId: 'openGraphImageId',
+  twitterTitle: 'twitterTitle',
+  twitterDescription: 'twitterDescription',
+  twitterImageId: 'twitterImageId',
+  structuredDataJson: 'structuredDataJson',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type SeoMetadataScalarFieldEnum = (typeof SeoMetadataScalarFieldEnum)[keyof typeof SeoMetadataScalarFieldEnum]
 
 
 export const AiProviderScalarFieldEnum = {
@@ -2363,6 +2168,63 @@ export const BehaviorProfileSegmentScalarFieldEnum = {
 export type BehaviorProfileSegmentScalarFieldEnum = (typeof BehaviorProfileSegmentScalarFieldEnum)[keyof typeof BehaviorProfileSegmentScalarFieldEnum]
 
 
+export const BlogCategoryScalarFieldEnum = {
+  id: 'id',
+  storeId: 'storeId',
+  code: 'code',
+  slug: 'slug',
+  name: 'name',
+  shortDescription: 'shortDescription',
+  description: 'description',
+  status: 'status',
+  sortOrder: 'sortOrder',
+  isFeatured: 'isFeatured',
+  primaryImageId: 'primaryImageId',
+  coverImageId: 'coverImageId',
+  publishedAt: 'publishedAt',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BlogCategoryScalarFieldEnum = (typeof BlogCategoryScalarFieldEnum)[keyof typeof BlogCategoryScalarFieldEnum]
+
+
+export const BlogPostScalarFieldEnum = {
+  id: 'id',
+  storeId: 'storeId',
+  slug: 'slug',
+  title: 'title',
+  excerpt: 'excerpt',
+  body: 'body',
+  status: 'status',
+  isFeatured: 'isFeatured',
+  authorName: 'authorName',
+  readingTimeMinutes: 'readingTimeMinutes',
+  primaryImageId: 'primaryImageId',
+  coverImageId: 'coverImageId',
+  publishedAt: 'publishedAt',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BlogPostScalarFieldEnum = (typeof BlogPostScalarFieldEnum)[keyof typeof BlogPostScalarFieldEnum]
+
+
+export const BlogPostCategoryScalarFieldEnum = {
+  id: 'id',
+  blogPostId: 'blogPostId',
+  blogCategoryId: 'blogCategoryId',
+  isPrimary: 'isPrimary',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BlogPostCategoryScalarFieldEnum = (typeof BlogPostCategoryScalarFieldEnum)[keyof typeof BlogPostCategoryScalarFieldEnum]
+
+
 export const ConversionFlowScalarFieldEnum = {
   id: 'id',
   storeId: 'storeId',
@@ -2677,6 +2539,80 @@ export const SupportMessageScalarFieldEnum = {
 } as const
 
 export type SupportMessageScalarFieldEnum = (typeof SupportMessageScalarFieldEnum)[keyof typeof SupportMessageScalarFieldEnum]
+
+
+export const HomepageScalarFieldEnum = {
+  id: 'id',
+  storeId: 'storeId',
+  code: 'code',
+  title: 'title',
+  status: 'status',
+  isDefault: 'isDefault',
+  publishedAt: 'publishedAt',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HomepageScalarFieldEnum = (typeof HomepageScalarFieldEnum)[keyof typeof HomepageScalarFieldEnum]
+
+
+export const HomepageSectionScalarFieldEnum = {
+  id: 'id',
+  homepageId: 'homepageId',
+  code: 'code',
+  type: 'type',
+  title: 'title',
+  subtitle: 'subtitle',
+  body: 'body',
+  primaryImageId: 'primaryImageId',
+  secondaryImageId: 'secondaryImageId',
+  ctaLabel: 'ctaLabel',
+  ctaHref: 'ctaHref',
+  sortOrder: 'sortOrder',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type HomepageSectionScalarFieldEnum = (typeof HomepageSectionScalarFieldEnum)[keyof typeof HomepageSectionScalarFieldEnum]
+
+
+export const HomepageFeaturedProductScalarFieldEnum = {
+  id: 'id',
+  homepageSectionId: 'homepageSectionId',
+  productId: 'productId',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HomepageFeaturedProductScalarFieldEnum = (typeof HomepageFeaturedProductScalarFieldEnum)[keyof typeof HomepageFeaturedProductScalarFieldEnum]
+
+
+export const HomepageFeaturedCategoryScalarFieldEnum = {
+  id: 'id',
+  homepageSectionId: 'homepageSectionId',
+  categoryId: 'categoryId',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HomepageFeaturedCategoryScalarFieldEnum = (typeof HomepageFeaturedCategoryScalarFieldEnum)[keyof typeof HomepageFeaturedCategoryScalarFieldEnum]
+
+
+export const HomepageFeaturedBlogPostScalarFieldEnum = {
+  id: 'id',
+  homepageSectionId: 'homepageSectionId',
+  blogPostId: 'blogPostId',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type HomepageFeaturedBlogPostScalarFieldEnum = (typeof HomepageFeaturedBlogPostScalarFieldEnum)[keyof typeof HomepageFeaturedBlogPostScalarFieldEnum]
 
 
 export const ApprovalRequestScalarFieldEnum = {
@@ -3344,6 +3280,71 @@ export const ChannelVariantStatusScalarFieldEnum = {
 } as const
 
 export type ChannelVariantStatusScalarFieldEnum = (typeof ChannelVariantStatusScalarFieldEnum)[keyof typeof ChannelVariantStatusScalarFieldEnum]
+
+
+export const MediaAssetScalarFieldEnum = {
+  id: 'id',
+  storeId: 'storeId',
+  kind: 'kind',
+  status: 'status',
+  slug: 'slug',
+  title: 'title',
+  altText: 'altText',
+  caption: 'caption',
+  description: 'description',
+  originalFilename: 'originalFilename',
+  mimeType: 'mimeType',
+  extension: 'extension',
+  storageKey: 'storageKey',
+  publicUrl: 'publicUrl',
+  widthPx: 'widthPx',
+  heightPx: 'heightPx',
+  sizeBytes: 'sizeBytes',
+  checksumSha256: 'checksumSha256',
+  isPublic: 'isPublic',
+  publishedAt: 'publishedAt',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MediaAssetScalarFieldEnum = (typeof MediaAssetScalarFieldEnum)[keyof typeof MediaAssetScalarFieldEnum]
+
+
+export const MediaVariantScalarFieldEnum = {
+  id: 'id',
+  assetId: 'assetId',
+  key: 'key',
+  label: 'label',
+  storageKey: 'storageKey',
+  publicUrl: 'publicUrl',
+  mimeType: 'mimeType',
+  extension: 'extension',
+  widthPx: 'widthPx',
+  heightPx: 'heightPx',
+  sizeBytes: 'sizeBytes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MediaVariantScalarFieldEnum = (typeof MediaVariantScalarFieldEnum)[keyof typeof MediaVariantScalarFieldEnum]
+
+
+export const MediaReferenceScalarFieldEnum = {
+  id: 'id',
+  assetId: 'assetId',
+  subjectType: 'subjectType',
+  subjectId: 'subjectId',
+  role: 'role',
+  sortOrder: 'sortOrder',
+  isPrimary: 'isPrimary',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type MediaReferenceScalarFieldEnum = (typeof MediaReferenceScalarFieldEnum)[keyof typeof MediaReferenceScalarFieldEnum]
 
 
 export const SearchDocumentScalarFieldEnum = {

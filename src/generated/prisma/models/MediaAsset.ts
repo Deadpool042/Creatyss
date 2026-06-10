@@ -844,6 +844,21 @@ export type MediaAssetNullableScalarRelationFilter = {
   isNot?: Prisma.MediaAssetWhereInput | null
 }
 
+export type MediaAssetListRelationFilter = {
+  every?: Prisma.MediaAssetWhereInput
+  some?: Prisma.MediaAssetWhereInput
+  none?: Prisma.MediaAssetWhereInput
+}
+
+export type MediaAssetOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type MediaAssetScalarRelationFilter = {
+  is?: Prisma.MediaAssetWhereInput
+  isNot?: Prisma.MediaAssetWhereInput
+}
+
 export type MediaAssetStoreIdStorageKeyCompoundUniqueInput = {
   storeId: string
   storageKey: string
@@ -944,21 +959,6 @@ export type MediaAssetSumOrderByAggregateInput = {
   sizeBytes?: Prisma.SortOrder
 }
 
-export type MediaAssetScalarRelationFilter = {
-  is?: Prisma.MediaAssetWhereInput
-  isNot?: Prisma.MediaAssetWhereInput
-}
-
-export type MediaAssetListRelationFilter = {
-  every?: Prisma.MediaAssetWhereInput
-  some?: Prisma.MediaAssetWhereInput
-  none?: Prisma.MediaAssetWhereInput
-}
-
-export type MediaAssetOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type MediaAssetCreateNestedOneWithoutCategoriesAsPrimaryImageInput = {
   create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutCategoriesAsPrimaryImageInput>
   connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutCategoriesAsPrimaryImageInput
@@ -991,50 +991,6 @@ export type MediaAssetUpdateOneWithoutCategoriesAsCoverImageNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutCategoriesAsCoverImageInput, Prisma.MediaAssetUpdateWithoutCategoriesAsCoverImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutCategoriesAsCoverImageInput>
 }
 
-export type EnumMediaAssetKindFieldUpdateOperationsInput = {
-  set?: $Enums.MediaAssetKind
-}
-
-export type EnumMediaAssetStatusFieldUpdateOperationsInput = {
-  set?: $Enums.MediaAssetStatus
-}
-
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type MediaAssetCreateNestedOneWithoutVariantsInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutVariantsInput, Prisma.MediaAssetUncheckedCreateWithoutVariantsInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutVariantsInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-}
-
-export type MediaAssetUpdateOneRequiredWithoutVariantsNestedInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutVariantsInput, Prisma.MediaAssetUncheckedCreateWithoutVariantsInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutVariantsInput
-  upsert?: Prisma.MediaAssetUpsertWithoutVariantsInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutVariantsInput, Prisma.MediaAssetUpdateWithoutVariantsInput>, Prisma.MediaAssetUncheckedUpdateWithoutVariantsInput>
-}
-
-export type MediaAssetCreateNestedOneWithoutReferencesInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutReferencesInput, Prisma.MediaAssetUncheckedCreateWithoutReferencesInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutReferencesInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-}
-
-export type MediaAssetUpdateOneRequiredWithoutReferencesNestedInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutReferencesInput, Prisma.MediaAssetUncheckedCreateWithoutReferencesInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutReferencesInput
-  upsert?: Prisma.MediaAssetUpsertWithoutReferencesInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutReferencesInput, Prisma.MediaAssetUpdateWithoutReferencesInput>, Prisma.MediaAssetUncheckedUpdateWithoutReferencesInput>
-}
-
 export type MediaAssetCreateNestedOneWithoutProductsAsPrimaryImageInput = {
   create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutProductsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutProductsAsPrimaryImageInput>
   connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutProductsAsPrimaryImageInput
@@ -1065,102 +1021,6 @@ export type MediaAssetUpdateOneWithoutProductVariantsAsPrimaryImageNestedInput =
   delete?: Prisma.MediaAssetWhereInput | boolean
   connect?: Prisma.MediaAssetWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutProductVariantsAsPrimaryImageInput, Prisma.MediaAssetUpdateWithoutProductVariantsAsPrimaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutProductVariantsAsPrimaryImageInput>
-}
-
-export type MediaAssetCreateNestedOneWithoutBlogCategoriesAsPrimaryImageInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogCategoriesAsPrimaryImageInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-}
-
-export type MediaAssetCreateNestedOneWithoutBlogCategoriesAsCoverImageInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogCategoriesAsCoverImageInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-}
-
-export type MediaAssetUpdateOneWithoutBlogCategoriesAsPrimaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogCategoriesAsPrimaryImageInput
-  upsert?: Prisma.MediaAssetUpsertWithoutBlogCategoriesAsPrimaryImageInput
-  disconnect?: Prisma.MediaAssetWhereInput | boolean
-  delete?: Prisma.MediaAssetWhereInput | boolean
-  connect?: Prisma.MediaAssetWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUpdateWithoutBlogCategoriesAsPrimaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsPrimaryImageInput>
-}
-
-export type MediaAssetUpdateOneWithoutBlogCategoriesAsCoverImageNestedInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogCategoriesAsCoverImageInput
-  upsert?: Prisma.MediaAssetUpsertWithoutBlogCategoriesAsCoverImageInput
-  disconnect?: Prisma.MediaAssetWhereInput | boolean
-  delete?: Prisma.MediaAssetWhereInput | boolean
-  connect?: Prisma.MediaAssetWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUpdateWithoutBlogCategoriesAsCoverImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsCoverImageInput>
-}
-
-export type MediaAssetCreateNestedOneWithoutBlogPostsAsPrimaryImageInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogPostsAsPrimaryImageInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-}
-
-export type MediaAssetCreateNestedOneWithoutBlogPostsAsCoverImageInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogPostsAsCoverImageInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-}
-
-export type MediaAssetUpdateOneWithoutBlogPostsAsPrimaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogPostsAsPrimaryImageInput
-  upsert?: Prisma.MediaAssetUpsertWithoutBlogPostsAsPrimaryImageInput
-  disconnect?: Prisma.MediaAssetWhereInput | boolean
-  delete?: Prisma.MediaAssetWhereInput | boolean
-  connect?: Prisma.MediaAssetWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUpdateWithoutBlogPostsAsPrimaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsPrimaryImageInput>
-}
-
-export type MediaAssetUpdateOneWithoutBlogPostsAsCoverImageNestedInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogPostsAsCoverImageInput
-  upsert?: Prisma.MediaAssetUpsertWithoutBlogPostsAsCoverImageInput
-  disconnect?: Prisma.MediaAssetWhereInput | boolean
-  delete?: Prisma.MediaAssetWhereInput | boolean
-  connect?: Prisma.MediaAssetWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUpdateWithoutBlogPostsAsCoverImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsCoverImageInput>
-}
-
-export type MediaAssetCreateNestedOneWithoutHomepageSectionsAsPrimaryImageInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutHomepageSectionsAsPrimaryImageInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-}
-
-export type MediaAssetCreateNestedOneWithoutHomepageSectionsAsSecondaryImageInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutHomepageSectionsAsSecondaryImageInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-}
-
-export type MediaAssetUpdateOneWithoutHomepageSectionsAsPrimaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutHomepageSectionsAsPrimaryImageInput
-  upsert?: Prisma.MediaAssetUpsertWithoutHomepageSectionsAsPrimaryImageInput
-  disconnect?: Prisma.MediaAssetWhereInput | boolean
-  delete?: Prisma.MediaAssetWhereInput | boolean
-  connect?: Prisma.MediaAssetWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUpdateWithoutHomepageSectionsAsPrimaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsPrimaryImageInput>
-}
-
-export type MediaAssetUpdateOneWithoutHomepageSectionsAsSecondaryImageNestedInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutHomepageSectionsAsSecondaryImageInput
-  upsert?: Prisma.MediaAssetUpsertWithoutHomepageSectionsAsSecondaryImageInput
-  disconnect?: Prisma.MediaAssetWhereInput | boolean
-  delete?: Prisma.MediaAssetWhereInput | boolean
-  connect?: Prisma.MediaAssetWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUpdateWithoutHomepageSectionsAsSecondaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsSecondaryImageInput>
 }
 
 export type MediaAssetCreateNestedOneWithoutPagesAsPrimaryImageInput = {
@@ -1259,38 +1119,6 @@ export type MediaAssetUpdateOneWithoutPageBlocksAsSecondaryImageNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutPageBlocksAsSecondaryImageInput, Prisma.MediaAssetUpdateWithoutPageBlocksAsSecondaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutPageBlocksAsSecondaryImageInput>
 }
 
-export type MediaAssetCreateNestedOneWithoutSeoOpenGraphForInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutSeoOpenGraphForInput, Prisma.MediaAssetUncheckedCreateWithoutSeoOpenGraphForInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutSeoOpenGraphForInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-}
-
-export type MediaAssetCreateNestedOneWithoutSeoTwitterForInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutSeoTwitterForInput, Prisma.MediaAssetUncheckedCreateWithoutSeoTwitterForInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutSeoTwitterForInput
-  connect?: Prisma.MediaAssetWhereUniqueInput
-}
-
-export type MediaAssetUpdateOneWithoutSeoOpenGraphForNestedInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutSeoOpenGraphForInput, Prisma.MediaAssetUncheckedCreateWithoutSeoOpenGraphForInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutSeoOpenGraphForInput
-  upsert?: Prisma.MediaAssetUpsertWithoutSeoOpenGraphForInput
-  disconnect?: Prisma.MediaAssetWhereInput | boolean
-  delete?: Prisma.MediaAssetWhereInput | boolean
-  connect?: Prisma.MediaAssetWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutSeoOpenGraphForInput, Prisma.MediaAssetUpdateWithoutSeoOpenGraphForInput>, Prisma.MediaAssetUncheckedUpdateWithoutSeoOpenGraphForInput>
-}
-
-export type MediaAssetUpdateOneWithoutSeoTwitterForNestedInput = {
-  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutSeoTwitterForInput, Prisma.MediaAssetUncheckedCreateWithoutSeoTwitterForInput>
-  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutSeoTwitterForInput
-  upsert?: Prisma.MediaAssetUpsertWithoutSeoTwitterForInput
-  disconnect?: Prisma.MediaAssetWhereInput | boolean
-  delete?: Prisma.MediaAssetWhereInput | boolean
-  connect?: Prisma.MediaAssetWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutSeoTwitterForInput, Prisma.MediaAssetUpdateWithoutSeoTwitterForInput>, Prisma.MediaAssetUncheckedUpdateWithoutSeoTwitterForInput>
-}
-
 export type MediaAssetCreateNestedManyWithoutStoreInput = {
   create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutStoreInput, Prisma.MediaAssetUncheckedCreateWithoutStoreInput> | Prisma.MediaAssetCreateWithoutStoreInput[] | Prisma.MediaAssetUncheckedCreateWithoutStoreInput[]
   connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutStoreInput | Prisma.MediaAssetCreateOrConnectWithoutStoreInput[]
@@ -1333,6 +1161,38 @@ export type MediaAssetUncheckedUpdateManyWithoutStoreNestedInput = {
   deleteMany?: Prisma.MediaAssetScalarWhereInput | Prisma.MediaAssetScalarWhereInput[]
 }
 
+export type MediaAssetCreateNestedOneWithoutSeoOpenGraphForInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutSeoOpenGraphForInput, Prisma.MediaAssetUncheckedCreateWithoutSeoOpenGraphForInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutSeoOpenGraphForInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+}
+
+export type MediaAssetCreateNestedOneWithoutSeoTwitterForInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutSeoTwitterForInput, Prisma.MediaAssetUncheckedCreateWithoutSeoTwitterForInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutSeoTwitterForInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+}
+
+export type MediaAssetUpdateOneWithoutSeoOpenGraphForNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutSeoOpenGraphForInput, Prisma.MediaAssetUncheckedCreateWithoutSeoOpenGraphForInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutSeoOpenGraphForInput
+  upsert?: Prisma.MediaAssetUpsertWithoutSeoOpenGraphForInput
+  disconnect?: Prisma.MediaAssetWhereInput | boolean
+  delete?: Prisma.MediaAssetWhereInput | boolean
+  connect?: Prisma.MediaAssetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutSeoOpenGraphForInput, Prisma.MediaAssetUpdateWithoutSeoOpenGraphForInput>, Prisma.MediaAssetUncheckedUpdateWithoutSeoOpenGraphForInput>
+}
+
+export type MediaAssetUpdateOneWithoutSeoTwitterForNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutSeoTwitterForInput, Prisma.MediaAssetUncheckedCreateWithoutSeoTwitterForInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutSeoTwitterForInput
+  upsert?: Prisma.MediaAssetUpsertWithoutSeoTwitterForInput
+  disconnect?: Prisma.MediaAssetWhereInput | boolean
+  delete?: Prisma.MediaAssetWhereInput | boolean
+  connect?: Prisma.MediaAssetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutSeoTwitterForInput, Prisma.MediaAssetUpdateWithoutSeoTwitterForInput>, Prisma.MediaAssetUncheckedUpdateWithoutSeoTwitterForInput>
+}
+
 export type MediaAssetCreateNestedOneWithoutBundlesAsPrimaryImageInput = {
   create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBundlesAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBundlesAsPrimaryImageInput>
   connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBundlesAsPrimaryImageInput
@@ -1347,6 +1207,70 @@ export type MediaAssetUpdateOneWithoutBundlesAsPrimaryImageNestedInput = {
   delete?: Prisma.MediaAssetWhereInput | boolean
   connect?: Prisma.MediaAssetWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutBundlesAsPrimaryImageInput, Prisma.MediaAssetUpdateWithoutBundlesAsPrimaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutBundlesAsPrimaryImageInput>
+}
+
+export type MediaAssetCreateNestedOneWithoutBlogCategoriesAsPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogCategoriesAsPrimaryImageInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+}
+
+export type MediaAssetCreateNestedOneWithoutBlogCategoriesAsCoverImageInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogCategoriesAsCoverImageInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+}
+
+export type MediaAssetUpdateOneWithoutBlogCategoriesAsPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogCategoriesAsPrimaryImageInput
+  upsert?: Prisma.MediaAssetUpsertWithoutBlogCategoriesAsPrimaryImageInput
+  disconnect?: Prisma.MediaAssetWhereInput | boolean
+  delete?: Prisma.MediaAssetWhereInput | boolean
+  connect?: Prisma.MediaAssetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUpdateWithoutBlogCategoriesAsPrimaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsPrimaryImageInput>
+}
+
+export type MediaAssetUpdateOneWithoutBlogCategoriesAsCoverImageNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogCategoriesAsCoverImageInput
+  upsert?: Prisma.MediaAssetUpsertWithoutBlogCategoriesAsCoverImageInput
+  disconnect?: Prisma.MediaAssetWhereInput | boolean
+  delete?: Prisma.MediaAssetWhereInput | boolean
+  connect?: Prisma.MediaAssetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUpdateWithoutBlogCategoriesAsCoverImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsCoverImageInput>
+}
+
+export type MediaAssetCreateNestedOneWithoutBlogPostsAsPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogPostsAsPrimaryImageInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+}
+
+export type MediaAssetCreateNestedOneWithoutBlogPostsAsCoverImageInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogPostsAsCoverImageInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+}
+
+export type MediaAssetUpdateOneWithoutBlogPostsAsPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogPostsAsPrimaryImageInput
+  upsert?: Prisma.MediaAssetUpsertWithoutBlogPostsAsPrimaryImageInput
+  disconnect?: Prisma.MediaAssetWhereInput | boolean
+  delete?: Prisma.MediaAssetWhereInput | boolean
+  connect?: Prisma.MediaAssetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUpdateWithoutBlogPostsAsPrimaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsPrimaryImageInput>
+}
+
+export type MediaAssetUpdateOneWithoutBlogPostsAsCoverImageNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutBlogPostsAsCoverImageInput
+  upsert?: Prisma.MediaAssetUpsertWithoutBlogPostsAsCoverImageInput
+  disconnect?: Prisma.MediaAssetWhereInput | boolean
+  delete?: Prisma.MediaAssetWhereInput | boolean
+  connect?: Prisma.MediaAssetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUpdateWithoutBlogPostsAsCoverImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsCoverImageInput>
 }
 
 export type MediaAssetCreateNestedOneWithoutPublicEventsAsPrimaryImageInput = {
@@ -1393,6 +1317,74 @@ export type MediaAssetUpdateOneRequiredWithoutSocialPublicationAssetsNestedInput
   upsert?: Prisma.MediaAssetUpsertWithoutSocialPublicationAssetsInput
   connect?: Prisma.MediaAssetWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutSocialPublicationAssetsInput, Prisma.MediaAssetUpdateWithoutSocialPublicationAssetsInput>, Prisma.MediaAssetUncheckedUpdateWithoutSocialPublicationAssetsInput>
+}
+
+export type MediaAssetCreateNestedOneWithoutHomepageSectionsAsPrimaryImageInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutHomepageSectionsAsPrimaryImageInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+}
+
+export type MediaAssetCreateNestedOneWithoutHomepageSectionsAsSecondaryImageInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutHomepageSectionsAsSecondaryImageInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+}
+
+export type MediaAssetUpdateOneWithoutHomepageSectionsAsPrimaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutHomepageSectionsAsPrimaryImageInput
+  upsert?: Prisma.MediaAssetUpsertWithoutHomepageSectionsAsPrimaryImageInput
+  disconnect?: Prisma.MediaAssetWhereInput | boolean
+  delete?: Prisma.MediaAssetWhereInput | boolean
+  connect?: Prisma.MediaAssetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUpdateWithoutHomepageSectionsAsPrimaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsPrimaryImageInput>
+}
+
+export type MediaAssetUpdateOneWithoutHomepageSectionsAsSecondaryImageNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutHomepageSectionsAsSecondaryImageInput
+  upsert?: Prisma.MediaAssetUpsertWithoutHomepageSectionsAsSecondaryImageInput
+  disconnect?: Prisma.MediaAssetWhereInput | boolean
+  delete?: Prisma.MediaAssetWhereInput | boolean
+  connect?: Prisma.MediaAssetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUpdateWithoutHomepageSectionsAsSecondaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsSecondaryImageInput>
+}
+
+export type EnumMediaAssetKindFieldUpdateOperationsInput = {
+  set?: $Enums.MediaAssetKind
+}
+
+export type EnumMediaAssetStatusFieldUpdateOperationsInput = {
+  set?: $Enums.MediaAssetStatus
+}
+
+export type MediaAssetCreateNestedOneWithoutVariantsInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutVariantsInput, Prisma.MediaAssetUncheckedCreateWithoutVariantsInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutVariantsInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+}
+
+export type MediaAssetUpdateOneRequiredWithoutVariantsNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutVariantsInput, Prisma.MediaAssetUncheckedCreateWithoutVariantsInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutVariantsInput
+  upsert?: Prisma.MediaAssetUpsertWithoutVariantsInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutVariantsInput, Prisma.MediaAssetUpdateWithoutVariantsInput>, Prisma.MediaAssetUncheckedUpdateWithoutVariantsInput>
+}
+
+export type MediaAssetCreateNestedOneWithoutReferencesInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutReferencesInput, Prisma.MediaAssetUncheckedCreateWithoutReferencesInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutReferencesInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+}
+
+export type MediaAssetUpdateOneRequiredWithoutReferencesNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutReferencesInput, Prisma.MediaAssetUncheckedCreateWithoutReferencesInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutReferencesInput
+  upsert?: Prisma.MediaAssetUpsertWithoutReferencesInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutReferencesInput, Prisma.MediaAssetUpdateWithoutReferencesInput>, Prisma.MediaAssetUncheckedUpdateWithoutReferencesInput>
 }
 
 export type MediaAssetCreateWithoutCategoriesAsPrimaryImageInput = {
@@ -1798,430 +1790,6 @@ export type MediaAssetUncheckedUpdateWithoutCategoriesAsCoverImageInput = {
   references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
   socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
   categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetCreateWithoutVariantsInput = {
-  id?: string
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
-  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetUncheckedCreateWithoutVariantsInput = {
-  id?: string
-  storeId?: string | null
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetCreateOrConnectWithoutVariantsInput = {
-  where: Prisma.MediaAssetWhereUniqueInput
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutVariantsInput, Prisma.MediaAssetUncheckedCreateWithoutVariantsInput>
-}
-
-export type MediaAssetUpsertWithoutVariantsInput = {
-  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutVariantsInput, Prisma.MediaAssetUncheckedUpdateWithoutVariantsInput>
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutVariantsInput, Prisma.MediaAssetUncheckedCreateWithoutVariantsInput>
-  where?: Prisma.MediaAssetWhereInput
-}
-
-export type MediaAssetUpdateToOneWithWhereWithoutVariantsInput = {
-  where?: Prisma.MediaAssetWhereInput
-  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutVariantsInput, Prisma.MediaAssetUncheckedUpdateWithoutVariantsInput>
-}
-
-export type MediaAssetUpdateWithoutVariantsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
-  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetUncheckedUpdateWithoutVariantsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetCreateWithoutReferencesInput = {
-  id?: string
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
-  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetUncheckedCreateWithoutReferencesInput = {
-  id?: string
-  storeId?: string | null
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetCreateOrConnectWithoutReferencesInput = {
-  where: Prisma.MediaAssetWhereUniqueInput
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutReferencesInput, Prisma.MediaAssetUncheckedCreateWithoutReferencesInput>
-}
-
-export type MediaAssetUpsertWithoutReferencesInput = {
-  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutReferencesInput, Prisma.MediaAssetUncheckedUpdateWithoutReferencesInput>
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutReferencesInput, Prisma.MediaAssetUncheckedCreateWithoutReferencesInput>
-  where?: Prisma.MediaAssetWhereInput
-}
-
-export type MediaAssetUpdateToOneWithWhereWithoutReferencesInput = {
-  where?: Prisma.MediaAssetWhereInput
-  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutReferencesInput, Prisma.MediaAssetUncheckedUpdateWithoutReferencesInput>
-}
-
-export type MediaAssetUpdateWithoutReferencesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
-  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetUncheckedUpdateWithoutReferencesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
   productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
   productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
   pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
@@ -2660,1278 +2228,6 @@ export type MediaAssetUncheckedUpdateWithoutProductVariantsAsPrimaryImageInput =
   blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
   homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
   homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput = {
-  id?: string
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
-  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput = {
-  id?: string
-  storeId?: string | null
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetCreateOrConnectWithoutBlogCategoriesAsPrimaryImageInput = {
-  where: Prisma.MediaAssetWhereUniqueInput
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput>
-}
-
-export type MediaAssetCreateWithoutBlogCategoriesAsCoverImageInput = {
-  id?: string
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
-  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput = {
-  id?: string
-  storeId?: string | null
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetCreateOrConnectWithoutBlogCategoriesAsCoverImageInput = {
-  where: Prisma.MediaAssetWhereUniqueInput
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput>
-}
-
-export type MediaAssetUpsertWithoutBlogCategoriesAsPrimaryImageInput = {
-  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsPrimaryImageInput>
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput>
-  where?: Prisma.MediaAssetWhereInput
-}
-
-export type MediaAssetUpdateToOneWithWhereWithoutBlogCategoriesAsPrimaryImageInput = {
-  where?: Prisma.MediaAssetWhereInput
-  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsPrimaryImageInput>
-}
-
-export type MediaAssetUpdateWithoutBlogCategoriesAsPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
-  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetUncheckedUpdateWithoutBlogCategoriesAsPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetUpsertWithoutBlogCategoriesAsCoverImageInput = {
-  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsCoverImageInput>
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput>
-  where?: Prisma.MediaAssetWhereInput
-}
-
-export type MediaAssetUpdateToOneWithWhereWithoutBlogCategoriesAsCoverImageInput = {
-  where?: Prisma.MediaAssetWhereInput
-  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsCoverImageInput>
-}
-
-export type MediaAssetUpdateWithoutBlogCategoriesAsCoverImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
-  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetUncheckedUpdateWithoutBlogCategoriesAsCoverImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput = {
-  id?: string
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
-  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput = {
-  id?: string
-  storeId?: string | null
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetCreateOrConnectWithoutBlogPostsAsPrimaryImageInput = {
-  where: Prisma.MediaAssetWhereUniqueInput
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput>
-}
-
-export type MediaAssetCreateWithoutBlogPostsAsCoverImageInput = {
-  id?: string
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
-  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput = {
-  id?: string
-  storeId?: string | null
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetCreateOrConnectWithoutBlogPostsAsCoverImageInput = {
-  where: Prisma.MediaAssetWhereUniqueInput
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput>
-}
-
-export type MediaAssetUpsertWithoutBlogPostsAsPrimaryImageInput = {
-  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsPrimaryImageInput>
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput>
-  where?: Prisma.MediaAssetWhereInput
-}
-
-export type MediaAssetUpdateToOneWithWhereWithoutBlogPostsAsPrimaryImageInput = {
-  where?: Prisma.MediaAssetWhereInput
-  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsPrimaryImageInput>
-}
-
-export type MediaAssetUpdateWithoutBlogPostsAsPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
-  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetUncheckedUpdateWithoutBlogPostsAsPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetUpsertWithoutBlogPostsAsCoverImageInput = {
-  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsCoverImageInput>
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput>
-  where?: Prisma.MediaAssetWhereInput
-}
-
-export type MediaAssetUpdateToOneWithWhereWithoutBlogPostsAsCoverImageInput = {
-  where?: Prisma.MediaAssetWhereInput
-  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsCoverImageInput>
-}
-
-export type MediaAssetUpdateWithoutBlogPostsAsCoverImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
-  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetUncheckedUpdateWithoutBlogPostsAsCoverImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput = {
-  id?: string
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
-  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput = {
-  id?: string
-  storeId?: string | null
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetCreateOrConnectWithoutHomepageSectionsAsPrimaryImageInput = {
-  where: Prisma.MediaAssetWhereUniqueInput
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput>
-}
-
-export type MediaAssetCreateWithoutHomepageSectionsAsSecondaryImageInput = {
-  id?: string
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
-  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInput = {
-  id?: string
-  storeId?: string | null
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetCreateOrConnectWithoutHomepageSectionsAsSecondaryImageInput = {
-  where: Prisma.MediaAssetWhereUniqueInput
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInput>
-}
-
-export type MediaAssetUpsertWithoutHomepageSectionsAsPrimaryImageInput = {
-  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsPrimaryImageInput>
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput>
-  where?: Prisma.MediaAssetWhereInput
-}
-
-export type MediaAssetUpdateToOneWithWhereWithoutHomepageSectionsAsPrimaryImageInput = {
-  where?: Prisma.MediaAssetWhereInput
-  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsPrimaryImageInput>
-}
-
-export type MediaAssetUpdateWithoutHomepageSectionsAsPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
-  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetUncheckedUpdateWithoutHomepageSectionsAsPrimaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetUpsertWithoutHomepageSectionsAsSecondaryImageInput = {
-  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsSecondaryImageInput>
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInput>
-  where?: Prisma.MediaAssetWhereInput
-}
-
-export type MediaAssetUpdateToOneWithWhereWithoutHomepageSectionsAsSecondaryImageInput = {
-  where?: Prisma.MediaAssetWhereInput
-  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsSecondaryImageInput>
-}
-
-export type MediaAssetUpdateWithoutHomepageSectionsAsSecondaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
-  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
-  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
-  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
-}
-
-export type MediaAssetUncheckedUpdateWithoutHomepageSectionsAsSecondaryImageInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
-  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
-  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
-  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
-  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
   seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
   seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
@@ -5211,6 +3507,159 @@ export type MediaAssetUncheckedUpdateWithoutPageBlocksAsSecondaryImageInput = {
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
 }
 
+export type MediaAssetCreateWithoutStoreInput = {
+  id?: string
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetUncheckedCreateWithoutStoreInput = {
+  id?: string
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetCreateOrConnectWithoutStoreInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutStoreInput, Prisma.MediaAssetUncheckedCreateWithoutStoreInput>
+}
+
+export type MediaAssetCreateManyStoreInputEnvelope = {
+  data: Prisma.MediaAssetCreateManyStoreInput | Prisma.MediaAssetCreateManyStoreInput[]
+  skipDuplicates?: boolean
+}
+
+export type MediaAssetUpsertWithWhereUniqueWithoutStoreInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutStoreInput, Prisma.MediaAssetUncheckedUpdateWithoutStoreInput>
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutStoreInput, Prisma.MediaAssetUncheckedCreateWithoutStoreInput>
+}
+
+export type MediaAssetUpdateWithWhereUniqueWithoutStoreInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutStoreInput, Prisma.MediaAssetUncheckedUpdateWithoutStoreInput>
+}
+
+export type MediaAssetUpdateManyWithWhereWithoutStoreInput = {
+  where: Prisma.MediaAssetScalarWhereInput
+  data: Prisma.XOR<Prisma.MediaAssetUpdateManyMutationInput, Prisma.MediaAssetUncheckedUpdateManyWithoutStoreInput>
+}
+
+export type MediaAssetScalarWhereInput = {
+  AND?: Prisma.MediaAssetScalarWhereInput | Prisma.MediaAssetScalarWhereInput[]
+  OR?: Prisma.MediaAssetScalarWhereInput[]
+  NOT?: Prisma.MediaAssetScalarWhereInput | Prisma.MediaAssetScalarWhereInput[]
+  id?: Prisma.StringFilter<"MediaAsset"> | string
+  storeId?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
+  kind?: Prisma.EnumMediaAssetKindFilter<"MediaAsset"> | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFilter<"MediaAsset"> | $Enums.MediaAssetStatus
+  slug?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
+  title?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
+  altText?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
+  caption?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
+  description?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
+  originalFilename?: Prisma.StringFilter<"MediaAsset"> | string
+  mimeType?: Prisma.StringFilter<"MediaAsset"> | string
+  extension?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
+  storageKey?: Prisma.StringFilter<"MediaAsset"> | string
+  publicUrl?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
+  widthPx?: Prisma.IntNullableFilter<"MediaAsset"> | number | null
+  heightPx?: Prisma.IntNullableFilter<"MediaAsset"> | number | null
+  sizeBytes?: Prisma.IntNullableFilter<"MediaAsset"> | number | null
+  checksumSha256?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
+  isPublic?: Prisma.BoolFilter<"MediaAsset"> | boolean
+  publishedAt?: Prisma.DateTimeNullableFilter<"MediaAsset"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"MediaAsset"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"MediaAsset"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"MediaAsset"> | Date | string
+}
+
 export type MediaAssetCreateWithoutSeoOpenGraphForInput = {
   id?: string
   kind?: $Enums.MediaAssetKind
@@ -5635,159 +4084,6 @@ export type MediaAssetUncheckedUpdateWithoutSeoTwitterForInput = {
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
 }
 
-export type MediaAssetCreateWithoutStoreInput = {
-  id?: string
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetUncheckedCreateWithoutStoreInput = {
-  id?: string
-  kind?: $Enums.MediaAssetKind
-  status?: $Enums.MediaAssetStatus
-  slug?: string | null
-  title?: string | null
-  altText?: string | null
-  caption?: string | null
-  description?: string | null
-  originalFilename: string
-  mimeType: string
-  extension?: string | null
-  storageKey: string
-  publicUrl?: string | null
-  widthPx?: number | null
-  heightPx?: number | null
-  sizeBytes?: number | null
-  checksumSha256?: string | null
-  isPublic?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
-  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
-  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
-  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
-  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
-  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
-  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
-  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
-  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
-  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
-  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
-  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
-  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
-  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
-  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
-  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
-  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
-  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
-}
-
-export type MediaAssetCreateOrConnectWithoutStoreInput = {
-  where: Prisma.MediaAssetWhereUniqueInput
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutStoreInput, Prisma.MediaAssetUncheckedCreateWithoutStoreInput>
-}
-
-export type MediaAssetCreateManyStoreInputEnvelope = {
-  data: Prisma.MediaAssetCreateManyStoreInput | Prisma.MediaAssetCreateManyStoreInput[]
-  skipDuplicates?: boolean
-}
-
-export type MediaAssetUpsertWithWhereUniqueWithoutStoreInput = {
-  where: Prisma.MediaAssetWhereUniqueInput
-  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutStoreInput, Prisma.MediaAssetUncheckedUpdateWithoutStoreInput>
-  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutStoreInput, Prisma.MediaAssetUncheckedCreateWithoutStoreInput>
-}
-
-export type MediaAssetUpdateWithWhereUniqueWithoutStoreInput = {
-  where: Prisma.MediaAssetWhereUniqueInput
-  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutStoreInput, Prisma.MediaAssetUncheckedUpdateWithoutStoreInput>
-}
-
-export type MediaAssetUpdateManyWithWhereWithoutStoreInput = {
-  where: Prisma.MediaAssetScalarWhereInput
-  data: Prisma.XOR<Prisma.MediaAssetUpdateManyMutationInput, Prisma.MediaAssetUncheckedUpdateManyWithoutStoreInput>
-}
-
-export type MediaAssetScalarWhereInput = {
-  AND?: Prisma.MediaAssetScalarWhereInput | Prisma.MediaAssetScalarWhereInput[]
-  OR?: Prisma.MediaAssetScalarWhereInput[]
-  NOT?: Prisma.MediaAssetScalarWhereInput | Prisma.MediaAssetScalarWhereInput[]
-  id?: Prisma.StringFilter<"MediaAsset"> | string
-  storeId?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
-  kind?: Prisma.EnumMediaAssetKindFilter<"MediaAsset"> | $Enums.MediaAssetKind
-  status?: Prisma.EnumMediaAssetStatusFilter<"MediaAsset"> | $Enums.MediaAssetStatus
-  slug?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
-  title?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
-  altText?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
-  caption?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
-  description?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
-  originalFilename?: Prisma.StringFilter<"MediaAsset"> | string
-  mimeType?: Prisma.StringFilter<"MediaAsset"> | string
-  extension?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
-  storageKey?: Prisma.StringFilter<"MediaAsset"> | string
-  publicUrl?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
-  widthPx?: Prisma.IntNullableFilter<"MediaAsset"> | number | null
-  heightPx?: Prisma.IntNullableFilter<"MediaAsset"> | number | null
-  sizeBytes?: Prisma.IntNullableFilter<"MediaAsset"> | number | null
-  checksumSha256?: Prisma.StringNullableFilter<"MediaAsset"> | string | null
-  isPublic?: Prisma.BoolFilter<"MediaAsset"> | boolean
-  publishedAt?: Prisma.DateTimeNullableFilter<"MediaAsset"> | Date | string | null
-  archivedAt?: Prisma.DateTimeNullableFilter<"MediaAsset"> | Date | string | null
-  createdAt?: Prisma.DateTimeFilter<"MediaAsset"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"MediaAsset"> | Date | string
-}
-
 export type MediaAssetCreateWithoutBundlesAsPrimaryImageInput = {
   id?: string
   kind?: $Enums.MediaAssetKind
@@ -5998,6 +4294,854 @@ export type MediaAssetUncheckedUpdateWithoutBundlesAsPrimaryImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
+}
+
+export type MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput = {
+  id?: string
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
+  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput = {
+  id?: string
+  storeId?: string | null
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetCreateOrConnectWithoutBlogCategoriesAsPrimaryImageInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput>
+}
+
+export type MediaAssetCreateWithoutBlogCategoriesAsCoverImageInput = {
+  id?: string
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
+  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput = {
+  id?: string
+  storeId?: string | null
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetCreateOrConnectWithoutBlogCategoriesAsCoverImageInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput>
+}
+
+export type MediaAssetUpsertWithoutBlogCategoriesAsPrimaryImageInput = {
+  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsPrimaryImageInput>
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput>
+  where?: Prisma.MediaAssetWhereInput
+}
+
+export type MediaAssetUpdateToOneWithWhereWithoutBlogCategoriesAsPrimaryImageInput = {
+  where?: Prisma.MediaAssetWhereInput
+  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogCategoriesAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsPrimaryImageInput>
+}
+
+export type MediaAssetUpdateWithoutBlogCategoriesAsPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
+  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUncheckedUpdateWithoutBlogCategoriesAsPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUpsertWithoutBlogCategoriesAsCoverImageInput = {
+  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsCoverImageInput>
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput>
+  where?: Prisma.MediaAssetWhereInput
+}
+
+export type MediaAssetUpdateToOneWithWhereWithoutBlogCategoriesAsCoverImageInput = {
+  where?: Prisma.MediaAssetWhereInput
+  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogCategoriesAsCoverImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogCategoriesAsCoverImageInput>
+}
+
+export type MediaAssetUpdateWithoutBlogCategoriesAsCoverImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
+  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUncheckedUpdateWithoutBlogCategoriesAsCoverImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput = {
+  id?: string
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
+  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput = {
+  id?: string
+  storeId?: string | null
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetCreateOrConnectWithoutBlogPostsAsPrimaryImageInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput>
+}
+
+export type MediaAssetCreateWithoutBlogPostsAsCoverImageInput = {
+  id?: string
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
+  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput = {
+  id?: string
+  storeId?: string | null
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetCreateOrConnectWithoutBlogPostsAsCoverImageInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput>
+}
+
+export type MediaAssetUpsertWithoutBlogPostsAsPrimaryImageInput = {
+  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsPrimaryImageInput>
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput>
+  where?: Prisma.MediaAssetWhereInput
+}
+
+export type MediaAssetUpdateToOneWithWhereWithoutBlogPostsAsPrimaryImageInput = {
+  where?: Prisma.MediaAssetWhereInput
+  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogPostsAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsPrimaryImageInput>
+}
+
+export type MediaAssetUpdateWithoutBlogPostsAsPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
+  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUncheckedUpdateWithoutBlogPostsAsPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUpsertWithoutBlogPostsAsCoverImageInput = {
+  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsCoverImageInput>
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput>
+  where?: Prisma.MediaAssetWhereInput
+}
+
+export type MediaAssetUpdateToOneWithWhereWithoutBlogPostsAsCoverImageInput = {
+  where?: Prisma.MediaAssetWhereInput
+  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutBlogPostsAsCoverImageInput, Prisma.MediaAssetUncheckedUpdateWithoutBlogPostsAsCoverImageInput>
+}
+
+export type MediaAssetUpdateWithoutBlogPostsAsCoverImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
+  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUncheckedUpdateWithoutBlogPostsAsCoverImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
 }
 
 export type MediaAssetCreateWithoutPublicEventsAsPrimaryImageInput = {
@@ -6613,6 +5757,854 @@ export type MediaAssetUncheckedUpdateWithoutSocialPublicationAssetsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
   references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput = {
+  id?: string
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
+  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput = {
+  id?: string
+  storeId?: string | null
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetCreateOrConnectWithoutHomepageSectionsAsPrimaryImageInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput>
+}
+
+export type MediaAssetCreateWithoutHomepageSectionsAsSecondaryImageInput = {
+  id?: string
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
+  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInput = {
+  id?: string
+  storeId?: string | null
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetCreateOrConnectWithoutHomepageSectionsAsSecondaryImageInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInput>
+}
+
+export type MediaAssetUpsertWithoutHomepageSectionsAsPrimaryImageInput = {
+  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsPrimaryImageInput>
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput>
+  where?: Prisma.MediaAssetWhereInput
+}
+
+export type MediaAssetUpdateToOneWithWhereWithoutHomepageSectionsAsPrimaryImageInput = {
+  where?: Prisma.MediaAssetWhereInput
+  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutHomepageSectionsAsPrimaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsPrimaryImageInput>
+}
+
+export type MediaAssetUpdateWithoutHomepageSectionsAsPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
+  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUncheckedUpdateWithoutHomepageSectionsAsPrimaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUpsertWithoutHomepageSectionsAsSecondaryImageInput = {
+  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsSecondaryImageInput>
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInput>
+  where?: Prisma.MediaAssetWhereInput
+}
+
+export type MediaAssetUpdateToOneWithWhereWithoutHomepageSectionsAsSecondaryImageInput = {
+  where?: Prisma.MediaAssetWhereInput
+  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutHomepageSectionsAsSecondaryImageInput, Prisma.MediaAssetUncheckedUpdateWithoutHomepageSectionsAsSecondaryImageInput>
+}
+
+export type MediaAssetUpdateWithoutHomepageSectionsAsSecondaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
+  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUncheckedUpdateWithoutHomepageSectionsAsSecondaryImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetCreateWithoutVariantsInput = {
+  id?: string
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
+  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetUncheckedCreateWithoutVariantsInput = {
+  id?: string
+  storeId?: string | null
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetCreateOrConnectWithoutVariantsInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutVariantsInput, Prisma.MediaAssetUncheckedCreateWithoutVariantsInput>
+}
+
+export type MediaAssetUpsertWithoutVariantsInput = {
+  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutVariantsInput, Prisma.MediaAssetUncheckedUpdateWithoutVariantsInput>
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutVariantsInput, Prisma.MediaAssetUncheckedCreateWithoutVariantsInput>
+  where?: Prisma.MediaAssetWhereInput
+}
+
+export type MediaAssetUpdateToOneWithWhereWithoutVariantsInput = {
+  where?: Prisma.MediaAssetWhereInput
+  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutVariantsInput, Prisma.MediaAssetUncheckedUpdateWithoutVariantsInput>
+}
+
+export type MediaAssetUpdateWithoutVariantsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
+  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUncheckedUpdateWithoutVariantsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetCreateWithoutReferencesInput = {
+  id?: string
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
+  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetUncheckedCreateWithoutReferencesInput = {
+  id?: string
+  storeId?: string | null
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetCreateOrConnectWithoutReferencesInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutReferencesInput, Prisma.MediaAssetUncheckedCreateWithoutReferencesInput>
+}
+
+export type MediaAssetUpsertWithoutReferencesInput = {
+  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutReferencesInput, Prisma.MediaAssetUncheckedUpdateWithoutReferencesInput>
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutReferencesInput, Prisma.MediaAssetUncheckedCreateWithoutReferencesInput>
+  where?: Prisma.MediaAssetWhereInput
+}
+
+export type MediaAssetUpdateToOneWithWhereWithoutReferencesInput = {
+  where?: Prisma.MediaAssetWhereInput
+  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutReferencesInput, Prisma.MediaAssetUncheckedUpdateWithoutReferencesInput>
+}
+
+export type MediaAssetUpdateWithoutReferencesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
+  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUncheckedUpdateWithoutReferencesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
   categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
   categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
   productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput

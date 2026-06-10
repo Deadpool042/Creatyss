@@ -33,6 +33,7 @@ export const adminNavigationCapabilities = {
     paymentsRead: "admin.settings.payments.read",
     shippingRead: "admin.settings.shipping.read",
     ordersRead: "admin.settings.orders.read",
+    ordersWrite: "admin.settings.orders.write",
     catalogRead: "admin.settings.catalog.read",
     mediaRead: "admin.settings.media.read",
     seoRead: "admin.settings.seo.read",

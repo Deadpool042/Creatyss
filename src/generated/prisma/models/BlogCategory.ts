@@ -631,6 +631,66 @@ export type BlogCategoryScalarRelationFilter = {
   isNot?: Prisma.BlogCategoryWhereInput
 }
 
+export type BlogCategoryCreateNestedManyWithoutStoreInput = {
+  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput> | Prisma.BlogCategoryCreateWithoutStoreInput[] | Prisma.BlogCategoryUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutStoreInput | Prisma.BlogCategoryCreateOrConnectWithoutStoreInput[]
+  createMany?: Prisma.BlogCategoryCreateManyStoreInputEnvelope
+  connect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+}
+
+export type BlogCategoryUncheckedCreateNestedManyWithoutStoreInput = {
+  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput> | Prisma.BlogCategoryCreateWithoutStoreInput[] | Prisma.BlogCategoryUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutStoreInput | Prisma.BlogCategoryCreateOrConnectWithoutStoreInput[]
+  createMany?: Prisma.BlogCategoryCreateManyStoreInputEnvelope
+  connect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+}
+
+export type BlogCategoryUpdateManyWithoutStoreNestedInput = {
+  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput> | Prisma.BlogCategoryCreateWithoutStoreInput[] | Prisma.BlogCategoryUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutStoreInput | Prisma.BlogCategoryCreateOrConnectWithoutStoreInput[]
+  upsert?: Prisma.BlogCategoryUpsertWithWhereUniqueWithoutStoreInput | Prisma.BlogCategoryUpsertWithWhereUniqueWithoutStoreInput[]
+  createMany?: Prisma.BlogCategoryCreateManyStoreInputEnvelope
+  set?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+  disconnect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+  delete?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+  connect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+  update?: Prisma.BlogCategoryUpdateWithWhereUniqueWithoutStoreInput | Prisma.BlogCategoryUpdateWithWhereUniqueWithoutStoreInput[]
+  updateMany?: Prisma.BlogCategoryUpdateManyWithWhereWithoutStoreInput | Prisma.BlogCategoryUpdateManyWithWhereWithoutStoreInput[]
+  deleteMany?: Prisma.BlogCategoryScalarWhereInput | Prisma.BlogCategoryScalarWhereInput[]
+}
+
+export type BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput = {
+  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput> | Prisma.BlogCategoryCreateWithoutStoreInput[] | Prisma.BlogCategoryUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutStoreInput | Prisma.BlogCategoryCreateOrConnectWithoutStoreInput[]
+  upsert?: Prisma.BlogCategoryUpsertWithWhereUniqueWithoutStoreInput | Prisma.BlogCategoryUpsertWithWhereUniqueWithoutStoreInput[]
+  createMany?: Prisma.BlogCategoryCreateManyStoreInputEnvelope
+  set?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+  disconnect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+  delete?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+  connect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+  update?: Prisma.BlogCategoryUpdateWithWhereUniqueWithoutStoreInput | Prisma.BlogCategoryUpdateWithWhereUniqueWithoutStoreInput[]
+  updateMany?: Prisma.BlogCategoryUpdateManyWithWhereWithoutStoreInput | Prisma.BlogCategoryUpdateManyWithWhereWithoutStoreInput[]
+  deleteMany?: Prisma.BlogCategoryScalarWhereInput | Prisma.BlogCategoryScalarWhereInput[]
+}
+
+export type EnumBlogCategoryStatusFieldUpdateOperationsInput = {
+  set?: $Enums.BlogCategoryStatus
+}
+
+export type BlogCategoryCreateNestedOneWithoutPostLinksInput = {
+  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedCreateWithoutPostLinksInput>
+  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutPostLinksInput
+  connect?: Prisma.BlogCategoryWhereUniqueInput
+}
+
+export type BlogCategoryUpdateOneRequiredWithoutPostLinksNestedInput = {
+  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedCreateWithoutPostLinksInput>
+  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutPostLinksInput
+  upsert?: Prisma.BlogCategoryUpsertWithoutPostLinksInput
+  connect?: Prisma.BlogCategoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BlogCategoryUpdateToOneWithWhereWithoutPostLinksInput, Prisma.BlogCategoryUpdateWithoutPostLinksInput>, Prisma.BlogCategoryUncheckedUpdateWithoutPostLinksInput>
+}
+
 export type BlogCategoryCreateNestedManyWithoutPrimaryImageInput = {
   create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutPrimaryImageInput, Prisma.BlogCategoryUncheckedCreateWithoutPrimaryImageInput> | Prisma.BlogCategoryCreateWithoutPrimaryImageInput[] | Prisma.BlogCategoryUncheckedCreateWithoutPrimaryImageInput[]
   connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutPrimaryImageInput | Prisma.BlogCategoryCreateOrConnectWithoutPrimaryImageInput[]
@@ -715,64 +775,182 @@ export type BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput = {
   deleteMany?: Prisma.BlogCategoryScalarWhereInput | Prisma.BlogCategoryScalarWhereInput[]
 }
 
-export type EnumBlogCategoryStatusFieldUpdateOperationsInput = {
-  set?: $Enums.BlogCategoryStatus
+export type BlogCategoryCreateWithoutStoreInput = {
+  id?: string
+  code: string
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.BlogCategoryStatus
+  sortOrder?: number
+  isFeatured?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutBlogCategoriesAsPrimaryImageInput
+  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutBlogCategoriesAsCoverImageInput
+  postLinks?: Prisma.BlogPostCategoryCreateNestedManyWithoutBlogCategoryInput
 }
 
-export type BlogCategoryCreateNestedOneWithoutPostLinksInput = {
-  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedCreateWithoutPostLinksInput>
-  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutPostLinksInput
-  connect?: Prisma.BlogCategoryWhereUniqueInput
+export type BlogCategoryUncheckedCreateWithoutStoreInput = {
+  id?: string
+  code: string
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.BlogCategoryStatus
+  sortOrder?: number
+  isFeatured?: boolean
+  primaryImageId?: string | null
+  coverImageId?: string | null
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  postLinks?: Prisma.BlogPostCategoryUncheckedCreateNestedManyWithoutBlogCategoryInput
 }
 
-export type BlogCategoryUpdateOneRequiredWithoutPostLinksNestedInput = {
-  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedCreateWithoutPostLinksInput>
-  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutPostLinksInput
-  upsert?: Prisma.BlogCategoryUpsertWithoutPostLinksInput
-  connect?: Prisma.BlogCategoryWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.BlogCategoryUpdateToOneWithWhereWithoutPostLinksInput, Prisma.BlogCategoryUpdateWithoutPostLinksInput>, Prisma.BlogCategoryUncheckedUpdateWithoutPostLinksInput>
+export type BlogCategoryCreateOrConnectWithoutStoreInput = {
+  where: Prisma.BlogCategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput>
 }
 
-export type BlogCategoryCreateNestedManyWithoutStoreInput = {
-  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput> | Prisma.BlogCategoryCreateWithoutStoreInput[] | Prisma.BlogCategoryUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutStoreInput | Prisma.BlogCategoryCreateOrConnectWithoutStoreInput[]
-  createMany?: Prisma.BlogCategoryCreateManyStoreInputEnvelope
-  connect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+export type BlogCategoryCreateManyStoreInputEnvelope = {
+  data: Prisma.BlogCategoryCreateManyStoreInput | Prisma.BlogCategoryCreateManyStoreInput[]
+  skipDuplicates?: boolean
 }
 
-export type BlogCategoryUncheckedCreateNestedManyWithoutStoreInput = {
-  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput> | Prisma.BlogCategoryCreateWithoutStoreInput[] | Prisma.BlogCategoryUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutStoreInput | Prisma.BlogCategoryCreateOrConnectWithoutStoreInput[]
-  createMany?: Prisma.BlogCategoryCreateManyStoreInputEnvelope
-  connect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
+export type BlogCategoryUpsertWithWhereUniqueWithoutStoreInput = {
+  where: Prisma.BlogCategoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.BlogCategoryUpdateWithoutStoreInput, Prisma.BlogCategoryUncheckedUpdateWithoutStoreInput>
+  create: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput>
 }
 
-export type BlogCategoryUpdateManyWithoutStoreNestedInput = {
-  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput> | Prisma.BlogCategoryCreateWithoutStoreInput[] | Prisma.BlogCategoryUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutStoreInput | Prisma.BlogCategoryCreateOrConnectWithoutStoreInput[]
-  upsert?: Prisma.BlogCategoryUpsertWithWhereUniqueWithoutStoreInput | Prisma.BlogCategoryUpsertWithWhereUniqueWithoutStoreInput[]
-  createMany?: Prisma.BlogCategoryCreateManyStoreInputEnvelope
-  set?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
-  disconnect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
-  delete?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
-  connect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
-  update?: Prisma.BlogCategoryUpdateWithWhereUniqueWithoutStoreInput | Prisma.BlogCategoryUpdateWithWhereUniqueWithoutStoreInput[]
-  updateMany?: Prisma.BlogCategoryUpdateManyWithWhereWithoutStoreInput | Prisma.BlogCategoryUpdateManyWithWhereWithoutStoreInput[]
-  deleteMany?: Prisma.BlogCategoryScalarWhereInput | Prisma.BlogCategoryScalarWhereInput[]
+export type BlogCategoryUpdateWithWhereUniqueWithoutStoreInput = {
+  where: Prisma.BlogCategoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.BlogCategoryUpdateWithoutStoreInput, Prisma.BlogCategoryUncheckedUpdateWithoutStoreInput>
 }
 
-export type BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput = {
-  create?: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput> | Prisma.BlogCategoryCreateWithoutStoreInput[] | Prisma.BlogCategoryUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.BlogCategoryCreateOrConnectWithoutStoreInput | Prisma.BlogCategoryCreateOrConnectWithoutStoreInput[]
-  upsert?: Prisma.BlogCategoryUpsertWithWhereUniqueWithoutStoreInput | Prisma.BlogCategoryUpsertWithWhereUniqueWithoutStoreInput[]
-  createMany?: Prisma.BlogCategoryCreateManyStoreInputEnvelope
-  set?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
-  disconnect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
-  delete?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
-  connect?: Prisma.BlogCategoryWhereUniqueInput | Prisma.BlogCategoryWhereUniqueInput[]
-  update?: Prisma.BlogCategoryUpdateWithWhereUniqueWithoutStoreInput | Prisma.BlogCategoryUpdateWithWhereUniqueWithoutStoreInput[]
-  updateMany?: Prisma.BlogCategoryUpdateManyWithWhereWithoutStoreInput | Prisma.BlogCategoryUpdateManyWithWhereWithoutStoreInput[]
-  deleteMany?: Prisma.BlogCategoryScalarWhereInput | Prisma.BlogCategoryScalarWhereInput[]
+export type BlogCategoryUpdateManyWithWhereWithoutStoreInput = {
+  where: Prisma.BlogCategoryScalarWhereInput
+  data: Prisma.XOR<Prisma.BlogCategoryUpdateManyMutationInput, Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreInput>
+}
+
+export type BlogCategoryScalarWhereInput = {
+  AND?: Prisma.BlogCategoryScalarWhereInput | Prisma.BlogCategoryScalarWhereInput[]
+  OR?: Prisma.BlogCategoryScalarWhereInput[]
+  NOT?: Prisma.BlogCategoryScalarWhereInput | Prisma.BlogCategoryScalarWhereInput[]
+  id?: Prisma.StringFilter<"BlogCategory"> | string
+  storeId?: Prisma.StringFilter<"BlogCategory"> | string
+  code?: Prisma.StringFilter<"BlogCategory"> | string
+  slug?: Prisma.StringFilter<"BlogCategory"> | string
+  name?: Prisma.StringFilter<"BlogCategory"> | string
+  shortDescription?: Prisma.StringNullableFilter<"BlogCategory"> | string | null
+  description?: Prisma.StringNullableFilter<"BlogCategory"> | string | null
+  status?: Prisma.EnumBlogCategoryStatusFilter<"BlogCategory"> | $Enums.BlogCategoryStatus
+  sortOrder?: Prisma.IntFilter<"BlogCategory"> | number
+  isFeatured?: Prisma.BoolFilter<"BlogCategory"> | boolean
+  primaryImageId?: Prisma.StringNullableFilter<"BlogCategory"> | string | null
+  coverImageId?: Prisma.StringNullableFilter<"BlogCategory"> | string | null
+  publishedAt?: Prisma.DateTimeNullableFilter<"BlogCategory"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"BlogCategory"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"BlogCategory"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"BlogCategory"> | Date | string
+}
+
+export type BlogCategoryCreateWithoutPostLinksInput = {
+  id?: string
+  code: string
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.BlogCategoryStatus
+  sortOrder?: number
+  isFeatured?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutBlogCategoriesInput
+  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutBlogCategoriesAsPrimaryImageInput
+  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutBlogCategoriesAsCoverImageInput
+}
+
+export type BlogCategoryUncheckedCreateWithoutPostLinksInput = {
+  id?: string
+  storeId: string
+  code: string
+  slug: string
+  name: string
+  shortDescription?: string | null
+  description?: string | null
+  status?: $Enums.BlogCategoryStatus
+  sortOrder?: number
+  isFeatured?: boolean
+  primaryImageId?: string | null
+  coverImageId?: string | null
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type BlogCategoryCreateOrConnectWithoutPostLinksInput = {
+  where: Prisma.BlogCategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.BlogCategoryCreateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedCreateWithoutPostLinksInput>
+}
+
+export type BlogCategoryUpsertWithoutPostLinksInput = {
+  update: Prisma.XOR<Prisma.BlogCategoryUpdateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedUpdateWithoutPostLinksInput>
+  create: Prisma.XOR<Prisma.BlogCategoryCreateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedCreateWithoutPostLinksInput>
+  where?: Prisma.BlogCategoryWhereInput
+}
+
+export type BlogCategoryUpdateToOneWithWhereWithoutPostLinksInput = {
+  where?: Prisma.BlogCategoryWhereInput
+  data: Prisma.XOR<Prisma.BlogCategoryUpdateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedUpdateWithoutPostLinksInput>
+}
+
+export type BlogCategoryUpdateWithoutPostLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBlogCategoryStatusFieldUpdateOperationsInput | $Enums.BlogCategoryStatus
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneRequiredWithoutBlogCategoriesNestedInput
+  primaryImage?: Prisma.MediaAssetUpdateOneWithoutBlogCategoriesAsPrimaryImageNestedInput
+  coverImage?: Prisma.MediaAssetUpdateOneWithoutBlogCategoriesAsCoverImageNestedInput
+}
+
+export type BlogCategoryUncheckedUpdateWithoutPostLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBlogCategoryStatusFieldUpdateOperationsInput | $Enums.BlogCategoryStatus
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BlogCategoryCreateWithoutPrimaryImageInput = {
@@ -887,28 +1065,6 @@ export type BlogCategoryUpdateManyWithWhereWithoutPrimaryImageInput = {
   data: Prisma.XOR<Prisma.BlogCategoryUpdateManyMutationInput, Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageInput>
 }
 
-export type BlogCategoryScalarWhereInput = {
-  AND?: Prisma.BlogCategoryScalarWhereInput | Prisma.BlogCategoryScalarWhereInput[]
-  OR?: Prisma.BlogCategoryScalarWhereInput[]
-  NOT?: Prisma.BlogCategoryScalarWhereInput | Prisma.BlogCategoryScalarWhereInput[]
-  id?: Prisma.StringFilter<"BlogCategory"> | string
-  storeId?: Prisma.StringFilter<"BlogCategory"> | string
-  code?: Prisma.StringFilter<"BlogCategory"> | string
-  slug?: Prisma.StringFilter<"BlogCategory"> | string
-  name?: Prisma.StringFilter<"BlogCategory"> | string
-  shortDescription?: Prisma.StringNullableFilter<"BlogCategory"> | string | null
-  description?: Prisma.StringNullableFilter<"BlogCategory"> | string | null
-  status?: Prisma.EnumBlogCategoryStatusFilter<"BlogCategory"> | $Enums.BlogCategoryStatus
-  sortOrder?: Prisma.IntFilter<"BlogCategory"> | number
-  isFeatured?: Prisma.BoolFilter<"BlogCategory"> | boolean
-  primaryImageId?: Prisma.StringNullableFilter<"BlogCategory"> | string | null
-  coverImageId?: Prisma.StringNullableFilter<"BlogCategory"> | string | null
-  publishedAt?: Prisma.DateTimeNullableFilter<"BlogCategory"> | Date | string | null
-  archivedAt?: Prisma.DateTimeNullableFilter<"BlogCategory"> | Date | string | null
-  createdAt?: Prisma.DateTimeFilter<"BlogCategory"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"BlogCategory"> | Date | string
-}
-
 export type BlogCategoryUpsertWithWhereUniqueWithoutCoverImageInput = {
   where: Prisma.BlogCategoryWhereUniqueInput
   update: Prisma.XOR<Prisma.BlogCategoryUpdateWithoutCoverImageInput, Prisma.BlogCategoryUncheckedUpdateWithoutCoverImageInput>
@@ -925,28 +1081,8 @@ export type BlogCategoryUpdateManyWithWhereWithoutCoverImageInput = {
   data: Prisma.XOR<Prisma.BlogCategoryUpdateManyMutationInput, Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageInput>
 }
 
-export type BlogCategoryCreateWithoutPostLinksInput = {
+export type BlogCategoryCreateManyStoreInput = {
   id?: string
-  code: string
-  slug: string
-  name: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.BlogCategoryStatus
-  sortOrder?: number
-  isFeatured?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store: Prisma.StoreCreateNestedOneWithoutBlogCategoriesInput
-  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutBlogCategoriesAsPrimaryImageInput
-  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutBlogCategoriesAsCoverImageInput
-}
-
-export type BlogCategoryUncheckedCreateWithoutPostLinksInput = {
-  id?: string
-  storeId: string
   code: string
   slug: string
   name: string
@@ -963,23 +1099,7 @@ export type BlogCategoryUncheckedCreateWithoutPostLinksInput = {
   updatedAt?: Date | string
 }
 
-export type BlogCategoryCreateOrConnectWithoutPostLinksInput = {
-  where: Prisma.BlogCategoryWhereUniqueInput
-  create: Prisma.XOR<Prisma.BlogCategoryCreateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedCreateWithoutPostLinksInput>
-}
-
-export type BlogCategoryUpsertWithoutPostLinksInput = {
-  update: Prisma.XOR<Prisma.BlogCategoryUpdateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedUpdateWithoutPostLinksInput>
-  create: Prisma.XOR<Prisma.BlogCategoryCreateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedCreateWithoutPostLinksInput>
-  where?: Prisma.BlogCategoryWhereInput
-}
-
-export type BlogCategoryUpdateToOneWithWhereWithoutPostLinksInput = {
-  where?: Prisma.BlogCategoryWhereInput
-  data: Prisma.XOR<Prisma.BlogCategoryUpdateWithoutPostLinksInput, Prisma.BlogCategoryUncheckedUpdateWithoutPostLinksInput>
-}
-
-export type BlogCategoryUpdateWithoutPostLinksInput = {
+export type BlogCategoryUpdateWithoutStoreInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -993,14 +1113,13 @@ export type BlogCategoryUpdateWithoutPostLinksInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  store?: Prisma.StoreUpdateOneRequiredWithoutBlogCategoriesNestedInput
   primaryImage?: Prisma.MediaAssetUpdateOneWithoutBlogCategoriesAsPrimaryImageNestedInput
   coverImage?: Prisma.MediaAssetUpdateOneWithoutBlogCategoriesAsCoverImageNestedInput
+  postLinks?: Prisma.BlogPostCategoryUpdateManyWithoutBlogCategoryNestedInput
 }
 
-export type BlogCategoryUncheckedUpdateWithoutPostLinksInput = {
+export type BlogCategoryUncheckedUpdateWithoutStoreInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  storeId?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1015,70 +1134,25 @@ export type BlogCategoryUncheckedUpdateWithoutPostLinksInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  postLinks?: Prisma.BlogPostCategoryUncheckedUpdateManyWithoutBlogCategoryNestedInput
 }
 
-export type BlogCategoryCreateWithoutStoreInput = {
-  id?: string
-  code: string
-  slug: string
-  name: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.BlogCategoryStatus
-  sortOrder?: number
-  isFeatured?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutBlogCategoriesAsPrimaryImageInput
-  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutBlogCategoriesAsCoverImageInput
-  postLinks?: Prisma.BlogPostCategoryCreateNestedManyWithoutBlogCategoryInput
-}
-
-export type BlogCategoryUncheckedCreateWithoutStoreInput = {
-  id?: string
-  code: string
-  slug: string
-  name: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.BlogCategoryStatus
-  sortOrder?: number
-  isFeatured?: boolean
-  primaryImageId?: string | null
-  coverImageId?: string | null
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  postLinks?: Prisma.BlogPostCategoryUncheckedCreateNestedManyWithoutBlogCategoryInput
-}
-
-export type BlogCategoryCreateOrConnectWithoutStoreInput = {
-  where: Prisma.BlogCategoryWhereUniqueInput
-  create: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput>
-}
-
-export type BlogCategoryCreateManyStoreInputEnvelope = {
-  data: Prisma.BlogCategoryCreateManyStoreInput | Prisma.BlogCategoryCreateManyStoreInput[]
-  skipDuplicates?: boolean
-}
-
-export type BlogCategoryUpsertWithWhereUniqueWithoutStoreInput = {
-  where: Prisma.BlogCategoryWhereUniqueInput
-  update: Prisma.XOR<Prisma.BlogCategoryUpdateWithoutStoreInput, Prisma.BlogCategoryUncheckedUpdateWithoutStoreInput>
-  create: Prisma.XOR<Prisma.BlogCategoryCreateWithoutStoreInput, Prisma.BlogCategoryUncheckedCreateWithoutStoreInput>
-}
-
-export type BlogCategoryUpdateWithWhereUniqueWithoutStoreInput = {
-  where: Prisma.BlogCategoryWhereUniqueInput
-  data: Prisma.XOR<Prisma.BlogCategoryUpdateWithoutStoreInput, Prisma.BlogCategoryUncheckedUpdateWithoutStoreInput>
-}
-
-export type BlogCategoryUpdateManyWithWhereWithoutStoreInput = {
-  where: Prisma.BlogCategoryScalarWhereInput
-  data: Prisma.XOR<Prisma.BlogCategoryUpdateManyMutationInput, Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreInput>
+export type BlogCategoryUncheckedUpdateManyWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBlogCategoryStatusFieldUpdateOperationsInput | $Enums.BlogCategoryStatus
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type BlogCategoryCreateManyPrimaryImageInput = {
@@ -1223,80 +1297,6 @@ export type BlogCategoryUncheckedUpdateManyWithoutCoverImageInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type BlogCategoryCreateManyStoreInput = {
-  id?: string
-  code: string
-  slug: string
-  name: string
-  shortDescription?: string | null
-  description?: string | null
-  status?: $Enums.BlogCategoryStatus
-  sortOrder?: number
-  isFeatured?: boolean
-  primaryImageId?: string | null
-  coverImageId?: string | null
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type BlogCategoryUpdateWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumBlogCategoryStatusFieldUpdateOperationsInput | $Enums.BlogCategoryStatus
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  primaryImage?: Prisma.MediaAssetUpdateOneWithoutBlogCategoriesAsPrimaryImageNestedInput
-  coverImage?: Prisma.MediaAssetUpdateOneWithoutBlogCategoriesAsCoverImageNestedInput
-  postLinks?: Prisma.BlogPostCategoryUpdateManyWithoutBlogCategoryNestedInput
-}
-
-export type BlogCategoryUncheckedUpdateWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumBlogCategoryStatusFieldUpdateOperationsInput | $Enums.BlogCategoryStatus
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  postLinks?: Prisma.BlogPostCategoryUncheckedUpdateManyWithoutBlogCategoryNestedInput
-}
-
-export type BlogCategoryUncheckedUpdateManyWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumBlogCategoryStatusFieldUpdateOperationsInput | $Enums.BlogCategoryStatus
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string

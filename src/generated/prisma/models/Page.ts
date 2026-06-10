@@ -486,16 +486,6 @@ export type PageUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PageListRelationFilter = {
-  every?: Prisma.PageWhereInput
-  some?: Prisma.PageWhereInput
-  none?: Prisma.PageWhereInput
-}
-
-export type PageOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type PageStoreIdCodeCompoundUniqueInput = {
   storeId: string
   code: string
@@ -563,6 +553,76 @@ export type PageMinOrderByAggregateInput = {
 export type PageScalarRelationFilter = {
   is?: Prisma.PageWhereInput
   isNot?: Prisma.PageWhereInput
+}
+
+export type PageListRelationFilter = {
+  every?: Prisma.PageWhereInput
+  some?: Prisma.PageWhereInput
+  none?: Prisma.PageWhereInput
+}
+
+export type PageOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type EnumPageStatusFieldUpdateOperationsInput = {
+  set?: $Enums.PageStatus
+}
+
+export type PageCreateNestedOneWithoutSectionsInput = {
+  create?: Prisma.XOR<Prisma.PageCreateWithoutSectionsInput, Prisma.PageUncheckedCreateWithoutSectionsInput>
+  connectOrCreate?: Prisma.PageCreateOrConnectWithoutSectionsInput
+  connect?: Prisma.PageWhereUniqueInput
+}
+
+export type PageUpdateOneRequiredWithoutSectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.PageCreateWithoutSectionsInput, Prisma.PageUncheckedCreateWithoutSectionsInput>
+  connectOrCreate?: Prisma.PageCreateOrConnectWithoutSectionsInput
+  upsert?: Prisma.PageUpsertWithoutSectionsInput
+  connect?: Prisma.PageWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PageUpdateToOneWithWhereWithoutSectionsInput, Prisma.PageUpdateWithoutSectionsInput>, Prisma.PageUncheckedUpdateWithoutSectionsInput>
+}
+
+export type PageCreateNestedManyWithoutStoreInput = {
+  create?: Prisma.XOR<Prisma.PageCreateWithoutStoreInput, Prisma.PageUncheckedCreateWithoutStoreInput> | Prisma.PageCreateWithoutStoreInput[] | Prisma.PageUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.PageCreateOrConnectWithoutStoreInput | Prisma.PageCreateOrConnectWithoutStoreInput[]
+  createMany?: Prisma.PageCreateManyStoreInputEnvelope
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
+}
+
+export type PageUncheckedCreateNestedManyWithoutStoreInput = {
+  create?: Prisma.XOR<Prisma.PageCreateWithoutStoreInput, Prisma.PageUncheckedCreateWithoutStoreInput> | Prisma.PageCreateWithoutStoreInput[] | Prisma.PageUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.PageCreateOrConnectWithoutStoreInput | Prisma.PageCreateOrConnectWithoutStoreInput[]
+  createMany?: Prisma.PageCreateManyStoreInputEnvelope
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
+}
+
+export type PageUpdateManyWithoutStoreNestedInput = {
+  create?: Prisma.XOR<Prisma.PageCreateWithoutStoreInput, Prisma.PageUncheckedCreateWithoutStoreInput> | Prisma.PageCreateWithoutStoreInput[] | Prisma.PageUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.PageCreateOrConnectWithoutStoreInput | Prisma.PageCreateOrConnectWithoutStoreInput[]
+  upsert?: Prisma.PageUpsertWithWhereUniqueWithoutStoreInput | Prisma.PageUpsertWithWhereUniqueWithoutStoreInput[]
+  createMany?: Prisma.PageCreateManyStoreInputEnvelope
+  set?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
+  disconnect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
+  delete?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
+  update?: Prisma.PageUpdateWithWhereUniqueWithoutStoreInput | Prisma.PageUpdateWithWhereUniqueWithoutStoreInput[]
+  updateMany?: Prisma.PageUpdateManyWithWhereWithoutStoreInput | Prisma.PageUpdateManyWithWhereWithoutStoreInput[]
+  deleteMany?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[]
+}
+
+export type PageUncheckedUpdateManyWithoutStoreNestedInput = {
+  create?: Prisma.XOR<Prisma.PageCreateWithoutStoreInput, Prisma.PageUncheckedCreateWithoutStoreInput> | Prisma.PageCreateWithoutStoreInput[] | Prisma.PageUncheckedCreateWithoutStoreInput[]
+  connectOrCreate?: Prisma.PageCreateOrConnectWithoutStoreInput | Prisma.PageCreateOrConnectWithoutStoreInput[]
+  upsert?: Prisma.PageUpsertWithWhereUniqueWithoutStoreInput | Prisma.PageUpsertWithWhereUniqueWithoutStoreInput[]
+  createMany?: Prisma.PageCreateManyStoreInputEnvelope
+  set?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
+  disconnect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
+  delete?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
+  update?: Prisma.PageUpdateWithWhereUniqueWithoutStoreInput | Prisma.PageUpdateWithWhereUniqueWithoutStoreInput[]
+  updateMany?: Prisma.PageUpdateManyWithWhereWithoutStoreInput | Prisma.PageUpdateManyWithWhereWithoutStoreInput[]
+  deleteMany?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[]
 }
 
 export type PageCreateNestedManyWithoutPrimaryImageInput = {
@@ -647,211 +707,6 @@ export type PageUncheckedUpdateManyWithoutCoverImageNestedInput = {
   update?: Prisma.PageUpdateWithWhereUniqueWithoutCoverImageInput | Prisma.PageUpdateWithWhereUniqueWithoutCoverImageInput[]
   updateMany?: Prisma.PageUpdateManyWithWhereWithoutCoverImageInput | Prisma.PageUpdateManyWithWhereWithoutCoverImageInput[]
   deleteMany?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[]
-}
-
-export type EnumPageStatusFieldUpdateOperationsInput = {
-  set?: $Enums.PageStatus
-}
-
-export type PageCreateNestedOneWithoutSectionsInput = {
-  create?: Prisma.XOR<Prisma.PageCreateWithoutSectionsInput, Prisma.PageUncheckedCreateWithoutSectionsInput>
-  connectOrCreate?: Prisma.PageCreateOrConnectWithoutSectionsInput
-  connect?: Prisma.PageWhereUniqueInput
-}
-
-export type PageUpdateOneRequiredWithoutSectionsNestedInput = {
-  create?: Prisma.XOR<Prisma.PageCreateWithoutSectionsInput, Prisma.PageUncheckedCreateWithoutSectionsInput>
-  connectOrCreate?: Prisma.PageCreateOrConnectWithoutSectionsInput
-  upsert?: Prisma.PageUpsertWithoutSectionsInput
-  connect?: Prisma.PageWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PageUpdateToOneWithWhereWithoutSectionsInput, Prisma.PageUpdateWithoutSectionsInput>, Prisma.PageUncheckedUpdateWithoutSectionsInput>
-}
-
-export type PageCreateNestedManyWithoutStoreInput = {
-  create?: Prisma.XOR<Prisma.PageCreateWithoutStoreInput, Prisma.PageUncheckedCreateWithoutStoreInput> | Prisma.PageCreateWithoutStoreInput[] | Prisma.PageUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.PageCreateOrConnectWithoutStoreInput | Prisma.PageCreateOrConnectWithoutStoreInput[]
-  createMany?: Prisma.PageCreateManyStoreInputEnvelope
-  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
-}
-
-export type PageUncheckedCreateNestedManyWithoutStoreInput = {
-  create?: Prisma.XOR<Prisma.PageCreateWithoutStoreInput, Prisma.PageUncheckedCreateWithoutStoreInput> | Prisma.PageCreateWithoutStoreInput[] | Prisma.PageUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.PageCreateOrConnectWithoutStoreInput | Prisma.PageCreateOrConnectWithoutStoreInput[]
-  createMany?: Prisma.PageCreateManyStoreInputEnvelope
-  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
-}
-
-export type PageUpdateManyWithoutStoreNestedInput = {
-  create?: Prisma.XOR<Prisma.PageCreateWithoutStoreInput, Prisma.PageUncheckedCreateWithoutStoreInput> | Prisma.PageCreateWithoutStoreInput[] | Prisma.PageUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.PageCreateOrConnectWithoutStoreInput | Prisma.PageCreateOrConnectWithoutStoreInput[]
-  upsert?: Prisma.PageUpsertWithWhereUniqueWithoutStoreInput | Prisma.PageUpsertWithWhereUniqueWithoutStoreInput[]
-  createMany?: Prisma.PageCreateManyStoreInputEnvelope
-  set?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
-  disconnect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
-  delete?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
-  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
-  update?: Prisma.PageUpdateWithWhereUniqueWithoutStoreInput | Prisma.PageUpdateWithWhereUniqueWithoutStoreInput[]
-  updateMany?: Prisma.PageUpdateManyWithWhereWithoutStoreInput | Prisma.PageUpdateManyWithWhereWithoutStoreInput[]
-  deleteMany?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[]
-}
-
-export type PageUncheckedUpdateManyWithoutStoreNestedInput = {
-  create?: Prisma.XOR<Prisma.PageCreateWithoutStoreInput, Prisma.PageUncheckedCreateWithoutStoreInput> | Prisma.PageCreateWithoutStoreInput[] | Prisma.PageUncheckedCreateWithoutStoreInput[]
-  connectOrCreate?: Prisma.PageCreateOrConnectWithoutStoreInput | Prisma.PageCreateOrConnectWithoutStoreInput[]
-  upsert?: Prisma.PageUpsertWithWhereUniqueWithoutStoreInput | Prisma.PageUpsertWithWhereUniqueWithoutStoreInput[]
-  createMany?: Prisma.PageCreateManyStoreInputEnvelope
-  set?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
-  disconnect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
-  delete?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
-  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[]
-  update?: Prisma.PageUpdateWithWhereUniqueWithoutStoreInput | Prisma.PageUpdateWithWhereUniqueWithoutStoreInput[]
-  updateMany?: Prisma.PageUpdateManyWithWhereWithoutStoreInput | Prisma.PageUpdateManyWithWhereWithoutStoreInput[]
-  deleteMany?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[]
-}
-
-export type PageCreateWithoutPrimaryImageInput = {
-  id?: string
-  code: string
-  slug: string
-  title: string
-  shortDescription?: string | null
-  body?: string | null
-  status?: $Enums.PageStatus
-  isSystemPage?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store: Prisma.StoreCreateNestedOneWithoutPagesInput
-  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutPagesAsCoverImageInput
-  sections?: Prisma.PageSectionCreateNestedManyWithoutPageInput
-}
-
-export type PageUncheckedCreateWithoutPrimaryImageInput = {
-  id?: string
-  storeId: string
-  code: string
-  slug: string
-  title: string
-  shortDescription?: string | null
-  body?: string | null
-  status?: $Enums.PageStatus
-  isSystemPage?: boolean
-  coverImageId?: string | null
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  sections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPageInput
-}
-
-export type PageCreateOrConnectWithoutPrimaryImageInput = {
-  where: Prisma.PageWhereUniqueInput
-  create: Prisma.XOR<Prisma.PageCreateWithoutPrimaryImageInput, Prisma.PageUncheckedCreateWithoutPrimaryImageInput>
-}
-
-export type PageCreateManyPrimaryImageInputEnvelope = {
-  data: Prisma.PageCreateManyPrimaryImageInput | Prisma.PageCreateManyPrimaryImageInput[]
-  skipDuplicates?: boolean
-}
-
-export type PageCreateWithoutCoverImageInput = {
-  id?: string
-  code: string
-  slug: string
-  title: string
-  shortDescription?: string | null
-  body?: string | null
-  status?: $Enums.PageStatus
-  isSystemPage?: boolean
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  store: Prisma.StoreCreateNestedOneWithoutPagesInput
-  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutPagesAsPrimaryImageInput
-  sections?: Prisma.PageSectionCreateNestedManyWithoutPageInput
-}
-
-export type PageUncheckedCreateWithoutCoverImageInput = {
-  id?: string
-  storeId: string
-  code: string
-  slug: string
-  title: string
-  shortDescription?: string | null
-  body?: string | null
-  status?: $Enums.PageStatus
-  isSystemPage?: boolean
-  primaryImageId?: string | null
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  sections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPageInput
-}
-
-export type PageCreateOrConnectWithoutCoverImageInput = {
-  where: Prisma.PageWhereUniqueInput
-  create: Prisma.XOR<Prisma.PageCreateWithoutCoverImageInput, Prisma.PageUncheckedCreateWithoutCoverImageInput>
-}
-
-export type PageCreateManyCoverImageInputEnvelope = {
-  data: Prisma.PageCreateManyCoverImageInput | Prisma.PageCreateManyCoverImageInput[]
-  skipDuplicates?: boolean
-}
-
-export type PageUpsertWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.PageWhereUniqueInput
-  update: Prisma.XOR<Prisma.PageUpdateWithoutPrimaryImageInput, Prisma.PageUncheckedUpdateWithoutPrimaryImageInput>
-  create: Prisma.XOR<Prisma.PageCreateWithoutPrimaryImageInput, Prisma.PageUncheckedCreateWithoutPrimaryImageInput>
-}
-
-export type PageUpdateWithWhereUniqueWithoutPrimaryImageInput = {
-  where: Prisma.PageWhereUniqueInput
-  data: Prisma.XOR<Prisma.PageUpdateWithoutPrimaryImageInput, Prisma.PageUncheckedUpdateWithoutPrimaryImageInput>
-}
-
-export type PageUpdateManyWithWhereWithoutPrimaryImageInput = {
-  where: Prisma.PageScalarWhereInput
-  data: Prisma.XOR<Prisma.PageUpdateManyMutationInput, Prisma.PageUncheckedUpdateManyWithoutPrimaryImageInput>
-}
-
-export type PageScalarWhereInput = {
-  AND?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[]
-  OR?: Prisma.PageScalarWhereInput[]
-  NOT?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[]
-  id?: Prisma.StringFilter<"Page"> | string
-  storeId?: Prisma.StringFilter<"Page"> | string
-  code?: Prisma.StringFilter<"Page"> | string
-  slug?: Prisma.StringFilter<"Page"> | string
-  title?: Prisma.StringFilter<"Page"> | string
-  shortDescription?: Prisma.StringNullableFilter<"Page"> | string | null
-  body?: Prisma.StringNullableFilter<"Page"> | string | null
-  status?: Prisma.EnumPageStatusFilter<"Page"> | $Enums.PageStatus
-  isSystemPage?: Prisma.BoolFilter<"Page"> | boolean
-  primaryImageId?: Prisma.StringNullableFilter<"Page"> | string | null
-  coverImageId?: Prisma.StringNullableFilter<"Page"> | string | null
-  publishedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null
-  archivedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null
-  createdAt?: Prisma.DateTimeFilter<"Page"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Page"> | Date | string
-}
-
-export type PageUpsertWithWhereUniqueWithoutCoverImageInput = {
-  where: Prisma.PageWhereUniqueInput
-  update: Prisma.XOR<Prisma.PageUpdateWithoutCoverImageInput, Prisma.PageUncheckedUpdateWithoutCoverImageInput>
-  create: Prisma.XOR<Prisma.PageCreateWithoutCoverImageInput, Prisma.PageUncheckedCreateWithoutCoverImageInput>
-}
-
-export type PageUpdateWithWhereUniqueWithoutCoverImageInput = {
-  where: Prisma.PageWhereUniqueInput
-  data: Prisma.XOR<Prisma.PageUpdateWithoutCoverImageInput, Prisma.PageUncheckedUpdateWithoutCoverImageInput>
-}
-
-export type PageUpdateManyWithWhereWithoutCoverImageInput = {
-  where: Prisma.PageScalarWhereInput
-  data: Prisma.XOR<Prisma.PageUpdateManyMutationInput, Prisma.PageUncheckedUpdateManyWithoutCoverImageInput>
 }
 
 export type PageCreateWithoutSectionsInput = {
@@ -1004,6 +859,221 @@ export type PageUpdateManyWithWhereWithoutStoreInput = {
   data: Prisma.XOR<Prisma.PageUpdateManyMutationInput, Prisma.PageUncheckedUpdateManyWithoutStoreInput>
 }
 
+export type PageScalarWhereInput = {
+  AND?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[]
+  OR?: Prisma.PageScalarWhereInput[]
+  NOT?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[]
+  id?: Prisma.StringFilter<"Page"> | string
+  storeId?: Prisma.StringFilter<"Page"> | string
+  code?: Prisma.StringFilter<"Page"> | string
+  slug?: Prisma.StringFilter<"Page"> | string
+  title?: Prisma.StringFilter<"Page"> | string
+  shortDescription?: Prisma.StringNullableFilter<"Page"> | string | null
+  body?: Prisma.StringNullableFilter<"Page"> | string | null
+  status?: Prisma.EnumPageStatusFilter<"Page"> | $Enums.PageStatus
+  isSystemPage?: Prisma.BoolFilter<"Page"> | boolean
+  primaryImageId?: Prisma.StringNullableFilter<"Page"> | string | null
+  coverImageId?: Prisma.StringNullableFilter<"Page"> | string | null
+  publishedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"Page"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Page"> | Date | string
+}
+
+export type PageCreateWithoutPrimaryImageInput = {
+  id?: string
+  code: string
+  slug: string
+  title: string
+  shortDescription?: string | null
+  body?: string | null
+  status?: $Enums.PageStatus
+  isSystemPage?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutPagesInput
+  coverImage?: Prisma.MediaAssetCreateNestedOneWithoutPagesAsCoverImageInput
+  sections?: Prisma.PageSectionCreateNestedManyWithoutPageInput
+}
+
+export type PageUncheckedCreateWithoutPrimaryImageInput = {
+  id?: string
+  storeId: string
+  code: string
+  slug: string
+  title: string
+  shortDescription?: string | null
+  body?: string | null
+  status?: $Enums.PageStatus
+  isSystemPage?: boolean
+  coverImageId?: string | null
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPageInput
+}
+
+export type PageCreateOrConnectWithoutPrimaryImageInput = {
+  where: Prisma.PageWhereUniqueInput
+  create: Prisma.XOR<Prisma.PageCreateWithoutPrimaryImageInput, Prisma.PageUncheckedCreateWithoutPrimaryImageInput>
+}
+
+export type PageCreateManyPrimaryImageInputEnvelope = {
+  data: Prisma.PageCreateManyPrimaryImageInput | Prisma.PageCreateManyPrimaryImageInput[]
+  skipDuplicates?: boolean
+}
+
+export type PageCreateWithoutCoverImageInput = {
+  id?: string
+  code: string
+  slug: string
+  title: string
+  shortDescription?: string | null
+  body?: string | null
+  status?: $Enums.PageStatus
+  isSystemPage?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutPagesInput
+  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutPagesAsPrimaryImageInput
+  sections?: Prisma.PageSectionCreateNestedManyWithoutPageInput
+}
+
+export type PageUncheckedCreateWithoutCoverImageInput = {
+  id?: string
+  storeId: string
+  code: string
+  slug: string
+  title: string
+  shortDescription?: string | null
+  body?: string | null
+  status?: $Enums.PageStatus
+  isSystemPage?: boolean
+  primaryImageId?: string | null
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sections?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPageInput
+}
+
+export type PageCreateOrConnectWithoutCoverImageInput = {
+  where: Prisma.PageWhereUniqueInput
+  create: Prisma.XOR<Prisma.PageCreateWithoutCoverImageInput, Prisma.PageUncheckedCreateWithoutCoverImageInput>
+}
+
+export type PageCreateManyCoverImageInputEnvelope = {
+  data: Prisma.PageCreateManyCoverImageInput | Prisma.PageCreateManyCoverImageInput[]
+  skipDuplicates?: boolean
+}
+
+export type PageUpsertWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.PageWhereUniqueInput
+  update: Prisma.XOR<Prisma.PageUpdateWithoutPrimaryImageInput, Prisma.PageUncheckedUpdateWithoutPrimaryImageInput>
+  create: Prisma.XOR<Prisma.PageCreateWithoutPrimaryImageInput, Prisma.PageUncheckedCreateWithoutPrimaryImageInput>
+}
+
+export type PageUpdateWithWhereUniqueWithoutPrimaryImageInput = {
+  where: Prisma.PageWhereUniqueInput
+  data: Prisma.XOR<Prisma.PageUpdateWithoutPrimaryImageInput, Prisma.PageUncheckedUpdateWithoutPrimaryImageInput>
+}
+
+export type PageUpdateManyWithWhereWithoutPrimaryImageInput = {
+  where: Prisma.PageScalarWhereInput
+  data: Prisma.XOR<Prisma.PageUpdateManyMutationInput, Prisma.PageUncheckedUpdateManyWithoutPrimaryImageInput>
+}
+
+export type PageUpsertWithWhereUniqueWithoutCoverImageInput = {
+  where: Prisma.PageWhereUniqueInput
+  update: Prisma.XOR<Prisma.PageUpdateWithoutCoverImageInput, Prisma.PageUncheckedUpdateWithoutCoverImageInput>
+  create: Prisma.XOR<Prisma.PageCreateWithoutCoverImageInput, Prisma.PageUncheckedCreateWithoutCoverImageInput>
+}
+
+export type PageUpdateWithWhereUniqueWithoutCoverImageInput = {
+  where: Prisma.PageWhereUniqueInput
+  data: Prisma.XOR<Prisma.PageUpdateWithoutCoverImageInput, Prisma.PageUncheckedUpdateWithoutCoverImageInput>
+}
+
+export type PageUpdateManyWithWhereWithoutCoverImageInput = {
+  where: Prisma.PageScalarWhereInput
+  data: Prisma.XOR<Prisma.PageUpdateManyMutationInput, Prisma.PageUncheckedUpdateManyWithoutCoverImageInput>
+}
+
+export type PageCreateManyStoreInput = {
+  id?: string
+  code: string
+  slug: string
+  title: string
+  shortDescription?: string | null
+  body?: string | null
+  status?: $Enums.PageStatus
+  isSystemPage?: boolean
+  primaryImageId?: string | null
+  coverImageId?: string | null
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PageUpdateWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
+  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  primaryImage?: Prisma.MediaAssetUpdateOneWithoutPagesAsPrimaryImageNestedInput
+  coverImage?: Prisma.MediaAssetUpdateOneWithoutPagesAsCoverImageNestedInput
+  sections?: Prisma.PageSectionUpdateManyWithoutPageNestedInput
+}
+
+export type PageUncheckedUpdateWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
+  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sections?: Prisma.PageSectionUncheckedUpdateManyWithoutPageNestedInput
+}
+
+export type PageUncheckedUpdateManyWithoutStoreInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
+  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type PageCreateManyPrimaryImageInput = {
   id?: string
   storeId: string
@@ -1138,76 +1208,6 @@ export type PageUncheckedUpdateManyWithoutCoverImageInput = {
   status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type PageCreateManyStoreInput = {
-  id?: string
-  code: string
-  slug: string
-  title: string
-  shortDescription?: string | null
-  body?: string | null
-  status?: $Enums.PageStatus
-  isSystemPage?: boolean
-  primaryImageId?: string | null
-  coverImageId?: string | null
-  publishedAt?: Date | string | null
-  archivedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type PageUpdateWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
-  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  primaryImage?: Prisma.MediaAssetUpdateOneWithoutPagesAsPrimaryImageNestedInput
-  coverImage?: Prisma.MediaAssetUpdateOneWithoutPagesAsCoverImageNestedInput
-  sections?: Prisma.PageSectionUpdateManyWithoutPageNestedInput
-}
-
-export type PageUncheckedUpdateWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
-  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sections?: Prisma.PageSectionUncheckedUpdateManyWithoutPageNestedInput
-}
-
-export type PageUncheckedUpdateManyWithoutStoreInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  shortDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumPageStatusFieldUpdateOperationsInput | $Enums.PageStatus
-  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string

@@ -635,6 +635,52 @@ export type PageBlockSumOrderByAggregateInput = {
   sortOrder?: Prisma.SortOrder
 }
 
+export type PageBlockCreateNestedManyWithoutPageSectionInput = {
+  create?: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput> | Prisma.PageBlockCreateWithoutPageSectionInput[] | Prisma.PageBlockUncheckedCreateWithoutPageSectionInput[]
+  connectOrCreate?: Prisma.PageBlockCreateOrConnectWithoutPageSectionInput | Prisma.PageBlockCreateOrConnectWithoutPageSectionInput[]
+  createMany?: Prisma.PageBlockCreateManyPageSectionInputEnvelope
+  connect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+}
+
+export type PageBlockUncheckedCreateNestedManyWithoutPageSectionInput = {
+  create?: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput> | Prisma.PageBlockCreateWithoutPageSectionInput[] | Prisma.PageBlockUncheckedCreateWithoutPageSectionInput[]
+  connectOrCreate?: Prisma.PageBlockCreateOrConnectWithoutPageSectionInput | Prisma.PageBlockCreateOrConnectWithoutPageSectionInput[]
+  createMany?: Prisma.PageBlockCreateManyPageSectionInputEnvelope
+  connect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+}
+
+export type PageBlockUpdateManyWithoutPageSectionNestedInput = {
+  create?: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput> | Prisma.PageBlockCreateWithoutPageSectionInput[] | Prisma.PageBlockUncheckedCreateWithoutPageSectionInput[]
+  connectOrCreate?: Prisma.PageBlockCreateOrConnectWithoutPageSectionInput | Prisma.PageBlockCreateOrConnectWithoutPageSectionInput[]
+  upsert?: Prisma.PageBlockUpsertWithWhereUniqueWithoutPageSectionInput | Prisma.PageBlockUpsertWithWhereUniqueWithoutPageSectionInput[]
+  createMany?: Prisma.PageBlockCreateManyPageSectionInputEnvelope
+  set?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+  disconnect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+  delete?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+  connect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+  update?: Prisma.PageBlockUpdateWithWhereUniqueWithoutPageSectionInput | Prisma.PageBlockUpdateWithWhereUniqueWithoutPageSectionInput[]
+  updateMany?: Prisma.PageBlockUpdateManyWithWhereWithoutPageSectionInput | Prisma.PageBlockUpdateManyWithWhereWithoutPageSectionInput[]
+  deleteMany?: Prisma.PageBlockScalarWhereInput | Prisma.PageBlockScalarWhereInput[]
+}
+
+export type PageBlockUncheckedUpdateManyWithoutPageSectionNestedInput = {
+  create?: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput> | Prisma.PageBlockCreateWithoutPageSectionInput[] | Prisma.PageBlockUncheckedCreateWithoutPageSectionInput[]
+  connectOrCreate?: Prisma.PageBlockCreateOrConnectWithoutPageSectionInput | Prisma.PageBlockCreateOrConnectWithoutPageSectionInput[]
+  upsert?: Prisma.PageBlockUpsertWithWhereUniqueWithoutPageSectionInput | Prisma.PageBlockUpsertWithWhereUniqueWithoutPageSectionInput[]
+  createMany?: Prisma.PageBlockCreateManyPageSectionInputEnvelope
+  set?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+  disconnect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+  delete?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+  connect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+  update?: Prisma.PageBlockUpdateWithWhereUniqueWithoutPageSectionInput | Prisma.PageBlockUpdateWithWhereUniqueWithoutPageSectionInput[]
+  updateMany?: Prisma.PageBlockUpdateManyWithWhereWithoutPageSectionInput | Prisma.PageBlockUpdateManyWithWhereWithoutPageSectionInput[]
+  deleteMany?: Prisma.PageBlockScalarWhereInput | Prisma.PageBlockScalarWhereInput[]
+}
+
+export type EnumPageBlockTypeFieldUpdateOperationsInput = {
+  set?: $Enums.PageBlockType
+}
+
 export type PageBlockCreateNestedManyWithoutPrimaryImageInput = {
   create?: Prisma.XOR<Prisma.PageBlockCreateWithoutPrimaryImageInput, Prisma.PageBlockUncheckedCreateWithoutPrimaryImageInput> | Prisma.PageBlockCreateWithoutPrimaryImageInput[] | Prisma.PageBlockUncheckedCreateWithoutPrimaryImageInput[]
   connectOrCreate?: Prisma.PageBlockCreateOrConnectWithoutPrimaryImageInput | Prisma.PageBlockCreateOrConnectWithoutPrimaryImageInput[]
@@ -719,50 +765,91 @@ export type PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput = {
   deleteMany?: Prisma.PageBlockScalarWhereInput | Prisma.PageBlockScalarWhereInput[]
 }
 
-export type PageBlockCreateNestedManyWithoutPageSectionInput = {
-  create?: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput> | Prisma.PageBlockCreateWithoutPageSectionInput[] | Prisma.PageBlockUncheckedCreateWithoutPageSectionInput[]
-  connectOrCreate?: Prisma.PageBlockCreateOrConnectWithoutPageSectionInput | Prisma.PageBlockCreateOrConnectWithoutPageSectionInput[]
-  createMany?: Prisma.PageBlockCreateManyPageSectionInputEnvelope
-  connect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+export type PageBlockCreateWithoutPageSectionInput = {
+  id?: string
+  code: string
+  type: $Enums.PageBlockType
+  title?: string | null
+  subtitle?: string | null
+  body?: string | null
+  ctaLabel?: string | null
+  ctaHref?: string | null
+  htmlContent?: string | null
+  sortOrder?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
+  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutPageBlocksAsPrimaryImageInput
+  secondaryImage?: Prisma.MediaAssetCreateNestedOneWithoutPageBlocksAsSecondaryImageInput
 }
 
-export type PageBlockUncheckedCreateNestedManyWithoutPageSectionInput = {
-  create?: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput> | Prisma.PageBlockCreateWithoutPageSectionInput[] | Prisma.PageBlockUncheckedCreateWithoutPageSectionInput[]
-  connectOrCreate?: Prisma.PageBlockCreateOrConnectWithoutPageSectionInput | Prisma.PageBlockCreateOrConnectWithoutPageSectionInput[]
-  createMany?: Prisma.PageBlockCreateManyPageSectionInputEnvelope
-  connect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
+export type PageBlockUncheckedCreateWithoutPageSectionInput = {
+  id?: string
+  code: string
+  type: $Enums.PageBlockType
+  title?: string | null
+  subtitle?: string | null
+  body?: string | null
+  primaryImageId?: string | null
+  secondaryImageId?: string | null
+  ctaLabel?: string | null
+  ctaHref?: string | null
+  htmlContent?: string | null
+  sortOrder?: number
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  archivedAt?: Date | string | null
 }
 
-export type PageBlockUpdateManyWithoutPageSectionNestedInput = {
-  create?: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput> | Prisma.PageBlockCreateWithoutPageSectionInput[] | Prisma.PageBlockUncheckedCreateWithoutPageSectionInput[]
-  connectOrCreate?: Prisma.PageBlockCreateOrConnectWithoutPageSectionInput | Prisma.PageBlockCreateOrConnectWithoutPageSectionInput[]
-  upsert?: Prisma.PageBlockUpsertWithWhereUniqueWithoutPageSectionInput | Prisma.PageBlockUpsertWithWhereUniqueWithoutPageSectionInput[]
-  createMany?: Prisma.PageBlockCreateManyPageSectionInputEnvelope
-  set?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
-  disconnect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
-  delete?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
-  connect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
-  update?: Prisma.PageBlockUpdateWithWhereUniqueWithoutPageSectionInput | Prisma.PageBlockUpdateWithWhereUniqueWithoutPageSectionInput[]
-  updateMany?: Prisma.PageBlockUpdateManyWithWhereWithoutPageSectionInput | Prisma.PageBlockUpdateManyWithWhereWithoutPageSectionInput[]
-  deleteMany?: Prisma.PageBlockScalarWhereInput | Prisma.PageBlockScalarWhereInput[]
+export type PageBlockCreateOrConnectWithoutPageSectionInput = {
+  where: Prisma.PageBlockWhereUniqueInput
+  create: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput>
 }
 
-export type PageBlockUncheckedUpdateManyWithoutPageSectionNestedInput = {
-  create?: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput> | Prisma.PageBlockCreateWithoutPageSectionInput[] | Prisma.PageBlockUncheckedCreateWithoutPageSectionInput[]
-  connectOrCreate?: Prisma.PageBlockCreateOrConnectWithoutPageSectionInput | Prisma.PageBlockCreateOrConnectWithoutPageSectionInput[]
-  upsert?: Prisma.PageBlockUpsertWithWhereUniqueWithoutPageSectionInput | Prisma.PageBlockUpsertWithWhereUniqueWithoutPageSectionInput[]
-  createMany?: Prisma.PageBlockCreateManyPageSectionInputEnvelope
-  set?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
-  disconnect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
-  delete?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
-  connect?: Prisma.PageBlockWhereUniqueInput | Prisma.PageBlockWhereUniqueInput[]
-  update?: Prisma.PageBlockUpdateWithWhereUniqueWithoutPageSectionInput | Prisma.PageBlockUpdateWithWhereUniqueWithoutPageSectionInput[]
-  updateMany?: Prisma.PageBlockUpdateManyWithWhereWithoutPageSectionInput | Prisma.PageBlockUpdateManyWithWhereWithoutPageSectionInput[]
-  deleteMany?: Prisma.PageBlockScalarWhereInput | Prisma.PageBlockScalarWhereInput[]
+export type PageBlockCreateManyPageSectionInputEnvelope = {
+  data: Prisma.PageBlockCreateManyPageSectionInput | Prisma.PageBlockCreateManyPageSectionInput[]
+  skipDuplicates?: boolean
 }
 
-export type EnumPageBlockTypeFieldUpdateOperationsInput = {
-  set?: $Enums.PageBlockType
+export type PageBlockUpsertWithWhereUniqueWithoutPageSectionInput = {
+  where: Prisma.PageBlockWhereUniqueInput
+  update: Prisma.XOR<Prisma.PageBlockUpdateWithoutPageSectionInput, Prisma.PageBlockUncheckedUpdateWithoutPageSectionInput>
+  create: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput>
+}
+
+export type PageBlockUpdateWithWhereUniqueWithoutPageSectionInput = {
+  where: Prisma.PageBlockWhereUniqueInput
+  data: Prisma.XOR<Prisma.PageBlockUpdateWithoutPageSectionInput, Prisma.PageBlockUncheckedUpdateWithoutPageSectionInput>
+}
+
+export type PageBlockUpdateManyWithWhereWithoutPageSectionInput = {
+  where: Prisma.PageBlockScalarWhereInput
+  data: Prisma.XOR<Prisma.PageBlockUpdateManyMutationInput, Prisma.PageBlockUncheckedUpdateManyWithoutPageSectionInput>
+}
+
+export type PageBlockScalarWhereInput = {
+  AND?: Prisma.PageBlockScalarWhereInput | Prisma.PageBlockScalarWhereInput[]
+  OR?: Prisma.PageBlockScalarWhereInput[]
+  NOT?: Prisma.PageBlockScalarWhereInput | Prisma.PageBlockScalarWhereInput[]
+  id?: Prisma.StringFilter<"PageBlock"> | string
+  pageSectionId?: Prisma.StringFilter<"PageBlock"> | string
+  code?: Prisma.StringFilter<"PageBlock"> | string
+  type?: Prisma.EnumPageBlockTypeFilter<"PageBlock"> | $Enums.PageBlockType
+  title?: Prisma.StringNullableFilter<"PageBlock"> | string | null
+  subtitle?: Prisma.StringNullableFilter<"PageBlock"> | string | null
+  body?: Prisma.StringNullableFilter<"PageBlock"> | string | null
+  primaryImageId?: Prisma.StringNullableFilter<"PageBlock"> | string | null
+  secondaryImageId?: Prisma.StringNullableFilter<"PageBlock"> | string | null
+  ctaLabel?: Prisma.StringNullableFilter<"PageBlock"> | string | null
+  ctaHref?: Prisma.StringNullableFilter<"PageBlock"> | string | null
+  htmlContent?: Prisma.StringNullableFilter<"PageBlock"> | string | null
+  sortOrder?: Prisma.IntFilter<"PageBlock"> | number
+  isActive?: Prisma.BoolFilter<"PageBlock"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"PageBlock"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PageBlock"> | Date | string
+  archivedAt?: Prisma.DateTimeNullableFilter<"PageBlock"> | Date | string | null
 }
 
 export type PageBlockCreateWithoutPrimaryImageInput = {
@@ -877,29 +964,6 @@ export type PageBlockUpdateManyWithWhereWithoutPrimaryImageInput = {
   data: Prisma.XOR<Prisma.PageBlockUpdateManyMutationInput, Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageInput>
 }
 
-export type PageBlockScalarWhereInput = {
-  AND?: Prisma.PageBlockScalarWhereInput | Prisma.PageBlockScalarWhereInput[]
-  OR?: Prisma.PageBlockScalarWhereInput[]
-  NOT?: Prisma.PageBlockScalarWhereInput | Prisma.PageBlockScalarWhereInput[]
-  id?: Prisma.StringFilter<"PageBlock"> | string
-  pageSectionId?: Prisma.StringFilter<"PageBlock"> | string
-  code?: Prisma.StringFilter<"PageBlock"> | string
-  type?: Prisma.EnumPageBlockTypeFilter<"PageBlock"> | $Enums.PageBlockType
-  title?: Prisma.StringNullableFilter<"PageBlock"> | string | null
-  subtitle?: Prisma.StringNullableFilter<"PageBlock"> | string | null
-  body?: Prisma.StringNullableFilter<"PageBlock"> | string | null
-  primaryImageId?: Prisma.StringNullableFilter<"PageBlock"> | string | null
-  secondaryImageId?: Prisma.StringNullableFilter<"PageBlock"> | string | null
-  ctaLabel?: Prisma.StringNullableFilter<"PageBlock"> | string | null
-  ctaHref?: Prisma.StringNullableFilter<"PageBlock"> | string | null
-  htmlContent?: Prisma.StringNullableFilter<"PageBlock"> | string | null
-  sortOrder?: Prisma.IntFilter<"PageBlock"> | number
-  isActive?: Prisma.BoolFilter<"PageBlock"> | boolean
-  createdAt?: Prisma.DateTimeFilter<"PageBlock"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PageBlock"> | Date | string
-  archivedAt?: Prisma.DateTimeNullableFilter<"PageBlock"> | Date | string | null
-}
-
 export type PageBlockUpsertWithWhereUniqueWithoutSecondaryImageInput = {
   where: Prisma.PageBlockWhereUniqueInput
   update: Prisma.XOR<Prisma.PageBlockUpdateWithoutSecondaryImageInput, Prisma.PageBlockUncheckedUpdateWithoutSecondaryImageInput>
@@ -916,26 +980,7 @@ export type PageBlockUpdateManyWithWhereWithoutSecondaryImageInput = {
   data: Prisma.XOR<Prisma.PageBlockUpdateManyMutationInput, Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageInput>
 }
 
-export type PageBlockCreateWithoutPageSectionInput = {
-  id?: string
-  code: string
-  type: $Enums.PageBlockType
-  title?: string | null
-  subtitle?: string | null
-  body?: string | null
-  ctaLabel?: string | null
-  ctaHref?: string | null
-  htmlContent?: string | null
-  sortOrder?: number
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  archivedAt?: Date | string | null
-  primaryImage?: Prisma.MediaAssetCreateNestedOneWithoutPageBlocksAsPrimaryImageInput
-  secondaryImage?: Prisma.MediaAssetCreateNestedOneWithoutPageBlocksAsSecondaryImageInput
-}
-
-export type PageBlockUncheckedCreateWithoutPageSectionInput = {
+export type PageBlockCreateManyPageSectionInput = {
   id?: string
   code: string
   type: $Enums.PageBlockType
@@ -954,30 +999,61 @@ export type PageBlockUncheckedCreateWithoutPageSectionInput = {
   archivedAt?: Date | string | null
 }
 
-export type PageBlockCreateOrConnectWithoutPageSectionInput = {
-  where: Prisma.PageBlockWhereUniqueInput
-  create: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput>
+export type PageBlockUpdateWithoutPageSectionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPageBlockTypeFieldUpdateOperationsInput | $Enums.PageBlockType
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  htmlContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  primaryImage?: Prisma.MediaAssetUpdateOneWithoutPageBlocksAsPrimaryImageNestedInput
+  secondaryImage?: Prisma.MediaAssetUpdateOneWithoutPageBlocksAsSecondaryImageNestedInput
 }
 
-export type PageBlockCreateManyPageSectionInputEnvelope = {
-  data: Prisma.PageBlockCreateManyPageSectionInput | Prisma.PageBlockCreateManyPageSectionInput[]
-  skipDuplicates?: boolean
+export type PageBlockUncheckedUpdateWithoutPageSectionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPageBlockTypeFieldUpdateOperationsInput | $Enums.PageBlockType
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  htmlContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
-export type PageBlockUpsertWithWhereUniqueWithoutPageSectionInput = {
-  where: Prisma.PageBlockWhereUniqueInput
-  update: Prisma.XOR<Prisma.PageBlockUpdateWithoutPageSectionInput, Prisma.PageBlockUncheckedUpdateWithoutPageSectionInput>
-  create: Prisma.XOR<Prisma.PageBlockCreateWithoutPageSectionInput, Prisma.PageBlockUncheckedCreateWithoutPageSectionInput>
-}
-
-export type PageBlockUpdateWithWhereUniqueWithoutPageSectionInput = {
-  where: Prisma.PageBlockWhereUniqueInput
-  data: Prisma.XOR<Prisma.PageBlockUpdateWithoutPageSectionInput, Prisma.PageBlockUncheckedUpdateWithoutPageSectionInput>
-}
-
-export type PageBlockUpdateManyWithWhereWithoutPageSectionInput = {
-  where: Prisma.PageBlockScalarWhereInput
-  data: Prisma.XOR<Prisma.PageBlockUpdateManyMutationInput, Prisma.PageBlockUncheckedUpdateManyWithoutPageSectionInput>
+export type PageBlockUncheckedUpdateManyWithoutPageSectionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumPageBlockTypeFieldUpdateOperationsInput | $Enums.PageBlockType
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  htmlContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type PageBlockCreateManyPrimaryImageInput = {
@@ -1122,82 +1198,6 @@ export type PageBlockUncheckedUpdateManyWithoutSecondaryImageInput = {
   subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  htmlContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-}
-
-export type PageBlockCreateManyPageSectionInput = {
-  id?: string
-  code: string
-  type: $Enums.PageBlockType
-  title?: string | null
-  subtitle?: string | null
-  body?: string | null
-  primaryImageId?: string | null
-  secondaryImageId?: string | null
-  ctaLabel?: string | null
-  ctaHref?: string | null
-  htmlContent?: string | null
-  sortOrder?: number
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  archivedAt?: Date | string | null
-}
-
-export type PageBlockUpdateWithoutPageSectionInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumPageBlockTypeFieldUpdateOperationsInput | $Enums.PageBlockType
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  htmlContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  primaryImage?: Prisma.MediaAssetUpdateOneWithoutPageBlocksAsPrimaryImageNestedInput
-  secondaryImage?: Prisma.MediaAssetUpdateOneWithoutPageBlocksAsSecondaryImageNestedInput
-}
-
-export type PageBlockUncheckedUpdateWithoutPageSectionInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumPageBlockTypeFieldUpdateOperationsInput | $Enums.PageBlockType
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  secondaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  htmlContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-}
-
-export type PageBlockUncheckedUpdateManyWithoutPageSectionInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumPageBlockTypeFieldUpdateOperationsInput | $Enums.PageBlockType
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  secondaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ctaLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ctaHref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   htmlContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
