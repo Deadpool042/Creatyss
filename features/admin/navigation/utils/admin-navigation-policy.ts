@@ -34,6 +34,8 @@ export const adminNavigationCapabilities = {
     seoRead: "admin.settings.seo.read",
     advancedRead: "admin.settings.advanced.read",
     apiClientsRead: "admin.settings.api-clients.read",
+    apiClientsWrite: "admin.settings.api-clients.write",
+    apiClientsRevoke: "admin.settings.api-clients.revoke",
     webhooksRead: "admin.settings.webhooks.read",
   },
   system: {

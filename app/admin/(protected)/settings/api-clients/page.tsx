@@ -1,6 +1,8 @@
 import { Key, ShieldOff } from "lucide-react";
 
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { revokeApiClientAction } from "@/features/admin/settings/actions/revoke-api-client.action";
+import { CreateApiClientDrawer } from "@/features/admin/settings/components/create-api-client-drawer";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
@@ -20,6 +22,11 @@ const STATUS_CONFIG: Record<AdminApiClientSummary["status"], { label: string; ba
   REVOKED: { label: "Révoqué", badge: "bg-feedback-error-surface/75 text-feedback-error-foreground" },
   ARCHIVED: { label: "Archivé", badge: "bg-surface-subtle text-muted-foreground/50" },
 };
+
+async function revokeClient(formData: FormData) {
+  "use server";
+  await revokeApiClientAction(formData);
+}
 
 export default async function AdminSettingsApiClientsPage() {
   await requireAdminCapability("admin.settings.api-clients.read");
@@ -49,13 +56,15 @@ export default async function AdminSettingsApiClientsPage() {
       contentPreset="form"
     >
       <div className="space-y-6">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">Sécurité</p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">Clés API</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Clients API autorisés à interagir avec l'API admin. Modèle :{" "}
-            <code className="rounded bg-surface-subtle px-1 font-mono text-[11px]">ApiClient</code>
-          </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">Sécurité</p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">Clés API</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Clients API autorisés à interagir avec l&apos;API admin.
+            </p>
+          </div>
+          <CreateApiClientDrawer />
         </div>
 
         {clients.length === 0 ? (
@@ -128,13 +137,25 @@ export default async function AdminSettingsApiClientsPage() {
                     <span className={cn("shrink-0 inline-flex h-6 items-center rounded-md px-2 text-[11px] font-medium", cfg.badge)}>
                       {cfg.label}
                     </span>
+
+                    {client.status === "ACTIVE" && (
+                      <form action={revokeClient}>
+                        <input type="hidden" name="clientId" value={client.clientId} />
+                        <button
+                          type="submit"
+                          className="shrink-0 rounded-md px-2 py-1 text-[11px] font-medium text-muted-foreground/60 hover:bg-feedback-error-surface/30 hover:text-feedback-error-foreground transition-colors"
+                        >
+                          Révoquer
+                        </button>
+                      </form>
+                    )}
                   </div>
                 );
               })}
             </div>
 
             <p className="mt-3 text-xs text-muted-foreground/50">
-              Création et révocation de clés disponibles prochainement.
+              Création de clés disponible prochainement.
             </p>
           </>
         )}
