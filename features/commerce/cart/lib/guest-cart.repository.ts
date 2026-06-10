@@ -172,6 +172,7 @@ export async function findGuestCartVariantById(
     },
   });
   if (!variant) return null;
+  if (!variant.product.catalogPriceCents) return null;
 
   const inv = variant.inventoryItems[0];
   const stockQuantity = Math.max(
@@ -191,9 +192,7 @@ export async function findGuestCartVariantById(
     productStatus: variant.product.status as GuestCartVariant["productStatus"],
     name: variant.name ?? null,
     sku: variant.sku,
-    unitPriceAmount: variant.product.catalogPriceCents
-      ? centsToMoneyString(variant.product.catalogPriceCents)
-      : "0,00",
+    unitPriceAmount: centsToMoneyString(variant.product.catalogPriceCents),
     stockQuantity,
     status: variant.status as GuestCartVariant["status"],
     isAvailable,

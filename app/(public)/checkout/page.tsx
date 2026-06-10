@@ -78,6 +78,8 @@ function getErrorMessage(error: string | undefined): string | null {
       return "Renseignez vos informations avant de créer la commande.";
     case "save_failed":
       return "Les informations de commande n'ont pas pu être enregistrées.";
+    case "insufficient_stock":
+      return "Un article de votre panier n'est plus disponible en quantité suffisante.";
     case "create_failed":
       return "La commande n'a pas pu être créée.";
     default:

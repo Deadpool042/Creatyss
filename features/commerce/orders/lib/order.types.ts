@@ -76,6 +76,7 @@ export type OrderRepositoryErrorCode =
   | "missing_shipping_selection"
   | "missing_payment_method"
   | "shipping_method_unavailable"
+  | "insufficient_stock"
   | "create_failed";
 
 export class OrderRepositoryError extends Error {

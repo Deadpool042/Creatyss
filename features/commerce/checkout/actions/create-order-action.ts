@@ -92,10 +92,16 @@ export async function createOrderAction(formData: FormData): Promise<void> {
   try {
     const order = await createOrderFromGuestCartToken(cartToken, selectedPaymentMethod);
     orderReference = order.reference;
-    await sendOrderTransactionalEmail({
-      orderId: order.id,
-      eventType: "order_created",
-    });
+
+    try {
+      await sendOrderTransactionalEmail({
+        orderId: order.id,
+        eventType: "order_created",
+      });
+    } catch (emailError) {
+      console.error("[checkout-email]", emailError);
+    }
+
     await clearCartSessionToken();
     await clearCheckoutPaymentMethod();
   } catch (error) {

@@ -230,6 +230,32 @@ export async function createOrderFromGuestCartToken(
       );
     }
 
+    // Stock validation — Step A: load InventoryItems for all variants in cart
+    const variantIds = cart.lines.map((l) => l.variantId).filter(Boolean);
+    const inventoryItems = await tx.inventoryItem.findMany({
+      where: { storeId: cart.storeId, variantId: { in: variantIds } },
+      select: { id: true, variantId: true, onHandQuantity: true, reservedQuantity: true },
+    });
+    const inventoryMap = new Map(inventoryItems.map((i) => [i.variantId, i]));
+
+    // Stock validation — Step B: check availability per line
+    for (const line of cart.lines) {
+      if (!line.variantId) continue;
+      const inv = inventoryMap.get(line.variantId);
+      if (!inv) {
+        throw new OrderRepositoryError(
+          "insufficient_stock",
+          "Stock insuffisant pour un article du panier."
+        );
+      }
+      if (inv.onHandQuantity - inv.reservedQuantity < line.quantity) {
+        throw new OrderRepositoryError(
+          "insufficient_stock",
+          "Stock insuffisant pour un article du panier."
+        );
+      }
+    }
+
     const subtotalCents = cart.lines.reduce(
       (sum, line) =>
         sum + Math.round(Number(line.unitPriceAmount) * line.quantity * 100),
@@ -354,6 +380,26 @@ export async function createOrderFromGuestCartToken(
 
     if (!createdOrder) {
       throw new OrderRepositoryError("create_failed", "Order reference generation failed.");
+    }
+
+    // Stock decrement — Step C: update onHandQuantity and create InventoryMovement per line
+    for (const line of cart.lines) {
+      if (!line.variantId) continue;
+      const inv = inventoryMap.get(line.variantId);
+      if (!inv) continue;
+      await tx.inventoryItem.update({
+        where: { id: inv.id },
+        data: { onHandQuantity: { decrement: line.quantity } },
+      });
+      await tx.inventoryMovement.create({
+        data: {
+          inventoryItemId: inv.id,
+          type: "CONSUMPTION",
+          quantityDelta: -line.quantity,
+          referenceType: "order",
+          referenceId: createdOrder.id,
+        },
+      });
     }
 
     // Create Payment in the same transaction — atomicity guaranteed
