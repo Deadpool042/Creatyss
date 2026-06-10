@@ -1,4 +1,4 @@
-export type AdminPaymentStatus = "pending" | "captured" | "cancelled";
+export type AdminPaymentStatus = "pending" | "captured" | "cancelled" | "unknown";
 
 export type AdminPaymentMethodType = "bank_transfer" | "cash_on_delivery" | "card" | "wallet" | "other";
 

@@ -20,6 +20,7 @@ function toPrismaPaymentStatus(status: AdminPaymentStatus): PrismaPaymentStatus 
 }
 
 export async function listAdminPayments(
+  storeId: string,
   filters: AdminPaymentListFilters = {}
 ): Promise<AdminPaymentListResult> {
   const safePage = Math.max(1, filters.page ?? 1);
@@ -31,7 +32,7 @@ export async function listAdminPayments(
       ? { status: { in: [...filters.status].map(toPrismaPaymentStatus) } }
       : {};
 
-  const where = { ...statusWhere };
+  const where = { storeId, ...statusWhere };
 
   const [rawPayments, total] = await Promise.all([
     db.payment.findMany({
@@ -57,7 +58,7 @@ export async function listAdminPayments(
 
   const orderIds = rawPayments.map((p) => p.orderId);
   const orders = await db.order.findMany({
-    where: { id: { in: orderIds } },
+    where: { storeId, id: { in: orderIds } },
     select: {
       id: true,
       orderNumber: true,

@@ -17,13 +17,10 @@ const dateFormatter = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
 
 function getPaymentStatusLabel(status: AdminPaymentStatus): string {
   switch (status) {
-    case "captured":
-      return "Reçu";
-    case "cancelled":
-      return "Annulé";
-    case "pending":
-    default:
-      return "En attente";
+    case "captured": return "Reçu";
+    case "cancelled": return "Annulé";
+    case "unknown": return "Statut inconnu";
+    default: return "En attente";
   }
 }
 
@@ -31,24 +28,19 @@ type PaymentBadgeVariant = "outline" | "secondary" | "destructive";
 
 function getPaymentStatusBadgeVariant(status: AdminPaymentStatus): PaymentBadgeVariant {
   switch (status) {
-    case "captured":
-      return "secondary";
-    case "cancelled":
-      return "destructive";
-    case "pending":
-    default:
-      return "outline";
+    case "captured": return "secondary";
+    case "cancelled": return "destructive";
+    default: return "outline";
   }
 }
 
 function getPaymentMethodLabel(method: AdminPaymentMethodType): string {
   switch (method) {
-    case "bank_transfer":
-      return "Virement bancaire";
-    case "cash_on_delivery":
-      return "Paiement à l'atelier";
-    default:
-      return method;
+    case "bank_transfer": return "Virement bancaire";
+    case "cash_on_delivery": return "Paiement à l'atelier";
+    case "card": return "Carte bancaire";
+    case "wallet": return "Portefeuille électronique";
+    case "other": return "Autre";
   }
 }
 

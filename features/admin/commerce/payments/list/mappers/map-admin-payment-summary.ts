@@ -22,9 +22,10 @@ type AdminPaymentSummarySource = {
 
 function toAdminPaymentStatus(status: string): AdminPaymentStatus {
   switch (status) {
+    case "PENDING": return "pending";
     case "CAPTURED": return "captured";
     case "CANCELLED": return "cancelled";
-    default: return "pending";
+    default: return "unknown";
   }
 }
 
