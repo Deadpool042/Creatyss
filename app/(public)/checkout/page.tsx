@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/feedback";
 import { moneyStringToCents } from "@/core/money";
 import { readCartSessionToken } from "@/core/sessions/cart";
+import { readCheckoutPaymentMethod } from "@/core/sessions/checkout-payment";
 import { readGuestCheckoutContextByToken } from "@/features/commerce/cart/lib/guest-cart.repository";
 import type { GuestCheckoutContext } from "@/features/commerce/cart/lib/guest-cart.types";
 import {
@@ -13,6 +14,7 @@ import {
   getAvailableShippingMethods,
   getStoreIdByCartId,
   ShippingMethodSelector,
+  PaymentMethodSelector,
 } from "@/features/commerce/checkout";
 import { formatCatalogMoneyFromCents } from "@/features/storefront/catalog/helpers/catalog-pricing";
 
@@ -68,6 +70,8 @@ function getErrorMessage(error: string | undefined): string | null {
       return "Renseignez la ville de facturation.";
     case "missing_shipping_selection":
       return "Veuillez sélectionner une méthode de livraison.";
+    case "missing_payment_method":
+      return "Veuillez sélectionner un mode de paiement.";
     case "shipping_method_unavailable":
       return "La méthode de livraison sélectionnée n'est plus disponible. Veuillez en choisir une autre.";
     case "missing_checkout":
@@ -117,6 +121,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
   const billingSameAsShipping = draft?.billingSameAsShipping ?? true;
 
   const currentShippingSelection = draft?.shippingSelection ?? null;
+  const currentPaymentMethod = draft !== null ? await readCheckoutPaymentMethod() : null;
 
   const storeId = cart !== null ? await getStoreIdByCartId(cart.id) : null;
   const subtotalCents =
@@ -142,6 +147,12 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
   })();
 
   const subtotalLabel = formatCatalogMoneyFromCents(subtotalCents, "EUR");
+
+  const paymentLineLabel: string = (() => {
+    if (currentPaymentMethod === "bank_transfer") return "Virement bancaire";
+    if (currentPaymentMethod === "cash_on_delivery") return "Paiement à l'atelier";
+    return "À sélectionner";
+  })();
 
   return (
     <div className="grid gap-8">
@@ -426,6 +437,11 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               hasDraft={draft !== null}
             />
 
+            <PaymentMethodSelector
+              currentPaymentMethod={currentPaymentMethod}
+              hasDraft={draft !== null}
+            />
+
             <aside className="product-panel grid gap-4">
               <div className="grid gap-1">
                 <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
@@ -519,6 +535,13 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   Livraison
                 </p>
                 <p className="text-sm text-muted-foreground">{shippingLineLabel}</p>
+              </div>
+
+              <div className="grid gap-1">
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                  Paiement
+                </p>
+                <p className="text-sm text-muted-foreground">{paymentLineLabel}</p>
               </div>
 
               {totalLabel !== null ? (

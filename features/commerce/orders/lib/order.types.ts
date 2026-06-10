@@ -2,8 +2,8 @@ import type { OrderStatus } from "@/entities/order/order-status-transition";
 export type { OrderStatus };
 
 export type PaymentStatus = "pending" | "succeeded" | "failed";
-export type PaymentProvider = "stripe";
-export type PaymentMethod = "card";
+export type PaymentProvider = "stripe" | "manual" | null;
+export type PaymentMethod = "card" | "bank_transfer" | "cash_on_delivery" | "other";
 
 export type OrderLine = {
   id: string;
@@ -74,6 +74,7 @@ export type OrderRepositoryErrorCode =
   | "empty_cart"
   | "missing_checkout"
   | "missing_shipping_selection"
+  | "missing_payment_method"
   | "shipping_method_unavailable"
   | "create_failed";
 

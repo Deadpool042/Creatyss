@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { clearCartSessionToken, readCartSessionToken } from "@/core/sessions/cart";
+import { clearCheckoutPaymentMethod, readCheckoutPaymentMethod } from "@/core/sessions/checkout-payment";
 import { createOrderFromGuestCartToken } from "@/features/commerce/orders/lib/order.repository";
 import { OrderRepositoryError } from "@/features/commerce/orders/lib/order.types";
 import {
@@ -80,16 +81,23 @@ export async function createOrderAction(formData: FormData): Promise<void> {
     redirect("/checkout?error=missing_shipping_selection");
   }
 
+  const selectedPaymentMethod = await readCheckoutPaymentMethod();
+
+  if (selectedPaymentMethod === null) {
+    redirect("/checkout?error=missing_payment_method");
+  }
+
   let orderReference: string;
 
   try {
-    const order = await createOrderFromGuestCartToken(cartToken);
+    const order = await createOrderFromGuestCartToken(cartToken, selectedPaymentMethod);
     orderReference = order.reference;
     await sendOrderTransactionalEmail({
       orderId: order.id,
       eventType: "order_created",
     });
     await clearCartSessionToken();
+    await clearCheckoutPaymentMethod();
   } catch (error) {
     if (error instanceof OrderRepositoryError) {
       redirect(`/checkout?error=${error.code}`);

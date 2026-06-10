@@ -8,6 +8,10 @@ import {
   type PrismaPaymentStatus,
 } from "@/entities/order/order-status";
 import {
+  mapCheckoutPaymentMethodToPrisma,
+  type CheckoutPaymentMethod,
+} from "@/features/commerce/checkout/types/checkout-payment-method.types";
+import {
   OrderRepositoryError,
   type PaymentStatus,
   type PaymentProvider,
@@ -37,6 +41,20 @@ function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
   return typeof (error as PostgreSqlErrorLike).code === "string";
 }
 
+function mapPaymentMethod(methodType: string | null): PaymentMethod {
+  switch (methodType) {
+    case "CARD": return "card";
+    case "BANK_TRANSFER": return "bank_transfer";
+    case "CASH_ON_DELIVERY": return "cash_on_delivery";
+    default: return "other";
+  }
+}
+
+function mapPaymentProvider(provider: string | null): PaymentProvider {
+  if (provider === "stripe") return "stripe";
+  return provider ? "manual" : null;
+}
+
 function mapPublicOrderPayment(input: {
   paymentStatus: PrismaPaymentStatus | null;
   provider: string | null;
@@ -47,8 +65,8 @@ function mapPublicOrderPayment(input: {
 }): OrderPayment {
   return {
     status: input.paymentStatus ? toAppPaymentStatus(input.paymentStatus) : "pending",
-    provider: "stripe",
-    method: "card",
+    provider: mapPaymentProvider(input.provider),
+    method: mapPaymentMethod(input.methodType),
     amount: normalizeMoneyString(input.amountCaptured ?? input.totalAmount),
     currency: "eur",
     stripeCheckoutSessionId: null,
@@ -145,7 +163,8 @@ function mapPublicOrderConfirmation(input: {
 }
 
 export async function createOrderFromGuestCartToken(
-  cartToken: string
+  cartToken: string,
+  paymentMethod: CheckoutPaymentMethod
 ): Promise<CreatedOrderRow> {
   return db.$transaction(async (tx) => {
     const cart = await tx.cart.findUnique({
@@ -336,6 +355,21 @@ export async function createOrderFromGuestCartToken(
     if (!createdOrder) {
       throw new OrderRepositoryError("create_failed", "Order reference generation failed.");
     }
+
+    // Create Payment in the same transaction — atomicity guaranteed
+    await tx.payment.create({
+      data: {
+        orderId: createdOrder.id,
+        storeId: cart.storeId,
+        currencyCode: cart.currencyCode,
+        amountAuthorized: totalCents / 100,
+        status: "PENDING",
+        methodType: mapCheckoutPaymentMethodToPrisma(paymentMethod),
+        provider: null,
+        providerReference: null,
+        providerPaymentId: null,
+      },
+    });
 
     // Mark cart CONVERTED and checkout COMPLETED
     await Promise.all([
