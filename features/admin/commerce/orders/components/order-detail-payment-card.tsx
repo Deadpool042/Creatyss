@@ -1,4 +1,15 @@
 import type { AdminOrderPayment } from "@/features/admin/commerce/orders/details/types/admin-order-detail.types";
+
+function getPaymentMethodTypeLabel(methodType: string | null): string | null {
+  switch (methodType) {
+    case "BANK_TRANSFER": return "Virement bancaire";
+    case "CASH_ON_DELIVERY": return "Paiement à l'atelier";
+    case "CARD": return "Carte bancaire";
+    case "WALLET": return "Portefeuille électronique";
+    case "OTHER": return "Autre";
+    default: return methodType;
+  }
+}
 import {
   AdminSplitDetailFact,
   AdminSplitDetailSectionCard,
@@ -35,7 +46,7 @@ export function OrderDetailPaymentCard({ payment }: OrderDetailPaymentCardProps)
           <AdminSplitDetailFact
             className="rounded-none border-0 bg-transparent px-0 py-0 shadow-none"
             label="Méthode"
-            value={payment.methodType}
+            value={getPaymentMethodTypeLabel(payment.methodType) ?? payment.methodType}
           />
         ) : null}
         {payment.amountCaptured ? (

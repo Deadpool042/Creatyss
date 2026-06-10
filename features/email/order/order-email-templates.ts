@@ -1,5 +1,7 @@
 import type { OrderEmailEventType } from "./order-email.types";
 
+type PaymentMethodInput = "card" | "bank_transfer" | "cash_on_delivery" | "other" | null;
+
 type OrderEmailTemplateInput = {
   eventType: OrderEmailEventType;
   customerFirstName: string;
@@ -7,7 +9,21 @@ type OrderEmailTemplateInput = {
   totalAmount: string;
   orderUrl: string;
   trackingReference?: string | null;
+  paymentMethod?: PaymentMethodInput;
 };
+
+function getPaymentMethodLine(method: PaymentMethodInput): string {
+  switch (method) {
+    case "bank_transfer":
+      return "Mode de paiement : Virement bancaire. Votre commande sera preparee apres verification manuelle du virement.";
+    case "cash_on_delivery":
+      return "Mode de paiement : Paiement a l'atelier. Le reglement sera effectue lors du retrait.";
+    case "card":
+      return "Mode de paiement : Carte bancaire.";
+    default:
+      return "Mode de paiement : A confirmer avec notre equipe.";
+  }
+}
 
 export type OrderEmailTemplate = {
   subject: string;
@@ -109,7 +125,8 @@ export function buildOrderEmailTemplate(input: OrderEmailTemplateInput): OrderEm
       const body = [
         `Votre commande ${input.reference} a bien ete enregistree.`,
         `Montant de la commande : ${input.totalAmount} EUR.`,
-        "Vous pouvez suivre son paiement et son traitement depuis la page de confirmation.",
+        getPaymentMethodLine(input.paymentMethod ?? null),
+        "Vous pouvez suivre son traitement depuis la page de confirmation.",
       ];
 
       return {

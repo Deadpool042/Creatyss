@@ -1,5 +1,7 @@
 import type { AppPaymentStatus, OrderStatus } from "@/entities/order/order-status";
 
+type PaymentMethod = "card" | "bank_transfer" | "cash_on_delivery" | "other";
+
 export type OrderPaymentStatus = AppPaymentStatus;
 
 export type OrderStatusSummary = {
@@ -38,6 +40,28 @@ export function getPaymentStatusLabel(status: OrderPaymentStatus): string {
     case "pending":
     default:
       return "Paiement en attente";
+  }
+}
+
+export function getPaymentMethodLabel(method: PaymentMethod): string {
+  switch (method) {
+    case "bank_transfer": return "Virement bancaire";
+    case "cash_on_delivery": return "Paiement à l'atelier";
+    case "card": return "Carte bancaire";
+    default: return "Autre";
+  }
+}
+
+export function getPaymentMethodInstructions(method: PaymentMethod): string | null {
+  switch (method) {
+    case "bank_transfer":
+      return "Votre commande est enregistrée. Le paiement par virement sera vérifié manuellement après réception.";
+    case "cash_on_delivery":
+      return "Votre commande est enregistrée. Le paiement sera effectué à l'atelier lors du retrait.";
+    case "card":
+      return null;
+    default:
+      return "Votre commande est enregistrée. Notre équipe vous contactera pour finaliser le paiement.";
   }
 }
 

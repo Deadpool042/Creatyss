@@ -69,8 +69,6 @@ function mapPublicOrderPayment(input: {
     method: mapPaymentMethod(input.methodType),
     amount: normalizeMoneyString(input.amountCaptured ?? input.totalAmount),
     currency: "eur",
-    stripeCheckoutSessionId: null,
-    stripePaymentIntentId: input.providerReference,
   };
 }
 
@@ -124,6 +122,8 @@ function mapPublicOrderConfirmation(input: {
   billingCountryCode: "FR" | null;
   shippedAt: Date | null;
   trackingReference: string | null;
+  subtotalAmount: string;
+  shippingAmount: string;
   totalAmount: string;
   payment: OrderPayment;
   createdAt: Date;
@@ -154,6 +154,8 @@ function mapPublicOrderConfirmation(input: {
     billingCountryCode: input.billingCountryCode,
     shippedAt: input.shippedAt ? input.shippedAt.toISOString() : null,
     trackingReference: input.trackingReference,
+    subtotalAmount: normalizeMoneyString(input.subtotalAmount),
+    shippingAmount: normalizeMoneyString(input.shippingAmount),
     totalAmount: normalizeMoneyString(input.totalAmount),
     payment: input.payment,
     createdAt: input.createdAt.toISOString(),
@@ -507,6 +509,8 @@ export async function findPublicOrderByReference(reference: string): Promise<Pub
     billingCountryCode: billingAddress?.countryCode === "FR" ? "FR" : null,
     shippedAt: latestShipment?.shippedAt ?? null,
     trackingReference: latestShipment?.trackingNumber ?? null,
+    subtotalAmount: String(order.subtotalAmount ?? 0),
+    shippingAmount: String(order.shippingAmount ?? 0),
     totalAmount: String(order.totalAmount),
     payment: mapPublicOrderPayment({
       paymentStatus: (latestPayment?.status as PrismaPaymentStatus | undefined) ?? null,
@@ -538,6 +542,11 @@ export async function findOrderEmailContextById(id: string): Promise<OrderEmailC
         orderBy: [{ shippedAt: "desc" }, { createdAt: "desc" }],
         select: { trackingNumber: true },
       },
+      payments: {
+        take: 1,
+        orderBy: { createdAt: "desc" },
+        select: { methodType: true },
+      },
     },
   });
   if (!order || !order.customerEmail || !order.customerFirstName) return null;
@@ -549,5 +558,6 @@ export async function findOrderEmailContextById(id: string): Promise<OrderEmailC
     customerFirstName: order.customerFirstName,
     totalAmount: normalizeMoneyString(String(order.totalAmount)),
     trackingReference: order.shipments[0]?.trackingNumber ?? null,
+    paymentMethod: mapPaymentMethod(order.payments[0]?.methodType ?? null),
   };
 }

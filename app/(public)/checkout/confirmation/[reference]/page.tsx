@@ -8,6 +8,8 @@ import {
   getOrderPaymentNotice,
   getOrderStatusLabel,
   getOrderStatusSummary,
+  getPaymentMethodInstructions,
+  getPaymentMethodLabel,
   getPaymentStatusLabel,
 } from "@/entities/order/order-status-presentation";
 import { startOrderPaymentAction } from "@/features/commerce/payment";
@@ -246,13 +248,42 @@ export default async function OrderConfirmationPage({
 
             <div className="grid gap-1">
               <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                Sous-total
+              </p>
+              <p className="text-sm text-muted-foreground">{order.subtotalAmount}</p>
+            </div>
+
+            <div className="grid gap-1">
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                Livraison
+              </p>
+              <p className="text-sm text-muted-foreground">{order.shippingAmount}</p>
+            </div>
+
+            <div className="grid gap-1">
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                 Total commande
               </p>
               <p className="text-sm text-muted-foreground">{order.totalAmount}</p>
             </div>
 
+            <div className="grid gap-1">
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                Mode de paiement
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {getPaymentMethodLabel(order.payment.method)}
+              </p>
+            </div>
+
+            {getPaymentMethodInstructions(order.payment.method) ? (
+              <p className="text-sm text-muted-foreground">
+                {getPaymentMethodInstructions(order.payment.method)}
+              </p>
+            ) : null}
+
             <div className="flex flex-wrap gap-3">
-              {order.status === "pending" ? (
+              {order.status === "pending" && order.payment.method === "card" ? (
                 <form action={startOrderPaymentAction}>
                   <input name="reference" type="hidden" value={order.reference} />
                   <Button type="submit">Payer la commande</Button>

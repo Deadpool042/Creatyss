@@ -55,6 +55,7 @@ export async function sendOrderTransactionalEmail(input: {
       totalAmount: order.totalAmount,
       orderUrl,
       trackingReference: order.trackingReference,
+      paymentMethod: order.paymentMethod,
     });
 
     try {

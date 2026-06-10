@@ -25,8 +25,6 @@ export type OrderPayment = {
   method: PaymentMethod;
   amount: string;
   currency: "eur";
-  stripeCheckoutSessionId: string | null;
-  stripePaymentIntentId: string | null;
 };
 
 export type PublicOrderConfirmation = {
@@ -53,6 +51,8 @@ export type PublicOrderConfirmation = {
   billingCountryCode: "FR" | null;
   shippedAt: string | null;
   trackingReference: string | null;
+  subtotalAmount: string;
+  shippingAmount: string;
   totalAmount: string;
   payment: OrderPayment;
   createdAt: string;
@@ -67,6 +67,7 @@ export type OrderEmailContext = {
   customerFirstName: string;
   totalAmount: string;
   trackingReference: string | null;
+  paymentMethod: PaymentMethod | null;
 };
 
 export type OrderRepositoryErrorCode =
