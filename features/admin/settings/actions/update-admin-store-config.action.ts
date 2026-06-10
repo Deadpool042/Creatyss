@@ -3,7 +3,7 @@
 import { z } from "zod";
 
 import { db } from "@/core/db";
-import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 
 const storeConfigSchema = z.object({
   status: z.enum(["DRAFT", "ACTIVE", "SUSPENDED", "ARCHIVED"]),
@@ -19,7 +19,7 @@ export async function updateAdminStoreConfigAction(
   _prevState: StoreConfigFormState,
   formData: FormData
 ): Promise<StoreConfigFormState> {
-  await requireAuthenticatedAdmin();
+  await requireAdminCapability("admin.settings.store.read");
 
   const parsed = storeConfigSchema.safeParse({
     status: formData.get("status"),

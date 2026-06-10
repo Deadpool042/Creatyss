@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/core/db";
-import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import {
   storeSettingsSchema,
@@ -12,7 +12,7 @@ export async function updateAdminStoreSettingsAction(
   _prevState: StoreSettingsFormState,
   formData: FormData
 ): Promise<StoreSettingsFormState> {
-  await requireAuthenticatedAdmin();
+  await requireAdminCapability("admin.settings.general.read");
 
   const raw = {
     name: formData.get("name"),

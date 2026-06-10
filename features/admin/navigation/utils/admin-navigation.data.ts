@@ -425,6 +425,9 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
       sidebar: true,
       mobileMore: true,
     },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.storeRead],
+    },
   },
   {
     key: "catalog-settings",

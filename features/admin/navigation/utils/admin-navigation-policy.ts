@@ -23,6 +23,8 @@ export const adminNavigationCapabilities = {
     pricingRead: "admin.catalog.pricing.read",
   },
   settings: {
+    generalRead: "admin.settings.general.read",
+    storeRead: "admin.settings.store.read",
     teamRead: "admin.settings.team.read",
     teamWrite: "admin.settings.team.write",
     teamSuspend: "admin.settings.team.suspend",

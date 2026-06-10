@@ -24,6 +24,8 @@ const permissionCodes = [
 
   adminNavigationCapabilities.insights.analyticsRead,
 
+  adminNavigationCapabilities.settings.generalRead,
+  adminNavigationCapabilities.settings.storeRead,
   adminNavigationCapabilities.settings.teamRead,
   adminNavigationCapabilities.settings.teamWrite,
   adminNavigationCapabilities.settings.teamSuspend,

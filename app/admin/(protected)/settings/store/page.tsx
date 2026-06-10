@@ -1,8 +1,10 @@
+import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { StoreConfigForm } from "@/features/admin/settings/components/store-config-form";
 import { getAdminStoreConfig } from "@/features/admin/settings/queries/get-admin-store-config.query";
 
 export default async function AdminSettingsStorePage() {
+  await requireAdminCapability("admin.settings.store.read");
   const store = await getAdminStoreConfig();
 
   if (!store) {
