@@ -1,11 +1,12 @@
-import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
-import { CreditCard } from "lucide-react";
-
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { PaymentSettingsForm } from "@/features/admin/settings/components/payment-settings-form";
+import { getAdminPaymentSettings } from "@/features/admin/settings/queries/get-admin-payment-settings.query";
 
 export default async function AdminSettingsPaymentsPage() {
   await requireAdminCapability("admin.settings.payments.read");
+  const settings = await getAdminPaymentSettings();
+
   return (
     <AdminPageShell
       scrollBehavior="page"
@@ -13,13 +14,24 @@ export default async function AdminSettingsPaymentsPage() {
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Paiements" }]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
+      contentPreset="form"
     >
-      <AdminComingSoon
-        title="Réglages de paiement"
-        description="Connexion aux prestataires de paiement (Stripe, etc.), clés API, modes de paiement acceptés et configuration des webhooks."
-        docRef="docs/domains/optional/commerce/payments.md"
-        icon={CreditCard}
-      />
+      <div className="space-y-8">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
+            Réglages
+          </p>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
+            Réglages de paiement
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Moyens de paiement proposés à vos clientes : virement bancaire et paiement à
+            l&apos;atelier.
+          </p>
+        </div>
+
+        <PaymentSettingsForm settings={settings} />
+      </div>
     </AdminPageShell>
   );
 }

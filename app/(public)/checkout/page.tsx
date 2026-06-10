@@ -12,6 +12,7 @@ import {
   createOrderAction,
   saveGuestCheckoutAction,
   getAvailableShippingMethods,
+  getAvailablePaymentMethods,
   getStoreIdByCartId,
   ShippingMethodSelector,
   PaymentMethodSelector,
@@ -74,6 +75,8 @@ function getErrorMessage(error: string | undefined): string | null {
       return "Veuillez sélectionner un mode de paiement.";
     case "shipping_method_unavailable":
       return "La méthode de livraison sélectionnée n'est plus disponible. Veuillez en choisir une autre.";
+    case "payment_method_unavailable":
+      return "Le mode de paiement sélectionné n'est plus disponible. Veuillez en choisir un autre.";
     case "missing_checkout":
       return "Renseignez vos informations avant de créer la commande.";
     case "save_failed":
@@ -132,6 +135,11 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
     storeId !== null
       ? await getAvailableShippingMethods({ storeId, subtotalCents })
       : [];
+  const availablePaymentMethods =
+    storeId !== null
+      ? await getAvailablePaymentMethods({ storeId })
+      : [];
+  const hasPaymentMethods = availablePaymentMethods.length > 0;
 
   const shippingLineLabel: string = (() => {
     if (currentShippingSelection === null) return "À sélectionner";
@@ -411,7 +419,16 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                       Créez la commande une fois vos informations complètes. Vous pouvez aussi les
                       enregistrer pour plus tard.
                     </p>
-                    <Button formAction={createOrderAction} type="submit">
+                    {!hasPaymentMethods ? (
+                      <p className="text-sm text-muted-foreground">
+                        Aucun mode de paiement n&apos;est disponible pour le moment.
+                      </p>
+                    ) : null}
+                    <Button
+                      disabled={!hasPaymentMethods}
+                      formAction={createOrderAction}
+                      type="submit"
+                    >
                       Créer la commande
                     </Button>
                     <Button formAction={saveGuestCheckoutAction} type="submit" variant="ghost">
@@ -442,6 +459,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
             <PaymentMethodSelector
               currentPaymentMethod={currentPaymentMethod}
               hasDraft={draft !== null}
+              methods={availablePaymentMethods}
             />
 
             <aside className="product-panel grid gap-4">

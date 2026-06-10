@@ -3,6 +3,8 @@
 import { readCartSessionToken } from "@/core/sessions/cart";
 import { writeCheckoutPaymentMethod } from "@/core/sessions/checkout-payment";
 import { readGuestCheckoutContextByToken } from "@/features/commerce/cart/lib/guest-cart.repository";
+import { getAvailablePaymentMethods } from "@/features/commerce/checkout/queries/get-available-payment-methods.query";
+import { getStoreIdByCartId } from "@/features/commerce/checkout/queries/get-store-id-by-cart.query";
 import { isCheckoutPaymentMethod } from "@/features/commerce/checkout/types/checkout-payment-method.types";
 
 type SelectPaymentMethodResult =
@@ -54,7 +56,22 @@ export async function selectPaymentMethodAction(
     };
   }
 
-  // --- 5. Persister la sélection dans le cookie de session
+  // --- 5. Vérifier que la méthode soumise est activée dans les settings du store
+  const storeId =
+    checkoutContext.cart !== null
+      ? await getStoreIdByCartId(checkoutContext.cart.id)
+      : null;
+
+  if (storeId !== null) {
+    const availableMethods = await getAvailablePaymentMethods({ storeId });
+    const isMethodAvailable = availableMethods.some((m) => m.id === paymentMethodCode);
+
+    if (!isMethodAvailable) {
+      return { status: "error", message: "Ce mode de paiement n'est pas disponible." };
+    }
+  }
+
+  // --- 6. Persister la sélection dans le cookie de session
   await writeCheckoutPaymentMethod(paymentMethodCode);
 
   return { status: "success", message: "Mode de paiement sélectionné." };

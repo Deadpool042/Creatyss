@@ -35,6 +35,10 @@ export type StoreMinAggregateOutputType = {
   supportPhone: string | null
   shippingReturnsPolicy: string | null
   orderNumberPrefix: string | null
+  bankTransferEnabled: boolean | null
+  cashOnDeliveryEnabled: boolean | null
+  bankTransferInstructions: string | null
+  cashOnDeliveryInstructions: string | null
   defaultLocaleCode: string | null
   defaultCurrency: $Enums.CurrencyCode | null
   timezone: string | null
@@ -56,6 +60,10 @@ export type StoreMaxAggregateOutputType = {
   supportPhone: string | null
   shippingReturnsPolicy: string | null
   orderNumberPrefix: string | null
+  bankTransferEnabled: boolean | null
+  cashOnDeliveryEnabled: boolean | null
+  bankTransferInstructions: string | null
+  cashOnDeliveryInstructions: string | null
   defaultLocaleCode: string | null
   defaultCurrency: $Enums.CurrencyCode | null
   timezone: string | null
@@ -77,6 +85,10 @@ export type StoreCountAggregateOutputType = {
   supportPhone: number
   shippingReturnsPolicy: number
   orderNumberPrefix: number
+  bankTransferEnabled: number
+  cashOnDeliveryEnabled: number
+  bankTransferInstructions: number
+  cashOnDeliveryInstructions: number
   defaultLocaleCode: number
   defaultCurrency: number
   timezone: number
@@ -100,6 +112,10 @@ export type StoreMinAggregateInputType = {
   supportPhone?: true
   shippingReturnsPolicy?: true
   orderNumberPrefix?: true
+  bankTransferEnabled?: true
+  cashOnDeliveryEnabled?: true
+  bankTransferInstructions?: true
+  cashOnDeliveryInstructions?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -121,6 +137,10 @@ export type StoreMaxAggregateInputType = {
   supportPhone?: true
   shippingReturnsPolicy?: true
   orderNumberPrefix?: true
+  bankTransferEnabled?: true
+  cashOnDeliveryEnabled?: true
+  bankTransferInstructions?: true
+  cashOnDeliveryInstructions?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -142,6 +162,10 @@ export type StoreCountAggregateInputType = {
   supportPhone?: true
   shippingReturnsPolicy?: true
   orderNumberPrefix?: true
+  bankTransferEnabled?: true
+  cashOnDeliveryEnabled?: true
+  bankTransferInstructions?: true
+  cashOnDeliveryInstructions?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -236,6 +260,10 @@ export type StoreGroupByOutputType = {
   supportPhone: string | null
   shippingReturnsPolicy: string | null
   orderNumberPrefix: string | null
+  bankTransferEnabled: boolean
+  cashOnDeliveryEnabled: boolean
+  bankTransferInstructions: string | null
+  cashOnDeliveryInstructions: string | null
   defaultLocaleCode: string
   defaultCurrency: $Enums.CurrencyCode
   timezone: string
@@ -278,6 +306,10 @@ export type StoreWhereInput = {
   supportPhone?: Prisma.StringNullableFilter<"Store"> | string | null
   shippingReturnsPolicy?: Prisma.StringNullableFilter<"Store"> | string | null
   orderNumberPrefix?: Prisma.StringNullableFilter<"Store"> | string | null
+  bankTransferEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  bankTransferInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
+  cashOnDeliveryInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringFilter<"Store"> | string
@@ -375,6 +407,10 @@ export type StoreOrderByWithRelationInput = {
   supportPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrderInput | Prisma.SortOrder
   orderNumberPrefix?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankTransferEnabled?: Prisma.SortOrder
+  cashOnDeliveryEnabled?: Prisma.SortOrder
+  bankTransferInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
+  cashOnDeliveryInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -475,6 +511,10 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   supportPhone?: Prisma.StringNullableFilter<"Store"> | string | null
   shippingReturnsPolicy?: Prisma.StringNullableFilter<"Store"> | string | null
   orderNumberPrefix?: Prisma.StringNullableFilter<"Store"> | string | null
+  bankTransferEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  bankTransferInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
+  cashOnDeliveryInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringFilter<"Store"> | string
@@ -572,6 +612,10 @@ export type StoreOrderByWithAggregationInput = {
   supportPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrderInput | Prisma.SortOrder
   orderNumberPrefix?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankTransferEnabled?: Prisma.SortOrder
+  cashOnDeliveryEnabled?: Prisma.SortOrder
+  bankTransferInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
+  cashOnDeliveryInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -599,6 +643,10 @@ export type StoreScalarWhereWithAggregatesInput = {
   supportPhone?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   shippingReturnsPolicy?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   orderNumberPrefix?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
+  bankTransferEnabled?: Prisma.BoolWithAggregatesFilter<"Store"> | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolWithAggregatesFilter<"Store"> | boolean
+  bankTransferInstructions?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
+  cashOnDeliveryInstructions?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringWithAggregatesFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeWithAggregatesFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringWithAggregatesFilter<"Store"> | string
@@ -620,6 +668,10 @@ export type StoreCreateInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -717,6 +769,10 @@ export type StoreUncheckedCreateInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -814,6 +870,10 @@ export type StoreUpdateInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -911,6 +971,10 @@ export type StoreUncheckedUpdateInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1008,6 +1072,10 @@ export type StoreCreateManyInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -1029,6 +1097,10 @@ export type StoreUpdateManyMutationInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1050,6 +1122,10 @@ export type StoreUncheckedUpdateManyInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1081,6 +1157,10 @@ export type StoreCountOrderByAggregateInput = {
   supportPhone?: Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrder
   orderNumberPrefix?: Prisma.SortOrder
+  bankTransferEnabled?: Prisma.SortOrder
+  cashOnDeliveryEnabled?: Prisma.SortOrder
+  bankTransferInstructions?: Prisma.SortOrder
+  cashOnDeliveryInstructions?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -1102,6 +1182,10 @@ export type StoreMaxOrderByAggregateInput = {
   supportPhone?: Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrder
   orderNumberPrefix?: Prisma.SortOrder
+  bankTransferEnabled?: Prisma.SortOrder
+  cashOnDeliveryEnabled?: Prisma.SortOrder
+  bankTransferInstructions?: Prisma.SortOrder
+  cashOnDeliveryInstructions?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -1123,6 +1207,10 @@ export type StoreMinOrderByAggregateInput = {
   supportPhone?: Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrder
   orderNumberPrefix?: Prisma.SortOrder
+  bankTransferEnabled?: Prisma.SortOrder
+  cashOnDeliveryEnabled?: Prisma.SortOrder
+  bankTransferInstructions?: Prisma.SortOrder
+  cashOnDeliveryInstructions?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -2286,6 +2374,10 @@ export type StoreCreateWithoutAvailabilityRecordsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2382,6 +2474,10 @@ export type StoreUncheckedCreateWithoutAvailabilityRecordsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2494,6 +2590,10 @@ export type StoreUpdateWithoutAvailabilityRecordsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2590,6 +2690,10 @@ export type StoreUncheckedUpdateWithoutAvailabilityRecordsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2686,6 +2790,10 @@ export type StoreCreateWithoutCategoriesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2782,6 +2890,10 @@ export type StoreUncheckedCreateWithoutCategoriesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2894,6 +3006,10 @@ export type StoreUpdateWithoutCategoriesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2990,6 +3106,10 @@ export type StoreUncheckedUpdateWithoutCategoriesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3086,6 +3206,10 @@ export type StoreCreateWithoutPriceListsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3182,6 +3306,10 @@ export type StoreUncheckedCreateWithoutPriceListsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3294,6 +3422,10 @@ export type StoreUpdateWithoutPriceListsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3390,6 +3522,10 @@ export type StoreUncheckedUpdateWithoutPriceListsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3486,6 +3622,10 @@ export type StoreCreateWithoutProductTypesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3582,6 +3722,10 @@ export type StoreUncheckedCreateWithoutProductTypesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3694,6 +3838,10 @@ export type StoreUpdateWithoutProductTypesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3790,6 +3938,10 @@ export type StoreUncheckedUpdateWithoutProductTypesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3886,6 +4038,10 @@ export type StoreCreateWithoutProductsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3982,6 +4138,10 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4094,6 +4254,10 @@ export type StoreUpdateWithoutProductsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4190,6 +4354,10 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4286,6 +4454,10 @@ export type StoreCreateWithoutCartsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4382,6 +4554,10 @@ export type StoreUncheckedCreateWithoutCartsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4494,6 +4670,10 @@ export type StoreUpdateWithoutCartsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4590,6 +4770,10 @@ export type StoreUncheckedUpdateWithoutCartsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4686,6 +4870,10 @@ export type StoreCreateWithoutCheckoutsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4782,6 +4970,10 @@ export type StoreUncheckedCreateWithoutCheckoutsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4894,6 +5086,10 @@ export type StoreUpdateWithoutCheckoutsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4990,6 +5186,10 @@ export type StoreUncheckedUpdateWithoutCheckoutsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5086,6 +5286,10 @@ export type StoreCreateWithoutCustomersInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5182,6 +5386,10 @@ export type StoreUncheckedCreateWithoutCustomersInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5294,6 +5502,10 @@ export type StoreUpdateWithoutCustomersInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5390,6 +5602,10 @@ export type StoreUncheckedUpdateWithoutCustomersInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5486,6 +5702,10 @@ export type StoreCreateWithoutOrdersInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5582,6 +5802,10 @@ export type StoreUncheckedCreateWithoutOrdersInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5694,6 +5918,10 @@ export type StoreUpdateWithoutOrdersInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5790,6 +6018,10 @@ export type StoreUncheckedUpdateWithoutOrdersInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5886,6 +6118,10 @@ export type StoreCreateWithoutPagesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5982,6 +6218,10 @@ export type StoreUncheckedCreateWithoutPagesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6094,6 +6334,10 @@ export type StoreUpdateWithoutPagesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6190,6 +6434,10 @@ export type StoreUncheckedUpdateWithoutPagesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6286,6 +6534,10 @@ export type StoreCreateWithoutApiClientsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6382,6 +6634,10 @@ export type StoreUncheckedCreateWithoutApiClientsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6494,6 +6750,10 @@ export type StoreUpdateWithoutApiClientsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6590,6 +6850,10 @@ export type StoreUncheckedUpdateWithoutApiClientsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6686,6 +6950,10 @@ export type StoreCreateWithoutUsersInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6782,6 +7050,10 @@ export type StoreUncheckedCreateWithoutUsersInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6894,6 +7166,10 @@ export type StoreUpdateWithoutUsersInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6990,6 +7266,10 @@ export type StoreUncheckedUpdateWithoutUsersInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7086,6 +7366,10 @@ export type StoreCreateWithoutDomainsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7182,6 +7466,10 @@ export type StoreUncheckedCreateWithoutDomainsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7294,6 +7582,10 @@ export type StoreUpdateWithoutDomainsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7390,6 +7682,10 @@ export type StoreUncheckedUpdateWithoutDomainsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7486,6 +7782,10 @@ export type StoreCreateWithoutAuditLogsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7582,6 +7882,10 @@ export type StoreUncheckedCreateWithoutAuditLogsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7694,6 +7998,10 @@ export type StoreUpdateWithoutAuditLogsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7790,6 +8098,10 @@ export type StoreUncheckedUpdateWithoutAuditLogsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7886,6 +8198,10 @@ export type StoreCreateWithoutDomainEventsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7982,6 +8298,10 @@ export type StoreUncheckedCreateWithoutDomainEventsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8094,6 +8414,10 @@ export type StoreUpdateWithoutDomainEventsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8190,6 +8514,10 @@ export type StoreUncheckedUpdateWithoutDomainEventsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8286,6 +8614,10 @@ export type StoreCreateWithoutFeatureFlagsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8382,6 +8714,10 @@ export type StoreUncheckedCreateWithoutFeatureFlagsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8494,6 +8830,10 @@ export type StoreUpdateWithoutFeatureFlagsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8590,6 +8930,10 @@ export type StoreUncheckedUpdateWithoutFeatureFlagsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8686,6 +9030,10 @@ export type StoreCreateWithoutJobsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8782,6 +9130,10 @@ export type StoreUncheckedCreateWithoutJobsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8894,6 +9246,10 @@ export type StoreUpdateWithoutJobsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8990,6 +9346,10 @@ export type StoreUncheckedUpdateWithoutJobsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9086,6 +9446,10 @@ export type StoreCreateWithoutMonitoringChecksInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9182,6 +9546,10 @@ export type StoreUncheckedCreateWithoutMonitoringChecksInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9294,6 +9662,10 @@ export type StoreUpdateWithoutMonitoringChecksInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9390,6 +9762,10 @@ export type StoreUncheckedUpdateWithoutMonitoringChecksInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9486,6 +9862,10 @@ export type StoreCreateWithoutObservabilitySignalsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9582,6 +9962,10 @@ export type StoreUncheckedCreateWithoutObservabilitySignalsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9694,6 +10078,10 @@ export type StoreUpdateWithoutObservabilitySignalsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9790,6 +10178,10 @@ export type StoreUncheckedUpdateWithoutObservabilitySignalsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9886,6 +10278,10 @@ export type StoreCreateWithoutSeoMetadataInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9982,6 +10378,10 @@ export type StoreUncheckedCreateWithoutSeoMetadataInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10094,6 +10494,10 @@ export type StoreUpdateWithoutSeoMetadataInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10190,6 +10594,10 @@ export type StoreUncheckedUpdateWithoutSeoMetadataInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10286,6 +10694,10 @@ export type StoreCreateWithoutAiProvidersInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10382,6 +10794,10 @@ export type StoreUncheckedCreateWithoutAiProvidersInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10494,6 +10910,10 @@ export type StoreUpdateWithoutAiProvidersInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10590,6 +11010,10 @@ export type StoreUncheckedUpdateWithoutAiProvidersInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10686,6 +11110,10 @@ export type StoreCreateWithoutAiTasksInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10782,6 +11210,10 @@ export type StoreUncheckedCreateWithoutAiTasksInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10894,6 +11326,10 @@ export type StoreUpdateWithoutAiTasksInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10990,6 +11426,10 @@ export type StoreUncheckedUpdateWithoutAiTasksInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11086,6 +11526,10 @@ export type StoreCreateWithoutBundlesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11182,6 +11626,10 @@ export type StoreUncheckedCreateWithoutBundlesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11294,6 +11742,10 @@ export type StoreUpdateWithoutBundlesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11390,6 +11842,10 @@ export type StoreUncheckedUpdateWithoutBundlesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11486,6 +11942,10 @@ export type StoreCreateWithoutDiscountsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11582,6 +12042,10 @@ export type StoreUncheckedCreateWithoutDiscountsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11694,6 +12158,10 @@ export type StoreUpdateWithoutDiscountsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11790,6 +12258,10 @@ export type StoreUncheckedUpdateWithoutDiscountsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11886,6 +12358,10 @@ export type StoreCreateWithoutDocumentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11982,6 +12458,10 @@ export type StoreUncheckedCreateWithoutDocumentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12094,6 +12574,10 @@ export type StoreUpdateWithoutDocumentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12190,6 +12674,10 @@ export type StoreUncheckedUpdateWithoutDocumentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12286,6 +12774,10 @@ export type StoreCreateWithoutFulfillmentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12382,6 +12874,10 @@ export type StoreUncheckedCreateWithoutFulfillmentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12494,6 +12990,10 @@ export type StoreUpdateWithoutFulfillmentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12590,6 +13090,10 @@ export type StoreUncheckedUpdateWithoutFulfillmentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12686,6 +13190,10 @@ export type StoreCreateWithoutGiftCardsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12782,6 +13290,10 @@ export type StoreUncheckedCreateWithoutGiftCardsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12894,6 +13406,10 @@ export type StoreUpdateWithoutGiftCardsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12990,6 +13506,10 @@ export type StoreUncheckedUpdateWithoutGiftCardsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13086,6 +13606,10 @@ export type StoreCreateWithoutGiftRequestsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13182,6 +13706,10 @@ export type StoreUncheckedCreateWithoutGiftRequestsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13294,6 +13822,10 @@ export type StoreUpdateWithoutGiftRequestsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13390,6 +13922,10 @@ export type StoreUncheckedUpdateWithoutGiftRequestsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13486,6 +14022,10 @@ export type StoreCreateWithoutInventoryItemsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13582,6 +14122,10 @@ export type StoreUncheckedCreateWithoutInventoryItemsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13694,6 +14238,10 @@ export type StoreUpdateWithoutInventoryItemsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13790,6 +14338,10 @@ export type StoreUncheckedUpdateWithoutInventoryItemsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13886,6 +14438,10 @@ export type StoreCreateWithoutLoyaltyAccountsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13982,6 +14538,10 @@ export type StoreUncheckedCreateWithoutLoyaltyAccountsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14094,6 +14654,10 @@ export type StoreUpdateWithoutLoyaltyAccountsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14190,6 +14754,10 @@ export type StoreUncheckedUpdateWithoutLoyaltyAccountsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14286,6 +14854,10 @@ export type StoreCreateWithoutPaymentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14382,6 +14954,10 @@ export type StoreUncheckedCreateWithoutPaymentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14494,6 +15070,10 @@ export type StoreUpdateWithoutPaymentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14590,6 +15170,10 @@ export type StoreUncheckedUpdateWithoutPaymentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14686,6 +15270,10 @@ export type StoreCreateWithoutReturnRequestsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14782,6 +15370,10 @@ export type StoreUncheckedCreateWithoutReturnRequestsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14894,6 +15486,10 @@ export type StoreUpdateWithoutReturnRequestsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14990,6 +15586,10 @@ export type StoreUncheckedUpdateWithoutReturnRequestsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15086,6 +15686,10 @@ export type StoreCreateWithoutSalesPoliciesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15182,6 +15786,10 @@ export type StoreUncheckedCreateWithoutSalesPoliciesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15294,6 +15902,10 @@ export type StoreUpdateWithoutSalesPoliciesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15390,6 +16002,10 @@ export type StoreUncheckedUpdateWithoutSalesPoliciesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15486,6 +16102,10 @@ export type StoreCreateWithoutSellabilityDecisionsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15582,6 +16202,10 @@ export type StoreUncheckedCreateWithoutSellabilityDecisionsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15694,6 +16318,10 @@ export type StoreUpdateWithoutSellabilityDecisionsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15790,6 +16418,10 @@ export type StoreUncheckedUpdateWithoutSellabilityDecisionsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15886,6 +16518,10 @@ export type StoreCreateWithoutShippingZonesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15982,6 +16618,10 @@ export type StoreUncheckedCreateWithoutShippingZonesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16094,6 +16734,10 @@ export type StoreUpdateWithoutShippingZonesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16190,6 +16834,10 @@ export type StoreUncheckedUpdateWithoutShippingZonesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16286,6 +16934,10 @@ export type StoreCreateWithoutShippingMethodsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16382,6 +17034,10 @@ export type StoreUncheckedCreateWithoutShippingMethodsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16494,6 +17150,10 @@ export type StoreUpdateWithoutShippingMethodsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16590,6 +17250,10 @@ export type StoreUncheckedUpdateWithoutShippingMethodsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16686,6 +17350,10 @@ export type StoreCreateWithoutShipmentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16782,6 +17450,10 @@ export type StoreUncheckedCreateWithoutShipmentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16894,6 +17566,10 @@ export type StoreUpdateWithoutShipmentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16990,6 +17666,10 @@ export type StoreUncheckedUpdateWithoutShipmentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17086,6 +17766,10 @@ export type StoreCreateWithoutSubscriptionsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17182,6 +17866,10 @@ export type StoreUncheckedCreateWithoutSubscriptionsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17294,6 +17982,10 @@ export type StoreUpdateWithoutSubscriptionsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17390,6 +18082,10 @@ export type StoreUncheckedUpdateWithoutSubscriptionsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17486,6 +18182,10 @@ export type StoreCreateWithoutTaxRulesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17582,6 +18282,10 @@ export type StoreUncheckedCreateWithoutTaxRulesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17694,6 +18398,10 @@ export type StoreUpdateWithoutTaxRulesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17790,6 +18498,10 @@ export type StoreUncheckedUpdateWithoutTaxRulesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17886,6 +18598,10 @@ export type StoreCreateWithoutAnalyticsMetricsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17982,6 +18698,10 @@ export type StoreUncheckedCreateWithoutAnalyticsMetricsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18094,6 +18814,10 @@ export type StoreUpdateWithoutAnalyticsMetricsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18190,6 +18914,10 @@ export type StoreUncheckedUpdateWithoutAnalyticsMetricsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18286,6 +19014,10 @@ export type StoreCreateWithoutAttributionModelsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18382,6 +19114,10 @@ export type StoreUncheckedCreateWithoutAttributionModelsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18494,6 +19230,10 @@ export type StoreUpdateWithoutAttributionModelsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18590,6 +19330,10 @@ export type StoreUncheckedUpdateWithoutAttributionModelsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18686,6 +19430,10 @@ export type StoreCreateWithoutBehaviorSegmentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18782,6 +19530,10 @@ export type StoreUncheckedCreateWithoutBehaviorSegmentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18894,6 +19646,10 @@ export type StoreUpdateWithoutBehaviorSegmentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18990,6 +19746,10 @@ export type StoreUncheckedUpdateWithoutBehaviorSegmentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19086,6 +19846,10 @@ export type StoreCreateWithoutBehaviorProfilesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19182,6 +19946,10 @@ export type StoreUncheckedCreateWithoutBehaviorProfilesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19294,6 +20062,10 @@ export type StoreUpdateWithoutBehaviorProfilesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19390,6 +20162,10 @@ export type StoreUncheckedUpdateWithoutBehaviorProfilesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19486,6 +20262,10 @@ export type StoreCreateWithoutBlogCategoriesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19582,6 +20362,10 @@ export type StoreUncheckedCreateWithoutBlogCategoriesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19694,6 +20478,10 @@ export type StoreUpdateWithoutBlogCategoriesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19790,6 +20578,10 @@ export type StoreUncheckedUpdateWithoutBlogCategoriesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19886,6 +20678,10 @@ export type StoreCreateWithoutBlogPostsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19982,6 +20778,10 @@ export type StoreUncheckedCreateWithoutBlogPostsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20094,6 +20894,10 @@ export type StoreUpdateWithoutBlogPostsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20190,6 +20994,10 @@ export type StoreUncheckedUpdateWithoutBlogPostsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20286,6 +21094,10 @@ export type StoreCreateWithoutConversionFlowsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20382,6 +21194,10 @@ export type StoreUncheckedCreateWithoutConversionFlowsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20494,6 +21310,10 @@ export type StoreUpdateWithoutConversionFlowsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20590,6 +21410,10 @@ export type StoreUncheckedUpdateWithoutConversionFlowsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20686,6 +21510,10 @@ export type StoreCreateWithoutCrmContactsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20782,6 +21610,10 @@ export type StoreUncheckedCreateWithoutCrmContactsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20894,6 +21726,10 @@ export type StoreUpdateWithoutCrmContactsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20990,6 +21826,10 @@ export type StoreUncheckedUpdateWithoutCrmContactsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21086,6 +21926,10 @@ export type StoreCreateWithoutCrmTagsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21182,6 +22026,10 @@ export type StoreUncheckedCreateWithoutCrmTagsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21294,6 +22142,10 @@ export type StoreUpdateWithoutCrmTagsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21390,6 +22242,10 @@ export type StoreUncheckedUpdateWithoutCrmTagsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21486,6 +22342,10 @@ export type StoreCreateWithoutNewsletterSubscribersInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21582,6 +22442,10 @@ export type StoreUncheckedCreateWithoutNewsletterSubscribersInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21694,6 +22558,10 @@ export type StoreUpdateWithoutNewsletterSubscribersInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21790,6 +22658,10 @@ export type StoreUncheckedUpdateWithoutNewsletterSubscribersInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21886,6 +22758,10 @@ export type StoreCreateWithoutNewsletterCampaignsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21982,6 +22858,10 @@ export type StoreUncheckedCreateWithoutNewsletterCampaignsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22094,6 +22974,10 @@ export type StoreUpdateWithoutNewsletterCampaignsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22190,6 +23074,10 @@ export type StoreUncheckedUpdateWithoutNewsletterCampaignsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22286,6 +23174,10 @@ export type StoreCreateWithoutPublicEventsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22382,6 +23274,10 @@ export type StoreUncheckedCreateWithoutPublicEventsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22494,6 +23390,10 @@ export type StoreUpdateWithoutPublicEventsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22590,6 +23490,10 @@ export type StoreUncheckedUpdateWithoutPublicEventsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22686,6 +23590,10 @@ export type StoreCreateWithoutRecommendationRulesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22782,6 +23690,10 @@ export type StoreUncheckedCreateWithoutRecommendationRulesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22894,6 +23806,10 @@ export type StoreUpdateWithoutRecommendationRulesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22990,6 +23906,10 @@ export type StoreUncheckedUpdateWithoutRecommendationRulesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23086,6 +24006,10 @@ export type StoreCreateWithoutSocialPublicationsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23182,6 +24106,10 @@ export type StoreUncheckedCreateWithoutSocialPublicationsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23294,6 +24222,10 @@ export type StoreUpdateWithoutSocialPublicationsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23390,6 +24322,10 @@ export type StoreUncheckedUpdateWithoutSocialPublicationsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23486,6 +24422,10 @@ export type StoreCreateWithoutSupportTicketsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23582,6 +24522,10 @@ export type StoreUncheckedCreateWithoutSupportTicketsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23694,6 +24638,10 @@ export type StoreUpdateWithoutSupportTicketsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23790,6 +24738,10 @@ export type StoreUncheckedUpdateWithoutSupportTicketsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23886,6 +24838,10 @@ export type StoreCreateWithoutHomepagesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23982,6 +24938,10 @@ export type StoreUncheckedCreateWithoutHomepagesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24094,6 +25054,10 @@ export type StoreUpdateWithoutHomepagesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24190,6 +25154,10 @@ export type StoreUncheckedUpdateWithoutHomepagesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24286,6 +25254,10 @@ export type StoreCreateWithoutApprovalRequestsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24382,6 +25354,10 @@ export type StoreUncheckedCreateWithoutApprovalRequestsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24494,6 +25470,10 @@ export type StoreUpdateWithoutApprovalRequestsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24590,6 +25570,10 @@ export type StoreUncheckedUpdateWithoutApprovalRequestsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24686,6 +25670,10 @@ export type StoreCreateWithoutConsentPurposesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24782,6 +25770,10 @@ export type StoreUncheckedCreateWithoutConsentPurposesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24894,6 +25886,10 @@ export type StoreUpdateWithoutConsentPurposesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24990,6 +25986,10 @@ export type StoreUncheckedUpdateWithoutConsentPurposesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25086,6 +26086,10 @@ export type StoreCreateWithoutConsentRecordsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25182,6 +26186,10 @@ export type StoreUncheckedCreateWithoutConsentRecordsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25294,6 +26302,10 @@ export type StoreUpdateWithoutConsentRecordsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25390,6 +26402,10 @@ export type StoreUncheckedUpdateWithoutConsentRecordsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25486,6 +26502,10 @@ export type StoreCreateWithoutEmailMessagesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25582,6 +26602,10 @@ export type StoreUncheckedCreateWithoutEmailMessagesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25694,6 +26718,10 @@ export type StoreUpdateWithoutEmailMessagesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25790,6 +26818,10 @@ export type StoreUncheckedUpdateWithoutEmailMessagesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25886,6 +26918,10 @@ export type StoreCreateWithoutExportDefinitionsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25982,6 +27018,10 @@ export type StoreUncheckedCreateWithoutExportDefinitionsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26094,6 +27134,10 @@ export type StoreUpdateWithoutExportDefinitionsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26190,6 +27234,10 @@ export type StoreUncheckedUpdateWithoutExportDefinitionsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26286,6 +27334,10 @@ export type StoreCreateWithoutExportRequestsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26382,6 +27434,10 @@ export type StoreUncheckedCreateWithoutExportRequestsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26494,6 +27550,10 @@ export type StoreUpdateWithoutExportRequestsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26590,6 +27650,10 @@ export type StoreUncheckedUpdateWithoutExportRequestsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26686,6 +27750,10 @@ export type StoreCreateWithoutFraudRiskAssessmentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26782,6 +27850,10 @@ export type StoreUncheckedCreateWithoutFraudRiskAssessmentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26894,6 +27966,10 @@ export type StoreUpdateWithoutFraudRiskAssessmentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26990,6 +28066,10 @@ export type StoreUncheckedUpdateWithoutFraudRiskAssessmentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27086,6 +28166,10 @@ export type StoreCreateWithoutImportDefinitionsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27182,6 +28266,10 @@ export type StoreUncheckedCreateWithoutImportDefinitionsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27294,6 +28382,10 @@ export type StoreUpdateWithoutImportDefinitionsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27390,6 +28482,10 @@ export type StoreUncheckedUpdateWithoutImportDefinitionsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27486,6 +28582,10 @@ export type StoreCreateWithoutImportRequestsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27582,6 +28682,10 @@ export type StoreUncheckedCreateWithoutImportRequestsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27694,6 +28798,10 @@ export type StoreUpdateWithoutImportRequestsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27790,6 +28898,10 @@ export type StoreUncheckedUpdateWithoutImportRequestsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27886,6 +28998,10 @@ export type StoreCreateWithoutIntegrationsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27982,6 +29098,10 @@ export type StoreUncheckedCreateWithoutIntegrationsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28094,6 +29214,10 @@ export type StoreUpdateWithoutIntegrationsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28190,6 +29314,10 @@ export type StoreUncheckedUpdateWithoutIntegrationsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28286,6 +29414,10 @@ export type StoreCreateWithoutLocalizationLocalesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28382,6 +29514,10 @@ export type StoreUncheckedCreateWithoutLocalizationLocalesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28494,6 +29630,10 @@ export type StoreUpdateWithoutLocalizationLocalesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28590,6 +29730,10 @@ export type StoreUncheckedUpdateWithoutLocalizationLocalesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28686,6 +29830,10 @@ export type StoreCreateWithoutLocalizedValuesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28782,6 +29930,10 @@ export type StoreUncheckedCreateWithoutLocalizedValuesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28894,6 +30046,10 @@ export type StoreUpdateWithoutLocalizedValuesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28990,6 +30146,10 @@ export type StoreUncheckedUpdateWithoutLocalizedValuesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29086,6 +30246,10 @@ export type StoreCreateWithoutNotificationsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29182,6 +30346,10 @@ export type StoreUncheckedCreateWithoutNotificationsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29294,6 +30462,10 @@ export type StoreUpdateWithoutNotificationsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29390,6 +30562,10 @@ export type StoreUncheckedUpdateWithoutNotificationsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29486,6 +30662,10 @@ export type StoreCreateWithoutNotificationPreferencesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29582,6 +30762,10 @@ export type StoreUncheckedCreateWithoutNotificationPreferencesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29694,6 +30878,10 @@ export type StoreUpdateWithoutNotificationPreferencesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29790,6 +30978,10 @@ export type StoreUncheckedUpdateWithoutNotificationPreferencesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29886,6 +31078,10 @@ export type StoreCreateWithoutSchedulePlansInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29982,6 +31178,10 @@ export type StoreUncheckedCreateWithoutSchedulePlansInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30094,6 +31294,10 @@ export type StoreUpdateWithoutSchedulePlansInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30190,6 +31394,10 @@ export type StoreUncheckedUpdateWithoutSchedulePlansInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30286,6 +31494,10 @@ export type StoreCreateWithoutWebhookEndpointsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30382,6 +31594,10 @@ export type StoreUncheckedCreateWithoutWebhookEndpointsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30494,6 +31710,10 @@ export type StoreUpdateWithoutWebhookEndpointsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30590,6 +31810,10 @@ export type StoreUncheckedUpdateWithoutWebhookEndpointsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30686,6 +31910,10 @@ export type StoreCreateWithoutWorkflowDefinitionsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30782,6 +32010,10 @@ export type StoreUncheckedCreateWithoutWorkflowDefinitionsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30894,6 +32126,10 @@ export type StoreUpdateWithoutWorkflowDefinitionsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30990,6 +32226,10 @@ export type StoreUncheckedUpdateWithoutWorkflowDefinitionsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31086,6 +32326,10 @@ export type StoreCreateWithoutWorkflowInstancesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31182,6 +32426,10 @@ export type StoreUncheckedCreateWithoutWorkflowInstancesInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31294,6 +32542,10 @@ export type StoreUpdateWithoutWorkflowInstancesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31390,6 +32642,10 @@ export type StoreUncheckedUpdateWithoutWorkflowInstancesInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31486,6 +32742,10 @@ export type StoreCreateWithoutChannelsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31582,6 +32842,10 @@ export type StoreUncheckedCreateWithoutChannelsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31694,6 +32958,10 @@ export type StoreUpdateWithoutChannelsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31790,6 +33058,10 @@ export type StoreUncheckedUpdateWithoutChannelsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31886,6 +33158,10 @@ export type StoreCreateWithoutMediaAssetsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31982,6 +33258,10 @@ export type StoreUncheckedCreateWithoutMediaAssetsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -32094,6 +33374,10 @@ export type StoreUpdateWithoutMediaAssetsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -32190,6 +33474,10 @@ export type StoreUncheckedUpdateWithoutMediaAssetsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -32286,6 +33574,10 @@ export type StoreCreateWithoutSearchDocumentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -32382,6 +33674,10 @@ export type StoreUncheckedCreateWithoutSearchDocumentsInput = {
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
   orderNumberPrefix?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -32494,6 +33790,10 @@ export type StoreUpdateWithoutSearchDocumentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -32590,6 +33890,10 @@ export type StoreUncheckedUpdateWithoutSearchDocumentsInput = {
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -33392,6 +34696,10 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
   orderNumberPrefix?: boolean
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: boolean
+  cashOnDeliveryInstructions?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -33490,6 +34798,10 @@ export type StoreSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
   orderNumberPrefix?: boolean
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: boolean
+  cashOnDeliveryInstructions?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -33511,6 +34823,10 @@ export type StoreSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
   orderNumberPrefix?: boolean
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: boolean
+  cashOnDeliveryInstructions?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -33532,6 +34848,10 @@ export type StoreSelectScalar = {
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
   orderNumberPrefix?: boolean
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: boolean
+  cashOnDeliveryInstructions?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -33542,7 +34862,7 @@ export type StoreSelectScalar = {
   archivedAt?: boolean
 }
 
-export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "supportEmail" | "supportPhone" | "shippingReturnsPolicy" | "orderNumberPrefix" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
+export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "supportEmail" | "supportPhone" | "shippingReturnsPolicy" | "orderNumberPrefix" | "bankTransferEnabled" | "cashOnDeliveryEnabled" | "bankTransferInstructions" | "cashOnDeliveryInstructions" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
 export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   domains?: boolean | Prisma.Store$domainsArgs<ExtArgs>
   users?: boolean | Prisma.Store$usersArgs<ExtArgs>
@@ -33716,6 +35036,10 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     supportPhone: string | null
     shippingReturnsPolicy: string | null
     orderNumberPrefix: string | null
+    bankTransferEnabled: boolean
+    cashOnDeliveryEnabled: boolean
+    bankTransferInstructions: string | null
+    cashOnDeliveryInstructions: string | null
     defaultLocaleCode: string
     defaultCurrency: $Enums.CurrencyCode
     timezone: string
@@ -34233,6 +35557,10 @@ export interface StoreFieldRefs {
   readonly supportPhone: Prisma.FieldRef<"Store", 'String'>
   readonly shippingReturnsPolicy: Prisma.FieldRef<"Store", 'String'>
   readonly orderNumberPrefix: Prisma.FieldRef<"Store", 'String'>
+  readonly bankTransferEnabled: Prisma.FieldRef<"Store", 'Boolean'>
+  readonly cashOnDeliveryEnabled: Prisma.FieldRef<"Store", 'Boolean'>
+  readonly bankTransferInstructions: Prisma.FieldRef<"Store", 'String'>
+  readonly cashOnDeliveryInstructions: Prisma.FieldRef<"Store", 'String'>
   readonly defaultLocaleCode: Prisma.FieldRef<"Store", 'String'>
   readonly defaultCurrency: Prisma.FieldRef<"Store", 'CurrencyCode'>
   readonly timezone: Prisma.FieldRef<"Store", 'String'>

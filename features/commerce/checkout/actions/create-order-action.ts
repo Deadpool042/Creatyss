@@ -11,6 +11,8 @@ import {
 } from "@/features/commerce/cart/lib/guest-cart.repository";
 import { validateGuestCheckoutInput } from "@/entities/checkout/guest-checkout-input";
 import { sendOrderTransactionalEmail } from "@/features/email";
+import { getAvailablePaymentMethods } from "@/features/commerce/checkout/queries/get-available-payment-methods.query";
+import { getStoreIdByCartId } from "@/features/commerce/checkout/queries/get-store-id-by-cart.query";
 
 export async function createOrderAction(formData: FormData): Promise<void> {
   const cartToken = await readCartSessionToken();
@@ -85,6 +87,20 @@ export async function createOrderAction(formData: FormData): Promise<void> {
 
   if (selectedPaymentMethod === null) {
     redirect("/checkout?error=missing_payment_method");
+  }
+
+  // Re-validate the selected payment method against the current store settings.
+  // Guards against race condition: admin disables a payment method after client selection.
+  const storeId = await getStoreIdByCartId(cart.id);
+
+  if (storeId !== null) {
+    const availableMethods = await getAvailablePaymentMethods({ storeId });
+    const isMethodStillAvailable = availableMethods.some((m) => m.id === selectedPaymentMethod);
+
+    if (!isMethodStillAvailable) {
+      await clearCheckoutPaymentMethod();
+      redirect("/checkout?error=payment_method_unavailable");
+    }
   }
 
   let orderReference: string;

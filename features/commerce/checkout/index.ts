@@ -9,6 +9,10 @@ export {
   getAvailableShippingMethods,
   type AvailableShippingMethod,
 } from "./queries/get-available-shipping-methods.query";
+export {
+  getAvailablePaymentMethods,
+  type AvailablePaymentMethod,
+} from "./queries/get-available-payment-methods.query";
 export { getStoreIdByCartId } from "./queries/get-store-id-by-cart.query";
 
 // Components

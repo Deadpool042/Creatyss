@@ -38,6 +38,11 @@ model Store {
   shippingReturnsPolicy String?
   orderNumberPrefix     String?
 
+  bankTransferEnabled        Boolean @default(false)
+  cashOnDeliveryEnabled      Boolean @default(false)
+  bankTransferInstructions   String?
+  cashOnDeliveryInstructions String?
+
   defaultLocaleCode String
   defaultCurrency   CurrencyCode @default(EUR)
   timezone          String       @default("Europe/Paris")
