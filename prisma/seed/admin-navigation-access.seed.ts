@@ -9,6 +9,8 @@ const permissionCodes = [
   adminNavigationCapabilities.commerce.ordersRead,
   adminNavigationCapabilities.commerce.customersRead,
   adminNavigationCapabilities.commerce.paymentsRead,
+  adminNavigationCapabilities.commerce.paymentsCapture,
+  adminNavigationCapabilities.commerce.paymentsCancel,
   adminNavigationCapabilities.commerce.shippingRead,
 
   adminNavigationCapabilities.catalog.pricingRead,

@@ -3,6 +3,8 @@ export const adminNavigationCapabilities = {
     ordersRead: "admin.commerce.orders.read",
     customersRead: "admin.commerce.customers.read",
     paymentsRead: "admin.commerce.payments.read",
+    paymentsCapture: "admin.commerce.payments.capture",
+    paymentsCancel: "admin.commerce.payments.cancel",
     shippingRead: "admin.commerce.shipping.read",
   },
   content: {
