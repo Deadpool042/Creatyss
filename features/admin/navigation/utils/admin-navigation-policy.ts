@@ -24,6 +24,8 @@ export const adminNavigationCapabilities = {
   },
   settings: {
     teamRead: "admin.settings.team.read",
+    teamWrite: "admin.settings.team.write",
+    teamSuspend: "admin.settings.team.suspend",
     paymentsRead: "admin.settings.payments.read",
     shippingRead: "admin.settings.shipping.read",
     ordersRead: "admin.settings.orders.read",

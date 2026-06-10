@@ -1,6 +1,9 @@
 import { Clock, ShieldCheck, UserCheck, UserX } from "lucide-react";
 
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { suspendAdminUserAction } from "@/features/admin/settings/actions/suspend-admin-user.action";
+import { reactivateAdminUserAction } from "@/features/admin/settings/actions/reactivate-admin-user.action";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
@@ -28,8 +31,19 @@ const STATUS_CONFIG: Record<AdminUserSummary["status"], {
   ARCHIVED: { label: "Archivé", badge: "bg-surface-subtle text-muted-foreground/60", icon: UserX },
 };
 
+async function suspendUser(formData: FormData) {
+  "use server";
+  await suspendAdminUserAction(formData);
+}
+
+async function reactivateUser(formData: FormData) {
+  "use server";
+  await reactivateAdminUserAction(formData);
+}
+
 export default async function AdminSettingsTeamPage() {
   await requireAdminCapability("admin.settings.team.read");
+  const currentAdmin = await requireAuthenticatedAdmin();
 
   let users: AdminUserSummary[] = [];
 
@@ -155,14 +169,37 @@ export default async function AdminSettingsTeamPage() {
                       <StatusIcon className="size-3" />
                       {cfg.label}
                     </span>
+
+                    {/* Actions */}
+                    {user.status === "ACTIVE" && user.id !== currentAdmin.id && (
+                      <form action={suspendUser}>
+                        <input type="hidden" name="userId" value={user.id} />
+                        <button
+                          type="submit"
+                          className="shrink-0 rounded-md px-2 py-1 text-[11px] font-medium text-muted-foreground/60 hover:bg-feedback-warning-surface/30 hover:text-feedback-warning-foreground transition-colors"
+                        >
+                          Suspendre
+                        </button>
+                      </form>
+                    )}
+                    {user.status === "SUSPENDED" && user.id !== currentAdmin.id && (
+                      <form action={reactivateUser}>
+                        <input type="hidden" name="userId" value={user.id} />
+                        <button
+                          type="submit"
+                          className="shrink-0 rounded-md px-2 py-1 text-[11px] font-medium text-muted-foreground/60 hover:bg-feedback-success-surface/30 hover:text-feedback-success-foreground transition-colors"
+                        >
+                          Réactiver
+                        </button>
+                      </form>
+                    )}
                   </div>
                 );
               })}
             </div>
 
             <p className="mt-3 text-xs text-muted-foreground/50">
-              Invitation et gestion des rôles disponibles prochainement.
-              Modèle : <code className="rounded bg-surface-subtle px-1 font-mono">prisma/core/foundation/identity.prisma</code>
+              Invitation de membres et gestion des rôles disponibles prochainement.
             </p>
           </>
         )}
