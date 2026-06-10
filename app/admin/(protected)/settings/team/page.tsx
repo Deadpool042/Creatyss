@@ -4,6 +4,7 @@ import { requireAdminCapability } from "@/core/auth/admin/require-admin-capabili
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { suspendAdminUserAction } from "@/features/admin/settings/actions/suspend-admin-user.action";
 import { reactivateAdminUserAction } from "@/features/admin/settings/actions/reactivate-admin-user.action";
+import { CreateAdminUserDrawer } from "@/features/admin/settings/components/create-admin-user-drawer";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
@@ -70,17 +71,20 @@ export default async function AdminSettingsTeamPage() {
       contentPreset="form"
     >
       <div className="space-y-6">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
-            Accès admin
-          </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-            Équipe
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Membres ayant accès à l'espace d'administration. Rôles et permissions gérés via le
-            schéma d'identité.
-          </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
+              Accès admin
+            </p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
+              Équipe
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Membres ayant accès à l'espace d'administration. Rôles et permissions gérés via le
+              schéma d'identité.
+            </p>
+          </div>
+          <CreateAdminUserDrawer />
         </div>
 
         {users.length === 0 ? (
