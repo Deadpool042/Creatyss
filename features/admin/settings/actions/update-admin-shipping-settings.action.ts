@@ -127,7 +127,8 @@ export async function updateAdminShippingSettingsAction(
     revalidatePath("/admin/settings/shipping");
 
     return { status: "success", message: "Réglages livraison enregistrés." };
-  } catch {
+  } catch (error) {
+    console.error("[shipping-settings]", error);
     return { status: "error", message: "Erreur lors de la sauvegarde. Réessayez." };
   }
 }

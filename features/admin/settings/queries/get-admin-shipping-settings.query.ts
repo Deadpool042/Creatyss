@@ -19,26 +19,16 @@ export async function getAdminShippingSettings(): Promise<AdminShippingSettings 
 
   const currencyCode = store.defaultCurrency as string;
 
-  const standardMethod = await db.shippingMethod.findFirst({
-    where: {
-      storeId: store.id,
-      code: "STANDARD",
-    },
-    select: {
-      amount: true,
-    },
-  });
-
-  const freeMethod = await db.shippingMethod.findFirst({
-    where: {
-      storeId: store.id,
-      code: "FREE",
-    },
-    select: {
-      minSubtotalAmount: true,
-      status: true,
-    },
-  });
+  const [standardMethod, freeMethod] = await Promise.all([
+    db.shippingMethod.findFirst({
+      where: { storeId: store.id, code: "STANDARD" },
+      select: { amount: true },
+    }),
+    db.shippingMethod.findFirst({
+      where: { storeId: store.id, code: "FREE" },
+      select: { minSubtotalAmount: true, status: true },
+    }),
+  ]);
 
   const standardShippingAmount = standardMethod
     ? Number(standardMethod.amount)

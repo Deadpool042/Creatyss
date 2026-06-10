@@ -4,10 +4,7 @@ export const shippingSettingsSchema = z.object({
   standardShippingAmount: z.coerce.number().min(0).max(9999.99),
   freeShippingThreshold: z
     .union([z.literal(""), z.coerce.number().min(0).max(9999.99)])
-    .transform((v) => (v === "" ? null : v))
-    .nullable()
-    .optional()
-    .transform((v) => v ?? null),
+    .transform((v) => (v === "" ? null : v)),
   currencyCode: z.string().min(1),
 });
 

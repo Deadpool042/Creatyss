@@ -73,6 +73,8 @@ export type OrderRepositoryErrorCode =
   | "missing_cart"
   | "empty_cart"
   | "missing_checkout"
+  | "missing_shipping_selection"
+  | "shipping_method_unavailable"
   | "create_failed";
 
 export class OrderRepositoryError extends Error {

@@ -61,14 +61,28 @@ export async function createOrderAction(formData: FormData): Promise<void> {
     redirect(`/checkout?error=${validation.code}`);
   }
 
-  let orderReference: string;
-
   try {
     await upsertGuestCheckoutDetails({
       cartId: cart.id,
       ...validation.data,
     });
+  } catch (error) {
+    console.error(error);
+    redirect("/checkout?error=save_failed");
+  }
 
+  // Re-read the checkout context after upsert to get the persisted shipping selection.
+  // Done outside the order-creation try/catch so a missing_shipping_selection redirect
+  // is not swallowed by the generic create_failed handler.
+  const refreshedContext = await readGuestCheckoutContextByToken(cartToken);
+
+  if (!refreshedContext?.draft?.shippingSelection) {
+    redirect("/checkout?error=missing_shipping_selection");
+  }
+
+  let orderReference: string;
+
+  try {
     const order = await createOrderFromGuestCartToken(cartToken);
     orderReference = order.reference;
     await sendOrderTransactionalEmail({

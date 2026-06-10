@@ -4,12 +4,14 @@ import {
   moneyStringToCents,
   centsToMoneyString,
 } from "@/core/money";
+import type { CurrencyCode } from "@/prisma-generated/client";
 import type {
   GuestCartVariant,
   GuestCartItemReference,
   GuestCartLine,
   GuestCart,
   GuestCheckoutDetails,
+  GuestCheckoutShippingSelection,
   GuestCheckoutIssueCode,
   GuestCheckoutContext,
 } from "./guest-cart.types";
@@ -19,6 +21,7 @@ export type {
   GuestCartLine,
   GuestCart,
   GuestCheckoutDetails,
+  GuestCheckoutShippingSelection,
   GuestCheckoutIssueCode,
   GuestCheckoutContext,
 };
@@ -44,6 +47,12 @@ type CheckoutWithAddresses = {
     city: string;
     countryCode: string;
   }>;
+  shippingSelection: {
+    methodCode: string;
+    methodName: string;
+    amount: { toNumber: () => number };
+    currencyCode: string;
+  } | null;
 };
 
 function mapGuestCheckoutDetails(
@@ -74,6 +83,16 @@ function mapGuestCheckoutDetails(
     billingPostalCode: billing?.postalCode ?? null,
     billingCity: billing?.city ?? null,
     billingCountryCode: (billing?.countryCode as "FR") ?? null,
+    shippingSelection: checkout.shippingSelection
+      ? {
+          methodCode: checkout.shippingSelection.methodCode,
+          methodName: checkout.shippingSelection.methodName,
+          amountCents: Math.round(
+            checkout.shippingSelection.amount.toNumber() * 100
+          ),
+          currencyCode: checkout.shippingSelection.currencyCode,
+        }
+      : null,
     createdAt: checkout.createdAt.toISOString(),
     updatedAt: checkout.updatedAt.toISOString(),
   };
@@ -376,7 +395,17 @@ export async function readGuestCheckoutDetailsByCartId(
   if (!cartId || cartId.trim().length === 0) return null;
   const checkout = await db.checkout.findFirst({
     where: { cartId, status: { in: ["OPEN", "READY"] } },
-    include: { addresses: true },
+    include: {
+      addresses: true,
+      shippingSelection: {
+        select: {
+          methodCode: true,
+          methodName: true,
+          amount: true,
+          currencyCode: true,
+        },
+      },
+    },
     orderBy: { createdAt: "desc" },
   });
   if (!checkout) return null;
@@ -501,10 +530,52 @@ export async function upsertGuestCheckoutDetails(input: {
 
   const updated = await db.checkout.findUnique({
     where: { id: checkoutId },
-    include: { addresses: true },
+    include: {
+      addresses: true,
+      shippingSelection: {
+        select: {
+          methodCode: true,
+          methodName: true,
+          amount: true,
+          currencyCode: true,
+        },
+      },
+    },
   });
   if (!updated) throw new Error("Checkout save failed");
   return mapGuestCheckoutDetails(updated);
+}
+
+// ---------------------------------------------------------------------------
+// Checkout shipping selection upsert
+// ---------------------------------------------------------------------------
+
+export async function upsertCheckoutShippingSelection(input: {
+  checkoutId: string;
+  shippingMethodId: string;
+  methodCode: string;
+  methodName: string;
+  amountCents: number;
+  currencyCode: CurrencyCode;
+}): Promise<void> {
+  await db.checkoutShippingSelection.upsert({
+    where: { checkoutId: input.checkoutId },
+    create: {
+      checkoutId: input.checkoutId,
+      shippingMethodId: input.shippingMethodId,
+      methodCode: input.methodCode,
+      methodName: input.methodName,
+      amount: input.amountCents / 100,
+      currencyCode: input.currencyCode,
+    },
+    update: {
+      shippingMethodId: input.shippingMethodId,
+      methodCode: input.methodCode,
+      methodName: input.methodName,
+      amount: input.amountCents / 100,
+      currencyCode: input.currencyCode,
+    },
+  });
 }
 
 // ---------------------------------------------------------------------------

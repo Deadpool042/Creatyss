@@ -176,14 +176,68 @@ export async function createOrderFromGuestCartToken(
       throw new OrderRepositoryError("missing_checkout", "Checkout not found.");
     }
 
+    if (!checkout.shippingSelection) {
+      throw new OrderRepositoryError(
+        "missing_shipping_selection",
+        "No shipping method selected."
+      );
+    }
+
+    const shippingMethodId = checkout.shippingSelection.shippingMethodId;
+    const shippingMethod = shippingMethodId
+      ? await tx.shippingMethod.findUnique({ where: { id: shippingMethodId } })
+      : await tx.shippingMethod.findUnique({
+          where: { storeId_code: { storeId: cart.storeId, code: checkout.shippingSelection.methodCode } },
+        });
+
+    if (!shippingMethod) {
+      throw new OrderRepositoryError(
+        "shipping_method_unavailable",
+        "Shipping method no longer exists."
+      );
+    }
+
+    if (shippingMethod.status !== "ACTIVE") {
+      throw new OrderRepositoryError(
+        "shipping_method_unavailable",
+        "Shipping method is no longer active."
+      );
+    }
+
+    if (shippingMethod.storeId !== cart.storeId) {
+      throw new OrderRepositoryError(
+        "shipping_method_unavailable",
+        "Shipping method does not belong to this store."
+      );
+    }
+
     const subtotalCents = cart.lines.reduce(
       (sum, line) =>
         sum + Math.round(Number(line.unitPriceAmount) * line.quantity * 100),
       0
     );
-    const shippingCents = checkout.shippingSelection
-      ? Math.round(Number(checkout.shippingSelection.amount) * 100)
-      : 0;
+
+    if (
+      shippingMethod.minSubtotalAmount !== null &&
+      subtotalCents < Math.round(Number(shippingMethod.minSubtotalAmount) * 100)
+    ) {
+      throw new OrderRepositoryError(
+        "shipping_method_unavailable",
+        "Cart subtotal is below the minimum for this shipping method."
+      );
+    }
+
+    if (
+      shippingMethod.maxSubtotalAmount !== null &&
+      subtotalCents > Math.round(Number(shippingMethod.maxSubtotalAmount) * 100)
+    ) {
+      throw new OrderRepositoryError(
+        "shipping_method_unavailable",
+        "Cart subtotal exceeds the maximum for this shipping method."
+      );
+    }
+
+    const shippingCents = Math.round(Number(shippingMethod.amount) * 100);
     const totalCents = subtotalCents + shippingCents;
 
     const shippingAddress = checkout.addresses.find((a) => a.type === "SHIPPING") ?? null;
@@ -253,19 +307,15 @@ export async function createOrderFromGuestCartToken(
                 phone: addr.phone,
               })),
             },
-            ...(checkout.shippingSelection
-              ? {
-                  shippingSelection: {
-                    create: {
-                      shippingMethodId: checkout.shippingSelection.shippingMethodId,
-                      methodCode: checkout.shippingSelection.methodCode,
-                      methodName: checkout.shippingSelection.methodName,
-                      amount: checkout.shippingSelection.amount,
-                      currencyCode: checkout.shippingSelection.currencyCode,
-                    },
-                  },
-                }
-              : {}),
+            shippingSelection: {
+              create: {
+                shippingMethodId: shippingMethod.id,
+                methodCode: shippingMethod.code,
+                methodName: shippingMethod.name,
+                amount: shippingMethod.amount,
+                currencyCode: shippingMethod.currencyCode,
+              },
+            },
           },
           select: { id: true, orderNumber: true },
         });

@@ -41,6 +41,13 @@ export type GuestCart = {
   lines: GuestCartLine[];
 };
 
+export type GuestCheckoutShippingSelection = {
+  methodCode: string;
+  methodName: string;
+  amountCents: number;
+  currencyCode: string;
+};
+
 export type GuestCheckoutDetails = {
   id: string;
   cartId: string;
@@ -62,6 +69,7 @@ export type GuestCheckoutDetails = {
   billingPostalCode: string | null;
   billingCity: string | null;
   billingCountryCode: "FR" | null;
+  shippingSelection: GuestCheckoutShippingSelection | null;
   createdAt: string;
   updatedAt: string;
 };

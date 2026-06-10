@@ -3,10 +3,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/feedback";
+import { moneyStringToCents } from "@/core/money";
 import { readCartSessionToken } from "@/core/sessions/cart";
 import { readGuestCheckoutContextByToken } from "@/features/commerce/cart/lib/guest-cart.repository";
 import type { GuestCheckoutContext } from "@/features/commerce/cart/lib/guest-cart.types";
-import { createOrderAction, saveGuestCheckoutAction } from "@/features/commerce/checkout";
+import {
+  createOrderAction,
+  saveGuestCheckoutAction,
+  getAvailableShippingMethods,
+  getStoreIdByCartId,
+  ShippingMethodSelector,
+} from "@/features/commerce/checkout";
+import { formatCatalogMoneyFromCents } from "@/features/storefront/catalog/helpers/catalog-pricing";
 
 export const dynamic = "force-dynamic";
 
@@ -58,6 +66,10 @@ function getErrorMessage(error: string | undefined): string | null {
       return "Renseignez un code postal de facturation à 5 chiffres.";
     case "missing_billing_city":
       return "Renseignez la ville de facturation.";
+    case "missing_shipping_selection":
+      return "Veuillez sélectionner une méthode de livraison.";
+    case "shipping_method_unavailable":
+      return "La méthode de livraison sélectionnée n'est plus disponible. Veuillez en choisir une autre.";
     case "missing_checkout":
       return "Renseignez vos informations avant de créer la commande.";
     case "save_failed":
@@ -103,6 +115,33 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
       : null;
   const canSave = cart !== null && issues.length === 0;
   const billingSameAsShipping = draft?.billingSameAsShipping ?? true;
+
+  const currentShippingSelection = draft?.shippingSelection ?? null;
+
+  const storeId = cart !== null ? await getStoreIdByCartId(cart.id) : null;
+  const subtotalCents =
+    cart !== null ? moneyStringToCents(cart.subtotal) : 0;
+  const availableMethods =
+    storeId !== null
+      ? await getAvailableShippingMethods({ storeId, subtotalCents })
+      : [];
+
+  const shippingLineLabel: string = (() => {
+    if (currentShippingSelection === null) return "À sélectionner";
+    if (currentShippingSelection.amountCents === 0) return "Offert";
+    return formatCatalogMoneyFromCents(
+      currentShippingSelection.amountCents,
+      currentShippingSelection.currencyCode
+    );
+  })();
+
+  const totalLabel: string | null = (() => {
+    if (currentShippingSelection === null) return null;
+    const totalCents = subtotalCents + currentShippingSelection.amountCents;
+    return formatCatalogMoneyFromCents(totalCents, currentShippingSelection.currencyCode);
+  })();
+
+  const subtotalLabel = formatCatalogMoneyFromCents(subtotalCents, "EUR");
 
   return (
     <div className="grid gap-8">
@@ -381,6 +420,12 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               </div>
             </form>
 
+            <ShippingMethodSelector
+              availableMethods={availableMethods}
+              currentSelection={currentShippingSelection}
+              hasDraft={draft !== null}
+            />
+
             <aside className="product-panel grid gap-4">
               <div className="grid gap-1">
                 <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
@@ -466,8 +511,24 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Sous-total panier
                 </p>
-                <p className="text-sm text-muted-foreground">{cart.subtotal}</p>
+                <p className="text-sm text-muted-foreground">{subtotalLabel}</p>
               </div>
+
+              <div className="grid gap-1">
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                  Livraison
+                </p>
+                <p className="text-sm text-muted-foreground">{shippingLineLabel}</p>
+              </div>
+
+              {totalLabel !== null ? (
+                <div className="grid gap-1 border-t border-surface-border/60 pt-3">
+                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    Total
+                  </p>
+                  <p className="text-sm font-medium text-foreground">{totalLabel}</p>
+                </div>
+              ) : null}
             </aside>
           </div>
         ) : (
