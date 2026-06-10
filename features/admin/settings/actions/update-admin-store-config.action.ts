@@ -19,7 +19,7 @@ export async function updateAdminStoreConfigAction(
   _prevState: StoreConfigFormState,
   formData: FormData
 ): Promise<StoreConfigFormState> {
-  await requireAdminCapability("admin.settings.store.read");
+  await requireAdminCapability("admin.settings.store.write");
 
   const parsed = storeConfigSchema.safeParse({
     status: formData.get("status"),

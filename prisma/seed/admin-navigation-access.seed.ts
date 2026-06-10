@@ -25,7 +25,9 @@ const permissionCodes = [
   adminNavigationCapabilities.insights.analyticsRead,
 
   adminNavigationCapabilities.settings.generalRead,
+  adminNavigationCapabilities.settings.generalWrite,
   adminNavigationCapabilities.settings.storeRead,
+  adminNavigationCapabilities.settings.storeWrite,
   adminNavigationCapabilities.settings.teamRead,
   adminNavigationCapabilities.settings.teamWrite,
   adminNavigationCapabilities.settings.teamSuspend,
@@ -35,6 +37,7 @@ const permissionCodes = [
   adminNavigationCapabilities.settings.catalogRead,
   adminNavigationCapabilities.settings.mediaRead,
   adminNavigationCapabilities.settings.seoRead,
+  adminNavigationCapabilities.settings.seoWrite,
   adminNavigationCapabilities.settings.advancedRead,
   adminNavigationCapabilities.settings.apiClientsRead,
   adminNavigationCapabilities.settings.apiClientsWrite,

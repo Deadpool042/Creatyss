@@ -12,7 +12,7 @@ export async function updateAdminStoreSettingsAction(
   _prevState: StoreSettingsFormState,
   formData: FormData
 ): Promise<StoreSettingsFormState> {
-  await requireAdminCapability("admin.settings.general.read");
+  await requireAdminCapability("admin.settings.general.write");
 
   const raw = {
     name: formData.get("name"),

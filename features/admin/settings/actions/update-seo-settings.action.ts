@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/core/db";
-import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import {
   seoSettingsSchema,
@@ -12,7 +12,7 @@ export async function updateSeoSettingsAction(
   _prevState: SeoSettingsFormState,
   formData: FormData
 ): Promise<SeoSettingsFormState> {
-  await requireAuthenticatedAdmin();
+  await requireAdminCapability("admin.settings.seo.write");
 
   const raw = {
     metaTitle: formData.get("metaTitle") || null,

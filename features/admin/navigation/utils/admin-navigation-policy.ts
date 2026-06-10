@@ -24,7 +24,9 @@ export const adminNavigationCapabilities = {
   },
   settings: {
     generalRead: "admin.settings.general.read",
+    generalWrite: "admin.settings.general.write",
     storeRead: "admin.settings.store.read",
+    storeWrite: "admin.settings.store.write",
     teamRead: "admin.settings.team.read",
     teamWrite: "admin.settings.team.write",
     teamSuspend: "admin.settings.team.suspend",
@@ -34,6 +36,7 @@ export const adminNavigationCapabilities = {
     catalogRead: "admin.settings.catalog.read",
     mediaRead: "admin.settings.media.read",
     seoRead: "admin.settings.seo.read",
+    seoWrite: "admin.settings.seo.write",
     advancedRead: "admin.settings.advanced.read",
     apiClientsRead: "admin.settings.api-clients.read",
     apiClientsWrite: "admin.settings.api-clients.write",
