@@ -11,7 +11,10 @@ const permissionCodes = [
   adminNavigationCapabilities.commerce.paymentsRead,
   adminNavigationCapabilities.commerce.shippingRead,
 
+  adminNavigationCapabilities.catalog.pricingRead,
+
   adminNavigationCapabilities.content.homepageRead,
+  adminNavigationCapabilities.content.pagesRead,
   adminNavigationCapabilities.content.blogRead,
   adminNavigationCapabilities.content.seoRead,
 
@@ -21,9 +24,16 @@ const permissionCodes = [
 
   adminNavigationCapabilities.insights.analyticsRead,
 
+  adminNavigationCapabilities.settings.teamRead,
   adminNavigationCapabilities.settings.paymentsRead,
   adminNavigationCapabilities.settings.shippingRead,
+  adminNavigationCapabilities.settings.ordersRead,
+  adminNavigationCapabilities.settings.catalogRead,
+  adminNavigationCapabilities.settings.mediaRead,
+  adminNavigationCapabilities.settings.seoRead,
   adminNavigationCapabilities.settings.advancedRead,
+  adminNavigationCapabilities.settings.apiClientsRead,
+  adminNavigationCapabilities.settings.webhooksRead,
 
   adminNavigationCapabilities.system.logsRead,
   adminNavigationCapabilities.system.monitoringRead,
