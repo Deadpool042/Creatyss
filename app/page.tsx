@@ -113,17 +113,28 @@ export default async function HomePage() {
         />
 
         <HomepageSavoirFaireSection
-          editorialTitle={null}
-          editorialText={null}
+          savoirFaireTitle={data?.savoirFaire?.title}
+          savoirFaireBody={data?.savoirFaire?.body}
+          savoirFaireImagePath={data?.savoirFaire?.imageStorageKey}
+          uploadsPublicPath={uploadsPublicPath}
         />
 
-        <HomepageGuaranteesSection />
+        <HomepageGuaranteesSection guaranteesBody={data?.guarantees?.body} />
 
         <HomepageJournalSection featuredPost={data?.featuredPost ?? null} />
 
-        <HomepageAboutSection />
+        <HomepageAboutSection
+          aboutTitle={data?.about?.title}
+          aboutSubtitle={data?.about?.subtitle}
+          aboutBody={data?.about?.body}
+          aboutCtaLabel={data?.about?.ctaLabel}
+          aboutCtaHref={data?.about?.ctaHref}
+        />
 
-        <HomepageNewsletterSection />
+        <HomepageNewsletterSection
+          newsletterTitle={data?.newsletter?.title}
+          newsletterSubtitle={data?.newsletter?.subtitle}
+        />
       </div>
     </div>
   );

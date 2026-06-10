@@ -6,6 +6,22 @@ type GuaranteeItem = {
   icon: React.ReactNode;
 };
 
+function parseGuaranteesBody(body: string): Array<{ label: string; description: string }> {
+  return body
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .slice(0, 4)
+    .flatMap((line) => {
+      const parts = line.split("|");
+      if (parts.length < 2) return [];
+      const label = parts[0]?.trim() ?? "";
+      const description = parts.slice(1).join("|").trim();
+      if (!label || !description) return [];
+      return [{ label, description }];
+    });
+}
+
 const GUARANTEES: GuaranteeItem[] = [
   {
     label: "Atelier en France",
@@ -82,11 +98,24 @@ const GUARANTEES: GuaranteeItem[] = [
   },
 ];
 
-export function HomepageGuaranteesSection() {
+type HomepageGuaranteesSectionProps = {
+  guaranteesBody?: string | null | undefined;
+};
+
+export function HomepageGuaranteesSection({ guaranteesBody }: HomepageGuaranteesSectionProps = {}) {
+  const parsed = guaranteesBody ? parseGuaranteesBody(guaranteesBody) : [];
+  const items: GuaranteeItem[] = parsed.length > 0
+    ? GUARANTEES.map((g, i) => ({
+        ...g,
+        label: parsed[i]?.label ?? g.label,
+        description: parsed[i]?.description ?? g.description,
+      }))
+    : GUARANTEES;
+
   return (
     <div className="-mx-4 border-t border-band-border bg-band-bg md:-mx-6 xl:-mx-12">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-        {GUARANTEES.map((item, index) => (
+        {items.map((item, index) => (
           <div
             className="flex items-center gap-4 border-b border-band-border px-6 py-6 sm:px-8 last:border-b-0 lg:border-b-0 lg:border-r lg:border-band-border lg:px-10 lg:py-8 lg:last:border-r-0"
             key={index}

@@ -2,7 +2,20 @@
 
 import { useState } from "react";
 
-export function HomepageNewsletterSection() {
+const FALLBACK_TITLE = "Nouvelles créations, coulisses & marchés";
+const FALLBACK_SUBTITLE = "Quelques nouvelles par mois, jamais plus.\nPour ceux qui aiment les belles choses faites avec soin.";
+
+type HomepageNewsletterSectionProps = {
+  newsletterTitle?: string | null | undefined;
+  newsletterSubtitle?: string | null | undefined;
+};
+
+export function HomepageNewsletterSection({
+  newsletterTitle,
+  newsletterSubtitle,
+}: HomepageNewsletterSectionProps = {}) {
+  const title = newsletterTitle ?? FALLBACK_TITLE;
+  const subtitle = newsletterSubtitle ?? FALLBACK_SUBTITLE;
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -42,15 +55,12 @@ export function HomepageNewsletterSection() {
         className="mb-4 font-serif text-[1.75rem] font-light leading-[1.2] text-white min-[900px]:text-[2.5rem]"
         id="newsletter-title"
       >
-        Nouvelles créations, <br className="hidden min-[480px]:block" />
-        coulisses &amp; marchés
+        {title}
       </h2>
 
       {/* Subline */}
-      <p className="mx-auto mb-10 max-w-[48ch] text-[0.82rem] font-light leading-[1.8] text-white/40">
-        Quelques nouvelles par mois, jamais plus.
-        <br />
-        Pour ceux qui aiment les belles choses faites avec soin.
+      <p className="mx-auto mb-10 max-w-[48ch] whitespace-pre-line text-[0.82rem] font-light leading-[1.8] text-white/40">
+        {subtitle}
       </p>
 
       {/* Form */}

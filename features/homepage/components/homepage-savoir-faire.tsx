@@ -1,30 +1,38 @@
 import Image from "next/image";
 
 type HomepageSavoirFaireSectionProps = {
-  editorialTitle: string | null;
-  editorialText: string | null;
+  savoirFaireTitle?: string | null | undefined;
+  savoirFaireBody?: string | null | undefined;
+  savoirFaireImagePath?: string | null | undefined;
+  uploadsPublicPath?: string | undefined;
 };
 
-const savoirFaireImagePath = "/uploads/savoir-faire-placeholder.webp";
+const FALLBACK_IMAGE_PATH = "/uploads/savoir-faire-placeholder.webp";
 
 export function HomepageSavoirFaireSection({
-  editorialText,
-  editorialTitle,
+  savoirFaireTitle,
+  savoirFaireBody,
+  savoirFaireImagePath,
+  uploadsPublicPath,
 }: HomepageSavoirFaireSectionProps) {
+  const resolvedImagePath =
+    savoirFaireImagePath != null && uploadsPublicPath != null
+      ? `${uploadsPublicPath}/${savoirFaireImagePath.replace(/^\/+/, "")}`
+      : FALLBACK_IMAGE_PATH;
   return (
     <section className="grid overflow-hidden rounded-xl border border-hero-border/50 bg-hero-bg min-[860px]:grid-cols-[0.95fr_1.05fr] dark:border-hero-border">
       {/* Panneau visuel */}
       <div className="relative min-h-136 overflow-hidden bg-[linear-gradient(145deg,#c8b89e_0%,#a8906e_45%,#6e5840_100%)]">
         <Image
           alt="Détail du savoir-faire Creatyss dans l'atelier"
-          src={savoirFaireImagePath}
+          src={resolvedImagePath}
           fill
           className="object-cover object-[58%_center] md:object-[62%_center]"
           quality={92}
           sizes="(max-width: 979px) 100vw, 48vw"
         />
         <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(28,22,16,0.18)_0%,rgba(28,22,16,0.04)_36%,rgba(28,22,16,0)_62%)] dark:bg-[linear-gradient(to_top,rgba(0,0,0,0.34)_0%,rgba(0,0,0,0.12)_36%,rgba(0,0,0,0)_62%)]" />
-        {!savoirFaireImagePath ? (
+        {!resolvedImagePath ? (
           <div className="absolute inset-0 grid place-items-center bg-black/5 p-8 text-center text-[0.62rem] uppercase tracking-[0.24em] text-white/35">
             Détail couture · mains au travail · lumière naturelle
           </div>
@@ -50,14 +58,14 @@ export function HomepageSavoirFaireSection({
         </p>
 
         <h2 className="max-w-[18ch] font-serif text-3xl font-normal leading-[1.2] tracking-tight text-hero-ink min-[860px]:text-[2.6rem] dark:text-foreground">
-          {editorialTitle ?? "Du dessin à la dernière piqûre"}
+          {savoirFaireTitle ?? "Du dessin à la dernière piqûre"}
         </h2>
 
         {/* Rule terracotta */}
         <div className="mt-5 mb-6 h-px w-9 bg-brand dark:bg-brand" />
 
         <p className="max-w-[44ch] text-sm font-light leading-[1.85] text-hero-ink-soft dark:text-foreground/72">
-          {editorialText ??
+          {savoirFaireBody ??
             "Chaque sac naît d'une intention, se dessine, se construit dans des matières choisies avec soin et prend forme dans un rythme volontairement artisanal. Ici, rien n'est précipité. Chaque création est pensée pour durer et porter une vraie présence."}
         </p>
 

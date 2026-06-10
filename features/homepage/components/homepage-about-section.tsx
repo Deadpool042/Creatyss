@@ -1,6 +1,32 @@
 import Link from "next/link";
 
-export function HomepageAboutSection() {
+const FALLBACK_TITLE = "Derrière chaque sac, une main.";
+const FALLBACK_BODY = "« Je couds par passion, mais aussi par conviction — que les objets qu'on porte méritent d'être pensés, faits avec soin, et destinés à durer. »";
+const FALLBACK_SUBTITLE = "— Creatyss, fabrication française";
+const FALLBACK_CTA_LABEL = "Notre histoire";
+const FALLBACK_CTA_HREF = "/blog?category=atelier";
+
+type HomepageAboutSectionProps = {
+  aboutTitle?: string | null | undefined;
+  aboutSubtitle?: string | null | undefined;
+  aboutBody?: string | null | undefined;
+  aboutCtaLabel?: string | null | undefined;
+  aboutCtaHref?: string | null | undefined;
+};
+
+export function HomepageAboutSection({
+  aboutTitle,
+  aboutSubtitle,
+  aboutBody,
+  aboutCtaLabel,
+  aboutCtaHref,
+}: HomepageAboutSectionProps = {}) {
+  const title = aboutTitle ?? FALLBACK_TITLE;
+  const body = aboutBody ?? FALLBACK_BODY;
+  const subtitle = aboutSubtitle ?? FALLBACK_SUBTITLE;
+  const ctaLabel = aboutCtaLabel ?? FALLBACK_CTA_LABEL;
+  const ctaHref = aboutCtaHref ?? FALLBACK_CTA_HREF;
+
   return (
     <section
       aria-labelledby="homepage-about-title"
@@ -17,26 +43,25 @@ export function HomepageAboutSection() {
           className="mb-6 max-w-[20ch] font-serif text-3xl font-normal leading-[1.2] tracking-tight text-hero-ink min-[860px]:text-[2.75rem]"
           id="homepage-about-title"
         >
-          Derrière chaque sac, <em>une main.</em>
+          {title}
         </h2>
 
         {/* Blockquote — font-serif font-light leading-[1.6] border-l brand pl-6 */}
         <blockquote className="mb-7 max-w-[40ch] border-l-2 border-brand pl-6 font-serif text-[1.1rem] font-light italic leading-[1.6] text-hero-ink-soft min-[860px]:text-[1.2rem]">
-          « Je couds par passion, mais aussi par conviction — que les objets qu'on porte méritent
-          d'être pensés, faits avec soin, et destinés à durer. »
+          {body}
         </blockquote>
 
         {/* Signature — font-serif tracking-.12em comme index.html */}
         <p className="mb-11 font-serif text-[0.75rem] tracking-[0.12em] text-hero-ink-muted">
-          — Creatyss, fabrication française
+          {subtitle}
         </p>
 
         {/* btn-ghost — border-b seul comme index.html */}
         <Link
           className="inline-flex items-center gap-2.5 self-start border-b border-hero-border pb-0.5 text-[0.65rem] font-medium uppercase tracking-[0.22em] text-hero-ink transition-colors hover:border-hero-ink"
-          href="/blog?category=atelier"
+          href={ctaHref}
         >
-          Notre histoire
+          {ctaLabel}
           <span aria-hidden="true" className="font-serif text-sm">
             →
           </span>

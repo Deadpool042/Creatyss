@@ -1,9 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { createAdminHomepage } from "../services/create-admin-homepage.service";
 
 export async function createHomepageAction(): Promise<void> {
+  await requireAuthenticatedAdmin();
+
   try {
     await createAdminHomepage();
   } catch (error: unknown) {

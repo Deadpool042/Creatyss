@@ -8,6 +8,25 @@ const CANONICAL_STORE_CODE = "creatyss";
 export type StorefrontHomepageData = {
   hero: { title: string | null; text: string | null; imageStorageKey: string | null } | null;
   editorial: { title: string | null; text: string | null } | null;
+  savoirFaire: {
+    title: string | null;
+    body: string | null;
+    imageStorageKey: string | null;
+  } | null;
+  about: {
+    title: string | null;
+    subtitle: string | null;
+    body: string | null;
+    ctaLabel: string | null;
+    ctaHref: string | null;
+  } | null;
+  newsletter: {
+    title: string | null;
+    subtitle: string | null;
+  } | null;
+  guarantees: {
+    body: string | null;
+  } | null;
   featuredProducts: Array<{
     id: string;
     name: string;
@@ -58,9 +77,13 @@ export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | 
         },
         orderBy: { sortOrder: "asc" },
         select: {
+          code: true,
           type: true,
           title: true,
+          subtitle: true,
           body: true,
+          ctaLabel: true,
+          ctaHref: true,
           primaryImage: {
             select: { storageKey: true },
           },
@@ -120,6 +143,10 @@ export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | 
 
   let hero: StorefrontHomepageData["hero"] = null;
   let editorial: StorefrontHomepageData["editorial"] = null;
+  let savoirFaire: StorefrontHomepageData["savoirFaire"] = null;
+  let about: StorefrontHomepageData["about"] = null;
+  let newsletter: StorefrontHomepageData["newsletter"] = null;
+  let guarantees: StorefrontHomepageData["guarantees"] = null;
   const featuredProducts: StorefrontHomepageData["featuredProducts"] = [];
   const featuredCategories: StorefrontHomepageData["featuredCategories"] = [];
   let featuredPost: StorefrontHomepageData["featuredPost"] = null;
@@ -133,7 +160,37 @@ export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | 
       };
     }
 
-    if (section.type === HomepageSectionType.EDITORIAL && editorial === null) {
+    if (section.type === HomepageSectionType.EDITORIAL && section.code === "savoir-faire" && savoirFaire === null) {
+      const imageKey = section.primaryImage?.storageKey ?? null;
+      savoirFaire = {
+        title: section.title ?? null,
+        body: section.body ?? null,
+        imageStorageKey: imageKey !== null && localUploadExists(imageKey) ? imageKey : null,
+      };
+    }
+
+    if (section.type === HomepageSectionType.EDITORIAL && section.code === "about" && about === null) {
+      about = {
+        title: section.title ?? null,
+        subtitle: section.subtitle ?? null,
+        body: section.body ?? null,
+        ctaLabel: section.ctaLabel ?? null,
+        ctaHref: section.ctaHref ?? null,
+      };
+    }
+
+    if (section.type === HomepageSectionType.EDITORIAL && section.code === "newsletter" && newsletter === null) {
+      newsletter = {
+        title: section.title ?? null,
+        subtitle: section.subtitle ?? null,
+      };
+    }
+
+    if (section.type === HomepageSectionType.EDITORIAL && section.code === "guarantees" && guarantees === null) {
+      guarantees = { body: section.body ?? null };
+    }
+
+    if (section.type === HomepageSectionType.EDITORIAL && section.code !== "savoir-faire" && section.code !== "about" && section.code !== "newsletter" && section.code !== "guarantees" && editorial === null) {
       editorial = {
         title: section.title ?? null,
         text: section.body ?? null,
@@ -195,5 +252,5 @@ export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | 
     }
   }
 
-  return { hero, editorial, featuredProducts, featuredCategories, featuredPost };
+  return { hero, editorial, savoirFaire, about, newsletter, guarantees, featuredProducts, featuredCategories, featuredPost };
 }
