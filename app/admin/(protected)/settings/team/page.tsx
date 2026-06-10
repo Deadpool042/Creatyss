@@ -1,6 +1,6 @@
 import { Clock, ShieldCheck, UserCheck, UserX } from "lucide-react";
 
-import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
@@ -29,7 +29,7 @@ const STATUS_CONFIG: Record<AdminUserSummary["status"], {
 };
 
 export default async function AdminSettingsTeamPage() {
-  await requireAuthenticatedAdmin();
+  await requireAdminCapability("admin.settings.team.read");
 
   let users: AdminUserSummary[] = [];
 

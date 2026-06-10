@@ -1,3 +1,4 @@
+import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { SeoSettingsForm } from "@/features/admin/settings/components/seo-settings-form";
 import { getAdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
@@ -5,6 +6,8 @@ import { getAdminSeoSettings } from "@/features/admin/settings/queries/get-seo-s
 export const dynamic = "force-dynamic";
 
 export default async function AdminSettingsSeoPage() {
+  await requireAdminCapability("admin.settings.seo.read");
+
   let seo = null;
 
   try {

@@ -2,7 +2,10 @@ import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
 import { Truck } from "lucide-react";
 
-export default function AdminSettingsShippingPage() {
+import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+
+export default async function AdminSettingsShippingPage() {
+  await requireAdminCapability("admin.settings.shipping.read");
   return (
     <AdminPageShell
       scrollBehavior="page"

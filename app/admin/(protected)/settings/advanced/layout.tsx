@@ -2,13 +2,15 @@ import type { ReactNode } from "react";
 
 import { AdminSplitPageShell } from "@/components/admin/layout/admin-split-page-shell";
 import { AdminSplitView } from "@/components/admin/layout/admin-split-view";
+import { requireInternalAdminCapability } from "@/core/auth/admin/require-internal-admin-capability";
 
 type AdvancedSettingsLayoutProps = {
   list: ReactNode;
   detail: ReactNode;
 };
 
-export default function AdvancedSettingsLayout({ list, detail }: AdvancedSettingsLayoutProps) {
+export default async function AdvancedSettingsLayout({ list, detail }: AdvancedSettingsLayoutProps) {
+  await requireInternalAdminCapability("admin.settings.advanced.read");
   return (
     <AdminSplitPageShell
       title="Avancé"

@@ -2,7 +2,10 @@ import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
 import { ShoppingCart } from "lucide-react";
 
-export default function AdminSettingsOrdersPage() {
+import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+
+export default async function AdminSettingsOrdersPage() {
+  await requireAdminCapability("admin.settings.orders.read");
   return (
     <AdminPageShell
       scrollBehavior="page"

@@ -1,5 +1,7 @@
 import { HardDrive, Image as ImageIcon, Library } from "lucide-react";
 
+import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { Badge } from "@/components/ui/badge";
 import { serverEnv } from "@/core/config/env/server";
@@ -16,6 +18,8 @@ import { getAdminMediaStats } from "@/features/admin/settings/queries/get-media-
 export const dynamic = "force-dynamic";
 
 export default async function AdminSettingsMediaPage() {
+  await requireAdminCapability("admin.settings.media.read");
+
   let stats = { activeAssetCount: 0 };
 
   try {
