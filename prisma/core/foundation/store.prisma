@@ -36,6 +36,12 @@ model Store {
   supportEmail String?
   supportPhone String?
   shippingReturnsPolicy String?
+  addressLine1          String?
+  addressCity           String?
+  addressPostalCode     String?
+  addressCountry        String?
+  instagramUrl          String?
+  facebookUrl           String?
   orderNumberPrefix     String?
 
   bankTransferEnabled        Boolean @default(false)

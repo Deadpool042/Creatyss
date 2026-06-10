@@ -25,6 +25,12 @@ export const storeSettingsSchema = z.object({
   defaultCurrency: z.enum(CURRENCY_CODES),
   timezone: z.string().min(1),
   defaultLocaleCode: z.string().min(2).max(10),
+  addressLine1: z.string().trim().max(150).nullable().optional().transform(v => v === "" ? null : v ?? null),
+  addressCity: z.string().trim().max(100).nullable().optional().transform(v => v === "" ? null : v ?? null),
+  addressPostalCode: z.string().trim().max(20).nullable().optional().transform(v => v === "" ? null : v ?? null),
+  addressCountry: z.string().trim().max(80).nullable().optional().transform(v => v === "" ? null : v ?? null),
+  instagramUrl: z.string().trim().url("URL invalide").or(z.literal("")).nullable().optional().transform(v => !v || v === "" ? null : v),
+  facebookUrl: z.string().trim().url("URL invalide").or(z.literal("")).nullable().optional().transform(v => !v || v === "" ? null : v),
 });
 
 export type StoreSettingsInput = z.infer<typeof storeSettingsSchema>;

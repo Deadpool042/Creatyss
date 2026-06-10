@@ -23,6 +23,12 @@ export async function updateAdminStoreSettingsAction(
     defaultCurrency: formData.get("defaultCurrency"),
     timezone: formData.get("timezone"),
     defaultLocaleCode: formData.get("defaultLocaleCode"),
+    addressLine1: formData.get("addressLine1"),
+    addressCity: formData.get("addressCity"),
+    addressPostalCode: formData.get("addressPostalCode"),
+    addressCountry: formData.get("addressCountry"),
+    instagramUrl: formData.get("instagramUrl"),
+    facebookUrl: formData.get("facebookUrl"),
   };
 
   const parsed = storeSettingsSchema.safeParse(raw);
@@ -58,6 +64,12 @@ export async function updateAdminStoreSettingsAction(
         defaultCurrency: parsed.data.defaultCurrency as never,
         timezone: parsed.data.timezone,
         defaultLocaleCode: parsed.data.defaultLocaleCode,
+        addressLine1: parsed.data.addressLine1 ?? null,
+        addressCity: parsed.data.addressCity ?? null,
+        addressPostalCode: parsed.data.addressPostalCode ?? null,
+        addressCountry: parsed.data.addressCountry ?? null,
+        instagramUrl: parsed.data.instagramUrl ?? null,
+        facebookUrl: parsed.data.facebookUrl ?? null,
       },
     });
 

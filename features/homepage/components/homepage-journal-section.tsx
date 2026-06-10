@@ -13,11 +13,20 @@ type HomepageFeaturedPost = {
   publishedAt: string | Date | null;
 } | null;
 
+const FALLBACK_INSTAGRAM_URL = "https://www.instagram.com/creatyss";
+const FALLBACK_FACEBOOK_URL = "https://www.facebook.com/creatyss";
+
 type HomepageJournalSectionProps = {
   featuredPost: HomepageFeaturedPost;
+  instagramUrl?: string | null;
+  facebookUrl?: string | null;
 };
 
-export function HomepageJournalSection({ featuredPost }: HomepageJournalSectionProps) {
+export function HomepageJournalSection({
+  featuredPost,
+  instagramUrl,
+  facebookUrl,
+}: HomepageJournalSectionProps) {
   return (
     <SurfaceSection
       eyebrow="Journal"
@@ -60,10 +69,10 @@ export function HomepageJournalSection({ featuredPost }: HomepageJournalSectionP
 
       <div className="mt-5 flex flex-wrap gap-3">
         <Button asChild variant="outline">
-          <Link href="https://www.facebook.com/creatyss">Facebook</Link>
+          <Link href={facebookUrl ?? FALLBACK_FACEBOOK_URL} target="_blank" rel="noreferrer">Facebook</Link>
         </Button>
         <Button asChild variant="outline">
-          <Link href="https://www.instagram.com/creatyss">Instagram</Link>
+          <Link href={instagramUrl ?? FALLBACK_INSTAGRAM_URL} target="_blank" rel="noreferrer">Instagram</Link>
         </Button>
       </div>
     </SurfaceSection>

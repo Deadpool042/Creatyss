@@ -233,7 +233,119 @@ export function StoreSettingsForm({ store }: Props) {
           </div>
         </AdminFormSection>
 
-        {/* ── Section 4 : Métadonnées en lecture seule ─────────────── */}
+        {/* ── Section 4 : Adresse atelier ──────────────────────────── */}
+        <AdminFormSection
+          eyebrow="Localisation"
+          title="Adresse atelier"
+          description="Adresse utilisée sur la page contact, le footer et les emails."
+          className="py-6"
+        >
+          <AdminFormField
+            label="Adresse"
+            htmlFor="addressLine1"
+            error={fieldError("addressLine1")}
+          >
+            <Input
+              id="addressLine1"
+              name="addressLine1"
+              defaultValue={store.addressLine1 ?? ""}
+              maxLength={150}
+              placeholder="12 rue de la Paix"
+              className={cn(fieldError("addressLine1") && "border-feedback-error")}
+            />
+          </AdminFormField>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            <AdminFormField
+              label="Code postal"
+              htmlFor="addressPostalCode"
+              error={fieldError("addressPostalCode")}
+            >
+              <Input
+                id="addressPostalCode"
+                name="addressPostalCode"
+                defaultValue={store.addressPostalCode ?? ""}
+                maxLength={20}
+                placeholder="75001"
+                className={cn(fieldError("addressPostalCode") && "border-feedback-error")}
+              />
+            </AdminFormField>
+
+            <AdminFormField
+              label="Ville"
+              htmlFor="addressCity"
+              error={fieldError("addressCity")}
+            >
+              <Input
+                id="addressCity"
+                name="addressCity"
+                defaultValue={store.addressCity ?? ""}
+                maxLength={100}
+                placeholder="Paris"
+                className={cn(fieldError("addressCity") && "border-feedback-error")}
+              />
+            </AdminFormField>
+
+            <AdminFormField
+              label="Pays"
+              htmlFor="addressCountry"
+              error={fieldError("addressCountry")}
+            >
+              <Input
+                id="addressCountry"
+                name="addressCountry"
+                defaultValue={store.addressCountry ?? ""}
+                maxLength={80}
+                placeholder="France"
+                className={cn(fieldError("addressCountry") && "border-feedback-error")}
+              />
+            </AdminFormField>
+          </div>
+        </AdminFormSection>
+
+        {/* ── Section 5 : Réseaux sociaux ──────────────────────────── */}
+        <AdminFormSection
+          eyebrow="Présence en ligne"
+          title="Réseaux sociaux"
+          description="URL complète du profil (ex : https://www.instagram.com/creatyss)."
+          className="py-6"
+        >
+          <div className="grid gap-4 sm:grid-cols-2">
+            <AdminFormField
+              label="Instagram"
+              htmlFor="instagramUrl"
+              error={fieldError("instagramUrl")}
+            >
+              <Input
+                id="instagramUrl"
+                name="instagramUrl"
+                type="url"
+                defaultValue={store.instagramUrl ?? ""}
+                maxLength={200}
+                placeholder="https://www.instagram.com/..."
+                className={cn(fieldError("instagramUrl") && "border-feedback-error")}
+              />
+            </AdminFormField>
+
+            <AdminFormField
+              label="Facebook"
+              htmlFor="facebookUrl"
+              error={fieldError("facebookUrl")}
+            >
+              <Input
+                id="facebookUrl"
+                name="facebookUrl"
+                type="url"
+                defaultValue={store.facebookUrl ?? ""}
+                maxLength={200}
+                placeholder="https://www.facebook.com/..."
+                className={cn(fieldError("facebookUrl") && "border-feedback-error")}
+              />
+            </AdminFormField>
+          </div>
+        </AdminFormSection>
+
+        {/* ── Section 6 : Métadonnées en lecture seule ─────────────── */}
         <div className="py-6">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[

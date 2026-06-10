@@ -16,6 +16,12 @@ export type AdminStoreSettings = {
   status: string;
   isProduction: boolean;
   updatedAt: string;
+  addressLine1: string | null;
+  addressCity: string | null;
+  addressPostalCode: string | null;
+  addressCountry: string | null;
+  instagramUrl: string | null;
+  facebookUrl: string | null;
 };
 
 export async function getAdminStoreSettings(): Promise<AdminStoreSettings | null> {
@@ -36,6 +42,12 @@ export async function getAdminStoreSettings(): Promise<AdminStoreSettings | null
       status: true,
       isProduction: true,
       updatedAt: true,
+      addressLine1: true,
+      addressCity: true,
+      addressPostalCode: true,
+      addressCountry: true,
+      instagramUrl: true,
+      facebookUrl: true,
     },
   });
 

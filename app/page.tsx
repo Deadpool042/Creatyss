@@ -121,7 +121,11 @@ export default async function HomePage() {
 
         <HomepageGuaranteesSection guaranteesBody={data?.guarantees?.body} />
 
-        <HomepageJournalSection featuredPost={data?.featuredPost ?? null} />
+        <HomepageJournalSection
+          featuredPost={data?.featuredPost ?? null}
+          instagramUrl={data?.instagramUrl ?? null}
+          facebookUrl={data?.facebookUrl ?? null}
+        />
 
         <HomepageAboutSection
           aboutTitle={data?.about?.title}

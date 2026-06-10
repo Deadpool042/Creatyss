@@ -1,12 +1,39 @@
 import type { Metadata } from "next";
 import { MailIcon, MapPinIcon } from "lucide-react";
+import { getStorefrontStoreContact } from "@/features/storefront/store/queries/get-storefront-store-contact.query";
 
 export const metadata: Metadata = {
   title: "Contact — Creatyss",
   description: "Contactez l'atelier Creatyss pour toute question sur les créations, le sur-mesure ou une commande.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  let storeContact: Awaited<ReturnType<typeof getStorefrontStoreContact>>;
+  try {
+    storeContact = await getStorefrontStoreContact();
+  } catch {
+    storeContact = {
+      supportEmail: null,
+      supportPhone: null,
+      addressLine1: null,
+      addressPostalCode: null,
+      addressCity: null,
+      addressCountry: null,
+      instagramUrl: null,
+      facebookUrl: null,
+    };
+  }
+
+  const addressParts = [
+    storeContact.addressLine1,
+    storeContact.addressPostalCode && storeContact.addressCity
+      ? `${storeContact.addressPostalCode} ${storeContact.addressCity}`
+      : storeContact.addressCity ?? storeContact.addressPostalCode,
+    storeContact.addressCountry,
+  ].filter(Boolean);
+
+  const hasAddress = addressParts.length > 0;
+
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-12 md:px-6 md:py-20 xl:px-0">
       {/* Header */}
@@ -104,46 +131,57 @@ export default function ContactPage() {
               />
             </div>
 
-            <p className="text-[11px] text-muted-foreground/60">
-              Formulaire de contact en cours d&apos;activation. En attendant, écrivez-nous directement à{" "}
-              <a
-                href="mailto:contact@creatyss.fr"
-                className="underline underline-offset-2 hover:text-foreground"
-              >
-                contact@creatyss.fr
-              </a>
-            </p>
+            {storeContact.supportEmail !== null ? (
+              <p className="text-[11px] text-muted-foreground/60">
+                Formulaire de contact en cours d&apos;activation. En attendant, écrivez-nous directement à{" "}
+                <a
+                  href={`mailto:${storeContact.supportEmail}`}
+                  className="underline underline-offset-2 hover:text-foreground"
+                >
+                  {storeContact.supportEmail}
+                </a>
+              </p>
+            ) : null}
           </form>
         </div>
 
         {/* Infos contact */}
         <div className="flex flex-col gap-4 md:w-56">
-          <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-5">
-            <div className="flex items-start gap-3">
-              <MailIcon className="mt-0.5 size-4 shrink-0 text-muted-foreground/60" />
-              <div>
-                <p className="text-[13px] font-medium text-foreground">Email</p>
-                <a
-                  href="mailto:contact@creatyss.fr"
-                  className="mt-0.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  contact@creatyss.fr
-                </a>
+          {storeContact.supportEmail !== null ? (
+            <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-5">
+              <div className="flex items-start gap-3">
+                <MailIcon className="mt-0.5 size-4 shrink-0 text-muted-foreground/60" />
+                <div>
+                  <p className="text-[13px] font-medium text-foreground">Email</p>
+                  <a
+                    href={`mailto:${storeContact.supportEmail}`}
+                    className="mt-0.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {storeContact.supportEmail}
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
+          ) : null}
 
-          <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-5">
-            <div className="flex items-start gap-3">
-              <MapPinIcon className="mt-0.5 size-4 shrink-0 text-muted-foreground/60" />
-              <div>
-                <p className="text-[13px] font-medium text-foreground">Atelier</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  Saint-Étienne<br />Loire, France
-                </p>
+          {hasAddress ? (
+            <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-5">
+              <div className="flex items-start gap-3">
+                <MapPinIcon className="mt-0.5 size-4 shrink-0 text-muted-foreground/60" />
+                <div>
+                  <p className="text-[13px] font-medium text-foreground">Atelier</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {addressParts.map((part, index) => (
+                      <span key={index}>
+                        {part}
+                        {index < addressParts.length - 1 ? <br /> : null}
+                      </span>
+                    ))}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          ) : null}
 
           <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-5">
             <p className="text-[13px] font-medium text-foreground">Délai de réponse</p>

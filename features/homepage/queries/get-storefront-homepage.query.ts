@@ -46,6 +46,8 @@ export type StorefrontHomepageData = {
     excerpt: string | null;
     publishedAt: Date | null;
   } | null;
+  instagramUrl: string | null;
+  facebookUrl: string | null;
 };
 
 export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | null> {
@@ -55,6 +57,8 @@ export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | 
     },
     select: {
       id: true,
+      instagramUrl: true,
+      facebookUrl: true,
     },
   });
 
@@ -252,5 +256,17 @@ export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | 
     }
   }
 
-  return { hero, editorial, savoirFaire, about, newsletter, guarantees, featuredProducts, featuredCategories, featuredPost };
+  return {
+    hero,
+    editorial,
+    savoirFaire,
+    about,
+    newsletter,
+    guarantees,
+    featuredProducts,
+    featuredCategories,
+    featuredPost,
+    instagramUrl: store.instagramUrl ?? null,
+    facebookUrl: store.facebookUrl ?? null,
+  };
 }
