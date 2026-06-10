@@ -8,6 +8,7 @@ import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/shared";
+import { DEFAULT_ORDER_REFERENCE_PREFIX } from "@/entities/order/order-reference";
 import { cn } from "@/lib/utils";
 import { updateAdminOrderSettingsAction } from "@/features/admin/settings/actions/update-admin-order-settings.action";
 import { type OrderSettingsFormState } from "@/features/admin/settings/schemas/order-settings.schema";
@@ -15,7 +16,7 @@ import type { AdminOrderSettings } from "@/features/admin/settings/queries/get-a
 
 const INITIAL_STATE: OrderSettingsFormState = { status: "idle" };
 
-const DEFAULT_PREFIX = "CRY";
+const DEFAULT_PREFIX = DEFAULT_ORDER_REFERENCE_PREFIX;
 
 type Props = { settings: AdminOrderSettings };
 

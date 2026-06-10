@@ -41,7 +41,7 @@ Un modèle Prisma peut exister en base sans feature correspondante dans le catal
 
 - Ne pas supprimer un modèle Prisma non utilisé côté UI sans analyser les données existantes et l'impact sur les relations.
 - Ne pas implémenter directement la logique métier d'une feature sans l'avoir d'abord déclarée dans `FEATURE_CATALOG`.
-- Utiliser `AdminComingSoon` pour les modules préparés mais non encore implémentés (cf. `settings/orders`).
+- Utiliser `AdminComingSoon` pour les modules préparés mais non encore implémentés.
 - Garder `defaultState: "inactive"` pour toute feature non prête à livrer.
 - Un module peut être classé `optional` dans Prisma (activabilité technique) et `cross-cutting` dans la documentation (portée fonctionnelle). Ces deux axes sont orthogonaux et ne se contredisent pas — cf. `docs/architecture/10-fondations/11-modele-de-classification.md`.
 - Ne pas créer de fichier Prisma vide comme placeholder. Si un domaine n'a pas encore de matérialisation DB réelle, sa place est dans `docs/domains/`.
@@ -62,7 +62,7 @@ Un modèle Prisma peut exister en base sans feature correspondante dans le catal
   scopes: ["store"],
 }
 ```
-Schéma Prisma préparé. Feature cataloguée. Placeholder `settings/orders` en place via `AdminComingSoon`. UI non implémentée.
+Schéma Prisma préparé. Feature cataloguée. UI non implémentée.
 
 ---
 
