@@ -108,7 +108,7 @@ export function ShippingSettingsForm({ settings }: Props) {
 
       {/* Note d'information */}
       <p className="mt-4 text-[11px] text-muted-foreground/70">
-        Ces réglages préparent les méthodes de livraison. Le checkout public sera branché dans un lot séparé.
+        Ces réglages sont utilisés par le checkout public pour proposer les méthodes de livraison disponibles.
       </p>
 
       {/* ── Sticky footer ──────────────────────────────────────────────── */}

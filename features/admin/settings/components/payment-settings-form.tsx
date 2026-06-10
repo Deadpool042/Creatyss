@@ -149,8 +149,7 @@ export function PaymentSettingsForm({ settings }: Props) {
 
       {/* Note d'information */}
       <p className="mt-4 text-[11px] text-muted-foreground/70">
-        Ces réglages préparent les moyens de paiement. Leur affichage dans le checkout public sera
-        branché dans un lot séparé.
+        Ces réglages sont utilisés par le checkout public pour proposer les moyens de paiement disponibles.
       </p>
 
       {/* ── Sticky footer ──────────────────────────────────────────────── */}
