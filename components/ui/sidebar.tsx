@@ -62,8 +62,7 @@ function SidebarProvider({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   /** Override the breakpoint (px) below which the sidebar renders as a Sheet.
-   *  Defaults to the shadcn useIsMobile() threshold (768px).
-   *  Pass 1024 in AdminShell to align with --breakpoint-laptop. */
+   *  Defaults to the useIsMobile() threshold (768px). */
   mobileBreakpoint?: number;
 }) {
   const isMobileDefault = useIsMobile();
@@ -71,10 +70,11 @@ function SidebarProvider({
 
   React.useEffect(() => {
     if (mobileBreakpoint === undefined) return;
-    const update = () => setIsMobileOverride(window.innerWidth < mobileBreakpoint);
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    const mql = window.matchMedia(`(max-width: ${mobileBreakpoint - 1}px)`);
+    const handler = (e: MediaQueryListEvent) => setIsMobileOverride(e.matches);
+    setIsMobileOverride(mql.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
   }, [mobileBreakpoint]);
 
   const isMobile = mobileBreakpoint !== undefined ? Boolean(isMobileOverride) : isMobileDefault;

@@ -51,8 +51,6 @@ export function AdminEmptyState({
       </EmptyHeader>
       <EmptyContent>
         {actionNode}
-        {/* <Image src="/assets/empty-states/category-empty-state.png" alt="" width={162} height={162} /> */}
-        {/* TODO: ajouter une image d'empty state pour les categories */}
       </EmptyContent>
     </Empty>
   );
