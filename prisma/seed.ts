@@ -8,6 +8,7 @@ import { createScriptPrismaClient } from "../scripts/helpers/prisma-client";
 import { seedAdminNavigationAccess } from "./seed/admin-navigation-access.seed";
 import { seedBlogPosts } from "./seed/blog-posts.seed";
 import { seedFeatureFlagsCatalog } from "./seed/feature-flags-catalog.seed";
+import { seedLegalPages } from "./seed/legal-pages.seed";
 
 const prisma = createScriptPrismaClient();
 
@@ -22,6 +23,10 @@ async function main(): Promise<void> {
   await seedAdminNavigationAccess(prisma);
   await seedBlogPosts(prisma, store.id);
   await seedFeatureFlagsCatalog(prisma);
+  await seedLegalPages(prisma, store.id);
+
+  const pagesCount = await prisma.page.count({ where: { storeId: store.id } });
+  console.info(`Seed OK — store ${store.id} (${store.code}), pages en base : ${pagesCount}`);
 }
 
 main()
