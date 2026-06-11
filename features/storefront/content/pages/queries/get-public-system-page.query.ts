@@ -2,8 +2,7 @@ import { db } from "@/core/db";
 
 /**
  * Codes des Pages système légales exposées publiquement.
- * Volontairement dupliqués depuis le périmètre admin (settings/legal)
- * pour ne pas créer de dépendance storefront → features/admin.
+ * Codes dupliqués côté storefront pour éviter une dépendance vers l'admin.
  */
 export const PUBLIC_SYSTEM_PAGE_CODES = [
   "legal-notice",

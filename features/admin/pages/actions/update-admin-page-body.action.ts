@@ -30,7 +30,7 @@ export async function updateAdminPageBodyAction(
   _prevState: AdminPageBodyFormState,
   formData: FormData
 ): Promise<AdminPageBodyFormState> {
-  await requireAdminCapability("admin.settings.legal.write");
+  await requireAdminCapability("admin.content.pages.write");
 
   const parsed = adminPageBodySchema.safeParse({
     body: formData.get("body") ?? "",

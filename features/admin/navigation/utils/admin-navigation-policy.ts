@@ -10,6 +10,7 @@ export const adminNavigationCapabilities = {
   content: {
     homepageRead: "admin.content.homepage.read",
     pagesRead: "admin.content.pages.read",
+    pagesWrite: "admin.content.pages.write",
     blogRead: "admin.content.blog.read",
     seoRead: "admin.content.seo.read",
   },
@@ -49,8 +50,6 @@ export const adminNavigationCapabilities = {
     webhooksRead: "admin.settings.webhooks.read",
     notificationsRead: "admin.settings.notifications.read",
     notificationsWrite: "admin.settings.notifications.write",
-    legalRead: "admin.settings.legal.read",
-    legalWrite: "admin.settings.legal.write",
   },
   system: {
     logsRead: "admin.system.logs.read",

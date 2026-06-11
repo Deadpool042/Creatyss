@@ -5,7 +5,6 @@ import {
   Image,
   Key,
   Package,
-  Scale,
   Search,
   Settings,
   ShoppingCart,
@@ -82,12 +81,6 @@ const SETTINGS_CARDS: ReadonlyArray<SettingsCard> = [
     title: "SEO",
     description: "Métadonnées globales, sitemap et balises par défaut.",
     icon: Search,
-  },
-  {
-    href: "/admin/settings/legal",
-    title: "Légal",
-    description: "Mentions légales, CGV, confidentialité et politique de retour.",
-    icon: Scale,
   },
   {
     href: "/admin/settings/team",

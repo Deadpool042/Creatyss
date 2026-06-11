@@ -17,6 +17,7 @@ const permissionCodes = [
 
   adminNavigationCapabilities.content.homepageRead,
   adminNavigationCapabilities.content.pagesRead,
+  adminNavigationCapabilities.content.pagesWrite,
   adminNavigationCapabilities.content.blogRead,
   adminNavigationCapabilities.content.seoRead,
 
@@ -50,8 +51,6 @@ const permissionCodes = [
   adminNavigationCapabilities.settings.webhooksRead,
   adminNavigationCapabilities.settings.notificationsRead,
   adminNavigationCapabilities.settings.notificationsWrite,
-  adminNavigationCapabilities.settings.legalRead,
-  adminNavigationCapabilities.settings.legalWrite,
 
   adminNavigationCapabilities.system.logsRead,
   adminNavigationCapabilities.system.monitoringRead,
