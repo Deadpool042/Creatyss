@@ -57,6 +57,16 @@ const permissionCodes = [
   adminNavigationCapabilities.system.observabilityRead,
 ] as const;
 
+/**
+ * Permissions système retirées de la policy : supprimées en base au seed
+ * (RolePermission nettoyé par cascade). Liste explicite, jamais de prune large.
+ */
+const removedPermissionCodes = [
+  // settings/legal décommissionné (lot 5c) au profit de content/pages
+  "admin.settings.legal.read",
+  "admin.settings.legal.write",
+] as const;
+
 const featureFlagCodes = [
   adminNavigationFeatureFlags.commerce.payments,
   adminNavigationFeatureFlags.commerce.shipping,
@@ -74,6 +84,13 @@ function featureFlagNameFromCode(code: string): string {
 }
 
 export async function seedAdminNavigationAccess(db: PrismaClient): Promise<void> {
+  await db.permission.deleteMany({
+    where: {
+      code: { in: [...removedPermissionCodes] },
+      isSystem: true,
+    },
+  });
+
   for (const code of permissionCodes) {
     await db.permission.upsert({
       where: { code },

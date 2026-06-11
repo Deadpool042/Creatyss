@@ -47,10 +47,13 @@ export const adminNavigationCapabilities = {
     apiClientsRead: "admin.settings.api-clients.read",
     apiClientsWrite: "admin.settings.api-clients.write",
     apiClientsRevoke: "admin.settings.api-clients.revoke",
+    // Réservé : aucune route ni action ne consomme cette capability à ce jour.
     webhooksRead: "admin.settings.webhooks.read",
     notificationsRead: "admin.settings.notifications.read",
     notificationsWrite: "admin.settings.notifications.write",
   },
+  // Réservé : capabilities system déclarées et seedées, aucune route ne les
+  // consomme à ce jour (logs, monitoring, observabilité à venir).
   system: {
     logsRead: "admin.system.logs.read",
     monitoringRead: "admin.system.monitoring.read",
