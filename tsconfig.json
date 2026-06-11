@@ -38,8 +38,6 @@
     "components/**/*.tsx",
     "core/**/*.ts",
     "core/**/*.tsx",
-    "db/**/*.ts",
-    "db/**/*.tsx",
     "entities/**/*.ts",
     "entities/**/*.tsx",
     "features/**/*.ts",
