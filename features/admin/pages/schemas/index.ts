@@ -1,5 +1,6 @@
 export {
-  adminPageFormSchema,
-  adminPageStatusSchema,
-  type AdminPageFormSchema,
-} from "./admin-page-form.schema";
+  ADMIN_PAGE_BODY_MAX_LENGTH,
+  adminPageBodySchema,
+  type AdminPageBodyFormState,
+  type AdminPageBodyInput,
+} from "./admin-page-body.schema";

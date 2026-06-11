@@ -22,11 +22,3 @@ export type AdminPageDetail = {
   body: string | null;
   updatedAt: string;
 };
-
-export type AdminPageFormValues = {
-  title: string;
-  slug: string;
-  excerpt: string;
-  body: string;
-  status: AdminPageStatus;
-};
