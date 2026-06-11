@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { CheckCircle2, XCircle } from "lucide-react";
 
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/shared";
 import { cn } from "@/lib/utils";
-import { SEO_INDEXING_MODE_LABELS, SEO_INDEXING_MODE_VALUES } from "@/entities/seo";
+import { SEO_INDEXING_MODE_LABELS, SEO_INDEXING_MODE_VALUES, type SeoIndexingMode } from "@/entities/seo";
 import { updateSeoSettingsAction } from "@/features/admin/settings/actions/update-seo-settings.action";
 import { type SeoSettingsFormState } from "@/features/admin/settings/schemas/seo-settings.schema";
 import type { AdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
@@ -35,8 +35,12 @@ export function SeoSettingsForm({ seo }: Props) {
   const fieldError = (key: string) =>
     state.status === "error" ? state.fieldErrors?.[key as keyof typeof state.fieldErrors] : undefined;
 
-  const defaultIndexingMode = seo?.indexingMode ?? "INDEX_FOLLOW";
-  const defaultSitemapIncluded = seo?.sitemapIncluded ?? true;
+  const [indexingMode, setIndexingMode] = useState<SeoIndexingMode>(
+    seo?.indexingMode ?? "INDEX_FOLLOW"
+  );
+  const [sitemapIncluded, setSitemapIncluded] = useState(
+    seo?.sitemapIncluded ?? true
+  );
 
   return (
     <form action={action} className="relative">
@@ -208,7 +212,11 @@ export function SeoSettingsForm({ seo }: Props) {
               description="Détermine si la page d'accueil est indexée et si les liens sont suivis."
               error={fieldError("indexingMode")}
             >
-              <Select name="indexingMode" defaultValue={defaultIndexingMode}>
+              <Select
+                name="indexingMode"
+                value={indexingMode}
+                onValueChange={(v) => setIndexingMode(v as SeoIndexingMode)}
+              >
                 <SelectTrigger id="indexingMode">
                   <SelectValue />
                 </SelectTrigger>
@@ -230,7 +238,8 @@ export function SeoSettingsForm({ seo }: Props) {
             >
               <Select
                 name="sitemapIncluded"
-                defaultValue={defaultSitemapIncluded ? "true" : "false"}
+                value={sitemapIncluded ? "true" : "false"}
+                onValueChange={(v) => setSitemapIncluded(v === "true")}
               >
                 <SelectTrigger id="sitemapIncluded">
                   <SelectValue />

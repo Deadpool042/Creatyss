@@ -2,6 +2,7 @@
 
 import { db } from "@/core/db";
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { revalidatePath } from "next/cache";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import {
   seoSettingsSchema,
@@ -83,6 +84,8 @@ export async function updateSeoSettingsAction(
         sitemapIncluded: parsed.data.sitemapIncluded,
       },
     });
+
+    revalidatePath("/admin/settings/seo");
 
     return { status: "success", message: "Réglages SEO enregistrés." };
   } catch {

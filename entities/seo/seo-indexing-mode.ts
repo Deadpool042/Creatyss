@@ -27,11 +27,13 @@ export function isSeoIndexingMode(value: string): value is SeoIndexingMode {
 export function getSeoRobotsFlags(
   mode: SeoIndexingMode | null | undefined
 ): { index: boolean; follow: boolean } | undefined {
-  if (mode === null || mode === undefined || mode === SEO_INDEXING_MODE_DEFAULT) {
+  if (mode === null || mode === undefined) {
     return undefined;
   }
 
   switch (mode) {
+    case "INDEX_FOLLOW":
+      return { index: true, follow: true };
     case "INDEX_NOFOLLOW":
       return { index: true, follow: false };
     case "NOINDEX_FOLLOW":
