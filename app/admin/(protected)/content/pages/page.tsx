@@ -1,13 +1,23 @@
-import { PagesEmptyState, PagesPageHeader, PagesPageShell } from "@/features/admin/pages";
+import {
+  PagesEmptyState,
+  PagesList,
+  PagesPageHeader,
+  PagesPageShell,
+  getAdminPagesList,
+} from "@/features/admin/pages";
 
-export default function AdminContentPagesPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AdminContentPagesPage() {
+  const pages = await getAdminPagesList();
+
   return (
     <PagesPageShell>
       <PagesPageHeader
         title="Pages"
-        description="Gérez les pages éditoriales génériques de la boutique."
+        description="Pages éditoriales et pages système de la boutique."
       />
-      <PagesEmptyState />
+      {pages.length > 0 ? <PagesList pages={pages} /> : <PagesEmptyState />}
     </PagesPageShell>
   );
 }

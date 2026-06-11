@@ -2,10 +2,10 @@ export function PagesEmptyState() {
   return (
     <div className="rounded-2xl border border-surface-border bg-surface-panel p-6">
       <div className="space-y-2">
-        <h2 className="text-base font-medium">Aucune implémentation métier branchée</h2>
+        <h2 className="text-base font-medium">Aucune page pour le moment</h2>
         <p className="text-sm text-muted-foreground">
-          Le socle admin des pages est en place. Il reste à brancher les queries,
-          actions, schémas et types sur le domaine content/pages.
+          Les pages de la boutique apparaîtront ici, y compris les pages légales
+          système une fois leurs textes enregistrés dans les réglages.
         </p>
       </div>
     </div>

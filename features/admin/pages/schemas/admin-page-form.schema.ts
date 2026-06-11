@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const adminPageStatusSchema = z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]);
+export const adminPageStatusSchema = z.enum(["DRAFT", "ACTIVE", "INACTIVE", "ARCHIVED"]);
 
 export const adminPageFormSchema = z.object({
   title: z.string().trim().min(1, "Le titre est requis."),
