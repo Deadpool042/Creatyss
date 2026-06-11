@@ -5,6 +5,7 @@ export type TransactionalEmailPayload = {
   subject: string;
   text: string;
   html: string;
+  replyTo?: string | null;
 };
 
 export type TransactionalEmailResult = {

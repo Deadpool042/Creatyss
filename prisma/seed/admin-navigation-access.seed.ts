@@ -48,6 +48,8 @@ const permissionCodes = [
   adminNavigationCapabilities.settings.apiClientsWrite,
   adminNavigationCapabilities.settings.apiClientsRevoke,
   adminNavigationCapabilities.settings.webhooksRead,
+  adminNavigationCapabilities.settings.notificationsRead,
+  adminNavigationCapabilities.settings.notificationsWrite,
 
   adminNavigationCapabilities.system.logsRead,
   adminNavigationCapabilities.system.monitoringRead,

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {
+  Bell,
   CreditCard,
   Image,
   Key,
@@ -68,6 +69,12 @@ const SETTINGS_CARDS: ReadonlyArray<SettingsCard> = [
     title: "Médias",
     description: "Stockage des images, formats acceptés et optimisation.",
     icon: Image,
+  },
+  {
+    href: "/admin/settings/notifications",
+    title: "Notifications",
+    description: "Emails transactionnels et adresse de réponse de la boutique.",
+    icon: Bell,
   },
   {
     href: "/admin/settings/seo",

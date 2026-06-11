@@ -27,6 +27,7 @@ export class BrevoEmailProvider implements TransactionalEmailProvider {
         subject: payload.subject,
         textContent: payload.text,
         htmlContent: payload.html,
+        ...(payload.replyTo ? { replyTo: { email: payload.replyTo } } : {}),
       }),
     });
 

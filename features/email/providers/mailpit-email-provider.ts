@@ -40,6 +40,7 @@ function buildMessage(input: TransactionalEmailPayload): {
     `From: ${fromHeader}`,
     `To: ${input.to}`,
     `Subject: ${input.subject}`,
+    ...(input.replyTo ? [`Reply-To: ${input.replyTo}`] : []),
     `Message-ID: ${messageId}`,
     `Date: ${new Date().toUTCString()}`,
     "MIME-Version: 1.0",

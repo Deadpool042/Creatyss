@@ -47,6 +47,8 @@ export const adminNavigationCapabilities = {
     apiClientsWrite: "admin.settings.api-clients.write",
     apiClientsRevoke: "admin.settings.api-clients.revoke",
     webhooksRead: "admin.settings.webhooks.read",
+    notificationsRead: "admin.settings.notifications.read",
+    notificationsWrite: "admin.settings.notifications.write",
   },
   system: {
     logsRead: "admin.system.logs.read",

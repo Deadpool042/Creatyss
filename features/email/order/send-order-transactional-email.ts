@@ -5,6 +5,7 @@ import {
   markOrderEmailEventFailed,
   markOrderEmailEventSent,
 } from "@/features/email/order/order-email.repository";
+import { db } from "@/core/db";
 import { serverEnv } from "@/core/config/env/server";
 import { resolveEmailProvider } from "@/features/email/providers/resolve-email-provider";
 import { findOrderEmailContextById } from "@/features/commerce/orders/lib/order.repository";
@@ -32,6 +33,27 @@ export async function sendOrderTransactionalEmail(input: {
     }
 
     const emailProvider = resolveEmailProvider();
+
+    const store = await db.store.findFirst({
+      orderBy: { createdAt: "asc" },
+      select: {
+        replyToEmail: true,
+        emailConfirmationEnabled: true,
+        emailShippingEnabled: true,
+      },
+    });
+    const replyTo = store?.replyToEmail ?? null;
+
+    const emailEnabled =
+      input.eventType === "order_created"
+        ? (store?.emailConfirmationEnabled ?? true)
+        : input.eventType === "order_shipped"
+          ? (store?.emailShippingEnabled ?? true)
+          : true;
+
+    if (!emailEnabled) {
+      return;
+    }
 
     const emailEvent = await createOrderEmailEventIfAbsent({
       orderId: order.id,
@@ -64,6 +86,7 @@ export async function sendOrderTransactionalEmail(input: {
         subject: template.subject,
         text: template.text,
         html: template.html,
+        replyTo,
       });
 
       await markOrderEmailEventSent({

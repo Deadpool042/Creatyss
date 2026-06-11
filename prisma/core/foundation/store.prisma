@@ -32,17 +32,20 @@ model Store {
   slug   String      @unique
   status StoreStatus @default(DRAFT)
 
-  legalName    String?
-  supportEmail String?
-  supportPhone String?
-  shippingReturnsPolicy String?
-  addressLine1          String?
-  addressCity           String?
-  addressPostalCode     String?
-  addressCountry        String?
-  instagramUrl          String?
-  facebookUrl           String?
-  orderNumberPrefix     String?
+  legalName                String?
+  supportEmail             String?
+  supportPhone             String?
+  shippingReturnsPolicy    String?
+  addressLine1             String?
+  addressCity              String?
+  addressPostalCode        String?
+  addressCountry           String?
+  instagramUrl             String?
+  facebookUrl              String?
+  orderNumberPrefix        String?
+  emailConfirmationEnabled Boolean @default(true)
+  emailShippingEnabled     Boolean @default(true)
+  replyToEmail             String?
 
   bankTransferEnabled        Boolean @default(false)
   cashOnDeliveryEnabled      Boolean @default(false)

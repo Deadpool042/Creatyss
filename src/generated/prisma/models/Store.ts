@@ -41,6 +41,9 @@ export type StoreMinAggregateOutputType = {
   instagramUrl: string | null
   facebookUrl: string | null
   orderNumberPrefix: string | null
+  emailConfirmationEnabled: boolean | null
+  emailShippingEnabled: boolean | null
+  replyToEmail: string | null
   bankTransferEnabled: boolean | null
   cashOnDeliveryEnabled: boolean | null
   bankTransferInstructions: string | null
@@ -72,6 +75,9 @@ export type StoreMaxAggregateOutputType = {
   instagramUrl: string | null
   facebookUrl: string | null
   orderNumberPrefix: string | null
+  emailConfirmationEnabled: boolean | null
+  emailShippingEnabled: boolean | null
+  replyToEmail: string | null
   bankTransferEnabled: boolean | null
   cashOnDeliveryEnabled: boolean | null
   bankTransferInstructions: string | null
@@ -103,6 +109,9 @@ export type StoreCountAggregateOutputType = {
   instagramUrl: number
   facebookUrl: number
   orderNumberPrefix: number
+  emailConfirmationEnabled: number
+  emailShippingEnabled: number
+  replyToEmail: number
   bankTransferEnabled: number
   cashOnDeliveryEnabled: number
   bankTransferInstructions: number
@@ -136,6 +145,9 @@ export type StoreMinAggregateInputType = {
   instagramUrl?: true
   facebookUrl?: true
   orderNumberPrefix?: true
+  emailConfirmationEnabled?: true
+  emailShippingEnabled?: true
+  replyToEmail?: true
   bankTransferEnabled?: true
   cashOnDeliveryEnabled?: true
   bankTransferInstructions?: true
@@ -167,6 +179,9 @@ export type StoreMaxAggregateInputType = {
   instagramUrl?: true
   facebookUrl?: true
   orderNumberPrefix?: true
+  emailConfirmationEnabled?: true
+  emailShippingEnabled?: true
+  replyToEmail?: true
   bankTransferEnabled?: true
   cashOnDeliveryEnabled?: true
   bankTransferInstructions?: true
@@ -198,6 +213,9 @@ export type StoreCountAggregateInputType = {
   instagramUrl?: true
   facebookUrl?: true
   orderNumberPrefix?: true
+  emailConfirmationEnabled?: true
+  emailShippingEnabled?: true
+  replyToEmail?: true
   bankTransferEnabled?: true
   cashOnDeliveryEnabled?: true
   bankTransferInstructions?: true
@@ -302,6 +320,9 @@ export type StoreGroupByOutputType = {
   instagramUrl: string | null
   facebookUrl: string | null
   orderNumberPrefix: string | null
+  emailConfirmationEnabled: boolean
+  emailShippingEnabled: boolean
+  replyToEmail: string | null
   bankTransferEnabled: boolean
   cashOnDeliveryEnabled: boolean
   bankTransferInstructions: string | null
@@ -354,6 +375,9 @@ export type StoreWhereInput = {
   instagramUrl?: Prisma.StringNullableFilter<"Store"> | string | null
   facebookUrl?: Prisma.StringNullableFilter<"Store"> | string | null
   orderNumberPrefix?: Prisma.StringNullableFilter<"Store"> | string | null
+  emailConfirmationEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  emailShippingEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  replyToEmail?: Prisma.StringNullableFilter<"Store"> | string | null
   bankTransferEnabled?: Prisma.BoolFilter<"Store"> | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFilter<"Store"> | boolean
   bankTransferInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
@@ -461,6 +485,9 @@ export type StoreOrderByWithRelationInput = {
   instagramUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   facebookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   orderNumberPrefix?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailConfirmationEnabled?: Prisma.SortOrder
+  emailShippingEnabled?: Prisma.SortOrder
+  replyToEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   bankTransferEnabled?: Prisma.SortOrder
   cashOnDeliveryEnabled?: Prisma.SortOrder
   bankTransferInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -571,6 +598,9 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   instagramUrl?: Prisma.StringNullableFilter<"Store"> | string | null
   facebookUrl?: Prisma.StringNullableFilter<"Store"> | string | null
   orderNumberPrefix?: Prisma.StringNullableFilter<"Store"> | string | null
+  emailConfirmationEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  emailShippingEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  replyToEmail?: Prisma.StringNullableFilter<"Store"> | string | null
   bankTransferEnabled?: Prisma.BoolFilter<"Store"> | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFilter<"Store"> | boolean
   bankTransferInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
@@ -678,6 +708,9 @@ export type StoreOrderByWithAggregationInput = {
   instagramUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   facebookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   orderNumberPrefix?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailConfirmationEnabled?: Prisma.SortOrder
+  emailShippingEnabled?: Prisma.SortOrder
+  replyToEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   bankTransferEnabled?: Prisma.SortOrder
   cashOnDeliveryEnabled?: Prisma.SortOrder
   bankTransferInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -715,6 +748,9 @@ export type StoreScalarWhereWithAggregatesInput = {
   instagramUrl?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   facebookUrl?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   orderNumberPrefix?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
+  emailConfirmationEnabled?: Prisma.BoolWithAggregatesFilter<"Store"> | boolean
+  emailShippingEnabled?: Prisma.BoolWithAggregatesFilter<"Store"> | boolean
+  replyToEmail?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   bankTransferEnabled?: Prisma.BoolWithAggregatesFilter<"Store"> | boolean
   cashOnDeliveryEnabled?: Prisma.BoolWithAggregatesFilter<"Store"> | boolean
   bankTransferInstructions?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
@@ -746,6 +782,9 @@ export type StoreCreateInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -853,6 +892,9 @@ export type StoreUncheckedCreateInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -960,6 +1002,9 @@ export type StoreUpdateInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1067,6 +1112,9 @@ export type StoreUncheckedUpdateInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1174,6 +1222,9 @@ export type StoreCreateManyInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -1205,6 +1256,9 @@ export type StoreUpdateManyMutationInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1236,6 +1290,9 @@ export type StoreUncheckedUpdateManyInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1277,6 +1334,9 @@ export type StoreCountOrderByAggregateInput = {
   instagramUrl?: Prisma.SortOrder
   facebookUrl?: Prisma.SortOrder
   orderNumberPrefix?: Prisma.SortOrder
+  emailConfirmationEnabled?: Prisma.SortOrder
+  emailShippingEnabled?: Prisma.SortOrder
+  replyToEmail?: Prisma.SortOrder
   bankTransferEnabled?: Prisma.SortOrder
   cashOnDeliveryEnabled?: Prisma.SortOrder
   bankTransferInstructions?: Prisma.SortOrder
@@ -1308,6 +1368,9 @@ export type StoreMaxOrderByAggregateInput = {
   instagramUrl?: Prisma.SortOrder
   facebookUrl?: Prisma.SortOrder
   orderNumberPrefix?: Prisma.SortOrder
+  emailConfirmationEnabled?: Prisma.SortOrder
+  emailShippingEnabled?: Prisma.SortOrder
+  replyToEmail?: Prisma.SortOrder
   bankTransferEnabled?: Prisma.SortOrder
   cashOnDeliveryEnabled?: Prisma.SortOrder
   bankTransferInstructions?: Prisma.SortOrder
@@ -1339,6 +1402,9 @@ export type StoreMinOrderByAggregateInput = {
   instagramUrl?: Prisma.SortOrder
   facebookUrl?: Prisma.SortOrder
   orderNumberPrefix?: Prisma.SortOrder
+  emailConfirmationEnabled?: Prisma.SortOrder
+  emailShippingEnabled?: Prisma.SortOrder
+  replyToEmail?: Prisma.SortOrder
   bankTransferEnabled?: Prisma.SortOrder
   cashOnDeliveryEnabled?: Prisma.SortOrder
   bankTransferInstructions?: Prisma.SortOrder
@@ -2512,6 +2578,9 @@ export type StoreCreateWithoutAvailabilityRecordsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -2618,6 +2687,9 @@ export type StoreUncheckedCreateWithoutAvailabilityRecordsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -2740,6 +2812,9 @@ export type StoreUpdateWithoutAvailabilityRecordsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2846,6 +2921,9 @@ export type StoreUncheckedUpdateWithoutAvailabilityRecordsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2952,6 +3030,9 @@ export type StoreCreateWithoutCategoriesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -3058,6 +3139,9 @@ export type StoreUncheckedCreateWithoutCategoriesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -3180,6 +3264,9 @@ export type StoreUpdateWithoutCategoriesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3286,6 +3373,9 @@ export type StoreUncheckedUpdateWithoutCategoriesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3392,6 +3482,9 @@ export type StoreCreateWithoutPriceListsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -3498,6 +3591,9 @@ export type StoreUncheckedCreateWithoutPriceListsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -3620,6 +3716,9 @@ export type StoreUpdateWithoutPriceListsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3726,6 +3825,9 @@ export type StoreUncheckedUpdateWithoutPriceListsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3832,6 +3934,9 @@ export type StoreCreateWithoutProductTypesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -3938,6 +4043,9 @@ export type StoreUncheckedCreateWithoutProductTypesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -4060,6 +4168,9 @@ export type StoreUpdateWithoutProductTypesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4166,6 +4277,9 @@ export type StoreUncheckedUpdateWithoutProductTypesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4272,6 +4386,9 @@ export type StoreCreateWithoutProductsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -4378,6 +4495,9 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -4500,6 +4620,9 @@ export type StoreUpdateWithoutProductsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4606,6 +4729,9 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4712,6 +4838,9 @@ export type StoreCreateWithoutCartsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -4818,6 +4947,9 @@ export type StoreUncheckedCreateWithoutCartsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -4940,6 +5072,9 @@ export type StoreUpdateWithoutCartsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5046,6 +5181,9 @@ export type StoreUncheckedUpdateWithoutCartsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5152,6 +5290,9 @@ export type StoreCreateWithoutCheckoutsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -5258,6 +5399,9 @@ export type StoreUncheckedCreateWithoutCheckoutsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -5380,6 +5524,9 @@ export type StoreUpdateWithoutCheckoutsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5486,6 +5633,9 @@ export type StoreUncheckedUpdateWithoutCheckoutsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5592,6 +5742,9 @@ export type StoreCreateWithoutCustomersInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -5698,6 +5851,9 @@ export type StoreUncheckedCreateWithoutCustomersInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -5820,6 +5976,9 @@ export type StoreUpdateWithoutCustomersInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5926,6 +6085,9 @@ export type StoreUncheckedUpdateWithoutCustomersInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6032,6 +6194,9 @@ export type StoreCreateWithoutOrdersInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -6138,6 +6303,9 @@ export type StoreUncheckedCreateWithoutOrdersInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -6260,6 +6428,9 @@ export type StoreUpdateWithoutOrdersInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6366,6 +6537,9 @@ export type StoreUncheckedUpdateWithoutOrdersInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6472,6 +6646,9 @@ export type StoreCreateWithoutPagesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -6578,6 +6755,9 @@ export type StoreUncheckedCreateWithoutPagesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -6700,6 +6880,9 @@ export type StoreUpdateWithoutPagesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6806,6 +6989,9 @@ export type StoreUncheckedUpdateWithoutPagesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6912,6 +7098,9 @@ export type StoreCreateWithoutApiClientsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -7018,6 +7207,9 @@ export type StoreUncheckedCreateWithoutApiClientsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -7140,6 +7332,9 @@ export type StoreUpdateWithoutApiClientsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7246,6 +7441,9 @@ export type StoreUncheckedUpdateWithoutApiClientsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7352,6 +7550,9 @@ export type StoreCreateWithoutUsersInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -7458,6 +7659,9 @@ export type StoreUncheckedCreateWithoutUsersInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -7580,6 +7784,9 @@ export type StoreUpdateWithoutUsersInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7686,6 +7893,9 @@ export type StoreUncheckedUpdateWithoutUsersInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7792,6 +8002,9 @@ export type StoreCreateWithoutDomainsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -7898,6 +8111,9 @@ export type StoreUncheckedCreateWithoutDomainsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -8020,6 +8236,9 @@ export type StoreUpdateWithoutDomainsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -8126,6 +8345,9 @@ export type StoreUncheckedUpdateWithoutDomainsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -8232,6 +8454,9 @@ export type StoreCreateWithoutAuditLogsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -8338,6 +8563,9 @@ export type StoreUncheckedCreateWithoutAuditLogsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -8460,6 +8688,9 @@ export type StoreUpdateWithoutAuditLogsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -8566,6 +8797,9 @@ export type StoreUncheckedUpdateWithoutAuditLogsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -8672,6 +8906,9 @@ export type StoreCreateWithoutDomainEventsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -8778,6 +9015,9 @@ export type StoreUncheckedCreateWithoutDomainEventsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -8900,6 +9140,9 @@ export type StoreUpdateWithoutDomainEventsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -9006,6 +9249,9 @@ export type StoreUncheckedUpdateWithoutDomainEventsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -9112,6 +9358,9 @@ export type StoreCreateWithoutFeatureFlagsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -9218,6 +9467,9 @@ export type StoreUncheckedCreateWithoutFeatureFlagsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -9340,6 +9592,9 @@ export type StoreUpdateWithoutFeatureFlagsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -9446,6 +9701,9 @@ export type StoreUncheckedUpdateWithoutFeatureFlagsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -9552,6 +9810,9 @@ export type StoreCreateWithoutJobsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -9658,6 +9919,9 @@ export type StoreUncheckedCreateWithoutJobsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -9780,6 +10044,9 @@ export type StoreUpdateWithoutJobsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -9886,6 +10153,9 @@ export type StoreUncheckedUpdateWithoutJobsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -9992,6 +10262,9 @@ export type StoreCreateWithoutMonitoringChecksInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -10098,6 +10371,9 @@ export type StoreUncheckedCreateWithoutMonitoringChecksInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -10220,6 +10496,9 @@ export type StoreUpdateWithoutMonitoringChecksInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -10326,6 +10605,9 @@ export type StoreUncheckedUpdateWithoutMonitoringChecksInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -10432,6 +10714,9 @@ export type StoreCreateWithoutObservabilitySignalsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -10538,6 +10823,9 @@ export type StoreUncheckedCreateWithoutObservabilitySignalsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -10660,6 +10948,9 @@ export type StoreUpdateWithoutObservabilitySignalsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -10766,6 +11057,9 @@ export type StoreUncheckedUpdateWithoutObservabilitySignalsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -10872,6 +11166,9 @@ export type StoreCreateWithoutSeoMetadataInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -10978,6 +11275,9 @@ export type StoreUncheckedCreateWithoutSeoMetadataInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -11100,6 +11400,9 @@ export type StoreUpdateWithoutSeoMetadataInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -11206,6 +11509,9 @@ export type StoreUncheckedUpdateWithoutSeoMetadataInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -11312,6 +11618,9 @@ export type StoreCreateWithoutAiProvidersInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -11418,6 +11727,9 @@ export type StoreUncheckedCreateWithoutAiProvidersInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -11540,6 +11852,9 @@ export type StoreUpdateWithoutAiProvidersInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -11646,6 +11961,9 @@ export type StoreUncheckedUpdateWithoutAiProvidersInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -11752,6 +12070,9 @@ export type StoreCreateWithoutAiTasksInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -11858,6 +12179,9 @@ export type StoreUncheckedCreateWithoutAiTasksInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -11980,6 +12304,9 @@ export type StoreUpdateWithoutAiTasksInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -12086,6 +12413,9 @@ export type StoreUncheckedUpdateWithoutAiTasksInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -12192,6 +12522,9 @@ export type StoreCreateWithoutBundlesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -12298,6 +12631,9 @@ export type StoreUncheckedCreateWithoutBundlesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -12420,6 +12756,9 @@ export type StoreUpdateWithoutBundlesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -12526,6 +12865,9 @@ export type StoreUncheckedUpdateWithoutBundlesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -12632,6 +12974,9 @@ export type StoreCreateWithoutDiscountsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -12738,6 +13083,9 @@ export type StoreUncheckedCreateWithoutDiscountsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -12860,6 +13208,9 @@ export type StoreUpdateWithoutDiscountsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -12966,6 +13317,9 @@ export type StoreUncheckedUpdateWithoutDiscountsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -13072,6 +13426,9 @@ export type StoreCreateWithoutDocumentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -13178,6 +13535,9 @@ export type StoreUncheckedCreateWithoutDocumentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -13300,6 +13660,9 @@ export type StoreUpdateWithoutDocumentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -13406,6 +13769,9 @@ export type StoreUncheckedUpdateWithoutDocumentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -13512,6 +13878,9 @@ export type StoreCreateWithoutFulfillmentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -13618,6 +13987,9 @@ export type StoreUncheckedCreateWithoutFulfillmentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -13740,6 +14112,9 @@ export type StoreUpdateWithoutFulfillmentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -13846,6 +14221,9 @@ export type StoreUncheckedUpdateWithoutFulfillmentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -13952,6 +14330,9 @@ export type StoreCreateWithoutGiftCardsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -14058,6 +14439,9 @@ export type StoreUncheckedCreateWithoutGiftCardsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -14180,6 +14564,9 @@ export type StoreUpdateWithoutGiftCardsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -14286,6 +14673,9 @@ export type StoreUncheckedUpdateWithoutGiftCardsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -14392,6 +14782,9 @@ export type StoreCreateWithoutGiftRequestsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -14498,6 +14891,9 @@ export type StoreUncheckedCreateWithoutGiftRequestsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -14620,6 +15016,9 @@ export type StoreUpdateWithoutGiftRequestsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -14726,6 +15125,9 @@ export type StoreUncheckedUpdateWithoutGiftRequestsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -14832,6 +15234,9 @@ export type StoreCreateWithoutInventoryItemsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -14938,6 +15343,9 @@ export type StoreUncheckedCreateWithoutInventoryItemsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -15060,6 +15468,9 @@ export type StoreUpdateWithoutInventoryItemsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -15166,6 +15577,9 @@ export type StoreUncheckedUpdateWithoutInventoryItemsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -15272,6 +15686,9 @@ export type StoreCreateWithoutLoyaltyAccountsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -15378,6 +15795,9 @@ export type StoreUncheckedCreateWithoutLoyaltyAccountsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -15500,6 +15920,9 @@ export type StoreUpdateWithoutLoyaltyAccountsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -15606,6 +16029,9 @@ export type StoreUncheckedUpdateWithoutLoyaltyAccountsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -15712,6 +16138,9 @@ export type StoreCreateWithoutPaymentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -15818,6 +16247,9 @@ export type StoreUncheckedCreateWithoutPaymentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -15940,6 +16372,9 @@ export type StoreUpdateWithoutPaymentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -16046,6 +16481,9 @@ export type StoreUncheckedUpdateWithoutPaymentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -16152,6 +16590,9 @@ export type StoreCreateWithoutReturnRequestsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -16258,6 +16699,9 @@ export type StoreUncheckedCreateWithoutReturnRequestsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -16380,6 +16824,9 @@ export type StoreUpdateWithoutReturnRequestsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -16486,6 +16933,9 @@ export type StoreUncheckedUpdateWithoutReturnRequestsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -16592,6 +17042,9 @@ export type StoreCreateWithoutSalesPoliciesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -16698,6 +17151,9 @@ export type StoreUncheckedCreateWithoutSalesPoliciesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -16820,6 +17276,9 @@ export type StoreUpdateWithoutSalesPoliciesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -16926,6 +17385,9 @@ export type StoreUncheckedUpdateWithoutSalesPoliciesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -17032,6 +17494,9 @@ export type StoreCreateWithoutSellabilityDecisionsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -17138,6 +17603,9 @@ export type StoreUncheckedCreateWithoutSellabilityDecisionsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -17260,6 +17728,9 @@ export type StoreUpdateWithoutSellabilityDecisionsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -17366,6 +17837,9 @@ export type StoreUncheckedUpdateWithoutSellabilityDecisionsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -17472,6 +17946,9 @@ export type StoreCreateWithoutShippingZonesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -17578,6 +18055,9 @@ export type StoreUncheckedCreateWithoutShippingZonesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -17700,6 +18180,9 @@ export type StoreUpdateWithoutShippingZonesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -17806,6 +18289,9 @@ export type StoreUncheckedUpdateWithoutShippingZonesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -17912,6 +18398,9 @@ export type StoreCreateWithoutShippingMethodsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -18018,6 +18507,9 @@ export type StoreUncheckedCreateWithoutShippingMethodsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -18140,6 +18632,9 @@ export type StoreUpdateWithoutShippingMethodsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -18246,6 +18741,9 @@ export type StoreUncheckedUpdateWithoutShippingMethodsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -18352,6 +18850,9 @@ export type StoreCreateWithoutShipmentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -18458,6 +18959,9 @@ export type StoreUncheckedCreateWithoutShipmentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -18580,6 +19084,9 @@ export type StoreUpdateWithoutShipmentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -18686,6 +19193,9 @@ export type StoreUncheckedUpdateWithoutShipmentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -18792,6 +19302,9 @@ export type StoreCreateWithoutSubscriptionsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -18898,6 +19411,9 @@ export type StoreUncheckedCreateWithoutSubscriptionsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -19020,6 +19536,9 @@ export type StoreUpdateWithoutSubscriptionsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -19126,6 +19645,9 @@ export type StoreUncheckedUpdateWithoutSubscriptionsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -19232,6 +19754,9 @@ export type StoreCreateWithoutTaxRulesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -19338,6 +19863,9 @@ export type StoreUncheckedCreateWithoutTaxRulesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -19460,6 +19988,9 @@ export type StoreUpdateWithoutTaxRulesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -19566,6 +20097,9 @@ export type StoreUncheckedUpdateWithoutTaxRulesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -19672,6 +20206,9 @@ export type StoreCreateWithoutAnalyticsMetricsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -19778,6 +20315,9 @@ export type StoreUncheckedCreateWithoutAnalyticsMetricsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -19900,6 +20440,9 @@ export type StoreUpdateWithoutAnalyticsMetricsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -20006,6 +20549,9 @@ export type StoreUncheckedUpdateWithoutAnalyticsMetricsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -20112,6 +20658,9 @@ export type StoreCreateWithoutAttributionModelsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -20218,6 +20767,9 @@ export type StoreUncheckedCreateWithoutAttributionModelsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -20340,6 +20892,9 @@ export type StoreUpdateWithoutAttributionModelsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -20446,6 +21001,9 @@ export type StoreUncheckedUpdateWithoutAttributionModelsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -20552,6 +21110,9 @@ export type StoreCreateWithoutBehaviorSegmentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -20658,6 +21219,9 @@ export type StoreUncheckedCreateWithoutBehaviorSegmentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -20780,6 +21344,9 @@ export type StoreUpdateWithoutBehaviorSegmentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -20886,6 +21453,9 @@ export type StoreUncheckedUpdateWithoutBehaviorSegmentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -20992,6 +21562,9 @@ export type StoreCreateWithoutBehaviorProfilesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -21098,6 +21671,9 @@ export type StoreUncheckedCreateWithoutBehaviorProfilesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -21220,6 +21796,9 @@ export type StoreUpdateWithoutBehaviorProfilesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -21326,6 +21905,9 @@ export type StoreUncheckedUpdateWithoutBehaviorProfilesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -21432,6 +22014,9 @@ export type StoreCreateWithoutBlogCategoriesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -21538,6 +22123,9 @@ export type StoreUncheckedCreateWithoutBlogCategoriesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -21660,6 +22248,9 @@ export type StoreUpdateWithoutBlogCategoriesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -21766,6 +22357,9 @@ export type StoreUncheckedUpdateWithoutBlogCategoriesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -21872,6 +22466,9 @@ export type StoreCreateWithoutBlogPostsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -21978,6 +22575,9 @@ export type StoreUncheckedCreateWithoutBlogPostsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -22100,6 +22700,9 @@ export type StoreUpdateWithoutBlogPostsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -22206,6 +22809,9 @@ export type StoreUncheckedUpdateWithoutBlogPostsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -22312,6 +22918,9 @@ export type StoreCreateWithoutConversionFlowsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -22418,6 +23027,9 @@ export type StoreUncheckedCreateWithoutConversionFlowsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -22540,6 +23152,9 @@ export type StoreUpdateWithoutConversionFlowsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -22646,6 +23261,9 @@ export type StoreUncheckedUpdateWithoutConversionFlowsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -22752,6 +23370,9 @@ export type StoreCreateWithoutCrmContactsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -22858,6 +23479,9 @@ export type StoreUncheckedCreateWithoutCrmContactsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -22980,6 +23604,9 @@ export type StoreUpdateWithoutCrmContactsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -23086,6 +23713,9 @@ export type StoreUncheckedUpdateWithoutCrmContactsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -23192,6 +23822,9 @@ export type StoreCreateWithoutCrmTagsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -23298,6 +23931,9 @@ export type StoreUncheckedCreateWithoutCrmTagsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -23420,6 +24056,9 @@ export type StoreUpdateWithoutCrmTagsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -23526,6 +24165,9 @@ export type StoreUncheckedUpdateWithoutCrmTagsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -23632,6 +24274,9 @@ export type StoreCreateWithoutNewsletterSubscribersInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -23738,6 +24383,9 @@ export type StoreUncheckedCreateWithoutNewsletterSubscribersInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -23860,6 +24508,9 @@ export type StoreUpdateWithoutNewsletterSubscribersInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -23966,6 +24617,9 @@ export type StoreUncheckedUpdateWithoutNewsletterSubscribersInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -24072,6 +24726,9 @@ export type StoreCreateWithoutNewsletterCampaignsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -24178,6 +24835,9 @@ export type StoreUncheckedCreateWithoutNewsletterCampaignsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -24300,6 +24960,9 @@ export type StoreUpdateWithoutNewsletterCampaignsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -24406,6 +25069,9 @@ export type StoreUncheckedUpdateWithoutNewsletterCampaignsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -24512,6 +25178,9 @@ export type StoreCreateWithoutPublicEventsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -24618,6 +25287,9 @@ export type StoreUncheckedCreateWithoutPublicEventsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -24740,6 +25412,9 @@ export type StoreUpdateWithoutPublicEventsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -24846,6 +25521,9 @@ export type StoreUncheckedUpdateWithoutPublicEventsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -24952,6 +25630,9 @@ export type StoreCreateWithoutRecommendationRulesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -25058,6 +25739,9 @@ export type StoreUncheckedCreateWithoutRecommendationRulesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -25180,6 +25864,9 @@ export type StoreUpdateWithoutRecommendationRulesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -25286,6 +25973,9 @@ export type StoreUncheckedUpdateWithoutRecommendationRulesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -25392,6 +26082,9 @@ export type StoreCreateWithoutSocialPublicationsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -25498,6 +26191,9 @@ export type StoreUncheckedCreateWithoutSocialPublicationsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -25620,6 +26316,9 @@ export type StoreUpdateWithoutSocialPublicationsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -25726,6 +26425,9 @@ export type StoreUncheckedUpdateWithoutSocialPublicationsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -25832,6 +26534,9 @@ export type StoreCreateWithoutSupportTicketsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -25938,6 +26643,9 @@ export type StoreUncheckedCreateWithoutSupportTicketsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -26060,6 +26768,9 @@ export type StoreUpdateWithoutSupportTicketsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -26166,6 +26877,9 @@ export type StoreUncheckedUpdateWithoutSupportTicketsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -26272,6 +26986,9 @@ export type StoreCreateWithoutHomepagesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -26378,6 +27095,9 @@ export type StoreUncheckedCreateWithoutHomepagesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -26500,6 +27220,9 @@ export type StoreUpdateWithoutHomepagesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -26606,6 +27329,9 @@ export type StoreUncheckedUpdateWithoutHomepagesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -26712,6 +27438,9 @@ export type StoreCreateWithoutApprovalRequestsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -26818,6 +27547,9 @@ export type StoreUncheckedCreateWithoutApprovalRequestsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -26940,6 +27672,9 @@ export type StoreUpdateWithoutApprovalRequestsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -27046,6 +27781,9 @@ export type StoreUncheckedUpdateWithoutApprovalRequestsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -27152,6 +27890,9 @@ export type StoreCreateWithoutConsentPurposesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -27258,6 +27999,9 @@ export type StoreUncheckedCreateWithoutConsentPurposesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -27380,6 +28124,9 @@ export type StoreUpdateWithoutConsentPurposesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -27486,6 +28233,9 @@ export type StoreUncheckedUpdateWithoutConsentPurposesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -27592,6 +28342,9 @@ export type StoreCreateWithoutConsentRecordsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -27698,6 +28451,9 @@ export type StoreUncheckedCreateWithoutConsentRecordsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -27820,6 +28576,9 @@ export type StoreUpdateWithoutConsentRecordsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -27926,6 +28685,9 @@ export type StoreUncheckedUpdateWithoutConsentRecordsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -28032,6 +28794,9 @@ export type StoreCreateWithoutEmailMessagesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -28138,6 +28903,9 @@ export type StoreUncheckedCreateWithoutEmailMessagesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -28260,6 +29028,9 @@ export type StoreUpdateWithoutEmailMessagesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -28366,6 +29137,9 @@ export type StoreUncheckedUpdateWithoutEmailMessagesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -28472,6 +29246,9 @@ export type StoreCreateWithoutExportDefinitionsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -28578,6 +29355,9 @@ export type StoreUncheckedCreateWithoutExportDefinitionsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -28700,6 +29480,9 @@ export type StoreUpdateWithoutExportDefinitionsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -28806,6 +29589,9 @@ export type StoreUncheckedUpdateWithoutExportDefinitionsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -28912,6 +29698,9 @@ export type StoreCreateWithoutExportRequestsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -29018,6 +29807,9 @@ export type StoreUncheckedCreateWithoutExportRequestsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -29140,6 +29932,9 @@ export type StoreUpdateWithoutExportRequestsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -29246,6 +30041,9 @@ export type StoreUncheckedUpdateWithoutExportRequestsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -29352,6 +30150,9 @@ export type StoreCreateWithoutFraudRiskAssessmentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -29458,6 +30259,9 @@ export type StoreUncheckedCreateWithoutFraudRiskAssessmentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -29580,6 +30384,9 @@ export type StoreUpdateWithoutFraudRiskAssessmentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -29686,6 +30493,9 @@ export type StoreUncheckedUpdateWithoutFraudRiskAssessmentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -29792,6 +30602,9 @@ export type StoreCreateWithoutImportDefinitionsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -29898,6 +30711,9 @@ export type StoreUncheckedCreateWithoutImportDefinitionsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -30020,6 +30836,9 @@ export type StoreUpdateWithoutImportDefinitionsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -30126,6 +30945,9 @@ export type StoreUncheckedUpdateWithoutImportDefinitionsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -30232,6 +31054,9 @@ export type StoreCreateWithoutImportRequestsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -30338,6 +31163,9 @@ export type StoreUncheckedCreateWithoutImportRequestsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -30460,6 +31288,9 @@ export type StoreUpdateWithoutImportRequestsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -30566,6 +31397,9 @@ export type StoreUncheckedUpdateWithoutImportRequestsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -30672,6 +31506,9 @@ export type StoreCreateWithoutIntegrationsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -30778,6 +31615,9 @@ export type StoreUncheckedCreateWithoutIntegrationsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -30900,6 +31740,9 @@ export type StoreUpdateWithoutIntegrationsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -31006,6 +31849,9 @@ export type StoreUncheckedUpdateWithoutIntegrationsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -31112,6 +31958,9 @@ export type StoreCreateWithoutLocalizationLocalesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -31218,6 +32067,9 @@ export type StoreUncheckedCreateWithoutLocalizationLocalesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -31340,6 +32192,9 @@ export type StoreUpdateWithoutLocalizationLocalesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -31446,6 +32301,9 @@ export type StoreUncheckedUpdateWithoutLocalizationLocalesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -31552,6 +32410,9 @@ export type StoreCreateWithoutLocalizedValuesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -31658,6 +32519,9 @@ export type StoreUncheckedCreateWithoutLocalizedValuesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -31780,6 +32644,9 @@ export type StoreUpdateWithoutLocalizedValuesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -31886,6 +32753,9 @@ export type StoreUncheckedUpdateWithoutLocalizedValuesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -31992,6 +32862,9 @@ export type StoreCreateWithoutNotificationsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -32098,6 +32971,9 @@ export type StoreUncheckedCreateWithoutNotificationsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -32220,6 +33096,9 @@ export type StoreUpdateWithoutNotificationsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -32326,6 +33205,9 @@ export type StoreUncheckedUpdateWithoutNotificationsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -32432,6 +33314,9 @@ export type StoreCreateWithoutNotificationPreferencesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -32538,6 +33423,9 @@ export type StoreUncheckedCreateWithoutNotificationPreferencesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -32660,6 +33548,9 @@ export type StoreUpdateWithoutNotificationPreferencesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -32766,6 +33657,9 @@ export type StoreUncheckedUpdateWithoutNotificationPreferencesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -32872,6 +33766,9 @@ export type StoreCreateWithoutSchedulePlansInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -32978,6 +33875,9 @@ export type StoreUncheckedCreateWithoutSchedulePlansInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -33100,6 +34000,9 @@ export type StoreUpdateWithoutSchedulePlansInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -33206,6 +34109,9 @@ export type StoreUncheckedUpdateWithoutSchedulePlansInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -33312,6 +34218,9 @@ export type StoreCreateWithoutWebhookEndpointsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -33418,6 +34327,9 @@ export type StoreUncheckedCreateWithoutWebhookEndpointsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -33540,6 +34452,9 @@ export type StoreUpdateWithoutWebhookEndpointsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -33646,6 +34561,9 @@ export type StoreUncheckedUpdateWithoutWebhookEndpointsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -33752,6 +34670,9 @@ export type StoreCreateWithoutWorkflowDefinitionsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -33858,6 +34779,9 @@ export type StoreUncheckedCreateWithoutWorkflowDefinitionsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -33980,6 +34904,9 @@ export type StoreUpdateWithoutWorkflowDefinitionsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -34086,6 +35013,9 @@ export type StoreUncheckedUpdateWithoutWorkflowDefinitionsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -34192,6 +35122,9 @@ export type StoreCreateWithoutWorkflowInstancesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -34298,6 +35231,9 @@ export type StoreUncheckedCreateWithoutWorkflowInstancesInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -34420,6 +35356,9 @@ export type StoreUpdateWithoutWorkflowInstancesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -34526,6 +35465,9 @@ export type StoreUncheckedUpdateWithoutWorkflowInstancesInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -34632,6 +35574,9 @@ export type StoreCreateWithoutChannelsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -34738,6 +35683,9 @@ export type StoreUncheckedCreateWithoutChannelsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -34860,6 +35808,9 @@ export type StoreUpdateWithoutChannelsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -34966,6 +35917,9 @@ export type StoreUncheckedUpdateWithoutChannelsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -35072,6 +36026,9 @@ export type StoreCreateWithoutMediaAssetsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -35178,6 +36135,9 @@ export type StoreUncheckedCreateWithoutMediaAssetsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -35300,6 +36260,9 @@ export type StoreUpdateWithoutMediaAssetsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -35406,6 +36369,9 @@ export type StoreUncheckedUpdateWithoutMediaAssetsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -35512,6 +36478,9 @@ export type StoreCreateWithoutSearchDocumentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -35618,6 +36587,9 @@ export type StoreUncheckedCreateWithoutSearchDocumentsInput = {
   instagramUrl?: string | null
   facebookUrl?: string | null
   orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
@@ -35740,6 +36712,9 @@ export type StoreUpdateWithoutSearchDocumentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -35846,6 +36821,9 @@ export type StoreUncheckedUpdateWithoutSearchDocumentsInput = {
   instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -36658,6 +37636,9 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   instagramUrl?: boolean
   facebookUrl?: boolean
   orderNumberPrefix?: boolean
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: boolean
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: boolean
@@ -36766,6 +37747,9 @@ export type StoreSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   instagramUrl?: boolean
   facebookUrl?: boolean
   orderNumberPrefix?: boolean
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: boolean
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: boolean
@@ -36797,6 +37781,9 @@ export type StoreSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   instagramUrl?: boolean
   facebookUrl?: boolean
   orderNumberPrefix?: boolean
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: boolean
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: boolean
@@ -36828,6 +37815,9 @@ export type StoreSelectScalar = {
   instagramUrl?: boolean
   facebookUrl?: boolean
   orderNumberPrefix?: boolean
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: boolean
   bankTransferEnabled?: boolean
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: boolean
@@ -36842,7 +37832,7 @@ export type StoreSelectScalar = {
   archivedAt?: boolean
 }
 
-export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "supportEmail" | "supportPhone" | "shippingReturnsPolicy" | "addressLine1" | "addressCity" | "addressPostalCode" | "addressCountry" | "instagramUrl" | "facebookUrl" | "orderNumberPrefix" | "bankTransferEnabled" | "cashOnDeliveryEnabled" | "bankTransferInstructions" | "cashOnDeliveryInstructions" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
+export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "supportEmail" | "supportPhone" | "shippingReturnsPolicy" | "addressLine1" | "addressCity" | "addressPostalCode" | "addressCountry" | "instagramUrl" | "facebookUrl" | "orderNumberPrefix" | "emailConfirmationEnabled" | "emailShippingEnabled" | "replyToEmail" | "bankTransferEnabled" | "cashOnDeliveryEnabled" | "bankTransferInstructions" | "cashOnDeliveryInstructions" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
 export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   domains?: boolean | Prisma.Store$domainsArgs<ExtArgs>
   users?: boolean | Prisma.Store$usersArgs<ExtArgs>
@@ -37022,6 +38012,9 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     instagramUrl: string | null
     facebookUrl: string | null
     orderNumberPrefix: string | null
+    emailConfirmationEnabled: boolean
+    emailShippingEnabled: boolean
+    replyToEmail: string | null
     bankTransferEnabled: boolean
     cashOnDeliveryEnabled: boolean
     bankTransferInstructions: string | null
@@ -37549,6 +38542,9 @@ export interface StoreFieldRefs {
   readonly instagramUrl: Prisma.FieldRef<"Store", 'String'>
   readonly facebookUrl: Prisma.FieldRef<"Store", 'String'>
   readonly orderNumberPrefix: Prisma.FieldRef<"Store", 'String'>
+  readonly emailConfirmationEnabled: Prisma.FieldRef<"Store", 'Boolean'>
+  readonly emailShippingEnabled: Prisma.FieldRef<"Store", 'Boolean'>
+  readonly replyToEmail: Prisma.FieldRef<"Store", 'String'>
   readonly bankTransferEnabled: Prisma.FieldRef<"Store", 'Boolean'>
   readonly cashOnDeliveryEnabled: Prisma.FieldRef<"Store", 'Boolean'>
   readonly bankTransferInstructions: Prisma.FieldRef<"Store", 'String'>
