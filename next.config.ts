@@ -45,9 +45,24 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        // Catégories WooCommerce : slugs anciens sans équivalent direct,
-        // renvoi générique vers la boutique plutôt que 404
-        source: "/categorie-produit/:path*",
+        // Produits WooCommerce (/produit/<slug>) : slugs conservés à l'import.
+        // Produit inconnu → notFound de /boutique/[slug], équivalent au 404 d'origine.
+        source: "/produit/:slug",
+        destination: "/boutique/:slug",
+        permanent: true,
+      },
+      {
+        // Catégories WooCommerce : les slugs ont été conservés à l'import
+        // (seed_data/categories.creatyss.json), le filtre boutique est préservé.
+        // Un slug inconnu donne une liste vide, sans erreur.
+        source: "/categorie-produit/:slug",
+        destination: "/boutique?category=:slug",
+        permanent: true,
+      },
+      {
+        // Chemins catégorie plus profonds (pagination Woo, sous-catégories) :
+        // renvoi générique vers la boutique
+        source: "/categorie-produit/:path+",
         destination: "/boutique",
         permanent: true,
       },
