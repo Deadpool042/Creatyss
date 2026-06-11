@@ -17,6 +17,8 @@ export async function updateAdminStoreSettingsAction(
   const raw = {
     name: formData.get("name"),
     legalName: formData.get("legalName") || null,
+    siret: formData.get("siret"),
+    vatNumber: formData.get("vatNumber"),
     supportEmail: formData.get("supportEmail") || null,
     supportPhone: formData.get("supportPhone") || null,
     shippingReturnsPolicy: formData.get("shippingReturnsPolicy") || null,
@@ -58,6 +60,8 @@ export async function updateAdminStoreSettingsAction(
       data: {
         name: parsed.data.name,
         legalName: parsed.data.legalName ?? null,
+        siret: parsed.data.siret ?? null,
+        vatNumber: parsed.data.vatNumber ?? null,
         supportEmail: parsed.data.supportEmail || null,
         supportPhone: parsed.data.supportPhone ?? null,
         shippingReturnsPolicy: parsed.data.shippingReturnsPolicy ?? null,

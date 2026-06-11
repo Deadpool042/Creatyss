@@ -14063,6 +14063,8 @@ export const StoreScalarFieldEnum = {
   slug: 'slug',
   status: 'status',
   legalName: 'legalName',
+  siret: 'siret',
+  vatNumber: 'vatNumber',
   supportEmail: 'supportEmail',
   supportPhone: 'supportPhone',
   shippingReturnsPolicy: 'shippingReturnsPolicy',

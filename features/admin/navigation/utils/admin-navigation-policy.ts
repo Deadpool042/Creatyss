@@ -49,6 +49,8 @@ export const adminNavigationCapabilities = {
     webhooksRead: "admin.settings.webhooks.read",
     notificationsRead: "admin.settings.notifications.read",
     notificationsWrite: "admin.settings.notifications.write",
+    legalRead: "admin.settings.legal.read",
+    legalWrite: "admin.settings.legal.write",
   },
   system: {
     logsRead: "admin.system.logs.read",

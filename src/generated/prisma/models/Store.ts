@@ -31,6 +31,8 @@ export type StoreMinAggregateOutputType = {
   slug: string | null
   status: $Enums.StoreStatus | null
   legalName: string | null
+  siret: string | null
+  vatNumber: string | null
   supportEmail: string | null
   supportPhone: string | null
   shippingReturnsPolicy: string | null
@@ -65,6 +67,8 @@ export type StoreMaxAggregateOutputType = {
   slug: string | null
   status: $Enums.StoreStatus | null
   legalName: string | null
+  siret: string | null
+  vatNumber: string | null
   supportEmail: string | null
   supportPhone: string | null
   shippingReturnsPolicy: string | null
@@ -99,6 +103,8 @@ export type StoreCountAggregateOutputType = {
   slug: number
   status: number
   legalName: number
+  siret: number
+  vatNumber: number
   supportEmail: number
   supportPhone: number
   shippingReturnsPolicy: number
@@ -135,6 +141,8 @@ export type StoreMinAggregateInputType = {
   slug?: true
   status?: true
   legalName?: true
+  siret?: true
+  vatNumber?: true
   supportEmail?: true
   supportPhone?: true
   shippingReturnsPolicy?: true
@@ -169,6 +177,8 @@ export type StoreMaxAggregateInputType = {
   slug?: true
   status?: true
   legalName?: true
+  siret?: true
+  vatNumber?: true
   supportEmail?: true
   supportPhone?: true
   shippingReturnsPolicy?: true
@@ -203,6 +213,8 @@ export type StoreCountAggregateInputType = {
   slug?: true
   status?: true
   legalName?: true
+  siret?: true
+  vatNumber?: true
   supportEmail?: true
   supportPhone?: true
   shippingReturnsPolicy?: true
@@ -310,6 +322,8 @@ export type StoreGroupByOutputType = {
   slug: string
   status: $Enums.StoreStatus
   legalName: string | null
+  siret: string | null
+  vatNumber: string | null
   supportEmail: string | null
   supportPhone: string | null
   shippingReturnsPolicy: string | null
@@ -365,6 +379,8 @@ export type StoreWhereInput = {
   slug?: Prisma.StringFilter<"Store"> | string
   status?: Prisma.EnumStoreStatusFilter<"Store"> | $Enums.StoreStatus
   legalName?: Prisma.StringNullableFilter<"Store"> | string | null
+  siret?: Prisma.StringNullableFilter<"Store"> | string | null
+  vatNumber?: Prisma.StringNullableFilter<"Store"> | string | null
   supportEmail?: Prisma.StringNullableFilter<"Store"> | string | null
   supportPhone?: Prisma.StringNullableFilter<"Store"> | string | null
   shippingReturnsPolicy?: Prisma.StringNullableFilter<"Store"> | string | null
@@ -475,6 +491,8 @@ export type StoreOrderByWithRelationInput = {
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
   legalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  siret?: Prisma.SortOrderInput | Prisma.SortOrder
+  vatNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   supportEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   supportPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -588,6 +606,8 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Store"> | string
   status?: Prisma.EnumStoreStatusFilter<"Store"> | $Enums.StoreStatus
   legalName?: Prisma.StringNullableFilter<"Store"> | string | null
+  siret?: Prisma.StringNullableFilter<"Store"> | string | null
+  vatNumber?: Prisma.StringNullableFilter<"Store"> | string | null
   supportEmail?: Prisma.StringNullableFilter<"Store"> | string | null
   supportPhone?: Prisma.StringNullableFilter<"Store"> | string | null
   shippingReturnsPolicy?: Prisma.StringNullableFilter<"Store"> | string | null
@@ -698,6 +718,8 @@ export type StoreOrderByWithAggregationInput = {
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
   legalName?: Prisma.SortOrderInput | Prisma.SortOrder
+  siret?: Prisma.SortOrderInput | Prisma.SortOrder
+  vatNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   supportEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   supportPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -738,6 +760,8 @@ export type StoreScalarWhereWithAggregatesInput = {
   slug?: Prisma.StringWithAggregatesFilter<"Store"> | string
   status?: Prisma.EnumStoreStatusWithAggregatesFilter<"Store"> | $Enums.StoreStatus
   legalName?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
+  siret?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
+  vatNumber?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   supportEmail?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   supportPhone?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   shippingReturnsPolicy?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
@@ -772,6 +796,8 @@ export type StoreCreateInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -882,6 +908,8 @@ export type StoreUncheckedCreateInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -992,6 +1020,8 @@ export type StoreUpdateInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1102,6 +1132,8 @@ export type StoreUncheckedUpdateInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1212,6 +1244,8 @@ export type StoreCreateManyInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -1246,6 +1280,8 @@ export type StoreUpdateManyMutationInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1280,6 +1316,8 @@ export type StoreUncheckedUpdateManyInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1324,6 +1362,8 @@ export type StoreCountOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
   legalName?: Prisma.SortOrder
+  siret?: Prisma.SortOrder
+  vatNumber?: Prisma.SortOrder
   supportEmail?: Prisma.SortOrder
   supportPhone?: Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrder
@@ -1358,6 +1398,8 @@ export type StoreMaxOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
   legalName?: Prisma.SortOrder
+  siret?: Prisma.SortOrder
+  vatNumber?: Prisma.SortOrder
   supportEmail?: Prisma.SortOrder
   supportPhone?: Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrder
@@ -1392,6 +1434,8 @@ export type StoreMinOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   status?: Prisma.SortOrder
   legalName?: Prisma.SortOrder
+  siret?: Prisma.SortOrder
+  vatNumber?: Prisma.SortOrder
   supportEmail?: Prisma.SortOrder
   supportPhone?: Prisma.SortOrder
   shippingReturnsPolicy?: Prisma.SortOrder
@@ -2568,6 +2612,8 @@ export type StoreCreateWithoutAvailabilityRecordsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -2677,6 +2723,8 @@ export type StoreUncheckedCreateWithoutAvailabilityRecordsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -2802,6 +2850,8 @@ export type StoreUpdateWithoutAvailabilityRecordsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2911,6 +2961,8 @@ export type StoreUncheckedUpdateWithoutAvailabilityRecordsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3020,6 +3072,8 @@ export type StoreCreateWithoutCategoriesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -3129,6 +3183,8 @@ export type StoreUncheckedCreateWithoutCategoriesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -3254,6 +3310,8 @@ export type StoreUpdateWithoutCategoriesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3363,6 +3421,8 @@ export type StoreUncheckedUpdateWithoutCategoriesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3472,6 +3532,8 @@ export type StoreCreateWithoutPriceListsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -3581,6 +3643,8 @@ export type StoreUncheckedCreateWithoutPriceListsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -3706,6 +3770,8 @@ export type StoreUpdateWithoutPriceListsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3815,6 +3881,8 @@ export type StoreUncheckedUpdateWithoutPriceListsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3924,6 +3992,8 @@ export type StoreCreateWithoutProductTypesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -4033,6 +4103,8 @@ export type StoreUncheckedCreateWithoutProductTypesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -4158,6 +4230,8 @@ export type StoreUpdateWithoutProductTypesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4267,6 +4341,8 @@ export type StoreUncheckedUpdateWithoutProductTypesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4376,6 +4452,8 @@ export type StoreCreateWithoutProductsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -4485,6 +4563,8 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -4610,6 +4690,8 @@ export type StoreUpdateWithoutProductsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4719,6 +4801,8 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4828,6 +4912,8 @@ export type StoreCreateWithoutCartsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -4937,6 +5023,8 @@ export type StoreUncheckedCreateWithoutCartsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -5062,6 +5150,8 @@ export type StoreUpdateWithoutCartsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5171,6 +5261,8 @@ export type StoreUncheckedUpdateWithoutCartsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5280,6 +5372,8 @@ export type StoreCreateWithoutCheckoutsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -5389,6 +5483,8 @@ export type StoreUncheckedCreateWithoutCheckoutsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -5514,6 +5610,8 @@ export type StoreUpdateWithoutCheckoutsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5623,6 +5721,8 @@ export type StoreUncheckedUpdateWithoutCheckoutsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5732,6 +5832,8 @@ export type StoreCreateWithoutCustomersInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -5841,6 +5943,8 @@ export type StoreUncheckedCreateWithoutCustomersInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -5966,6 +6070,8 @@ export type StoreUpdateWithoutCustomersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6075,6 +6181,8 @@ export type StoreUncheckedUpdateWithoutCustomersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6184,6 +6292,8 @@ export type StoreCreateWithoutOrdersInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -6293,6 +6403,8 @@ export type StoreUncheckedCreateWithoutOrdersInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -6418,6 +6530,8 @@ export type StoreUpdateWithoutOrdersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6527,6 +6641,8 @@ export type StoreUncheckedUpdateWithoutOrdersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6636,6 +6752,8 @@ export type StoreCreateWithoutPagesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -6745,6 +6863,8 @@ export type StoreUncheckedCreateWithoutPagesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -6870,6 +6990,8 @@ export type StoreUpdateWithoutPagesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6979,6 +7101,8 @@ export type StoreUncheckedUpdateWithoutPagesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7088,6 +7212,8 @@ export type StoreCreateWithoutApiClientsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -7197,6 +7323,8 @@ export type StoreUncheckedCreateWithoutApiClientsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -7322,6 +7450,8 @@ export type StoreUpdateWithoutApiClientsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7431,6 +7561,8 @@ export type StoreUncheckedUpdateWithoutApiClientsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7540,6 +7672,8 @@ export type StoreCreateWithoutUsersInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -7649,6 +7783,8 @@ export type StoreUncheckedCreateWithoutUsersInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -7774,6 +7910,8 @@ export type StoreUpdateWithoutUsersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7883,6 +8021,8 @@ export type StoreUncheckedUpdateWithoutUsersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -7992,6 +8132,8 @@ export type StoreCreateWithoutDomainsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -8101,6 +8243,8 @@ export type StoreUncheckedCreateWithoutDomainsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -8226,6 +8370,8 @@ export type StoreUpdateWithoutDomainsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -8335,6 +8481,8 @@ export type StoreUncheckedUpdateWithoutDomainsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -8444,6 +8592,8 @@ export type StoreCreateWithoutAuditLogsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -8553,6 +8703,8 @@ export type StoreUncheckedCreateWithoutAuditLogsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -8678,6 +8830,8 @@ export type StoreUpdateWithoutAuditLogsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -8787,6 +8941,8 @@ export type StoreUncheckedUpdateWithoutAuditLogsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -8896,6 +9052,8 @@ export type StoreCreateWithoutDomainEventsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -9005,6 +9163,8 @@ export type StoreUncheckedCreateWithoutDomainEventsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -9130,6 +9290,8 @@ export type StoreUpdateWithoutDomainEventsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -9239,6 +9401,8 @@ export type StoreUncheckedUpdateWithoutDomainEventsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -9348,6 +9512,8 @@ export type StoreCreateWithoutFeatureFlagsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -9457,6 +9623,8 @@ export type StoreUncheckedCreateWithoutFeatureFlagsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -9582,6 +9750,8 @@ export type StoreUpdateWithoutFeatureFlagsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -9691,6 +9861,8 @@ export type StoreUncheckedUpdateWithoutFeatureFlagsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -9800,6 +9972,8 @@ export type StoreCreateWithoutJobsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -9909,6 +10083,8 @@ export type StoreUncheckedCreateWithoutJobsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -10034,6 +10210,8 @@ export type StoreUpdateWithoutJobsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -10143,6 +10321,8 @@ export type StoreUncheckedUpdateWithoutJobsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -10252,6 +10432,8 @@ export type StoreCreateWithoutMonitoringChecksInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -10361,6 +10543,8 @@ export type StoreUncheckedCreateWithoutMonitoringChecksInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -10486,6 +10670,8 @@ export type StoreUpdateWithoutMonitoringChecksInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -10595,6 +10781,8 @@ export type StoreUncheckedUpdateWithoutMonitoringChecksInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -10704,6 +10892,8 @@ export type StoreCreateWithoutObservabilitySignalsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -10813,6 +11003,8 @@ export type StoreUncheckedCreateWithoutObservabilitySignalsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -10938,6 +11130,8 @@ export type StoreUpdateWithoutObservabilitySignalsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -11047,6 +11241,8 @@ export type StoreUncheckedUpdateWithoutObservabilitySignalsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -11156,6 +11352,8 @@ export type StoreCreateWithoutSeoMetadataInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -11265,6 +11463,8 @@ export type StoreUncheckedCreateWithoutSeoMetadataInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -11390,6 +11590,8 @@ export type StoreUpdateWithoutSeoMetadataInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -11499,6 +11701,8 @@ export type StoreUncheckedUpdateWithoutSeoMetadataInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -11608,6 +11812,8 @@ export type StoreCreateWithoutAiProvidersInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -11717,6 +11923,8 @@ export type StoreUncheckedCreateWithoutAiProvidersInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -11842,6 +12050,8 @@ export type StoreUpdateWithoutAiProvidersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -11951,6 +12161,8 @@ export type StoreUncheckedUpdateWithoutAiProvidersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -12060,6 +12272,8 @@ export type StoreCreateWithoutAiTasksInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -12169,6 +12383,8 @@ export type StoreUncheckedCreateWithoutAiTasksInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -12294,6 +12510,8 @@ export type StoreUpdateWithoutAiTasksInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -12403,6 +12621,8 @@ export type StoreUncheckedUpdateWithoutAiTasksInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -12512,6 +12732,8 @@ export type StoreCreateWithoutBundlesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -12621,6 +12843,8 @@ export type StoreUncheckedCreateWithoutBundlesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -12746,6 +12970,8 @@ export type StoreUpdateWithoutBundlesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -12855,6 +13081,8 @@ export type StoreUncheckedUpdateWithoutBundlesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -12964,6 +13192,8 @@ export type StoreCreateWithoutDiscountsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -13073,6 +13303,8 @@ export type StoreUncheckedCreateWithoutDiscountsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -13198,6 +13430,8 @@ export type StoreUpdateWithoutDiscountsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -13307,6 +13541,8 @@ export type StoreUncheckedUpdateWithoutDiscountsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -13416,6 +13652,8 @@ export type StoreCreateWithoutDocumentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -13525,6 +13763,8 @@ export type StoreUncheckedCreateWithoutDocumentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -13650,6 +13890,8 @@ export type StoreUpdateWithoutDocumentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -13759,6 +14001,8 @@ export type StoreUncheckedUpdateWithoutDocumentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -13868,6 +14112,8 @@ export type StoreCreateWithoutFulfillmentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -13977,6 +14223,8 @@ export type StoreUncheckedCreateWithoutFulfillmentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -14102,6 +14350,8 @@ export type StoreUpdateWithoutFulfillmentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -14211,6 +14461,8 @@ export type StoreUncheckedUpdateWithoutFulfillmentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -14320,6 +14572,8 @@ export type StoreCreateWithoutGiftCardsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -14429,6 +14683,8 @@ export type StoreUncheckedCreateWithoutGiftCardsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -14554,6 +14810,8 @@ export type StoreUpdateWithoutGiftCardsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -14663,6 +14921,8 @@ export type StoreUncheckedUpdateWithoutGiftCardsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -14772,6 +15032,8 @@ export type StoreCreateWithoutGiftRequestsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -14881,6 +15143,8 @@ export type StoreUncheckedCreateWithoutGiftRequestsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -15006,6 +15270,8 @@ export type StoreUpdateWithoutGiftRequestsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -15115,6 +15381,8 @@ export type StoreUncheckedUpdateWithoutGiftRequestsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -15224,6 +15492,8 @@ export type StoreCreateWithoutInventoryItemsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -15333,6 +15603,8 @@ export type StoreUncheckedCreateWithoutInventoryItemsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -15458,6 +15730,8 @@ export type StoreUpdateWithoutInventoryItemsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -15567,6 +15841,8 @@ export type StoreUncheckedUpdateWithoutInventoryItemsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -15676,6 +15952,8 @@ export type StoreCreateWithoutLoyaltyAccountsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -15785,6 +16063,8 @@ export type StoreUncheckedCreateWithoutLoyaltyAccountsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -15910,6 +16190,8 @@ export type StoreUpdateWithoutLoyaltyAccountsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -16019,6 +16301,8 @@ export type StoreUncheckedUpdateWithoutLoyaltyAccountsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -16128,6 +16412,8 @@ export type StoreCreateWithoutPaymentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -16237,6 +16523,8 @@ export type StoreUncheckedCreateWithoutPaymentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -16362,6 +16650,8 @@ export type StoreUpdateWithoutPaymentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -16471,6 +16761,8 @@ export type StoreUncheckedUpdateWithoutPaymentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -16580,6 +16872,8 @@ export type StoreCreateWithoutReturnRequestsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -16689,6 +16983,8 @@ export type StoreUncheckedCreateWithoutReturnRequestsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -16814,6 +17110,8 @@ export type StoreUpdateWithoutReturnRequestsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -16923,6 +17221,8 @@ export type StoreUncheckedUpdateWithoutReturnRequestsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -17032,6 +17332,8 @@ export type StoreCreateWithoutSalesPoliciesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -17141,6 +17443,8 @@ export type StoreUncheckedCreateWithoutSalesPoliciesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -17266,6 +17570,8 @@ export type StoreUpdateWithoutSalesPoliciesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -17375,6 +17681,8 @@ export type StoreUncheckedUpdateWithoutSalesPoliciesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -17484,6 +17792,8 @@ export type StoreCreateWithoutSellabilityDecisionsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -17593,6 +17903,8 @@ export type StoreUncheckedCreateWithoutSellabilityDecisionsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -17718,6 +18030,8 @@ export type StoreUpdateWithoutSellabilityDecisionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -17827,6 +18141,8 @@ export type StoreUncheckedUpdateWithoutSellabilityDecisionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -17936,6 +18252,8 @@ export type StoreCreateWithoutShippingZonesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -18045,6 +18363,8 @@ export type StoreUncheckedCreateWithoutShippingZonesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -18170,6 +18490,8 @@ export type StoreUpdateWithoutShippingZonesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -18279,6 +18601,8 @@ export type StoreUncheckedUpdateWithoutShippingZonesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -18388,6 +18712,8 @@ export type StoreCreateWithoutShippingMethodsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -18497,6 +18823,8 @@ export type StoreUncheckedCreateWithoutShippingMethodsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -18622,6 +18950,8 @@ export type StoreUpdateWithoutShippingMethodsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -18731,6 +19061,8 @@ export type StoreUncheckedUpdateWithoutShippingMethodsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -18840,6 +19172,8 @@ export type StoreCreateWithoutShipmentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -18949,6 +19283,8 @@ export type StoreUncheckedCreateWithoutShipmentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -19074,6 +19410,8 @@ export type StoreUpdateWithoutShipmentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -19183,6 +19521,8 @@ export type StoreUncheckedUpdateWithoutShipmentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -19292,6 +19632,8 @@ export type StoreCreateWithoutSubscriptionsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -19401,6 +19743,8 @@ export type StoreUncheckedCreateWithoutSubscriptionsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -19526,6 +19870,8 @@ export type StoreUpdateWithoutSubscriptionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -19635,6 +19981,8 @@ export type StoreUncheckedUpdateWithoutSubscriptionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -19744,6 +20092,8 @@ export type StoreCreateWithoutTaxRulesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -19853,6 +20203,8 @@ export type StoreUncheckedCreateWithoutTaxRulesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -19978,6 +20330,8 @@ export type StoreUpdateWithoutTaxRulesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -20087,6 +20441,8 @@ export type StoreUncheckedUpdateWithoutTaxRulesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -20196,6 +20552,8 @@ export type StoreCreateWithoutAnalyticsMetricsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -20305,6 +20663,8 @@ export type StoreUncheckedCreateWithoutAnalyticsMetricsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -20430,6 +20790,8 @@ export type StoreUpdateWithoutAnalyticsMetricsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -20539,6 +20901,8 @@ export type StoreUncheckedUpdateWithoutAnalyticsMetricsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -20648,6 +21012,8 @@ export type StoreCreateWithoutAttributionModelsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -20757,6 +21123,8 @@ export type StoreUncheckedCreateWithoutAttributionModelsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -20882,6 +21250,8 @@ export type StoreUpdateWithoutAttributionModelsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -20991,6 +21361,8 @@ export type StoreUncheckedUpdateWithoutAttributionModelsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -21100,6 +21472,8 @@ export type StoreCreateWithoutBehaviorSegmentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -21209,6 +21583,8 @@ export type StoreUncheckedCreateWithoutBehaviorSegmentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -21334,6 +21710,8 @@ export type StoreUpdateWithoutBehaviorSegmentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -21443,6 +21821,8 @@ export type StoreUncheckedUpdateWithoutBehaviorSegmentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -21552,6 +21932,8 @@ export type StoreCreateWithoutBehaviorProfilesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -21661,6 +22043,8 @@ export type StoreUncheckedCreateWithoutBehaviorProfilesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -21786,6 +22170,8 @@ export type StoreUpdateWithoutBehaviorProfilesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -21895,6 +22281,8 @@ export type StoreUncheckedUpdateWithoutBehaviorProfilesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -22004,6 +22392,8 @@ export type StoreCreateWithoutBlogCategoriesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -22113,6 +22503,8 @@ export type StoreUncheckedCreateWithoutBlogCategoriesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -22238,6 +22630,8 @@ export type StoreUpdateWithoutBlogCategoriesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -22347,6 +22741,8 @@ export type StoreUncheckedUpdateWithoutBlogCategoriesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -22456,6 +22852,8 @@ export type StoreCreateWithoutBlogPostsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -22565,6 +22963,8 @@ export type StoreUncheckedCreateWithoutBlogPostsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -22690,6 +23090,8 @@ export type StoreUpdateWithoutBlogPostsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -22799,6 +23201,8 @@ export type StoreUncheckedUpdateWithoutBlogPostsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -22908,6 +23312,8 @@ export type StoreCreateWithoutConversionFlowsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -23017,6 +23423,8 @@ export type StoreUncheckedCreateWithoutConversionFlowsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -23142,6 +23550,8 @@ export type StoreUpdateWithoutConversionFlowsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -23251,6 +23661,8 @@ export type StoreUncheckedUpdateWithoutConversionFlowsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -23360,6 +23772,8 @@ export type StoreCreateWithoutCrmContactsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -23469,6 +23883,8 @@ export type StoreUncheckedCreateWithoutCrmContactsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -23594,6 +24010,8 @@ export type StoreUpdateWithoutCrmContactsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -23703,6 +24121,8 @@ export type StoreUncheckedUpdateWithoutCrmContactsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -23812,6 +24232,8 @@ export type StoreCreateWithoutCrmTagsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -23921,6 +24343,8 @@ export type StoreUncheckedCreateWithoutCrmTagsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -24046,6 +24470,8 @@ export type StoreUpdateWithoutCrmTagsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -24155,6 +24581,8 @@ export type StoreUncheckedUpdateWithoutCrmTagsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -24264,6 +24692,8 @@ export type StoreCreateWithoutNewsletterSubscribersInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -24373,6 +24803,8 @@ export type StoreUncheckedCreateWithoutNewsletterSubscribersInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -24498,6 +24930,8 @@ export type StoreUpdateWithoutNewsletterSubscribersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -24607,6 +25041,8 @@ export type StoreUncheckedUpdateWithoutNewsletterSubscribersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -24716,6 +25152,8 @@ export type StoreCreateWithoutNewsletterCampaignsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -24825,6 +25263,8 @@ export type StoreUncheckedCreateWithoutNewsletterCampaignsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -24950,6 +25390,8 @@ export type StoreUpdateWithoutNewsletterCampaignsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -25059,6 +25501,8 @@ export type StoreUncheckedUpdateWithoutNewsletterCampaignsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -25168,6 +25612,8 @@ export type StoreCreateWithoutPublicEventsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -25277,6 +25723,8 @@ export type StoreUncheckedCreateWithoutPublicEventsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -25402,6 +25850,8 @@ export type StoreUpdateWithoutPublicEventsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -25511,6 +25961,8 @@ export type StoreUncheckedUpdateWithoutPublicEventsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -25620,6 +26072,8 @@ export type StoreCreateWithoutRecommendationRulesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -25729,6 +26183,8 @@ export type StoreUncheckedCreateWithoutRecommendationRulesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -25854,6 +26310,8 @@ export type StoreUpdateWithoutRecommendationRulesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -25963,6 +26421,8 @@ export type StoreUncheckedUpdateWithoutRecommendationRulesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -26072,6 +26532,8 @@ export type StoreCreateWithoutSocialPublicationsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -26181,6 +26643,8 @@ export type StoreUncheckedCreateWithoutSocialPublicationsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -26306,6 +26770,8 @@ export type StoreUpdateWithoutSocialPublicationsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -26415,6 +26881,8 @@ export type StoreUncheckedUpdateWithoutSocialPublicationsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -26524,6 +26992,8 @@ export type StoreCreateWithoutSupportTicketsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -26633,6 +27103,8 @@ export type StoreUncheckedCreateWithoutSupportTicketsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -26758,6 +27230,8 @@ export type StoreUpdateWithoutSupportTicketsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -26867,6 +27341,8 @@ export type StoreUncheckedUpdateWithoutSupportTicketsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -26976,6 +27452,8 @@ export type StoreCreateWithoutHomepagesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -27085,6 +27563,8 @@ export type StoreUncheckedCreateWithoutHomepagesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -27210,6 +27690,8 @@ export type StoreUpdateWithoutHomepagesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -27319,6 +27801,8 @@ export type StoreUncheckedUpdateWithoutHomepagesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -27428,6 +27912,8 @@ export type StoreCreateWithoutApprovalRequestsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -27537,6 +28023,8 @@ export type StoreUncheckedCreateWithoutApprovalRequestsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -27662,6 +28150,8 @@ export type StoreUpdateWithoutApprovalRequestsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -27771,6 +28261,8 @@ export type StoreUncheckedUpdateWithoutApprovalRequestsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -27880,6 +28372,8 @@ export type StoreCreateWithoutConsentPurposesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -27989,6 +28483,8 @@ export type StoreUncheckedCreateWithoutConsentPurposesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -28114,6 +28610,8 @@ export type StoreUpdateWithoutConsentPurposesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -28223,6 +28721,8 @@ export type StoreUncheckedUpdateWithoutConsentPurposesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -28332,6 +28832,8 @@ export type StoreCreateWithoutConsentRecordsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -28441,6 +28943,8 @@ export type StoreUncheckedCreateWithoutConsentRecordsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -28566,6 +29070,8 @@ export type StoreUpdateWithoutConsentRecordsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -28675,6 +29181,8 @@ export type StoreUncheckedUpdateWithoutConsentRecordsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -28784,6 +29292,8 @@ export type StoreCreateWithoutEmailMessagesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -28893,6 +29403,8 @@ export type StoreUncheckedCreateWithoutEmailMessagesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -29018,6 +29530,8 @@ export type StoreUpdateWithoutEmailMessagesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -29127,6 +29641,8 @@ export type StoreUncheckedUpdateWithoutEmailMessagesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -29236,6 +29752,8 @@ export type StoreCreateWithoutExportDefinitionsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -29345,6 +29863,8 @@ export type StoreUncheckedCreateWithoutExportDefinitionsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -29470,6 +29990,8 @@ export type StoreUpdateWithoutExportDefinitionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -29579,6 +30101,8 @@ export type StoreUncheckedUpdateWithoutExportDefinitionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -29688,6 +30212,8 @@ export type StoreCreateWithoutExportRequestsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -29797,6 +30323,8 @@ export type StoreUncheckedCreateWithoutExportRequestsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -29922,6 +30450,8 @@ export type StoreUpdateWithoutExportRequestsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -30031,6 +30561,8 @@ export type StoreUncheckedUpdateWithoutExportRequestsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -30140,6 +30672,8 @@ export type StoreCreateWithoutFraudRiskAssessmentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -30249,6 +30783,8 @@ export type StoreUncheckedCreateWithoutFraudRiskAssessmentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -30374,6 +30910,8 @@ export type StoreUpdateWithoutFraudRiskAssessmentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -30483,6 +31021,8 @@ export type StoreUncheckedUpdateWithoutFraudRiskAssessmentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -30592,6 +31132,8 @@ export type StoreCreateWithoutImportDefinitionsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -30701,6 +31243,8 @@ export type StoreUncheckedCreateWithoutImportDefinitionsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -30826,6 +31370,8 @@ export type StoreUpdateWithoutImportDefinitionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -30935,6 +31481,8 @@ export type StoreUncheckedUpdateWithoutImportDefinitionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -31044,6 +31592,8 @@ export type StoreCreateWithoutImportRequestsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -31153,6 +31703,8 @@ export type StoreUncheckedCreateWithoutImportRequestsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -31278,6 +31830,8 @@ export type StoreUpdateWithoutImportRequestsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -31387,6 +31941,8 @@ export type StoreUncheckedUpdateWithoutImportRequestsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -31496,6 +32052,8 @@ export type StoreCreateWithoutIntegrationsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -31605,6 +32163,8 @@ export type StoreUncheckedCreateWithoutIntegrationsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -31730,6 +32290,8 @@ export type StoreUpdateWithoutIntegrationsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -31839,6 +32401,8 @@ export type StoreUncheckedUpdateWithoutIntegrationsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -31948,6 +32512,8 @@ export type StoreCreateWithoutLocalizationLocalesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -32057,6 +32623,8 @@ export type StoreUncheckedCreateWithoutLocalizationLocalesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -32182,6 +32750,8 @@ export type StoreUpdateWithoutLocalizationLocalesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -32291,6 +32861,8 @@ export type StoreUncheckedUpdateWithoutLocalizationLocalesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -32400,6 +32972,8 @@ export type StoreCreateWithoutLocalizedValuesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -32509,6 +33083,8 @@ export type StoreUncheckedCreateWithoutLocalizedValuesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -32634,6 +33210,8 @@ export type StoreUpdateWithoutLocalizedValuesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -32743,6 +33321,8 @@ export type StoreUncheckedUpdateWithoutLocalizedValuesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -32852,6 +33432,8 @@ export type StoreCreateWithoutNotificationsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -32961,6 +33543,8 @@ export type StoreUncheckedCreateWithoutNotificationsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -33086,6 +33670,8 @@ export type StoreUpdateWithoutNotificationsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -33195,6 +33781,8 @@ export type StoreUncheckedUpdateWithoutNotificationsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -33304,6 +33892,8 @@ export type StoreCreateWithoutNotificationPreferencesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -33413,6 +34003,8 @@ export type StoreUncheckedCreateWithoutNotificationPreferencesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -33538,6 +34130,8 @@ export type StoreUpdateWithoutNotificationPreferencesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -33647,6 +34241,8 @@ export type StoreUncheckedUpdateWithoutNotificationPreferencesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -33756,6 +34352,8 @@ export type StoreCreateWithoutSchedulePlansInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -33865,6 +34463,8 @@ export type StoreUncheckedCreateWithoutSchedulePlansInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -33990,6 +34590,8 @@ export type StoreUpdateWithoutSchedulePlansInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -34099,6 +34701,8 @@ export type StoreUncheckedUpdateWithoutSchedulePlansInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -34208,6 +34812,8 @@ export type StoreCreateWithoutWebhookEndpointsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -34317,6 +34923,8 @@ export type StoreUncheckedCreateWithoutWebhookEndpointsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -34442,6 +35050,8 @@ export type StoreUpdateWithoutWebhookEndpointsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -34551,6 +35161,8 @@ export type StoreUncheckedUpdateWithoutWebhookEndpointsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -34660,6 +35272,8 @@ export type StoreCreateWithoutWorkflowDefinitionsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -34769,6 +35383,8 @@ export type StoreUncheckedCreateWithoutWorkflowDefinitionsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -34894,6 +35510,8 @@ export type StoreUpdateWithoutWorkflowDefinitionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -35003,6 +35621,8 @@ export type StoreUncheckedUpdateWithoutWorkflowDefinitionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -35112,6 +35732,8 @@ export type StoreCreateWithoutWorkflowInstancesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -35221,6 +35843,8 @@ export type StoreUncheckedCreateWithoutWorkflowInstancesInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -35346,6 +35970,8 @@ export type StoreUpdateWithoutWorkflowInstancesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -35455,6 +36081,8 @@ export type StoreUncheckedUpdateWithoutWorkflowInstancesInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -35564,6 +36192,8 @@ export type StoreCreateWithoutChannelsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -35673,6 +36303,8 @@ export type StoreUncheckedCreateWithoutChannelsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -35798,6 +36430,8 @@ export type StoreUpdateWithoutChannelsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -35907,6 +36541,8 @@ export type StoreUncheckedUpdateWithoutChannelsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -36016,6 +36652,8 @@ export type StoreCreateWithoutMediaAssetsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -36125,6 +36763,8 @@ export type StoreUncheckedCreateWithoutMediaAssetsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -36250,6 +36890,8 @@ export type StoreUpdateWithoutMediaAssetsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -36359,6 +37001,8 @@ export type StoreUncheckedUpdateWithoutMediaAssetsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -36468,6 +37112,8 @@ export type StoreCreateWithoutSearchDocumentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -36577,6 +37223,8 @@ export type StoreUncheckedCreateWithoutSearchDocumentsInput = {
   slug: string
   status?: $Enums.StoreStatus
   legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
   supportEmail?: string | null
   supportPhone?: string | null
   shippingReturnsPolicy?: string | null
@@ -36702,6 +37350,8 @@ export type StoreUpdateWithoutSearchDocumentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -36811,6 +37461,8 @@ export type StoreUncheckedUpdateWithoutSearchDocumentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
   legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -37626,6 +38278,8 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   slug?: boolean
   status?: boolean
   legalName?: boolean
+  siret?: boolean
+  vatNumber?: boolean
   supportEmail?: boolean
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
@@ -37737,6 +38391,8 @@ export type StoreSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   slug?: boolean
   status?: boolean
   legalName?: boolean
+  siret?: boolean
+  vatNumber?: boolean
   supportEmail?: boolean
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
@@ -37771,6 +38427,8 @@ export type StoreSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   slug?: boolean
   status?: boolean
   legalName?: boolean
+  siret?: boolean
+  vatNumber?: boolean
   supportEmail?: boolean
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
@@ -37805,6 +38463,8 @@ export type StoreSelectScalar = {
   slug?: boolean
   status?: boolean
   legalName?: boolean
+  siret?: boolean
+  vatNumber?: boolean
   supportEmail?: boolean
   supportPhone?: boolean
   shippingReturnsPolicy?: boolean
@@ -37832,7 +38492,7 @@ export type StoreSelectScalar = {
   archivedAt?: boolean
 }
 
-export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "supportEmail" | "supportPhone" | "shippingReturnsPolicy" | "addressLine1" | "addressCity" | "addressPostalCode" | "addressCountry" | "instagramUrl" | "facebookUrl" | "orderNumberPrefix" | "emailConfirmationEnabled" | "emailShippingEnabled" | "replyToEmail" | "bankTransferEnabled" | "cashOnDeliveryEnabled" | "bankTransferInstructions" | "cashOnDeliveryInstructions" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
+export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "siret" | "vatNumber" | "supportEmail" | "supportPhone" | "shippingReturnsPolicy" | "addressLine1" | "addressCity" | "addressPostalCode" | "addressCountry" | "instagramUrl" | "facebookUrl" | "orderNumberPrefix" | "emailConfirmationEnabled" | "emailShippingEnabled" | "replyToEmail" | "bankTransferEnabled" | "cashOnDeliveryEnabled" | "bankTransferInstructions" | "cashOnDeliveryInstructions" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
 export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   domains?: boolean | Prisma.Store$domainsArgs<ExtArgs>
   users?: boolean | Prisma.Store$usersArgs<ExtArgs>
@@ -38002,6 +38662,8 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     slug: string
     status: $Enums.StoreStatus
     legalName: string | null
+    siret: string | null
+    vatNumber: string | null
     supportEmail: string | null
     supportPhone: string | null
     shippingReturnsPolicy: string | null
@@ -38532,6 +39194,8 @@ export interface StoreFieldRefs {
   readonly slug: Prisma.FieldRef<"Store", 'String'>
   readonly status: Prisma.FieldRef<"Store", 'StoreStatus'>
   readonly legalName: Prisma.FieldRef<"Store", 'String'>
+  readonly siret: Prisma.FieldRef<"Store", 'String'>
+  readonly vatNumber: Prisma.FieldRef<"Store", 'String'>
   readonly supportEmail: Prisma.FieldRef<"Store", 'String'>
   readonly supportPhone: Prisma.FieldRef<"Store", 'String'>
   readonly shippingReturnsPolicy: Prisma.FieldRef<"Store", 'String'>

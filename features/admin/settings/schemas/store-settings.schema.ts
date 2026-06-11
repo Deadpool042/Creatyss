@@ -19,6 +19,8 @@ export const TIMEZONES = [
 export const storeSettingsSchema = z.object({
   name: z.string().min(1, "Le nom est requis").max(100),
   legalName: z.string().max(150).optional().nullable(),
+  siret: z.string().trim().max(20).optional().transform(v => !v || v === "" ? null : v).nullable(),
+  vatNumber: z.string().trim().toUpperCase().max(20).optional().transform(v => !v || v === "" ? null : v).nullable(),
   supportEmail: z.email("Email invalide").max(200).optional().nullable().or(z.literal("")),
   supportPhone: z.string().max(30).optional().nullable(),
   shippingReturnsPolicy: z.string().max(2000).optional().nullable(),

@@ -33,6 +33,8 @@ model Store {
   status StoreStatus @default(DRAFT)
 
   legalName                String?
+  siret                    String?
+  vatNumber                String?
   supportEmail             String?
   supportPhone             String?
   shippingReturnsPolicy    String?

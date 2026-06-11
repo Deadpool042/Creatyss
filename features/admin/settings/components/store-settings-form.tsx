@@ -110,7 +110,49 @@ export function StoreSettingsForm({ store }: Props) {
           </AdminFormField>
         </AdminFormSection>
 
-        {/* ── Section 2 : Support ───────────────────────────────────── */}
+        {/* ── Section 2 : Informations légales ─────────────────────── */}
+        <AdminFormSection
+          eyebrow="Légal"
+          title="Informations légales"
+          description="Utilisées sur les pages légales publiques (CGV, mentions légales)."
+          className="py-6"
+        >
+          <div className="grid gap-4 sm:grid-cols-2">
+            <AdminFormField
+              label="SIRET"
+              htmlFor="siret"
+              description="Numéro d'identification de l'établissement (14 chiffres)."
+              error={fieldError("siret")}
+            >
+              <Input
+                id="siret"
+                name="siret"
+                defaultValue={store.siret ?? ""}
+                maxLength={20}
+                placeholder="123 456 789 00012"
+                className={cn(fieldError("siret") && "border-feedback-error")}
+              />
+            </AdminFormField>
+
+            <AdminFormField
+              label="TVA intracommunautaire"
+              htmlFor="vatNumber"
+              description="Numéro de TVA européen (ex. FR12345678901)."
+              error={fieldError("vatNumber")}
+            >
+              <Input
+                id="vatNumber"
+                name="vatNumber"
+                defaultValue={store.vatNumber ?? ""}
+                maxLength={20}
+                placeholder="FR12345678901"
+                className={cn(fieldError("vatNumber") && "border-feedback-error")}
+              />
+            </AdminFormField>
+          </div>
+        </AdminFormSection>
+
+        {/* ── Section 3 : Support ───────────────────────────────────── */}
         <AdminFormSection
           eyebrow="Contact"
           title="Support client"

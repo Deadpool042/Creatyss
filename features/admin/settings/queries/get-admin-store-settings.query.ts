@@ -7,6 +7,8 @@ export type AdminStoreSettings = {
   slug: string;
   name: string;
   legalName: string | null;
+  siret: string | null;
+  vatNumber: string | null;
   supportEmail: string | null;
   supportPhone: string | null;
   shippingReturnsPolicy: string | null;
@@ -33,6 +35,8 @@ export async function getAdminStoreSettings(): Promise<AdminStoreSettings | null
       slug: true,
       name: true,
       legalName: true,
+      siret: true,
+      vatNumber: true,
       supportEmail: true,
       supportPhone: true,
       shippingReturnsPolicy: true,
