@@ -375,6 +375,21 @@ Il ne doit pas devenir un CMS universel ni un doublon des autres domaines édito
 
 ---
 
+## État réel actuel (2026-06-11)
+
+Ce qui existe réellement dans le code, par opposition à la cible décrite ci-dessus :
+
+- modèle Prisma complet (`Page`, `PageSection`, `PageBlock`) — seuls les champs plats de `Page` sont exploités à ce stade ;
+- **pages système légales** (`isSystemPage=true`, codes `legal-notice`, `terms-of-sale`, `privacy-policy`, `returns-policy`) : seedées depuis l'ancien site, éditables (corps uniquement) et publiables/dépubliables depuis `/admin/content/pages`, servies par 4 routes publiques statiques FR ;
+- publication gouvernée : un corps vide ou contenant un marqueur `[TODO …]` n'est pas publiable ;
+- liste admin en lecture gouvernée de toutes les pages, tous statuts ;
+- **pas de création de pages éditoriales** : une création libre title/slug/textarea a été implémentée puis retirée (2026-06-11) car contraire à ce document ; toute réouverture devra porter des pages structurées et gouvernées ;
+- pas de route publique dynamique `/[slug]` ; pas de sections/blocs administrables ; pas de variantes.
+
+Référence d'implémentation : `../../lots/2026-06-11-legal-v1-reference.md`.
+
+---
+
 ## Questions ouvertes
 
 À confirmer explicitement dans le projet :
