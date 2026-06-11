@@ -9,16 +9,7 @@ import {
   type AdminPageBodyFormState,
 } from "../schemas/admin-page-body.schema";
 
-/**
- * Routes publiques des pages système légales, par code.
- * Doit rester aligné avec app/(public) et les codes du Lot 3.
- */
-const PUBLIC_LEGAL_PATHS: Record<string, string> = {
-  "legal-notice": "/mentions-legales",
-  "terms-of-sale": "/conditions-generales-de-vente",
-  "privacy-policy": "/politique-confidentialite",
-  "returns-policy": "/politique-retour",
-};
+import { PUBLIC_LEGAL_PATHS } from "../constants/public-legal-paths";
 
 /**
  * Met à jour uniquement le corps d'une page système.

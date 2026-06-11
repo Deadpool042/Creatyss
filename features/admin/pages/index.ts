@@ -1,10 +1,12 @@
 export {
   PageBodyForm,
+  PageStatusToggle,
   PagesEmptyState,
   PagesList,
   PagesPageHeader,
   PagesPageShell,
 } from "./components";
+export { toggleAdminPageStatusAction } from "./actions/toggle-admin-page-status.action";
 export { updateAdminPageBodyAction } from "./actions/update-admin-page-body.action";
 export { buildPageFormDefaultValues } from "./helpers";
 export { getAdminPageDetail, getAdminPagesList } from "./queries";
