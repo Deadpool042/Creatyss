@@ -38,6 +38,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.7,
     },
+    {
+      url: `${serverEnv.appUrl}/mentions-legales`,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${serverEnv.appUrl}/conditions-generales-de-vente`,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${serverEnv.appUrl}/politique-confidentialite`,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${serverEnv.appUrl}/politique-retour`,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
 
   const productPages: MetadataRoute.Sitemap = products

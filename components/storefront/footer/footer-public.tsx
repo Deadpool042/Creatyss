@@ -21,6 +21,13 @@ const INFO_LINKS: readonly FooterInfoLink[] = [
   { href: "/faq", label: "FAQ", status: "comingSoon" },
 ];
 
+const LEGAL_LINKS = [
+  { href: "/mentions-legales", label: "Mentions légales" },
+  { href: "/conditions-generales-de-vente", label: "CGV" },
+  { href: "/politique-confidentialite", label: "Confidentialité" },
+  { href: "/politique-retour", label: "Retours" },
+] as const;
+
 const ATELIER_ITEMS = [
   "Saint-Étienne",
   "Fait main",
@@ -132,10 +139,21 @@ export function FooterPublic() {
         </div>
       </div>
 
-      <div className="mx-auto mt-8 flex max-w-430 flex-col items-center gap-1 border-t border-surface-border-subtle px-4 pt-5 text-center sm:px-6 min-[560px]:flex-row min-[560px]:justify-between xl:px-12">
+      <div className="mx-auto mt-8 flex max-w-430 flex-col items-center gap-3 border-t border-surface-border-subtle px-4 pt-5 text-center sm:px-6 min-[560px]:flex-row min-[560px]:justify-between xl:px-12">
         <span className="text-[0.78rem] text-text-muted-strong">
           © {new Date().getFullYear()} Creatyss. Tous droits réservés.
         </span>
+        <nav aria-label="Liens légaux">
+          <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+            {LEGAL_LINKS.map(({ href, label }) => (
+              <li key={href}>
+                <Link href={href} className={`${FOOTER_LINK_CLASS} text-[0.78rem]`}>
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
         <span className="text-[0.78rem] text-text-muted-strong">
           Créations artisanales en pièces uniques
         </span>
