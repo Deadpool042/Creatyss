@@ -192,9 +192,9 @@ export function StoreSettingsForm({ store }: Props) {
           </div>
 
           <AdminFormField
-            label="Politique de livraison et retours"
+            label="Livraison & retours (fiches produit)"
             htmlFor="shippingReturnsPolicy"
-            description="Résumé court affiché sur la boutique (délais, conditions, procédure de retour)."
+            description="Texte court affiché sur les fiches produit dans le bloc Livraison & retours. La politique de retour complète se gère dans Contenu > Pages."
             error={fieldError("shippingReturnsPolicy")}
           >
             <Textarea

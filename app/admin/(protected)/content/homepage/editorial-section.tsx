@@ -40,8 +40,8 @@ export function EditorialSection({
 
       <AdminFormField
         htmlFor="homepage-shipping-returns-policy"
-        label="Livraison & retours (global PDP)"
-        hint="Texte global affiché dans l'accordéon Livraison & retours de toutes les PDP. Gardez une formulation générale, sans promesse spécifique à un produit."
+        label="Livraison & retours (fiches produit)"
+        hint="Texte court affiché sur les fiches produit dans le bloc Livraison & retours — formulation générale, sans promesse spécifique à un produit. La politique de retour complète se gère dans Contenu > Pages. Champ également éditable dans Réglages > Général."
       >
         <Textarea
           defaultValue={shippingReturnsPolicy ?? ""}
