@@ -12,6 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/shared";
 import { cn } from "@/lib/utils";
 import { SEO_INDEXING_MODE_LABELS, SEO_INDEXING_MODE_VALUES, type SeoIndexingMode } from "@/entities/seo";
+import { MediaAssetPickerField } from "@/features/admin/media/components/media-asset-picker-field";
+import type { AdminMediaListItem } from "@/features/admin/media/types/admin-media-list-item.types";
 import { updateSeoSettingsAction } from "@/features/admin/settings/actions/update-seo-settings.action";
 import { type SeoSettingsFormState } from "@/features/admin/settings/schemas/seo-settings.schema";
 import type { AdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
@@ -19,9 +21,13 @@ import type { AdminSeoSettings } from "@/features/admin/settings/queries/get-seo
 
 const INITIAL_STATE: SeoSettingsFormState = { status: "idle" };
 
-type Props = { seo: AdminSeoSettings | null };
+type Props = {
+  seo: AdminSeoSettings | null;
+  assets: AdminMediaListItem[];
+  uploadsPublicPath: string;
+};
 
-export function SeoSettingsForm({ seo }: Props) {
+export function SeoSettingsForm({ seo, assets, uploadsPublicPath }: Props) {
   const [state, action, isPending] = useActionState(updateSeoSettingsAction, INITIAL_STATE);
 
   useEffect(() => {
@@ -198,7 +204,43 @@ export function SeoSettingsForm({ seo }: Props) {
           </AdminFormField>
         </AdminFormSection>
 
-        {/* ── Section 4 : Indexation ────────────────────────────────── */}
+        {/* ── Section 4 : Images sociales ───────────────────────────── */}
+        <AdminFormSection
+          eyebrow="Réseaux sociaux"
+          title="Images sociales"
+          description="Images affichées lors du partage de la boutique sur les réseaux sociaux."
+          className="py-6"
+        >
+          <div className="grid gap-6 sm:grid-cols-2">
+            <MediaAssetPickerField
+              name="openGraphImageId"
+              label="Image Open Graph"
+              description="Recommandé : 1200 × 630 px. Utilisée par Facebook, LinkedIn et autres réseaux."
+              defaultValue={
+                seo?.openGraphImageId != null && seo.openGraphImageFilePath != null
+                  ? { id: seo.openGraphImageId, filePath: seo.openGraphImageFilePath }
+                  : null
+              }
+              assets={assets}
+              uploadsPublicPath={uploadsPublicPath}
+            />
+
+            <MediaAssetPickerField
+              name="twitterImageId"
+              label="Image Twitter"
+              description="Si vide, l'image Open Graph sera utilisée."
+              defaultValue={
+                seo?.twitterImageId != null && seo.twitterImageFilePath != null
+                  ? { id: seo.twitterImageId, filePath: seo.twitterImageFilePath }
+                  : null
+              }
+              assets={assets}
+              uploadsPublicPath={uploadsPublicPath}
+            />
+          </div>
+        </AdminFormSection>
+
+        {/* ── Section 5 : Indexation ────────────────────────────────── */}
         <AdminFormSection
           eyebrow="Indexation"
           title="Visibilité dans les moteurs"

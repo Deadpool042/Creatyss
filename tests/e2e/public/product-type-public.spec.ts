@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { resetSimpleProductCatalogState } from "../order-db";
 
 test.beforeEach(() => {
-  resetSimpleProductCatalogState();
+  return resetSimpleProductCatalogState();
 });
 
 test("renders a simple product as a single purchasable offer", async ({ page }) => {

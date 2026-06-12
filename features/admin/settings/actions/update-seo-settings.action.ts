@@ -23,6 +23,8 @@ export async function updateSeoSettingsAction(
     openGraphDescription: formData.get("openGraphDescription") || null,
     twitterTitle: formData.get("twitterTitle") || null,
     twitterDescription: formData.get("twitterDescription") || null,
+    openGraphImageId: formData.get("openGraphImageId") || null,
+    twitterImageId: formData.get("twitterImageId") || null,
     indexingMode: formData.get("indexingMode"),
     sitemapIncluded: formData.get("sitemapIncluded"),
   };
@@ -49,6 +51,23 @@ export async function updateSeoSettingsAction(
       return { status: "error", message: "Boutique introuvable." };
     }
 
+    const imageIds = [
+      ...new Set(
+        [parsed.data.openGraphImageId, parsed.data.twitterImageId].filter(
+          (id): id is string => id != null
+        )
+      ),
+    ];
+
+    if (imageIds.length > 0) {
+      const existingCount = await db.mediaAsset.count({
+        where: { id: { in: imageIds } },
+      });
+      if (existingCount !== imageIds.length) {
+        return { status: "error", message: "Image sélectionnée introuvable." };
+      }
+    }
+
     await db.seoMetadata.upsert({
       where: {
         storeId_subjectType_subjectId: {
@@ -65,6 +84,8 @@ export async function updateSeoSettingsAction(
         openGraphDescription: parsed.data.openGraphDescription ?? null,
         twitterTitle: parsed.data.twitterTitle ?? null,
         twitterDescription: parsed.data.twitterDescription ?? null,
+        openGraphImageId: parsed.data.openGraphImageId ?? null,
+        twitterImageId: parsed.data.twitterImageId ?? null,
         indexingMode: parsed.data.indexingMode as never,
         sitemapIncluded: parsed.data.sitemapIncluded,
       },
@@ -80,12 +101,15 @@ export async function updateSeoSettingsAction(
         openGraphDescription: parsed.data.openGraphDescription ?? null,
         twitterTitle: parsed.data.twitterTitle ?? null,
         twitterDescription: parsed.data.twitterDescription ?? null,
+        openGraphImageId: parsed.data.openGraphImageId ?? null,
+        twitterImageId: parsed.data.twitterImageId ?? null,
         indexingMode: parsed.data.indexingMode as never,
         sitemapIncluded: parsed.data.sitemapIncluded,
       },
     });
 
     revalidatePath("/admin/settings/seo");
+    revalidatePath("/");
 
     return { status: "success", message: "Réglages SEO enregistrés." };
   } catch {

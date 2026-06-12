@@ -1,4 +1,5 @@
 import { db } from "@/core/db";
+import { mapPrismaCategoryStatusToLifecycleStatus } from "@/entities/category";
 import { SEO_INDEXING_MODE_DEFAULT } from "@/entities/seo";
 import type { AdminCategoryDetail } from "../types";
 
@@ -9,34 +10,45 @@ type GetAdminCategoryDetailInput = {
 export async function getAdminCategoryDetail(
   input: GetAdminCategoryDetailInput
 ): Promise<AdminCategoryDetail | null> {
-  const category = await db.category.findFirst({
-    where: {
-      slug: input.slug,
-      archivedAt: null,
-    },
-    select: {
-      id: true,
-      storeId: true,
-      name: true,
-      slug: true,
-      description: true,
-      isFeatured: true,
-      sortOrder: true,
-      updatedAt: true,
-      parentId: true,
-      parent: {
-        select: {
-          name: true,
-        },
-      },
-      primaryImageId: true,
-      primaryImage: {
-        select: {
-          publicUrl: true,
-        },
+  const categorySelect = {
+    id: true,
+    storeId: true,
+    name: true,
+    slug: true,
+    status: true,
+    description: true,
+    isFeatured: true,
+    sortOrder: true,
+    updatedAt: true,
+    parentId: true,
+    parent: {
+      select: {
+        name: true,
       },
     },
-  });
+    primaryImageId: true,
+    primaryImage: {
+      select: {
+        publicUrl: true,
+      },
+    },
+  } as const;
+
+  const category =
+    (await db.category.findFirst({
+      where: {
+        slug: input.slug,
+        archivedAt: null,
+      },
+      select: categorySelect,
+    })) ??
+    (await db.category.findFirst({
+      where: {
+        slug: input.slug,
+        archivedAt: { not: null },
+      },
+      select: categorySelect,
+    }));
 
   if (category === null) {
     return null;
@@ -66,6 +78,7 @@ export async function getAdminCategoryDetail(
     id: category.id,
     name: category.name,
     slug: category.slug,
+    status: mapPrismaCategoryStatusToLifecycleStatus(category.status),
     description: category.description,
     parentId: category.parentId,
     parentName: category.parent?.name ?? null,

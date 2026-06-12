@@ -1,5 +1,7 @@
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { getUploadsPublicPath } from "@/core/uploads";
+import { listAdminMediaAssets, type AdminMediaListItem } from "@/features/admin/media";
 import { SeoSettingsForm } from "@/features/admin/settings/components/seo-settings-form";
 import { getAdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
 
@@ -9,12 +11,15 @@ export default async function AdminSettingsSeoPage() {
   await requireAdminCapability("admin.settings.seo.read");
 
   let seo = null;
+  let assets: AdminMediaListItem[] = [];
 
   try {
-    seo = await getAdminSeoSettings();
+    [seo, assets] = await Promise.all([getAdminSeoSettings(), listAdminMediaAssets()]);
   } catch {
     // DB non disponible ou table absente — état vide
   }
+
+  const uploadsPublicPath = getUploadsPublicPath();
 
   return (
     <AdminPageShell
@@ -42,7 +47,7 @@ export default async function AdminSettingsSeoPage() {
           </p>
         </div>
 
-        <SeoSettingsForm seo={seo} />
+        <SeoSettingsForm seo={seo} assets={assets} uploadsPublicPath={uploadsPublicPath} />
       </div>
     </AdminPageShell>
   );

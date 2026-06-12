@@ -12,6 +12,8 @@ export const seoSettingsSchema = z.object({
   openGraphDescription: z.string().max(320).optional().nullable(),
   twitterTitle: z.string().max(120).optional().nullable(),
   twitterDescription: z.string().max(320).optional().nullable(),
+  openGraphImageId: z.string().cuid().optional().nullable(),
+  twitterImageId: z.string().cuid().optional().nullable(),
   indexingMode: z.enum([...SEO_INDEXING_MODE_VALUES]),
   sitemapIncluded: z
     .enum(["true", "false"])

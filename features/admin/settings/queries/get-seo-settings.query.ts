@@ -12,6 +12,10 @@ export type AdminSeoSettings = {
   openGraphDescription: string | null;
   twitterTitle: string | null;
   twitterDescription: string | null;
+  openGraphImageId: string | null;
+  openGraphImageFilePath: string | null;
+  twitterImageId: string | null;
+  twitterImageFilePath: string | null;
   indexingMode: SeoIndexingModeValue;
   sitemapIncluded: boolean;
 };
@@ -37,6 +41,10 @@ export async function getAdminSeoSettings(): Promise<AdminSeoSettings | null> {
       openGraphDescription: true,
       twitterTitle: true,
       twitterDescription: true,
+      openGraphImageId: true,
+      twitterImageId: true,
+      openGraphImage: { select: { storageKey: true } },
+      twitterImage: { select: { storageKey: true } },
       indexingMode: true,
       sitemapIncluded: true,
     },
@@ -52,6 +60,10 @@ export async function getAdminSeoSettings(): Promise<AdminSeoSettings | null> {
     openGraphDescription: row.openGraphDescription,
     twitterTitle: row.twitterTitle,
     twitterDescription: row.twitterDescription,
+    openGraphImageId: row.openGraphImageId,
+    openGraphImageFilePath: row.openGraphImage?.storageKey ?? null,
+    twitterImageId: row.twitterImageId,
+    twitterImageFilePath: row.twitterImage?.storageKey ?? null,
     indexingMode: row.indexingMode as SeoIndexingModeValue,
     sitemapIncluded: row.sitemapIncluded,
   };

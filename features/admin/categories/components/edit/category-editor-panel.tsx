@@ -20,15 +20,18 @@ import {
   CATEGORY_MEDIA_EMPTY_STATE_COPY,
   CATEGORY_SEO_SECTION_COPY,
 } from "../../config";
+import type { CategoryPickerItem } from "../../list";
 import type { AdminCategoryDetail } from "../../types";
 import { CategoryArchiveButton } from "./category-archive-button";
 import { CategoryImageForm } from "./category-image-form";
+import { CategoryParentField } from "../shared/category-parent-field";
 import { CategorySeoForm } from "./category-seo-form";
 
 type CategoryEditorPanelProps = {
   category: AdminCategoryDetail;
   routeSlug: string;
   mediaAssets: AdminMediaListItem[];
+  parentOptions: CategoryPickerItem[];
   updateAction: (formData: FormData) => Promise<void>;
 };
 
@@ -36,6 +39,7 @@ export function CategoryEditorPanel({
   category,
   routeSlug,
   mediaAssets,
+  parentOptions,
   updateAction,
 }: CategoryEditorPanelProps) {
   return (
@@ -52,7 +56,6 @@ export function CategoryEditorPanel({
             <input name="categoryId" type="hidden" value={category.id} />
             <input name="routeSlug" type="hidden" value={routeSlug} />
             <input name="sortOrder" type="hidden" value={String(category.sortOrder)} />
-            <input name="parentId" type="hidden" value={category.parentId ?? ""} />
             <input name="primaryImageId" type="hidden" value={category.primaryImageId ?? ""} />
 
             <AdminFormField htmlFor="cat-name" label={CATEGORY_FIELD_COPY.nameLabel}>
@@ -75,6 +78,12 @@ export function CategoryEditorPanel({
                 rows={5}
               />
             </AdminFormField>
+
+            <CategoryParentField
+              items={parentOptions}
+              selectedParentId={category.parentId}
+              currentCategoryId={category.id}
+            />
 
             <AdminCheckboxField
               label={CATEGORY_FIELD_COPY.featuredLabel}

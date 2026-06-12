@@ -32,6 +32,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const robots = getSeoRobotsFlags(seo?.indexingMode);
 
+  const uploadsPublicPath = getUploadsPublicPath().replace(/\/$/, "");
+  const openGraphImageUrl =
+    seo?.openGraphImageFilePath != null
+      ? `${uploadsPublicPath}/${seo.openGraphImageFilePath}`
+      : null;
+  const twitterImageUrl =
+    seo?.twitterImageFilePath != null
+      ? `${uploadsPublicPath}/${seo.twitterImageFilePath}`
+      : openGraphImageUrl;
+
   return {
     title: seo?.metaTitle ?? FALLBACK_TITLE,
     description: seo?.metaDescription ?? FALLBACK_DESCRIPTION,
@@ -40,6 +50,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: seo?.openGraphTitle ?? seo?.metaTitle ?? FALLBACK_TITLE,
       description: seo?.openGraphDescription ?? seo?.metaDescription ?? FALLBACK_DESCRIPTION,
+      ...(openGraphImageUrl !== null && { images: [openGraphImageUrl] }),
     },
     twitter: {
       title: seo?.twitterTitle ?? seo?.openGraphTitle ?? seo?.metaTitle ?? FALLBACK_TITLE,
@@ -48,6 +59,7 @@ export async function generateMetadata(): Promise<Metadata> {
         seo?.openGraphDescription ??
         seo?.metaDescription ??
         FALLBACK_DESCRIPTION,
+      ...(twitterImageUrl !== null && { images: [twitterImageUrl] }),
     },
   };
 }

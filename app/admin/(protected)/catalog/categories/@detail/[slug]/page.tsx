@@ -6,8 +6,10 @@ import { listAdminMediaAssets } from "@/features/admin/media";
 import {
   ADMIN_CATEGORIES_DETAIL_CONTENT_CLASS,
   ADMIN_CATEGORIES_DETAIL_CONSTRAIN_CONTENT,
+  CategoryArchivedPanel,
   CategoryEditorPanel,
   getAdminCategoryDetail,
+  listCategoriesForPicker,
   updateCategoryAction,
 } from "@/features/admin/categories";
 import {
@@ -44,14 +46,39 @@ export default async function EditAdminCategoryPage({
     readSingleSearchParam(resolvedSearchParams.error)
   );
 
-  const [category, mediaAssets] = await Promise.all([
-    getAdminCategoryDetail({ slug }),
-    listAdminMediaAssets(),
-  ]);
+  const category = await getAdminCategoryDetail({ slug });
 
   if (category === null) {
     notFound();
   }
+
+  if (category.status === "archived") {
+    return (
+      <AdminSplitDetailPaneShell
+        constrainContent={ADMIN_CATEGORIES_DETAIL_CONSTRAIN_CONTENT}
+        contentClassName={ADMIN_CATEGORIES_DETAIL_CONTENT_CLASS}
+      >
+        <AdminPageHeader
+          compact
+          eyebrow={CATEGORY_EDIT_PAGE_COPY.eyebrow}
+          title={CATEGORY_EDIT_PAGE_COPY.title}
+          description={CATEGORY_EDIT_PAGE_COPY.description}
+        />
+
+        <div className="space-y-3">
+          {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
+          {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
+        </div>
+
+        <CategoryArchivedPanel category={category} />
+      </AdminSplitDetailPaneShell>
+    );
+  }
+
+  const [mediaAssets, parentOptions] = await Promise.all([
+    listAdminMediaAssets(),
+    listCategoriesForPicker(),
+  ]);
 
   async function handleUpdateCategory(formData: FormData): Promise<void> {
     "use server";
@@ -78,6 +105,7 @@ export default async function EditAdminCategoryPage({
         category={category}
         routeSlug={slug}
         mediaAssets={mediaAssets}
+        parentOptions={parentOptions}
         updateAction={handleUpdateCategory}
       />
     </AdminSplitDetailPaneShell>

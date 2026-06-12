@@ -43,6 +43,9 @@ function buildCategoryBaseWhere(input: CategoryBaseWhereInput) {
 
 export async function listCategoriesForPicker(): Promise<CategoryPickerItem[]> {
   return db.category.findMany({
+    where: {
+      archivedAt: null,
+    },
     select: { id: true, name: true, slug: true, parentId: true },
     orderBy: [{ parentId: "asc" }, { name: "asc" }],
   });

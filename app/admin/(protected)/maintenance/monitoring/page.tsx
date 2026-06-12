@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { AlertTriangle, CheckCircle2, Clock, Database, GitBranch, Package, Zap } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
@@ -178,20 +180,20 @@ export default async function AdminMaintenanceMonitoringPage() {
 
       {/* Quick links */}
       <div className="flex flex-wrap gap-2">
-        <a
+        <Link
           href="/admin/maintenance/logs"
           className="inline-flex items-center gap-1.5 rounded-full border border-surface-border/60 bg-surface-panel px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-surface-panel-soft hover:text-foreground"
         >
           <Zap className="size-3.5" />
           Jobs queue
-        </a>
-        <a
+        </Link>
+        <Link
           href="/admin/maintenance/observability"
           className="inline-flex items-center gap-1.5 rounded-full border border-surface-border/60 bg-surface-panel px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-surface-panel-soft hover:text-foreground"
         >
           <Package className="size-3.5" />
           Journal d'audit
-        </a>
+        </Link>
       </div>
     </AdminPageShell>
   );

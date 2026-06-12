@@ -22,7 +22,7 @@ Creatyss est un socle e-commerce custom.
 
 Le projet est conçu pour être :
 
-- local-first via développement natif `pnpm dev` ;
+- local-first via développement natif `pnpm dev ou make local-dev` ;
 - compatible avec Docker Compose pour les vérifications prod-like locales ;
 - maintenable ;
 - lisible ;

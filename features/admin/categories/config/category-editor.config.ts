@@ -9,6 +9,8 @@ export const CATEGORY_FIELD_COPY = {
   slugLabel: "Adresse de la catégorie",
   slugHint: "Visible dans l’URL. Utilisez des lettres minuscules, des chiffres et des tirets.",
   descriptionLabel: "Description",
+  parentLabel: "Catégorie parente",
+  parentNoneOptionLabel: "Aucune catégorie parente",
   featuredLabel: "Afficher cette catégorie en avant dans l’administration",
 } as const;
 
@@ -44,6 +46,16 @@ export const CATEGORY_ARCHIVE_SECTION_COPY = {
   description:
     "À utiliser seulement si cette catégorie ne doit plus apparaître dans l’administration. Elle pourra ensuite être restaurée depuis la vue archives.",
 } satisfies CategorySectionCopy;
+
+export const CATEGORY_RESTORE_SECTION_COPY = {
+  eyebrow: "Archives",
+  title: "Restaurer la catégorie",
+  description:
+    "Cette catégorie est archivée. Restaurez-la pour la remettre en brouillon et la réutiliser dans l’administration.",
+} satisfies CategorySectionCopy;
+
+export const CATEGORY_ARCHIVED_NOTICE_COPY =
+  "Cette catégorie est archivée. Restaurez-la avant de modifier ses informations, son image ou son SEO.";
 
 export const CATEGORY_ARCHIVE_DIALOG_COPY = {
   triggerLabel: "Archiver la catégorie",

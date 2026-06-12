@@ -1,4 +1,5 @@
 //features/admin/categories/types/admin-category.types.ts
+import type { CategoryLifecycleStatus } from "@/entities/category";
 import type { SeoIndexingMode } from "@/entities/seo";
 
 export type AdminCategorySortOption =
@@ -30,6 +31,7 @@ export type AdminCategoryDetail = {
   id: string;
   name: string;
   slug: string;
+  status: CategoryLifecycleStatus;
   description: string | null;
   parentId: string | null;
   parentName: string | null;

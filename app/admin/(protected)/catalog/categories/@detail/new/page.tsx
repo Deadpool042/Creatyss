@@ -21,7 +21,9 @@ import {
 import {
   ADMIN_CATEGORIES_DETAIL_CONTENT_CLASS,
   ADMIN_CATEGORIES_DETAIL_CONSTRAIN_CONTENT,
+  CategoryParentField,
   createCategoryAction,
+  listCategoriesForPicker,
 } from "@/features/admin/categories";
 
 export const dynamic = "force-dynamic";
@@ -34,6 +36,7 @@ type NewAdminCategoryPageProps = Readonly<{
 
 export default async function NewAdminCategoryPage({ searchParams }: NewAdminCategoryPageProps) {
   const resolvedSearchParams = await searchParams;
+  const parentOptions = await listCategoriesForPicker();
   const errorParam = Array.isArray(resolvedSearchParams.error)
     ? resolvedSearchParams.error[0]
     : resolvedSearchParams.error;
@@ -82,6 +85,8 @@ export default async function NewAdminCategoryPage({ searchParams }: NewAdminCat
               <Textarea id="cat-description" name="description" rows={5} />
             </AdminFormField>
 
+            <CategoryParentField items={parentOptions} />
+
             <AdminCheckboxField
               label={CATEGORY_FIELD_COPY.featuredLabel}
               inputProps={{ name: "isFeatured", value: "on" }}
@@ -89,7 +94,6 @@ export default async function NewAdminCategoryPage({ searchParams }: NewAdminCat
             />
 
             <input type="hidden" name="sortOrder" value="0" />
-            <input type="hidden" name="parentId" value="" />
             <input type="hidden" name="primaryImageId" value="" />
 
             <AdminFormActions>

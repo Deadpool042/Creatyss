@@ -1,3 +1,4 @@
+export { MediaAssetPickerField } from "./components/media-asset-picker-field";
 export { getAdminMediaAssetById } from "./queries/get-admin-media-asset-by-id.query";
 export { listAdminMediaAssets } from "./queries/list-admin-media-assets.query";
 export {

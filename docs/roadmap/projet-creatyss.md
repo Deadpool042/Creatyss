@@ -36,7 +36,7 @@ Le rendu reste artisanal, chaleureux et premium.
 - Schéma Prisma multi-fichiers cohérent avec la doctrine
 - Catalogue : produits, variantes, options, images, catégories, prix
 - Storefront : boutique, fiche produit, blog, homepage éditable
-- Admin : blog complet (création, édition, publication, suppression), bibliothèque médias avec archivage
+- Admin : blog implémenté (création, édition, publication, suppression — recette manuelle ouverte, cf. validation Horizon 1), bibliothèque médias avec archivage
 - Server Actions sécurisées sur les flux admin critiques
 - Fallback images locales absentes côté serveur (`localUploadExists`)
 
@@ -55,6 +55,14 @@ Une case non vérifiée reste ouverte — pas d'auto-validation.
 
 La validation finale est factuelle : `typecheck`, `lint`, test manuel, capture ou revue humaine.
 L'IA peut proposer et vérifier ; elle ne valide pas à la place de l'humain.
+
+Trois états distincts, à ne pas confondre :
+
+- **implémenté** : le code existe et passe typecheck/lint ;
+- **recetté** : vérifié manuellement par un humain ;
+- **testé e2e** : couvert par un test automatisé de bout en bout.
+
+Une case n'est cochée qu'au stade « recetté » minimum.
 
 ---
 
@@ -85,10 +93,10 @@ L'IA peut proposer et vérifier ; elle ne valide pas à la place de l'humain.
 - [x] Blog public lisible avec listing et détail
 - [x] Homepage éditable sans intervention développeur
 - [x] Admin produits utilisable par une non-technicienne
-- [ ] Admin catégories utilisable
+- [x] Admin catégories utilisable — recetté manuellement (création parent/enfant, édition, retrait du parent, archivage, filtre archives, détail archivé dans le shell admin sans 404 globale, restauration, retour liste active) le 2026-06-12
 - [x] Admin médias utilisable avec archivage
-- [ ] Admin blog créer / modifier / publier opérationnel
-- [ ] Erreurs principales visibles et compréhensibles
+- [x] Admin blog créer / modifier / publier opérationnel — recetté manuellement le 2026-06-12 (création brouillon, édition, publication, rendu public, SEO de base via title, dépublication, 404 publique après dépublication)
+- [x] Erreurs principales visibles et compréhensibles — recetté manuellement le 2026-06-12 (404 admin dans l’expérience admin, retour tableau de bord OK, boundary runtime admin dédiée, pas de stack technique affichée, Réessayer fonctionnel)
 - [x] `pnpm run typecheck` passe
 - [x] `pnpm run lint` passe
 
@@ -119,14 +127,20 @@ L'IA peut proposer et vérifier ; elle ne valide pas à la place de l'humain.
 - Le flux panier → commande ne contient aucun état incohérent.
 - L'admin peut voir, filtrer et mettre à jour les commandes.
 
+**État 2026-06-12 :** le flux Checkout V1 est implémenté de bout en bout (panier cookie signé, checkout invité, transaction atomique, email non fatal, confirmation, admin paiements) — référence : `docs/lots/2026-06-10-checkout-v1-reference.md`.
+
+**Mise à jour 2026-06-12 (smoke E2E) :** le smoke `tests/e2e/public/commerce-smoke.spec.ts` passe localement. Parcours couvert : produit test vendable → ajout panier → panier visible → checkout invité (informations enregistrées) → livraison sélectionnée → paiement `Virement bancaire` → création commande → confirmation publique (référence `CMD-*`, email client, paiement en attente) → panier vidé → connexion admin → commande visible dans la vue d'ensemble → détail admin (email client, statut paiement, méthode `Virement bancaire`).
+
+Limites du smoke : paiement limité à `Virement bancaire` (pas de paiement en ligne, conforme au hors périmètre H2) ; l'email transactionnel est non fatal et n'est **pas** vérifié par ce smoke ; la contrainte de disponibilité/stock n'est pas exercée par ce parcours.
+
 **Validation :**
 
-- [ ] Panier fonctionnel
-- [ ] Checkout minimal fonctionnel
-- [ ] Commande créée et consultable en admin
-- [ ] Disponibilité produit respectée
-- [ ] Emails ou confirmations minimales cadrées
-- [ ] Parcours testé de bout en bout
+- [x] Panier fonctionnel — implémenté, couvert par le smoke E2E minimal (2026-06-12)
+- [x] Checkout minimal fonctionnel — implémenté, couvert par le smoke E2E minimal (invité, `Virement bancaire` uniquement) (2026-06-12)
+- [x] Commande créée et consultable en admin — implémenté, couvert par le smoke E2E minimal (vue d'ensemble + détail) (2026-06-12)
+- [ ] Disponibilité produit respectée — implémenté (validations stock/statut dans l'action panier), non couvert par le smoke E2E
+- [ ] Emails ou confirmations minimales cadrées — confirmation publique couverte par le smoke ; email non fatal, non testé E2E (preuve séparée requise)
+- [x] Parcours testé de bout en bout — smoke E2E minimal vert localement (2026-06-12)
 
 ---
 
