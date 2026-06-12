@@ -1,6 +1,9 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { loginAsSeedAdmin } from "../admin/admin-auth";
-import { ensureCommerceSmokeFixture } from "../commerce-db";
+import {
+  ensureCommerceSmokeFixture,
+  readOrderCreatedEmailEvidence,
+} from "../commerce-db";
 
 function extractOrderReference(page: Page): string {
   const match = page.url().match(/\/checkout\/confirmation\/(CMD-[A-Z0-9]{10})(?:\?.*)?$/);
@@ -95,6 +98,14 @@ test("creates a guest order and exposes it in admin orders", async ({ page }) =>
   await expect(page.getByText(customerEmail)).toBeVisible();
   await expect(page.getByText("Paiement en attente").first()).toBeVisible();
   await expect(page.getByText("Virement bancaire").first()).toBeVisible();
+
+  // Preuve « email cadré » : l'événement order_created est enregistré en DB
+  // avec le bon destinataire (l'envoi est synchrone avant le redirect de
+  // confirmation). Le statut n'est pas contraint à SENT : email non fatal.
+  const emailEvidence = await readOrderCreatedEmailEvidence(reference);
+  expect(emailEvidence).not.toBeNull();
+  expect(emailEvidence?.recipientEmail).toBe(customerEmail);
+  expect(["PREPARED", "SENT", "FAILED"]).toContain(emailEvidence?.status);
 
   await page.goto("/panier");
   await expect(

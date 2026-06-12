@@ -1,36 +1,35 @@
-import { expect, test } from "@playwright/test";
-import { resetSimpleProductCatalogState } from "../order-db";
+import { expect, test, type Page } from "@playwright/test";
+import { ensureCommerceSmokeFixture } from "../commerce-db";
 
-test.beforeEach(() => {
-  return resetSimpleProductCatalogState();
-});
+type Fixture = Awaited<ReturnType<typeof ensureCommerceSmokeFixture>>;
+
+async function addFixtureProductToCart(page: Page, fixture: Fixture): Promise<void> {
+  await page.goto(`/boutique/${fixture.productSlug}`);
+  await expect(page.getByRole("heading", { name: fixture.productName }).first()).toBeVisible();
+
+  await page.getByRole("button", { name: "Ajouter au panier" }).first().click();
+
+  // Signal fiable de l'ajout : le toast fiche produit. Les assertions sur
+  // ?cart_status=added sont racées (le composant toast retire le paramètre).
+  await expect(page.getByText("Ajouté au panier.").first()).toBeVisible({ timeout: 10_000 });
+}
 
 test("adds, updates and removes a cart line from the product page", async ({ page }) => {
-  await page.goto("/boutique/pochette-sable");
+  const fixture = await ensureCommerceSmokeFixture();
 
-  const offerCard = page
-    .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Produit simple" }) });
+  await addFixtureProductToCart(page, fixture);
 
-  await offerCard.getByLabel("Quantité").fill("1");
-  await offerCard.getByRole("button", { name: "Ajouter au panier" }).click();
+  await page.goto("/panier");
+  await expect(page.getByRole("heading", { level: 1, name: "Votre panier" })).toBeVisible();
+  await expect(page.getByText(fixture.productName).first()).toBeVisible();
 
-  await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_status=added$/);
-  await expect(page.getByText("Article ajouté au panier.")).toBeVisible();
-
-  await page.getByRole("link", { name: "Voir le panier" }).click();
-
-  await expect(page).toHaveURL(/\/panier$/);
-  await expect(page.getByRole("heading", { name: "Votre panier" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Pochette Sable" })).toBeVisible();
-  await expect(page.getByText("Sable · Sable · #D8C3A5")).toBeVisible();
-
-  await page.getByLabel("Quantité").fill("2");
+  // Mise à jour de quantité — l'input est visible côté panier.
+  await page.locator('input[name="quantity"]').first().fill("2");
   await page.getByRole("button", { name: "Mettre à jour la quantité" }).click();
 
   await expect(page).toHaveURL(/\/panier\?status=updated$/);
   await expect(page.getByText("Quantité du panier mise à jour.")).toBeVisible();
-  await expect(page.getByLabel("Quantité")).toHaveValue("2");
+  await expect(page.locator('input[name="quantity"]').first()).toHaveValue("2");
 
   await page.getByRole("button", { name: "Supprimer la ligne" }).click();
 
@@ -40,21 +39,5 @@ test("adds, updates and removes a cart line from the product page", async ({ pag
     page.getByRole("heading", {
       name: "Aucun article n'a encore été ajouté au panier",
     })
-  ).toBeVisible();
-});
-
-test("rejects a quantity above available stock", async ({ page }) => {
-  await page.goto("/boutique/pochette-sable");
-
-  const offerCard = page
-    .locator("article")
-    .filter({ has: page.getByRole("heading", { name: "Produit simple" }) });
-
-  await offerCard.getByLabel("Quantité").fill("13");
-  await offerCard.getByRole("button", { name: "Ajouter au panier" }).click();
-
-  await expect(page).toHaveURL(/\/boutique\/pochette-sable\?cart_error=insufficient_stock$/);
-  await expect(
-    page.getByText("Le stock disponible est insuffisant pour cette quantité.")
   ).toBeVisible();
 });

@@ -31,7 +31,10 @@ type CommerceLowStockFixture = {
 };
 
 function assertValidOrderReference(reference: string): void {
-  if (!/^CRY-[A-Z0-9]{10}$/.test(reference)) {
+  // Le préfixe est configurable via le réglage boutique `orderNumberPrefix`
+  // (cf. docs/lots/2026-06-10-settings-orders-v1-reference.md) : on valide la
+  // forme `PREFIX-XXXXXXXXXX` sans figer le préfixe (CRY, CMD, …).
+  if (!/^[A-Z0-9]+-[A-Z0-9]{10}$/.test(reference)) {
     throw new Error(`Invalid order reference: ${reference}`);
   }
 }
@@ -347,6 +350,51 @@ export async function ensureCommerceLowStockFixture(): Promise<CommerceLowStockF
     productName: LOW_STOCK_PRODUCT_NAME,
     variantSku: LOW_STOCK_VARIANT_SKU,
     availableQuantity,
+  };
+}
+
+type OrderCreatedEmailEvidence = {
+  status: string;
+  recipientEmail: string | null;
+};
+
+/**
+ * Preuve « email cadré » : l'événement email `order_created` est enregistré
+ * en DB (EmailMessage) avec le bon destinataire. Le statut n'est pas contraint
+ * à SENT : l'email est non fatal et son envoi réel dépend du provider local.
+ */
+export async function readOrderCreatedEmailEvidence(
+  reference: string
+): Promise<OrderCreatedEmailEvidence | null> {
+  assertValidOrderReference(reference);
+
+  const order = await prisma.order.findFirst({
+    where: { orderNumber: reference },
+    select: { id: true },
+  });
+
+  if (order === null) {
+    return null;
+  }
+
+  const message = await prisma.emailMessage.findFirst({
+    where: {
+      subjectType: "order",
+      subjectId: order.id,
+      subjectLine: "order_created",
+    },
+    include: {
+      recipients: { where: { type: "TO" }, take: 1 },
+    },
+  });
+
+  if (message === null) {
+    return null;
+  }
+
+  return {
+    status: message.status,
+    recipientEmail: message.recipients[0]?.email ?? null,
   };
 }
 
