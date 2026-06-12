@@ -165,12 +165,14 @@ Limites du smoke : paiement limité à `Virement bancaire` (pas de paiement en l
 
 **Validation :**
 
-- [ ] Build production validé
-- [ ] Variables d'environnement documentées
-- [ ] Sauvegarde DB documentée
-- [ ] Médias persistants documentés
+**État 2026-06-12 :** `pnpm run build` passe en local. `Dockerfile.prod` écrit (multi-stage, non-root), build d'image non validé faute de Docker disponible. Documentation d'exploitation initiée dans `docs/exploitation/` (env, sauvegardes, médias, mise à jour/rollback). Point d'attention tracé : pas de migrations Prisma, `db:push` embarque `--accept-data-loss` — sauvegarde obligatoire avant tout push en production.
+
+- [ ] Build production validé — `next build` local OK ; build image Docker restant à valider
+- [x] Variables d'environnement documentées — `docs/exploitation/01-variables-d-environnement.md` (2026-06-12)
+- [x] Sauvegarde DB documentée — `docs/exploitation/02-sauvegarde-restauration-db.md` ; test réel sauvegarde → restauration encore à exécuter (2026-06-12)
+- [x] Médias persistants documentés — `docs/exploitation/03-medias-persistants.md` (2026-06-12)
 - [ ] Déploiement VPS répétable
-- [ ] Procédure rollback minimale documentée
+- [x] Procédure rollback minimale documentée — `docs/exploitation/04-mise-a-jour-et-rollback.md` ; limites de `db push` explicitées (2026-06-12)
 
 ---
 
