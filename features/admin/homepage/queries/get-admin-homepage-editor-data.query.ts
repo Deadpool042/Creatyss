@@ -9,13 +9,11 @@ import { db } from "@/core/db";
 import { mapAdminHomepageEditorData } from "../mappers";
 import type { AdminHomepageEditorData } from "../types";
 
-const CANONICAL_STORE_CODE = "creatyss";
-
+// Convention socle : boutique unique, résolue comme premier store créé
+// (même convention que settings, panier et contact — cf. lot R5).
 async function getCanonicalStoreId(): Promise<string | null> {
-  const store = await db.store.findUnique({
-    where: {
-      code: CANONICAL_STORE_CODE,
-    },
+  const store = await db.store.findFirst({
+    orderBy: { createdAt: "asc" },
     select: {
       id: true,
     },

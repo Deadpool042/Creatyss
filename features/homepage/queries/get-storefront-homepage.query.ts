@@ -3,8 +3,6 @@ import { HomepageSectionType, HomepageStatus } from "@/prisma-generated/client";
 import { db } from "@/core/db";
 import { localUploadExists } from "@/core/uploads/check-local-upload";
 
-const CANONICAL_STORE_CODE = "creatyss";
-
 export type StorefrontHomepageData = {
   hero: { title: string | null; text: string | null; imageStorageKey: string | null } | null;
   editorial: { title: string | null; text: string | null } | null;
@@ -51,10 +49,10 @@ export type StorefrontHomepageData = {
 };
 
 export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | null> {
-  const store = await db.store.findUnique({
-    where: {
-      code: CANONICAL_STORE_CODE,
-    },
+  // Convention socle : boutique unique, résolue comme premier store créé
+  // (même convention que settings, panier et contact — cf. lot R5).
+  const store = await db.store.findFirst({
+    orderBy: { createdAt: "asc" },
     select: {
       id: true,
       instagramUrl: true,

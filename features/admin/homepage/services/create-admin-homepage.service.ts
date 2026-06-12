@@ -1,7 +1,6 @@
 import { HomepageSectionType, HomepageStatus } from "@/prisma-generated/client";
 import { withTransaction } from "@/core/db";
 
-const CANONICAL_STORE_CODE = "creatyss";
 const DEFAULT_HOMEPAGE_CODE = "default";
 const DEFAULT_HOMEPAGE_TITLE = "Page d'accueil";
 
@@ -17,17 +16,17 @@ type CreateAdminHomepageResult = {
 
 export async function createAdminHomepage(): Promise<CreateAdminHomepageResult | null> {
   return withTransaction(async (tx) => {
-    const store = await tx.store.findUnique({
-      where: {
-        code: CANONICAL_STORE_CODE,
-      },
+    // Convention socle : boutique unique, résolue comme premier store créé
+    // (même convention que settings, panier et contact — cf. lot R5).
+    const store = await tx.store.findFirst({
+      orderBy: { createdAt: "asc" },
       select: {
         id: true,
       },
     });
 
     if (store === null) {
-      throw new Error(`canonical_store_missing:${CANONICAL_STORE_CODE}`);
+      throw new Error("default_store_missing");
     }
 
     const existingHomepage = await tx.homepage.findFirst({
