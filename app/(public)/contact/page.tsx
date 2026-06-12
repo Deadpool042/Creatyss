@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { MailIcon, MapPinIcon } from "lucide-react";
 import { getStorefrontStoreContact } from "@/features/storefront/store/queries/get-storefront-store-contact.query";
+import { contentPagesCopyConfig } from "@/features/storefront/content/config/content-pages-copy.config";
 
 export const metadata: Metadata = {
-  title: "Contact — Creatyss",
-  description: "Contactez l'atelier Creatyss pour toute question sur les créations, le sur-mesure ou une commande.",
+  title: contentPagesCopyConfig.contact.metadata.title,
+  description: contentPagesCopyConfig.contact.metadata.description,
 };
 
 export default async function ContactPage() {
@@ -56,7 +57,11 @@ export default async function ContactPage() {
             Envoyer un message
           </h2>
 
-          <form className="space-y-5" action="mailto:contact@creatyss.local" method="dialog">
+          <form
+            className="space-y-5"
+            action={contentPagesCopyConfig.contact.mailtoPlaceholder}
+            method="dialog"
+          >
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <label htmlFor="firstName" className="mb-1.5 block text-[13px] font-medium text-foreground">
