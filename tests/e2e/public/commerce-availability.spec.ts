@@ -21,6 +21,10 @@ test("refuses add to cart when requested quantity exceeds available stock", asyn
     page.getByText("Le stock disponible est insuffisant pour cette quantité.").first()
   ).toBeVisible({ timeout: 10_000 });
 
+  // Maintien sur la fiche produit après refus (query param non vérifié :
+  // il est retiré aussitôt par le composant toast).
+  await expect(page).toHaveURL(new RegExp(`/boutique/${fixture.productSlug}(?:\\?.*)?$`));
+
   // Preuve fonctionnelle : le panier contient toujours une seule ligne à
   // quantité 1 — le refus n'a rien ajouté.
   await page.goto("/panier");
