@@ -256,9 +256,11 @@ export function MobileMenuDrawer({ variant = "bottomNav" }: MobileMenuDrawerProp
 
             <div className="mt-auto pt-1">
               <div className="rounded-2xl border border-shell-border/75 bg-background/45 p-3.5 shadow-soft backdrop-blur-md">
-                <p className="text-xs font-semibold text-foreground">Fait main à Saint-Étienne</p>
+                <p className="text-xs font-semibold text-foreground">
+                  {brandConfig.drawerNote.title}
+                </p>
                 <p className="mt-1 text-xs leading-relaxed text-text-muted-strong">
-                  Des pièces uniques, sans cuir, cousues avec soin.
+                  {brandConfig.drawerNote.body}
                 </p>
               </div>
             </div>

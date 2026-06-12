@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+import { instanceRedirects } from "./core/config/instance-redirects";
+
 const nextConfig: NextConfig = {
   images: {
     qualities: [75, 92],
@@ -15,58 +17,11 @@ const nextConfig: NextConfig = {
   },
 
   /**
-   * Redirects des URLs de l'ancien site WordPress (creatyss.com),
-   * slugs vérifiés sur le site en ligne le 2026-06-11.
-   * Sans redirect nécessaire (chemins identiques) : /politique-confidentialite,
-   * /contact, /panier, /blog. L'ancien site n'avait ni mentions légales
-   * ni politique de retour dédiées.
+   * Les redirects hérités de l'instance vivent hors du socle :
+   * cf. core/config/instance-redirects.ts (lot R6 — clonabilité).
    */
   async redirects() {
-    return [
-      {
-        // CGV : « ventes » au pluriel sur l'ancien site
-        source: "/conditions-generales-de-ventes",
-        destination: "/conditions-generales-de-vente",
-        permanent: true,
-      },
-      {
-        source: "/marches",
-        destination: "/les-marches",
-        permanent: true,
-      },
-      {
-        source: "/mon-compte/:path*",
-        destination: "/compte",
-        permanent: true,
-      },
-      {
-        source: "/validation-de-commande",
-        destination: "/checkout",
-        permanent: true,
-      },
-      {
-        // Produits WooCommerce (/produit/<slug>) : slugs conservés à l'import.
-        // Produit inconnu → notFound de /boutique/[slug], équivalent au 404 d'origine.
-        source: "/produit/:slug",
-        destination: "/boutique/:slug",
-        permanent: true,
-      },
-      {
-        // Catégories WooCommerce : les slugs ont été conservés à l'import
-        // (seed_data/categories.creatyss.json), le filtre boutique est préservé.
-        // Un slug inconnu donne une liste vide, sans erreur.
-        source: "/categorie-produit/:slug",
-        destination: "/boutique?category=:slug",
-        permanent: true,
-      },
-      {
-        // Chemins catégorie plus profonds (pagination Woo, sous-catégories) :
-        // renvoi générique vers la boutique
-        source: "/categorie-produit/:path+",
-        destination: "/boutique",
-        permanent: true,
-      },
-    ];
+    return instanceRedirects;
   },
 
   async headers() {

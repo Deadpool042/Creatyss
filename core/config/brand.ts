@@ -29,6 +29,12 @@ export const brandConfig = {
   /** Baseline courte (drawer mobile). */
   baselineShort: "Sacs artisanaux faits main à Saint-Étienne.",
 
+  /** Encart bas du drawer mobile. */
+  drawerNote: {
+    title: "Fait main à Saint-Étienne",
+    body: "Des pièces uniques, sans cuir, cousues avec soin.",
+  },
+
   /** Mentions éditoriales de la colonne « L'atelier » du footer. */
   atelierItems: [
     "Saint-Étienne",
