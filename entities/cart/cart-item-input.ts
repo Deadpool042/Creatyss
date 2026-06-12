@@ -5,7 +5,6 @@ export type ValidatedCartItemInput = {
 
 export type CartItemInputErrorCode =
   | "missing_variant_id"
-  | "invalid_variant_id"
   | "missing_quantity"
   | "invalid_quantity";
 
@@ -34,7 +33,7 @@ function readTrimmedString(value: FormDataEntryValue | string | null | undefined
 
 function normalizeVariantId(
   value: FormDataEntryValue | string | null | undefined
-): string | null | undefined {
+): string | null {
   const normalizedValue = readTrimmedString(value);
 
   if (normalizedValue === null || normalizedValue.length === 0) {
@@ -73,13 +72,6 @@ export function validateCartItemInput(input: CartItemInputSource): CartItemInput
     return {
       ok: false,
       code: "missing_variant_id",
-    };
-  }
-
-  if (variantId === undefined) {
-    return {
-      ok: false,
-      code: "invalid_variant_id",
     };
   }
 

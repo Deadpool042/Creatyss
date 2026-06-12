@@ -44,7 +44,6 @@ export type ValidatedHomepageInput = {
 export type HomepageInputErrorCode =
   | "missing_homepage"
   | "shipping_returns_policy_too_long"
-  | "invalid_hero_image"
   | "hero_title_too_long"
   | "hero_text_too_long"
   | "editorial_title_too_long"

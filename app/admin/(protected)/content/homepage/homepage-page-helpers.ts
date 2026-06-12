@@ -46,8 +46,6 @@ export function getHomepageErrorMessage(error: string | undefined): string | nul
   switch (error) {
     case "missing_homepage":
       return "La page d'accueil publiée est introuvable.";
-    case "invalid_hero_image":
-      return "La sélection de l'image principale est invalide.";
     case "hero_media_missing":
       return "Le média sélectionné pour l'image principale est introuvable.";
     case "hero_title_too_long":

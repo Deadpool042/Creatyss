@@ -22,7 +22,6 @@ function getCartErrorMessage(error: string | null): string | null {
     case "invalid_quantity":
       return "Renseignez une quantité entière supérieure ou égale à 1.";
     case "missing_variant_id":
-    case "invalid_variant_id":
       return "La déclinaison sélectionnée est invalide.";
     case "variant_unavailable":
       return "Cette déclinaison n'est pas disponible actuellement.";
