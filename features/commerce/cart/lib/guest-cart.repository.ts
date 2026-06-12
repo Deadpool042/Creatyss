@@ -4,7 +4,7 @@ import {
   moneyStringToCents,
   centsToMoneyString,
 } from "@/core/money";
-import type { CurrencyCode } from "@/prisma-generated/client";
+import type { AvailabilityStatus, CurrencyCode } from "@/prisma-generated/client";
 import type {
   GuestCartVariant,
   GuestCartItemReference,
@@ -25,6 +25,32 @@ export type {
   GuestCheckoutIssueCode,
   GuestCheckoutContext,
 };
+
+// ---------------------------------------------------------------------------
+// Vendabilité (doctrine : `availability` porte la disponibilité vendable,
+// `inventory` la vérité de quantité — cf. AGENTS.md, points stabilisés).
+// Sans enregistrement de disponibilité, fallback héritage : la vendabilité
+// est dérivée des statuts + stock, comme au catalogue
+// (catalog-availability.ts).
+// ---------------------------------------------------------------------------
+
+const SELLABLE_AVAILABILITY_STATUSES: readonly AvailabilityStatus[] = [
+  "AVAILABLE",
+  "PREORDER",
+  "BACKORDER",
+];
+
+function isVariantSellable(
+  availabilityRecords: readonly { isSellable: boolean; status: AvailabilityStatus }[]
+): boolean {
+  const record = availabilityRecords[0];
+
+  if (record === undefined) {
+    return true;
+  }
+
+  return record.isSellable && SELLABLE_AVAILABILITY_STATUSES.includes(record.status);
+}
 
 // ---------------------------------------------------------------------------
 // Internal helpers
@@ -169,6 +195,10 @@ export async function findGuestCartVariantById(
         select: { onHandQuantity: true, reservedQuantity: true },
         take: 1,
       },
+      availabilityRecords: {
+        select: { isSellable: true, status: true },
+        take: 1,
+      },
     },
   });
   if (!variant) return null;
@@ -179,9 +209,11 @@ export async function findGuestCartVariantById(
     0,
     (inv?.onHandQuantity ?? 0) - (inv?.reservedQuantity ?? 0)
   );
+  const isSellable = isVariantSellable(variant.availabilityRecords);
   const isAvailable =
     variant.product.status === "ACTIVE" &&
     variant.status === "ACTIVE" &&
+    isSellable &&
     stockQuantity > 0;
 
   return {
@@ -195,6 +227,7 @@ export async function findGuestCartVariantById(
     unitPriceAmount: centsToMoneyString(variant.product.catalogPriceCents),
     stockQuantity,
     status: variant.status as GuestCartVariant["status"],
+    isSellable,
     isAvailable,
   };
 }
@@ -327,6 +360,10 @@ export async function readGuestCartById(
                 select: { onHandQuantity: true, reservedQuantity: true },
                 take: 1,
               },
+              availabilityRecords: {
+                select: { isSellable: true, status: true },
+                take: 1,
+              },
             },
           },
         },
@@ -346,6 +383,7 @@ export async function readGuestCartById(
     const isAvailable =
       line.product.status === "ACTIVE" &&
       line.variant.status === "ACTIVE" &&
+      isVariantSellable(line.variant.availabilityRecords) &&
       availableQty >= line.quantity;
     const unitPriceStr = normalizeMoneyString(String(line.unitPriceAmount));
     const lineTotalStr = centsToMoneyString(

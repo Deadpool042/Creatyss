@@ -9,6 +9,8 @@ export type GuestCartVariant = {
   unitPriceAmount: string;
   stockQuantity: number;
   status: "DRAFT" | "ACTIVE" | "INACTIVE" | "ARCHIVED";
+  /** Vendabilité portée par availability (isSellable + statut vendable). */
+  isSellable: boolean;
   isAvailable: boolean;
 };
 

@@ -67,6 +67,12 @@ export async function addToCartAction(formData: FormData): Promise<void> {
     redirect(`/boutique/${productSlug}?cart_error=variant_unavailable`);
   }
 
+  // Vendabilité portée par availability (doctrine) : une variante non
+  // vendable est refusée même si du stock résiduel existe.
+  if (!variant.isSellable) {
+    redirect(`/boutique/${productSlug}?cart_error=variant_unavailable`);
+  }
+
   const cartToken = await readCartSessionToken();
   let cartId = cartToken ? await findGuestCartIdByToken(cartToken) : null;
 
