@@ -195,20 +195,20 @@ Référence : `docs/audit/audit-clonabilite-2026-06-12.md` (inventaire des spéc
 
 - Copy/config storefront (R1) : composants config-driven selon la convention existante `features/<domaine>/config/*.config.ts` ; source de marque unique consommée par metadata, footer, topbar, emails, JSON-LD. Prérequis de la clonabilité **et** du multilangue.
 - Gradation du mécanisme feature-flags : ajout du niveau dans `FeatureFlag` et sa résolution (lot `prisma-architect` — le modèle actuel est booléen alors que la gouvernance prévoit des features graduées).
-- Pages de contenu unifiées (R2) : `a-propos`, `les-marchés`, `contact` basculent vers le domaine `pages`, comme les pages légales.
+- Pages de contenu unifiées (R2) — décision 2026-06-12 : copy en config (`features/storefront/content/config/`) dans l'immédiat ; la bascule vers les pages DB à blocs (`PageSection`/`PageBlock`, déjà modélisées) reste la cible quand l'éditeur de blocs sera implémenté.
 - Résolution de boutique unique (R5) : supprimer la double convention (`CANONICAL_STORE_CODE` en dur vs premier store).
 - Redirects d'instance hors du socle (R6) ; statut bootstrap explicite de l'outillage Woo (R4) — l'import durable des clones est l'import en masse générique (CSV), capacité optionnelle déjà modélisée.
 - `localization` comme première capacité graduée de référence : valide le pattern complet (toggle + niveaux + routing + traduction du contenu métier, distincte du copy UI).
 
-**Décision d'architecture préalable à toute extension commerce :** frontière `availability`/`inventory` — le flux panier calcule la disponibilité depuis `inventory` sans consulter `availabilityRecord`, et le cœur commerce dépend d'un module classé optionnel (cf. audit). À trancher en `architect-review` avant d'activer de nouvelles capacités commerce.
+**Décision d'architecture `availability`/`inventory` — tranchée le 2026-06-12 :** doctrine réaffirmée, phase 1 sans précommande. La vendabilité (`availabilityRecord`) est consommée par le flux panier (ajout, lignes, checkout) ; `inventory` reste la vérité de quantité (re-vérification transactionnelle + décrément à la création de commande). Détail dans `docs/domains/core/catalog/availability.md`, « Décisions tranchées ».
 
 **Validation :**
 
-- [ ] Copy/config storefront en place — plus de marque en dur dans les composants du socle
-- [ ] `FeatureFlag` gradué (niveau porté par le mécanisme et résolu par les guards)
-- [ ] Pages de contenu servies par le domaine `pages`
-- [ ] Résolution de boutique unifiée
-- [ ] Décision `availability`/`inventory` documentée
+- [x] Copy/config storefront en place — plus de marque en dur dans les composants du socle ; garde anti-régression unitaire (`brand-copy-guard.test.ts`) couvrant storefront/homepage/components (2026-06-12)
+- [ ] `FeatureFlag` gradué — schéma additif (`allowedLevels`, `defaultLevel`, `Override.level`) et règles pures posés, `prisma validate` OK ; restent `db:push` (sauvegarde préalable), `test:unit`, et le premier guard gradué (`localization`)
+- [x] Pages de contenu en copy/config (`a-propos`, `les-marchés`, `contact`) — option config actée, cible « pages à blocs » tracée (2026-06-12)
+- [x] Résolution de boutique unifiée — convention premier-store partout, `CANONICAL_STORE_CODE` supprimé (2026-06-12)
+- [x] Décision `availability`/`inventory` documentée et implémentée côté panier (2026-06-12)
 - [ ] Clone à blanc : repo cloné, marque/contenu/config changés, boutique fonctionnelle sans modification du cœur
 
 ---

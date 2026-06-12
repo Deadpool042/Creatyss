@@ -389,6 +389,19 @@ Rappel d'ancrage technique côté schéma :
   overrides ; sa résolution serveur est gouvernée par les guards décrits dans
   `feature-governance.md`.
 
+Gradation (état réel depuis 2026-06-12) — le mécanisme de niveaux gradués est
+porté par le schéma :
+
+- `FeatureFlag.allowedLevels` : liste ordonnée des niveaux autorisés, du plus
+  bas au plus élevé ; liste vide = feature non graduée (`status` seul) ;
+- `FeatureFlag.defaultLevel` : niveau par défaut quand la feature est active ;
+- `FeatureFlagOverride.level` : niveau imposé par un override (null = hérite
+  du défaut).
+
+Les règles pures de résolution (`resolveEffectiveLevel`, `meetsRequiredLevel`)
+vivent dans `entities/feature-flags/feature-level.ts`. Aucun guard gradué
+n'est encore branché : le premier consommateur prévu est `localization`.
+
 Le feature flag est un mécanisme de variation contrôlée. Il n'est pas la
 doctrine produit : il l'exécute.
 

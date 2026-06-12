@@ -306,14 +306,28 @@ Il ne doit pas absorber l’ensemble de la chaîne stock-logistique.
 
 ---
 
+## Décisions tranchées
+
+**Frontière `availability` / `inventory` (décision du 2026-06-12, phase 1) :**
+`availability` porte la vendabilité (`isSellable` + statut vendable
+`AVAILABLE`/`PREORDER`/`BACKORDER`), `inventory` porte la vérité de quantité.
+État réel du code : le catalogue (`catalog-availability.ts`) et le flux
+panier (`guest-cart.repository.ts`, ajout + lignes + checkout via
+`cart_unavailable`) consomment la vendabilité ; la quantité reste vérifiée et
+décrémentée transactionnellement par `inventory` à la création de commande.
+En l'absence d'enregistrement de disponibilité, repli héritage : vendabilité
+dérivée des statuts + stock. Phase 1 sans précommande : `PREORDER`/`BACKORDER`
+passent la vendabilité mais restent bloqués par le stock au panier. La
+re-vérification de vendabilité à la création de commande n'est pas encore en
+place (défense en profondeur possible).
+
 ## Questions ouvertes
 
 À confirmer explicitement dans le projet :
 
-- la frontière exacte entre `availability` et `inventory` ;
 - la présence ou non d’une réservation portée par `availability` ;
 - la disponibilité multi-store / multi-channel ;
-- la gestion de la précommande ;
+- la gestion de la précommande (achat effectif en `PREORDER`/`BACKORDER` à stock nul) ;
 - la hiérarchie entre système interne et stock externe ;
 - la stratégie en cas de divergence entre disponibilité et stock réel.
 
