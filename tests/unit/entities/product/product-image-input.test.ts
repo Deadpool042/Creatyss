@@ -26,10 +26,12 @@ describe("validateCreateProductImageInput", () => {
     });
   });
 
-  it("rejette un media asset invalide", () => {
+  // Contrat actuel : mediaAssetId et variantId sont des chaînes libres
+  // (plus de contrainte de format — la validation d'existence se fait en DB).
+  it("rejette un media asset manquant ou vide", () => {
     expect(
       validateCreateProductImageInput({
-        mediaAssetId: "abc",
+        mediaAssetId: "   ",
         variantId: null,
         altText: null,
         sortOrder: "0",
@@ -37,22 +39,28 @@ describe("validateCreateProductImageInput", () => {
       })
     ).toEqual({
       ok: false,
-      code: "invalid_media_asset",
+      code: "missing_media_asset",
     });
   });
 
-  it("rejette une variante invalide", () => {
+  it("accepte des identifiants libres pour le media asset et la variante", () => {
     expect(
       validateCreateProductImageInput({
-        mediaAssetId: "12",
+        mediaAssetId: "abc",
         variantId: "variant-1",
         altText: null,
         sortOrder: "0",
         isPrimary: null,
       })
     ).toEqual({
-      ok: false,
-      code: "invalid_variant",
+      ok: true,
+      data: {
+        mediaAssetId: "abc",
+        variantId: "variant-1",
+        altText: null,
+        sortOrder: 0,
+        isPrimary: false,
+      },
     });
   });
 });

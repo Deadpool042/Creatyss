@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
+// Import direct (pas le barrel) : l'index de la feature exporte aussi des
+// modules serveur (core/db est gardé par "server-only"), inimportables ici.
 import {
   resolveStripeCheckoutSessionState,
   type StripeCheckoutSessionStateInput,
-} from "@/features/commerce/payment";
+} from "@/features/commerce/payment/stripe-checkout-session-state";
 
 function resolve(input: StripeCheckoutSessionStateInput) {
   return resolveStripeCheckoutSessionState(input);

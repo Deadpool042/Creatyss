@@ -29,15 +29,20 @@ describe("validateCartItemInput", () => {
     });
   });
 
-  it("rejette un identifiant de variante invalide", () => {
+  // Contrat actuel : l'identifiant de variante est une chaîne libre non vide
+  // (plus de contrainte de format — la validation d'existence se fait en DB).
+  it("accepte un identifiant de variante libre non vide", () => {
     expect(
       validateCartItemInput({
         variantId: "abc",
         quantity: "1",
       })
     ).toEqual({
-      ok: false,
-      code: "invalid_variant_id",
+      ok: true,
+      data: {
+        variantId: "abc",
+        quantity: 1,
+      },
     });
   });
 

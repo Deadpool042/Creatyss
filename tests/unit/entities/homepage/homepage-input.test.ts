@@ -72,6 +72,7 @@ describe("validateHomepageInput", () => {
             sortOrder: 1,
           },
         ],
+        shippingReturnsPolicy: null,
       },
     });
   });
@@ -106,17 +107,20 @@ describe("validateHomepageInput", () => {
         featuredProducts: [],
         featuredCategories: [],
         featuredBlogPosts: [],
+        shippingReturnsPolicy: null,
       },
     });
   });
 
-  it("rejette une valeur heroImageMediaAssetId invalide", () => {
+  // Contrat actuel : l'identifiant d'image hero est une chaîne libre non vide
+  // (la validation d'existence du media asset se fait en aval).
+  it("accepte un identifiant d'image hero libre", () => {
     expect(
       validateHomepageInput({
         homepageId: "7",
         heroTitle: null,
         heroText: null,
-        heroImageMediaAssetId: "not-a-valid-value",
+        heroImageMediaAssetId: "media-asset-1",
         editorialTitle: null,
         editorialText: null,
         featuredProductIds: [],
@@ -127,8 +131,22 @@ describe("validateHomepageInput", () => {
         featuredBlogPostSortOrders: {},
       })
     ).toEqual({
-      ok: false,
-      code: "invalid_hero_image",
+      ok: true,
+      data: {
+        homepageId: "7",
+        heroTitle: null,
+        heroText: null,
+        heroImage: {
+          kind: "media_asset",
+          mediaAssetId: "media-asset-1",
+        },
+        editorialTitle: null,
+        editorialText: null,
+        featuredProducts: [],
+        featuredCategories: [],
+        featuredBlogPosts: [],
+        shippingReturnsPolicy: null,
+      },
     });
   });
 
@@ -157,7 +175,9 @@ describe("validateHomepageInput", () => {
     });
   });
 
-  it("rejette des ids invalides dans les categories mises en avant", () => {
+  // Contrat actuel : les ids de sélection sont des chaînes libres ;
+  // l'invalidité porte sur les ids vides (après trim) ou non-string.
+  it("rejette des ids vides dans les categories mises en avant", () => {
     expect(
       validateHomepageInput({
         homepageId: "7",
@@ -168,10 +188,8 @@ describe("validateHomepageInput", () => {
         editorialText: null,
         featuredProductIds: [],
         featuredProductSortOrders: {},
-        featuredCategoryIds: ["cat-1"],
-        featuredCategorySortOrders: {
-          "cat-1": "0",
-        },
+        featuredCategoryIds: ["  "],
+        featuredCategorySortOrders: {},
         featuredBlogPostIds: [],
         featuredBlogPostSortOrders: {},
       })

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { buildOrderEmailTemplate } from "@/features/email";
+// Import direct (pas le barrel) : l'index de la feature exporte aussi l'action
+// serveur (core/db est gardé par "server-only"), inimportable ici.
+import { buildOrderEmailTemplate } from "@/features/email/order/order-email-templates";
 
 describe("buildOrderEmailTemplate", () => {
   it("construit un email de commande creee lisible", () => {
