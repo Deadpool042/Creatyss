@@ -1,0 +1,106 @@
+# docker-compose.prod.yml — déploiement production VPS (Horizon 3).
+#
+# Statut : écrit le 2026-06-12, NON VALIDÉ par un déploiement réel
+# (cf. docs/exploitation/README.md). À valider avec le build de
+# Dockerfile.prod puis un déploiement à blanc.
+#
+# Usage :
+#   docker compose -f docker-compose.prod.yml build
+#   docker compose -f docker-compose.prod.yml up -d
+#   # synchronisation du schéma (sauvegarde DB obligatoire avant —
+#   # cf. docs/exploitation/04-mise-a-jour-et-rollback.md) :
+#   docker compose -f docker-compose.prod.yml run --rm db-push
+#
+# Variables requises dans le .env serveur (jamais commité) :
+# cf. docs/exploitation/01-variables-d-environnement.md, plus :
+#   APP_DOMAIN  — domaine public (ex. creatyss.com)
+#   CADDY_EMAIL — email Let's Encrypt
+
+services:
+  db:
+    container_name: creatyss-db
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # Pas de port publié : la base n'est accessible que depuis le réseau
+    # compose. Pour une intervention manuelle : docker exec creatyss-db psql …
+    mem_limit: 768m
+    restart: unless-stopped
+
+  app:
+    container_name: creatyss-app
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    image: creatyss:prod
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      NEXT_TELEMETRY_DISABLED: "1"
+      APP_URL: ${APP_URL}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
+      DATABASE_URL: ${DATABASE_URL}
+      ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET}
+      CART_SESSION_SECRET: ${CART_SESSION_SECRET}
+      EMAIL_PROVIDER: ${EMAIL_PROVIDER}
+      EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS}
+      EMAIL_FROM_NAME: ${EMAIL_FROM_NAME}
+      BREVO_API_KEY: ${BREVO_API_KEY}
+      BREVO_FROM_ADDRESS: ${BREVO_FROM_ADDRESS}
+      BREVO_FROM_NAME: ${BREVO_FROM_NAME}
+      UPLOADS_DIR: ${UPLOADS_DIR}
+    volumes:
+      - uploads_data:/app/public/uploads
+    # Pas de port publié : seul Caddy expose l'app.
+    mem_limit: 1g
+    restart: unless-stopped
+
+  caddy:
+    container_name: creatyss-caddy
+    image: caddy:2-alpine
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}
+      CADDY_EMAIL: ${CADDY_EMAIL}
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    mem_limit: 128m
+    restart: unless-stopped
+
+  # Job ponctuel : synchronisation du schéma Prisma.
+  # ATTENTION : db push est potentiellement destructif (pas de migrations,
+  # --accept-data-loss en dur dans le script). Sauvegarde obligatoire avant.
+  db-push:
+    image: creatyss:prod
+    profiles: ["jobs"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    entrypoint: ["pnpm", "run", "db:push"]
+    restart: "no"
+
+volumes:
+  postgres_data:
+  uploads_data:
+  caddy_data:
+  caddy_config:
