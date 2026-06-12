@@ -14,6 +14,7 @@ import { ProductHeroAvailabilityMeta, ProductHeroPricingMeta } from "../product-
 import type { ProductHeroResolvedProps } from "../product-hero-resolved-props";
 import { ProductHeroVariableCartForm } from "../product-hero-variable-cart-form";
 import { ProductHeroVariantSelector } from "../product-hero-variant-selector";
+import { productPageCopyConfig } from "../../../config/product-page-copy.config";
 
 /**
  * Layout landscape compact du hero produit.
@@ -117,10 +118,10 @@ export function ProductHeroSectionLandscape({
               <div className="flex flex-wrap items-center gap-1.5 text-[0.75rem] leading-4 text-foreground-muted">
                 <span className="inline-flex items-center gap-1">
                   <MapPin aria-hidden="true" className="size-3 text-brand/85" />
-                  <span>Fait main à Saint-Étienne</span>
+                  <span>{productPageCopyConfig.heroBadges.location}</span>
                 </span>
                 <span className="rounded-full border border-surface-border-subtle px-1.5 py-0.5">
-                  Pièce unique
+                  {productPageCopyConfig.heroBadges.uniquenessCompact}
                 </span>
               </div>
             </section>

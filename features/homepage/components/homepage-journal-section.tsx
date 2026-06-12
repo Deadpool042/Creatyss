@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SurfaceSection } from "@/components/shared";
 
+import { homepageCopyConfig } from "../config/homepage-copy.config";
+
 const blogDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",
 });
@@ -13,8 +15,8 @@ type HomepageFeaturedPost = {
   publishedAt: string | Date | null;
 } | null;
 
-const FALLBACK_INSTAGRAM_URL = "https://www.instagram.com/creatyss";
-const FALLBACK_FACEBOOK_URL = "https://www.facebook.com/creatyss";
+const FALLBACK_INSTAGRAM_URL = homepageCopyConfig.journal.fallbackInstagramUrl;
+const FALLBACK_FACEBOOK_URL = homepageCopyConfig.journal.fallbackFacebookUrl;
 
 type HomepageJournalSectionProps = {
   featuredPost: HomepageFeaturedPost;
@@ -62,8 +64,7 @@ export function HomepageJournalSection({
         </article>
       ) : (
         <p className="leading-relaxed text-muted-foreground">
-          Le journal de l'atelier sera bientôt enrichi de nouveaux contenus : inspirations,
-          nouveautés et temps forts autour des créations Creatyss.
+          {homepageCopyConfig.journal.emptyText}
         </p>
       )}
 

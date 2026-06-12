@@ -1,5 +1,7 @@
 import { buildSeoDescription, pickSeoText } from "@/entities/product/seo-text";
 
+import { productPageCopyConfig } from "../config/product-page-copy.config";
+
 type ProductJsonLdSource = {
   slug: string;
   name: string;
@@ -38,7 +40,7 @@ export function buildProductJsonLd(input: {
     name: pickSeoText(product.name) ?? product.name,
     description: buildSeoDescription({
       candidates: [product.seoDescription, product.shortDescription, product.description],
-      defaultValue: "Produit Creatyss.",
+      defaultValue: productPageCopyConfig.jsonLdDefaultDescription,
       maxLength: 500,
     }),
     url: `${appUrl}/boutique/${product.slug}`,

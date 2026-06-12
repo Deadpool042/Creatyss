@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+
+import { brandConfig } from "@/core/config/brand";
 import { useRef, type ComponentType, type SVGProps } from "react";
 import {
   BookOpenTextIcon,
@@ -214,10 +216,10 @@ export function MobileMenuDrawer({ variant = "bottomNav" }: MobileMenuDrawerProp
               </div>
               <div className="min-w-0 pt-0.5">
                 <DrawerTitle className="font-semibold tracking-tight text-foreground">
-                  Creatyss
+                  {brandConfig.name}
                 </DrawerTitle>
                 <DrawerDescription className="mt-0.5 text-sm leading-relaxed text-text-muted-strong">
-                  Sacs artisanaux faits main à Saint-Étienne.
+                  {brandConfig.baselineShort}
                 </DrawerDescription>
               </div>
             </div>

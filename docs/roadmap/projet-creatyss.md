@@ -9,7 +9,9 @@ Creatyss est la boutique en ligne d'une créatrice de sacs artisanaux uniques.
 L'objectif n'est pas de construire une plateforme.
 C'est de livrer un outil sobre, fiable et premium, taillé pour une seule boutique, exploitable par une seule personne non technique.
 
-Chaque décision technique se justifie par rapport à cet objectif.
+Le produit Creatyss est la première instanciation d'un **socle e-commerce modulaire réutilisable** (cf. `AGENTS.md`) : un clone du repo doit pouvoir devenir une autre boutique en ne changeant que la présentation storefront, le contenu et la configuration. Les fonctionnalités au-delà du cœur sont des capacités optionnelles, activables explicitement et, quand c'est pertinent, graduées par niveaux — gouvernées selon `docs/domains/cross-cutting/feature-governance.md`. Ni site-factory, ni multi-tenant.
+
+Chaque décision technique se justifie par rapport à ces deux objectifs : la boutique d'abord, la réutilisabilité du socle comme discipline.
 
 ---
 
@@ -151,7 +153,7 @@ Limites du smoke : paiement limité à `Virement bancaire` (pas de paiement en l
 **Périmètre :**
 
 - Déploiement Docker Compose production (`docker-compose.prod.yml`)
-- Configuration HTTPS, reverse proxy (Nginx ou Caddy)
+- Configuration HTTPS, reverse proxy — Caddy retenu (2026-06-12, `docker/caddy/Caddyfile`)
 - Variables d'environnement et secrets externalisés
 - Sauvegardes base de données
 - Logs applicatifs lisibles
@@ -176,30 +178,66 @@ Limites du smoke : paiement limité à `Virement bancaire` (pas de paiement en l
 
 ---
 
+## Horizon 4 — Socle clonable et gouvernance des features
+
+**Objectif :** rendre opérationnelle l'identité « socle réutilisable » — un clone du repo devient une autre boutique sans toucher au cœur — et doter le mécanisme d'activation des niveaux nécessaires aux capacités graduées.
+
+Référence : `docs/audit/audit-clonabilite-2026-06-12.md` (inventaire des spécificités Creatyss dans le socle) et `docs/domains/cross-cutting/feature-governance.md` (doctrine modules / capabilities / niveaux / guards).
+
+**Pattern canonique pour toute capacité optionnelle :**
+
+1. prérequis socle (ce qui doit exister dans le cœur pour que l'option soit activable sans refonte) ;
+2. activation explicite (toggle DB via `FeatureFlag`, jamais par effet de bord) ;
+3. niveaux si la capacité est graduée (ex. localization : 1 langue → N langues + routing) ;
+4. fiche domaine à jour, testabilité indépendante, invariants cœur préservés.
+
+**Lots, par ordre de dépendance :**
+
+- Copy/config storefront (R1) : composants config-driven selon la convention existante `features/<domaine>/config/*.config.ts` ; source de marque unique consommée par metadata, footer, topbar, emails, JSON-LD. Prérequis de la clonabilité **et** du multilangue.
+- Gradation du mécanisme feature-flags : ajout du niveau dans `FeatureFlag` et sa résolution (lot `prisma-architect` — le modèle actuel est booléen alors que la gouvernance prévoit des features graduées).
+- Pages de contenu unifiées (R2) : `a-propos`, `les-marchés`, `contact` basculent vers le domaine `pages`, comme les pages légales.
+- Résolution de boutique unique (R5) : supprimer la double convention (`CANONICAL_STORE_CODE` en dur vs premier store).
+- Redirects d'instance hors du socle (R6) ; statut bootstrap explicite de l'outillage Woo (R4) — l'import durable des clones est l'import en masse générique (CSV), capacité optionnelle déjà modélisée.
+- `localization` comme première capacité graduée de référence : valide le pattern complet (toggle + niveaux + routing + traduction du contenu métier, distincte du copy UI).
+
+**Décision d'architecture préalable à toute extension commerce :** frontière `availability`/`inventory` — le flux panier calcule la disponibilité depuis `inventory` sans consulter `availabilityRecord`, et le cœur commerce dépend d'un module classé optionnel (cf. audit). À trancher en `architect-review` avant d'activer de nouvelles capacités commerce.
+
+**Validation :**
+
+- [ ] Copy/config storefront en place — plus de marque en dur dans les composants du socle
+- [ ] `FeatureFlag` gradué (niveau porté par le mécanisme et résolu par les guards)
+- [ ] Pages de contenu servies par le domaine `pages`
+- [ ] Résolution de boutique unifiée
+- [ ] Décision `availability`/`inventory` documentée
+- [ ] Clone à blanc : repo cloné, marque/contenu/config changés, boutique fonctionnelle sans modification du cœur
+
+---
+
 ## Plus tard — uniquement sur besoin validé
 
-À ouvrir uniquement si un besoin réel et explicite l'impose :
+Capacités optionnelles déjà modélisées dans `prisma/optional/` et `docs/domains/optional/` : leur ouverture est une **activation gouvernée** (pattern Horizon 4), pas une construction. À ouvrir uniquement si un besoin réel et explicite l'impose :
 
 - Retours et échanges
 - Cartes cadeaux
 - Programme fidélité
 - Expédition avancée (transporteurs, suivi)
 - Taxation plus riche
-- Extensions de paiement supplémentaires
+- Extensions de paiement supplémentaires (paiement en ligne inclus)
 - Recommandations produits
 - Enrichissements marketing (codes promo, bundles)
+- Import en masse générique (CSV ou autre)
+- Multi-langue (`localization` graduée — cadrée en Horizon 4)
 
 ---
 
 ## Hors périmètre assumé
 
-Sans validation explicite et contrary à l'intention produit :
+Sans validation explicite et contraire à l'intention produit :
 
 - Multi-tenant ou site-factory
 - Microservices
 - IA produit
 - Analytics complexes
-- Multi-langue
 - Multi-devise
 - Moteur de règles complexe
 - Migration vers Shopify, WordPress ou toute plateforme externe

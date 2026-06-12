@@ -9,6 +9,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/shared/theme";
 import { Toaster } from "@/components/ui/sonner";
 import { clientEnv } from "@/core/config/env";
+import { brandConfig } from "@/core/config/brand";
 
 const jost = Jost({
   subsets: ["latin"],
@@ -33,10 +34,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(clientEnv.appUrl),
   title: {
-    default: "Creatyss — Créations artisanales",
-    template: "%s — Creatyss",
+    default: brandConfig.metadata.titleDefault,
+    template: brandConfig.metadata.titleTemplate,
   },
-  description: "Créations artisanales faites main à Saint-Étienne. Sacs, pochettes et accessoires uniques, sans cuir animal. Découvrez les collections Creatyss.",
+  description: brandConfig.metadata.description,
 };
 
 type RootLayoutProps = Readonly<{

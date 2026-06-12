@@ -1,10 +1,12 @@
 import Link from "next/link";
 
-const FALLBACK_TITLE = "Derrière chaque sac, une main.";
-const FALLBACK_BODY = "« Je couds par passion, mais aussi par conviction — que les objets qu'on porte méritent d'être pensés, faits avec soin, et destinés à durer. »";
-const FALLBACK_SUBTITLE = "— Creatyss, fabrication française";
-const FALLBACK_CTA_LABEL = "Notre histoire";
-const FALLBACK_CTA_HREF = "/blog?category=atelier";
+import { homepageCopyConfig } from "../config/homepage-copy.config";
+
+const FALLBACK_TITLE = homepageCopyConfig.about.fallbackTitle;
+const FALLBACK_BODY = homepageCopyConfig.about.fallbackBody;
+const FALLBACK_SUBTITLE = homepageCopyConfig.about.fallbackSubtitle;
+const FALLBACK_CTA_LABEL = homepageCopyConfig.about.fallbackCtaLabel;
+const FALLBACK_CTA_HREF = homepageCopyConfig.about.fallbackCtaHref;
 
 type HomepageAboutSectionProps = {
   aboutTitle?: string | null | undefined;

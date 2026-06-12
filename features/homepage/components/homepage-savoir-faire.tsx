@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { homepageCopyConfig } from "../config/homepage-copy.config";
+
 type HomepageSavoirFaireSectionProps = {
   savoirFaireTitle?: string | null | undefined;
   savoirFaireBody?: string | null | undefined;
@@ -24,7 +26,7 @@ export function HomepageSavoirFaireSection({
       {/* Panneau visuel */}
       <div className="relative min-h-136 overflow-hidden bg-[linear-gradient(145deg,#c8b89e_0%,#a8906e_45%,#6e5840_100%)]">
         <Image
-          alt="Détail du savoir-faire Creatyss dans l'atelier"
+          alt={homepageCopyConfig.savoirFaire.imageAlt}
           src={resolvedImagePath}
           fill
           className="object-cover object-[58%_center] md:object-[62%_center]"
@@ -45,7 +47,7 @@ export function HomepageSavoirFaireSection({
           <div className="flex-1">
             <p className="text-[0.82rem] font-medium text-white/96">Fait main en France</p>
             <p className="mt-0.5 text-[0.75rem] font-light leading-relaxed text-white/72 dark:text-white/78">
-              Chaque geste, de la découpe à la finition, est réalisé dans l'atelier Creatyss.
+              {homepageCopyConfig.savoirFaire.badgeNote}
             </p>
           </div>
         </div>

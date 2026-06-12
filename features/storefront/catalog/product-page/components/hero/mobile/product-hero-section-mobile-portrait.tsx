@@ -11,6 +11,7 @@ import { ProductHeroAvailabilityMeta, ProductHeroPricingMeta } from "../product-
 import type { ProductHeroResolvedProps } from "../product-hero-resolved-props";
 import { ProductHeroVariableCartForm } from "../product-hero-variable-cart-form";
 import { ProductHeroVariantSelector } from "../product-hero-variant-selector";
+import { productPageCopyConfig } from "../../../config/product-page-copy.config";
 
 /**
  * Layout mobile portrait du hero produit.
@@ -108,10 +109,10 @@ export function ProductHeroSectionMobilePortrait({
             <div className="flex flex-wrap items-center gap-2 text-xs leading-snug text-muted-foreground">
               <span className="inline-flex items-center gap-1.5">
                 <MapPin aria-hidden="true" className="size-3.5 text-brand/85" />
-                <span>Fait main à Saint-Étienne</span>
+                <span>{productPageCopyConfig.heroBadges.location}</span>
               </span>
               <span className="rounded-full border border-surface-border-subtle px-2 py-0.5 text-[0.75rem] leading-5 text-muted-foreground">
-                Chaque sac est unique
+                {productPageCopyConfig.heroBadges.uniqueness}
               </span>
             </div>
             {shortDescription ? (

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { homepageCopyConfig } from "../config/homepage-copy.config";
+
 type HomepageHeroSectionProps = {
   heroTitle: string | null;
   heroText: string | null;
@@ -13,9 +15,7 @@ export function HomepageHeroSection({
   heroTitle,
 }: HomepageHeroSectionProps) {
   const resolvedTitle = heroTitle ?? "Des sacs faits main, nulle part ailleurs.";
-  const resolvedText =
-    heroText ??
-    "Chaque sac Creatyss est dessiné, coupé et cousu dans notre atelier en France. Aucun modèle n'est reproduit à l'identique.";
+  const resolvedText = heroText ?? homepageCopyConfig.hero.fallbackText;
 
   if (heroImagePath) {
     return (

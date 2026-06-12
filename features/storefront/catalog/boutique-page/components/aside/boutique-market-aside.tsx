@@ -2,17 +2,9 @@ import { ArrowRightIcon, CalendarIcon } from "lucide-react";
 
 import { CustomButton, CustomLink } from "@/components/shared";
 
-type MarketEvent = {
-  dateLabel: string;
-  name: string;
-  location: string;
-};
+import { boutiqueCopyConfig } from "../../config/boutique-copy.config";
 
-// Données éditoriales marchés — à remplacer par une source CMS quand disponible.
-const MARKET_EVENTS: readonly MarketEvent[] = [
-  { dateLabel: "Date à confirmer", name: "Marché de créateurs", location: "Saint-Étienne" },
-  { dateLabel: "Calendrier à venir", name: "Marché artisanal", location: "Loire" },
-];
+const asideCopy = boutiqueCopyConfig.marketAside;
 
 // Classes partagées localement — text-[0.65rem] = taille label eyebrow compact, pas d'alias Tailwind exact.
 const labelClass = "m-0 text-[0.65rem] font-semibold uppercase tracking-widest text-brand/80";
@@ -21,7 +13,7 @@ const eventDateClass = "m-0 text-[0.65rem] font-semibold uppercase tracking-[0.1
 export function BoutiqueMarketAside() {
   return (
     <aside
-      aria-label="Informations atelier Creatyss"
+      aria-label={asideCopy.ariaLabel}
       data-testid="boutique-market-aside"
       className="hidden tablet:block tablet:self-stretch "
     >
@@ -29,14 +21,14 @@ export function BoutiqueMarketAside() {
       <div className="grid gap-3 laptop:sticky laptop:top-32 laptop:z-20 laptop:content-start border-l border-brand h-fit">
         <div data-motion-surface="market-aside" className="grid gap-3.5  p-3.5">
           <div className="grid gap-1">
-            <p className={labelClass}>L&apos;atelier Creatyss</p>
+            <p className={labelClass}>{asideCopy.label}</p>
             <p className="m-0 text-base font-semibold leading-snug text-foreground">
-              Prochains marchés
+              {asideCopy.title}
             </p>
           </div>
 
           <ul className="m-0 grid list-none gap-3.5 border-y border-surface-border-subtle py-3.5 pl-0">
-            {MARKET_EVENTS.map((event) => (
+            {asideCopy.events.map((event) => (
               <li key={event.name} className="flex items-start gap-2.5">
                 <CalendarIcon
                   className="mt-0.5 size-3.5 shrink-0 text-brand/80"
@@ -63,7 +55,7 @@ export function BoutiqueMarketAside() {
               variant="navUnderline"
               className="capitalize flex items-center gap-1"
             >
-              Voir les marchés
+              {asideCopy.ctaLabel}
               <span>
                 <ArrowRightIcon />
               </span>
@@ -72,11 +64,10 @@ export function BoutiqueMarketAside() {
 
           <div className="grid gap-1.5 rounded-xl border border-surface-border-subtle/70 bg-background-secondary p-3">
             <p className="m-0 text-sm font-semibold leading-snug text-foreground">
-              Créations faites main en pièce unique
+              {asideCopy.uniqueBlock.title}
             </p>
             <p className="m-0 text-xs leading-relaxed text-text-muted-strong">
-              Chaque sac est imaginé et cousu à la main dans mon atelier stéphanois, en pièce
-              unique.
+              {asideCopy.uniqueBlock.body}
             </p>
           </div>
         </div>

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { brandConfig } from "@/core/config/brand";
+
 const BOUTIQUE_LINKS = [
   { href: "/boutique", label: "Toute la boutique" },
   { href: "/boutique?sort=newest", label: "Nouveautés" },
@@ -26,15 +28,6 @@ const LEGAL_LINKS = [
   { href: "/conditions-generales-de-vente", label: "CGV" },
   { href: "/politique-confidentialite", label: "Confidentialité" },
   { href: "/politique-retour", label: "Retours" },
-] as const;
-
-const ATELIER_ITEMS = [
-  "Saint-Étienne",
-  "Fait main",
-  "Sans cuir",
-  "Pièces uniques",
-  "Les marchés",
-  "Sur-mesure",
 ] as const;
 
 const FOOTER_LINK_CLASS =
@@ -67,11 +60,11 @@ export function FooterPublic() {
               className="h-6 w-auto shrink-0 opacity-85"
             />
             <span className="text-[0.88rem] font-semibold uppercase tracking-[0.2em]">
-              Creatyss
+              {brandConfig.name}
             </span>
           </Link>
           <p className="text-[0.82rem] leading-relaxed text-text-muted-strong">
-            Sacs et accessoires artisanaux conçus et cousus à la main à Saint‑Étienne, sans cuir.
+            {brandConfig.baseline}
           </p>
         </div>
 
@@ -119,7 +112,7 @@ export function FooterPublic() {
         <div className="flex flex-col gap-3">
           <FooterColumnTitle>L&apos;atelier</FooterColumnTitle>
           <ul className="flex flex-col gap-2">
-            {ATELIER_ITEMS.map((item) => (
+            {brandConfig.atelierItems.map((item) => (
               <li key={item} className="text-[0.82rem] text-text-muted-strong">
                 {item}
               </li>
@@ -141,7 +134,7 @@ export function FooterPublic() {
 
       <div className="mx-auto mt-8 flex max-w-430 flex-col items-center gap-3 border-t border-surface-border-subtle px-4 pt-5 text-center sm:px-6 min-[560px]:flex-row min-[560px]:justify-between xl:px-12">
         <span className="text-[0.78rem] text-text-muted-strong">
-          © {new Date().getFullYear()} Creatyss. Tous droits réservés.
+          © {new Date().getFullYear()} {brandConfig.copyrightName}. Tous droits réservés.
         </span>
         <nav aria-label="Liens légaux">
           <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
@@ -155,7 +148,7 @@ export function FooterPublic() {
           </ul>
         </nav>
         <span className="text-[0.78rem] text-text-muted-strong">
-          Créations artisanales en pièces uniques
+          {brandConfig.tagline}
         </span>
       </div>
     </footer>

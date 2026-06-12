@@ -1,3 +1,5 @@
+import { brandConfig } from "@/core/config/brand";
+
 import type { OrderEmailEventType } from "./order-email.types";
 
 type PaymentMethodInput = "card" | "bank_transfer" | "cash_on_delivery" | "other" | null;
@@ -48,7 +50,7 @@ function wrapHtml(input: {
     `<p>Bonjour ${input.greeting},</p>`,
     paragraphs,
     `<p><a href="${input.ctaUrl}">${input.ctaLabel}</a></p>`,
-    "<p>Creatyss</p>",
+    `<p>${brandConfig.emailSignature}</p>`,
     "</body>",
     "</html>",
   ].join("");
@@ -75,7 +77,7 @@ export function buildOrderEmailTemplate(input: OrderEmailTemplateInput): OrderEm
           "",
           `Suivre la commande : ${input.orderUrl}`,
           "",
-          "Creatyss",
+          brandConfig.emailSignature,
         ].join("\n"),
         html: wrapHtml({
           title: "Paiement confirme",
@@ -107,7 +109,7 @@ export function buildOrderEmailTemplate(input: OrderEmailTemplateInput): OrderEm
           "",
           `Suivre la commande : ${input.orderUrl}`,
           "",
-          "Creatyss",
+          brandConfig.emailSignature,
         ].join("\n"),
         html: wrapHtml({
           title: "Commande expediee",
@@ -138,7 +140,7 @@ export function buildOrderEmailTemplate(input: OrderEmailTemplateInput): OrderEm
           "",
           `Suivre la commande : ${input.orderUrl}`,
           "",
-          "Creatyss",
+          brandConfig.emailSignature,
         ].join("\n"),
         html: wrapHtml({
           title: "Commande creee",

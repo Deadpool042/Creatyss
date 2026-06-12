@@ -1,5 +1,9 @@
 import { Separator } from "@/components/ui/separator";
 
+import { boutiqueCopyConfig } from "../../config/boutique-copy.config";
+
+const headerCopy = boutiqueCopyConfig.header;
+
 type BoutiquePageHeaderProps = {
   productCountLabel: string;
   activeCategoryName: string | null;
@@ -65,8 +69,8 @@ export function BoutiquePageHeader({
           <div className="flex w-full flex-col gap-2 py-6 max-w-56 xs:max-w-[16rem] mobile:max-w-[18rem] tablet:max-w-md laptop:gap-3">
             <p className="m-0 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-brand">
               {activeCategoryName
-                ? `Sélection ${activeCategoryName}`
-                : "Créations uniques, faites main à Saint-Étienne"}
+                ? `${headerCopy.categoryEyebrowPrefix} ${activeCategoryName}`
+                : headerCopy.defaultEyebrow}
             </p>
 
             <h1 className="m-0 font-serif text-3xl font-medium leading-[1.05] tracking-[0.02em] text-foreground/80 tablet:text-4xl laptop:text-5xl">
@@ -76,8 +80,7 @@ export function BoutiquePageHeader({
             <Separator className="max-w-15 border border-brand" />
 
             <p className="m-0 text-xs italic leading-relaxed text-hero-ink-soft line-clamp-2 tablet:text-sm laptop:line-clamp-none">
-              Chaque pièce est imaginée et cousue à la main dans mon atelier stéphanois avec
-              passion, exigence et engagement.
+              {headerCopy.intro}
             </p>
 
             <p className="m-0 text-xs text-muted-foreground">{productCountLabel}</p>

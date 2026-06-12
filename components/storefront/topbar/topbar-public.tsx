@@ -2,6 +2,8 @@ import Image from "next/image";
 
 import Link from "next/link";
 
+import { brandConfig } from "@/core/config/brand";
+
 import type { ComponentType, SVGProps } from "react";
 
 import {
@@ -157,7 +159,7 @@ function PublicLogo({
           prominent ? "text-[1.1rem] tracking-[0.38em]" : "text-[1.05rem] tracking-[0.36em]",
         ].join(" ")}
       >
-        Creatyss
+        {brandConfig.name}
       </span>
     </Link>
   );

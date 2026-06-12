@@ -1,3 +1,5 @@
+import { brandConfig } from "@/core/config/brand";
+
 export function OrientationGuard() {
   return (
     <div
@@ -10,7 +12,7 @@ export function OrientationGuard() {
         </p>
         <p className="text-lg font-semibold text-foreground">Tournez votre téléphone</p>
         <p className="text-sm leading-relaxed text-text-muted-strong">
-          La boutique Creatyss est pensée pour une consultation mobile en portrait.
+          {brandConfig.orientationNotice}
         </p>
       </div>
     </div>
