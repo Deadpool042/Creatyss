@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { brandConfig } from "@/core/config/brand";
 import { listCatalogFilterCategories } from "@/features/storefront/catalog";
 
 export const metadata: Metadata = {
-  title: "Catégories — Creatyss",
-  description: "Découvrez toutes les collections Creatyss : sacs, accessoires et créations artisanales uniques.",
+  title: `Catégories — ${brandConfig.name}`,
+  description: brandConfig.categoriesPageDescription,
 };
 
 export const dynamic = "force-dynamic";
@@ -32,7 +33,7 @@ export default async function CategoriesPage() {
           Toutes les catégories
         </h1>
         <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Chaque collection est pensée et réalisée à la main dans l'atelier stéphanois de Creatyss.
+          {brandConfig.categoriesPageIntro}
         </p>
       </div>
 

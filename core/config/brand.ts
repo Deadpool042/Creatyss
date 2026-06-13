@@ -12,6 +12,16 @@
 export const brandConfig = {
   name: "Creatyss",
 
+  /**
+   * Identifiants techniques du store créé par le bootstrap initial
+   * (`scripts/helpers/admin-bootstrap.ts`, `ensureDefaultStore`).
+   * Pour un clone : changer ces valeurs avant le premier
+   * `pnpm run bootstrap:store-admin` sur une base vide. Sans effet sur un
+   * store déjà créé (champs éditables via `/admin/settings/general`).
+   */
+  storeCode: "creatyss",
+  storeSlug: "creatyss",
+
   metadata: {
     titleDefault: "Creatyss — Créations artisanales",
     titleTemplate: "%s — Creatyss",
@@ -54,6 +64,18 @@ export const brandConfig = {
 
   /** Signature des emails transactionnels. */
   emailSignature: "Creatyss",
+
+  /** Description longue du réassurance "fait main" (page boutique). */
+  reassuranceHandmadeDescription:
+    "Chaque pièce est cousue à la main dans notre atelier stéphanois.",
+
+  /** Page "Toutes les catégories" : metadata description. */
+  categoriesPageDescription:
+    "Découvrez toutes les collections Creatyss : sacs, accessoires et créations artisanales uniques.",
+
+  /** Page "Toutes les catégories" : intro éditoriale. */
+  categoriesPageIntro:
+    "Chaque collection est pensée et réalisée à la main dans l'atelier stéphanois de Creatyss.",
 } as const;
 
 export type BrandConfig = typeof brandConfig;

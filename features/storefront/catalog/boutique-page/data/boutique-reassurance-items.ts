@@ -1,5 +1,7 @@
 import { type LucideIcon, Gem, HandHeart, Leaf, Ruler } from "lucide-react";
 
+import { brandConfig } from "@/core/config/brand";
+
 export type ReassuranceItem = {
   readonly title: string;
   readonly description: string;
@@ -8,8 +10,8 @@ export type ReassuranceItem = {
 
 export const BOUTIQUE_REASSURANCE_ITEMS: readonly ReassuranceItem[] = [
   {
-    title: "Fait main à Saint-Étienne",
-    description: "Chaque pièce est cousue à la main dans notre atelier stéphanois.",
+    title: brandConfig.drawerNote.title,
+    description: brandConfig.reassuranceHandmadeDescription,
     Icon: HandHeart,
   },
   {

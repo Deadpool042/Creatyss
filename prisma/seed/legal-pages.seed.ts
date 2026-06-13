@@ -3,6 +3,16 @@ import type { PageStatus, PrismaClient } from "@/prisma-generated/client";
 /**
  * Seed des 4 Pages système légales.
  *
+ * Statut clonabilité (Horizon 4 — cadrage « clone à blanc »,
+ * `docs/lots/2026-06-13-clone-a-blanc-cadrage.md`) : ce contenu est un
+ * **contenu de bootstrap propre à l'instance Creatyss** (texte juridique
+ * réel repris de creatyss.com), pas un contrat de socle. Le socle n'impose
+ * aucun texte légal : ces pages vivent en DB (`PageSection`/`PageBlock`,
+ * domaine `pages`) et sont éditables via l'admin. Un clone du repo doit
+ * remplacer ce contenu par ses propres mentions légales/CGV/politique de
+ * confidentialité après le premier seed — ne pas publier ce contenu tel
+ * quel pour une autre boutique.
+ *
  * Sources :
  * - terms-of-sale : https://www.creatyss.com/conditions-generales-de-ventes/ (texte repris tel quel)
  * - privacy-policy : https://www.creatyss.com/politique-confidentialite/ (texte repris tel quel)

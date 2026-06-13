@@ -6,6 +6,7 @@ import {
   type PrismaClient,
 } from "@/prisma-generated/client";
 
+import { brandConfig } from "../../core/config/brand";
 import { hashAdminPassword } from "../../core/auth/admin/password";
 import { normalizeAdminBootstrapInput } from "../../core/auth/admin/validation";
 
@@ -42,11 +43,11 @@ export async function ensureDefaultStore(prisma: PrismaClient) {
 
   return prisma.store.create({
     data: {
-      code: "creatyss",
-      name: "Creatyss",
-      slug: "creatyss",
+      code: brandConfig.storeCode,
+      name: brandConfig.name,
+      slug: brandConfig.storeSlug,
       status: StoreStatus.ACTIVE,
-      legalName: "Creatyss",
+      legalName: brandConfig.name,
       supportEmail: "admin@creatyss.local",
       defaultLocaleCode: "fr-FR",
       defaultCurrency: "EUR",

@@ -198,18 +198,19 @@ Référence : `docs/audit/audit-clonabilite-2026-06-12.md` (inventaire des spéc
 - Pages de contenu unifiées (R2) — décision 2026-06-12 : copy en config (`features/storefront/content/config/`) dans l'immédiat ; la bascule vers les pages DB à blocs (`PageSection`/`PageBlock`, déjà modélisées) reste la cible quand l'éditeur de blocs sera implémenté.
 - Résolution de boutique unique (R5) : supprimer la double convention (`CANONICAL_STORE_CODE` en dur vs premier store).
 - Redirects d'instance hors du socle (R6) ; statut bootstrap explicite de l'outillage Woo (R4) — l'import durable des clones est l'import en masse générique (CSV), capacité optionnelle déjà modélisée.
-- `localization` comme première capacité graduée de référence : valide le pattern complet (toggle + niveaux + routing + traduction du contenu métier, distincte du copy UI).
+- `localization` comme première capacité graduée de référence : valide le pattern complet (toggle + niveaux + routing + traduction du contenu métier, distincte du copy UI). Lots 1 à 3 faits (2026-06-13) : guard gradué branché, niveau `managed` câblé (locale par défaut gérée + admin minimal `/admin/settings/localization`), convention copy unifiée (`entities/languages/resolve-locale-content.ts`), pilote `homepage` migré sans changement de composant. Lot 4 (`multilingual`, sous-lots 1-5) fait (2026-06-13) : seconde locale gérée, lecture `LocalizedValue` + fallback, sélecteur de langue storefront sans routing, admin de traduction et câblage lecture multilingue du pilote homepage. **Chantier en pause (2026-06-13)** : niveau repassé à `managed` (override store), sélecteur masqué, en attendant un autre chantier. Lot 5 (`localized-routing`, L3) cadré mais non implémenté — 5 décisions produit à trancher avant tout sous-lot (cf. `docs/lots/2026-06-13-localization-l3-cadrage.md`). Reprise prévue : généraliser `LocalizedValue` à d'autres contenus et/ou trancher le cadrage L3.
 
 **Décision d'architecture `availability`/`inventory` — tranchée le 2026-06-12 :** doctrine réaffirmée, phase 1 sans précommande. La vendabilité (`availabilityRecord`) est consommée par le flux panier (ajout, lignes, checkout) ; `inventory` reste la vérité de quantité (re-vérification transactionnelle + décrément à la création de commande). Détail dans `docs/domains/core/catalog/availability.md`, « Décisions tranchées ».
 
 **Validation :**
 
 - [x] Copy/config storefront en place — plus de marque en dur dans les composants du socle ; garde anti-régression unitaire (`brand-copy-guard.test.ts`) couvrant storefront/homepage/components (2026-06-12)
-- [ ] `FeatureFlag` gradué — schéma additif (`allowedLevels`, `defaultLevel`, `Override.level`) et règles pures posés, `prisma validate` OK ; restent `db:push` (sauvegarde préalable), `test:unit`, et le premier guard gradué (`localization`)
+- [x] `FeatureFlag` gradué — schéma additif (`allowedLevels`, `defaultLevel`, `Override.level`) posé, `db:push` et `test:unit` (110/110) OK (2026-06-12) ; premier guard gradué branché (`getLocalizationFeatureState` / `meetsLocalizationLevel`, flag `platform.localization` seedé en DRAFT, `allowedLevels = ["managed", "multilingual", "localized-routing"]`) (2026-06-13) — reste à régénérer le client Prisma (`db:generate`) pour exposer ces champs au typecheck
 - [x] Pages de contenu en copy/config (`a-propos`, `les-marchés`, `contact`) — option config actée, cible « pages à blocs » tracée (2026-06-12)
 - [x] Résolution de boutique unifiée — convention premier-store partout, `CANONICAL_STORE_CODE` supprimé (2026-06-12)
+- [x] Statut bootstrap Woo explicite (R4) — `scripts/import-woocommerce/README.md` documente le périmètre instance Creatyss, `WC_*` hors runtime socle, couplage `seed:dev`, capacité durable = import générique CSV (déjà fait, non daté)
 - [x] Décision `availability`/`inventory` documentée et implémentée côté panier (2026-06-12)
-- [ ] Clone à blanc : repo cloné, marque/contenu/config changés, boutique fonctionnelle sans modification du cœur
+- [ ] Clone à blanc : repo cloné, marque/contenu/config changés, boutique fonctionnelle sans modification du cœur — cadré (`docs/lots/2026-06-13-clone-a-blanc-cadrage.md`). Sous-lots 1-3 faits (2026-06-13) : inventaire des points de config (`docs/exploitation/05-clonage-instance.md`), identité du store au premier seed centralisée via `brandConfig.storeCode`/`storeSlug`, contenu légal seedé documenté comme bootstrap Creatyss. Reste le sous-lot 4 (exécution réelle de la validation, en local — DB `localhost:5434` hors de portée du sandbox).
 
 ---
 
