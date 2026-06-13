@@ -11,6 +11,7 @@ import { ProductPageTemplate } from "@/features/storefront/catalog/product-page/
 import { buildProductPageViewModel } from "@/features/storefront/catalog/product-page/composition/build-product-page-view-model";
 import { buildStorefrontProductPageRendering } from "@/features/storefront/catalog/product-page/composition/build-storefront-product-page-rendering";
 import { buildProductJsonLd } from "@/features/storefront/catalog/product-page/model/build-product-json-ld";
+import { getLocalizedProductPageCopy } from "@/features/storefront/catalog/product-page/queries/get-localized-product-page-copy.query";
 import { buildSeoDescription, pickSeoText } from "@/entities/product/seo-text";
 import { getSeoRobotsFlags } from "@/entities/seo";
 
@@ -98,9 +99,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const [product, relatedActive] = await Promise.all([
+  const [product, relatedActive, productPageCopy] = await Promise.all([
     getPublishedProductBySlug(slug),
     isRelatedProductsFeatureActive(),
+    getLocalizedProductPageCopy(),
   ]);
 
   if (product === null) {
@@ -126,6 +128,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const productJsonLd = buildProductJsonLd({
     product,
     appUrl: clientEnv.appUrl,
+    jsonLdDefaultDescription: productPageCopy.jsonLdDefaultDescription,
   });
 
   return (
@@ -154,6 +157,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         heroCta={rendering.heroCta}
         heroVariantSummary={viewModel.variantSummary}
         heroAsideExtra={heroAsideExtra}
+        editorialCopy={productPageCopy.editorial}
+        heroLocationLabel={productPageCopy.heroBadges.location}
+        heroUniquenessLabel={productPageCopy.heroBadges.uniqueness}
+        heroUniquenessCompactLabel={productPageCopy.heroBadges.uniquenessCompact}
       />
     </>
   );

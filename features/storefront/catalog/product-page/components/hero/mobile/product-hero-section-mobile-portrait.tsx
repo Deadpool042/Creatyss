@@ -13,6 +13,13 @@ import { ProductHeroVariableCartForm } from "../product-hero-variable-cart-form"
 import { ProductHeroVariantSelector } from "../product-hero-variant-selector";
 import { productPageCopyConfig } from "../../../config/product-page-copy.config";
 
+type Props = ProductHeroResolvedProps & {
+  /** Badge localisation (icône MapPin) — défaut : config fr. */
+  heroLocationLabel?: string;
+  /** Badge unicité (variante portrait) — défaut : config fr. */
+  heroUniquenessLabel?: string;
+};
+
 /**
  * Layout mobile portrait du hero produit.
  *
@@ -46,7 +53,9 @@ export function ProductHeroSectionMobilePortrait({
   cta,
   asideExtra,
   disableCart,
-}: ProductHeroResolvedProps) {
+  heroLocationLabel = productPageCopyConfig.heroBadges.location,
+  heroUniquenessLabel = productPageCopyConfig.heroBadges.uniqueness,
+}: Props) {
   const hasVisibleThumbnailRail = false;
   const shouldShowGalleryDots = !hasVisibleThumbnailRail && galleryImages.length > 1;
   const shouldShowActionBlock = !isSimpleProduct || Boolean(cta);
@@ -109,10 +118,10 @@ export function ProductHeroSectionMobilePortrait({
             <div className="flex flex-wrap items-center gap-2 text-xs leading-snug text-muted-foreground">
               <span className="inline-flex items-center gap-1.5">
                 <MapPin aria-hidden="true" className="size-3.5 text-brand/85" />
-                <span>{productPageCopyConfig.heroBadges.location}</span>
+                <span>{heroLocationLabel}</span>
               </span>
               <span className="rounded-full border border-surface-border-subtle px-2 py-0.5 text-[0.75rem] leading-5 text-muted-foreground">
-                {productPageCopyConfig.heroBadges.uniqueness}
+                {heroUniquenessLabel}
               </span>
             </div>
             {shortDescription ? (

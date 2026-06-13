@@ -31,8 +31,14 @@ function toAbsoluteUrl(input: string, base: string): string {
 export function buildProductJsonLd(input: {
   product: ProductJsonLdSource;
   appUrl: string;
+  /** Description JSON-LD par défaut (localisée) — défaut : config fr. */
+  jsonLdDefaultDescription?: string;
 }): ProductJsonLd {
-  const { product, appUrl } = input;
+  const {
+    product,
+    appUrl,
+    jsonLdDefaultDescription = productPageCopyConfig.jsonLdDefaultDescription,
+  } = input;
 
   return {
     "@context": "https://schema.org",
@@ -40,7 +46,7 @@ export function buildProductJsonLd(input: {
     name: pickSeoText(product.name) ?? product.name,
     description: buildSeoDescription({
       candidates: [product.seoDescription, product.shortDescription, product.description],
-      defaultValue: productPageCopyConfig.jsonLdDefaultDescription,
+      defaultValue: jsonLdDefaultDescription,
       maxLength: 500,
     }),
     url: `${appUrl}/boutique/${product.slug}`,

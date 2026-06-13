@@ -14,6 +14,7 @@ import React from "react";
 
 import { getUploadsPublicPath } from "@/core/uploads";
 import type { OfferVariant } from "@/features/storefront/catalog/types/product-offer-variant.types";
+import type { ProductPageCopy } from "../config/product-page-copy.config";
 
 import { ProductRelatedSection } from "./sections/product-related-section";
 import { ProductHeroSection } from "./hero/product-hero-section";
@@ -81,6 +82,12 @@ export type ProductPageTemplateProps = {
   heroVariantSummary?: { total: number; available: number } | null;
   heroAsideExtra?: React.ReactNode;
   disableCart?: boolean;
+  /** Copy éditorial localisé — défaut : config fr. */
+  editorialCopy?: ProductPageCopy["editorial"];
+  /** Badges hero localisés (mobile uniquement) — défaut : config fr. */
+  heroLocationLabel?: string;
+  heroUniquenessLabel?: string;
+  heroUniquenessCompactLabel?: string;
 };
 
 export function ProductPageTemplate({
@@ -103,6 +110,10 @@ export function ProductPageTemplate({
   heroVariantSummary,
   heroAsideExtra,
   disableCart,
+  editorialCopy,
+  heroLocationLabel,
+  heroUniquenessLabel,
+  heroUniquenessCompactLabel,
 }: ProductPageTemplateProps) {
   const uploadsPublicPath = getUploadsPublicPath();
   const isSimpleProduct = productType === "simple";
@@ -141,6 +152,9 @@ export function ProductPageTemplate({
           variablePriceLabel={!isSimpleProduct ? "Prix (selon déclinaison)" : null}
           cta={heroCta}
           asideExtra={heroAsideExtra}
+          {...(heroLocationLabel !== undefined ? { heroLocationLabel } : {})}
+          {...(heroUniquenessLabel !== undefined ? { heroUniquenessLabel } : {})}
+          {...(heroUniquenessCompactLabel !== undefined ? { heroUniquenessCompactLabel } : {})}
           {...(disableCart !== undefined ? { disableCart } : {})}
         />
 
@@ -162,7 +176,7 @@ export function ProductPageTemplate({
             }
             careContent={resolvedCareContent ? <p>{resolvedCareContent}</p> : undefined}
           />
-          <ProductEditorialSection />
+          <ProductEditorialSection {...(editorialCopy !== undefined ? { copy: editorialCopy } : {})} />
         </div>
 
         <div className="block min-[700px]:hidden">

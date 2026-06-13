@@ -16,6 +16,13 @@ import { ProductHeroVariableCartForm } from "../product-hero-variable-cart-form"
 import { ProductHeroVariantSelector } from "../product-hero-variant-selector";
 import { productPageCopyConfig } from "../../../config/product-page-copy.config";
 
+type Props = ProductHeroResolvedProps & {
+  /** Badge localisation (icône MapPin) — défaut : config fr. */
+  heroLocationLabel?: string;
+  /** Badge unicité (variante compacte) — défaut : config fr. */
+  heroUniquenessCompactLabel?: string;
+};
+
 /**
  * Layout landscape compact du hero produit.
  *
@@ -49,7 +56,9 @@ export function ProductHeroSectionLandscape({
   cta,
   asideExtra,
   disableCart,
-}: ProductHeroResolvedProps) {
+  heroLocationLabel = productPageCopyConfig.heroBadges.location,
+  heroUniquenessCompactLabel = productPageCopyConfig.heroBadges.uniquenessCompact,
+}: Props) {
   const hasVisibleThumbnailRail = false;
   const shouldShowGalleryDots = !hasVisibleThumbnailRail && galleryImages.length > 1;
   const shouldShowActionBlock = Boolean(cta) || Boolean(variableVariants);
@@ -118,10 +127,10 @@ export function ProductHeroSectionLandscape({
               <div className="flex flex-wrap items-center gap-1.5 text-[0.75rem] leading-4 text-foreground-muted">
                 <span className="inline-flex items-center gap-1">
                   <MapPin aria-hidden="true" className="size-3 text-brand/85" />
-                  <span>{productPageCopyConfig.heroBadges.location}</span>
+                  <span>{heroLocationLabel}</span>
                 </span>
                 <span className="rounded-full border border-surface-border-subtle px-1.5 py-0.5">
-                  {productPageCopyConfig.heroBadges.uniquenessCompact}
+                  {heroUniquenessCompactLabel}
                 </span>
               </div>
             </section>

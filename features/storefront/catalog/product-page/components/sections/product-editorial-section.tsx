@@ -10,15 +10,20 @@ import Link from "next/link";
 
 import { ArrowRight } from "lucide-react";
 
-import { productPageCopyConfig } from "../../config/product-page-copy.config";
+import { productPageCopyConfig, type ProductPageCopy } from "../../config/product-page-copy.config";
 
-const editorialCopy = productPageCopyConfig.editorial;
+type Props = {
+  /** Copy éditorial résolu (localisé) — défaut : config fr. */
+  copy?: ProductPageCopy["editorial"];
+};
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
-export function ProductEditorialSection() {
+export function ProductEditorialSection({ copy = productPageCopyConfig.editorial }: Props) {
+  const editorialCopy = copy;
+
   return (
     <section className="w-full px-1 py-2 min-[700px]:px-2 min-[1200px]:px-3 ">
       <div className="grid max-w-2xl gap-6">

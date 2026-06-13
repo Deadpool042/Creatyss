@@ -32,6 +32,10 @@ export type ProductHeroSectionProps = {
   cta?: React.ReactNode | undefined;
   asideExtra?: React.ReactNode | undefined;
   disableCart?: boolean;
+  /** Badges hero localisés (mobile uniquement) — défaut : config fr. */
+  heroLocationLabel?: string;
+  heroUniquenessLabel?: string;
+  heroUniquenessCompactLabel?: string;
 };
 
 // ---------------------------------------------------------------------------
@@ -86,6 +90,9 @@ export function ProductHeroSection({
   cta,
   asideExtra,
   disableCart,
+  heroLocationLabel,
+  heroUniquenessLabel,
+  heroUniquenessCompactLabel,
 }: ProductHeroSectionProps) {
   // --- État variant sélectionné ---
   const initialSelectedVariantId = useMemo(() => {
@@ -219,12 +226,20 @@ export function ProductHeroSection({
 
       {/* Landscape compact — petit viewport paysage uniquement */}
       <div className="hidden [@media(max-height:600px)_and_(orientation:landscape)]:block">
-        <ProductHeroSectionLandscape {...resolvedProps} />
+        <ProductHeroSectionLandscape
+          {...resolvedProps}
+          {...(heroLocationLabel !== undefined ? { heroLocationLabel } : {})}
+          {...(heroUniquenessCompactLabel !== undefined ? { heroUniquenessCompactLabel } : {})}
+        />
       </div>
 
       {/* Mobile portrait — < md, hors landscape compact */}
       <div className="block md:hidden [@media(max-height:600px)_and_(orientation:landscape)]:hidden">
-        <ProductHeroSectionMobilePortrait {...resolvedProps} />
+        <ProductHeroSectionMobilePortrait
+          {...resolvedProps}
+          {...(heroLocationLabel !== undefined ? { heroLocationLabel } : {})}
+          {...(heroUniquenessLabel !== undefined ? { heroUniquenessLabel } : {})}
+        />
       </div>
 
       {/* Tablet — md à < xl, hors landscape compact */}

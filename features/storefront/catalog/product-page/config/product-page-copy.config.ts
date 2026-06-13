@@ -1,29 +1,28 @@
 /**
- * Copy éditorial de la fiche produit (Horizon 4 — lot R1).
+ * Copy éditorial de la fiche produit (Horizon 4 — lot R1 ; convention copy
+ * unifiée — généralisation `LocalizedValue`, pilote n°2 après `homepage`).
  *
- * Textes de marque extraits des composants : les composants consomment cette
- * configuration, le clone change le contenu ici. Locale par défaut en vue de
- * l'option `localization`.
+ * Cette config est le CONTRAT consommé par les composants (forme et clés du
+ * copy ; valeurs par défaut éditoriales). Son CONTENU est résolu par locale
+ * via `entities/languages/<locale>/product-page/`.
+ *
+ * Aujourd'hui une seule locale est servie (la locale par défaut, fr) : la
+ * résolution est constante, mais suit déjà le chemin qu'empruntera une
+ * future locale secondaire à l'activation du niveau `multilingual` de
+ * `platform.localization` — aucun second remaniement des composants.
  */
-export const productPageCopyConfig = {
-  editorial: {
-    eyebrow: "Savoir-faire",
-    titleLine1: "Fabriqué à la main",
-    titleLine2: "à Saint-Étienne",
-    body: "Chaque pièce est pensée, dessinée et fabriquée à la main dans mon atelier stéphanois. Je sélectionne des matières choisies avec exigence et réalise des finitions soignées, pour des pièces uniques, pensées pour durer.",
-    ctaLabel: "Découvrir mon atelier",
-    ctaHref: "/a-propos",
-  },
+import { resolveLocaleContent } from "@/entities/languages/resolve-locale-content";
+import { PRODUCT_PAGE_COPY_FR } from "@/entities/languages/fr/product-page/product-page-copy_fr";
 
-  heroBadges: {
-    /** Badge localisation (icône MapPin). */
-    location: "Fait main à Saint-Étienne",
-    /** Badge unicité — variante par défaut (portrait). */
-    uniqueness: "Chaque sac est unique",
-    /** Badge unicité — variante compacte (landscape). */
-    uniquenessCompact: "Pièce unique",
-  },
+export type ProductPageCopy = typeof PRODUCT_PAGE_COPY_FR;
 
-  /** Description JSON-LD par défaut quand le produit n'en fournit aucune. */
-  jsonLdDefaultDescription: "Produit Creatyss.",
-} as const;
+const PRODUCT_PAGE_COPY_DEFAULT_LOCALE = "fr";
+
+const productPageCopyDictionaries: Readonly<Record<string, ProductPageCopy>> = {
+  fr: PRODUCT_PAGE_COPY_FR,
+};
+
+export const productPageCopyConfig: ProductPageCopy = resolveLocaleContent({
+  dictionaries: productPageCopyDictionaries,
+  defaultLocaleCode: PRODUCT_PAGE_COPY_DEFAULT_LOCALE,
+});
