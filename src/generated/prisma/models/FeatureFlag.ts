@@ -33,6 +33,7 @@ export type FeatureFlagMinAggregateOutputType = {
   status: $Enums.FeatureFlagStatus | null
   scopeType: $Enums.FeatureFlagScopeType | null
   isEnabledByDefault: boolean | null
+  defaultLevel: string | null
   createdAt: Date | null
   updatedAt: Date | null
   archivedAt: Date | null
@@ -47,6 +48,7 @@ export type FeatureFlagMaxAggregateOutputType = {
   status: $Enums.FeatureFlagStatus | null
   scopeType: $Enums.FeatureFlagScopeType | null
   isEnabledByDefault: boolean | null
+  defaultLevel: string | null
   createdAt: Date | null
   updatedAt: Date | null
   archivedAt: Date | null
@@ -61,6 +63,8 @@ export type FeatureFlagCountAggregateOutputType = {
   status: number
   scopeType: number
   isEnabledByDefault: number
+  allowedLevels: number
+  defaultLevel: number
   createdAt: number
   updatedAt: number
   archivedAt: number
@@ -77,6 +81,7 @@ export type FeatureFlagMinAggregateInputType = {
   status?: true
   scopeType?: true
   isEnabledByDefault?: true
+  defaultLevel?: true
   createdAt?: true
   updatedAt?: true
   archivedAt?: true
@@ -91,6 +96,7 @@ export type FeatureFlagMaxAggregateInputType = {
   status?: true
   scopeType?: true
   isEnabledByDefault?: true
+  defaultLevel?: true
   createdAt?: true
   updatedAt?: true
   archivedAt?: true
@@ -105,6 +111,8 @@ export type FeatureFlagCountAggregateInputType = {
   status?: true
   scopeType?: true
   isEnabledByDefault?: true
+  allowedLevels?: true
+  defaultLevel?: true
   createdAt?: true
   updatedAt?: true
   archivedAt?: true
@@ -192,6 +200,8 @@ export type FeatureFlagGroupByOutputType = {
   status: $Enums.FeatureFlagStatus
   scopeType: $Enums.FeatureFlagScopeType
   isEnabledByDefault: boolean
+  allowedLevels: string[]
+  defaultLevel: string | null
   createdAt: Date
   updatedAt: Date
   archivedAt: Date | null
@@ -227,6 +237,8 @@ export type FeatureFlagWhereInput = {
   status?: Prisma.EnumFeatureFlagStatusFilter<"FeatureFlag"> | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFilter<"FeatureFlag"> | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFilter<"FeatureFlag"> | boolean
+  allowedLevels?: Prisma.StringNullableListFilter<"FeatureFlag">
+  defaultLevel?: Prisma.StringNullableFilter<"FeatureFlag"> | string | null
   createdAt?: Prisma.DateTimeFilter<"FeatureFlag"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FeatureFlag"> | Date | string
   archivedAt?: Prisma.DateTimeNullableFilter<"FeatureFlag"> | Date | string | null
@@ -243,6 +255,8 @@ export type FeatureFlagOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   scopeType?: Prisma.SortOrder
   isEnabledByDefault?: Prisma.SortOrder
+  allowedLevels?: Prisma.SortOrder
+  defaultLevel?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -263,6 +277,8 @@ export type FeatureFlagWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumFeatureFlagStatusFilter<"FeatureFlag"> | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFilter<"FeatureFlag"> | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFilter<"FeatureFlag"> | boolean
+  allowedLevels?: Prisma.StringNullableListFilter<"FeatureFlag">
+  defaultLevel?: Prisma.StringNullableFilter<"FeatureFlag"> | string | null
   createdAt?: Prisma.DateTimeFilter<"FeatureFlag"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FeatureFlag"> | Date | string
   archivedAt?: Prisma.DateTimeNullableFilter<"FeatureFlag"> | Date | string | null
@@ -279,6 +295,8 @@ export type FeatureFlagOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   scopeType?: Prisma.SortOrder
   isEnabledByDefault?: Prisma.SortOrder
+  allowedLevels?: Prisma.SortOrder
+  defaultLevel?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -299,6 +317,8 @@ export type FeatureFlagScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumFeatureFlagStatusWithAggregatesFilter<"FeatureFlag"> | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeWithAggregatesFilter<"FeatureFlag"> | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolWithAggregatesFilter<"FeatureFlag"> | boolean
+  allowedLevels?: Prisma.StringNullableListFilter<"FeatureFlag">
+  defaultLevel?: Prisma.StringNullableWithAggregatesFilter<"FeatureFlag"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"FeatureFlag"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"FeatureFlag"> | Date | string
   archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"FeatureFlag"> | Date | string | null
@@ -312,6 +332,8 @@ export type FeatureFlagCreateInput = {
   status?: $Enums.FeatureFlagStatus
   scopeType?: $Enums.FeatureFlagScopeType
   isEnabledByDefault?: boolean
+  allowedLevels?: Prisma.FeatureFlagCreateallowedLevelsInput | string[]
+  defaultLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -328,6 +350,8 @@ export type FeatureFlagUncheckedCreateInput = {
   status?: $Enums.FeatureFlagStatus
   scopeType?: $Enums.FeatureFlagScopeType
   isEnabledByDefault?: boolean
+  allowedLevels?: Prisma.FeatureFlagCreateallowedLevelsInput | string[]
+  defaultLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -342,6 +366,8 @@ export type FeatureFlagUpdateInput = {
   status?: Prisma.EnumFeatureFlagStatusFieldUpdateOperationsInput | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowedLevels?: Prisma.FeatureFlagUpdateallowedLevelsInput | string[]
+  defaultLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -358,6 +384,8 @@ export type FeatureFlagUncheckedUpdateInput = {
   status?: Prisma.EnumFeatureFlagStatusFieldUpdateOperationsInput | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowedLevels?: Prisma.FeatureFlagUpdateallowedLevelsInput | string[]
+  defaultLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -373,6 +401,8 @@ export type FeatureFlagCreateManyInput = {
   status?: $Enums.FeatureFlagStatus
   scopeType?: $Enums.FeatureFlagScopeType
   isEnabledByDefault?: boolean
+  allowedLevels?: Prisma.FeatureFlagCreateallowedLevelsInput | string[]
+  defaultLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -386,6 +416,8 @@ export type FeatureFlagUpdateManyMutationInput = {
   status?: Prisma.EnumFeatureFlagStatusFieldUpdateOperationsInput | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowedLevels?: Prisma.FeatureFlagUpdateallowedLevelsInput | string[]
+  defaultLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -400,6 +432,8 @@ export type FeatureFlagUncheckedUpdateManyInput = {
   status?: Prisma.EnumFeatureFlagStatusFieldUpdateOperationsInput | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowedLevels?: Prisma.FeatureFlagUpdateallowedLevelsInput | string[]
+  defaultLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -413,6 +447,14 @@ export type FeatureFlagListRelationFilter = {
 
 export type FeatureFlagOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type FeatureFlagStoreIdCodeCompoundUniqueInput = {
@@ -429,6 +471,8 @@ export type FeatureFlagCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   scopeType?: Prisma.SortOrder
   isEnabledByDefault?: Prisma.SortOrder
+  allowedLevels?: Prisma.SortOrder
+  defaultLevel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
@@ -443,6 +487,7 @@ export type FeatureFlagMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   scopeType?: Prisma.SortOrder
   isEnabledByDefault?: Prisma.SortOrder
+  defaultLevel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
@@ -457,6 +502,7 @@ export type FeatureFlagMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   scopeType?: Prisma.SortOrder
   isEnabledByDefault?: Prisma.SortOrder
+  defaultLevel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
@@ -509,12 +555,21 @@ export type FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput = {
   deleteMany?: Prisma.FeatureFlagScalarWhereInput | Prisma.FeatureFlagScalarWhereInput[]
 }
 
+export type FeatureFlagCreateallowedLevelsInput = {
+  set: string[]
+}
+
 export type EnumFeatureFlagStatusFieldUpdateOperationsInput = {
   set?: $Enums.FeatureFlagStatus
 }
 
 export type EnumFeatureFlagScopeTypeFieldUpdateOperationsInput = {
   set?: $Enums.FeatureFlagScopeType
+}
+
+export type FeatureFlagUpdateallowedLevelsInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type FeatureFlagCreateNestedOneWithoutOverridesInput = {
@@ -539,6 +594,8 @@ export type FeatureFlagCreateWithoutStoreInput = {
   status?: $Enums.FeatureFlagStatus
   scopeType?: $Enums.FeatureFlagScopeType
   isEnabledByDefault?: boolean
+  allowedLevels?: Prisma.FeatureFlagCreateallowedLevelsInput | string[]
+  defaultLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -553,6 +610,8 @@ export type FeatureFlagUncheckedCreateWithoutStoreInput = {
   status?: $Enums.FeatureFlagStatus
   scopeType?: $Enums.FeatureFlagScopeType
   isEnabledByDefault?: boolean
+  allowedLevels?: Prisma.FeatureFlagCreateallowedLevelsInput | string[]
+  defaultLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -597,6 +656,8 @@ export type FeatureFlagScalarWhereInput = {
   status?: Prisma.EnumFeatureFlagStatusFilter<"FeatureFlag"> | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFilter<"FeatureFlag"> | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFilter<"FeatureFlag"> | boolean
+  allowedLevels?: Prisma.StringNullableListFilter<"FeatureFlag">
+  defaultLevel?: Prisma.StringNullableFilter<"FeatureFlag"> | string | null
   createdAt?: Prisma.DateTimeFilter<"FeatureFlag"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FeatureFlag"> | Date | string
   archivedAt?: Prisma.DateTimeNullableFilter<"FeatureFlag"> | Date | string | null
@@ -610,6 +671,8 @@ export type FeatureFlagCreateWithoutOverridesInput = {
   status?: $Enums.FeatureFlagStatus
   scopeType?: $Enums.FeatureFlagScopeType
   isEnabledByDefault?: boolean
+  allowedLevels?: Prisma.FeatureFlagCreateallowedLevelsInput | string[]
+  defaultLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -625,6 +688,8 @@ export type FeatureFlagUncheckedCreateWithoutOverridesInput = {
   status?: $Enums.FeatureFlagStatus
   scopeType?: $Enums.FeatureFlagScopeType
   isEnabledByDefault?: boolean
+  allowedLevels?: Prisma.FeatureFlagCreateallowedLevelsInput | string[]
+  defaultLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -654,6 +719,8 @@ export type FeatureFlagUpdateWithoutOverridesInput = {
   status?: Prisma.EnumFeatureFlagStatusFieldUpdateOperationsInput | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowedLevels?: Prisma.FeatureFlagUpdateallowedLevelsInput | string[]
+  defaultLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -669,6 +736,8 @@ export type FeatureFlagUncheckedUpdateWithoutOverridesInput = {
   status?: Prisma.EnumFeatureFlagStatusFieldUpdateOperationsInput | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowedLevels?: Prisma.FeatureFlagUpdateallowedLevelsInput | string[]
+  defaultLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -682,6 +751,8 @@ export type FeatureFlagCreateManyStoreInput = {
   status?: $Enums.FeatureFlagStatus
   scopeType?: $Enums.FeatureFlagScopeType
   isEnabledByDefault?: boolean
+  allowedLevels?: Prisma.FeatureFlagCreateallowedLevelsInput | string[]
+  defaultLevel?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -695,6 +766,8 @@ export type FeatureFlagUpdateWithoutStoreInput = {
   status?: Prisma.EnumFeatureFlagStatusFieldUpdateOperationsInput | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowedLevels?: Prisma.FeatureFlagUpdateallowedLevelsInput | string[]
+  defaultLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -709,6 +782,8 @@ export type FeatureFlagUncheckedUpdateWithoutStoreInput = {
   status?: Prisma.EnumFeatureFlagStatusFieldUpdateOperationsInput | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowedLevels?: Prisma.FeatureFlagUpdateallowedLevelsInput | string[]
+  defaultLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -723,6 +798,8 @@ export type FeatureFlagUncheckedUpdateManyWithoutStoreInput = {
   status?: Prisma.EnumFeatureFlagStatusFieldUpdateOperationsInput | $Enums.FeatureFlagStatus
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   isEnabledByDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowedLevels?: Prisma.FeatureFlagUpdateallowedLevelsInput | string[]
+  defaultLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -768,6 +845,8 @@ export type FeatureFlagSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   status?: boolean
   scopeType?: boolean
   isEnabledByDefault?: boolean
+  allowedLevels?: boolean
+  defaultLevel?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   archivedAt?: boolean
@@ -785,6 +864,8 @@ export type FeatureFlagSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   status?: boolean
   scopeType?: boolean
   isEnabledByDefault?: boolean
+  allowedLevels?: boolean
+  defaultLevel?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   archivedAt?: boolean
@@ -800,6 +881,8 @@ export type FeatureFlagSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   status?: boolean
   scopeType?: boolean
   isEnabledByDefault?: boolean
+  allowedLevels?: boolean
+  defaultLevel?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   archivedAt?: boolean
@@ -815,12 +898,14 @@ export type FeatureFlagSelectScalar = {
   status?: boolean
   scopeType?: boolean
   isEnabledByDefault?: boolean
+  allowedLevels?: boolean
+  defaultLevel?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   archivedAt?: boolean
 }
 
-export type FeatureFlagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "code" | "name" | "description" | "status" | "scopeType" | "isEnabledByDefault" | "createdAt" | "updatedAt" | "archivedAt", ExtArgs["result"]["featureFlag"]>
+export type FeatureFlagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "code" | "name" | "description" | "status" | "scopeType" | "isEnabledByDefault" | "allowedLevels" | "defaultLevel" | "createdAt" | "updatedAt" | "archivedAt", ExtArgs["result"]["featureFlag"]>
 export type FeatureFlagInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   store?: boolean | Prisma.FeatureFlag$storeArgs<ExtArgs>
   overrides?: boolean | Prisma.FeatureFlag$overridesArgs<ExtArgs>
@@ -848,6 +933,17 @@ export type $FeatureFlagPayload<ExtArgs extends runtime.Types.Extensions.Interna
     status: $Enums.FeatureFlagStatus
     scopeType: $Enums.FeatureFlagScopeType
     isEnabledByDefault: boolean
+    /**
+     * Gradation optionnelle (cf. feature-governance.md, « Niveaux fonctionnels
+     * gradués ») : liste ordonnée des niveaux autorisés, du plus bas au plus
+     * élevé. Liste vide = feature non graduée (status seul).
+     */
+    allowedLevels: string[]
+    /**
+     * Niveau par défaut quand la feature graduée est active.
+     * Doit appartenir à allowedLevels. Null pour les features non graduées.
+     */
+    defaultLevel: string | null
     createdAt: Date
     updatedAt: Date
     archivedAt: Date | null
@@ -1284,6 +1380,8 @@ export interface FeatureFlagFieldRefs {
   readonly status: Prisma.FieldRef<"FeatureFlag", 'FeatureFlagStatus'>
   readonly scopeType: Prisma.FieldRef<"FeatureFlag", 'FeatureFlagScopeType'>
   readonly isEnabledByDefault: Prisma.FieldRef<"FeatureFlag", 'Boolean'>
+  readonly allowedLevels: Prisma.FieldRef<"FeatureFlag", 'String[]'>
+  readonly defaultLevel: Prisma.FieldRef<"FeatureFlag", 'String'>
   readonly createdAt: Prisma.FieldRef<"FeatureFlag", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"FeatureFlag", 'DateTime'>
   readonly archivedAt: Prisma.FieldRef<"FeatureFlag", 'DateTime'>

@@ -30,6 +30,7 @@ export type FeatureFlagOverrideMinAggregateOutputType = {
   scopeType: $Enums.FeatureFlagScopeType | null
   scopeId: string | null
   isEnabled: boolean | null
+  level: string | null
   startsAt: Date | null
   endsAt: Date | null
   reasonCode: string | null
@@ -46,6 +47,7 @@ export type FeatureFlagOverrideMaxAggregateOutputType = {
   scopeType: $Enums.FeatureFlagScopeType | null
   scopeId: string | null
   isEnabled: boolean | null
+  level: string | null
   startsAt: Date | null
   endsAt: Date | null
   reasonCode: string | null
@@ -62,6 +64,7 @@ export type FeatureFlagOverrideCountAggregateOutputType = {
   scopeType: number
   scopeId: number
   isEnabled: number
+  level: number
   startsAt: number
   endsAt: number
   reasonCode: number
@@ -80,6 +83,7 @@ export type FeatureFlagOverrideMinAggregateInputType = {
   scopeType?: true
   scopeId?: true
   isEnabled?: true
+  level?: true
   startsAt?: true
   endsAt?: true
   reasonCode?: true
@@ -96,6 +100,7 @@ export type FeatureFlagOverrideMaxAggregateInputType = {
   scopeType?: true
   scopeId?: true
   isEnabled?: true
+  level?: true
   startsAt?: true
   endsAt?: true
   reasonCode?: true
@@ -112,6 +117,7 @@ export type FeatureFlagOverrideCountAggregateInputType = {
   scopeType?: true
   scopeId?: true
   isEnabled?: true
+  level?: true
   startsAt?: true
   endsAt?: true
   reasonCode?: true
@@ -201,6 +207,7 @@ export type FeatureFlagOverrideGroupByOutputType = {
   scopeType: $Enums.FeatureFlagScopeType
   scopeId: string
   isEnabled: boolean
+  level: string | null
   startsAt: Date | null
   endsAt: Date | null
   reasonCode: string | null
@@ -238,6 +245,7 @@ export type FeatureFlagOverrideWhereInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFilter<"FeatureFlagOverride"> | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFilter<"FeatureFlagOverride"> | string
   isEnabled?: Prisma.BoolFilter<"FeatureFlagOverride"> | boolean
+  level?: Prisma.StringNullableFilter<"FeatureFlagOverride"> | string | null
   startsAt?: Prisma.DateTimeNullableFilter<"FeatureFlagOverride"> | Date | string | null
   endsAt?: Prisma.DateTimeNullableFilter<"FeatureFlagOverride"> | Date | string | null
   reasonCode?: Prisma.StringNullableFilter<"FeatureFlagOverride"> | string | null
@@ -256,6 +264,7 @@ export type FeatureFlagOverrideOrderByWithRelationInput = {
   scopeType?: Prisma.SortOrder
   scopeId?: Prisma.SortOrder
   isEnabled?: Prisma.SortOrder
+  level?: Prisma.SortOrderInput | Prisma.SortOrder
   startsAt?: Prisma.SortOrderInput | Prisma.SortOrder
   endsAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reasonCode?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -278,6 +287,7 @@ export type FeatureFlagOverrideWhereUniqueInput = Prisma.AtLeast<{
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFilter<"FeatureFlagOverride"> | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFilter<"FeatureFlagOverride"> | string
   isEnabled?: Prisma.BoolFilter<"FeatureFlagOverride"> | boolean
+  level?: Prisma.StringNullableFilter<"FeatureFlagOverride"> | string | null
   startsAt?: Prisma.DateTimeNullableFilter<"FeatureFlagOverride"> | Date | string | null
   endsAt?: Prisma.DateTimeNullableFilter<"FeatureFlagOverride"> | Date | string | null
   reasonCode?: Prisma.StringNullableFilter<"FeatureFlagOverride"> | string | null
@@ -296,6 +306,7 @@ export type FeatureFlagOverrideOrderByWithAggregationInput = {
   scopeType?: Prisma.SortOrder
   scopeId?: Prisma.SortOrder
   isEnabled?: Prisma.SortOrder
+  level?: Prisma.SortOrderInput | Prisma.SortOrder
   startsAt?: Prisma.SortOrderInput | Prisma.SortOrder
   endsAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reasonCode?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -318,6 +329,7 @@ export type FeatureFlagOverrideScalarWhereWithAggregatesInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeWithAggregatesFilter<"FeatureFlagOverride"> | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringWithAggregatesFilter<"FeatureFlagOverride"> | string
   isEnabled?: Prisma.BoolWithAggregatesFilter<"FeatureFlagOverride"> | boolean
+  level?: Prisma.StringNullableWithAggregatesFilter<"FeatureFlagOverride"> | string | null
   startsAt?: Prisma.DateTimeNullableWithAggregatesFilter<"FeatureFlagOverride"> | Date | string | null
   endsAt?: Prisma.DateTimeNullableWithAggregatesFilter<"FeatureFlagOverride"> | Date | string | null
   reasonCode?: Prisma.StringNullableWithAggregatesFilter<"FeatureFlagOverride"> | string | null
@@ -333,6 +345,7 @@ export type FeatureFlagOverrideCreateInput = {
   scopeType: $Enums.FeatureFlagScopeType
   scopeId: string
   isEnabled: boolean
+  level?: string | null
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   reasonCode?: string | null
@@ -350,6 +363,7 @@ export type FeatureFlagOverrideUncheckedCreateInput = {
   scopeType: $Enums.FeatureFlagScopeType
   scopeId: string
   isEnabled: boolean
+  level?: string | null
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   reasonCode?: string | null
@@ -365,6 +379,7 @@ export type FeatureFlagOverrideUpdateInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reasonCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -382,6 +397,7 @@ export type FeatureFlagOverrideUncheckedUpdateInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reasonCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -398,6 +414,7 @@ export type FeatureFlagOverrideCreateManyInput = {
   scopeType: $Enums.FeatureFlagScopeType
   scopeId: string
   isEnabled: boolean
+  level?: string | null
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   reasonCode?: string | null
@@ -413,6 +430,7 @@ export type FeatureFlagOverrideUpdateManyMutationInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reasonCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -428,6 +446,7 @@ export type FeatureFlagOverrideUncheckedUpdateManyInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reasonCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -460,6 +479,7 @@ export type FeatureFlagOverrideCountOrderByAggregateInput = {
   scopeType?: Prisma.SortOrder
   scopeId?: Prisma.SortOrder
   isEnabled?: Prisma.SortOrder
+  level?: Prisma.SortOrder
   startsAt?: Prisma.SortOrder
   endsAt?: Prisma.SortOrder
   reasonCode?: Prisma.SortOrder
@@ -476,6 +496,7 @@ export type FeatureFlagOverrideMaxOrderByAggregateInput = {
   scopeType?: Prisma.SortOrder
   scopeId?: Prisma.SortOrder
   isEnabled?: Prisma.SortOrder
+  level?: Prisma.SortOrder
   startsAt?: Prisma.SortOrder
   endsAt?: Prisma.SortOrder
   reasonCode?: Prisma.SortOrder
@@ -492,6 +513,7 @@ export type FeatureFlagOverrideMinOrderByAggregateInput = {
   scopeType?: Prisma.SortOrder
   scopeId?: Prisma.SortOrder
   isEnabled?: Prisma.SortOrder
+  level?: Prisma.SortOrder
   startsAt?: Prisma.SortOrder
   endsAt?: Prisma.SortOrder
   reasonCode?: Prisma.SortOrder
@@ -591,6 +613,7 @@ export type FeatureFlagOverrideCreateWithoutCreatedByInput = {
   scopeType: $Enums.FeatureFlagScopeType
   scopeId: string
   isEnabled: boolean
+  level?: string | null
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   reasonCode?: string | null
@@ -607,6 +630,7 @@ export type FeatureFlagOverrideUncheckedCreateWithoutCreatedByInput = {
   scopeType: $Enums.FeatureFlagScopeType
   scopeId: string
   isEnabled: boolean
+  level?: string | null
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   reasonCode?: string | null
@@ -651,6 +675,7 @@ export type FeatureFlagOverrideScalarWhereInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFilter<"FeatureFlagOverride"> | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFilter<"FeatureFlagOverride"> | string
   isEnabled?: Prisma.BoolFilter<"FeatureFlagOverride"> | boolean
+  level?: Prisma.StringNullableFilter<"FeatureFlagOverride"> | string | null
   startsAt?: Prisma.DateTimeNullableFilter<"FeatureFlagOverride"> | Date | string | null
   endsAt?: Prisma.DateTimeNullableFilter<"FeatureFlagOverride"> | Date | string | null
   reasonCode?: Prisma.StringNullableFilter<"FeatureFlagOverride"> | string | null
@@ -666,6 +691,7 @@ export type FeatureFlagOverrideCreateWithoutFeatureFlagInput = {
   scopeType: $Enums.FeatureFlagScopeType
   scopeId: string
   isEnabled: boolean
+  level?: string | null
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   reasonCode?: string | null
@@ -681,6 +707,7 @@ export type FeatureFlagOverrideUncheckedCreateWithoutFeatureFlagInput = {
   scopeType: $Enums.FeatureFlagScopeType
   scopeId: string
   isEnabled: boolean
+  level?: string | null
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   reasonCode?: string | null
@@ -723,6 +750,7 @@ export type FeatureFlagOverrideCreateManyCreatedByInput = {
   scopeType: $Enums.FeatureFlagScopeType
   scopeId: string
   isEnabled: boolean
+  level?: string | null
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   reasonCode?: string | null
@@ -737,6 +765,7 @@ export type FeatureFlagOverrideUpdateWithoutCreatedByInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reasonCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -753,6 +782,7 @@ export type FeatureFlagOverrideUncheckedUpdateWithoutCreatedByInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reasonCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -768,6 +798,7 @@ export type FeatureFlagOverrideUncheckedUpdateManyWithoutCreatedByInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reasonCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -782,6 +813,7 @@ export type FeatureFlagOverrideCreateManyFeatureFlagInput = {
   scopeType: $Enums.FeatureFlagScopeType
   scopeId: string
   isEnabled: boolean
+  level?: string | null
   startsAt?: Date | string | null
   endsAt?: Date | string | null
   reasonCode?: string | null
@@ -797,6 +829,7 @@ export type FeatureFlagOverrideUpdateWithoutFeatureFlagInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reasonCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -812,6 +845,7 @@ export type FeatureFlagOverrideUncheckedUpdateWithoutFeatureFlagInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reasonCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -827,6 +861,7 @@ export type FeatureFlagOverrideUncheckedUpdateManyWithoutFeatureFlagInput = {
   scopeType?: Prisma.EnumFeatureFlagScopeTypeFieldUpdateOperationsInput | $Enums.FeatureFlagScopeType
   scopeId?: Prisma.StringFieldUpdateOperationsInput | string
   isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reasonCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -845,6 +880,7 @@ export type FeatureFlagOverrideSelect<ExtArgs extends runtime.Types.Extensions.I
   scopeType?: boolean
   scopeId?: boolean
   isEnabled?: boolean
+  level?: boolean
   startsAt?: boolean
   endsAt?: boolean
   reasonCode?: boolean
@@ -863,6 +899,7 @@ export type FeatureFlagOverrideSelectCreateManyAndReturn<ExtArgs extends runtime
   scopeType?: boolean
   scopeId?: boolean
   isEnabled?: boolean
+  level?: boolean
   startsAt?: boolean
   endsAt?: boolean
   reasonCode?: boolean
@@ -881,6 +918,7 @@ export type FeatureFlagOverrideSelectUpdateManyAndReturn<ExtArgs extends runtime
   scopeType?: boolean
   scopeId?: boolean
   isEnabled?: boolean
+  level?: boolean
   startsAt?: boolean
   endsAt?: boolean
   reasonCode?: boolean
@@ -899,6 +937,7 @@ export type FeatureFlagOverrideSelectScalar = {
   scopeType?: boolean
   scopeId?: boolean
   isEnabled?: boolean
+  level?: boolean
   startsAt?: boolean
   endsAt?: boolean
   reasonCode?: boolean
@@ -909,7 +948,7 @@ export type FeatureFlagOverrideSelectScalar = {
   archivedAt?: boolean
 }
 
-export type FeatureFlagOverrideOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "featureFlagId" | "scopeType" | "scopeId" | "isEnabled" | "startsAt" | "endsAt" | "reasonCode" | "notes" | "createdByUserId" | "createdAt" | "updatedAt" | "archivedAt", ExtArgs["result"]["featureFlagOverride"]>
+export type FeatureFlagOverrideOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "featureFlagId" | "scopeType" | "scopeId" | "isEnabled" | "level" | "startsAt" | "endsAt" | "reasonCode" | "notes" | "createdByUserId" | "createdAt" | "updatedAt" | "archivedAt", ExtArgs["result"]["featureFlagOverride"]>
 export type FeatureFlagOverrideInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   featureFlag?: boolean | Prisma.FeatureFlagDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.FeatureFlagOverride$createdByArgs<ExtArgs>
@@ -935,6 +974,11 @@ export type $FeatureFlagOverridePayload<ExtArgs extends runtime.Types.Extensions
     scopeType: $Enums.FeatureFlagScopeType
     scopeId: string
     isEnabled: boolean
+    /**
+     * Niveau imposé par l'override pour une feature graduée.
+     * Doit appartenir aux allowedLevels du flag. Null = hérite du defaultLevel.
+     */
+    level: string | null
     startsAt: Date | null
     endsAt: Date | null
     reasonCode: string | null
@@ -1373,6 +1417,7 @@ export interface FeatureFlagOverrideFieldRefs {
   readonly scopeType: Prisma.FieldRef<"FeatureFlagOverride", 'FeatureFlagScopeType'>
   readonly scopeId: Prisma.FieldRef<"FeatureFlagOverride", 'String'>
   readonly isEnabled: Prisma.FieldRef<"FeatureFlagOverride", 'Boolean'>
+  readonly level: Prisma.FieldRef<"FeatureFlagOverride", 'String'>
   readonly startsAt: Prisma.FieldRef<"FeatureFlagOverride", 'DateTime'>
   readonly endsAt: Prisma.FieldRef<"FeatureFlagOverride", 'DateTime'>
   readonly reasonCode: Prisma.FieldRef<"FeatureFlagOverride", 'String'>

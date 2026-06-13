@@ -1,12 +1,6 @@
 import Link from "next/link";
 
-import { homepageCopyConfig } from "../config/homepage-copy.config";
-
-const FALLBACK_TITLE = homepageCopyConfig.about.fallbackTitle;
-const FALLBACK_BODY = homepageCopyConfig.about.fallbackBody;
-const FALLBACK_SUBTITLE = homepageCopyConfig.about.fallbackSubtitle;
-const FALLBACK_CTA_LABEL = homepageCopyConfig.about.fallbackCtaLabel;
-const FALLBACK_CTA_HREF = homepageCopyConfig.about.fallbackCtaHref;
+import { homepageCopyConfig, type HomepageCopy } from "../config/homepage-copy.config";
 
 type HomepageAboutSectionProps = {
   aboutTitle?: string | null | undefined;
@@ -14,6 +8,7 @@ type HomepageAboutSectionProps = {
   aboutBody?: string | null | undefined;
   aboutCtaLabel?: string | null | undefined;
   aboutCtaHref?: string | null | undefined;
+  copy?: HomepageCopy;
 };
 
 export function HomepageAboutSection({
@@ -22,12 +17,13 @@ export function HomepageAboutSection({
   aboutBody,
   aboutCtaLabel,
   aboutCtaHref,
+  copy = homepageCopyConfig,
 }: HomepageAboutSectionProps = {}) {
-  const title = aboutTitle ?? FALLBACK_TITLE;
-  const body = aboutBody ?? FALLBACK_BODY;
-  const subtitle = aboutSubtitle ?? FALLBACK_SUBTITLE;
-  const ctaLabel = aboutCtaLabel ?? FALLBACK_CTA_LABEL;
-  const ctaHref = aboutCtaHref ?? FALLBACK_CTA_HREF;
+  const title = aboutTitle ?? copy.about.fallbackTitle;
+  const body = aboutBody ?? copy.about.fallbackBody;
+  const subtitle = aboutSubtitle ?? copy.about.fallbackSubtitle;
+  const ctaLabel = aboutCtaLabel ?? copy.about.fallbackCtaLabel;
+  const ctaHref = aboutCtaHref ?? copy.about.fallbackCtaHref;
 
   return (
     <section

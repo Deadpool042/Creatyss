@@ -3,7 +3,7 @@ import Link from "next/link";
 import { PLACEHOLDER_FILENAME } from "@/core/media";
 import { type FeaturedCategory } from "@/features/homepage/types";
 
-import { homepageCopyConfig } from "../config/homepage-copy.config";
+import { homepageCopyConfig, type HomepageCopy } from "../config/homepage-copy.config";
 
 type TagStyle = "light" | "vert" | "terra";
 
@@ -55,11 +55,13 @@ const DEFAULT_VISUAL: CategoryVisualConfig = {
 type HomepageCollectionsSectionProps = {
   categories: FeaturedCategory[];
   uploadsPublicPath: string;
+  copy?: HomepageCopy;
 };
 
 export function HomepageCollectionsSection({
   categories,
   uploadsPublicPath,
+  copy = homepageCopyConfig,
 }: HomepageCollectionsSectionProps) {
   return (
     <section className="grid gap-8">
@@ -67,7 +69,7 @@ export function HomepageCollectionsSection({
       <div className="flex flex-col gap-4 min-[900px]:flex-row min-[900px]:items-end min-[900px]:justify-between">
         <div>
           <p className="mb-3.5 text-[0.62rem] font-medium uppercase tracking-[0.32em] text-muted-foreground">
-            {homepageCopyConfig.collections.eyebrow}
+            {copy.collections.eyebrow}
           </p>
           <h2 className="font-serif text-3xl font-normal tracking-tight text-foreground min-[900px]:text-5xl">
             Nos collections

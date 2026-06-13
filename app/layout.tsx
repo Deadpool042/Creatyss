@@ -5,6 +5,7 @@ import "./globals.css";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { PublicSiteShell } from "@/components/storefront/public-site-shell";
+import { LocaleSelector } from "@/components/storefront/topbar/locale-selector";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/shared/theme";
 import { Toaster } from "@/components/ui/sonner";
@@ -65,7 +66,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange={false}
         >
           <TooltipProvider>
-            <PublicSiteShell>{children}</PublicSiteShell>
+            <PublicSiteShell localeSelector={<LocaleSelector />}>{children}</PublicSiteShell>
           </TooltipProvider>
           <Toaster />
         </ThemeProvider>

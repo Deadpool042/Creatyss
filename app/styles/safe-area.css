@@ -53,6 +53,7 @@
   }
   .safe-px-compact {
     --safe-compact-inline-padding: 0.75rem;
+    background-color: red !important; /* debug */
   }
 }
 
@@ -62,6 +63,8 @@
     --safe-layout-inline-padding: 1rem;
   }
   .safe-px-compact {
+    /* background-color: green !important; debug */
+
     --safe-compact-inline-padding: 0.25rem;
     --safe-compact-area-ratio: 0.62;
   }

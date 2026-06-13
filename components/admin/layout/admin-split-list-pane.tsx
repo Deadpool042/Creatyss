@@ -45,7 +45,7 @@ export function AdminSplitListPane({
   const resolvedResultLabel = formatResultLabel(resultCount, resultLabel);
 
   return (
-    <section className={cn("flex min-h-0 flex-1 flex-col space-y-2", className)}>
+    <section className={cn("flex min-h-0 flex-1 flex-col space-y-2 ", className)}>
       <div className="admin-split-list-pane-scroll min-h-0 flex-1 overflow-visible md:overflow-x-hidden md:overflow-y-auto">
         <div>
           <header className="relative z-10 h-fit py-1">
@@ -69,9 +69,11 @@ export function AdminSplitListPane({
           </header>
         </div>
 
-        <div className="flex min-h-full min-w-0 flex-col safe-px-layout space-y-4 pt-2">
+        <div className="flex min-h-full min-w-0 flex-col  space-y-4 pt-2 safe-px-layout md:px-2">
           {overview !== undefined ? <div className="pb-2.5">{overview}</div> : null}
-          <div className="-mt-px">{isEmpty && emptyState !== undefined ? emptyState : children}</div>
+          <div className="-mt-px">
+            {isEmpty && emptyState !== undefined ? emptyState : children}
+          </div>
         </div>
       </div>
 

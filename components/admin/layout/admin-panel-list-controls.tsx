@@ -67,7 +67,7 @@ export function AdminPanelListControls({
   const currentSearch = searchParams.get("search") ?? "";
   const currentStatus = searchParams.get("status") ?? "";
   const isCompact = density === "compact";
-  const rootClassName = isCompact ? "flex flex-col gap-1.5 " : "grid gap-2";
+  const rootClassName = isCompact ? "flex flex-col gap-1.5 " : "grid gap-2 ";
   const inputClassName = cn(isCompact && "h-8 text-sm", searchInputClassName);
   const resolvedSelectTriggerSize = isCompact ? "sm" : selectTriggerSize;
   const selectTriggerClassName = isCompact ? "h-8 w-full text-sm" : "w-full";
@@ -139,7 +139,7 @@ export function AdminPanelListControls({
     return (
       <>
         {showDesktopControls ? (
-          <div className="hidden items-center gap-2 p-2 md:flex">
+          <div className="hidden items-center gap-2 p-1 md:flex">
             <form action={listPath} method="GET" className="min-w-0 flex-1">
               <Input
                 name="search"

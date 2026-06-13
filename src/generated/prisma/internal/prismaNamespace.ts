@@ -14192,6 +14192,8 @@ export const FeatureFlagScalarFieldEnum = {
   status: 'status',
   scopeType: 'scopeType',
   isEnabledByDefault: 'isEnabledByDefault',
+  allowedLevels: 'allowedLevels',
+  defaultLevel: 'defaultLevel',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   archivedAt: 'archivedAt'
@@ -14206,6 +14208,7 @@ export const FeatureFlagOverrideScalarFieldEnum = {
   scopeType: 'scopeType',
   scopeId: 'scopeId',
   isEnabled: 'isEnabled',
+  level: 'level',
   startsAt: 'startsAt',
   endsAt: 'endsAt',
   reasonCode: 'reasonCode',

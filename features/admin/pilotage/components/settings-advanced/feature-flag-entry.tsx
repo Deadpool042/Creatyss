@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Globe, Lock, User } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -77,6 +78,29 @@ type FeatureFlagEntryProps = Readonly<{
   flag: AdminFeatureFlagView;
 }>;
 
+function FeatureLinks({ flag }: { flag: AdminFeatureFlagView }) {
+  if (flag.key !== "platform.localization" || flag.dbState.status !== "ACTIVE") {
+    return null;
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2 pt-1">
+      <Link
+        href="/admin/settings/advanced/optional/localization/settings"
+        className="rounded-full border border-surface-border/60 px-2.5 py-1 text-[11px] font-medium text-foreground transition-colors hover:bg-surface-subtle/30"
+      >
+        Reglages
+      </Link>
+      <Link
+        href="/admin/settings/advanced/optional/localization/translations"
+        className="rounded-full border border-surface-border/60 px-2.5 py-1 text-[11px] font-medium text-foreground transition-colors hover:bg-surface-subtle/30"
+      >
+        Traductions
+      </Link>
+    </div>
+  );
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
@@ -128,6 +152,7 @@ export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
             </span>
           )}
         </div>
+        <FeatureLinks flag={flag} />
       </div>
 
       {/* Right: scope + toggle */}

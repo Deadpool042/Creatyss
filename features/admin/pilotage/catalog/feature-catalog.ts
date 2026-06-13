@@ -7,6 +7,7 @@ export const FEATURE_LEVELS = {
   media: ["basic", "optimization", "generation", "automation"],
   discounts: ["simple", "rules", "automation"],
   inventory: ["manual", "alerts", "forecasting"],
+  localization: ["managed", "multilingual", "localized-routing"],
 } as const;
 
 export const FEATURE_CATALOG = [
@@ -120,8 +121,9 @@ export const FEATURE_CATALOG = [
     family: "optional",
     module: "platform",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.localization,
   },
   // Satellite — search and channels
   {

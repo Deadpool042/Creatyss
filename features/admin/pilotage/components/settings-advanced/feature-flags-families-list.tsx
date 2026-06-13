@@ -43,7 +43,7 @@ export function FeatureFlagsFamiliesList({ items, activeSlug }: FeatureFlagsFami
         <p className="py-4 text-center text-sm text-muted-foreground">Aucune famille disponible.</p>
       }
     >
-      <ul className="flex flex-col gap-y-0.5">
+      <ul className="flex flex-col gap-y-0.5 ">
         {familyItems.map((item) => (
           <li key={item.slug}>
             <FeatureFlagsFamilyItem item={item} active={item.slug === activeSlug} />

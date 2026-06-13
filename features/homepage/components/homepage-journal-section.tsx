@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SurfaceSection } from "@/components/shared";
 
-import { homepageCopyConfig } from "../config/homepage-copy.config";
+import { homepageCopyConfig, type HomepageCopy } from "../config/homepage-copy.config";
 
 const blogDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "long",
@@ -15,20 +15,22 @@ type HomepageFeaturedPost = {
   publishedAt: string | Date | null;
 } | null;
 
-const FALLBACK_INSTAGRAM_URL = homepageCopyConfig.journal.fallbackInstagramUrl;
-const FALLBACK_FACEBOOK_URL = homepageCopyConfig.journal.fallbackFacebookUrl;
-
 type HomepageJournalSectionProps = {
   featuredPost: HomepageFeaturedPost;
   instagramUrl?: string | null;
   facebookUrl?: string | null;
+  copy?: HomepageCopy;
 };
 
 export function HomepageJournalSection({
   featuredPost,
   instagramUrl,
   facebookUrl,
+  copy = homepageCopyConfig,
 }: HomepageJournalSectionProps) {
+  const fallbackInstagramUrl = copy.journal.fallbackInstagramUrl;
+  const fallbackFacebookUrl = copy.journal.fallbackFacebookUrl;
+
   return (
     <SurfaceSection
       eyebrow="Journal"
@@ -64,16 +66,16 @@ export function HomepageJournalSection({
         </article>
       ) : (
         <p className="leading-relaxed text-muted-foreground">
-          {homepageCopyConfig.journal.emptyText}
+          {copy.journal.emptyText}
         </p>
       )}
 
       <div className="mt-5 flex flex-wrap gap-3">
         <Button asChild variant="outline">
-          <Link href={facebookUrl ?? FALLBACK_FACEBOOK_URL} target="_blank" rel="noreferrer">Facebook</Link>
+          <Link href={facebookUrl ?? fallbackFacebookUrl} target="_blank" rel="noreferrer">Facebook</Link>
         </Button>
         <Button asChild variant="outline">
-          <Link href={instagramUrl ?? FALLBACK_INSTAGRAM_URL} target="_blank" rel="noreferrer">Instagram</Link>
+          <Link href={instagramUrl ?? fallbackInstagramUrl} target="_blank" rel="noreferrer">Instagram</Link>
         </Button>
       </div>
     </SurfaceSection>

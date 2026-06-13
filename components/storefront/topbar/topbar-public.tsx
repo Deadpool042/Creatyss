@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { brandConfig } from "@/core/config/brand";
 
-import type { ComponentType, SVGProps } from "react";
+import type { ComponentType, ReactNode, SVGProps } from "react";
 
 import {
   BadgeCheckIcon,
@@ -58,6 +58,7 @@ type MarketingHeaderItem = Readonly<{
 
 type TopbarPublicProps = Readonly<{
   pathname: string;
+  localeSelector?: ReactNode;
 }>;
 
 const DESKTOP_NAV_ITEMS = [
@@ -265,13 +266,20 @@ function PublicReassuranceBar() {
   );
 }
 
-function MobileTopbar({ pathname }: { pathname: string }) {
+function MobileTopbar({
+  pathname,
+  localeSelector,
+}: {
+  pathname: string;
+  localeSelector?: ReactNode;
+}) {
   return (
     <div className="flex h-14 items-center justify-between desktop:hidden">
       <PublicLogo />
 
       <div className="flex items-center gap-0.5">
         <HeaderActions pathname={pathname} variant="mobile" />
+        {localeSelector}
         <div className="hidden md:flex desktop:hidden">
           <MobileMenuDrawer variant="topbar" />
         </div>
@@ -363,10 +371,14 @@ function DesktopTopbar({
   pathname,
 
   isBoutiqueRoute,
+
+  localeSelector,
 }: {
   pathname: string;
 
   isBoutiqueRoute: boolean;
+
+  localeSelector?: ReactNode;
 }) {
   return (
     <div
@@ -384,6 +396,8 @@ function DesktopTopbar({
 
       <div className="flex shrink-0 items-center gap-1.5">
         <HeaderActions pathname={pathname} />
+
+        {localeSelector}
 
         <ModeToggle />
       </div>
@@ -452,7 +466,7 @@ function TouchNavigation({ pathname }: { pathname: string }) {
   );
 }
 
-export function TopbarPublic({ pathname }: TopbarPublicProps) {
+export function TopbarPublic({ pathname, localeSelector }: TopbarPublicProps) {
   const isBoutiqueRoute = getIsBoutiqueRoute(pathname);
 
   return (
@@ -461,9 +475,13 @@ export function TopbarPublic({ pathname }: TopbarPublicProps) {
         {!isBoutiqueRoute ? <PublicReassuranceBar /> : null}
 
         <div className="mx-auto w-full max-w-430 px-4 sm:px-6 xl:px-12">
-          <MobileTopbar pathname={pathname} />
+          <MobileTopbar pathname={pathname} localeSelector={localeSelector} />
 
-          <DesktopTopbar pathname={pathname} isBoutiqueRoute={isBoutiqueRoute} />
+          <DesktopTopbar
+            pathname={pathname}
+            isBoutiqueRoute={isBoutiqueRoute}
+            localeSelector={localeSelector}
+          />
         </div>
       </header>
 

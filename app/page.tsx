@@ -15,6 +15,7 @@ import {
   HomepageSavoirFaireSection,
 } from "@/features/homepage";
 import { listPublishedProducts } from "@/features/storefront/catalog/queries/list-published-products";
+import { getLocalizedHomepageCopy } from "@/features/homepage/queries/get-localized-homepage-copy.query";
 import { getAdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
 import { getSeoRobotsFlags } from "@/entities/seo";
 
@@ -65,7 +66,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const [data, uploadsPublicPath, rawNewArrivals] = await Promise.all([
+  const [data, uploadsPublicPath, rawNewArrivals, copy] = await Promise.all([
     getStorefrontHomepage(),
     Promise.resolve(getUploadsPublicPath()),
     listPublishedProducts({
@@ -76,6 +77,7 @@ export default async function HomePage() {
       maxPriceCents: null,
       sort: "newest",
     }),
+    getLocalizedHomepageCopy(),
   ]);
 
   const heroImagePath =
@@ -95,6 +97,7 @@ export default async function HomePage() {
         heroTitle={data?.hero?.title ?? null}
         heroText={data?.hero?.text ?? null}
         heroImagePath={heroImagePath}
+        copy={copy}
       />
 
       <div className="flex flex-col gap-20 py-20 md:gap-24 md:py-24">
@@ -116,12 +119,14 @@ export default async function HomePage() {
           <HomepageCollectionsSection
             categories={featuredCategories}
             uploadsPublicPath={uploadsPublicPath}
+            copy={copy}
           />
         )}
 
         <HomepageEditorialSection
           editorialTitle={data?.editorial?.title ?? null}
           editorialText={data?.editorial?.text ?? null}
+          copy={copy}
         />
 
         <HomepageSavoirFaireSection
@@ -129,6 +134,7 @@ export default async function HomePage() {
           savoirFaireBody={data?.savoirFaire?.body}
           savoirFaireImagePath={data?.savoirFaire?.imageStorageKey}
           uploadsPublicPath={uploadsPublicPath}
+          copy={copy}
         />
 
         <HomepageGuaranteesSection guaranteesBody={data?.guarantees?.body} />
@@ -137,6 +143,7 @@ export default async function HomePage() {
           featuredPost={data?.featuredPost ?? null}
           instagramUrl={data?.instagramUrl ?? null}
           facebookUrl={data?.facebookUrl ?? null}
+          copy={copy}
         />
 
         <HomepageAboutSection
@@ -145,6 +152,7 @@ export default async function HomePage() {
           aboutBody={data?.about?.body}
           aboutCtaLabel={data?.about?.ctaLabel}
           aboutCtaHref={data?.about?.ctaHref}
+          copy={copy}
         />
 
         <HomepageNewsletterSection

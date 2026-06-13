@@ -7,6 +7,7 @@ import {
   Euro,
   FileText,
   FolderTree,
+  Globe,
   HeartPulse,
   House,
   ImageIcon,
@@ -52,6 +53,8 @@ export function renderAdminNavigationIcon(
       return <FileText {...props} />;
     case "folderTree":
       return <FolderTree {...props} />;
+    case "globe":
+      return <Globe {...props} />;
     case "heartPulse":
       return <HeartPulse {...props} />;
     case "house":

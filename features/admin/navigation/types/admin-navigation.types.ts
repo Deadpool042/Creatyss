@@ -35,7 +35,8 @@ export type AdminNavigationIconKey =
   | "shield"
   | "sliders"
   | "tag"
-  | "telescope";
+  | "telescope"
+  | "globe";
 
 export type AdminNavigationVisibility = {
   sidebar: boolean;

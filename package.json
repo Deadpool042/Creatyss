@@ -43,7 +43,9 @@
     "media:repair-legacy-storage-keys": "tsx scripts/repair-legacy-product-media-storage-keys.ts",
     "media:repair-legacy-storage-keys:apply": "tsx scripts/repair-legacy-product-media-storage-keys.ts --apply",
     "diagnostics:import": "tsx scripts/import-woocommerce/diagnostics/catalog-diagnostics.ts",
-    "catalog:backfill-price-snapshots": "tsx scripts/backfill-product-catalog-price-snapshots.ts"
+    "catalog:backfill-price-snapshots": "tsx scripts/backfill-product-catalog-price-snapshots.ts",
+    "localization:enable-multilingual": "tsx scripts/enable-localization-multilingual.ts --apply",
+    "localization:revert-multilingual": "tsx scripts/enable-localization-multilingual.ts --revert"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",

@@ -29,6 +29,15 @@ model FeatureFlag {
 
   isEnabledByDefault Boolean @default(false)
 
+  /// Gradation optionnelle (cf. feature-governance.md, « Niveaux fonctionnels
+  /// gradués ») : liste ordonnée des niveaux autorisés, du plus bas au plus
+  /// élevé. Liste vide = feature non graduée (status seul).
+  allowedLevels String[] @default([])
+
+  /// Niveau par défaut quand la feature graduée est active.
+  /// Doit appartenir à allowedLevels. Null pour les features non graduées.
+  defaultLevel String?
+
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   archivedAt DateTime?
@@ -51,6 +60,10 @@ model FeatureFlagOverride {
   scopeId   String
 
   isEnabled Boolean
+
+  /// Niveau imposé par l'override pour une feature graduée.
+  /// Doit appartenir aux allowedLevels du flag. Null = hérite du defaultLevel.
+  level String?
 
   startsAt DateTime?
   endsAt   DateTime?

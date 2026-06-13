@@ -1,12 +1,13 @@
 import Image from "next/image";
 
-import { homepageCopyConfig } from "../config/homepage-copy.config";
+import { homepageCopyConfig, type HomepageCopy } from "../config/homepage-copy.config";
 
 type HomepageSavoirFaireSectionProps = {
   savoirFaireTitle?: string | null | undefined;
   savoirFaireBody?: string | null | undefined;
   savoirFaireImagePath?: string | null | undefined;
   uploadsPublicPath?: string | undefined;
+  copy?: HomepageCopy;
 };
 
 const FALLBACK_IMAGE_PATH = "/uploads/savoir-faire-placeholder.webp";
@@ -16,6 +17,7 @@ export function HomepageSavoirFaireSection({
   savoirFaireBody,
   savoirFaireImagePath,
   uploadsPublicPath,
+  copy = homepageCopyConfig,
 }: HomepageSavoirFaireSectionProps) {
   const resolvedImagePath =
     savoirFaireImagePath != null && uploadsPublicPath != null
@@ -26,7 +28,7 @@ export function HomepageSavoirFaireSection({
       {/* Panneau visuel */}
       <div className="relative min-h-136 overflow-hidden bg-[linear-gradient(145deg,#c8b89e_0%,#a8906e_45%,#6e5840_100%)]">
         <Image
-          alt={homepageCopyConfig.savoirFaire.imageAlt}
+          alt={copy.savoirFaire.imageAlt}
           src={resolvedImagePath}
           fill
           className="object-cover object-[58%_center] md:object-[62%_center]"
@@ -47,7 +49,7 @@ export function HomepageSavoirFaireSection({
           <div className="flex-1">
             <p className="text-[0.82rem] font-medium text-white/96">Fait main en France</p>
             <p className="mt-0.5 text-[0.75rem] font-light leading-relaxed text-white/72 dark:text-white/78">
-              {homepageCopyConfig.savoirFaire.badgeNote}
+              {copy.savoirFaire.badgeNote}
             </p>
           </div>
         </div>

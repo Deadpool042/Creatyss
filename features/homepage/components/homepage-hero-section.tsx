@@ -1,21 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { homepageCopyConfig } from "../config/homepage-copy.config";
+import { homepageCopyConfig, type HomepageCopy } from "../config/homepage-copy.config";
 
 type HomepageHeroSectionProps = {
   heroTitle: string | null;
   heroText: string | null;
   heroImagePath: string | null;
+  copy?: HomepageCopy;
 };
 
 export function HomepageHeroSection({
   heroImagePath,
   heroText,
   heroTitle,
+  copy = homepageCopyConfig,
 }: HomepageHeroSectionProps) {
   const resolvedTitle = heroTitle ?? "Des sacs faits main, nulle part ailleurs.";
-  const resolvedText = heroText ?? homepageCopyConfig.hero.fallbackText;
+  const resolvedText = heroText ?? copy.hero.fallbackText;
 
   if (heroImagePath) {
     return (

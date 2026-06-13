@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useOptimistic, useTransition } from "react";
 
 import { toggleFeatureFlagAction } from "@/features/admin/pilotage/actions/toggle-feature-flag.action";
@@ -8,6 +9,7 @@ import type { AdminFeatureFlagView } from "@/features/admin/pilotage/queries/lis
 type ToggleStatus = "ACTIVE" | "INACTIVE" | "DRAFT" | "ARCHIVED" | null;
 
 export function useFeatureFlagToggle(flag: AdminFeatureFlagView) {
+  const router = useRouter();
   const dbStatus: ToggleStatus = flag.dbState.status ?? null;
 
   const [optimisticStatus, setOptimisticStatus] = useOptimistic(
@@ -20,7 +22,7 @@ export function useFeatureFlagToggle(flag: AdminFeatureFlagView) {
   const isActive = optimisticStatus === "ACTIVE";
   const canToggle =
     flag.dbState.id !== null &&
-    flag.mutability === "toggleable" &&
+    (flag.mutability === "toggleable" || flag.mutability === "level_selectable") &&
     optimisticStatus !== "ARCHIVED" &&
     optimisticStatus !== null;
 
@@ -30,6 +32,7 @@ export function useFeatureFlagToggle(flag: AdminFeatureFlagView) {
     startTransition(async () => {
       setOptimisticStatus(isActive ? "INACTIVE" : "ACTIVE");
       await toggleFeatureFlagAction(flagId);
+      router.refresh();
     });
   }
 
