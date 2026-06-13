@@ -205,7 +205,7 @@ Référence : `docs/audit/audit-clonabilite-2026-06-12.md` (inventaire des spéc
 **Validation :**
 
 - [x] Copy/config storefront en place — plus de marque en dur dans les composants du socle ; garde anti-régression unitaire (`brand-copy-guard.test.ts`) couvrant storefront/homepage/components (2026-06-12)
-- [x] `FeatureFlag` gradué — schéma additif (`allowedLevels`, `defaultLevel`, `Override.level`) posé, `db:push` et `test:unit` (110/110) OK (2026-06-12) ; premier guard gradué branché (`getLocalizationFeatureState` / `meetsLocalizationLevel`, flag `platform.localization` seedé en DRAFT, `allowedLevels = ["managed", "multilingual", "localized-routing"]`) (2026-06-13) — reste à régénérer le client Prisma (`db:generate`) pour exposer ces champs au typecheck
+- [x] `FeatureFlag` gradué — schéma additif (`allowedLevels`, `defaultLevel`, `Override.level`) posé, `db:push` et `test:unit` (110/110) OK (2026-06-12) ; premier guard gradué branché (`getLocalizationFeatureState` / `meetsLocalizationLevel`, flag `platform.localization` seedé en DRAFT, `allowedLevels = ["managed", "multilingual", "localized-routing"]`) (2026-06-13) ; client Prisma régénéré, champs exposés au typecheck (2026-06-13)
 - [x] Pages de contenu en copy/config (`a-propos`, `les-marchés`, `contact`) — option config actée, cible « pages à blocs » tracée (2026-06-12)
 - [x] Résolution de boutique unifiée — convention premier-store partout, `CANONICAL_STORE_CODE` supprimé (2026-06-12)
 - [x] Statut bootstrap Woo explicite (R4) — `scripts/import-woocommerce/README.md` documente le périmètre instance Creatyss, `WC_*` hors runtime socle, couplage `seed:dev`, capacité durable = import générique CSV (déjà fait, non daté)
@@ -217,6 +217,10 @@ Référence : `docs/audit/audit-clonabilite-2026-06-12.md` (inventaire des spéc
 ## Plus tard — uniquement sur besoin validé
 
 Capacités optionnelles déjà modélisées dans `prisma/optional/` et `docs/domains/optional/` : leur ouverture est une **activation gouvernée** (pattern Horizon 4), pas une construction. À ouvrir uniquement si un besoin réel et explicite l'impose :
+
+Suivi détaillé par module (32 entrées du catalogue `/admin/settings/advanced`,
+maturité L0-L3, roadmap et checklist d'ouverture) :
+`docs/roadmap/2026-06-13-audit-catalogue-modules.md`.
 
 - Retours et échanges
 - Cartes cadeaux
