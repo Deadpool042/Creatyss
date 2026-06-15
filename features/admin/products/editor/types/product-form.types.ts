@@ -103,6 +103,7 @@ export type ProductAvailabilityFormAction = (
 export type ProductInventoryRowInput = {
   variantId: string;
   onHandQuantity: number;
+  lowStockThreshold?: number | null;
 };
 
 export type ProductInventoryFormState = {

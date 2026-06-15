@@ -51,6 +51,8 @@ export async function shipAdminOrder(input: ShipOrderInput): Promise<void> {
     const shipmentData = {
       status: "SHIPPED" as const,
       trackingNumber: input.trackingReference,
+      carrier: input.carrier,
+      trackingUrl: input.trackingUrl,
       shippedAt,
     };
 

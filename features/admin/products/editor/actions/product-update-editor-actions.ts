@@ -582,6 +582,35 @@ function normalizeNonNegativeInteger(value: FormDataEntryValue | null | undefine
   return parsed;
 }
 
+const INVALID_OPTIONAL_INTEGER = Symbol("invalid-optional-integer");
+
+/**
+ * Parse un champ optionnel "entier positif ou nul" : chaîne vide → `null`
+ * (efface le seuil, comportement par défaut), entier positif/nul → valeur,
+ * tout autre contenu → `INVALID_OPTIONAL_INTEGER` (erreur de validation).
+ */
+function normalizeOptionalNonNegativeInteger(
+  value: FormDataEntryValue | null | undefined
+): number | null | typeof INVALID_OPTIONAL_INTEGER {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const trimmed = value.trim();
+
+  if (trimmed.length === 0) {
+    return null;
+  }
+
+  const parsed = Number.parseInt(trimmed, 10);
+
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    return INVALID_OPTIONAL_INTEGER;
+  }
+
+  return parsed;
+}
+
 export const updateProductInventoryAction: ProductInventoryFormAction = async (
   _prevState,
   formData
@@ -610,6 +639,7 @@ export const updateProductInventoryAction: ProductInventoryFormAction = async (
   }
 
   const onHandMap = buildMap(formData, "inventoryOnHand:");
+  const lowStockThresholdMap = buildMap(formData, "inventoryLowStockThreshold:");
 
   const rows: ProductInventoryRowInput[] = [];
 
@@ -624,10 +654,26 @@ export const updateProductInventoryAction: ProductInventoryFormAction = async (
       };
     }
 
-    rows.push({
+    const row: ProductInventoryRowInput = {
       variantId,
       onHandQuantity,
-    });
+    };
+
+    if (variantId in lowStockThresholdMap) {
+      const lowStockThreshold = normalizeOptionalNonNegativeInteger(lowStockThresholdMap[variantId]);
+
+      if (lowStockThreshold === INVALID_OPTIONAL_INTEGER) {
+        return {
+          ...productInventoryFormInitialState,
+          status: "error",
+          message: "Le seuil de stock faible doit être un entier positif ou nul.",
+        };
+      }
+
+      row.lowStockThreshold = lowStockThreshold;
+    }
+
+    rows.push(row);
   }
 
   try {

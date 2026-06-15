@@ -421,3 +421,39 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../core/foundation/stores.md`
 - `audit.md`
 - `../optional/platform/integrations.md`
+
+---
+
+## Décisions d'implémentation
+
+### Cockpit `engagement.analytics` — bloc « Ce mois » sur données commerce réelles (2026-06-13)
+
+Cf. `docs/lots/2026-06-13-engagement-analytics-cadrage.md` (périmètre réduit :
+commerce uniquement).
+
+- `engagement.analytics` (`FeatureFlag`) seedé (`allowedLevels:
+  ["read","insights","recommendations"]`, `defaultLevel: "read"`, `status:
+  "DRAFT"`, `isEnabledByDefault: false`) — module togglable dans
+  `/admin/settings/advanced`, **inactif par défaut**
+  (`prisma/seed/analytics-feature-flag.seed.ts`).
+- `getMonthlyCommerceAnalytics()`
+  (`features/admin/insights/queries/get-monthly-commerce-analytics.query.ts`) :
+  lecture live, mois courant, depuis `Order`/`Customer` —
+  `revenue`/`ordersCount` (`Order.totalAmount`/count, `status` ∈
+  `{CONFIRMED, PROCESSING, COMPLETED}`, `placedAt` du mois), `newCustomersCount`
+  (`Customer.createdAt` du mois), `cancellationRate` (`status = CANCELLED` /
+  total commandes créées dans le mois, en %).
+- `app/admin/(protected)/insights/analytics/page.tsx` : si
+  `meetsFeatureLevel("engagement.analytics", "read")`, le bloc « Ce mois » du
+  cockpit (`AnalyticsOverviewSections`) affiche ces données réelles (libellé
+  « Taux d'annulation », ex-« Taux de retour ») ; sinon il reste le mock
+  d'origine.
+- Bloc « Aujourd'hui vs hier » (sessions, pages vues, visiteurs uniques, taux
+  de conversion) **reste mock**, avec disclaimer renforcé : nécessite un
+  pipeline de tracking absent du repo — relève des « Analytics complexes »,
+  hors périmètre assumé (`docs/roadmap/projet-creatyss.md`).
+- `AnalyticsMetric`/`AnalyticsSnapshot` restent posés en Prisma mais non
+  alimentés par ce lot (vue calculée à la demande, non historisée).
+- Restent hors périmètre : pipeline de tracking de trafic, alimentation
+  `AnalyticsMetric`/`AnalyticsSnapshot`, niveaux `insights`/`recommendations`,
+  modèle `Return` dédié pour `commerce.returns`.

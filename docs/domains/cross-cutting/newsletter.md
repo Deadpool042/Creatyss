@@ -341,6 +341,48 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Décisions d'implémentation
+
+### Admin CRUD `NewsletterSubscriber`, niveau `basic` (2026-06-13)
+
+Cf.
+`docs/lots/2026-06-13-engagement-newsletter-automations-cadrage.md`
+(périmètre A1+B1 : admin CRUD abonnés seul, sans campagne).
+
+- `engagement.newsletter` (`FeatureFlag`) seedé (`allowedLevels:
+  ["basic","segmentation","automation"]`, `defaultLevel: "basic"`, `status:
+  "DRAFT"`, `isEnabledByDefault: false`) — module togglable dans
+  `/admin/settings/advanced`, **inactif par défaut**
+  (`prisma/seed/newsletter-feature-flag.seed.ts`).
+- `/admin/marketing/newsletter` (gating
+  `meetsFeatureLevel("engagement.newsletter","basic")`) : liste les
+  `NewsletterSubscriber` du store et permet d'en ajouter
+  (`createNewsletterSubscriberAction`, statut initial `SUBSCRIBED`, `source:
+  "admin"`) ou de basculer SUBSCRIBED/UNSUBSCRIBED
+  (`toggleNewsletterSubscriberStatusAction`).
+- **Aucune campagne** : `NewsletterCampaign` et
+  `NewsletterCampaignRecipient` restent non alimentés. Conforme à la
+  doctrine (« Non-responsabilités » : « exécuter les campagnes emailing ») —
+  ce lot ne touche pas à `platform.email`.
+- Niveaux `segmentation` (segmentation des abonnés) et `automation`
+  (synchronisation/automatisations) restent hors périmètre.
+
+### Souscription storefront `POST /api/newsletter` (2026-06-14)
+
+Cf.
+`docs/lots/2026-06-14-engagement-newsletter-storefront-subscription-cadrage.md`.
+
+- la homepage storefront appelait déjà `POST /api/newsletter` ; le route
+  handler manquait encore ;
+- le lot ajoute une souscription publique minimale, gated
+  `meetsFeatureLevel("engagement.newsletter","basic")` ;
+- l'entrée est bornée à `email` seul, sans double opt-in ni campagne ;
+- la politique retenue dans ce lot est **idempotente** :
+  - création si l'email n'existe pas ;
+  - succès sans mutation si le contact est déjà `SUBSCRIBED` ;
+  - réactivation explicite (`SUBSCRIBED`, horodatages nettoyés) sinon ;
+- aucune automation, aucun job ni envoi provider ne sont branchés ici.
+
 ## Documents liés
 
 - `consent.md`

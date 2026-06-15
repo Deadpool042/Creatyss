@@ -69,6 +69,12 @@ type ProductImagesTabProps = {
   onAttachLibraryOpenChange?: (open: boolean) => void;
   uploadFormOpen?: boolean;
   onUploadFormOpenChange?: (open: boolean) => void;
+  /**
+   * Affiche le diagnostic "sans texte alternatif" (niveau
+   * `catalog.products.media` >= `optimization`, cf.
+   * `docs/lots/2026-06-13-inventory-media-levels-cadrage.md`, sous-lot 2).
+   */
+  showMediaOptimizationDiagnostics?: boolean;
 };
 
 type ProductImageGallerySectionProps = {
@@ -435,6 +441,7 @@ export function ProductImagesTab({
   onAttachLibraryOpenChange,
   uploadFormOpen,
   onUploadFormOpenChange,
+  showMediaOptimizationDiagnostics = false,
 }: ProductImagesTabProps): JSX.Element {
   const [messageState, setMessageState] = useState<MessageState>(null);
   const [internalLibraryOpen, setInternalLibraryOpen] = useState(false);
@@ -488,6 +495,11 @@ export function ProductImagesTab({
       unknownCount,
     };
   }, [productImages]);
+
+  const missingAltTextCount = useMemo(
+    () => productImages.filter((image) => !image.altText || image.altText.trim().length === 0).length,
+    [productImages]
+  );
 
   async function handleSetPrimary(
     mediaAssetId: string
@@ -654,7 +666,9 @@ export function ProductImagesTab({
                     {productImages.length} image{productImages.length > 1 ? "s" : ""}
                   </div>
 
-                  <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-3">
+                  <div
+                    className={`grid gap-2 text-xs text-muted-foreground sm:grid-cols-3 ${showMediaOptimizationDiagnostics ? "lg:grid-cols-4" : ""}`}
+                  >
                     <div className="rounded-lg border border-surface-border/60 px-3 py-2">
                       <p className="text-[11px] uppercase tracking-wide">Conformes 4:5</p>
                       <p className="mt-1 text-sm font-semibold text-feedback-success-foreground">
@@ -673,6 +687,14 @@ export function ProductImagesTab({
                         {ratioStats.unknownCount}
                       </p>
                     </div>
+                    {showMediaOptimizationDiagnostics ? (
+                      <div className="rounded-lg border border-surface-border/60 px-3 py-2">
+                        <p className="text-[11px] uppercase tracking-wide">Sans texte alternatif</p>
+                        <p className="mt-1 text-sm font-semibold text-feedback-warning-foreground">
+                          {missingAltTextCount}
+                        </p>
+                      </div>
+                    ) : null}
                   </div>
 
                   {uploadImagesAction || attachImagesAction ? (

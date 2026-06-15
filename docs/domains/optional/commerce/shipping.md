@@ -213,3 +213,24 @@ Le domaine `shipping` s’arrête :
 - `../../core/commerce/checkout.md`
 - `../../core/commerce/pricing.md`
 - `fulfillment.md`
+
+---
+
+## Décisions d'implémentation
+
+### Suivi d'expédition admin — V1 (2026-06-13)
+
+Cf. `docs/lots/2026-06-13-commerce-shipping-cadrage.md`.
+
+- L'action admin « Marquer comme expédiée » (`shipAdminOrder`) capture
+  désormais `carrier` et `trackingUrl` (texte libre, saisie manuelle), en
+  plus de `trackingReference`. Aucune intégration transporteur.
+- Une action admin « Marquer comme livrée » (`deliverAdminOrder`) effectue
+  la transition `Shipment.status: SHIPPED → DELIVERED` et fixe
+  `deliveredAt = now()`. Transition gardée : refusée si l'expédition n'est
+  pas au statut `SHIPPED`.
+- `/admin/commerce/shipping` affiche désormais une vue de suivi : liste des
+  `Shipment` (toutes commandes), filtrable par statut, avec lien vers la
+  commande associée. Remplace l'ancien `AdminComingSoon`.
+- Restent hors périmètre : intégrations transporteurs, webhooks,
+  notifications automatiques, multi-colis, livraison partielle.

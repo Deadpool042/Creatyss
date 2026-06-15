@@ -1,18 +1,20 @@
 import { Separator } from "@/components/ui/separator";
 
-import { boutiqueCopyConfig } from "../../config/boutique-copy.config";
-
-const headerCopy = boutiqueCopyConfig.header;
+import { boutiqueCopyConfig, type BoutiquePageCopy } from "../../config/boutique-copy.config";
 
 type BoutiquePageHeaderProps = {
   productCountLabel: string;
   activeCategoryName: string | null;
+  /** Copy en-tête localisé — défaut : config fr. */
+  copy?: BoutiquePageCopy["header"];
 };
 
 export function BoutiquePageHeader({
   productCountLabel,
   activeCategoryName,
+  copy = boutiqueCopyConfig.header,
 }: BoutiquePageHeaderProps) {
+  const headerCopy = copy;
   return (
     <section
       className="w-full relative bg-background-secondary dark:bg-background overflow-hidden"

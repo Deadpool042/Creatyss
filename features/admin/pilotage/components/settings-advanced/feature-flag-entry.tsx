@@ -78,27 +78,94 @@ type FeatureFlagEntryProps = Readonly<{
   flag: AdminFeatureFlagView;
 }>;
 
+const FEATURE_LINK_CLASS =
+  "rounded-full border border-surface-border/60 px-2.5 py-1 text-[11px] font-medium text-foreground transition-colors hover:bg-surface-subtle/30";
+
 function FeatureLinks({ flag }: { flag: AdminFeatureFlagView }) {
-  if (flag.key !== "platform.localization" || flag.dbState.status !== "ACTIVE") {
+  if (flag.dbState.status !== "ACTIVE") {
     return null;
   }
 
-  return (
-    <div className="flex flex-wrap items-center gap-2 pt-1">
-      <Link
-        href="/admin/settings/advanced/optional/localization/settings"
-        className="rounded-full border border-surface-border/60 px-2.5 py-1 text-[11px] font-medium text-foreground transition-colors hover:bg-surface-subtle/30"
-      >
-        Reglages
-      </Link>
-      <Link
-        href="/admin/settings/advanced/optional/localization/translations"
-        className="rounded-full border border-surface-border/60 px-2.5 py-1 text-[11px] font-medium text-foreground transition-colors hover:bg-surface-subtle/30"
-      >
-        Traductions
-      </Link>
-    </div>
-  );
+  if (flag.key === "platform.localization") {
+    return (
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <Link
+          href="/admin/settings/advanced/optional/localization/settings"
+          className={FEATURE_LINK_CLASS}
+        >
+          Reglages
+        </Link>
+        <Link
+          href="/admin/settings/advanced/optional/localization/translations"
+          className={FEATURE_LINK_CLASS}
+        >
+          Traductions
+        </Link>
+      </div>
+    );
+  }
+
+  if (flag.key === "commerce.taxation") {
+    return (
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <Link href="/admin/commerce/taxation" className={FEATURE_LINK_CLASS}>
+          Réglages
+        </Link>
+      </div>
+    );
+  }
+
+  if (flag.key === "platform.notifications") {
+    return (
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <Link href="/admin/settings/notifications" className={FEATURE_LINK_CLASS}>
+          Reglages
+        </Link>
+      </div>
+    );
+  }
+
+  if (flag.key === "satellite.search") {
+    return (
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <Link href="/admin/settings/search" className={FEATURE_LINK_CLASS}>
+          Reglages
+        </Link>
+      </div>
+    );
+  }
+
+  if (flag.key === "satellite.channels") {
+    return (
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <Link href="/admin/settings/channels" className={FEATURE_LINK_CLASS}>
+          Reglages
+        </Link>
+      </div>
+    );
+  }
+
+  if (flag.key === "platform.integrations") {
+    return (
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <Link href="/admin/settings/integrations" className={FEATURE_LINK_CLASS}>
+          Reglages
+        </Link>
+      </div>
+    );
+  }
+
+  if (flag.key === "platform.webhooks") {
+    return (
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <Link href="/admin/settings/webhooks" className={FEATURE_LINK_CLASS}>
+          Reglages
+        </Link>
+      </div>
+    );
+  }
+
+  return null;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────

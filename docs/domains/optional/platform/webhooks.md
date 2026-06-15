@@ -351,6 +351,44 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Decisions d'implementation
+
+### Cadrage 2026-06-14 (cf. `docs/lots/2026-06-14-platform-webhooks-cadrage.md`)
+
+- **Point d'entree admin** : page discrète `/admin/settings/webhooks`,
+  reliee au `FeatureFlag` actif dans `/admin/settings/advanced`.
+- **Perimetre du lot** : seed `FeatureFlag`, gating et lecture admin seule du
+  referentiel Prisma actuel `WebhookEndpoint` / `WebhookDelivery`.
+- **Divergence majeure constatee** : la doctrine de ce document decrit un
+  pipeline de **webhooks entrants** (reception, validation, normalisation),
+  tandis que le modele Prisma actuel ressemble a un mecanisme de
+  **delivery vers endpoints**. Cette divergence est **documentee**, pas resolue.
+
+### Bilan d'execution (2026-06-14)
+
+Premier increment runnable livre :
+
+- seed `FeatureFlag` DRAFT via `prisma/seed/webhooks-feature-flag.seed.ts` ;
+- query de gating `isWebhooksFeatureActive()` ;
+- lecture admin `getAdminWebhooksSnapshot()` :
+  compteurs + derniers endpoints + dernieres deliveries ;
+- page `/admin/settings/webhooks` ;
+- lien « Reglages » ajoute depuis `/admin/settings/advanced` quand la feature est active.
+
+Etat reel apres lot :
+
+- **lecture admin du referentiel actuel** : oui ;
+- **pipeline entrant conforme doctrine** : non ;
+- **resolution de la divergence** : non ;
+- **actions runtime** : non.
+
+Le prochain increment devra donc trancher explicitement si :
+
+1. `WebhookEndpoint` / `WebhookDelivery` est le bon modele mais la doctrine doit etre reecrite ;
+2. ou si la doctrine entrante est correcte et le modele doit etre refonde/renomme.
+
+---
+
 ## Documents liés
 
 - `../../../architecture/30-execution/32-integrations-et-adaptateurs-fournisseurs.md`

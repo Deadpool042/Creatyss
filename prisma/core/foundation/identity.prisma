@@ -71,6 +71,7 @@ model User {
   notificationsAsRecipient         Notification[]             @relation("NotificationRecipientUser")
   notificationPreferences          NotificationPreference[]   @relation("NotificationPreferenceUser")
   createdNewsletterCampaigns       NewsletterCampaign[]       @relation("NewsletterCampaignCreatedByUser")
+  createdAutomations               Automation[]               @relation("AutomationCreatedByUser")
   assignedSupportTickets           SupportTicket[]            @relation("SupportTicketAssignedToUser")
   supportMessagesAsAuthor          SupportMessage[]           @relation("SupportMessageAuthorUser")
   createdSocialPublications        SocialPublication[]        @relation("SocialPublicationCreatedByUser")

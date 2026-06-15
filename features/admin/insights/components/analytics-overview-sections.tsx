@@ -1,12 +1,19 @@
 /**
  * analytics-overview-sections.tsx
- * Cockpit analytics — toutes les données sont des mocks assumés.
+ * Cockpit analytics.
+ * - Bloc "Ce mois" : données réelles (`Order`/`Customer`, lecture live à la
+ *   demande) si `monthly` est fourni — cf.
+ *   `docs/lots/2026-06-13-engagement-analytics-cadrage.md` (décision B1/C1).
+ * - Bloc "Aujourd'hui vs hier" et "Pages les plus visitées" : mocks assumés,
+ *   nécessitent un pipeline de tracking absent du repo (hors périmètre,
+ *   "Analytics complexes").
  * Domaine : analytics (prisma/optional/engagement/analytics.prisma)
- * Modèles : AnalyticsMetric, AnalyticsSnapshot
+ * Modèles : AnalyticsMetric, AnalyticsSnapshot (non alimentés par ce cockpit)
  */
 import { Activity, Eye, ShoppingCart, TrendingDown, TrendingUp, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import type { MonthlyCommerceAnalytics } from "@/features/admin/insights/queries/get-monthly-commerce-analytics.query";
 
 // ── Mock data ─────────────────────────────────────────────────────────────
 
@@ -92,13 +99,26 @@ function KpiCard({
 
 // ── Main ──────────────────────────────────────────────────────────────────
 
-export function AnalyticsOverviewSections() {
+type AnalyticsOverviewSectionsProps = {
+  /**
+   * Agrégats commerce du mois courant. `null` si
+   * `meetsFeatureLevel("engagement.analytics", "read")` est faux — le bloc
+   * "Ce mois" reste alors un mock (comportement antérieur).
+   */
+  monthly?: MonthlyCommerceAnalytics | null;
+};
+
+export function AnalyticsOverviewSections({ monthly = null }: AnalyticsOverviewSectionsProps) {
   return (
     <div>
       {/* KPI Hero — aujourd'hui */}
       <div className="mb-1.5">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
           Aujourd'hui vs hier
+        </p>
+        <p className="mt-0.5 text-[11px] text-muted-foreground/50">
+          Données de démonstration — nécessite un pipeline de tracking du
+          trafic (non implémenté).
         </p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -197,18 +217,31 @@ export function AnalyticsOverviewSections() {
           <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
             <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
               Ce mois
-              <span className="ml-1.5 font-normal text-muted-foreground/40">(mock)</span>
+              {monthly === null ? (
+                <span className="ml-1.5 font-normal text-muted-foreground/40">(mock)</span>
+              ) : null}
             </p>
             <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
               Vue mensuelle
             </h2>
             <div className="space-y-3">
-              {[
-                { label: "Revenu", value: `${MONTH.revenue.toLocaleString("fr-FR")} €` },
-                { label: "Commandes", value: String(MONTH.orders) },
-                { label: "Nouveaux clients", value: String(MONTH.newCustomers) },
-                { label: "Taux de retour", value: `${MONTH.returnRate}%` },
-              ].map((item) => (
+              {(monthly === null
+                ? [
+                    { label: "Revenu", value: `${MONTH.revenue.toLocaleString("fr-FR")} €` },
+                    { label: "Commandes", value: String(MONTH.orders) },
+                    { label: "Nouveaux clients", value: String(MONTH.newCustomers) },
+                    { label: "Taux de retour", value: `${MONTH.returnRate}%` },
+                  ]
+                : [
+                    { label: "Revenu", value: `${monthly.revenue.toLocaleString("fr-FR")} €` },
+                    { label: "Commandes", value: String(monthly.ordersCount) },
+                    { label: "Nouveaux clients", value: String(monthly.newCustomersCount) },
+                    {
+                      label: "Taux d'annulation",
+                      value: `${monthly.cancellationRate.toFixed(1)}%`,
+                    },
+                  ]
+              ).map((item) => (
                 <div key={item.label} className="flex items-center justify-between gap-3">
                   <p className="text-xs text-muted-foreground">{item.label}</p>
                   <p className="text-sm font-semibold tabular-nums text-foreground">{item.value}</p>
@@ -221,22 +254,50 @@ export function AnalyticsOverviewSections() {
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
               Module analytics
             </p>
-            <p className="mt-2 text-[11px] leading-5 text-muted-foreground/70">
-              Données de démonstration. Connectées à{" "}
-              <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
-                AnalyticsMetric
-              </code>{" "}
-              +{" "}
-              <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
-                AnalyticsSnapshot
-              </code>{" "}
-              lors de l'activation.
-              <br />
-              Doctrine :{" "}
-              <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
-                docs/domains/optional/
-              </code>
-            </p>
+            {monthly === null ? (
+              <p className="mt-2 text-[11px] leading-5 text-muted-foreground/70">
+                Données de démonstration. Connectées à{" "}
+                <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
+                  AnalyticsMetric
+                </code>{" "}
+                +{" "}
+                <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
+                  AnalyticsSnapshot
+                </code>{" "}
+                lors de l'activation.
+                <br />
+                Doctrine :{" "}
+                <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
+                  docs/domains/optional/
+                </code>
+              </p>
+            ) : (
+              <p className="mt-2 text-[11px] leading-5 text-muted-foreground/70">
+                Bloc "Ce mois" : vue calculée à la demande depuis{" "}
+                <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
+                  Order
+                </code>{" "}
+                /{" "}
+                <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
+                  Customer
+                </code>
+                , non historisée (
+                <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
+                  AnalyticsMetric
+                </code>{" "}
+                /{" "}
+                <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
+                  AnalyticsSnapshot
+                </code>{" "}
+                non alimentés). Bloc "Aujourd'hui vs hier" : mock, source
+                tracking absente.
+                <br />
+                Doctrine :{" "}
+                <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
+                  docs/domains/cross-cutting/analytics.md
+                </code>
+              </p>
+            )}
           </section>
         </div>
       </div>

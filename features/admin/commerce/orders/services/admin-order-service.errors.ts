@@ -1,6 +1,7 @@
 export type AdminOrderServiceErrorCode =
   | "missing_order"
-  | "invalid_status_transition";
+  | "invalid_status_transition"
+  | "invalid_shipment_transition";
 
 export class AdminOrderServiceError extends Error {
   readonly code: AdminOrderServiceErrorCode;

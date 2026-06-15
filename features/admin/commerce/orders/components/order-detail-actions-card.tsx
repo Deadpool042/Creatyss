@@ -8,7 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Notice } from "@/components/shared/feedback";
 import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
-import { updateOrderStatusAction, shipOrderAction } from "@/features/admin/commerce/orders/actions";
+import {
+  updateOrderStatusAction,
+  shipOrderAction,
+  deliverOrderAction,
+} from "@/features/admin/commerce/orders/actions";
 import { OrderCancelConfirmDialog } from "./order-cancel-confirm-dialog";
 import { getOrderTransitionLabel } from "@/features/admin/commerce/orders/mappers/order-detail-mappers";
 
@@ -16,14 +20,25 @@ type OrderDetailActionsCardProps = Readonly<{
   order: {
     id: string;
     trackingReference: string | null;
+    carrier: string | null;
+    trackingUrl: string | null;
   };
   allowedTransitions: readonly OrderStatus[];
+  shipmentStatus: string | null;
 }>;
 
-export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetailActionsCardProps) {
+export function OrderDetailActionsCard({
+  order,
+  allowedTransitions,
+  shipmentStatus,
+}: OrderDetailActionsCardProps) {
   const shippingFieldId = `tracking-reference-${order.id}`;
+  const carrierFieldId = `carrier-${order.id}`;
+  const trackingUrlFieldId = `tracking-url-${order.id}`;
   const canShip = allowedTransitions.includes("shipped");
+  const canDeliver = shipmentStatus === "SHIPPED";
   const statusTransitions = allowedTransitions.filter((nextStatus) => nextStatus !== "shipped");
+  const hasActions = allowedTransitions.length > 0 || canDeliver;
 
   return (
     <AdminSplitDetailSectionCard tone="secondary">
@@ -33,7 +48,7 @@ export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetai
         title="Actions disponibles"
       />
 
-      {allowedTransitions.length > 0 ? (
+      {hasActions ? (
         <div className="grid gap-4">
           {canShip ? (
             <form
@@ -60,8 +75,48 @@ export function OrderDetailActionsCard({ order, allowedTransitions }: OrderDetai
                 />
               </AdminFormField>
 
+              <AdminFormField htmlFor={carrierFieldId} label="Transporteur optionnel">
+                <Input
+                  defaultValue={order.carrier ?? ""}
+                  id={carrierFieldId}
+                  name="carrier"
+                  placeholder="Ex. Colissimo"
+                  type="text"
+                />
+              </AdminFormField>
+
+              <AdminFormField htmlFor={trackingUrlFieldId} label="Lien de suivi optionnel">
+                <Input
+                  defaultValue={order.trackingUrl ?? ""}
+                  id={trackingUrlFieldId}
+                  name="trackingUrl"
+                  placeholder="https://..."
+                  type="text"
+                />
+              </AdminFormField>
+
               <CustomButton type="submit" fullWidth className="sm:w-fit">
                 Marquer comme expédiée
+              </CustomButton>
+            </form>
+          ) : null}
+
+          {canDeliver ? (
+            <form
+              action={deliverOrderAction}
+              className="grid gap-3 rounded-xl border border-surface-border-subtle bg-surface-panel-soft p-4"
+            >
+              <div className="grid gap-1">
+                <h3 className="text-sm font-semibold text-foreground">Confirmer la livraison</h3>
+                <p className="text-sm leading-6 text-text-muted-strong">
+                  À utiliser une fois le colis effectivement remis au client.
+                </p>
+              </div>
+
+              <input name="orderId" type="hidden" value={order.id} />
+
+              <CustomButton type="submit" variant="outline" fullWidth className="sm:w-fit">
+                Marquer comme livrée
               </CustomButton>
             </form>
           ) : null}

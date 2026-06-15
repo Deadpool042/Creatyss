@@ -424,6 +424,7 @@ export type StoreWhereInput = {
   shipments?: Prisma.ShipmentListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   documents?: Prisma.DocumentListRelationFilter
+  documentCounters?: Prisma.DocumentCounterListRelationFilter
   returnRequests?: Prisma.ReturnRequestListRelationFilter
   discounts?: Prisma.DiscountListRelationFilter
   pages?: Prisma.PageListRelationFilter
@@ -453,6 +454,7 @@ export type StoreWhereInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentListRelationFilter
   newsletterSubscribers?: Prisma.NewsletterSubscriberListRelationFilter
   newsletterCampaigns?: Prisma.NewsletterCampaignListRelationFilter
+  automations?: Prisma.AutomationListRelationFilter
   publicEvents?: Prisma.PublicEventListRelationFilter
   supportTickets?: Prisma.SupportTicketListRelationFilter
   crmContacts?: Prisma.CrmContactListRelationFilter
@@ -536,6 +538,7 @@ export type StoreOrderByWithRelationInput = {
   shipments?: Prisma.ShipmentOrderByRelationAggregateInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   documents?: Prisma.DocumentOrderByRelationAggregateInput
+  documentCounters?: Prisma.DocumentCounterOrderByRelationAggregateInput
   returnRequests?: Prisma.ReturnRequestOrderByRelationAggregateInput
   discounts?: Prisma.DiscountOrderByRelationAggregateInput
   pages?: Prisma.PageOrderByRelationAggregateInput
@@ -565,6 +568,7 @@ export type StoreOrderByWithRelationInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentOrderByRelationAggregateInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberOrderByRelationAggregateInput
   newsletterCampaigns?: Prisma.NewsletterCampaignOrderByRelationAggregateInput
+  automations?: Prisma.AutomationOrderByRelationAggregateInput
   publicEvents?: Prisma.PublicEventOrderByRelationAggregateInput
   supportTickets?: Prisma.SupportTicketOrderByRelationAggregateInput
   crmContacts?: Prisma.CrmContactOrderByRelationAggregateInput
@@ -651,6 +655,7 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   shipments?: Prisma.ShipmentListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   documents?: Prisma.DocumentListRelationFilter
+  documentCounters?: Prisma.DocumentCounterListRelationFilter
   returnRequests?: Prisma.ReturnRequestListRelationFilter
   discounts?: Prisma.DiscountListRelationFilter
   pages?: Prisma.PageListRelationFilter
@@ -680,6 +685,7 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentListRelationFilter
   newsletterSubscribers?: Prisma.NewsletterSubscriberListRelationFilter
   newsletterCampaigns?: Prisma.NewsletterCampaignListRelationFilter
+  automations?: Prisma.AutomationListRelationFilter
   publicEvents?: Prisma.PublicEventListRelationFilter
   supportTickets?: Prisma.SupportTicketListRelationFilter
   crmContacts?: Prisma.CrmContactListRelationFilter
@@ -841,6 +847,7 @@ export type StoreCreateInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -870,6 +877,7 @@ export type StoreCreateInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -953,6 +961,7 @@ export type StoreUncheckedCreateInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -982,6 +991,7 @@ export type StoreUncheckedCreateInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -1065,6 +1075,7 @@ export type StoreUpdateInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -1094,6 +1105,7 @@ export type StoreUpdateInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -1177,6 +1189,7 @@ export type StoreUncheckedUpdateInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -1206,6 +1219,7 @@ export type StoreUncheckedUpdateInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -1837,6 +1851,20 @@ export type StoreUpdateOneRequiredWithoutDocumentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutDocumentsInput, Prisma.StoreUpdateWithoutDocumentsInput>, Prisma.StoreUncheckedUpdateWithoutDocumentsInput>
 }
 
+export type StoreCreateNestedOneWithoutDocumentCountersInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutDocumentCountersInput, Prisma.StoreUncheckedCreateWithoutDocumentCountersInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutDocumentCountersInput
+  connect?: Prisma.StoreWhereUniqueInput
+}
+
+export type StoreUpdateOneRequiredWithoutDocumentCountersNestedInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutDocumentCountersInput, Prisma.StoreUncheckedCreateWithoutDocumentCountersInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutDocumentCountersInput
+  upsert?: Prisma.StoreUpsertWithoutDocumentCountersInput
+  connect?: Prisma.StoreWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutDocumentCountersInput, Prisma.StoreUpdateWithoutDocumentCountersInput>, Prisma.StoreUncheckedUpdateWithoutDocumentCountersInput>
+}
+
 export type StoreCreateNestedOneWithoutFulfillmentsInput = {
   create?: Prisma.XOR<Prisma.StoreCreateWithoutFulfillmentsInput, Prisma.StoreUncheckedCreateWithoutFulfillmentsInput>
   connectOrCreate?: Prisma.StoreCreateOrConnectWithoutFulfillmentsInput
@@ -2063,6 +2091,20 @@ export type StoreUpdateOneWithoutAttributionModelsNestedInput = {
   delete?: Prisma.StoreWhereInput | boolean
   connect?: Prisma.StoreWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutAttributionModelsInput, Prisma.StoreUpdateWithoutAttributionModelsInput>, Prisma.StoreUncheckedUpdateWithoutAttributionModelsInput>
+}
+
+export type StoreCreateNestedOneWithoutAutomationsInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutAutomationsInput, Prisma.StoreUncheckedCreateWithoutAutomationsInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutAutomationsInput
+  connect?: Prisma.StoreWhereUniqueInput
+}
+
+export type StoreUpdateOneRequiredWithoutAutomationsNestedInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutAutomationsInput, Prisma.StoreUncheckedCreateWithoutAutomationsInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutAutomationsInput
+  upsert?: Prisma.StoreUpsertWithoutAutomationsInput
+  connect?: Prisma.StoreWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutAutomationsInput, Prisma.StoreUpdateWithoutAutomationsInput>, Prisma.StoreUncheckedUpdateWithoutAutomationsInput>
 }
 
 export type StoreCreateNestedOneWithoutBehaviorSegmentsInput = {
@@ -2656,6 +2698,7 @@ export type StoreCreateWithoutAvailabilityRecordsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -2685,6 +2728,7 @@ export type StoreCreateWithoutAvailabilityRecordsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -2767,6 +2811,7 @@ export type StoreUncheckedCreateWithoutAvailabilityRecordsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -2796,6 +2841,7 @@ export type StoreUncheckedCreateWithoutAvailabilityRecordsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -2894,6 +2940,7 @@ export type StoreUpdateWithoutAvailabilityRecordsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -2923,6 +2970,7 @@ export type StoreUpdateWithoutAvailabilityRecordsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -3005,6 +3053,7 @@ export type StoreUncheckedUpdateWithoutAvailabilityRecordsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -3034,6 +3083,7 @@ export type StoreUncheckedUpdateWithoutAvailabilityRecordsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -3116,6 +3166,7 @@ export type StoreCreateWithoutCategoriesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -3145,6 +3196,7 @@ export type StoreCreateWithoutCategoriesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -3227,6 +3279,7 @@ export type StoreUncheckedCreateWithoutCategoriesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -3256,6 +3309,7 @@ export type StoreUncheckedCreateWithoutCategoriesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -3354,6 +3408,7 @@ export type StoreUpdateWithoutCategoriesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -3383,6 +3438,7 @@ export type StoreUpdateWithoutCategoriesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -3465,6 +3521,7 @@ export type StoreUncheckedUpdateWithoutCategoriesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -3494,6 +3551,7 @@ export type StoreUncheckedUpdateWithoutCategoriesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -3576,6 +3634,7 @@ export type StoreCreateWithoutPriceListsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -3605,6 +3664,7 @@ export type StoreCreateWithoutPriceListsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -3687,6 +3747,7 @@ export type StoreUncheckedCreateWithoutPriceListsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -3716,6 +3777,7 @@ export type StoreUncheckedCreateWithoutPriceListsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -3814,6 +3876,7 @@ export type StoreUpdateWithoutPriceListsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -3843,6 +3906,7 @@ export type StoreUpdateWithoutPriceListsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -3925,6 +3989,7 @@ export type StoreUncheckedUpdateWithoutPriceListsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -3954,6 +4019,7 @@ export type StoreUncheckedUpdateWithoutPriceListsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -4036,6 +4102,7 @@ export type StoreCreateWithoutProductTypesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -4065,6 +4132,7 @@ export type StoreCreateWithoutProductTypesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -4147,6 +4215,7 @@ export type StoreUncheckedCreateWithoutProductTypesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -4176,6 +4245,7 @@ export type StoreUncheckedCreateWithoutProductTypesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -4274,6 +4344,7 @@ export type StoreUpdateWithoutProductTypesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -4303,6 +4374,7 @@ export type StoreUpdateWithoutProductTypesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -4385,6 +4457,7 @@ export type StoreUncheckedUpdateWithoutProductTypesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -4414,6 +4487,7 @@ export type StoreUncheckedUpdateWithoutProductTypesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -4496,6 +4570,7 @@ export type StoreCreateWithoutProductsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -4525,6 +4600,7 @@ export type StoreCreateWithoutProductsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -4607,6 +4683,7 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -4636,6 +4713,7 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -4734,6 +4812,7 @@ export type StoreUpdateWithoutProductsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -4763,6 +4842,7 @@ export type StoreUpdateWithoutProductsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -4845,6 +4925,7 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -4874,6 +4955,7 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -4956,6 +5038,7 @@ export type StoreCreateWithoutCartsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -4985,6 +5068,7 @@ export type StoreCreateWithoutCartsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -5067,6 +5151,7 @@ export type StoreUncheckedCreateWithoutCartsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -5096,6 +5181,7 @@ export type StoreUncheckedCreateWithoutCartsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -5194,6 +5280,7 @@ export type StoreUpdateWithoutCartsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -5223,6 +5310,7 @@ export type StoreUpdateWithoutCartsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -5305,6 +5393,7 @@ export type StoreUncheckedUpdateWithoutCartsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -5334,6 +5423,7 @@ export type StoreUncheckedUpdateWithoutCartsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -5416,6 +5506,7 @@ export type StoreCreateWithoutCheckoutsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -5445,6 +5536,7 @@ export type StoreCreateWithoutCheckoutsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -5527,6 +5619,7 @@ export type StoreUncheckedCreateWithoutCheckoutsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -5556,6 +5649,7 @@ export type StoreUncheckedCreateWithoutCheckoutsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -5654,6 +5748,7 @@ export type StoreUpdateWithoutCheckoutsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -5683,6 +5778,7 @@ export type StoreUpdateWithoutCheckoutsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -5765,6 +5861,7 @@ export type StoreUncheckedUpdateWithoutCheckoutsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -5794,6 +5891,7 @@ export type StoreUncheckedUpdateWithoutCheckoutsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -5876,6 +5974,7 @@ export type StoreCreateWithoutCustomersInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -5905,6 +6004,7 @@ export type StoreCreateWithoutCustomersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -5987,6 +6087,7 @@ export type StoreUncheckedCreateWithoutCustomersInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -6016,6 +6117,7 @@ export type StoreUncheckedCreateWithoutCustomersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -6114,6 +6216,7 @@ export type StoreUpdateWithoutCustomersInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -6143,6 +6246,7 @@ export type StoreUpdateWithoutCustomersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -6225,6 +6329,7 @@ export type StoreUncheckedUpdateWithoutCustomersInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -6254,6 +6359,7 @@ export type StoreUncheckedUpdateWithoutCustomersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -6336,6 +6442,7 @@ export type StoreCreateWithoutOrdersInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -6365,6 +6472,7 @@ export type StoreCreateWithoutOrdersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -6447,6 +6555,7 @@ export type StoreUncheckedCreateWithoutOrdersInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -6476,6 +6585,7 @@ export type StoreUncheckedCreateWithoutOrdersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -6574,6 +6684,7 @@ export type StoreUpdateWithoutOrdersInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -6603,6 +6714,7 @@ export type StoreUpdateWithoutOrdersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -6685,6 +6797,7 @@ export type StoreUncheckedUpdateWithoutOrdersInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -6714,6 +6827,7 @@ export type StoreUncheckedUpdateWithoutOrdersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -6797,6 +6911,7 @@ export type StoreCreateWithoutPagesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
@@ -6825,6 +6940,7 @@ export type StoreCreateWithoutPagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -6908,6 +7024,7 @@ export type StoreUncheckedCreateWithoutPagesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
@@ -6936,6 +7053,7 @@ export type StoreUncheckedCreateWithoutPagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -7035,6 +7153,7 @@ export type StoreUpdateWithoutPagesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
@@ -7063,6 +7182,7 @@ export type StoreUpdateWithoutPagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -7146,6 +7266,7 @@ export type StoreUncheckedUpdateWithoutPagesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
@@ -7174,6 +7295,7 @@ export type StoreUncheckedUpdateWithoutPagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -7257,6 +7379,7 @@ export type StoreCreateWithoutApiClientsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -7285,6 +7408,7 @@ export type StoreCreateWithoutApiClientsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -7368,6 +7492,7 @@ export type StoreUncheckedCreateWithoutApiClientsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -7396,6 +7521,7 @@ export type StoreUncheckedCreateWithoutApiClientsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -7495,6 +7621,7 @@ export type StoreUpdateWithoutApiClientsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -7523,6 +7650,7 @@ export type StoreUpdateWithoutApiClientsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -7606,6 +7734,7 @@ export type StoreUncheckedUpdateWithoutApiClientsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -7634,6 +7763,7 @@ export type StoreUncheckedUpdateWithoutApiClientsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -7716,6 +7846,7 @@ export type StoreCreateWithoutUsersInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -7745,6 +7876,7 @@ export type StoreCreateWithoutUsersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -7827,6 +7959,7 @@ export type StoreUncheckedCreateWithoutUsersInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -7856,6 +7989,7 @@ export type StoreUncheckedCreateWithoutUsersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -7954,6 +8088,7 @@ export type StoreUpdateWithoutUsersInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -7983,6 +8118,7 @@ export type StoreUpdateWithoutUsersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -8065,6 +8201,7 @@ export type StoreUncheckedUpdateWithoutUsersInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -8094,6 +8231,7 @@ export type StoreUncheckedUpdateWithoutUsersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -8176,6 +8314,7 @@ export type StoreCreateWithoutDomainsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -8205,6 +8344,7 @@ export type StoreCreateWithoutDomainsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -8287,6 +8427,7 @@ export type StoreUncheckedCreateWithoutDomainsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -8316,6 +8457,7 @@ export type StoreUncheckedCreateWithoutDomainsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -8414,6 +8556,7 @@ export type StoreUpdateWithoutDomainsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -8443,6 +8586,7 @@ export type StoreUpdateWithoutDomainsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -8525,6 +8669,7 @@ export type StoreUncheckedUpdateWithoutDomainsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -8554,6 +8699,7 @@ export type StoreUncheckedUpdateWithoutDomainsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -8637,6 +8783,7 @@ export type StoreCreateWithoutAuditLogsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -8665,6 +8812,7 @@ export type StoreCreateWithoutAuditLogsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -8748,6 +8896,7 @@ export type StoreUncheckedCreateWithoutAuditLogsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -8776,6 +8925,7 @@ export type StoreUncheckedCreateWithoutAuditLogsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -8875,6 +9025,7 @@ export type StoreUpdateWithoutAuditLogsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -8903,6 +9054,7 @@ export type StoreUpdateWithoutAuditLogsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -8986,6 +9138,7 @@ export type StoreUncheckedUpdateWithoutAuditLogsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -9014,6 +9167,7 @@ export type StoreUncheckedUpdateWithoutAuditLogsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -9097,6 +9251,7 @@ export type StoreCreateWithoutDomainEventsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -9126,6 +9281,7 @@ export type StoreCreateWithoutDomainEventsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -9208,6 +9364,7 @@ export type StoreUncheckedCreateWithoutDomainEventsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -9237,6 +9394,7 @@ export type StoreUncheckedCreateWithoutDomainEventsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -9335,6 +9493,7 @@ export type StoreUpdateWithoutDomainEventsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -9364,6 +9523,7 @@ export type StoreUpdateWithoutDomainEventsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -9446,6 +9606,7 @@ export type StoreUncheckedUpdateWithoutDomainEventsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -9475,6 +9636,7 @@ export type StoreUncheckedUpdateWithoutDomainEventsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -9557,6 +9719,7 @@ export type StoreCreateWithoutFeatureFlagsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -9585,6 +9748,7 @@ export type StoreCreateWithoutFeatureFlagsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -9668,6 +9832,7 @@ export type StoreUncheckedCreateWithoutFeatureFlagsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -9696,6 +9861,7 @@ export type StoreUncheckedCreateWithoutFeatureFlagsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -9795,6 +9961,7 @@ export type StoreUpdateWithoutFeatureFlagsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -9823,6 +9990,7 @@ export type StoreUpdateWithoutFeatureFlagsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -9906,6 +10074,7 @@ export type StoreUncheckedUpdateWithoutFeatureFlagsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -9934,6 +10103,7 @@ export type StoreUncheckedUpdateWithoutFeatureFlagsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -10017,6 +10187,7 @@ export type StoreCreateWithoutJobsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -10045,6 +10216,7 @@ export type StoreCreateWithoutJobsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -10128,6 +10300,7 @@ export type StoreUncheckedCreateWithoutJobsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -10156,6 +10329,7 @@ export type StoreUncheckedCreateWithoutJobsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -10255,6 +10429,7 @@ export type StoreUpdateWithoutJobsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -10283,6 +10458,7 @@ export type StoreUpdateWithoutJobsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -10366,6 +10542,7 @@ export type StoreUncheckedUpdateWithoutJobsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -10394,6 +10571,7 @@ export type StoreUncheckedUpdateWithoutJobsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -10477,6 +10655,7 @@ export type StoreCreateWithoutMonitoringChecksInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -10506,6 +10685,7 @@ export type StoreCreateWithoutMonitoringChecksInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -10588,6 +10768,7 @@ export type StoreUncheckedCreateWithoutMonitoringChecksInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -10617,6 +10798,7 @@ export type StoreUncheckedCreateWithoutMonitoringChecksInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -10715,6 +10897,7 @@ export type StoreUpdateWithoutMonitoringChecksInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -10744,6 +10927,7 @@ export type StoreUpdateWithoutMonitoringChecksInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -10826,6 +11010,7 @@ export type StoreUncheckedUpdateWithoutMonitoringChecksInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -10855,6 +11040,7 @@ export type StoreUncheckedUpdateWithoutMonitoringChecksInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -10937,6 +11123,7 @@ export type StoreCreateWithoutObservabilitySignalsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -10966,6 +11153,7 @@ export type StoreCreateWithoutObservabilitySignalsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -11048,6 +11236,7 @@ export type StoreUncheckedCreateWithoutObservabilitySignalsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -11077,6 +11266,7 @@ export type StoreUncheckedCreateWithoutObservabilitySignalsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -11175,6 +11365,7 @@ export type StoreUpdateWithoutObservabilitySignalsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -11204,6 +11395,7 @@ export type StoreUpdateWithoutObservabilitySignalsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -11286,6 +11478,7 @@ export type StoreUncheckedUpdateWithoutObservabilitySignalsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -11315,6 +11508,7 @@ export type StoreUncheckedUpdateWithoutObservabilitySignalsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -11397,6 +11591,7 @@ export type StoreCreateWithoutSeoMetadataInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -11425,6 +11620,7 @@ export type StoreCreateWithoutSeoMetadataInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -11508,6 +11704,7 @@ export type StoreUncheckedCreateWithoutSeoMetadataInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -11536,6 +11733,7 @@ export type StoreUncheckedCreateWithoutSeoMetadataInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -11635,6 +11833,7 @@ export type StoreUpdateWithoutSeoMetadataInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -11663,6 +11862,7 @@ export type StoreUpdateWithoutSeoMetadataInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -11746,6 +11946,7 @@ export type StoreUncheckedUpdateWithoutSeoMetadataInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -11774,6 +11975,7 @@ export type StoreUncheckedUpdateWithoutSeoMetadataInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -11857,6 +12059,7 @@ export type StoreCreateWithoutAiProvidersInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -11886,6 +12089,7 @@ export type StoreCreateWithoutAiProvidersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -11968,6 +12172,7 @@ export type StoreUncheckedCreateWithoutAiProvidersInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -11997,6 +12202,7 @@ export type StoreUncheckedCreateWithoutAiProvidersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -12095,6 +12301,7 @@ export type StoreUpdateWithoutAiProvidersInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -12124,6 +12331,7 @@ export type StoreUpdateWithoutAiProvidersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -12206,6 +12414,7 @@ export type StoreUncheckedUpdateWithoutAiProvidersInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -12235,6 +12444,7 @@ export type StoreUncheckedUpdateWithoutAiProvidersInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -12317,6 +12527,7 @@ export type StoreCreateWithoutAiTasksInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -12346,6 +12557,7 @@ export type StoreCreateWithoutAiTasksInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -12428,6 +12640,7 @@ export type StoreUncheckedCreateWithoutAiTasksInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -12457,6 +12670,7 @@ export type StoreUncheckedCreateWithoutAiTasksInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -12555,6 +12769,7 @@ export type StoreUpdateWithoutAiTasksInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -12584,6 +12799,7 @@ export type StoreUpdateWithoutAiTasksInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -12666,6 +12882,7 @@ export type StoreUncheckedUpdateWithoutAiTasksInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -12695,6 +12912,7 @@ export type StoreUncheckedUpdateWithoutAiTasksInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -12777,6 +12995,7 @@ export type StoreCreateWithoutBundlesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -12806,6 +13025,7 @@ export type StoreCreateWithoutBundlesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -12888,6 +13108,7 @@ export type StoreUncheckedCreateWithoutBundlesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -12917,6 +13138,7 @@ export type StoreUncheckedCreateWithoutBundlesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -13015,6 +13237,7 @@ export type StoreUpdateWithoutBundlesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -13044,6 +13267,7 @@ export type StoreUpdateWithoutBundlesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -13126,6 +13350,7 @@ export type StoreUncheckedUpdateWithoutBundlesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -13155,6 +13380,7 @@ export type StoreUncheckedUpdateWithoutBundlesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -13237,6 +13463,7 @@ export type StoreCreateWithoutDiscountsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
   blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
@@ -13265,6 +13492,7 @@ export type StoreCreateWithoutDiscountsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -13348,6 +13576,7 @@ export type StoreUncheckedCreateWithoutDiscountsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
   blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
@@ -13376,6 +13605,7 @@ export type StoreUncheckedCreateWithoutDiscountsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -13475,6 +13705,7 @@ export type StoreUpdateWithoutDiscountsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
   blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
@@ -13503,6 +13734,7 @@ export type StoreUpdateWithoutDiscountsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -13586,6 +13818,7 @@ export type StoreUncheckedUpdateWithoutDiscountsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
   blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
@@ -13614,6 +13847,7 @@ export type StoreUncheckedUpdateWithoutDiscountsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -13696,6 +13930,7 @@ export type StoreCreateWithoutDocumentsInput = {
   shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -13725,6 +13960,7 @@ export type StoreCreateWithoutDocumentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -13807,6 +14043,7 @@ export type StoreUncheckedCreateWithoutDocumentsInput = {
   shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -13836,6 +14073,7 @@ export type StoreUncheckedCreateWithoutDocumentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -13934,6 +14172,7 @@ export type StoreUpdateWithoutDocumentsInput = {
   shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -13963,6 +14202,7 @@ export type StoreUpdateWithoutDocumentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -14045,6 +14285,7 @@ export type StoreUncheckedUpdateWithoutDocumentsInput = {
   shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -14074,6 +14315,475 @@ export type StoreUncheckedUpdateWithoutDocumentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreCreateWithoutDocumentCountersInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  addressLine1?: string | null
+  addressCity?: string | null
+  addressPostalCode?: string | null
+  addressCountry?: string | null
+  instagramUrl?: string | null
+  facebookUrl?: string | null
+  orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
+}
+
+export type StoreUncheckedCreateWithoutDocumentCountersInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  addressLine1?: string | null
+  addressCity?: string | null
+  addressPostalCode?: string | null
+  addressCountry?: string | null
+  instagramUrl?: string | null
+  facebookUrl?: string | null
+  orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
+}
+
+export type StoreCreateOrConnectWithoutDocumentCountersInput = {
+  where: Prisma.StoreWhereUniqueInput
+  create: Prisma.XOR<Prisma.StoreCreateWithoutDocumentCountersInput, Prisma.StoreUncheckedCreateWithoutDocumentCountersInput>
+}
+
+export type StoreUpsertWithoutDocumentCountersInput = {
+  update: Prisma.XOR<Prisma.StoreUpdateWithoutDocumentCountersInput, Prisma.StoreUncheckedUpdateWithoutDocumentCountersInput>
+  create: Prisma.XOR<Prisma.StoreCreateWithoutDocumentCountersInput, Prisma.StoreUncheckedCreateWithoutDocumentCountersInput>
+  where?: Prisma.StoreWhereInput
+}
+
+export type StoreUpdateToOneWithWhereWithoutDocumentCountersInput = {
+  where?: Prisma.StoreWhereInput
+  data: Prisma.XOR<Prisma.StoreUpdateWithoutDocumentCountersInput, Prisma.StoreUncheckedUpdateWithoutDocumentCountersInput>
+}
+
+export type StoreUpdateWithoutDocumentCountersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreUncheckedUpdateWithoutDocumentCountersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -14157,6 +14867,7 @@ export type StoreCreateWithoutFulfillmentsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -14186,6 +14897,7 @@ export type StoreCreateWithoutFulfillmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -14268,6 +14980,7 @@ export type StoreUncheckedCreateWithoutFulfillmentsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -14297,6 +15010,7 @@ export type StoreUncheckedCreateWithoutFulfillmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -14395,6 +15109,7 @@ export type StoreUpdateWithoutFulfillmentsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -14424,6 +15139,7 @@ export type StoreUpdateWithoutFulfillmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -14506,6 +15222,7 @@ export type StoreUncheckedUpdateWithoutFulfillmentsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -14535,6 +15252,7 @@ export type StoreUncheckedUpdateWithoutFulfillmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -14617,6 +15335,7 @@ export type StoreCreateWithoutGiftCardsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -14646,6 +15365,7 @@ export type StoreCreateWithoutGiftCardsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -14728,6 +15448,7 @@ export type StoreUncheckedCreateWithoutGiftCardsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -14757,6 +15478,7 @@ export type StoreUncheckedCreateWithoutGiftCardsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -14855,6 +15577,7 @@ export type StoreUpdateWithoutGiftCardsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -14884,6 +15607,7 @@ export type StoreUpdateWithoutGiftCardsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -14966,6 +15690,7 @@ export type StoreUncheckedUpdateWithoutGiftCardsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -14995,6 +15720,7 @@ export type StoreUncheckedUpdateWithoutGiftCardsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -15077,6 +15803,7 @@ export type StoreCreateWithoutGiftRequestsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -15106,6 +15833,7 @@ export type StoreCreateWithoutGiftRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -15188,6 +15916,7 @@ export type StoreUncheckedCreateWithoutGiftRequestsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -15217,6 +15946,7 @@ export type StoreUncheckedCreateWithoutGiftRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -15315,6 +16045,7 @@ export type StoreUpdateWithoutGiftRequestsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -15344,6 +16075,7 @@ export type StoreUpdateWithoutGiftRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -15426,6 +16158,7 @@ export type StoreUncheckedUpdateWithoutGiftRequestsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -15455,6 +16188,7 @@ export type StoreUncheckedUpdateWithoutGiftRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -15536,6 +16270,7 @@ export type StoreCreateWithoutInventoryItemsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -15565,6 +16300,7 @@ export type StoreCreateWithoutInventoryItemsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -15647,6 +16383,7 @@ export type StoreUncheckedCreateWithoutInventoryItemsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -15676,6 +16413,7 @@ export type StoreUncheckedCreateWithoutInventoryItemsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -15774,6 +16512,7 @@ export type StoreUpdateWithoutInventoryItemsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -15803,6 +16542,7 @@ export type StoreUpdateWithoutInventoryItemsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -15885,6 +16625,7 @@ export type StoreUncheckedUpdateWithoutInventoryItemsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -15914,6 +16655,7 @@ export type StoreUncheckedUpdateWithoutInventoryItemsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -15997,6 +16739,7 @@ export type StoreCreateWithoutLoyaltyAccountsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -16026,6 +16769,7 @@ export type StoreCreateWithoutLoyaltyAccountsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -16108,6 +16852,7 @@ export type StoreUncheckedCreateWithoutLoyaltyAccountsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -16137,6 +16882,7 @@ export type StoreUncheckedCreateWithoutLoyaltyAccountsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -16235,6 +16981,7 @@ export type StoreUpdateWithoutLoyaltyAccountsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -16264,6 +17011,7 @@ export type StoreUpdateWithoutLoyaltyAccountsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -16346,6 +17094,7 @@ export type StoreUncheckedUpdateWithoutLoyaltyAccountsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -16375,6 +17124,7 @@ export type StoreUncheckedUpdateWithoutLoyaltyAccountsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -16456,6 +17206,7 @@ export type StoreCreateWithoutPaymentsInput = {
   shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -16485,6 +17236,7 @@ export type StoreCreateWithoutPaymentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -16567,6 +17319,7 @@ export type StoreUncheckedCreateWithoutPaymentsInput = {
   shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -16596,6 +17349,7 @@ export type StoreUncheckedCreateWithoutPaymentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -16694,6 +17448,7 @@ export type StoreUpdateWithoutPaymentsInput = {
   shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -16723,6 +17478,7 @@ export type StoreUpdateWithoutPaymentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -16805,6 +17561,7 @@ export type StoreUncheckedUpdateWithoutPaymentsInput = {
   shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -16834,6 +17591,7 @@ export type StoreUncheckedUpdateWithoutPaymentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -16917,6 +17675,7 @@ export type StoreCreateWithoutReturnRequestsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
   blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
@@ -16945,6 +17704,7 @@ export type StoreCreateWithoutReturnRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -17028,6 +17788,7 @@ export type StoreUncheckedCreateWithoutReturnRequestsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
   blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
@@ -17056,6 +17817,7 @@ export type StoreUncheckedCreateWithoutReturnRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -17155,6 +17917,7 @@ export type StoreUpdateWithoutReturnRequestsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
   blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
@@ -17183,6 +17946,7 @@ export type StoreUpdateWithoutReturnRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -17266,6 +18030,7 @@ export type StoreUncheckedUpdateWithoutReturnRequestsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
   blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
@@ -17294,6 +18059,7 @@ export type StoreUncheckedUpdateWithoutReturnRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -17377,6 +18143,7 @@ export type StoreCreateWithoutSalesPoliciesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -17406,6 +18173,7 @@ export type StoreCreateWithoutSalesPoliciesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -17488,6 +18256,7 @@ export type StoreUncheckedCreateWithoutSalesPoliciesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -17517,6 +18286,7 @@ export type StoreUncheckedCreateWithoutSalesPoliciesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -17615,6 +18385,7 @@ export type StoreUpdateWithoutSalesPoliciesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -17644,6 +18415,7 @@ export type StoreUpdateWithoutSalesPoliciesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -17726,6 +18498,7 @@ export type StoreUncheckedUpdateWithoutSalesPoliciesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -17755,6 +18528,7 @@ export type StoreUncheckedUpdateWithoutSalesPoliciesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -17837,6 +18611,7 @@ export type StoreCreateWithoutSellabilityDecisionsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -17866,6 +18641,7 @@ export type StoreCreateWithoutSellabilityDecisionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -17948,6 +18724,7 @@ export type StoreUncheckedCreateWithoutSellabilityDecisionsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -17977,6 +18754,7 @@ export type StoreUncheckedCreateWithoutSellabilityDecisionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -18075,6 +18853,7 @@ export type StoreUpdateWithoutSellabilityDecisionsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -18104,6 +18883,7 @@ export type StoreUpdateWithoutSellabilityDecisionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -18186,6 +18966,7 @@ export type StoreUncheckedUpdateWithoutSellabilityDecisionsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -18215,6 +18996,7 @@ export type StoreUncheckedUpdateWithoutSellabilityDecisionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -18296,6 +19078,7 @@ export type StoreCreateWithoutShippingZonesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -18325,6 +19108,7 @@ export type StoreCreateWithoutShippingZonesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -18407,6 +19191,7 @@ export type StoreUncheckedCreateWithoutShippingZonesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -18436,6 +19221,7 @@ export type StoreUncheckedCreateWithoutShippingZonesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -18534,6 +19320,7 @@ export type StoreUpdateWithoutShippingZonesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -18563,6 +19350,7 @@ export type StoreUpdateWithoutShippingZonesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -18645,6 +19433,7 @@ export type StoreUncheckedUpdateWithoutShippingZonesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -18674,6 +19463,7 @@ export type StoreUncheckedUpdateWithoutShippingZonesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -18756,6 +19546,7 @@ export type StoreCreateWithoutShippingMethodsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -18785,6 +19576,7 @@ export type StoreCreateWithoutShippingMethodsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -18867,6 +19659,7 @@ export type StoreUncheckedCreateWithoutShippingMethodsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -18896,6 +19689,7 @@ export type StoreUncheckedCreateWithoutShippingMethodsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -18994,6 +19788,7 @@ export type StoreUpdateWithoutShippingMethodsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -19023,6 +19818,7 @@ export type StoreUpdateWithoutShippingMethodsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -19105,6 +19901,7 @@ export type StoreUncheckedUpdateWithoutShippingMethodsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -19134,6 +19931,7 @@ export type StoreUncheckedUpdateWithoutShippingMethodsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -19216,6 +20014,7 @@ export type StoreCreateWithoutShipmentsInput = {
   shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -19245,6 +20044,7 @@ export type StoreCreateWithoutShipmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -19327,6 +20127,7 @@ export type StoreUncheckedCreateWithoutShipmentsInput = {
   shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -19356,6 +20157,7 @@ export type StoreUncheckedCreateWithoutShipmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -19454,6 +20256,7 @@ export type StoreUpdateWithoutShipmentsInput = {
   shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -19483,6 +20286,7 @@ export type StoreUpdateWithoutShipmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -19565,6 +20369,7 @@ export type StoreUncheckedUpdateWithoutShipmentsInput = {
   shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -19594,6 +20399,7 @@ export type StoreUncheckedUpdateWithoutShipmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -19677,6 +20483,7 @@ export type StoreCreateWithoutSubscriptionsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -19706,6 +20513,7 @@ export type StoreCreateWithoutSubscriptionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -19788,6 +20596,7 @@ export type StoreUncheckedCreateWithoutSubscriptionsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -19817,6 +20626,7 @@ export type StoreUncheckedCreateWithoutSubscriptionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -19915,6 +20725,7 @@ export type StoreUpdateWithoutSubscriptionsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -19944,6 +20755,7 @@ export type StoreUpdateWithoutSubscriptionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -20026,6 +20838,7 @@ export type StoreUncheckedUpdateWithoutSubscriptionsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -20055,6 +20868,7 @@ export type StoreUncheckedUpdateWithoutSubscriptionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -20137,6 +20951,7 @@ export type StoreCreateWithoutTaxRulesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -20166,6 +20981,7 @@ export type StoreCreateWithoutTaxRulesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -20248,6 +21064,7 @@ export type StoreUncheckedCreateWithoutTaxRulesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -20277,6 +21094,7 @@ export type StoreUncheckedCreateWithoutTaxRulesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -20375,6 +21193,7 @@ export type StoreUpdateWithoutTaxRulesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -20404,6 +21223,7 @@ export type StoreUpdateWithoutTaxRulesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -20486,6 +21306,7 @@ export type StoreUncheckedUpdateWithoutTaxRulesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -20515,6 +21336,7 @@ export type StoreUncheckedUpdateWithoutTaxRulesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -20597,6 +21419,7 @@ export type StoreCreateWithoutAnalyticsMetricsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -20626,6 +21449,7 @@ export type StoreCreateWithoutAnalyticsMetricsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -20708,6 +21532,7 @@ export type StoreUncheckedCreateWithoutAnalyticsMetricsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -20737,6 +21562,7 @@ export type StoreUncheckedCreateWithoutAnalyticsMetricsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -20835,6 +21661,7 @@ export type StoreUpdateWithoutAnalyticsMetricsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -20864,6 +21691,7 @@ export type StoreUpdateWithoutAnalyticsMetricsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -20946,6 +21774,7 @@ export type StoreUncheckedUpdateWithoutAnalyticsMetricsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -20975,6 +21804,7 @@ export type StoreUncheckedUpdateWithoutAnalyticsMetricsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -21057,6 +21887,7 @@ export type StoreCreateWithoutAttributionModelsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -21086,6 +21917,7 @@ export type StoreCreateWithoutAttributionModelsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -21168,6 +22000,7 @@ export type StoreUncheckedCreateWithoutAttributionModelsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -21197,6 +22030,7 @@ export type StoreUncheckedCreateWithoutAttributionModelsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -21295,6 +22129,7 @@ export type StoreUpdateWithoutAttributionModelsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -21324,6 +22159,7 @@ export type StoreUpdateWithoutAttributionModelsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -21406,6 +22242,475 @@ export type StoreUncheckedUpdateWithoutAttributionModelsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreCreateWithoutAutomationsInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  addressLine1?: string | null
+  addressCity?: string | null
+  addressPostalCode?: string | null
+  addressCountry?: string | null
+  instagramUrl?: string | null
+  facebookUrl?: string | null
+  orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
+}
+
+export type StoreUncheckedCreateWithoutAutomationsInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  addressLine1?: string | null
+  addressCity?: string | null
+  addressPostalCode?: string | null
+  addressCountry?: string | null
+  instagramUrl?: string | null
+  facebookUrl?: string | null
+  orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
+}
+
+export type StoreCreateOrConnectWithoutAutomationsInput = {
+  where: Prisma.StoreWhereUniqueInput
+  create: Prisma.XOR<Prisma.StoreCreateWithoutAutomationsInput, Prisma.StoreUncheckedCreateWithoutAutomationsInput>
+}
+
+export type StoreUpsertWithoutAutomationsInput = {
+  update: Prisma.XOR<Prisma.StoreUpdateWithoutAutomationsInput, Prisma.StoreUncheckedUpdateWithoutAutomationsInput>
+  create: Prisma.XOR<Prisma.StoreCreateWithoutAutomationsInput, Prisma.StoreUncheckedCreateWithoutAutomationsInput>
+  where?: Prisma.StoreWhereInput
+}
+
+export type StoreUpdateToOneWithWhereWithoutAutomationsInput = {
+  where?: Prisma.StoreWhereInput
+  data: Prisma.XOR<Prisma.StoreUpdateWithoutAutomationsInput, Prisma.StoreUncheckedUpdateWithoutAutomationsInput>
+}
+
+export type StoreUpdateWithoutAutomationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreUncheckedUpdateWithoutAutomationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -21442,6 +22747,7 @@ export type StoreUncheckedUpdateWithoutAttributionModelsInput = {
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
   behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
   behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
   localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
@@ -21517,6 +22823,7 @@ export type StoreCreateWithoutBehaviorSegmentsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -21546,6 +22853,7 @@ export type StoreCreateWithoutBehaviorSegmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -21628,6 +22936,7 @@ export type StoreUncheckedCreateWithoutBehaviorSegmentsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -21657,6 +22966,7 @@ export type StoreUncheckedCreateWithoutBehaviorSegmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -21755,6 +23065,7 @@ export type StoreUpdateWithoutBehaviorSegmentsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -21784,6 +23095,7 @@ export type StoreUpdateWithoutBehaviorSegmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -21866,6 +23178,7 @@ export type StoreUncheckedUpdateWithoutBehaviorSegmentsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -21895,6 +23208,7 @@ export type StoreUncheckedUpdateWithoutBehaviorSegmentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -21977,6 +23291,7 @@ export type StoreCreateWithoutBehaviorProfilesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -22006,6 +23321,7 @@ export type StoreCreateWithoutBehaviorProfilesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -22088,6 +23404,7 @@ export type StoreUncheckedCreateWithoutBehaviorProfilesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -22117,6 +23434,7 @@ export type StoreUncheckedCreateWithoutBehaviorProfilesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -22215,6 +23533,7 @@ export type StoreUpdateWithoutBehaviorProfilesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -22244,6 +23563,7 @@ export type StoreUpdateWithoutBehaviorProfilesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -22326,6 +23646,7 @@ export type StoreUncheckedUpdateWithoutBehaviorProfilesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -22355,6 +23676,7 @@ export type StoreUncheckedUpdateWithoutBehaviorProfilesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -22437,6 +23759,7 @@ export type StoreCreateWithoutBlogCategoriesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -22465,6 +23788,7 @@ export type StoreCreateWithoutBlogCategoriesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -22548,6 +23872,7 @@ export type StoreUncheckedCreateWithoutBlogCategoriesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -22576,6 +23901,7 @@ export type StoreUncheckedCreateWithoutBlogCategoriesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -22675,6 +24001,7 @@ export type StoreUpdateWithoutBlogCategoriesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -22703,6 +24030,7 @@ export type StoreUpdateWithoutBlogCategoriesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -22786,6 +24114,7 @@ export type StoreUncheckedUpdateWithoutBlogCategoriesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -22814,6 +24143,7 @@ export type StoreUncheckedUpdateWithoutBlogCategoriesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -22897,6 +24227,7 @@ export type StoreCreateWithoutBlogPostsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -22925,6 +24256,7 @@ export type StoreCreateWithoutBlogPostsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -23008,6 +24340,7 @@ export type StoreUncheckedCreateWithoutBlogPostsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -23036,6 +24369,7 @@ export type StoreUncheckedCreateWithoutBlogPostsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -23135,6 +24469,7 @@ export type StoreUpdateWithoutBlogPostsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -23163,6 +24498,7 @@ export type StoreUpdateWithoutBlogPostsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -23246,6 +24582,7 @@ export type StoreUncheckedUpdateWithoutBlogPostsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -23274,6 +24611,7 @@ export type StoreUncheckedUpdateWithoutBlogPostsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -23357,6 +24695,7 @@ export type StoreCreateWithoutConversionFlowsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -23386,6 +24725,7 @@ export type StoreCreateWithoutConversionFlowsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -23468,6 +24808,7 @@ export type StoreUncheckedCreateWithoutConversionFlowsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -23497,6 +24838,7 @@ export type StoreUncheckedCreateWithoutConversionFlowsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -23595,6 +24937,7 @@ export type StoreUpdateWithoutConversionFlowsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -23624,6 +24967,7 @@ export type StoreUpdateWithoutConversionFlowsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -23706,6 +25050,7 @@ export type StoreUncheckedUpdateWithoutConversionFlowsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -23735,6 +25080,7 @@ export type StoreUncheckedUpdateWithoutConversionFlowsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -23817,6 +25163,7 @@ export type StoreCreateWithoutCrmContactsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -23846,6 +25193,7 @@ export type StoreCreateWithoutCrmContactsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
@@ -23928,6 +25276,7 @@ export type StoreUncheckedCreateWithoutCrmContactsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -23957,6 +25306,7 @@ export type StoreUncheckedCreateWithoutCrmContactsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
@@ -24055,6 +25405,7 @@ export type StoreUpdateWithoutCrmContactsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -24084,6 +25435,7 @@ export type StoreUpdateWithoutCrmContactsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
@@ -24166,6 +25518,7 @@ export type StoreUncheckedUpdateWithoutCrmContactsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -24195,6 +25548,7 @@ export type StoreUncheckedUpdateWithoutCrmContactsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
@@ -24277,6 +25631,7 @@ export type StoreCreateWithoutCrmTagsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -24306,6 +25661,7 @@ export type StoreCreateWithoutCrmTagsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -24388,6 +25744,7 @@ export type StoreUncheckedCreateWithoutCrmTagsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -24417,6 +25774,7 @@ export type StoreUncheckedCreateWithoutCrmTagsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -24515,6 +25873,7 @@ export type StoreUpdateWithoutCrmTagsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -24544,6 +25903,7 @@ export type StoreUpdateWithoutCrmTagsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -24626,6 +25986,7 @@ export type StoreUncheckedUpdateWithoutCrmTagsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -24655,6 +26016,7 @@ export type StoreUncheckedUpdateWithoutCrmTagsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -24737,6 +26099,7 @@ export type StoreCreateWithoutNewsletterSubscribersInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -24765,6 +26128,7 @@ export type StoreCreateWithoutNewsletterSubscribersInput = {
   notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -24848,6 +26212,7 @@ export type StoreUncheckedCreateWithoutNewsletterSubscribersInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -24876,6 +26241,7 @@ export type StoreUncheckedCreateWithoutNewsletterSubscribersInput = {
   notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -24975,6 +26341,7 @@ export type StoreUpdateWithoutNewsletterSubscribersInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -25003,6 +26370,7 @@ export type StoreUpdateWithoutNewsletterSubscribersInput = {
   notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -25086,6 +26454,7 @@ export type StoreUncheckedUpdateWithoutNewsletterSubscribersInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -25114,6 +26483,7 @@ export type StoreUncheckedUpdateWithoutNewsletterSubscribersInput = {
   notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -25197,6 +26567,7 @@ export type StoreCreateWithoutNewsletterCampaignsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -25225,6 +26596,7 @@ export type StoreCreateWithoutNewsletterCampaignsInput = {
   notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -25308,6 +26680,7 @@ export type StoreUncheckedCreateWithoutNewsletterCampaignsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -25336,6 +26709,7 @@ export type StoreUncheckedCreateWithoutNewsletterCampaignsInput = {
   notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -25435,6 +26809,7 @@ export type StoreUpdateWithoutNewsletterCampaignsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -25463,6 +26838,7 @@ export type StoreUpdateWithoutNewsletterCampaignsInput = {
   notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -25546,6 +26922,7 @@ export type StoreUncheckedUpdateWithoutNewsletterCampaignsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -25574,6 +26951,7 @@ export type StoreUncheckedUpdateWithoutNewsletterCampaignsInput = {
   notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -25657,6 +27035,7 @@ export type StoreCreateWithoutPublicEventsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -25686,6 +27065,7 @@ export type StoreCreateWithoutPublicEventsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
@@ -25768,6 +27148,7 @@ export type StoreUncheckedCreateWithoutPublicEventsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -25797,6 +27178,7 @@ export type StoreUncheckedCreateWithoutPublicEventsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
@@ -25895,6 +27277,7 @@ export type StoreUpdateWithoutPublicEventsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -25924,6 +27307,7 @@ export type StoreUpdateWithoutPublicEventsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
@@ -26006,6 +27390,7 @@ export type StoreUncheckedUpdateWithoutPublicEventsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -26035,6 +27420,7 @@ export type StoreUncheckedUpdateWithoutPublicEventsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
@@ -26117,6 +27503,7 @@ export type StoreCreateWithoutRecommendationRulesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -26146,6 +27533,7 @@ export type StoreCreateWithoutRecommendationRulesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -26228,6 +27616,7 @@ export type StoreUncheckedCreateWithoutRecommendationRulesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -26257,6 +27646,7 @@ export type StoreUncheckedCreateWithoutRecommendationRulesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -26355,6 +27745,7 @@ export type StoreUpdateWithoutRecommendationRulesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -26384,6 +27775,7 @@ export type StoreUpdateWithoutRecommendationRulesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -26466,6 +27858,7 @@ export type StoreUncheckedUpdateWithoutRecommendationRulesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -26495,6 +27888,7 @@ export type StoreUncheckedUpdateWithoutRecommendationRulesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -26577,6 +27971,7 @@ export type StoreCreateWithoutSocialPublicationsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -26606,6 +28001,7 @@ export type StoreCreateWithoutSocialPublicationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -26688,6 +28084,7 @@ export type StoreUncheckedCreateWithoutSocialPublicationsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -26717,6 +28114,7 @@ export type StoreUncheckedCreateWithoutSocialPublicationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -26815,6 +28213,7 @@ export type StoreUpdateWithoutSocialPublicationsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -26844,6 +28243,7 @@ export type StoreUpdateWithoutSocialPublicationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -26926,6 +28326,7 @@ export type StoreUncheckedUpdateWithoutSocialPublicationsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -26955,6 +28356,7 @@ export type StoreUncheckedUpdateWithoutSocialPublicationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -27037,6 +28439,7 @@ export type StoreCreateWithoutSupportTicketsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -27066,6 +28469,7 @@ export type StoreCreateWithoutSupportTicketsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
@@ -27148,6 +28552,7 @@ export type StoreUncheckedCreateWithoutSupportTicketsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -27177,6 +28582,7 @@ export type StoreUncheckedCreateWithoutSupportTicketsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
@@ -27275,6 +28681,7 @@ export type StoreUpdateWithoutSupportTicketsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -27304,6 +28711,7 @@ export type StoreUpdateWithoutSupportTicketsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
@@ -27386,6 +28794,7 @@ export type StoreUncheckedUpdateWithoutSupportTicketsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -27415,6 +28824,7 @@ export type StoreUncheckedUpdateWithoutSupportTicketsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
@@ -27497,6 +28907,7 @@ export type StoreCreateWithoutHomepagesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -27525,6 +28936,7 @@ export type StoreCreateWithoutHomepagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -27608,6 +29020,7 @@ export type StoreUncheckedCreateWithoutHomepagesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -27636,6 +29049,7 @@ export type StoreUncheckedCreateWithoutHomepagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -27735,6 +29149,7 @@ export type StoreUpdateWithoutHomepagesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -27763,6 +29178,7 @@ export type StoreUpdateWithoutHomepagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -27846,6 +29262,7 @@ export type StoreUncheckedUpdateWithoutHomepagesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -27874,6 +29291,7 @@ export type StoreUncheckedUpdateWithoutHomepagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -27957,6 +29375,7 @@ export type StoreCreateWithoutApprovalRequestsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -27985,6 +29404,7 @@ export type StoreCreateWithoutApprovalRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -28068,6 +29488,7 @@ export type StoreUncheckedCreateWithoutApprovalRequestsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -28096,6 +29517,7 @@ export type StoreUncheckedCreateWithoutApprovalRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -28195,6 +29617,7 @@ export type StoreUpdateWithoutApprovalRequestsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -28223,6 +29646,7 @@ export type StoreUpdateWithoutApprovalRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -28306,6 +29730,7 @@ export type StoreUncheckedUpdateWithoutApprovalRequestsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -28334,6 +29759,7 @@ export type StoreUncheckedUpdateWithoutApprovalRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -28417,6 +29843,7 @@ export type StoreCreateWithoutConsentPurposesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -28445,6 +29872,7 @@ export type StoreCreateWithoutConsentPurposesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -28528,6 +29956,7 @@ export type StoreUncheckedCreateWithoutConsentPurposesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -28556,6 +29985,7 @@ export type StoreUncheckedCreateWithoutConsentPurposesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -28655,6 +30085,7 @@ export type StoreUpdateWithoutConsentPurposesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -28683,6 +30114,7 @@ export type StoreUpdateWithoutConsentPurposesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -28766,6 +30198,7 @@ export type StoreUncheckedUpdateWithoutConsentPurposesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -28794,6 +30227,7 @@ export type StoreUncheckedUpdateWithoutConsentPurposesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -28877,6 +30311,7 @@ export type StoreCreateWithoutConsentRecordsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -28905,6 +30340,7 @@ export type StoreCreateWithoutConsentRecordsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -28988,6 +30424,7 @@ export type StoreUncheckedCreateWithoutConsentRecordsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -29016,6 +30453,7 @@ export type StoreUncheckedCreateWithoutConsentRecordsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -29115,6 +30553,7 @@ export type StoreUpdateWithoutConsentRecordsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -29143,6 +30582,7 @@ export type StoreUpdateWithoutConsentRecordsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -29226,6 +30666,7 @@ export type StoreUncheckedUpdateWithoutConsentRecordsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -29254,6 +30695,7 @@ export type StoreUncheckedUpdateWithoutConsentRecordsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -29337,6 +30779,7 @@ export type StoreCreateWithoutEmailMessagesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -29365,6 +30808,7 @@ export type StoreCreateWithoutEmailMessagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -29448,6 +30892,7 @@ export type StoreUncheckedCreateWithoutEmailMessagesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -29476,6 +30921,7 @@ export type StoreUncheckedCreateWithoutEmailMessagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -29575,6 +31021,7 @@ export type StoreUpdateWithoutEmailMessagesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -29603,6 +31050,7 @@ export type StoreUpdateWithoutEmailMessagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -29686,6 +31134,7 @@ export type StoreUncheckedUpdateWithoutEmailMessagesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -29714,6 +31163,7 @@ export type StoreUncheckedUpdateWithoutEmailMessagesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -29797,6 +31247,7 @@ export type StoreCreateWithoutExportDefinitionsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -29825,6 +31276,7 @@ export type StoreCreateWithoutExportDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -29908,6 +31360,7 @@ export type StoreUncheckedCreateWithoutExportDefinitionsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -29936,6 +31389,7 @@ export type StoreUncheckedCreateWithoutExportDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -30035,6 +31489,7 @@ export type StoreUpdateWithoutExportDefinitionsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -30063,6 +31518,7 @@ export type StoreUpdateWithoutExportDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -30146,6 +31602,7 @@ export type StoreUncheckedUpdateWithoutExportDefinitionsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -30174,6 +31631,7 @@ export type StoreUncheckedUpdateWithoutExportDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -30257,6 +31715,7 @@ export type StoreCreateWithoutExportRequestsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -30285,6 +31744,7 @@ export type StoreCreateWithoutExportRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -30368,6 +31828,7 @@ export type StoreUncheckedCreateWithoutExportRequestsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -30396,6 +31857,7 @@ export type StoreUncheckedCreateWithoutExportRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -30495,6 +31957,7 @@ export type StoreUpdateWithoutExportRequestsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -30523,6 +31986,7 @@ export type StoreUpdateWithoutExportRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -30606,6 +32070,7 @@ export type StoreUncheckedUpdateWithoutExportRequestsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -30634,6 +32099,7 @@ export type StoreUncheckedUpdateWithoutExportRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -30717,6 +32183,7 @@ export type StoreCreateWithoutFraudRiskAssessmentsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -30745,6 +32212,7 @@ export type StoreCreateWithoutFraudRiskAssessmentsInput = {
   notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -30828,6 +32296,7 @@ export type StoreUncheckedCreateWithoutFraudRiskAssessmentsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -30856,6 +32325,7 @@ export type StoreUncheckedCreateWithoutFraudRiskAssessmentsInput = {
   notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -30955,6 +32425,7 @@ export type StoreUpdateWithoutFraudRiskAssessmentsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -30983,6 +32454,7 @@ export type StoreUpdateWithoutFraudRiskAssessmentsInput = {
   notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -31066,6 +32538,7 @@ export type StoreUncheckedUpdateWithoutFraudRiskAssessmentsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -31094,6 +32567,7 @@ export type StoreUncheckedUpdateWithoutFraudRiskAssessmentsInput = {
   notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -31177,6 +32651,7 @@ export type StoreCreateWithoutImportDefinitionsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -31205,6 +32680,7 @@ export type StoreCreateWithoutImportDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -31288,6 +32764,7 @@ export type StoreUncheckedCreateWithoutImportDefinitionsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -31316,6 +32793,7 @@ export type StoreUncheckedCreateWithoutImportDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -31415,6 +32893,7 @@ export type StoreUpdateWithoutImportDefinitionsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -31443,6 +32922,7 @@ export type StoreUpdateWithoutImportDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -31526,6 +33006,7 @@ export type StoreUncheckedUpdateWithoutImportDefinitionsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -31554,6 +33035,7 @@ export type StoreUncheckedUpdateWithoutImportDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -31637,6 +33119,7 @@ export type StoreCreateWithoutImportRequestsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -31665,6 +33148,7 @@ export type StoreCreateWithoutImportRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -31748,6 +33232,7 @@ export type StoreUncheckedCreateWithoutImportRequestsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -31776,6 +33261,7 @@ export type StoreUncheckedCreateWithoutImportRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -31875,6 +33361,7 @@ export type StoreUpdateWithoutImportRequestsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -31903,6 +33390,7 @@ export type StoreUpdateWithoutImportRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -31986,6 +33474,7 @@ export type StoreUncheckedUpdateWithoutImportRequestsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -32014,6 +33503,7 @@ export type StoreUncheckedUpdateWithoutImportRequestsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -32097,6 +33587,7 @@ export type StoreCreateWithoutIntegrationsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -32125,6 +33616,7 @@ export type StoreCreateWithoutIntegrationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -32208,6 +33700,7 @@ export type StoreUncheckedCreateWithoutIntegrationsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -32236,6 +33729,7 @@ export type StoreUncheckedCreateWithoutIntegrationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -32335,6 +33829,7 @@ export type StoreUpdateWithoutIntegrationsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -32363,6 +33858,7 @@ export type StoreUpdateWithoutIntegrationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -32446,6 +33942,7 @@ export type StoreUncheckedUpdateWithoutIntegrationsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -32474,6 +33971,7 @@ export type StoreUncheckedUpdateWithoutIntegrationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -32557,6 +34055,7 @@ export type StoreCreateWithoutLocalizationLocalesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -32586,6 +34085,7 @@ export type StoreCreateWithoutLocalizationLocalesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -32668,6 +34168,7 @@ export type StoreUncheckedCreateWithoutLocalizationLocalesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -32697,6 +34198,7 @@ export type StoreUncheckedCreateWithoutLocalizationLocalesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -32795,6 +34297,7 @@ export type StoreUpdateWithoutLocalizationLocalesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -32824,6 +34327,7 @@ export type StoreUpdateWithoutLocalizationLocalesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -32906,6 +34410,7 @@ export type StoreUncheckedUpdateWithoutLocalizationLocalesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -32935,6 +34440,7 @@ export type StoreUncheckedUpdateWithoutLocalizationLocalesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -33017,6 +34523,7 @@ export type StoreCreateWithoutLocalizedValuesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -33046,6 +34553,7 @@ export type StoreCreateWithoutLocalizedValuesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -33128,6 +34636,7 @@ export type StoreUncheckedCreateWithoutLocalizedValuesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -33157,6 +34666,7 @@ export type StoreUncheckedCreateWithoutLocalizedValuesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -33255,6 +34765,7 @@ export type StoreUpdateWithoutLocalizedValuesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -33284,6 +34795,7 @@ export type StoreUpdateWithoutLocalizedValuesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -33366,6 +34878,7 @@ export type StoreUncheckedUpdateWithoutLocalizedValuesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -33395,6 +34908,7 @@ export type StoreUncheckedUpdateWithoutLocalizedValuesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -33477,6 +34991,7 @@ export type StoreCreateWithoutNotificationsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -33505,6 +35020,7 @@ export type StoreCreateWithoutNotificationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -33588,6 +35104,7 @@ export type StoreUncheckedCreateWithoutNotificationsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -33616,6 +35133,7 @@ export type StoreUncheckedCreateWithoutNotificationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -33715,6 +35233,7 @@ export type StoreUpdateWithoutNotificationsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -33743,6 +35262,7 @@ export type StoreUpdateWithoutNotificationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -33826,6 +35346,7 @@ export type StoreUncheckedUpdateWithoutNotificationsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -33854,6 +35375,7 @@ export type StoreUncheckedUpdateWithoutNotificationsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -33937,6 +35459,7 @@ export type StoreCreateWithoutNotificationPreferencesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -33965,6 +35488,7 @@ export type StoreCreateWithoutNotificationPreferencesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -34048,6 +35572,7 @@ export type StoreUncheckedCreateWithoutNotificationPreferencesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -34076,6 +35601,7 @@ export type StoreUncheckedCreateWithoutNotificationPreferencesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -34175,6 +35701,7 @@ export type StoreUpdateWithoutNotificationPreferencesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -34203,6 +35730,7 @@ export type StoreUpdateWithoutNotificationPreferencesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -34286,6 +35814,7 @@ export type StoreUncheckedUpdateWithoutNotificationPreferencesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -34314,6 +35843,7 @@ export type StoreUncheckedUpdateWithoutNotificationPreferencesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -34397,6 +35927,7 @@ export type StoreCreateWithoutSchedulePlansInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -34425,6 +35956,7 @@ export type StoreCreateWithoutSchedulePlansInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -34508,6 +36040,7 @@ export type StoreUncheckedCreateWithoutSchedulePlansInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -34536,6 +36069,7 @@ export type StoreUncheckedCreateWithoutSchedulePlansInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -34635,6 +36169,7 @@ export type StoreUpdateWithoutSchedulePlansInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -34663,6 +36198,7 @@ export type StoreUpdateWithoutSchedulePlansInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -34746,6 +36282,7 @@ export type StoreUncheckedUpdateWithoutSchedulePlansInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -34774,6 +36311,7 @@ export type StoreUncheckedUpdateWithoutSchedulePlansInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -34857,6 +36395,7 @@ export type StoreCreateWithoutWebhookEndpointsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -34885,6 +36424,7 @@ export type StoreCreateWithoutWebhookEndpointsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -34968,6 +36508,7 @@ export type StoreUncheckedCreateWithoutWebhookEndpointsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -34996,6 +36537,7 @@ export type StoreUncheckedCreateWithoutWebhookEndpointsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -35095,6 +36637,7 @@ export type StoreUpdateWithoutWebhookEndpointsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -35123,6 +36666,7 @@ export type StoreUpdateWithoutWebhookEndpointsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -35206,6 +36750,7 @@ export type StoreUncheckedUpdateWithoutWebhookEndpointsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -35234,6 +36779,7 @@ export type StoreUncheckedUpdateWithoutWebhookEndpointsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -35317,6 +36863,7 @@ export type StoreCreateWithoutWorkflowDefinitionsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -35345,6 +36892,7 @@ export type StoreCreateWithoutWorkflowDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -35428,6 +36976,7 @@ export type StoreUncheckedCreateWithoutWorkflowDefinitionsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -35456,6 +37005,7 @@ export type StoreUncheckedCreateWithoutWorkflowDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -35555,6 +37105,7 @@ export type StoreUpdateWithoutWorkflowDefinitionsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -35583,6 +37134,7 @@ export type StoreUpdateWithoutWorkflowDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -35666,6 +37218,7 @@ export type StoreUncheckedUpdateWithoutWorkflowDefinitionsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -35694,6 +37247,7 @@ export type StoreUncheckedUpdateWithoutWorkflowDefinitionsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -35777,6 +37331,7 @@ export type StoreCreateWithoutWorkflowInstancesInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -35805,6 +37360,7 @@ export type StoreCreateWithoutWorkflowInstancesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -35888,6 +37444,7 @@ export type StoreUncheckedCreateWithoutWorkflowInstancesInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -35916,6 +37473,7 @@ export type StoreUncheckedCreateWithoutWorkflowInstancesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -36015,6 +37573,7 @@ export type StoreUpdateWithoutWorkflowInstancesInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -36043,6 +37602,7 @@ export type StoreUpdateWithoutWorkflowInstancesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -36126,6 +37686,7 @@ export type StoreUncheckedUpdateWithoutWorkflowInstancesInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -36154,6 +37715,7 @@ export type StoreUncheckedUpdateWithoutWorkflowInstancesInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -36237,6 +37799,7 @@ export type StoreCreateWithoutChannelsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -36266,6 +37829,7 @@ export type StoreCreateWithoutChannelsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -36348,6 +37912,7 @@ export type StoreUncheckedCreateWithoutChannelsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -36377,6 +37942,7 @@ export type StoreUncheckedCreateWithoutChannelsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -36475,6 +38041,7 @@ export type StoreUpdateWithoutChannelsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -36504,6 +38071,7 @@ export type StoreUpdateWithoutChannelsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -36586,6 +38154,7 @@ export type StoreUncheckedUpdateWithoutChannelsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -36615,6 +38184,7 @@ export type StoreUncheckedUpdateWithoutChannelsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -36696,6 +38266,7 @@ export type StoreCreateWithoutMediaAssetsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -36725,6 +38296,7 @@ export type StoreCreateWithoutMediaAssetsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -36807,6 +38379,7 @@ export type StoreUncheckedCreateWithoutMediaAssetsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -36836,6 +38409,7 @@ export type StoreUncheckedCreateWithoutMediaAssetsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -36934,6 +38508,7 @@ export type StoreUpdateWithoutMediaAssetsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -36963,6 +38538,7 @@ export type StoreUpdateWithoutMediaAssetsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -37045,6 +38621,7 @@ export type StoreUncheckedUpdateWithoutMediaAssetsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -37074,6 +38651,7 @@ export type StoreUncheckedUpdateWithoutMediaAssetsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -37157,6 +38735,7 @@ export type StoreCreateWithoutSearchDocumentsInput = {
   shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageCreateNestedManyWithoutStoreInput
@@ -37186,6 +38765,7 @@ export type StoreCreateWithoutSearchDocumentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
@@ -37268,6 +38848,7 @@ export type StoreUncheckedCreateWithoutSearchDocumentsInput = {
   shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
   returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
   discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
@@ -37297,6 +38878,7 @@ export type StoreUncheckedCreateWithoutSearchDocumentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
@@ -37395,6 +38977,7 @@ export type StoreUpdateWithoutSearchDocumentsInput = {
   shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
@@ -37424,6 +39007,7 @@ export type StoreUpdateWithoutSearchDocumentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
@@ -37506,6 +39090,7 @@ export type StoreUncheckedUpdateWithoutSearchDocumentsInput = {
   shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
   returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
   discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
   pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
@@ -37535,6 +39120,7 @@ export type StoreUncheckedUpdateWithoutSearchDocumentsInput = {
   fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
   newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
@@ -37589,6 +39175,7 @@ export type StoreCountOutputType = {
   shipments: number
   payments: number
   documents: number
+  documentCounters: number
   returnRequests: number
   discounts: number
   pages: number
@@ -37618,6 +39205,7 @@ export type StoreCountOutputType = {
   fraudRiskAssessments: number
   newsletterSubscribers: number
   newsletterCampaigns: number
+  automations: number
   publicEvents: number
   supportTickets: number
   crmContacts: number
@@ -37668,6 +39256,7 @@ export type StoreCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   shipments?: boolean | StoreCountOutputTypeCountShipmentsArgs
   payments?: boolean | StoreCountOutputTypeCountPaymentsArgs
   documents?: boolean | StoreCountOutputTypeCountDocumentsArgs
+  documentCounters?: boolean | StoreCountOutputTypeCountDocumentCountersArgs
   returnRequests?: boolean | StoreCountOutputTypeCountReturnRequestsArgs
   discounts?: boolean | StoreCountOutputTypeCountDiscountsArgs
   pages?: boolean | StoreCountOutputTypeCountPagesArgs
@@ -37697,6 +39286,7 @@ export type StoreCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   fraudRiskAssessments?: boolean | StoreCountOutputTypeCountFraudRiskAssessmentsArgs
   newsletterSubscribers?: boolean | StoreCountOutputTypeCountNewsletterSubscribersArgs
   newsletterCampaigns?: boolean | StoreCountOutputTypeCountNewsletterCampaignsArgs
+  automations?: boolean | StoreCountOutputTypeCountAutomationsArgs
   publicEvents?: boolean | StoreCountOutputTypeCountPublicEventsArgs
   supportTickets?: boolean | StoreCountOutputTypeCountSupportTicketsArgs
   crmContacts?: boolean | StoreCountOutputTypeCountCrmContactsArgs
@@ -37862,6 +39452,13 @@ export type StoreCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.
  */
 export type StoreCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DocumentWhereInput
+}
+
+/**
+ * StoreCountOutputType without action
+ */
+export type StoreCountOutputTypeCountDocumentCountersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentCounterWhereInput
 }
 
 /**
@@ -38065,6 +39662,13 @@ export type StoreCountOutputTypeCountNewsletterSubscribersArgs<ExtArgs extends r
  */
 export type StoreCountOutputTypeCountNewsletterCampaignsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.NewsletterCampaignWhereInput
+}
+
+/**
+ * StoreCountOutputType without action
+ */
+export type StoreCountOutputTypeCountAutomationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AutomationWhereInput
 }
 
 /**
@@ -38323,6 +39927,7 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   shipments?: boolean | Prisma.Store$shipmentsArgs<ExtArgs>
   payments?: boolean | Prisma.Store$paymentsArgs<ExtArgs>
   documents?: boolean | Prisma.Store$documentsArgs<ExtArgs>
+  documentCounters?: boolean | Prisma.Store$documentCountersArgs<ExtArgs>
   returnRequests?: boolean | Prisma.Store$returnRequestsArgs<ExtArgs>
   discounts?: boolean | Prisma.Store$discountsArgs<ExtArgs>
   pages?: boolean | Prisma.Store$pagesArgs<ExtArgs>
@@ -38352,6 +39957,7 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   fraudRiskAssessments?: boolean | Prisma.Store$fraudRiskAssessmentsArgs<ExtArgs>
   newsletterSubscribers?: boolean | Prisma.Store$newsletterSubscribersArgs<ExtArgs>
   newsletterCampaigns?: boolean | Prisma.Store$newsletterCampaignsArgs<ExtArgs>
+  automations?: boolean | Prisma.Store$automationsArgs<ExtArgs>
   publicEvents?: boolean | Prisma.Store$publicEventsArgs<ExtArgs>
   supportTickets?: boolean | Prisma.Store$supportTicketsArgs<ExtArgs>
   crmContacts?: boolean | Prisma.Store$crmContactsArgs<ExtArgs>
@@ -38512,6 +40118,7 @@ export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   shipments?: boolean | Prisma.Store$shipmentsArgs<ExtArgs>
   payments?: boolean | Prisma.Store$paymentsArgs<ExtArgs>
   documents?: boolean | Prisma.Store$documentsArgs<ExtArgs>
+  documentCounters?: boolean | Prisma.Store$documentCountersArgs<ExtArgs>
   returnRequests?: boolean | Prisma.Store$returnRequestsArgs<ExtArgs>
   discounts?: boolean | Prisma.Store$discountsArgs<ExtArgs>
   pages?: boolean | Prisma.Store$pagesArgs<ExtArgs>
@@ -38541,6 +40148,7 @@ export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   fraudRiskAssessments?: boolean | Prisma.Store$fraudRiskAssessmentsArgs<ExtArgs>
   newsletterSubscribers?: boolean | Prisma.Store$newsletterSubscribersArgs<ExtArgs>
   newsletterCampaigns?: boolean | Prisma.Store$newsletterCampaignsArgs<ExtArgs>
+  automations?: boolean | Prisma.Store$automationsArgs<ExtArgs>
   publicEvents?: boolean | Prisma.Store$publicEventsArgs<ExtArgs>
   supportTickets?: boolean | Prisma.Store$supportTicketsArgs<ExtArgs>
   crmContacts?: boolean | Prisma.Store$crmContactsArgs<ExtArgs>
@@ -38596,6 +40204,7 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     shipments: Prisma.$ShipmentPayload<ExtArgs>[]
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     documents: Prisma.$DocumentPayload<ExtArgs>[]
+    documentCounters: Prisma.$DocumentCounterPayload<ExtArgs>[]
     returnRequests: Prisma.$ReturnRequestPayload<ExtArgs>[]
     discounts: Prisma.$DiscountPayload<ExtArgs>[]
     pages: Prisma.$PagePayload<ExtArgs>[]
@@ -38625,6 +40234,7 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     fraudRiskAssessments: Prisma.$FraudRiskAssessmentPayload<ExtArgs>[]
     newsletterSubscribers: Prisma.$NewsletterSubscriberPayload<ExtArgs>[]
     newsletterCampaigns: Prisma.$NewsletterCampaignPayload<ExtArgs>[]
+    automations: Prisma.$AutomationPayload<ExtArgs>[]
     publicEvents: Prisma.$PublicEventPayload<ExtArgs>[]
     supportTickets: Prisma.$SupportTicketPayload<ExtArgs>[]
     crmContacts: Prisma.$CrmContactPayload<ExtArgs>[]
@@ -39101,6 +40711,7 @@ export interface Prisma__StoreClient<T, Null = never, ExtArgs extends runtime.Ty
   shipments<T extends Prisma.Store$shipmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$shipmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ShipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.Store$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documents<T extends Prisma.Store$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  documentCounters<T extends Prisma.Store$documentCountersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$documentCountersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentCounterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   returnRequests<T extends Prisma.Store$returnRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$returnRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReturnRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   discounts<T extends Prisma.Store$discountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$discountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DiscountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pages<T extends Prisma.Store$pagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$pagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -39130,6 +40741,7 @@ export interface Prisma__StoreClient<T, Null = never, ExtArgs extends runtime.Ty
   fraudRiskAssessments<T extends Prisma.Store$fraudRiskAssessmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$fraudRiskAssessmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FraudRiskAssessmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   newsletterSubscribers<T extends Prisma.Store$newsletterSubscribersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$newsletterSubscribersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NewsletterSubscriberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   newsletterCampaigns<T extends Prisma.Store$newsletterCampaignsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$newsletterCampaignsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NewsletterCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  automations<T extends Prisma.Store$automationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$automationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AutomationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   publicEvents<T extends Prisma.Store$publicEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$publicEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   supportTickets<T extends Prisma.Store$supportTicketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$supportTicketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   crmContacts<T extends Prisma.Store$crmContactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$crmContactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CrmContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -40046,6 +41658,30 @@ export type Store$documentsArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * Store.documentCounters
+ */
+export type Store$documentCountersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentCounter
+   */
+  select?: Prisma.DocumentCounterSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentCounter
+   */
+  omit?: Prisma.DocumentCounterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentCounterInclude<ExtArgs> | null
+  where?: Prisma.DocumentCounterWhereInput
+  orderBy?: Prisma.DocumentCounterOrderByWithRelationInput | Prisma.DocumentCounterOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentCounterWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentCounterScalarFieldEnum | Prisma.DocumentCounterScalarFieldEnum[]
+}
+
+/**
  * Store.returnRequests
  */
 export type Store$returnRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -40739,6 +42375,30 @@ export type Store$newsletterCampaignsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.NewsletterCampaignScalarFieldEnum | Prisma.NewsletterCampaignScalarFieldEnum[]
+}
+
+/**
+ * Store.automations
+ */
+export type Store$automationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Automation
+   */
+  select?: Prisma.AutomationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Automation
+   */
+  omit?: Prisma.AutomationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AutomationInclude<ExtArgs> | null
+  where?: Prisma.AutomationWhereInput
+  orderBy?: Prisma.AutomationOrderByWithRelationInput | Prisma.AutomationOrderByWithRelationInput[]
+  cursor?: Prisma.AutomationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AutomationScalarFieldEnum | Prisma.AutomationScalarFieldEnum[]
 }
 
 /**

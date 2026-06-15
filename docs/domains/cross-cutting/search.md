@@ -263,6 +263,41 @@ Il sert à trouver, pas à décider.
 
 ---
 
+## Decisions d'implementation
+
+### Cadrage 2026-06-14 (cf. `docs/lots/2026-06-14-satellite-search-cadrage.md`)
+
+- **Point d'entree admin** : page discrète `/admin/settings/search`, reliee au
+  `FeatureFlag` actif dans `/admin/settings/advanced`.
+- **Perimetre du lot** : seed `FeatureFlag`, gating et lecture admin seule du
+  referentiel `SearchDocument`.
+- **Divergence taxonomique** : la fiche doctrine reste dans `cross-cutting`,
+  alors que le catalogue pilotable et Prisma utilisent `satellite.search`.
+  Cette divergence est **constatee**, pas resolue ici.
+
+### Bilan d'execution (2026-06-14)
+
+Premier increment runnable livre :
+
+- seed `FeatureFlag` DRAFT via `prisma/seed/search-feature-flag.seed.ts` ;
+- query de gating `isSearchFeatureActive()` ;
+- lecture admin `listAdminSearchDocuments()` :
+  compteurs simples + dernieres entrees `SearchDocument` ;
+- page `/admin/settings/search` ;
+- lien « Reglages » ajoute depuis `/admin/settings/advanced` quand la feature est active.
+
+Etat reel apres lot :
+
+- **lecture admin du referentiel** : oui ;
+- **moteur externe** : non ;
+- **indexation automatique** : non ;
+- **storefront search** : non.
+
+Les questions ouvertes sur le moteur, l'indexation et la taxonomie restent donc
+entières pour les increments suivants.
+
+---
+
 ## Documents liés
 
 - `../core/catalog/products.md`

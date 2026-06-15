@@ -78,6 +78,8 @@ export type OrderRepositoryErrorCode =
   | "missing_payment_method"
   | "shipping_method_unavailable"
   | "insufficient_stock"
+  | "tax_address_missing"
+  | "tax_resolution_failed"
   | "create_failed";
 
 export class OrderRepositoryError extends Error {

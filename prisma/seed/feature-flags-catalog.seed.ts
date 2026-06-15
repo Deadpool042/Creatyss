@@ -5,6 +5,8 @@ type CatalogProductFlagDef = {
   name: string;
   description: string;
   isEnabledByDefault: boolean;
+  allowedLevels?: readonly string[];
+  defaultLevel?: string;
 };
 
 const CATALOG_PRODUCT_FLAGS: readonly CatalogProductFlagDef[] = [
@@ -13,6 +15,8 @@ const CATALOG_PRODUCT_FLAGS: readonly CatalogProductFlagDef[] = [
     name: "Médias produit",
     description: "Gestion des images, vidéos et contenus médias des produits.",
     isEnabledByDefault: true,
+    allowedLevels: ["basic", "optimization", "generation", "automation"],
+    defaultLevel: "basic",
   },
   {
     code: "catalog.products.categories",
@@ -50,6 +54,8 @@ const CATALOG_PRODUCT_FLAGS: readonly CatalogProductFlagDef[] = [
     name: "Inventaire produit",
     description: "Gestion du stock, des alertes et des prévisions d'inventaire.",
     isEnabledByDefault: true,
+    allowedLevels: ["manual", "alerts", "forecasting"],
+    defaultLevel: "manual",
   },
   {
     code: "catalog.products.related",
@@ -70,6 +76,9 @@ export async function seedFeatureFlagsCatalog(db: PrismaClient): Promise<void> {
   }
 
   for (const flag of CATALOG_PRODUCT_FLAGS) {
+    const allowedLevels = flag.allowedLevels ? [...flag.allowedLevels] : [];
+    const defaultLevel = flag.defaultLevel ?? null;
+
     await db.featureFlag.upsert({
       where: {
         storeId_code: {
@@ -82,6 +91,8 @@ export async function seedFeatureFlagsCatalog(db: PrismaClient): Promise<void> {
         description: flag.description,
         status: "ACTIVE",
         isEnabledByDefault: flag.isEnabledByDefault,
+        allowedLevels,
+        defaultLevel,
         archivedAt: null,
       },
       create: {
@@ -92,6 +103,8 @@ export async function seedFeatureFlagsCatalog(db: PrismaClient): Promise<void> {
         status: "ACTIVE",
         scopeType: "STORE",
         isEnabledByDefault: flag.isEnabledByDefault,
+        allowedLevels,
+        defaultLevel,
       },
     });
   }

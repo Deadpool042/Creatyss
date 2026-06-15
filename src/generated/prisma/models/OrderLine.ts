@@ -34,6 +34,7 @@ export type OrderLineAvgAggregateOutputType = {
   lineDiscountAmount: runtime.Decimal | null
   lineTaxAmount: runtime.Decimal | null
   lineTotalAmount: runtime.Decimal | null
+  taxRatePercent: runtime.Decimal | null
 }
 
 export type OrderLineSumAggregateOutputType = {
@@ -44,6 +45,7 @@ export type OrderLineSumAggregateOutputType = {
   lineDiscountAmount: runtime.Decimal | null
   lineTaxAmount: runtime.Decimal | null
   lineTotalAmount: runtime.Decimal | null
+  taxRatePercent: runtime.Decimal | null
 }
 
 export type OrderLineMinAggregateOutputType = {
@@ -58,6 +60,8 @@ export type OrderLineMinAggregateOutputType = {
   lineDiscountAmount: runtime.Decimal | null
   lineTaxAmount: runtime.Decimal | null
   lineTotalAmount: runtime.Decimal | null
+  taxRatePercent: runtime.Decimal | null
+  taxTerritory: string | null
   productName: string | null
   variantName: string | null
   sku: string | null
@@ -79,6 +83,8 @@ export type OrderLineMaxAggregateOutputType = {
   lineDiscountAmount: runtime.Decimal | null
   lineTaxAmount: runtime.Decimal | null
   lineTotalAmount: runtime.Decimal | null
+  taxRatePercent: runtime.Decimal | null
+  taxTerritory: string | null
   productName: string | null
   variantName: string | null
   sku: string | null
@@ -100,6 +106,8 @@ export type OrderLineCountAggregateOutputType = {
   lineDiscountAmount: number
   lineTaxAmount: number
   lineTotalAmount: number
+  taxRatePercent: number
+  taxTerritory: number
   productName: number
   variantName: number
   sku: number
@@ -119,6 +127,7 @@ export type OrderLineAvgAggregateInputType = {
   lineDiscountAmount?: true
   lineTaxAmount?: true
   lineTotalAmount?: true
+  taxRatePercent?: true
 }
 
 export type OrderLineSumAggregateInputType = {
@@ -129,6 +138,7 @@ export type OrderLineSumAggregateInputType = {
   lineDiscountAmount?: true
   lineTaxAmount?: true
   lineTotalAmount?: true
+  taxRatePercent?: true
 }
 
 export type OrderLineMinAggregateInputType = {
@@ -143,6 +153,8 @@ export type OrderLineMinAggregateInputType = {
   lineDiscountAmount?: true
   lineTaxAmount?: true
   lineTotalAmount?: true
+  taxRatePercent?: true
+  taxTerritory?: true
   productName?: true
   variantName?: true
   sku?: true
@@ -164,6 +176,8 @@ export type OrderLineMaxAggregateInputType = {
   lineDiscountAmount?: true
   lineTaxAmount?: true
   lineTotalAmount?: true
+  taxRatePercent?: true
+  taxTerritory?: true
   productName?: true
   variantName?: true
   sku?: true
@@ -185,6 +199,8 @@ export type OrderLineCountAggregateInputType = {
   lineDiscountAmount?: true
   lineTaxAmount?: true
   lineTotalAmount?: true
+  taxRatePercent?: true
+  taxTerritory?: true
   productName?: true
   variantName?: true
   sku?: true
@@ -293,6 +309,8 @@ export type OrderLineGroupByOutputType = {
   lineDiscountAmount: runtime.Decimal
   lineTaxAmount: runtime.Decimal
   lineTotalAmount: runtime.Decimal
+  taxRatePercent: runtime.Decimal | null
+  taxTerritory: string | null
   productName: string
   variantName: string | null
   sku: string | null
@@ -337,6 +355,8 @@ export type OrderLineWhereInput = {
   lineDiscountAmount?: Prisma.DecimalFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.DecimalNullableFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.StringNullableFilter<"OrderLine"> | string | null
   productName?: Prisma.StringFilter<"OrderLine"> | string
   variantName?: Prisma.StringNullableFilter<"OrderLine"> | string | null
   sku?: Prisma.StringNullableFilter<"OrderLine"> | string | null
@@ -363,6 +383,8 @@ export type OrderLineOrderByWithRelationInput = {
   lineDiscountAmount?: Prisma.SortOrder
   lineTaxAmount?: Prisma.SortOrder
   lineTotalAmount?: Prisma.SortOrder
+  taxRatePercent?: Prisma.SortOrderInput | Prisma.SortOrder
+  taxTerritory?: Prisma.SortOrderInput | Prisma.SortOrder
   productName?: Prisma.SortOrder
   variantName?: Prisma.SortOrderInput | Prisma.SortOrder
   sku?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -392,6 +414,8 @@ export type OrderLineWhereUniqueInput = Prisma.AtLeast<{
   lineDiscountAmount?: Prisma.DecimalFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.DecimalNullableFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.StringNullableFilter<"OrderLine"> | string | null
   productName?: Prisma.StringFilter<"OrderLine"> | string
   variantName?: Prisma.StringNullableFilter<"OrderLine"> | string | null
   sku?: Prisma.StringNullableFilter<"OrderLine"> | string | null
@@ -418,6 +442,8 @@ export type OrderLineOrderByWithAggregationInput = {
   lineDiscountAmount?: Prisma.SortOrder
   lineTaxAmount?: Prisma.SortOrder
   lineTotalAmount?: Prisma.SortOrder
+  taxRatePercent?: Prisma.SortOrderInput | Prisma.SortOrder
+  taxTerritory?: Prisma.SortOrderInput | Prisma.SortOrder
   productName?: Prisma.SortOrder
   variantName?: Prisma.SortOrderInput | Prisma.SortOrder
   sku?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -447,6 +473,8 @@ export type OrderLineScalarWhereWithAggregatesInput = {
   lineDiscountAmount?: Prisma.DecimalWithAggregatesFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalWithAggregatesFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalWithAggregatesFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.DecimalNullableWithAggregatesFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.StringNullableWithAggregatesFilter<"OrderLine"> | string | null
   productName?: Prisma.StringWithAggregatesFilter<"OrderLine"> | string
   variantName?: Prisma.StringNullableWithAggregatesFilter<"OrderLine"> | string | null
   sku?: Prisma.StringNullableWithAggregatesFilter<"OrderLine"> | string | null
@@ -465,6 +493,8 @@ export type OrderLineCreateInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -491,6 +521,8 @@ export type OrderLineUncheckedCreateInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -511,6 +543,8 @@ export type OrderLineUpdateInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -537,6 +571,8 @@ export type OrderLineUncheckedUpdateInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -560,6 +596,8 @@ export type OrderLineCreateManyInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -578,6 +616,8 @@ export type OrderLineUpdateManyMutationInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -599,6 +639,8 @@ export type OrderLineUncheckedUpdateManyInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -630,6 +672,8 @@ export type OrderLineCountOrderByAggregateInput = {
   lineDiscountAmount?: Prisma.SortOrder
   lineTaxAmount?: Prisma.SortOrder
   lineTotalAmount?: Prisma.SortOrder
+  taxRatePercent?: Prisma.SortOrder
+  taxTerritory?: Prisma.SortOrder
   productName?: Prisma.SortOrder
   variantName?: Prisma.SortOrder
   sku?: Prisma.SortOrder
@@ -647,6 +691,7 @@ export type OrderLineAvgOrderByAggregateInput = {
   lineDiscountAmount?: Prisma.SortOrder
   lineTaxAmount?: Prisma.SortOrder
   lineTotalAmount?: Prisma.SortOrder
+  taxRatePercent?: Prisma.SortOrder
 }
 
 export type OrderLineMaxOrderByAggregateInput = {
@@ -661,6 +706,8 @@ export type OrderLineMaxOrderByAggregateInput = {
   lineDiscountAmount?: Prisma.SortOrder
   lineTaxAmount?: Prisma.SortOrder
   lineTotalAmount?: Prisma.SortOrder
+  taxRatePercent?: Prisma.SortOrder
+  taxTerritory?: Prisma.SortOrder
   productName?: Prisma.SortOrder
   variantName?: Prisma.SortOrder
   sku?: Prisma.SortOrder
@@ -682,6 +729,8 @@ export type OrderLineMinOrderByAggregateInput = {
   lineDiscountAmount?: Prisma.SortOrder
   lineTaxAmount?: Prisma.SortOrder
   lineTotalAmount?: Prisma.SortOrder
+  taxRatePercent?: Prisma.SortOrder
+  taxTerritory?: Prisma.SortOrder
   productName?: Prisma.SortOrder
   variantName?: Prisma.SortOrder
   sku?: Prisma.SortOrder
@@ -699,6 +748,7 @@ export type OrderLineSumOrderByAggregateInput = {
   lineDiscountAmount?: Prisma.SortOrder
   lineTaxAmount?: Prisma.SortOrder
   lineTotalAmount?: Prisma.SortOrder
+  taxRatePercent?: Prisma.SortOrder
 }
 
 export type OrderLineScalarRelationFilter = {
@@ -876,6 +926,8 @@ export type OrderLineCreateWithoutProductInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -900,6 +952,8 @@ export type OrderLineUncheckedCreateWithoutProductInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -952,6 +1006,8 @@ export type OrderLineScalarWhereInput = {
   lineDiscountAmount?: Prisma.DecimalFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.DecimalNullableFilter<"OrderLine"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.StringNullableFilter<"OrderLine"> | string | null
   productName?: Prisma.StringFilter<"OrderLine"> | string
   variantName?: Prisma.StringNullableFilter<"OrderLine"> | string | null
   sku?: Prisma.StringNullableFilter<"OrderLine"> | string | null
@@ -970,6 +1026,8 @@ export type OrderLineCreateWithoutVariantInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -994,6 +1052,8 @@ export type OrderLineUncheckedCreateWithoutVariantInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -1040,6 +1100,8 @@ export type OrderLineCreateWithoutOrderInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -1064,6 +1126,8 @@ export type OrderLineUncheckedCreateWithoutOrderInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -1110,6 +1174,8 @@ export type OrderLineCreateWithoutFulfillmentItemsInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -1135,6 +1201,8 @@ export type OrderLineUncheckedCreateWithoutFulfillmentItemsInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -1170,6 +1238,8 @@ export type OrderLineUpdateWithoutFulfillmentItemsInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1195,6 +1265,8 @@ export type OrderLineUncheckedUpdateWithoutFulfillmentItemsInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1214,6 +1286,8 @@ export type OrderLineCreateWithoutReturnItemsInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -1239,6 +1313,8 @@ export type OrderLineUncheckedCreateWithoutReturnItemsInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -1274,6 +1350,8 @@ export type OrderLineUpdateWithoutReturnItemsInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1299,6 +1377,8 @@ export type OrderLineUncheckedUpdateWithoutReturnItemsInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1320,6 +1400,8 @@ export type OrderLineCreateManyProductInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -1338,6 +1420,8 @@ export type OrderLineUpdateWithoutProductInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1362,6 +1446,8 @@ export type OrderLineUncheckedUpdateWithoutProductInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1384,6 +1470,8 @@ export type OrderLineUncheckedUpdateManyWithoutProductInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1404,6 +1492,8 @@ export type OrderLineCreateManyVariantInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -1422,6 +1512,8 @@ export type OrderLineUpdateWithoutVariantInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1446,6 +1538,8 @@ export type OrderLineUncheckedUpdateWithoutVariantInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1468,6 +1562,8 @@ export type OrderLineUncheckedUpdateManyWithoutVariantInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1488,6 +1584,8 @@ export type OrderLineCreateManyOrderInput = {
   lineDiscountAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: string | null
   productName: string
   variantName?: string | null
   sku?: string | null
@@ -1506,6 +1604,8 @@ export type OrderLineUpdateWithoutOrderInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1530,6 +1630,8 @@ export type OrderLineUncheckedUpdateWithoutOrderInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1552,6 +1654,8 @@ export type OrderLineUncheckedUpdateManyWithoutOrderInput = {
   lineDiscountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTaxAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   lineTotalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  taxRatePercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  taxTerritory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   variantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sku?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1613,6 +1717,8 @@ export type OrderLineSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   lineDiscountAmount?: boolean
   lineTaxAmount?: boolean
   lineTotalAmount?: boolean
+  taxRatePercent?: boolean
+  taxTerritory?: boolean
   productName?: boolean
   variantName?: boolean
   sku?: boolean
@@ -1640,6 +1746,8 @@ export type OrderLineSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   lineDiscountAmount?: boolean
   lineTaxAmount?: boolean
   lineTotalAmount?: boolean
+  taxRatePercent?: boolean
+  taxTerritory?: boolean
   productName?: boolean
   variantName?: boolean
   sku?: boolean
@@ -1664,6 +1772,8 @@ export type OrderLineSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   lineDiscountAmount?: boolean
   lineTaxAmount?: boolean
   lineTotalAmount?: boolean
+  taxRatePercent?: boolean
+  taxTerritory?: boolean
   productName?: boolean
   variantName?: boolean
   sku?: boolean
@@ -1688,6 +1798,8 @@ export type OrderLineSelectScalar = {
   lineDiscountAmount?: boolean
   lineTaxAmount?: boolean
   lineTotalAmount?: boolean
+  taxRatePercent?: boolean
+  taxTerritory?: boolean
   productName?: boolean
   variantName?: boolean
   sku?: boolean
@@ -1697,7 +1809,7 @@ export type OrderLineSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OrderLineOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "productId" | "variantId" | "quantity" | "unitPriceAmount" | "compareAtAmount" | "lineSubtotalAmount" | "lineDiscountAmount" | "lineTaxAmount" | "lineTotalAmount" | "productName" | "variantName" | "sku" | "productSlug" | "variantSlug" | "createdAt" | "updatedAt", ExtArgs["result"]["orderLine"]>
+export type OrderLineOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "productId" | "variantId" | "quantity" | "unitPriceAmount" | "compareAtAmount" | "lineSubtotalAmount" | "lineDiscountAmount" | "lineTaxAmount" | "lineTotalAmount" | "taxRatePercent" | "taxTerritory" | "productName" | "variantName" | "sku" | "productSlug" | "variantSlug" | "createdAt" | "updatedAt", ExtArgs["result"]["orderLine"]>
 export type OrderLineInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   product?: boolean | Prisma.OrderLine$productArgs<ExtArgs>
@@ -1738,6 +1850,8 @@ export type $OrderLinePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     lineDiscountAmount: runtime.Decimal
     lineTaxAmount: runtime.Decimal
     lineTotalAmount: runtime.Decimal
+    taxRatePercent: runtime.Decimal | null
+    taxTerritory: string | null
     productName: string
     variantName: string | null
     sku: string | null
@@ -2184,6 +2298,8 @@ export interface OrderLineFieldRefs {
   readonly lineDiscountAmount: Prisma.FieldRef<"OrderLine", 'Decimal'>
   readonly lineTaxAmount: Prisma.FieldRef<"OrderLine", 'Decimal'>
   readonly lineTotalAmount: Prisma.FieldRef<"OrderLine", 'Decimal'>
+  readonly taxRatePercent: Prisma.FieldRef<"OrderLine", 'Decimal'>
+  readonly taxTerritory: Prisma.FieldRef<"OrderLine", 'String'>
   readonly productName: Prisma.FieldRef<"OrderLine", 'String'>
   readonly variantName: Prisma.FieldRef<"OrderLine", 'String'>
   readonly sku: Prisma.FieldRef<"OrderLine", 'String'>

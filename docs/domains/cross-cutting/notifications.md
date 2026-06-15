@@ -402,6 +402,41 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Decisions d'implementation
+
+### Cadrage 2026-06-14 (cf. `docs/lots/2026-06-14-platform-notifications-cadrage.md`)
+
+- **Point d'entree admin** : reutilisation de `/admin/settings/notifications`
+  pour eviter un doublon avec la page deja existante de reglages emails
+  transactionnels.
+- **Perimetre du lot** : seed `FeatureFlag`, gating et **lecture admin seule**
+  du referentiel `Notification` / `NotificationPreference`.
+- **Portee** : boutique courante + eventuelles entrees globales
+  (`storeId = null`), sans emission reelle ni provider externe.
+
+### Bilan d'execution (2026-06-14)
+
+Premier increment `platform.notifications` livre :
+
+- seed `FeatureFlag` DRAFT via `prisma/seed/notifications-feature-flag.seed.ts` ;
+- query de gating `isNotificationsFeatureActive()` ;
+- lecture admin `getAdminPlatformNotificationsSnapshot()` :
+  compteurs, dernieres `Notification`, dernieres `NotificationPreference` ;
+- integration UI dans `/admin/settings/notifications` ;
+- lien « Reglages » ajoute dans `/admin/settings/advanced` quand la feature est active.
+
+Etat reel apres lot :
+
+- **referentiel observable en admin** : oui ;
+- **emission automatique** : non ;
+- **CRUD admin** : non ;
+- **provider externe / realtime** : non.
+
+Les questions ouvertes restent donc valides pour les futurs increments relies a
+des producteurs metier ou a des canaux externes.
+
+---
+
 ## Documents liés
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`

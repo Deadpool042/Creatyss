@@ -441,3 +441,29 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../cross-cutting/audit.md`
 - `../cross-cutting/observability.md`
 - `../optional/platform/integrations.md`
+
+---
+
+## Décisions d'implémentation
+
+### Diagnostics qualité image — niveau `optimization` (2026-06-13)
+
+Cf. `docs/lots/2026-06-13-inventory-media-levels-cadrage.md`.
+
+- Diagnostic agrégé « Sans texte alternatif » (`MediaAsset.altText` vide ou
+  null) dans l'onglet médias de l'éditeur produit
+  (`product-images-tab.tsx`), affiché uniquement si le niveau effectif de
+  `catalog.products.media` est `optimization` (ou plus), résolu via
+  `meetsFeatureLevel` (`features/admin/pilotage/queries/get-feature-level-state.query.ts`).
+- **Écart constaté avec le cadrage** : le cadrage (écart n°3) supposait
+  qu'aucun diagnostic de conformité au ratio 4:5 (convention galerie produit
+  V1, cf. ci-dessus) n'existait. En réalité, `ratioStats` (compteurs
+  conforme/non conforme/inconnu) et le badge de conformité par image
+  (`getRatioConformity()`, `product-image-item.tsx`) étaient déjà
+  implémentés, sans gating, au niveau `basic`. Décision : ce diagnostic
+  ratio existant n'a pas été rétroactivement gated — seul le nouveau
+  diagnostic alt-text est gated `optimization`. Le diagnostic ratio reste
+  visible à tous les niveaux.
+- Restent hors périmètre : génération de `MediaVariant` responsive,
+  remplacement/recompression d'images existantes, vérification automatique
+  de l'ordre des images (`generation`/`automation`).

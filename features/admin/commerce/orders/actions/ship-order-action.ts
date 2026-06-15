@@ -12,9 +12,13 @@ import {
 
 export async function shipOrderAction(formData: FormData): Promise<void> {
   const trackingReferenceValue = String(formData.get("trackingReference") ?? "").trim();
+  const carrierValue = String(formData.get("carrier") ?? "").trim();
+  const trackingUrlValue = String(formData.get("trackingUrl") ?? "").trim();
   const parsed = shipOrderSchema.safeParse({
     orderId: String(formData.get("orderId") ?? ""),
     trackingReference: trackingReferenceValue.length > 0 ? trackingReferenceValue : null,
+    carrier: carrierValue.length > 0 ? carrierValue : null,
+    trackingUrl: trackingUrlValue.length > 0 ? trackingUrlValue : null,
   });
 
   if (!parsed.success) {

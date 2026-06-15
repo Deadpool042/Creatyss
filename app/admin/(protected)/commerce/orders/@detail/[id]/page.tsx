@@ -23,6 +23,13 @@ import {
 import { findDocumentsByOrderId } from "@/features/admin/commerce/documents/queries/find-documents-by-order.query";
 import { isDocumentsFeatureActive } from "@/features/admin/commerce/documents/queries/is-documents-feature-active.query";
 import { OrderDetailDocumentsCard } from "@/features/admin/commerce/documents/components/order-detail-documents-card";
+import { findFulfillmentByOrderId } from "@/features/admin/commerce/fulfillment/queries/find-fulfillment-by-order.query";
+import { isFulfillmentFeatureActive } from "@/features/admin/commerce/fulfillment/queries/is-fulfillment-feature-active.query";
+import { OrderDetailFulfillmentCard } from "@/features/admin/commerce/fulfillment/components/order-detail-fulfillment-card";
+import { findReturnByOrderId } from "@/features/admin/commerce/returns/queries/find-return-by-order.query";
+import { isReturnsFeatureActive } from "@/features/admin/commerce/returns/queries/is-returns-feature-active.query";
+import { OrderDetailReturnCard } from "@/features/admin/commerce/returns/components/order-detail-return-card";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 
 export const dynamic = "force-dynamic";
 
@@ -43,9 +50,18 @@ export default async function OrderDetailSlotPage({
   const { id } = await params;
   const resolvedSearchParams = await searchParams;
 
-  const [order, documentsFeatureActive] = await Promise.all([
+  const [
+    order,
+    documentsFeatureActive,
+    fulfillmentFeatureActive,
+    returnsFeatureActive,
+    storeId,
+  ] = await Promise.all([
     findAdminOrderById(id),
     isDocumentsFeatureActive(),
+    isFulfillmentFeatureActive(),
+    isReturnsFeatureActive(),
+    getCurrentStoreId(),
   ]);
 
   if (order === null) {
@@ -55,6 +71,12 @@ export default async function OrderDetailSlotPage({
   const vm = buildAdminOrderDetailViewModel(order, resolvedSearchParams);
 
   const documents = documentsFeatureActive ? await findDocumentsByOrderId(id) : null;
+  const fulfillment =
+    fulfillmentFeatureActive && storeId !== null
+      ? await findFulfillmentByOrderId(storeId, id)
+      : null;
+  const returnRequest =
+    returnsFeatureActive && storeId !== null ? await findReturnByOrderId(storeId, id) : null;
 
   return (
     <AdminSplitDetailPaneShell
@@ -89,7 +111,11 @@ export default async function OrderDetailSlotPage({
           totalAmount={order.totalAmount}
         />
 
-        <OrderDetailActionsCard allowedTransitions={vm.allowedTransitions} order={vm.orderMeta} />
+        <OrderDetailActionsCard
+          allowedTransitions={vm.allowedTransitions}
+          order={vm.orderMeta}
+          shipmentStatus={vm.shippingInfo.status}
+        />
       </div>
 
       <div
@@ -131,6 +157,18 @@ export default async function OrderDetailSlotPage({
       <div className={buildAdminOrdersDetailSectionClassName()}>
         <OrderDetailStatusHistoryCard statusHistory={vm.statusHistory} />
       </div>
+
+      {fulfillmentFeatureActive ? (
+        <div className={buildAdminOrdersDetailSectionClassName()}>
+          <OrderDetailFulfillmentCard fulfillment={fulfillment} orderId={id} />
+        </div>
+      ) : null}
+
+      {returnsFeatureActive ? (
+        <div className={buildAdminOrdersDetailSectionClassName()}>
+          <OrderDetailReturnCard request={returnRequest} orderId={id} />
+        </div>
+      ) : null}
 
       {documents !== null ? (
         <div className={buildAdminOrdersDetailSectionClassName()}>

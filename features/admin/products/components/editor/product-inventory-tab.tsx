@@ -26,14 +26,16 @@ function InventoryFields({
   variantId,
   inventory,
   availability,
+  showLowStockThreshold,
 }: {
   variantId: string;
   inventory: AdminProductVariantListItem["inventory"];
   availability: AdminProductVariantListItem["availability"];
+  showLowStockThreshold: boolean;
 }): JSX.Element {
   return (
     <>
-      <div className="grid gap-3 md:grid-cols-1">
+      <div className="grid gap-3 md:grid-cols-2">
         <AdminFormField label="Stock physique">
           <Input
             type="number"
@@ -44,6 +46,20 @@ function InventoryFields({
             className="text-sm"
           />
         </AdminFormField>
+
+        {showLowStockThreshold ? (
+          <AdminFormField label="Seuil stock faible">
+            <Input
+              type="number"
+              min={0}
+              step={1}
+              name={`inventoryLowStockThreshold:${variantId}`}
+              defaultValue={inventory.lowStockThreshold?.toString() ?? ""}
+              placeholder="2 (défaut)"
+              className="text-sm"
+            />
+          </AdminFormField>
+        ) : null}
       </div>
 
       <p className="text-xs text-muted-foreground">
@@ -93,7 +109,13 @@ function ProductInventorySectionIntro({
   );
 }
 
-function VariantInventoryCard({ variant }: { variant: AdminProductVariantListItem }): JSX.Element {
+function VariantInventoryCard({
+  variant,
+  showLowStockThreshold,
+}: {
+  variant: AdminProductVariantListItem;
+  showLowStockThreshold: boolean;
+}): JSX.Element {
   return (
     <div
       data-testid="product-stock-card"
@@ -108,6 +130,7 @@ function VariantInventoryCard({ variant }: { variant: AdminProductVariantListIte
         variantId={variant.id}
         inventory={variant.inventory}
         availability={variant.availability}
+        showLowStockThreshold={showLowStockThreshold}
       />
     </div>
   );
@@ -120,6 +143,7 @@ type ProductInventoryTabProps = {
   productId: string;
   variants: AdminProductVariantListItem[];
   isStandalone: boolean;
+  showLowStockThreshold: boolean;
 };
 
 export function ProductInventoryTab({
@@ -127,6 +151,7 @@ export function ProductInventoryTab({
   productId,
   variants,
   isStandalone,
+  showLowStockThreshold,
 }: ProductInventoryTabProps): JSX.Element {
   const [state, formAction, pending] = useActionState(action, productInventoryFormInitialState);
   const hasVariants = variants.length > 0;
@@ -178,6 +203,7 @@ export function ProductInventoryTab({
                         variantId={standaloneVariant.id}
                         inventory={standaloneVariant.inventory}
                         availability={standaloneVariant.availability}
+                        showLowStockThreshold={showLowStockThreshold}
                       />
                     </>
                   ) : (
@@ -197,7 +223,11 @@ export function ProductInventoryTab({
                   {hasVariants ? (
                     <div className="grid gap-4">
                       {variants.map((variant) => (
-                        <VariantInventoryCard key={variant.id} variant={variant} />
+                        <VariantInventoryCard
+                          key={variant.id}
+                          variant={variant}
+                          showLowStockThreshold={showLowStockThreshold}
+                        />
                       ))}
                     </div>
                   ) : (

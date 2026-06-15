@@ -120,6 +120,7 @@ export const ModelName = {
   DiscountVariantTarget: 'DiscountVariantTarget',
   DiscountCategoryTarget: 'DiscountCategoryTarget',
   Document: 'Document',
+  DocumentCounter: 'DocumentCounter',
   DocumentVersion: 'DocumentVersion',
   Fulfillment: 'Fulfillment',
   FulfillmentItem: 'FulfillmentItem',
@@ -156,6 +157,7 @@ export const ModelName = {
   AnalyticsSnapshot: 'AnalyticsSnapshot',
   AttributionModel: 'AttributionModel',
   AttributionCredit: 'AttributionCredit',
+  Automation: 'Automation',
   BehaviorSegment: 'BehaviorSegment',
   BehaviorProfile: 'BehaviorProfile',
   BehaviorProfileSegment: 'BehaviorProfileSegment',
@@ -740,6 +742,8 @@ export const OrderLineScalarFieldEnum = {
   lineDiscountAmount: 'lineDiscountAmount',
   lineTaxAmount: 'lineTaxAmount',
   lineTotalAmount: 'lineTotalAmount',
+  taxRatePercent: 'taxRatePercent',
+  taxTerritory: 'taxTerritory',
   productName: 'productName',
   variantName: 'variantName',
   sku: 'sku',
@@ -1517,6 +1521,8 @@ export const DocumentScalarFieldEnum = {
   documentNumber: 'documentNumber',
   title: 'title',
   currencyCode: 'currencyCode',
+  snapshot: 'snapshot',
+  parentDocumentId: 'parentDocumentId',
   issuedAt: 'issuedAt',
   sentAt: 'sentAt',
   cancelledAt: 'cancelledAt',
@@ -1530,6 +1536,19 @@ export const DocumentScalarFieldEnum = {
 } as const
 
 export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
+
+
+export const DocumentCounterScalarFieldEnum = {
+  id: 'id',
+  storeId: 'storeId',
+  typeCode: 'typeCode',
+  year: 'year',
+  lastValue: 'lastValue',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentCounterScalarFieldEnum = (typeof DocumentCounterScalarFieldEnum)[keyof typeof DocumentCounterScalarFieldEnum]
 
 
 export const DocumentVersionScalarFieldEnum = {
@@ -1665,6 +1684,7 @@ export const InventoryItemScalarFieldEnum = {
   notes: 'notes',
   onHandQuantity: 'onHandQuantity',
   reservedQuantity: 'reservedQuantity',
+  lowStockThreshold: 'lowStockThreshold',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   archivedAt: 'archivedAt'
@@ -2139,6 +2159,27 @@ export const AttributionCreditScalarFieldEnum = {
 } as const
 
 export type AttributionCreditScalarFieldEnum = (typeof AttributionCreditScalarFieldEnum)[keyof typeof AttributionCreditScalarFieldEnum]
+
+
+export const AutomationScalarFieldEnum = {
+  id: 'id',
+  storeId: 'storeId',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  status: 'status',
+  triggerType: 'triggerType',
+  actionType: 'actionType',
+  delayMinutes: 'delayMinutes',
+  templateCode: 'templateCode',
+  configJson: 'configJson',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type AutomationScalarFieldEnum = (typeof AutomationScalarFieldEnum)[keyof typeof AutomationScalarFieldEnum]
 
 
 export const BehaviorSegmentScalarFieldEnum = {
@@ -3390,6 +3431,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -3404,4 +3453,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

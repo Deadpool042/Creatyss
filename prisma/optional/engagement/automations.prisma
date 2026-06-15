@@ -1,0 +1,61 @@
+/// Feature: engagement.automations
+/// Category: optional
+/// Level: L1
+/// DependsOn: foundation.store, platform.email, cross-cutting.jobs
+
+enum AutomationStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+enum AutomationTriggerType {
+  CART_ABANDONED
+  ORDER_PLACED
+  NEWSLETTER_SUBSCRIBED
+  CUSTOMER_CREATED
+  MANUAL
+  OTHER
+}
+
+enum AutomationActionType {
+  EMAIL_MESSAGE
+  NEWSLETTER_CAMPAIGN
+  NOTIFICATION
+  WEBHOOK
+  OTHER
+}
+
+model Automation {
+  id      String @id @default(cuid())
+  storeId String
+
+  code        String
+  name        String
+  description String?
+
+  status      AutomationStatus      @default(DRAFT)
+  triggerType AutomationTriggerType
+  actionType  AutomationActionType
+
+  delayMinutes Int  @default(0)
+  templateCode String?
+  configJson   Json?
+
+  createdByUserId String?
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  store     Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdBy User? @relation("AutomationCreatedByUser", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([storeId, code])
+  @@index([storeId, status])
+  @@index([triggerType, status])
+  @@index([actionType, status])
+  @@index([createdByUserId])
+  @@map("automations")
+}

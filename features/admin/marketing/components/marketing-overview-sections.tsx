@@ -3,7 +3,7 @@
  * Cockpit marketing — toutes les données sont des mocks assumés.
  * Domaines : discounts (prisma/optional/commerce/discounts.prisma),
  *            newsletter (prisma/optional/engagement/newsletter.prisma),
- *            automations (à venir).
+ *            automations (référentiel admin, exécution à venir).
  */
 import Link from "next/link";
 import {
@@ -259,8 +259,8 @@ export function MarketingOverviewSections() {
               Module marketing
             </p>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Codes promo, newsletter et automations. Schéma Prisma activé —
-              interface d'administration en cours d'implémentation.
+              Codes promo, newsletter et automations. Référentiel admin
+              disponible ; exécution métier des automations encore hors lot.
             </p>
           </div>
           <p className="mt-4 text-[11px] leading-5 text-muted-foreground/50">
@@ -273,7 +273,7 @@ export function MarketingOverviewSections() {
             <code className="rounded bg-surface-subtle px-1 font-mono">
               NewsletterCampaign
             </code>{" "}
-            et aux futurs modèles Automation.
+            et au référentiel `Automation` déjà présent en base.
           </p>
         </section>
       </div>

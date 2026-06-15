@@ -27,6 +27,8 @@ export type AdminOrderDetailViewModel = {
     id: string;
     reference: string;
     trackingReference: string | null;
+    carrier: string | null;
+    trackingUrl: string | null;
     createdAtLabel: string;
     statusLabel: string;
     paymentStatusLabel: string;
@@ -99,6 +101,8 @@ export function buildAdminOrderDetailViewModel(
     id: order.id,
     reference: order.reference,
     trackingReference,
+    carrier: order.shipment?.carrier ?? null,
+    trackingUrl: order.shipment?.trackingUrl ?? null,
     createdAtLabel: formatOrderDateTime(order.createdAt),
     statusLabel: orderStatusLabel,
     paymentStatusLabel,

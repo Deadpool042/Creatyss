@@ -392,6 +392,32 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Décisions d'implémentation
+
+### V1 (2026-06-14) — cf. `docs/lots/2026-06-14-commerce-returns-cadrage.md`
+
+**État réel** : gestion des retours implémentée en V1, gated par
+`FeatureFlag commerce.returns` (DRAFT, inactif par défaut).
+
+- **Granularité** : demande « commande entière » (toutes les lignes, quantité
+  commandée, snapshot `productName`/`sku`). La sélection ligne par ligne reste
+  hors V1.
+- **Numérotation** : référence courte `RET-{année}-{6}` (pas de séquence sans
+  trou — non requis pour un retour). Pas de `DocumentCounter`, pas de schéma.
+- **Workflow** : `REQUESTED → UNDER_REVIEW → APPROVED | REJECTED → RECEIVED →
+  REFUNDED → CLOSED` (+ `CANCELLED`). Décisions tracées (`ReturnDecision`
+  `APPROVE`/`REJECT`).
+- **Frontières** : `REFUNDED` est **déclaratif** (aucun remboursement réel,
+  ni génération d'avoir) ; **aucun restock inventaire**. Pas d'impact
+  `Order.status`.
+- **Code** : `features/admin/commerce/returns/` (services create/advance, query,
+  actions, carte admin dans le détail commande). Aucun changement de schéma.
+
+**Reste** : sélection de lignes/quantités, lien remboursement (avoir
+`commerce.documents` / `payments`), restock `inventory`, demande côté client.
+
+---
+
 ## Documents liés
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`

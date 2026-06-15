@@ -368,6 +368,26 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Décisions d'implémentation
+
+### Assiette TTC (2026-06-14, à entériner)
+
+**État réel** : les montants `ProductPrice.amount` / `ProductVariantPrice.amount`
+sont saisis et stockés **TTC** (prix de vente consommateur, identique sur tous
+les territoires). La part HT et la TVA sont **dérivées par `taxation`** par
+territoire (`isIncludedInPrice = true`), pas portées par `pricing`.
+
+Conséquence de frontière : `pricing` reste source de vérité du **prix exposé**
+(TTC) ; `taxation` est source de vérité de la **ventilation HT/TVA**. Cf.
+`docs/lots/2026-06-14-commerce-taxation-cadrage.md` et
+`../../optional/commerce/taxation.md`.
+
+> ⚠️ Décision produit B2C à entériner formellement (la prose historique pouvait
+> laisser entendre un stockage HT). Le modèle ne porte pas de marqueur d'assiette
+> dédié ; l'assiette TTC est une convention. Signalée, non masquée.
+
+---
+
 ## Documents liés
 
 - `../../../architecture/10-fondations/10-principes-d-architecture.md`

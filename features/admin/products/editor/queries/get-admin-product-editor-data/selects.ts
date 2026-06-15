@@ -139,6 +139,7 @@ export const PRODUCT_EDITOR_CORE_SELECT = {
           storeId: true,
           onHandQuantity: true,
           reservedQuantity: true,
+          lowStockThreshold: true,
         },
       },
     },

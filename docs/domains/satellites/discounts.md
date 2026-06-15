@@ -379,6 +379,34 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Décisions d'implémentation
+
+### Admin CRUD `Discount`, niveau `simple` (2026-06-13)
+
+Cf. `docs/lots/2026-06-13-commerce-discounts-cadrage.md` (périmètre A1 : admin
+CRUD seul, sans application panier/checkout).
+
+- `commerce.discounts` (`FeatureFlag`) seedé (`allowedLevels:
+  ["simple","rules","automation"]`, `defaultLevel: "simple"`, `status:
+  "DRAFT"`, `isEnabledByDefault: false`) — module togglable dans
+  `/admin/settings/advanced`, **inactif par défaut**
+  (`prisma/seed/discounts-feature-flag.seed.ts`).
+- `/admin/marketing/discounts` (gating
+  `meetsFeatureLevel("commerce.discounts","simple")`) : liste les `Discount`
+  du store et permet d'en créer (`createDiscountAction`) ou d'activer/
+  désactiver (`toggleDiscountStatusAction`).
+- Niveau `simple` : types `PERCENTAGE`/`FIXED_AMOUNT`, scope `ORDER`
+  (`scopeType` par défaut du modèle). `FREE_SHIPPING`, les scopes
+  PRODUCT/PRODUCT_VARIANT/CATEGORY (et les tables `*Target`),
+  `isAutomatic`/`priority` (niveau `automation`) restent hors périmètre.
+- **Aucun effet panier/checkout** : `discountAmount` reste codé à `0` dans
+  `features/commerce/orders/lib/order.repository.ts`. Un `Discount` créé est
+  un référentiel non consommé — invariant « l'application d'une remise doit
+  être explicable » respecté en restant à `0` partout tant que
+  l'application réelle (niveau `rules`) n'est pas traitée.
+- `DiscountRedemption`, `DiscountCode` et les tables `*Target` restent non
+  alimentés par ce lot.
+
 ## Documents liés
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`

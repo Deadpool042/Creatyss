@@ -205,6 +205,65 @@ Le domaine `taxation` s’arrête :
 
 ---
 
+## Décisions d'implémentation
+
+### Cadrage 2026-06-14 (cf. `docs/lots/2026-06-14-commerce-taxation-cadrage.md`)
+
+Réponses aux **questions ouvertes** ci-dessus, dans le contexte B2C Creatyss
+(métropole + DOM-TOM, ambition UE/hors-UE) :
+
+- **Multi-pays : oui.** Déterminé par l'adresse de livraison (`countryCode`, et
+  code postal pour distinguer DOM-TOM de la métropole).
+- **Multi-taux : oui.** Imposé par les DOM-TOM (métropole 20/10/5,5/2,1 % ;
+  Guadeloupe/Martinique/Réunion 8,5 % ; Guyane/Mayotte exonéré). Résolution de
+  règle par spécificité décroissante `PRODUCT_VARIANT > PRODUCT > CATEGORY >
+  STORE`.
+- **Règles dynamiques : via `TaxRule.startsAt/endsAt` + `status`.** Pas de moteur
+  de règles externe en V1.
+- **Dépendance API externe : non en V1.** Taux gérés en interne (`TaxRule`,
+  seedés et administrables).
+
+### Assiette TTC (à entériner)
+
+Décision produit B2C : les prix `pricing` sont saisis et stockés **TTC** (prix de
+vente consommateur, identique sur tous les territoires) ; `taxation` dérive HT et
+TVA par territoire via `isIncludedInPrice = true`.
+
+> ⚠️ Cette décision **diverge** de la prose actuelle (« source de vérité pour les
+> prix hors taxe (pricing) »). Le schéma le permet (`TaxRule.isIncludedInPrice`).
+> Divergence assumée et à entériner ; ne pas la traiter comme une erreur.
+
+### Fallback
+
+Absence de règle applicable → **erreur bloquante explicite** (invariant « taxe
+explicable »), sauf territoires exonérés (Guyane/Mayotte) couverts par une règle
+0 % dédiée.
+
+### Bilan d'exécution (2026-06-14)
+
+Moteur TVA par territoire implémenté (B2C métropole + DOM) :
+
+- `entities/tax/tax-territory.ts` : territoire fiscal par code postal (DOM 971–976,
+  exonération Guyane/Mayotte, COM hors champ → null). Testé.
+- `entities/tax/tax-computation.ts` : ventilation TTC → HT/TVA, arrondi par ligne,
+  HT + TVA = TTC exact. Testé (`tests/unit/entities/tax/`).
+- `features/commerce/taxation/queries/resolve-tax-rate.query.ts` : résolution
+  `TaxRule` par spécificité + territoire + validité, erreur bloquante si aucune.
+- `features/commerce/taxation/queries/is-taxation-active.query.ts` + câblage
+  `features/commerce/orders/lib/order.repository.ts` : calcul au checkout, capture
+  `taxRatePercent`/`taxTerritory` par ligne + `Order.taxAmount`. **Gated** : TVA à 0
+  tant que la feature est inactive.
+- Schéma : `OrderLine.taxRatePercent`/`taxTerritory`
+  (migration `20260614120000_add_order_line_tax_capture`).
+- Seed taux FR/DOM (`prisma/seed/tax-rules.seed.ts`) + `FeatureFlag` DRAFT
+  (`taxation-feature-flag.seed.ts`).
+- UI admin lecture `/admin/commerce/taxation` + lien « Réglages » dans
+  `settings/advanced`.
+
+**Reste** : formulaire création/édition de règles (admin en lecture seule),
+taux réduits par ciblage catégorie, OSS UE / export hors-UE, e-reporting PPF.
+**Taux à valider par l'expert-comptable avant production.**
+
 ## Documents liés
 
 - `../../core/commerce/pricing.md`

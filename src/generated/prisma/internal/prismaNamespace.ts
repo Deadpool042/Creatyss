@@ -453,6 +453,7 @@ export const ModelName = {
   DiscountVariantTarget: 'DiscountVariantTarget',
   DiscountCategoryTarget: 'DiscountCategoryTarget',
   Document: 'Document',
+  DocumentCounter: 'DocumentCounter',
   DocumentVersion: 'DocumentVersion',
   Fulfillment: 'Fulfillment',
   FulfillmentItem: 'FulfillmentItem',
@@ -489,6 +490,7 @@ export const ModelName = {
   AnalyticsSnapshot: 'AnalyticsSnapshot',
   AttributionModel: 'AttributionModel',
   AttributionCredit: 'AttributionCredit',
+  Automation: 'Automation',
   BehaviorSegment: 'BehaviorSegment',
   BehaviorProfile: 'BehaviorProfile',
   BehaviorProfileSegment: 'BehaviorProfileSegment',
@@ -570,7 +572,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "availabilityRecord" | "availabilityPolicy" | "availabilityOverride" | "category" | "productCategory" | "priceList" | "productPrice" | "productVariantPrice" | "productType" | "productCharacteristic" | "product" | "productVariant" | "productOption" | "productOptionValue" | "productVariantOptionValue" | "relatedProduct" | "cart" | "cartLine" | "checkout" | "checkoutLine" | "checkoutAddress" | "checkoutShippingSelection" | "customer" | "customerAddress" | "customerContactPreference" | "order" | "orderLine" | "orderAddress" | "orderShippingSelection" | "orderStatusHistory" | "page" | "pageSection" | "pageBlock" | "apiClient" | "apiClientSecret" | "apiClientPermission" | "user" | "userCredential" | "userSession" | "role" | "permission" | "userRole" | "rolePermission" | "store" | "storeDomain" | "auditLog" | "auditLogChange" | "domainEvent" | "domainEventDelivery" | "featureFlag" | "featureFlagOverride" | "job" | "jobAttempt" | "monitoringCheck" | "monitoringCheckResult" | "observabilitySignal" | "observabilitySignalEvent" | "seoMetadata" | "aiProvider" | "aiTask" | "bundle" | "bundleItem" | "discount" | "discountCode" | "discountRedemption" | "discountProductTarget" | "discountVariantTarget" | "discountCategoryTarget" | "document" | "documentVersion" | "fulfillment" | "fulfillmentItem" | "giftCard" | "giftCardTransaction" | "giftRequest" | "giftRequestItem" | "inventoryItem" | "inventoryReservation" | "inventoryMovement" | "loyaltyAccount" | "loyaltyTransaction" | "payment" | "paymentAttempt" | "paymentRefund" | "returnRequest" | "returnItem" | "returnDecision" | "salesPolicy" | "sellabilityDecision" | "salesPolicyProductTarget" | "salesPolicyVariantTarget" | "salesPolicyCategoryTarget" | "shippingZone" | "shippingMethod" | "shipment" | "subscription" | "subscriptionItem" | "taxRule" | "taxRuleProductTarget" | "taxRuleVariantTarget" | "taxRuleCategoryTarget" | "analyticsMetric" | "analyticsSnapshot" | "attributionModel" | "attributionCredit" | "behaviorSegment" | "behaviorProfile" | "behaviorProfileSegment" | "blogCategory" | "blogPost" | "blogPostCategory" | "conversionFlow" | "conversionFlowProduct" | "crmContact" | "crmTag" | "crmContactTag" | "newsletterSubscriber" | "newsletterCampaign" | "newsletterCampaignRecipient" | "publicEvent" | "eventRegistration" | "eventReservation" | "recommendationRule" | "recommendationLink" | "socialPublication" | "socialPublicationAsset" | "supportTicket" | "supportMessage" | "homepage" | "homepageSection" | "homepageFeaturedProduct" | "homepageFeaturedCategory" | "homepageFeaturedBlogPost" | "approvalRequest" | "approvalDecision" | "consentPurpose" | "consentRecord" | "emailMessage" | "emailRecipient" | "exportDefinition" | "exportRequest" | "exportArtifact" | "fraudRiskAssessment" | "fraudRiskDecision" | "fraudRiskReview" | "importDefinition" | "importRequest" | "importArtifact" | "integration" | "integrationCredential" | "integrationSyncState" | "localizationLocale" | "localizedValue" | "notification" | "notificationPreference" | "schedulePlan" | "scheduleWindow" | "scheduleOccurrence" | "webhookEndpoint" | "webhookDelivery" | "workflowDefinition" | "workflowDefinitionStep" | "workflowInstance" | "workflowStepInstance" | "channel" | "channelProductStatus" | "channelVariantStatus" | "mediaAsset" | "mediaVariant" | "mediaReference" | "searchDocument"
+    modelProps: "availabilityRecord" | "availabilityPolicy" | "availabilityOverride" | "category" | "productCategory" | "priceList" | "productPrice" | "productVariantPrice" | "productType" | "productCharacteristic" | "product" | "productVariant" | "productOption" | "productOptionValue" | "productVariantOptionValue" | "relatedProduct" | "cart" | "cartLine" | "checkout" | "checkoutLine" | "checkoutAddress" | "checkoutShippingSelection" | "customer" | "customerAddress" | "customerContactPreference" | "order" | "orderLine" | "orderAddress" | "orderShippingSelection" | "orderStatusHistory" | "page" | "pageSection" | "pageBlock" | "apiClient" | "apiClientSecret" | "apiClientPermission" | "user" | "userCredential" | "userSession" | "role" | "permission" | "userRole" | "rolePermission" | "store" | "storeDomain" | "auditLog" | "auditLogChange" | "domainEvent" | "domainEventDelivery" | "featureFlag" | "featureFlagOverride" | "job" | "jobAttempt" | "monitoringCheck" | "monitoringCheckResult" | "observabilitySignal" | "observabilitySignalEvent" | "seoMetadata" | "aiProvider" | "aiTask" | "bundle" | "bundleItem" | "discount" | "discountCode" | "discountRedemption" | "discountProductTarget" | "discountVariantTarget" | "discountCategoryTarget" | "document" | "documentCounter" | "documentVersion" | "fulfillment" | "fulfillmentItem" | "giftCard" | "giftCardTransaction" | "giftRequest" | "giftRequestItem" | "inventoryItem" | "inventoryReservation" | "inventoryMovement" | "loyaltyAccount" | "loyaltyTransaction" | "payment" | "paymentAttempt" | "paymentRefund" | "returnRequest" | "returnItem" | "returnDecision" | "salesPolicy" | "sellabilityDecision" | "salesPolicyProductTarget" | "salesPolicyVariantTarget" | "salesPolicyCategoryTarget" | "shippingZone" | "shippingMethod" | "shipment" | "subscription" | "subscriptionItem" | "taxRule" | "taxRuleProductTarget" | "taxRuleVariantTarget" | "taxRuleCategoryTarget" | "analyticsMetric" | "analyticsSnapshot" | "attributionModel" | "attributionCredit" | "automation" | "behaviorSegment" | "behaviorProfile" | "behaviorProfileSegment" | "blogCategory" | "blogPost" | "blogPostCategory" | "conversionFlow" | "conversionFlowProduct" | "crmContact" | "crmTag" | "crmContactTag" | "newsletterSubscriber" | "newsletterCampaign" | "newsletterCampaignRecipient" | "publicEvent" | "eventRegistration" | "eventReservation" | "recommendationRule" | "recommendationLink" | "socialPublication" | "socialPublicationAsset" | "supportTicket" | "supportMessage" | "homepage" | "homepageSection" | "homepageFeaturedProduct" | "homepageFeaturedCategory" | "homepageFeaturedBlogPost" | "approvalRequest" | "approvalDecision" | "consentPurpose" | "consentRecord" | "emailMessage" | "emailRecipient" | "exportDefinition" | "exportRequest" | "exportArtifact" | "fraudRiskAssessment" | "fraudRiskDecision" | "fraudRiskReview" | "importDefinition" | "importRequest" | "importArtifact" | "integration" | "integrationCredential" | "integrationSyncState" | "localizationLocale" | "localizedValue" | "notification" | "notificationPreference" | "schedulePlan" | "scheduleWindow" | "scheduleOccurrence" | "webhookEndpoint" | "webhookDelivery" | "workflowDefinition" | "workflowDefinitionStep" | "workflowInstance" | "workflowStepInstance" | "channel" | "channelProductStatus" | "channelVariantStatus" | "mediaAsset" | "mediaVariant" | "mediaReference" | "searchDocument"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -5680,6 +5682,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DocumentCounter: {
+      payload: Prisma.$DocumentCounterPayload<ExtArgs>
+      fields: Prisma.DocumentCounterFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentCounterFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentCounterPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentCounterFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentCounterPayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentCounterFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentCounterPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentCounterFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentCounterPayload>
+        }
+        findMany: {
+          args: Prisma.DocumentCounterFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentCounterPayload>[]
+        }
+        create: {
+          args: Prisma.DocumentCounterCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentCounterPayload>
+        }
+        createMany: {
+          args: Prisma.DocumentCounterCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DocumentCounterCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentCounterPayload>[]
+        }
+        delete: {
+          args: Prisma.DocumentCounterDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentCounterPayload>
+        }
+        update: {
+          args: Prisma.DocumentCounterUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentCounterPayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentCounterDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentCounterUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DocumentCounterUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentCounterPayload>[]
+        }
+        upsert: {
+          args: Prisma.DocumentCounterUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentCounterPayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentCounterAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentCounter>
+        }
+        groupBy: {
+          args: Prisma.DocumentCounterGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentCounterGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentCounterCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentCounterCountAggregateOutputType> | number
+        }
+      }
+    }
     DocumentVersion: {
       payload: Prisma.$DocumentVersionPayload<ExtArgs>
       fields: Prisma.DocumentVersionFieldRefs
@@ -8341,6 +8417,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.AttributionCreditCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.AttributionCreditCountAggregateOutputType> | number
+        }
+      }
+    }
+    Automation: {
+      payload: Prisma.$AutomationPayload<ExtArgs>
+      fields: Prisma.AutomationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AutomationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AutomationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AutomationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AutomationPayload>
+        }
+        findFirst: {
+          args: Prisma.AutomationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AutomationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AutomationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AutomationPayload>
+        }
+        findMany: {
+          args: Prisma.AutomationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AutomationPayload>[]
+        }
+        create: {
+          args: Prisma.AutomationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AutomationPayload>
+        }
+        createMany: {
+          args: Prisma.AutomationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AutomationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AutomationPayload>[]
+        }
+        delete: {
+          args: Prisma.AutomationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AutomationPayload>
+        }
+        update: {
+          args: Prisma.AutomationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AutomationPayload>
+        }
+        deleteMany: {
+          args: Prisma.AutomationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AutomationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AutomationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AutomationPayload>[]
+        }
+        upsert: {
+          args: Prisma.AutomationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AutomationPayload>
+        }
+        aggregate: {
+          args: Prisma.AutomationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAutomation>
+        }
+        groupBy: {
+          args: Prisma.AutomationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AutomationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AutomationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AutomationCountAggregateOutputType> | number
         }
       }
     }
@@ -13767,6 +13917,8 @@ export const OrderLineScalarFieldEnum = {
   lineDiscountAmount: 'lineDiscountAmount',
   lineTaxAmount: 'lineTaxAmount',
   lineTotalAmount: 'lineTotalAmount',
+  taxRatePercent: 'taxRatePercent',
+  taxTerritory: 'taxTerritory',
   productName: 'productName',
   variantName: 'variantName',
   sku: 'sku',
@@ -14544,6 +14696,8 @@ export const DocumentScalarFieldEnum = {
   documentNumber: 'documentNumber',
   title: 'title',
   currencyCode: 'currencyCode',
+  snapshot: 'snapshot',
+  parentDocumentId: 'parentDocumentId',
   issuedAt: 'issuedAt',
   sentAt: 'sentAt',
   cancelledAt: 'cancelledAt',
@@ -14557,6 +14711,19 @@ export const DocumentScalarFieldEnum = {
 } as const
 
 export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
+
+
+export const DocumentCounterScalarFieldEnum = {
+  id: 'id',
+  storeId: 'storeId',
+  typeCode: 'typeCode',
+  year: 'year',
+  lastValue: 'lastValue',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentCounterScalarFieldEnum = (typeof DocumentCounterScalarFieldEnum)[keyof typeof DocumentCounterScalarFieldEnum]
 
 
 export const DocumentVersionScalarFieldEnum = {
@@ -14692,6 +14859,7 @@ export const InventoryItemScalarFieldEnum = {
   notes: 'notes',
   onHandQuantity: 'onHandQuantity',
   reservedQuantity: 'reservedQuantity',
+  lowStockThreshold: 'lowStockThreshold',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   archivedAt: 'archivedAt'
@@ -15166,6 +15334,27 @@ export const AttributionCreditScalarFieldEnum = {
 } as const
 
 export type AttributionCreditScalarFieldEnum = (typeof AttributionCreditScalarFieldEnum)[keyof typeof AttributionCreditScalarFieldEnum]
+
+
+export const AutomationScalarFieldEnum = {
+  id: 'id',
+  storeId: 'storeId',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  status: 'status',
+  triggerType: 'triggerType',
+  actionType: 'actionType',
+  delayMinutes: 'delayMinutes',
+  templateCode: 'templateCode',
+  configJson: 'configJson',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type AutomationScalarFieldEnum = (typeof AutomationScalarFieldEnum)[keyof typeof AutomationScalarFieldEnum]
 
 
 export const BehaviorSegmentScalarFieldEnum = {
@@ -16417,6 +16606,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -16431,6 +16628,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -17231,6 +17437,20 @@ export type ListEnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
  * Reference to a field of type 'FulfillmentStatus'
  */
 export type EnumFulfillmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FulfillmentStatus'>
@@ -17619,6 +17839,48 @@ export type EnumAttributionModelStatusFieldRefInput<$PrismaModel> = FieldRefInpu
  * Reference to a field of type 'AttributionModelStatus[]'
  */
 export type ListEnumAttributionModelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttributionModelStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AutomationStatus'
+ */
+export type EnumAutomationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AutomationStatus[]'
+ */
+export type ListEnumAutomationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AutomationTriggerType'
+ */
+export type EnumAutomationTriggerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationTriggerType'>
+    
+
+
+/**
+ * Reference to a field of type 'AutomationTriggerType[]'
+ */
+export type ListEnumAutomationTriggerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationTriggerType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AutomationActionType'
+ */
+export type EnumAutomationActionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationActionType'>
+    
+
+
+/**
+ * Reference to a field of type 'AutomationActionType[]'
+ */
+export type ListEnumAutomationActionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AutomationActionType[]'>
     
 
 
@@ -18597,6 +18859,7 @@ export type GlobalOmitConfig = {
   discountVariantTarget?: Prisma.DiscountVariantTargetOmit
   discountCategoryTarget?: Prisma.DiscountCategoryTargetOmit
   document?: Prisma.DocumentOmit
+  documentCounter?: Prisma.DocumentCounterOmit
   documentVersion?: Prisma.DocumentVersionOmit
   fulfillment?: Prisma.FulfillmentOmit
   fulfillmentItem?: Prisma.FulfillmentItemOmit
@@ -18633,6 +18896,7 @@ export type GlobalOmitConfig = {
   analyticsSnapshot?: Prisma.AnalyticsSnapshotOmit
   attributionModel?: Prisma.AttributionModelOmit
   attributionCredit?: Prisma.AttributionCreditOmit
+  automation?: Prisma.AutomationOmit
   behaviorSegment?: Prisma.BehaviorSegmentOmit
   behaviorProfile?: Prisma.BehaviorProfileOmit
   behaviorProfileSegment?: Prisma.BehaviorProfileSegmentOmit

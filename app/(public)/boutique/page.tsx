@@ -15,6 +15,7 @@ import {
 } from "@/features/storefront/catalog";
 import { BoutiquePage } from "@/features/storefront/catalog/boutique-page/components/boutique-page";
 import { buildBoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/composition/build-boutique-page-view-model";
+import { getLocalizedBoutiquePageCopy } from "@/features/storefront/catalog/boutique-page/queries/get-localized-boutique-page-copy.query";
 import { catalogSearchParamsSchema } from "@/features/storefront/catalog/schemas/catalog-search-params.schema";
 
 export const dynamic = "force-dynamic";
@@ -208,7 +209,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   }
 
   const skip = (currentPage - 1) * BOUTIQUE_PRODUCTS_PAGE_SIZE;
-  const [productsPage, categories, initialFavoriteProductIds, inStockCount, madeToOrderCount, unavailableCount] = await Promise.all([
+  const [productsPage, categories, initialFavoriteProductIds, inStockCount, madeToOrderCount, unavailableCount, boutiquePageCopy] = await Promise.all([
     listPublishedProductsPage({
       searchQuery,
       categorySlugs: filters.categorySlugs,
@@ -243,6 +244,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       minPriceCents: filters.minPriceCents,
       maxPriceCents: filters.maxPriceCents,
     }),
+    getLocalizedBoutiquePageCopy(),
   ]);
 
   const firstCategorySlug = filters.categorySlugs[0] ?? null;
@@ -275,5 +277,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     },
   });
 
-  return <BoutiquePage model={model} initialFavoriteProductIds={initialFavoriteProductIds} />;
+  return (
+    <BoutiquePage
+      model={model}
+      initialFavoriteProductIds={initialFavoriteProductIds}
+      copy={boutiquePageCopy}
+    />
+  );
 }

@@ -336,6 +336,7 @@ export async function updateProductGeneral(
 type UpdateProductInventoryRowInput = {
   variantId: string;
   onHandQuantity: number;
+  lowStockThreshold?: number | null;
 };
 
 type UpdateProductInventoryServiceInput = {
@@ -393,6 +394,9 @@ export async function updateProductInventory(
           status: InventoryItemStatus.ACTIVE,
           archivedAt: null,
           onHandQuantity: row.onHandQuantity,
+          ...(row.lowStockThreshold !== undefined
+            ? { lowStockThreshold: row.lowStockThreshold }
+            : {}),
         },
         create: {
           storeId: product.storeId,
@@ -400,6 +404,7 @@ export async function updateProductInventory(
           sku,
           status: InventoryItemStatus.ACTIVE,
           onHandQuantity: row.onHandQuantity,
+          lowStockThreshold: row.lowStockThreshold ?? null,
         },
       });
     }

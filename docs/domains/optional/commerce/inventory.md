@@ -305,3 +305,24 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 - `../../core/commerce/orders.md`
 - `fulfillment.md`
 - `../../../architecture/20-structure/23-systemes-externes-et-satellites.md`
+
+---
+
+## Décisions d'implémentation
+
+### Seuil « stock faible » configurable — niveau `alerts` (2026-06-13)
+
+Cf. `docs/lots/2026-06-13-inventory-media-levels-cadrage.md`.
+
+- `InventoryItem.lowStockThreshold` (`Int?`, nullable) : seuil par variante.
+  `null` = comportement par défaut (seuil 2, inchangé).
+- `getStockBadge()` (`features/admin/products/components/editor/variants/product-variant-item.utils.ts`)
+  utilise `inventory.lowStockThreshold ?? 2` au lieu de `2` codé en dur.
+- Champ « Seuil stock faible » dans l'éditeur produit
+  (`ProductInventoryTab` / `InventoryFields`), affiché uniquement si le
+  niveau effectif de `catalog.products.inventory` est `alerts` ou
+  `forecasting` (résolu via `meetsFeatureLevel`,
+  `features/admin/pilotage/queries/get-feature-level-state.query.ts`). Au
+  niveau `manual`, le champ est masqué et le seuil reste fixe (2).
+- Restent hors périmètre : agrégation « stock faible » au niveau liste
+  produits, alertes/notifications, prévisions (`forecasting`).

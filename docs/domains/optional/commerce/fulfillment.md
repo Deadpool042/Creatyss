@@ -313,6 +313,32 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Décisions d'implémentation
+
+### V1 (2026-06-14) — cf. `docs/lots/2026-06-14-commerce-fulfillment-cadrage.md`
+
+**État réel** : préparation logistique implémentée en V1, gated par
+`FeatureFlag commerce.fulfillment` (DRAFT, inactif par défaut).
+
+- **Granularité** : « tout ou rien » par ligne — un `FulfillmentItem` par
+  `OrderLine` (quantité commandée). Le partiel par quantité reste hors V1.
+- **Indépendance** : aucune modification du flux d'expédition existant
+  (`ship-admin-order.service`) ; pas de couplage automatique fulfillment ↔
+  shipment.
+- **Inventaire** : **aucune mutation de stock** à la préparation (décision
+  inter-domaines `inventory` réservée).
+- **Cycle de vie** : `PENDING → READY → FULFILLED`, annulation `→ CANCELLED` ;
+  `FULFILLED`/`CANCELLED` terminaux. Les items suivent le statut de la
+  préparation à `FULFILLED`/`CANCELLED`.
+- **Code** : `features/admin/commerce/fulfillment/` (services create/advance,
+  query, actions, carte admin dans le détail commande). Aucun changement de
+  schéma (modèle déjà posé).
+
+**Reste** : fulfillment partiel, lien à l'expédition, impact inventaire,
+multi-entrepôt.
+
+---
+
 ## Documents liés
 
 - `../../core/commerce/orders.md`

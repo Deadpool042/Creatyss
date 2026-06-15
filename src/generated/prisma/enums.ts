@@ -843,6 +843,39 @@ export const AttributionModelStatus = {
 export type AttributionModelStatus = (typeof AttributionModelStatus)[keyof typeof AttributionModelStatus]
 
 
+export const AutomationStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type AutomationStatus = (typeof AutomationStatus)[keyof typeof AutomationStatus]
+
+
+export const AutomationTriggerType = {
+  CART_ABANDONED: 'CART_ABANDONED',
+  ORDER_PLACED: 'ORDER_PLACED',
+  NEWSLETTER_SUBSCRIBED: 'NEWSLETTER_SUBSCRIBED',
+  CUSTOMER_CREATED: 'CUSTOMER_CREATED',
+  MANUAL: 'MANUAL',
+  OTHER: 'OTHER'
+} as const
+
+export type AutomationTriggerType = (typeof AutomationTriggerType)[keyof typeof AutomationTriggerType]
+
+
+export const AutomationActionType = {
+  EMAIL_MESSAGE: 'EMAIL_MESSAGE',
+  NEWSLETTER_CAMPAIGN: 'NEWSLETTER_CAMPAIGN',
+  NOTIFICATION: 'NOTIFICATION',
+  WEBHOOK: 'WEBHOOK',
+  OTHER: 'OTHER'
+} as const
+
+export type AutomationActionType = (typeof AutomationActionType)[keyof typeof AutomationActionType]
+
+
 export const BehaviorSegmentStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',

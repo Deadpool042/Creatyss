@@ -93,6 +93,9 @@ model OrderLine {
   lineTaxAmount      Decimal  @db.Decimal(12, 2)
   lineTotalAmount    Decimal  @db.Decimal(12, 2)
 
+  taxRatePercent Decimal? @db.Decimal(7, 4)
+  taxTerritory   String?
+
   productName String
   variantName String?
   sku         String?

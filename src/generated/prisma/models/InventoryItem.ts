@@ -29,11 +29,13 @@ export type AggregateInventoryItem = {
 export type InventoryItemAvgAggregateOutputType = {
   onHandQuantity: number | null
   reservedQuantity: number | null
+  lowStockThreshold: number | null
 }
 
 export type InventoryItemSumAggregateOutputType = {
   onHandQuantity: number | null
   reservedQuantity: number | null
+  lowStockThreshold: number | null
 }
 
 export type InventoryItemMinAggregateOutputType = {
@@ -45,6 +47,7 @@ export type InventoryItemMinAggregateOutputType = {
   notes: string | null
   onHandQuantity: number | null
   reservedQuantity: number | null
+  lowStockThreshold: number | null
   createdAt: Date | null
   updatedAt: Date | null
   archivedAt: Date | null
@@ -59,6 +62,7 @@ export type InventoryItemMaxAggregateOutputType = {
   notes: string | null
   onHandQuantity: number | null
   reservedQuantity: number | null
+  lowStockThreshold: number | null
   createdAt: Date | null
   updatedAt: Date | null
   archivedAt: Date | null
@@ -73,6 +77,7 @@ export type InventoryItemCountAggregateOutputType = {
   notes: number
   onHandQuantity: number
   reservedQuantity: number
+  lowStockThreshold: number
   createdAt: number
   updatedAt: number
   archivedAt: number
@@ -83,11 +88,13 @@ export type InventoryItemCountAggregateOutputType = {
 export type InventoryItemAvgAggregateInputType = {
   onHandQuantity?: true
   reservedQuantity?: true
+  lowStockThreshold?: true
 }
 
 export type InventoryItemSumAggregateInputType = {
   onHandQuantity?: true
   reservedQuantity?: true
+  lowStockThreshold?: true
 }
 
 export type InventoryItemMinAggregateInputType = {
@@ -99,6 +106,7 @@ export type InventoryItemMinAggregateInputType = {
   notes?: true
   onHandQuantity?: true
   reservedQuantity?: true
+  lowStockThreshold?: true
   createdAt?: true
   updatedAt?: true
   archivedAt?: true
@@ -113,6 +121,7 @@ export type InventoryItemMaxAggregateInputType = {
   notes?: true
   onHandQuantity?: true
   reservedQuantity?: true
+  lowStockThreshold?: true
   createdAt?: true
   updatedAt?: true
   archivedAt?: true
@@ -127,6 +136,7 @@ export type InventoryItemCountAggregateInputType = {
   notes?: true
   onHandQuantity?: true
   reservedQuantity?: true
+  lowStockThreshold?: true
   createdAt?: true
   updatedAt?: true
   archivedAt?: true
@@ -228,6 +238,7 @@ export type InventoryItemGroupByOutputType = {
   notes: string | null
   onHandQuantity: number
   reservedQuantity: number
+  lowStockThreshold: number | null
   createdAt: Date
   updatedAt: Date
   archivedAt: Date | null
@@ -265,6 +276,7 @@ export type InventoryItemWhereInput = {
   notes?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
   onHandQuantity?: Prisma.IntFilter<"InventoryItem"> | number
   reservedQuantity?: Prisma.IntFilter<"InventoryItem"> | number
+  lowStockThreshold?: Prisma.IntNullableFilter<"InventoryItem"> | number | null
   createdAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
   archivedAt?: Prisma.DateTimeNullableFilter<"InventoryItem"> | Date | string | null
@@ -283,6 +295,7 @@ export type InventoryItemOrderByWithRelationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   onHandQuantity?: Prisma.SortOrder
   reservedQuantity?: Prisma.SortOrder
+  lowStockThreshold?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -305,6 +318,7 @@ export type InventoryItemWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
   onHandQuantity?: Prisma.IntFilter<"InventoryItem"> | number
   reservedQuantity?: Prisma.IntFilter<"InventoryItem"> | number
+  lowStockThreshold?: Prisma.IntNullableFilter<"InventoryItem"> | number | null
   createdAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
   archivedAt?: Prisma.DateTimeNullableFilter<"InventoryItem"> | Date | string | null
@@ -323,6 +337,7 @@ export type InventoryItemOrderByWithAggregationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   onHandQuantity?: Prisma.SortOrder
   reservedQuantity?: Prisma.SortOrder
+  lowStockThreshold?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -345,6 +360,7 @@ export type InventoryItemScalarWhereWithAggregatesInput = {
   notes?: Prisma.StringNullableWithAggregatesFilter<"InventoryItem"> | string | null
   onHandQuantity?: Prisma.IntWithAggregatesFilter<"InventoryItem"> | number
   reservedQuantity?: Prisma.IntWithAggregatesFilter<"InventoryItem"> | number
+  lowStockThreshold?: Prisma.IntNullableWithAggregatesFilter<"InventoryItem"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"InventoryItem"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"InventoryItem"> | Date | string
   archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"InventoryItem"> | Date | string | null
@@ -357,6 +373,7 @@ export type InventoryItemCreateInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -375,6 +392,7 @@ export type InventoryItemUncheckedCreateInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -389,6 +407,7 @@ export type InventoryItemUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -407,6 +426,7 @@ export type InventoryItemUncheckedUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -423,6 +443,7 @@ export type InventoryItemCreateManyInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -435,6 +456,7 @@ export type InventoryItemUpdateManyMutationInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -449,6 +471,7 @@ export type InventoryItemUncheckedUpdateManyInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -478,6 +501,7 @@ export type InventoryItemCountOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   onHandQuantity?: Prisma.SortOrder
   reservedQuantity?: Prisma.SortOrder
+  lowStockThreshold?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
@@ -486,6 +510,7 @@ export type InventoryItemCountOrderByAggregateInput = {
 export type InventoryItemAvgOrderByAggregateInput = {
   onHandQuantity?: Prisma.SortOrder
   reservedQuantity?: Prisma.SortOrder
+  lowStockThreshold?: Prisma.SortOrder
 }
 
 export type InventoryItemMaxOrderByAggregateInput = {
@@ -497,6 +522,7 @@ export type InventoryItemMaxOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   onHandQuantity?: Prisma.SortOrder
   reservedQuantity?: Prisma.SortOrder
+  lowStockThreshold?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
@@ -511,6 +537,7 @@ export type InventoryItemMinOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   onHandQuantity?: Prisma.SortOrder
   reservedQuantity?: Prisma.SortOrder
+  lowStockThreshold?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
@@ -519,6 +546,7 @@ export type InventoryItemMinOrderByAggregateInput = {
 export type InventoryItemSumOrderByAggregateInput = {
   onHandQuantity?: Prisma.SortOrder
   reservedQuantity?: Prisma.SortOrder
+  lowStockThreshold?: Prisma.SortOrder
 }
 
 export type InventoryItemScalarRelationFilter = {
@@ -649,6 +677,7 @@ export type InventoryItemCreateWithoutVariantInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -665,6 +694,7 @@ export type InventoryItemUncheckedCreateWithoutVariantInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -710,6 +740,7 @@ export type InventoryItemScalarWhereInput = {
   notes?: Prisma.StringNullableFilter<"InventoryItem"> | string | null
   onHandQuantity?: Prisma.IntFilter<"InventoryItem"> | number
   reservedQuantity?: Prisma.IntFilter<"InventoryItem"> | number
+  lowStockThreshold?: Prisma.IntNullableFilter<"InventoryItem"> | number | null
   createdAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"InventoryItem"> | Date | string
   archivedAt?: Prisma.DateTimeNullableFilter<"InventoryItem"> | Date | string | null
@@ -722,6 +753,7 @@ export type InventoryItemCreateWithoutStoreInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -738,6 +770,7 @@ export type InventoryItemUncheckedCreateWithoutStoreInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -778,6 +811,7 @@ export type InventoryItemCreateWithoutReservationsInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -795,6 +829,7 @@ export type InventoryItemUncheckedCreateWithoutReservationsInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -824,6 +859,7 @@ export type InventoryItemUpdateWithoutReservationsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -841,6 +877,7 @@ export type InventoryItemUncheckedUpdateWithoutReservationsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -854,6 +891,7 @@ export type InventoryItemCreateWithoutMovementsInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -871,6 +909,7 @@ export type InventoryItemUncheckedCreateWithoutMovementsInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -900,6 +939,7 @@ export type InventoryItemUpdateWithoutMovementsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -917,6 +957,7 @@ export type InventoryItemUncheckedUpdateWithoutMovementsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -931,6 +972,7 @@ export type InventoryItemCreateManyVariantInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -943,6 +985,7 @@ export type InventoryItemUpdateWithoutVariantInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -959,6 +1002,7 @@ export type InventoryItemUncheckedUpdateWithoutVariantInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -974,6 +1018,7 @@ export type InventoryItemUncheckedUpdateManyWithoutVariantInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -987,6 +1032,7 @@ export type InventoryItemCreateManyStoreInput = {
   notes?: string | null
   onHandQuantity?: number
   reservedQuantity?: number
+  lowStockThreshold?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   archivedAt?: Date | string | null
@@ -999,6 +1045,7 @@ export type InventoryItemUpdateWithoutStoreInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1015,6 +1062,7 @@ export type InventoryItemUncheckedUpdateWithoutStoreInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1030,6 +1078,7 @@ export type InventoryItemUncheckedUpdateManyWithoutStoreInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   onHandQuantity?: Prisma.IntFieldUpdateOperationsInput | number
   reservedQuantity?: Prisma.IntFieldUpdateOperationsInput | number
+  lowStockThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1084,6 +1133,7 @@ export type InventoryItemSelect<ExtArgs extends runtime.Types.Extensions.Interna
   notes?: boolean
   onHandQuantity?: boolean
   reservedQuantity?: boolean
+  lowStockThreshold?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   archivedAt?: boolean
@@ -1103,6 +1153,7 @@ export type InventoryItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   notes?: boolean
   onHandQuantity?: boolean
   reservedQuantity?: boolean
+  lowStockThreshold?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   archivedAt?: boolean
@@ -1119,6 +1170,7 @@ export type InventoryItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   notes?: boolean
   onHandQuantity?: boolean
   reservedQuantity?: boolean
+  lowStockThreshold?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   archivedAt?: boolean
@@ -1135,12 +1187,13 @@ export type InventoryItemSelectScalar = {
   notes?: boolean
   onHandQuantity?: boolean
   reservedQuantity?: boolean
+  lowStockThreshold?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   archivedAt?: boolean
 }
 
-export type InventoryItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "variantId" | "sku" | "status" | "notes" | "onHandQuantity" | "reservedQuantity" | "createdAt" | "updatedAt" | "archivedAt", ExtArgs["result"]["inventoryItem"]>
+export type InventoryItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "variantId" | "sku" | "status" | "notes" | "onHandQuantity" | "reservedQuantity" | "lowStockThreshold" | "createdAt" | "updatedAt" | "archivedAt", ExtArgs["result"]["inventoryItem"]>
 export type InventoryItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   store?: boolean | Prisma.StoreDefaultArgs<ExtArgs>
   variant?: boolean | Prisma.ProductVariantDefaultArgs<ExtArgs>
@@ -1174,6 +1227,7 @@ export type $InventoryItemPayload<ExtArgs extends runtime.Types.Extensions.Inter
     notes: string | null
     onHandQuantity: number
     reservedQuantity: number
+    lowStockThreshold: number | null
     createdAt: Date
     updatedAt: Date
     archivedAt: Date | null
@@ -1612,6 +1666,7 @@ export interface InventoryItemFieldRefs {
   readonly notes: Prisma.FieldRef<"InventoryItem", 'String'>
   readonly onHandQuantity: Prisma.FieldRef<"InventoryItem", 'Int'>
   readonly reservedQuantity: Prisma.FieldRef<"InventoryItem", 'Int'>
+  readonly lowStockThreshold: Prisma.FieldRef<"InventoryItem", 'Int'>
   readonly createdAt: Prisma.FieldRef<"InventoryItem", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"InventoryItem", 'DateTime'>
   readonly archivedAt: Prisma.FieldRef<"InventoryItem", 'DateTime'>

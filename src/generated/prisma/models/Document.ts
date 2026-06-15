@@ -33,6 +33,7 @@ export type DocumentMinAggregateOutputType = {
   documentNumber: string | null
   title: string | null
   currencyCode: $Enums.CurrencyCode | null
+  parentDocumentId: string | null
   issuedAt: Date | null
   sentAt: Date | null
   cancelledAt: Date | null
@@ -54,6 +55,7 @@ export type DocumentMaxAggregateOutputType = {
   documentNumber: string | null
   title: string | null
   currencyCode: $Enums.CurrencyCode | null
+  parentDocumentId: string | null
   issuedAt: Date | null
   sentAt: Date | null
   cancelledAt: Date | null
@@ -75,6 +77,8 @@ export type DocumentCountAggregateOutputType = {
   documentNumber: number
   title: number
   currencyCode: number
+  snapshot: number
+  parentDocumentId: number
   issuedAt: number
   sentAt: number
   cancelledAt: number
@@ -98,6 +102,7 @@ export type DocumentMinAggregateInputType = {
   documentNumber?: true
   title?: true
   currencyCode?: true
+  parentDocumentId?: true
   issuedAt?: true
   sentAt?: true
   cancelledAt?: true
@@ -119,6 +124,7 @@ export type DocumentMaxAggregateInputType = {
   documentNumber?: true
   title?: true
   currencyCode?: true
+  parentDocumentId?: true
   issuedAt?: true
   sentAt?: true
   cancelledAt?: true
@@ -140,6 +146,8 @@ export type DocumentCountAggregateInputType = {
   documentNumber?: true
   title?: true
   currencyCode?: true
+  snapshot?: true
+  parentDocumentId?: true
   issuedAt?: true
   sentAt?: true
   cancelledAt?: true
@@ -234,6 +242,8 @@ export type DocumentGroupByOutputType = {
   documentNumber: string | null
   title: string | null
   currencyCode: $Enums.CurrencyCode | null
+  snapshot: runtime.JsonValue | null
+  parentDocumentId: string | null
   issuedAt: Date | null
   sentAt: Date | null
   cancelledAt: Date | null
@@ -276,6 +286,8 @@ export type DocumentWhereInput = {
   documentNumber?: Prisma.StringNullableFilter<"Document"> | string | null
   title?: Prisma.StringNullableFilter<"Document"> | string | null
   currencyCode?: Prisma.EnumCurrencyCodeNullableFilter<"Document"> | $Enums.CurrencyCode | null
+  snapshot?: Prisma.JsonNullableFilter<"Document">
+  parentDocumentId?: Prisma.StringNullableFilter<"Document"> | string | null
   issuedAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   sentAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
@@ -288,6 +300,8 @@ export type DocumentWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   store?: Prisma.XOR<Prisma.StoreScalarRelationFilter, Prisma.StoreWhereInput>
   order?: Prisma.XOR<Prisma.OrderNullableScalarRelationFilter, Prisma.OrderWhereInput> | null
+  parent?: Prisma.XOR<Prisma.DocumentNullableScalarRelationFilter, Prisma.DocumentWhereInput> | null
+  corrections?: Prisma.DocumentListRelationFilter
   versions?: Prisma.DocumentVersionListRelationFilter
 }
 
@@ -300,6 +314,8 @@ export type DocumentOrderByWithRelationInput = {
   documentNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   currencyCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  snapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentDocumentId?: Prisma.SortOrderInput | Prisma.SortOrder
   issuedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   sentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -312,6 +328,8 @@ export type DocumentOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   store?: Prisma.StoreOrderByWithRelationInput
   order?: Prisma.OrderOrderByWithRelationInput
+  parent?: Prisma.DocumentOrderByWithRelationInput
+  corrections?: Prisma.DocumentOrderByRelationAggregateInput
   versions?: Prisma.DocumentVersionOrderByRelationAggregateInput
 }
 
@@ -328,6 +346,8 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   documentNumber?: Prisma.StringNullableFilter<"Document"> | string | null
   title?: Prisma.StringNullableFilter<"Document"> | string | null
   currencyCode?: Prisma.EnumCurrencyCodeNullableFilter<"Document"> | $Enums.CurrencyCode | null
+  snapshot?: Prisma.JsonNullableFilter<"Document">
+  parentDocumentId?: Prisma.StringNullableFilter<"Document"> | string | null
   issuedAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   sentAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
@@ -340,6 +360,8 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   store?: Prisma.XOR<Prisma.StoreScalarRelationFilter, Prisma.StoreWhereInput>
   order?: Prisma.XOR<Prisma.OrderNullableScalarRelationFilter, Prisma.OrderWhereInput> | null
+  parent?: Prisma.XOR<Prisma.DocumentNullableScalarRelationFilter, Prisma.DocumentWhereInput> | null
+  corrections?: Prisma.DocumentListRelationFilter
   versions?: Prisma.DocumentVersionListRelationFilter
 }, "id" | "storeId_documentNumber">
 
@@ -352,6 +374,8 @@ export type DocumentOrderByWithAggregationInput = {
   documentNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   currencyCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  snapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentDocumentId?: Prisma.SortOrderInput | Prisma.SortOrder
   issuedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   sentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -379,6 +403,8 @@ export type DocumentScalarWhereWithAggregatesInput = {
   documentNumber?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   title?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   currencyCode?: Prisma.EnumCurrencyCodeNullableWithAggregatesFilter<"Document"> | $Enums.CurrencyCode | null
+  snapshot?: Prisma.JsonNullableWithAggregatesFilter<"Document">
+  parentDocumentId?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   issuedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Document"> | Date | string | null
   sentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Document"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Document"> | Date | string | null
@@ -398,6 +424,7 @@ export type DocumentCreateInput = {
   documentNumber?: string | null
   title?: string | null
   currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   issuedAt?: Date | string | null
   sentAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -410,6 +437,8 @@ export type DocumentCreateInput = {
   updatedAt?: Date | string
   store: Prisma.StoreCreateNestedOneWithoutDocumentsInput
   order?: Prisma.OrderCreateNestedOneWithoutDocumentsInput
+  parent?: Prisma.DocumentCreateNestedOneWithoutCorrectionsInput
+  corrections?: Prisma.DocumentCreateNestedManyWithoutParentInput
   versions?: Prisma.DocumentVersionCreateNestedManyWithoutDocumentInput
 }
 
@@ -422,6 +451,8 @@ export type DocumentUncheckedCreateInput = {
   documentNumber?: string | null
   title?: string | null
   currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: string | null
   issuedAt?: Date | string | null
   sentAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -432,6 +463,7 @@ export type DocumentUncheckedCreateInput = {
   publicUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  corrections?: Prisma.DocumentUncheckedCreateNestedManyWithoutParentInput
   versions?: Prisma.DocumentVersionUncheckedCreateNestedManyWithoutDocumentInput
 }
 
@@ -442,6 +474,7 @@ export type DocumentUpdateInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -454,6 +487,8 @@ export type DocumentUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   store?: Prisma.StoreUpdateOneRequiredWithoutDocumentsNestedInput
   order?: Prisma.OrderUpdateOneWithoutDocumentsNestedInput
+  parent?: Prisma.DocumentUpdateOneWithoutCorrectionsNestedInput
+  corrections?: Prisma.DocumentUpdateManyWithoutParentNestedInput
   versions?: Prisma.DocumentVersionUpdateManyWithoutDocumentNestedInput
 }
 
@@ -466,6 +501,8 @@ export type DocumentUncheckedUpdateInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -476,6 +513,7 @@ export type DocumentUncheckedUpdateInput = {
   publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  corrections?: Prisma.DocumentUncheckedUpdateManyWithoutParentNestedInput
   versions?: Prisma.DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
@@ -488,6 +526,8 @@ export type DocumentCreateManyInput = {
   documentNumber?: string | null
   title?: string | null
   currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: string | null
   issuedAt?: Date | string | null
   sentAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -507,6 +547,7 @@ export type DocumentUpdateManyMutationInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -528,6 +569,8 @@ export type DocumentUncheckedUpdateManyInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -550,6 +593,11 @@ export type DocumentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type DocumentNullableScalarRelationFilter = {
+  is?: Prisma.DocumentWhereInput | null
+  isNot?: Prisma.DocumentWhereInput | null
+}
+
 export type DocumentStoreIdDocumentNumberCompoundUniqueInput = {
   storeId: string
   documentNumber: string
@@ -564,6 +612,8 @@ export type DocumentCountOrderByAggregateInput = {
   documentNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   currencyCode?: Prisma.SortOrder
+  snapshot?: Prisma.SortOrder
+  parentDocumentId?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
@@ -585,6 +635,7 @@ export type DocumentMaxOrderByAggregateInput = {
   documentNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   currencyCode?: Prisma.SortOrder
+  parentDocumentId?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
@@ -606,6 +657,7 @@ export type DocumentMinOrderByAggregateInput = {
   documentNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   currencyCode?: Prisma.SortOrder
+  parentDocumentId?: Prisma.SortOrder
   issuedAt?: Prisma.SortOrder
   sentAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
@@ -707,12 +759,70 @@ export type DocumentUncheckedUpdateManyWithoutStoreNestedInput = {
   deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
 }
 
+export type DocumentCreateNestedOneWithoutCorrectionsInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutCorrectionsInput, Prisma.DocumentUncheckedCreateWithoutCorrectionsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutCorrectionsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentCreateNestedManyWithoutParentInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutParentInput, Prisma.DocumentUncheckedCreateWithoutParentInput> | Prisma.DocumentCreateWithoutParentInput[] | Prisma.DocumentUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutParentInput | Prisma.DocumentCreateOrConnectWithoutParentInput[]
+  createMany?: Prisma.DocumentCreateManyParentInputEnvelope
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+}
+
+export type DocumentUncheckedCreateNestedManyWithoutParentInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutParentInput, Prisma.DocumentUncheckedCreateWithoutParentInput> | Prisma.DocumentCreateWithoutParentInput[] | Prisma.DocumentUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutParentInput | Prisma.DocumentCreateOrConnectWithoutParentInput[]
+  createMany?: Prisma.DocumentCreateManyParentInputEnvelope
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+}
+
 export type EnumDocumentTypeCodeFieldUpdateOperationsInput = {
   set?: $Enums.DocumentTypeCode
 }
 
 export type EnumDocumentStatusFieldUpdateOperationsInput = {
   set?: $Enums.DocumentStatus
+}
+
+export type DocumentUpdateOneWithoutCorrectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutCorrectionsInput, Prisma.DocumentUncheckedCreateWithoutCorrectionsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutCorrectionsInput
+  upsert?: Prisma.DocumentUpsertWithoutCorrectionsInput
+  disconnect?: Prisma.DocumentWhereInput | boolean
+  delete?: Prisma.DocumentWhereInput | boolean
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutCorrectionsInput, Prisma.DocumentUpdateWithoutCorrectionsInput>, Prisma.DocumentUncheckedUpdateWithoutCorrectionsInput>
+}
+
+export type DocumentUpdateManyWithoutParentNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutParentInput, Prisma.DocumentUncheckedCreateWithoutParentInput> | Prisma.DocumentCreateWithoutParentInput[] | Prisma.DocumentUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutParentInput | Prisma.DocumentCreateOrConnectWithoutParentInput[]
+  upsert?: Prisma.DocumentUpsertWithWhereUniqueWithoutParentInput | Prisma.DocumentUpsertWithWhereUniqueWithoutParentInput[]
+  createMany?: Prisma.DocumentCreateManyParentInputEnvelope
+  set?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  disconnect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  delete?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  update?: Prisma.DocumentUpdateWithWhereUniqueWithoutParentInput | Prisma.DocumentUpdateWithWhereUniqueWithoutParentInput[]
+  updateMany?: Prisma.DocumentUpdateManyWithWhereWithoutParentInput | Prisma.DocumentUpdateManyWithWhereWithoutParentInput[]
+  deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
+}
+
+export type DocumentUncheckedUpdateManyWithoutParentNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutParentInput, Prisma.DocumentUncheckedCreateWithoutParentInput> | Prisma.DocumentCreateWithoutParentInput[] | Prisma.DocumentUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutParentInput | Prisma.DocumentCreateOrConnectWithoutParentInput[]
+  upsert?: Prisma.DocumentUpsertWithWhereUniqueWithoutParentInput | Prisma.DocumentUpsertWithWhereUniqueWithoutParentInput[]
+  createMany?: Prisma.DocumentCreateManyParentInputEnvelope
+  set?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  disconnect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  delete?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  update?: Prisma.DocumentUpdateWithWhereUniqueWithoutParentInput | Prisma.DocumentUpdateWithWhereUniqueWithoutParentInput[]
+  updateMany?: Prisma.DocumentUpdateManyWithWhereWithoutParentInput | Prisma.DocumentUpdateManyWithWhereWithoutParentInput[]
+  deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
 }
 
 export type DocumentCreateNestedOneWithoutVersionsInput = {
@@ -736,6 +846,7 @@ export type DocumentCreateWithoutOrderInput = {
   documentNumber?: string | null
   title?: string | null
   currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   issuedAt?: Date | string | null
   sentAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -747,6 +858,8 @@ export type DocumentCreateWithoutOrderInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   store: Prisma.StoreCreateNestedOneWithoutDocumentsInput
+  parent?: Prisma.DocumentCreateNestedOneWithoutCorrectionsInput
+  corrections?: Prisma.DocumentCreateNestedManyWithoutParentInput
   versions?: Prisma.DocumentVersionCreateNestedManyWithoutDocumentInput
 }
 
@@ -758,6 +871,8 @@ export type DocumentUncheckedCreateWithoutOrderInput = {
   documentNumber?: string | null
   title?: string | null
   currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: string | null
   issuedAt?: Date | string | null
   sentAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -768,6 +883,7 @@ export type DocumentUncheckedCreateWithoutOrderInput = {
   publicUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  corrections?: Prisma.DocumentUncheckedCreateNestedManyWithoutParentInput
   versions?: Prisma.DocumentVersionUncheckedCreateNestedManyWithoutDocumentInput
 }
 
@@ -809,6 +925,8 @@ export type DocumentScalarWhereInput = {
   documentNumber?: Prisma.StringNullableFilter<"Document"> | string | null
   title?: Prisma.StringNullableFilter<"Document"> | string | null
   currencyCode?: Prisma.EnumCurrencyCodeNullableFilter<"Document"> | $Enums.CurrencyCode | null
+  snapshot?: Prisma.JsonNullableFilter<"Document">
+  parentDocumentId?: Prisma.StringNullableFilter<"Document"> | string | null
   issuedAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   sentAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Document"> | Date | string | null
@@ -828,6 +946,7 @@ export type DocumentCreateWithoutStoreInput = {
   documentNumber?: string | null
   title?: string | null
   currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   issuedAt?: Date | string | null
   sentAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -839,6 +958,8 @@ export type DocumentCreateWithoutStoreInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   order?: Prisma.OrderCreateNestedOneWithoutDocumentsInput
+  parent?: Prisma.DocumentCreateNestedOneWithoutCorrectionsInput
+  corrections?: Prisma.DocumentCreateNestedManyWithoutParentInput
   versions?: Prisma.DocumentVersionCreateNestedManyWithoutDocumentInput
 }
 
@@ -850,6 +971,8 @@ export type DocumentUncheckedCreateWithoutStoreInput = {
   documentNumber?: string | null
   title?: string | null
   currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: string | null
   issuedAt?: Date | string | null
   sentAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -860,6 +983,7 @@ export type DocumentUncheckedCreateWithoutStoreInput = {
   publicUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  corrections?: Prisma.DocumentUncheckedCreateNestedManyWithoutParentInput
   versions?: Prisma.DocumentVersionUncheckedCreateNestedManyWithoutDocumentInput
 }
 
@@ -889,13 +1013,14 @@ export type DocumentUpdateManyWithWhereWithoutStoreInput = {
   data: Prisma.XOR<Prisma.DocumentUpdateManyMutationInput, Prisma.DocumentUncheckedUpdateManyWithoutStoreInput>
 }
 
-export type DocumentCreateWithoutVersionsInput = {
+export type DocumentCreateWithoutCorrectionsInput = {
   id?: string
   typeCode: $Enums.DocumentTypeCode
   status?: $Enums.DocumentStatus
   documentNumber?: string | null
   title?: string | null
   currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   issuedAt?: Date | string | null
   sentAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -908,6 +1033,194 @@ export type DocumentCreateWithoutVersionsInput = {
   updatedAt?: Date | string
   store: Prisma.StoreCreateNestedOneWithoutDocumentsInput
   order?: Prisma.OrderCreateNestedOneWithoutDocumentsInput
+  parent?: Prisma.DocumentCreateNestedOneWithoutCorrectionsInput
+  versions?: Prisma.DocumentVersionCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutCorrectionsInput = {
+  id?: string
+  storeId: string
+  orderId?: string | null
+  typeCode: $Enums.DocumentTypeCode
+  status?: $Enums.DocumentStatus
+  documentNumber?: string | null
+  title?: string | null
+  currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: string | null
+  issuedAt?: Date | string | null
+  sentAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  archivedAt?: Date | string | null
+  fileName?: string | null
+  mimeType?: string | null
+  storageKey?: string | null
+  publicUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  versions?: Prisma.DocumentVersionUncheckedCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutCorrectionsInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutCorrectionsInput, Prisma.DocumentUncheckedCreateWithoutCorrectionsInput>
+}
+
+export type DocumentCreateWithoutParentInput = {
+  id?: string
+  typeCode: $Enums.DocumentTypeCode
+  status?: $Enums.DocumentStatus
+  documentNumber?: string | null
+  title?: string | null
+  currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  issuedAt?: Date | string | null
+  sentAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  archivedAt?: Date | string | null
+  fileName?: string | null
+  mimeType?: string | null
+  storageKey?: string | null
+  publicUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutDocumentsInput
+  order?: Prisma.OrderCreateNestedOneWithoutDocumentsInput
+  corrections?: Prisma.DocumentCreateNestedManyWithoutParentInput
+  versions?: Prisma.DocumentVersionCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutParentInput = {
+  id?: string
+  storeId: string
+  orderId?: string | null
+  typeCode: $Enums.DocumentTypeCode
+  status?: $Enums.DocumentStatus
+  documentNumber?: string | null
+  title?: string | null
+  currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  issuedAt?: Date | string | null
+  sentAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  archivedAt?: Date | string | null
+  fileName?: string | null
+  mimeType?: string | null
+  storageKey?: string | null
+  publicUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  corrections?: Prisma.DocumentUncheckedCreateNestedManyWithoutParentInput
+  versions?: Prisma.DocumentVersionUncheckedCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutParentInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutParentInput, Prisma.DocumentUncheckedCreateWithoutParentInput>
+}
+
+export type DocumentCreateManyParentInputEnvelope = {
+  data: Prisma.DocumentCreateManyParentInput | Prisma.DocumentCreateManyParentInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentUpsertWithoutCorrectionsInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutCorrectionsInput, Prisma.DocumentUncheckedUpdateWithoutCorrectionsInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutCorrectionsInput, Prisma.DocumentUncheckedCreateWithoutCorrectionsInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutCorrectionsInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutCorrectionsInput, Prisma.DocumentUncheckedUpdateWithoutCorrectionsInput>
+}
+
+export type DocumentUpdateWithoutCorrectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  typeCode?: Prisma.EnumDocumentTypeCodeFieldUpdateOperationsInput | $Enums.DocumentTypeCode
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneRequiredWithoutDocumentsNestedInput
+  order?: Prisma.OrderUpdateOneWithoutDocumentsNestedInput
+  parent?: Prisma.DocumentUpdateOneWithoutCorrectionsNestedInput
+  versions?: Prisma.DocumentVersionUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutCorrectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeCode?: Prisma.EnumDocumentTypeCodeFieldUpdateOperationsInput | $Enums.DocumentTypeCode
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  versions?: Prisma.DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentUpsertWithWhereUniqueWithoutParentInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutParentInput, Prisma.DocumentUncheckedUpdateWithoutParentInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutParentInput, Prisma.DocumentUncheckedCreateWithoutParentInput>
+}
+
+export type DocumentUpdateWithWhereUniqueWithoutParentInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutParentInput, Prisma.DocumentUncheckedUpdateWithoutParentInput>
+}
+
+export type DocumentUpdateManyWithWhereWithoutParentInput = {
+  where: Prisma.DocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateManyMutationInput, Prisma.DocumentUncheckedUpdateManyWithoutParentInput>
+}
+
+export type DocumentCreateWithoutVersionsInput = {
+  id?: string
+  typeCode: $Enums.DocumentTypeCode
+  status?: $Enums.DocumentStatus
+  documentNumber?: string | null
+  title?: string | null
+  currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  issuedAt?: Date | string | null
+  sentAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  archivedAt?: Date | string | null
+  fileName?: string | null
+  mimeType?: string | null
+  storageKey?: string | null
+  publicUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutDocumentsInput
+  order?: Prisma.OrderCreateNestedOneWithoutDocumentsInput
+  parent?: Prisma.DocumentCreateNestedOneWithoutCorrectionsInput
+  corrections?: Prisma.DocumentCreateNestedManyWithoutParentInput
 }
 
 export type DocumentUncheckedCreateWithoutVersionsInput = {
@@ -919,6 +1232,8 @@ export type DocumentUncheckedCreateWithoutVersionsInput = {
   documentNumber?: string | null
   title?: string | null
   currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: string | null
   issuedAt?: Date | string | null
   sentAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -929,6 +1244,7 @@ export type DocumentUncheckedCreateWithoutVersionsInput = {
   publicUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  corrections?: Prisma.DocumentUncheckedCreateNestedManyWithoutParentInput
 }
 
 export type DocumentCreateOrConnectWithoutVersionsInput = {
@@ -954,6 +1270,7 @@ export type DocumentUpdateWithoutVersionsInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -966,6 +1283,8 @@ export type DocumentUpdateWithoutVersionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   store?: Prisma.StoreUpdateOneRequiredWithoutDocumentsNestedInput
   order?: Prisma.OrderUpdateOneWithoutDocumentsNestedInput
+  parent?: Prisma.DocumentUpdateOneWithoutCorrectionsNestedInput
+  corrections?: Prisma.DocumentUpdateManyWithoutParentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutVersionsInput = {
@@ -977,6 +1296,8 @@ export type DocumentUncheckedUpdateWithoutVersionsInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -987,6 +1308,7 @@ export type DocumentUncheckedUpdateWithoutVersionsInput = {
   publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  corrections?: Prisma.DocumentUncheckedUpdateManyWithoutParentNestedInput
 }
 
 export type DocumentCreateManyOrderInput = {
@@ -997,6 +1319,8 @@ export type DocumentCreateManyOrderInput = {
   documentNumber?: string | null
   title?: string | null
   currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: string | null
   issuedAt?: Date | string | null
   sentAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -1016,6 +1340,7 @@ export type DocumentUpdateWithoutOrderInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1027,6 +1352,8 @@ export type DocumentUpdateWithoutOrderInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   store?: Prisma.StoreUpdateOneRequiredWithoutDocumentsNestedInput
+  parent?: Prisma.DocumentUpdateOneWithoutCorrectionsNestedInput
+  corrections?: Prisma.DocumentUpdateManyWithoutParentNestedInput
   versions?: Prisma.DocumentVersionUpdateManyWithoutDocumentNestedInput
 }
 
@@ -1038,6 +1365,8 @@ export type DocumentUncheckedUpdateWithoutOrderInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1048,6 +1377,7 @@ export type DocumentUncheckedUpdateWithoutOrderInput = {
   publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  corrections?: Prisma.DocumentUncheckedUpdateManyWithoutParentNestedInput
   versions?: Prisma.DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
@@ -1059,6 +1389,8 @@ export type DocumentUncheckedUpdateManyWithoutOrderInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1079,6 +1411,8 @@ export type DocumentCreateManyStoreInput = {
   documentNumber?: string | null
   title?: string | null
   currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: string | null
   issuedAt?: Date | string | null
   sentAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -1098,6 +1432,7 @@ export type DocumentUpdateWithoutStoreInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1109,6 +1444,8 @@ export type DocumentUpdateWithoutStoreInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   order?: Prisma.OrderUpdateOneWithoutDocumentsNestedInput
+  parent?: Prisma.DocumentUpdateOneWithoutCorrectionsNestedInput
+  corrections?: Prisma.DocumentUpdateManyWithoutParentNestedInput
   versions?: Prisma.DocumentVersionUpdateManyWithoutDocumentNestedInput
 }
 
@@ -1120,6 +1457,8 @@ export type DocumentUncheckedUpdateWithoutStoreInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1130,6 +1469,7 @@ export type DocumentUncheckedUpdateWithoutStoreInput = {
   publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  corrections?: Prisma.DocumentUncheckedUpdateManyWithoutParentNestedInput
   versions?: Prisma.DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
@@ -1141,6 +1481,100 @@ export type DocumentUncheckedUpdateManyWithoutStoreInput = {
   documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  parentDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DocumentCreateManyParentInput = {
+  id?: string
+  storeId: string
+  orderId?: string | null
+  typeCode: $Enums.DocumentTypeCode
+  status?: $Enums.DocumentStatus
+  documentNumber?: string | null
+  title?: string | null
+  currencyCode?: $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  issuedAt?: Date | string | null
+  sentAt?: Date | string | null
+  cancelledAt?: Date | string | null
+  archivedAt?: Date | string | null
+  fileName?: string | null
+  mimeType?: string | null
+  storageKey?: string | null
+  publicUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DocumentUpdateWithoutParentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  typeCode?: Prisma.EnumDocumentTypeCodeFieldUpdateOperationsInput | $Enums.DocumentTypeCode
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneRequiredWithoutDocumentsNestedInput
+  order?: Prisma.OrderUpdateOneWithoutDocumentsNestedInput
+  corrections?: Prisma.DocumentUpdateManyWithoutParentNestedInput
+  versions?: Prisma.DocumentVersionUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutParentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeCode?: Prisma.EnumDocumentTypeCodeFieldUpdateOperationsInput | $Enums.DocumentTypeCode
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  corrections?: Prisma.DocumentUncheckedUpdateManyWithoutParentNestedInput
+  versions?: Prisma.DocumentVersionUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateManyWithoutParentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeCode?: Prisma.EnumDocumentTypeCodeFieldUpdateOperationsInput | $Enums.DocumentTypeCode
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  documentNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencyCode?: Prisma.NullableEnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode | null
+  snapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   issuedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1159,10 +1593,12 @@ export type DocumentUncheckedUpdateManyWithoutStoreInput = {
  */
 
 export type DocumentCountOutputType = {
+  corrections: number
   versions: number
 }
 
 export type DocumentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  corrections?: boolean | DocumentCountOutputTypeCountCorrectionsArgs
   versions?: boolean | DocumentCountOutputTypeCountVersionsArgs
 }
 
@@ -1174,6 +1610,13 @@ export type DocumentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Select specific fields to fetch from the DocumentCountOutputType
    */
   select?: Prisma.DocumentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountCorrectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentWhereInput
 }
 
 /**
@@ -1193,6 +1636,8 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   documentNumber?: boolean
   title?: boolean
   currencyCode?: boolean
+  snapshot?: boolean
+  parentDocumentId?: boolean
   issuedAt?: boolean
   sentAt?: boolean
   cancelledAt?: boolean
@@ -1205,6 +1650,8 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   updatedAt?: boolean
   store?: boolean | Prisma.StoreDefaultArgs<ExtArgs>
   order?: boolean | Prisma.Document$orderArgs<ExtArgs>
+  parent?: boolean | Prisma.Document$parentArgs<ExtArgs>
+  corrections?: boolean | Prisma.Document$correctionsArgs<ExtArgs>
   versions?: boolean | Prisma.Document$versionsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
@@ -1218,6 +1665,8 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   documentNumber?: boolean
   title?: boolean
   currencyCode?: boolean
+  snapshot?: boolean
+  parentDocumentId?: boolean
   issuedAt?: boolean
   sentAt?: boolean
   cancelledAt?: boolean
@@ -1230,6 +1679,7 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   store?: boolean | Prisma.StoreDefaultArgs<ExtArgs>
   order?: boolean | Prisma.Document$orderArgs<ExtArgs>
+  parent?: boolean | Prisma.Document$parentArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
 export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1241,6 +1691,8 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   documentNumber?: boolean
   title?: boolean
   currencyCode?: boolean
+  snapshot?: boolean
+  parentDocumentId?: boolean
   issuedAt?: boolean
   sentAt?: boolean
   cancelledAt?: boolean
@@ -1253,6 +1705,7 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   store?: boolean | Prisma.StoreDefaultArgs<ExtArgs>
   order?: boolean | Prisma.Document$orderArgs<ExtArgs>
+  parent?: boolean | Prisma.Document$parentArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
 export type DocumentSelectScalar = {
@@ -1264,6 +1717,8 @@ export type DocumentSelectScalar = {
   documentNumber?: boolean
   title?: boolean
   currencyCode?: boolean
+  snapshot?: boolean
+  parentDocumentId?: boolean
   issuedAt?: boolean
   sentAt?: boolean
   cancelledAt?: boolean
@@ -1276,20 +1731,24 @@ export type DocumentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "orderId" | "typeCode" | "status" | "documentNumber" | "title" | "currencyCode" | "issuedAt" | "sentAt" | "cancelledAt" | "archivedAt" | "fileName" | "mimeType" | "storageKey" | "publicUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "orderId" | "typeCode" | "status" | "documentNumber" | "title" | "currencyCode" | "snapshot" | "parentDocumentId" | "issuedAt" | "sentAt" | "cancelledAt" | "archivedAt" | "fileName" | "mimeType" | "storageKey" | "publicUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   store?: boolean | Prisma.StoreDefaultArgs<ExtArgs>
   order?: boolean | Prisma.Document$orderArgs<ExtArgs>
+  parent?: boolean | Prisma.Document$parentArgs<ExtArgs>
+  corrections?: boolean | Prisma.Document$correctionsArgs<ExtArgs>
   versions?: boolean | Prisma.Document$versionsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   store?: boolean | Prisma.StoreDefaultArgs<ExtArgs>
   order?: boolean | Prisma.Document$orderArgs<ExtArgs>
+  parent?: boolean | Prisma.Document$parentArgs<ExtArgs>
 }
 export type DocumentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   store?: boolean | Prisma.StoreDefaultArgs<ExtArgs>
   order?: boolean | Prisma.Document$orderArgs<ExtArgs>
+  parent?: boolean | Prisma.Document$parentArgs<ExtArgs>
 }
 
 export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1297,6 +1756,8 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     store: Prisma.$StorePayload<ExtArgs>
     order: Prisma.$OrderPayload<ExtArgs> | null
+    parent: Prisma.$DocumentPayload<ExtArgs> | null
+    corrections: Prisma.$DocumentPayload<ExtArgs>[]
     versions: Prisma.$DocumentVersionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1308,6 +1769,15 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     documentNumber: string | null
     title: string | null
     currencyCode: $Enums.CurrencyCode | null
+    /**
+     * Contenu légal figé à l'émission (snapshot EN 16931 : vendeur, acheteur,
+     * lignes, ventilation TVA, totaux). Immuable une fois ISSUED.
+     */
+    snapshot: runtime.JsonValue | null
+    /**
+     * Document corrigé (avoir → facture d'origine).
+     */
+    parentDocumentId: string | null
     issuedAt: Date | null
     sentAt: Date | null
     cancelledAt: Date | null
@@ -1714,6 +2184,8 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   store<T extends Prisma.StoreDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StoreDefaultArgs<ExtArgs>>): Prisma.Prisma__StoreClient<runtime.Types.Result.GetResult<Prisma.$StorePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   order<T extends Prisma.Document$orderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$orderArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  parent<T extends Prisma.Document$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$parentArgs<ExtArgs>>): Prisma.Prisma__DocumentClient<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  corrections<T extends Prisma.Document$correctionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$correctionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   versions<T extends Prisma.Document$versionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1752,6 +2224,8 @@ export interface DocumentFieldRefs {
   readonly documentNumber: Prisma.FieldRef<"Document", 'String'>
   readonly title: Prisma.FieldRef<"Document", 'String'>
   readonly currencyCode: Prisma.FieldRef<"Document", 'CurrencyCode'>
+  readonly snapshot: Prisma.FieldRef<"Document", 'Json'>
+  readonly parentDocumentId: Prisma.FieldRef<"Document", 'String'>
   readonly issuedAt: Prisma.FieldRef<"Document", 'DateTime'>
   readonly sentAt: Prisma.FieldRef<"Document", 'DateTime'>
   readonly cancelledAt: Prisma.FieldRef<"Document", 'DateTime'>
@@ -2179,6 +2653,49 @@ export type Document$orderArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   include?: Prisma.OrderInclude<ExtArgs> | null
   where?: Prisma.OrderWhereInput
+}
+
+/**
+ * Document.parent
+ */
+export type Document$parentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Document
+   */
+  select?: Prisma.DocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Document
+   */
+  omit?: Prisma.DocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentInclude<ExtArgs> | null
+  where?: Prisma.DocumentWhereInput
+}
+
+/**
+ * Document.corrections
+ */
+export type Document$correctionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Document
+   */
+  select?: Prisma.DocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Document
+   */
+  omit?: Prisma.DocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentInclude<ExtArgs> | null
+  where?: Prisma.DocumentWhereInput
+  orderBy?: Prisma.DocumentOrderByWithRelationInput | Prisma.DocumentOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentScalarFieldEnum | Prisma.DocumentScalarFieldEnum[]
 }
 
 /**

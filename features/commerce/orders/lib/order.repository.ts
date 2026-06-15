@@ -1,6 +1,12 @@
 import { db } from "@/core/db";
 import { normalizeMoneyString } from "@/core/money";
 import { createOrderReference, isValidOrderReference } from "@/entities/order/order-reference";
+import { computeLineTaxFromGross } from "@/entities/tax/tax-computation";
+import { isTaxationActive } from "@/features/commerce/taxation/queries/is-taxation-active.query";
+import {
+  resolveTaxRate,
+  TaxRateResolutionError,
+} from "@/features/commerce/taxation/queries/resolve-tax-rate.query";
 import {
   toAppOrderStatus,
   toAppPaymentStatus,
@@ -289,6 +295,51 @@ export async function createOrderFromGuestCartToken(
 
     const shippingAddress = checkout.addresses.find((a) => a.type === "SHIPPING") ?? null;
 
+    // Ventilation TVA par ligne (cf. commerce.taxation). Gated : tant que la
+    // feature est inactive, on conserve une TVA à 0 (comportement historique).
+    const taxationActive = await isTaxationActive(cart.storeId);
+    const lineTaxes = await Promise.all(
+      cart.lines.map(async (line) => {
+        const lineGross = Math.round(Number(line.unitPriceAmount) * line.quantity * 100) / 100;
+
+        if (!taxationActive) {
+          return { lineTaxAmount: 0, taxRatePercent: null as number | null, taxTerritory: null as string | null };
+        }
+
+        if (shippingAddress?.postalCode == null) {
+          throw new OrderRepositoryError(
+            "tax_address_missing",
+            "Adresse de livraison requise pour le calcul de la TVA."
+          );
+        }
+
+        try {
+          const resolved = await resolveTaxRate({
+            storeId: cart.storeId,
+            postalCode: shippingAddress.postalCode,
+            productId: line.productId,
+            variantId: line.variantId,
+          });
+          const breakdown = computeLineTaxFromGross(lineGross, resolved.ratePercent);
+          return {
+            lineTaxAmount: breakdown.taxAmount,
+            taxRatePercent: resolved.ratePercent,
+            taxTerritory: resolved.territory as string,
+          };
+        } catch (error) {
+          if (error instanceof TaxRateResolutionError) {
+            throw new OrderRepositoryError("tax_resolution_failed", error.message);
+          }
+          throw error;
+        }
+      })
+    );
+
+    const taxCents = lineTaxes.reduce(
+      (sum, line) => sum + Math.round(line.lineTaxAmount * 100),
+      0
+    );
+
     const storeSettings = await tx.store.findUnique({
       where: { id: cart.storeId },
       select: { orderNumberPrefix: true },
@@ -311,26 +362,29 @@ export async function createOrderFromGuestCartToken(
             subtotalAmount: subtotalCents / 100,
             shippingAmount: shippingCents / 100,
             discountAmount: 0,
-            taxAmount: 0,
+            taxAmount: taxCents / 100,
             totalAmount: totalCents / 100,
             customerEmail: checkout.email,
             customerFirstName: shippingAddress?.firstName ?? null,
             customerLastName: shippingAddress?.lastName ?? null,
             placedAt: new Date(),
             lines: {
-              create: cart.lines.map((line) => {
+              create: cart.lines.map((line, index) => {
                 const lineTotalAmount =
                   Math.round(Number(line.unitPriceAmount) * line.quantity * 100) / 100;
+                const tax = lineTaxes[index];
                 return {
-                  productId: line.productId,
-                  variantId: line.variantId,
+                  ...(line.productId ? { product: { connect: { id: line.productId } } } : {}),
+                  ...(line.variantId ? { variant: { connect: { id: line.variantId } } } : {}),
                   quantity: line.quantity,
                   unitPriceAmount: line.unitPriceAmount,
                   compareAtAmount: line.compareAtAmount,
                   lineSubtotalAmount: lineTotalAmount,
                   lineDiscountAmount: 0,
-                  lineTaxAmount: 0,
+                  lineTaxAmount: tax?.lineTaxAmount ?? 0,
                   lineTotalAmount,
+                  taxRatePercent: tax?.taxRatePercent ?? null,
+                  taxTerritory: tax?.taxTerritory ?? null,
                   productName: line.productName,
                   variantName: line.variantName ?? null,
                   sku: line.sku ?? null,
@@ -356,7 +410,7 @@ export async function createOrderFromGuestCartToken(
             },
             shippingSelection: {
               create: {
-                shippingMethodId: shippingMethod.id,
+                shippingMethod: { connect: { id: shippingMethod.id } },
                 methodCode: shippingMethod.code,
                 methodName: shippingMethod.name,
                 amount: shippingMethod.amount,

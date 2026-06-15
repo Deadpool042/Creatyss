@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { Button } from "@/components/ui/button";
+import { meetsFeatureLevel } from "@/features/admin/pilotage/queries/get-feature-level-state.query";
 import {
   attachProductImagesAction,
   deleteProductAction,
@@ -124,9 +125,10 @@ export default async function ProductDetailMediaPage({
     );
   }
 
-  const [imagesData, attachableMediaData] = await Promise.all([
+  const [imagesData, attachableMediaData, showMediaOptimizationDiagnostics] = await Promise.all([
     readAdminProductImages(product.id),
     listAttachableMediaAssets(product.id),
+    meetsFeatureLevel("catalog.products.media", "optimization"),
   ]);
 
   if (imagesData === null) {
@@ -180,6 +182,7 @@ export default async function ProductDetailMediaPage({
           updateAltTextAction={updateProductImageAltTextAction}
           reorderImageAction={reorderProductImageAction}
           attachImagesAction={attachProductImagesAction}
+          showMediaOptimizationDiagnostics={showMediaOptimizationDiagnostics}
         />
       </div>
     </AdminPageShell>

@@ -4,8 +4,10 @@ import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { LocalizationModuleShell } from "@/features/admin/pilotage/components/settings-advanced";
 import { HomepageTranslationsForm } from "@/features/admin/settings/components/homepage-translations-form";
 import { ProductPageTranslationsForm } from "@/features/admin/settings/components/product-page-translations-form";
+import { BoutiquePageTranslationsForm } from "@/features/admin/settings/components/boutique-page-translations-form";
 import { listHomepageTranslations } from "@/features/admin/settings/queries/list-homepage-translations.query";
 import { listProductPageTranslations } from "@/features/admin/settings/queries/list-product-page-translations.query";
+import { listBoutiquePageTranslations } from "@/features/admin/settings/queries/list-boutique-page-translations.query";
 import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
 
 export const dynamic = "force-dynamic";
@@ -29,9 +31,10 @@ export default async function AdvancedSettingsDetailLocalizationTranslationsPage
     redirect("/admin/settings/advanced/optional");
   }
 
-  const [homepageState, productPageState] = await Promise.all([
+  const [homepageState, productPageState, boutiquePageState] = await Promise.all([
     listHomepageTranslations(),
     listProductPageTranslations(),
+    listBoutiquePageTranslations(),
   ]);
 
   if (!homepageState.hasTargetLocale) {
@@ -79,6 +82,25 @@ export default async function AdvancedSettingsDetailLocalizationTranslationsPage
             <ProductPageTranslationsForm
               targetLocaleName={productPageState.targetLocale.name}
               fields={productPageState.fields}
+            />
+          </section>
+        ) : null}
+
+        {boutiquePageState.hasTargetLocale ? (
+          <section className="space-y-4 border-t border-surface-border/40 pt-8">
+            <div>
+              <h3 className="text-sm font-semibold text-foreground">Page boutique</h3>
+              <p className="text-sm text-muted-foreground">
+                Langue cible :{" "}
+                <span className="font-medium text-foreground">
+                  {boutiquePageState.targetLocale.name}
+                </span>{" "}
+                (<code className="font-mono text-[11px]">{boutiquePageState.targetLocale.code}</code>)
+              </p>
+            </div>
+            <BoutiquePageTranslationsForm
+              targetLocaleName={boutiquePageState.targetLocale.name}
+              fields={boutiquePageState.fields}
             />
           </section>
         ) : null}

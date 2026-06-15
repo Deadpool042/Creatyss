@@ -30,6 +30,8 @@ export function getOrderDetailStatusMessage(status: string | undefined): string 
       return "Le statut de la commande a été mis à jour.";
     case "shipped":
       return "La commande a été marquée comme expédiée.";
+    case "delivered":
+      return "La commande a été marquée comme livrée.";
     default:
       return null;
   }
@@ -41,6 +43,8 @@ export function getOrderDetailErrorMessage(error: string | undefined): string | 
       return "Cette transition n'est pas autorisée.";
     case "ship_failed":
       return "La commande n'a pas pu être marquée comme expédiée.";
+    case "deliver_failed":
+      return "La commande n'a pas pu être marquée comme livrée.";
     case "update_failed":
       return "La commande n'a pas pu être mise à jour.";
     default:

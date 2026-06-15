@@ -26,6 +26,7 @@ export type AdminProductVariantInventory = {
   reservedQuantity: number;
   availableQuantity: number;
   hasInventoryRecord: boolean;
+  lowStockThreshold: number | null;
 };
 
 export type AdminProductVariantOptionValue = {

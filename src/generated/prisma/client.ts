@@ -387,6 +387,12 @@ export type DiscountCategoryTarget = Prisma.DiscountCategoryTargetModel
  */
 export type Document = Prisma.DocumentModel
 /**
+ * Model DocumentCounter
+ * Compteur de numérotation séquentielle sans trou (par store, type, année).
+ * Incrémenté sous SELECT FOR UPDATE dans la transaction d'émission.
+ */
+export type DocumentCounter = Prisma.DocumentCounterModel
+/**
  * Model DocumentVersion
  * 
  */
@@ -566,6 +572,11 @@ export type AttributionModel = Prisma.AttributionModelModel
  * 
  */
 export type AttributionCredit = Prisma.AttributionCreditModel
+/**
+ * Model Automation
+ * 
+ */
+export type Automation = Prisma.AutomationModel
 /**
  * Model BehaviorSegment
  * 

@@ -34,6 +34,13 @@ model Document {
 
   currencyCode CurrencyCode?
 
+  /// Contenu légal figé à l'émission (snapshot EN 16931 : vendeur, acheteur,
+  /// lignes, ventilation TVA, totaux). Immuable une fois ISSUED.
+  snapshot Json?
+
+  /// Document corrigé (avoir → facture d'origine).
+  parentDocumentId String?
+
   issuedAt    DateTime?
   sentAt      DateTime?
   cancelledAt DateTime?
@@ -47,16 +54,38 @@ model Document {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  store Store  @relation(fields: [storeId], references: [id], onDelete: Restrict)
-  order Order? @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  store  Store     @relation(fields: [storeId], references: [id], onDelete: Restrict)
+  order  Order?    @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  parent Document? @relation("DocumentCorrections", fields: [parentDocumentId], references: [id], onDelete: Restrict)
 
-  versions DocumentVersion[]
+  corrections Document[]        @relation("DocumentCorrections")
+  versions    DocumentVersion[]
 
   @@unique([storeId, documentNumber])
   @@index([storeId, typeCode, status])
   @@index([orderId])
+  @@index([parentDocumentId])
   @@index([issuedAt])
   @@map("documents")
+}
+
+/// Compteur de numérotation séquentielle sans trou (par store, type, année).
+/// Incrémenté sous SELECT FOR UPDATE dans la transaction d'émission.
+model DocumentCounter {
+  id       String          @id @default(cuid())
+  storeId  String
+  typeCode DocumentTypeCode
+  year     Int
+
+  lastValue Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, typeCode, year])
+  @@map("document_counters")
 }
 
 model DocumentVersion {

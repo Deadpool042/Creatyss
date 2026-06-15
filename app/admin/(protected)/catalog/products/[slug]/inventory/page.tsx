@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { meetsFeatureLevel } from "@/features/admin/pilotage/queries/get-feature-level-state.query";
 import {
   deleteProductAction,
   updateProductInventoryAction,
@@ -29,6 +30,7 @@ export default async function ProductDetailInventoryPage({
   }
 
   const variantsData = await readAdminProductVariants(product.id);
+  const showLowStockThreshold = await meetsFeatureLevel("catalog.products.inventory", "alerts");
 
   return (
     <AdminPageShell
@@ -54,6 +56,7 @@ export default async function ProductDetailInventoryPage({
         productId={product.id}
         variants={variantsData?.variants ?? []}
         isStandalone={product.isStandalone}
+        showLowStockThreshold={showLowStockThreshold}
       />
     </AdminPageShell>
   );

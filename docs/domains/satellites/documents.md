@@ -400,6 +400,18 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## Décisions d'implémentation
 
+### Activation — FeatureFlag seedé (2026-06-14)
+
+Le `FeatureFlag commerce.documents` est désormais seedé (`prisma/seed/documents-feature-flag.seed.ts`, câblé dans `prisma/seed.ts`) : `status: "DRAFT"`, `scopeType: "STORE"`, `isEnabledByDefault: false`, **feature non graduée** (`allowedLevels = []`, pas d'entrée `FEATURE_LEVELS`). Ceci corrige l'écart « code applicatif prêt mais module inaccessible » : avant ce seed, `queryFeatureFlagActive("commerce.documents")` retournait `false`, donc `/admin/commerce/orders/[id]/documents` répondait `notFound()` et `OrderDetailDocumentsCard` n'était jamais rendu.
+
+Une fois la feature activée via `/admin/settings/advanced`, la génération de la confirmation de commande (déjà codée : `create-order-confirmation.service.ts`) devient utilisable. Le périmètre de ce lot s'arrête à l'activation — aucun nouveau type de document, aucune génération PDF réelle, aucune touche au schéma Prisma.
+
+### Bon de préparation `DELIVERY_NOTE` (2026-06-14)
+
+Extension « au-delà de la confirmation » la plus proche du pattern existant. `DELIVERY_NOTE` suit exactement le modèle `ORDER_CONFIRMATION` : `documentNumber = null` (document opérationnel interne, aucune obligation de numérotation séquentielle identifiée), `status: GENERATED`, un seul actif par commande (statuts hors `CANCELLED`/`ARCHIVED`), `title: "Bon de préparation — Commande #..."`.
+
+Implémentation : `create-delivery-note.service.ts` + `create-delivery-note-action.ts` (analogues à la confirmation), bouton « Générer le bon de préparation » dans `order-detail-documents-card.tsx` (logique indépendante de la confirmation). Pas de fichier réel généré (`storageKey`/`publicUrl` restent `null`), schéma Prisma inchangé.
+
 ### documentNumber — V1 (2026-06)
 
 **`ORDER_CONFIRMATION` conserve `documentNumber = null` en V1.**

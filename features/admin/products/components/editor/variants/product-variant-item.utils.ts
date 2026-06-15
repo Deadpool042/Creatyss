@@ -45,6 +45,8 @@ export function getAvailabilityBadge(
   }
 }
 
+const DEFAULT_LOW_STOCK_THRESHOLD = 2;
+
 export function getStockBadge(inventory: AdminProductVariantListItem["inventory"]): BadgeDescriptor {
   if (!inventory.hasInventoryRecord) {
     return { label: "Stock non suivi", variant: "outline" };
@@ -55,7 +57,8 @@ export function getStockBadge(inventory: AdminProductVariantListItem["inventory"
     return { label: "Rupture", variant: "destructive" };
   }
 
-  if (availableQuantity <= 2) {
+  const lowStockThreshold = inventory.lowStockThreshold ?? DEFAULT_LOW_STOCK_THRESHOLD;
+  if (availableQuantity <= lowStockThreshold) {
     return { label: `Stock faible · ${availableQuantity}`, variant: "outline" };
   }
 

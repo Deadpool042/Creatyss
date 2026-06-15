@@ -390,6 +390,40 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Decisions d'implementation
+
+### Cadrage 2026-06-14 (cf. `docs/lots/2026-06-14-satellite-channels-cadrage.md`)
+
+- **Point d'entree admin** : page discrète `/admin/settings/channels`, reliee
+  au `FeatureFlag` actif dans `/admin/settings/advanced`.
+- **Perimetre du lot** : seed `FeatureFlag`, gating et lecture admin seule de
+  `Channel`, `ChannelProductStatus` et `ChannelVariantStatus`.
+- **Statuts** : lecture brute des statuts Prisma existants, sans logique
+  provider ni regles d'eligibilite ajoutees.
+
+### Bilan d'execution (2026-06-14)
+
+Premier increment runnable livre :
+
+- seed `FeatureFlag` DRAFT via `prisma/seed/channels-feature-flag.seed.ts` ;
+- query de gating `isChannelsFeatureActive()` ;
+- lecture admin `getAdminChannelsSnapshot()` :
+  compteurs + derniers canaux + derniers statuts produit/variante ;
+- page `/admin/settings/channels` ;
+- lien « Reglages » ajoute depuis `/admin/settings/advanced` quand la feature est active.
+
+Etat reel apres lot :
+
+- **lecture admin du referentiel** : oui ;
+- **creation / edition** : non ;
+- **publication / synchronisation provider** : non ;
+- **regles d'eligibilite automatiques** : non.
+
+Les questions ouvertes sur les canaux supportes, l'eligibilite et la relation
+avec `integrations` restent donc entieres pour les increments suivants.
+
+---
+
 ## Documents liés
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`

@@ -361,6 +361,43 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Decisions d'implementation
+
+### Cadrage 2026-06-14 (cf. `docs/lots/2026-06-14-platform-integrations-cadrage.md`)
+
+- **Point d'entree admin** : page discrète `/admin/settings/integrations`,
+  reliee au `FeatureFlag` actif dans `/admin/settings/advanced`.
+- **Perimetre du lot** : seed `FeatureFlag`, gating et lecture admin seule de
+  `Integration`, `IntegrationCredential` et `IntegrationSyncState`.
+- **Secrets** : seules les metadonnees redacées (`secretPrefix`, `valueHint`)
+  peuvent etre lues ; aucun `secretHash` ni secret brut n'est expose.
+- **Frontiere `webhooks`** : constatee comme ouverte et explicitement laissee
+  hors lot.
+
+### Bilan d'execution (2026-06-14)
+
+Premier increment runnable livre :
+
+- seed `FeatureFlag` DRAFT via `prisma/seed/integrations-feature-flag.seed.ts` ;
+- query de gating `isIntegrationsFeatureActive()` ;
+- lecture admin `getAdminIntegrationsSnapshot()` :
+  compteurs + dernieres integrations + credentials redacts + sync states ;
+- page `/admin/settings/integrations` ;
+- lien « Reglages » ajoute depuis `/admin/settings/advanced` quand la feature est active.
+
+Etat reel apres lot :
+
+- **lecture admin du referentiel** : oui ;
+- **exposition des secrets** : non ;
+- **actions operatoires** : non ;
+- **adaptateurs provider** : non ;
+- **frontiere webhooks** : toujours ouverte.
+
+Les questions ouvertes sur `webhooks`, les contrats et les strategies de retry
+restent donc entieres pour les increments suivants.
+
+---
+
 ## Documents liés
 
 - `../../../architecture/30-execution/32-integrations-et-adaptateurs-fournisseurs.md`

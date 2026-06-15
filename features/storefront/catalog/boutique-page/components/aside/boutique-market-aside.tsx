@@ -2,15 +2,20 @@ import { ArrowRightIcon, CalendarIcon } from "lucide-react";
 
 import { CustomButton, CustomLink } from "@/components/shared";
 
-import { boutiqueCopyConfig } from "../../config/boutique-copy.config";
-
-const asideCopy = boutiqueCopyConfig.marketAside;
+import { boutiqueCopyConfig, type BoutiquePageCopy } from "../../config/boutique-copy.config";
 
 // Classes partagées localement — text-[0.65rem] = taille label eyebrow compact, pas d'alias Tailwind exact.
 const labelClass = "m-0 text-[0.65rem] font-semibold uppercase tracking-widest text-brand/80";
 const eventDateClass = "m-0 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-brand";
 
-export function BoutiqueMarketAside() {
+type BoutiqueMarketAsideProps = {
+  /** Copy aside marchés localisé — défaut : config fr. `events` reste hors catalogue (fr uniquement). */
+  copy?: BoutiquePageCopy["marketAside"];
+};
+
+export function BoutiqueMarketAside({ copy = boutiqueCopyConfig.marketAside }: BoutiqueMarketAsideProps) {
+  const asideCopy = copy;
+
   return (
     <aside
       aria-label={asideCopy.ariaLabel}

@@ -80,6 +80,7 @@ function mapAdminProductVariants(
         reservedQuantity,
         availableQuantity: onHandQuantity - reservedQuantity,
         hasInventoryRecord: inventoryItem !== null,
+        lowStockThreshold: inventoryItem?.lowStockThreshold ?? null,
       },
       optionValues: [...variant.optionValues]
         .sort((left, right) => {

@@ -1,39 +1,31 @@
 /**
- * Copy éditorial de la page boutique (Horizon 4 — lot R1).
+ * Copy éditorial de la page boutique (Horizon 4 — lot R1 ; convention copy
+ * unifiée — généralisation `LocalizedValue`, pilote n°3 après `homepage` et
+ * `product-page`).
  *
- * Textes de marque extraits des composants : les composants consomment cette
- * configuration, le clone change le contenu ici. Locale par défaut en vue de
- * l'option `localization`.
+ * Cette config est le CONTRAT consommé par les composants (forme et clés du
+ * copy ; valeurs par défaut éditoriales). Son CONTENU est résolu par locale
+ * via `entities/languages/<locale>/boutique-page/`.
+ *
+ * Aujourd'hui une seule locale est servie (la locale par défaut, fr) : la
+ * résolution est constante, mais suit déjà le chemin qu'empruntera une
+ * future locale secondaire à l'activation du niveau `multilingual` de
+ * `platform.localization` — aucun second remaniement des composants.
  */
-export const boutiqueCopyConfig = {
-  header: {
-    /** Eyebrow par défaut (sans catégorie active). */
-    defaultEyebrow: "Créations uniques, faites main à Saint-Étienne",
-    /** Préfixe d'eyebrow quand une catégorie est active. */
-    categoryEyebrowPrefix: "Sélection",
-    intro:
-      "Chaque pièce est imaginée et cousue à la main dans mon atelier stéphanois avec passion, exigence et engagement.",
-  },
+import { resolveLocaleContent } from "@/entities/languages/resolve-locale-content";
+import { BOUTIQUE_PAGE_COPY_FR } from "@/entities/languages/fr/boutique-page/boutique-page-copy_fr";
 
-  engagements: {
-    ariaLabel: "Engagements Creatyss",
-  },
+export type BoutiquePageCopy = typeof BOUTIQUE_PAGE_COPY_FR;
 
-  marketAside: {
-    ariaLabel: "Informations atelier Creatyss",
-    label: "L'atelier Creatyss",
-    title: "Prochains marchés",
-    // Données éditoriales marchés — à remplacer par une source CMS quand disponible.
-    events: [
-      { dateLabel: "Date à confirmer", name: "Marché de créateurs", location: "Saint-Étienne" },
-      { dateLabel: "Calendrier à venir", name: "Marché artisanal", location: "Loire" },
-    ],
-    ctaLabel: "Voir les marchés",
-    uniqueBlock: {
-      title: "Créations faites main en pièce unique",
-      body: "Chaque sac est imaginé et cousu à la main dans mon atelier stéphanois, en pièce unique.",
-    },
-  },
-} as const;
+export type BoutiqueMarketEvent = BoutiquePageCopy["marketAside"]["events"][number];
 
-export type BoutiqueMarketEvent = (typeof boutiqueCopyConfig.marketAside.events)[number];
+const BOUTIQUE_PAGE_COPY_DEFAULT_LOCALE = "fr";
+
+const boutiquePageCopyDictionaries: Readonly<Record<string, BoutiquePageCopy>> = {
+  fr: BOUTIQUE_PAGE_COPY_FR,
+};
+
+export const boutiqueCopyConfig: BoutiquePageCopy = resolveLocaleContent({
+  dictionaries: boutiquePageCopyDictionaries,
+  defaultLocaleCode: BOUTIQUE_PAGE_COPY_DEFAULT_LOCALE,
+});

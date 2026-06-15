@@ -27,7 +27,7 @@ const TAB_LINKS = [
     key: "translations" as const,
     href: "/admin/settings/advanced/optional/localization/translations",
     label: "Traductions",
-    description: "Contenus traduits (accueil, fiche produit).",
+    description: "Contenus traduits (accueil, fiche produit, page boutique).",
     icon: Languages,
   },
 ] as const;

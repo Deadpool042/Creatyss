@@ -13,6 +13,9 @@ import {
   type AdminOrderDocumentSummary,
 } from "@/features/admin/commerce/documents/types/admin-order-document.types";
 import { createOrderConfirmationAction } from "@/features/admin/commerce/documents/actions/create-order-confirmation-action";
+import { createDeliveryNoteAction } from "@/features/admin/commerce/documents/actions/create-delivery-note-action";
+import { issueInvoiceAction } from "@/features/admin/commerce/documents/actions/issue-invoice-action";
+import { issueCreditNoteAction } from "@/features/admin/commerce/documents/actions/issue-credit-note-action";
 
 const documentDateFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "2-digit",
@@ -33,6 +36,33 @@ function hasActiveOrderConfirmation(documents: AdminOrderDocumentSummary[]): boo
   );
 }
 
+function hasActiveDeliveryNote(documents: AdminOrderDocumentSummary[]): boolean {
+  return documents.some(
+    (doc) =>
+      doc.typeCode === "DELIVERY_NOTE" &&
+      doc.status !== "CANCELLED" &&
+      doc.status !== "ARCHIVED"
+  );
+}
+
+function hasActiveInvoice(documents: AdminOrderDocumentSummary[]): boolean {
+  return documents.some(
+    (doc) =>
+      doc.typeCode === "INVOICE" &&
+      doc.status !== "CANCELLED" &&
+      doc.status !== "ARCHIVED"
+  );
+}
+
+function hasActiveCreditNote(documents: AdminOrderDocumentSummary[]): boolean {
+  return documents.some(
+    (doc) =>
+      doc.typeCode === "CREDIT_NOTE" &&
+      doc.status !== "CANCELLED" &&
+      doc.status !== "ARCHIVED"
+  );
+}
+
 type OrderDetailDocumentsCardProps = Readonly<{
   documents: AdminOrderDocumentSummary[];
   orderId: string;
@@ -45,7 +75,32 @@ export function OrderDetailDocumentsCard({ documents, orderId }: OrderDetailDocu
     null
   );
 
+  const [isDeliveryNotePending, startDeliveryNoteTransition] = useTransition();
+  const [deliveryNoteGenerated, setDeliveryNoteGenerated] = useState(false);
+  const [deliveryNoteFeedback, setDeliveryNoteFeedback] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  const [isInvoicePending, startInvoiceTransition] = useTransition();
+  const [invoiceGenerated, setInvoiceGenerated] = useState(false);
+  const [invoiceFeedback, setInvoiceFeedback] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  const [isCreditNotePending, startCreditNoteTransition] = useTransition();
+  const [creditNoteGenerated, setCreditNoteGenerated] = useState(false);
+  const [creditNoteFeedback, setCreditNoteFeedback] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
   const confirmationAlreadyExists = generated || hasActiveOrderConfirmation(documents);
+  const deliveryNoteAlreadyExists =
+    deliveryNoteGenerated || hasActiveDeliveryNote(documents);
+  const invoiceAlreadyExists = invoiceGenerated || hasActiveInvoice(documents);
+  const creditNoteAlreadyExists = creditNoteGenerated || hasActiveCreditNote(documents);
 
   function handleGenerateConfirmation(): void {
     setFeedback(null);
@@ -59,6 +114,48 @@ export function OrderDetailDocumentsCard({ documents, orderId }: OrderDetailDocu
         });
       } else {
         setFeedback({ type: "error", message: result.error });
+      }
+    });
+  }
+
+  function handleGenerateDeliveryNote(): void {
+    setDeliveryNoteFeedback(null);
+    startDeliveryNoteTransition(async () => {
+      const result = await createDeliveryNoteAction(orderId);
+      if (result.success) {
+        setDeliveryNoteGenerated(true);
+        setDeliveryNoteFeedback({
+          type: "success",
+          message: "Bon de préparation généré avec succès.",
+        });
+      } else {
+        setDeliveryNoteFeedback({ type: "error", message: result.error });
+      }
+    });
+  }
+
+  function handleIssueInvoice(): void {
+    setInvoiceFeedback(null);
+    startInvoiceTransition(async () => {
+      const result = await issueInvoiceAction(orderId);
+      if (result.success) {
+        setInvoiceGenerated(true);
+        setInvoiceFeedback({ type: "success", message: "Facture émise avec succès." });
+      } else {
+        setInvoiceFeedback({ type: "error", message: result.error });
+      }
+    });
+  }
+
+  function handleIssueCreditNote(): void {
+    setCreditNoteFeedback(null);
+    startCreditNoteTransition(async () => {
+      const result = await issueCreditNoteAction(orderId);
+      if (result.success) {
+        setCreditNoteGenerated(true);
+        setCreditNoteFeedback({ type: "success", message: "Avoir émis avec succès." });
+      } else {
+        setCreditNoteFeedback({ type: "error", message: result.error });
       }
     });
   }
@@ -110,6 +207,15 @@ export function OrderDetailDocumentsCard({ documents, orderId }: OrderDetailDocu
                   ? `Émis le ${formatDocumentDate(doc.issuedAt)}`
                   : `Créé le ${formatDocumentDate(doc.createdAt)}`}
               </p>
+
+              <a
+                href={`/admin/commerce/documents/${doc.id}/pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card-meta w-fit leading-snug font-medium text-primary/80 hover:text-primary"
+              >
+                Télécharger le PDF
+              </a>
             </li>
           ))}
         </ol>
@@ -139,8 +245,81 @@ export function OrderDetailDocumentsCard({ documents, orderId }: OrderDetailDocu
           </p>
         ) : null}
 
+        {deliveryNoteAlreadyExists ? (
+          <p className="card-meta leading-snug text-text-muted-strong">
+            Bon de préparation déjà généré
+          </p>
+        ) : (
+          <button
+            type="button"
+            onClick={handleGenerateDeliveryNote}
+            disabled={isDeliveryNotePending}
+            className="w-fit rounded-lg border border-surface-border bg-surface-panel px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-interactive-hover disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isDeliveryNotePending ? "Génération en cours…" : "Générer le bon de préparation"}
+          </button>
+        )}
+
+        {deliveryNoteFeedback !== null ? (
+          <p
+            className={`card-meta leading-snug ${
+              deliveryNoteFeedback.type === "success" ? "text-text-success" : "text-text-alert"
+            }`}
+          >
+            {deliveryNoteFeedback.message}
+          </p>
+        ) : null}
+
+        {invoiceAlreadyExists ? (
+          <p className="card-meta leading-snug text-text-muted-strong">Facture déjà émise</p>
+        ) : (
+          <button
+            type="button"
+            onClick={handleIssueInvoice}
+            disabled={isInvoicePending}
+            className="w-fit rounded-lg border border-surface-border bg-surface-panel px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-interactive-hover disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isInvoicePending ? "Émission en cours…" : "Émettre la facture"}
+          </button>
+        )}
+
+        {invoiceFeedback !== null ? (
+          <p
+            className={`card-meta leading-snug ${
+              invoiceFeedback.type === "success" ? "text-text-success" : "text-text-alert"
+            }`}
+          >
+            {invoiceFeedback.message}
+          </p>
+        ) : null}
+
+        {invoiceAlreadyExists ? (
+          creditNoteAlreadyExists ? (
+            <p className="card-meta leading-snug text-text-muted-strong">Avoir déjà émis</p>
+          ) : (
+            <button
+              type="button"
+              onClick={handleIssueCreditNote}
+              disabled={isCreditNotePending}
+              className="w-fit rounded-lg border border-surface-border bg-surface-panel px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-interactive-hover disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isCreditNotePending ? "Émission en cours…" : "Émettre un avoir"}
+            </button>
+          )
+        ) : null}
+
+        {creditNoteFeedback !== null ? (
+          <p
+            className={`card-meta leading-snug ${
+              creditNoteFeedback.type === "success" ? "text-text-success" : "text-text-alert"
+            }`}
+          >
+            {creditNoteFeedback.message}
+          </p>
+        ) : null}
+
         <p className="card-meta leading-snug text-text-muted-strong/70">
-          La génération PDF sera disponible prochainement.
+          La facture électronique (Factur-X) sera disponible ultérieurement.
         </p>
       </div>
     </AdminSplitDetailSectionCard>

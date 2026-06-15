@@ -9,15 +9,17 @@ import { BoutiquePagination } from "./products/boutique-pagination";
 import { BoutiqueProductGrid } from "./products/boutique-product-grid";
 import { BoutiqueSidebar } from "./sidebar/boutique-sidebar";
 import { BOUTIQUE_REASSURANCE_ITEMS } from "../data/boutique-reassurance-items";
-import { boutiqueCopyConfig } from "../config/boutique-copy.config";
+import { boutiqueCopyConfig, type BoutiquePageCopy } from "../config/boutique-copy.config";
 import type { BoutiquePageViewModel } from "../types";
 
 type BoutiquePageProps = {
   model: BoutiquePageViewModel;
   initialFavoriteProductIds: readonly string[];
+  /** Copy page boutique localisé — défaut : config fr. */
+  copy?: BoutiquePageCopy;
 };
 
-export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageProps) {
+export function BoutiquePage({ model, initialFavoriteProductIds, copy = boutiqueCopyConfig }: BoutiquePageProps) {
   const hasActiveFilters = model.activeFilterLabels.length > 0;
 
   const hasDiscoveryBlockingFilter =
@@ -44,6 +46,7 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
       <BoutiquePageHeader
         productCountLabel={productCountLabel}
         activeCategoryName={activeCategoryName}
+        copy={copy.header}
       />
 
       <div
@@ -82,11 +85,11 @@ export function BoutiquePage({ model, initialFavoriteProductIds }: BoutiquePageP
           )}
         </main>
 
-        <BoutiqueMarketAside />
+        <BoutiqueMarketAside copy={copy.marketAside} />
       </div>
 
       <section
-        aria-label={boutiqueCopyConfig.engagements.ariaLabel}
+        aria-label={copy.engagements.ariaLabel}
         className="border-y border-surface-border-subtle bg-background-secondary py-3 tablet:py-3.5"
       >
         <ul className="m-0 list-none p-0 px-4 tablet:px-6 laptop:px-0 laptop:w-[min(100%-2rem,82rem)] laptop:mx-auto wide:w-[min(100%-4rem,106rem)] grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-4 desktop:gap-0 desktop:divide-x desktop:divide-surface-border-subtle desktop:*:px-4 desktop:[&>*:first-child]:pl-0 desktop:[&>*:last-child]:pr-0">
