@@ -27,6 +27,7 @@ import { seedSearchFeatureFlag } from "./seed/search-feature-flag.seed";
 import { seedTaxationFeatureFlag } from "./seed/taxation-feature-flag.seed";
 import { seedTaxRules } from "./seed/tax-rules.seed";
 import { seedWebhooksFeatureFlag } from "./seed/webhooks-feature-flag.seed";
+import { seedCustomers } from "./seed/customers.seed";
 
 const prisma = createScriptPrismaClient();
 
@@ -60,6 +61,7 @@ async function main(): Promise<void> {
   await seedLocalizationFeatureFlag(prisma);
   await seedLocalizationLocales(prisma);
   await seedLegalPages(prisma, store.id);
+  await seedCustomers(prisma, store.id);
 
   const pagesCount = await prisma.page.count({ where: { storeId: store.id } });
   console.info(`Seed OK — store ${store.id} (${store.code}), pages en base : ${pagesCount}`);
