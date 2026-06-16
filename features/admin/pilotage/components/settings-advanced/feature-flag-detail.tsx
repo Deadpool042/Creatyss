@@ -106,25 +106,77 @@ function resolveContextualLinks(
   _level: string | null
 ): ContextualLink[] {
   switch (key) {
+    // Platform — optional
     case "platform.localization":
       return [
         { label: "Réglages", href: "/admin/settings/advanced/optional/localization/settings" },
         { label: "Traductions", href: "/admin/settings/advanced/optional/localization/translations" },
       ];
     case "platform.notifications":
-      return [{ label: "Réglages", href: "/admin/settings/notifications" }];
+      return [{ label: "Notifications", href: "/admin/settings/notifications" }];
     case "platform.integrations":
-      return [{ label: "Réglages", href: "/admin/settings/integrations" }];
+      return [{ label: "Intégrations", href: "/admin/settings/integrations" }];
     case "platform.webhooks":
-      return [{ label: "Réglages", href: "/admin/settings/webhooks" }];
+      return [{ label: "Webhooks", href: "/admin/settings/webhooks" }];
+    // Satellite
     case "satellite.search":
-      return [{ label: "Réglages", href: "/admin/settings/search" }];
+      return [{ label: "Recherche", href: "/admin/settings/search" }];
     case "satellite.channels":
-      return [{ label: "Réglages", href: "/admin/settings/channels" }];
+      return [{ label: "Canaux", href: "/admin/settings/channels" }];
+    // AI
     case "ai.core":
-      return [{ label: "Réglages", href: "/admin/settings/ai" }];
+      return [{ label: "Réglages IA", href: "/admin/settings/ai" }];
+    // Commerce
+    case "commerce.fulfillment":
+      return [{ label: "Commandes", href: "/admin/commerce/orders" }];
+    case "commerce.documents":
+      return [{ label: "Documents", href: "/admin/commerce/documents" }];
     case "commerce.taxation":
-      return [{ label: "Réglages", href: "/admin/commerce/taxation" }];
+      return [{ label: "Fiscalité", href: "/admin/commerce/taxation" }];
+    case "commerce.payments":
+      return [{ label: "Paiements", href: "/admin/commerce/payments" }];
+    case "commerce.shipping":
+      return [{ label: "Livraison", href: "/admin/settings/shipping" }];
+    case "commerce.discounts":
+      return [{ label: "Remises", href: "/admin/marketing/discounts" }];
+    // Engagement
+    case "engagement.newsletter":
+      return [{ label: "Newsletter", href: "/admin/marketing/newsletter" }];
+    case "engagement.analytics":
+      return [{ label: "Analytics", href: "/admin/insights/analytics" }];
+    case "engagement.automations":
+      return [{ label: "Automations", href: "/admin/marketing/automations" }];
+    // Catalog — sections dédiées
+    case "catalog.products.pricing":
+      return [{ label: "Tarification", href: "/admin/catalog/pricing" }];
+    case "catalog.products.media":
+      return [{ label: "Médiathèque", href: "/admin/catalog/media" }];
+    case "catalog.products.categories":
+      return [{ label: "Catégories", href: "/admin/catalog/categories" }];
+    // Catalog — gestion par produit
+    case "catalog.products.inventory":
+    case "catalog.products.availability":
+    case "catalog.products.variants":
+    case "catalog.products.seo":
+    case "catalog.products.related":
+      return [{ label: "Produits", href: "/admin/catalog/products" }];
+    // Content
+    case "content.blog":
+      return [{ label: "Blog", href: "/admin/content/blog" }];
+    case "content.homepage":
+      return [{ label: "Page d'accueil", href: "/admin/content/homepage" }];
+    case "content.seo":
+      return [{ label: "SEO", href: "/admin/content/seo" }];
+    // Maintenance
+    case "maintenance.observability":
+      return [{ label: "Observabilité", href: "/admin/maintenance/observability" }];
+    case "maintenance.logs":
+      return [{ label: "Journaux", href: "/admin/maintenance/logs" }];
+    // Insights
+    case "insights.analyticsRead":
+      return [{ label: "Analytics", href: "/admin/insights/analytics" }];
+    // settings.advanced : circulaire — pas de lien
+    // commerce.returns : page inexistante — pas de lien
     default:
       return [];
   }

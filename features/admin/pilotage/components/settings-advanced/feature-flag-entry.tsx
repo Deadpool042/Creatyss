@@ -85,14 +85,10 @@ export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
   const scopeType = flag.dbState.scopeType;
   const ScopeIcon = scopeType ? (SCOPE_ICONS[scopeType] ?? Globe) : null;
 
-  const hasDetailPage =
-    flag.unmapped !== true &&
-    flag.family !== null &&
-    flag.mutability !== "readonly";
-
-  const detailHref = hasDetailPage
-    ? `/admin/settings/advanced/${flag.family}/${flagSlugFromKey(flag.key)}`
-    : null;
+  const detailHref =
+    flag.unmapped !== true && flag.family !== null
+      ? `/admin/settings/advanced/${flag.family}/${flagSlugFromKey(flag.key)}`
+      : null;
 
   return (
     <div className="flex flex-col gap-2 px-4 py-3.5 transition-colors hover:bg-surface-subtle/12 sm:flex-row sm:items-center sm:gap-3">
@@ -100,9 +96,19 @@ export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
       <div className="min-w-0 flex-1 space-y-1">
         {/* Row 1: label + mutability badge */}
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-[13px] font-medium text-foreground">
-            {flag.label}
-          </span>
+          {detailHref !== null ? (
+            <Link
+              href={detailHref}
+              className="text-[13px] font-medium text-foreground transition-colors hover:text-foreground/70 inline-flex items-center gap-0.5"
+            >
+              {flag.label}
+              <ChevronRight className="size-3 text-muted-foreground/50" />
+            </Link>
+          ) : (
+            <span className="text-[13px] font-medium text-foreground">
+              {flag.label}
+            </span>
+          )}
           {flag.mutability !== null && (
             <Badge
               variant="outline"
@@ -134,19 +140,6 @@ export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
         <div className="flex flex-wrap items-center gap-2">
           <DbStateBadge flag={flag} />
         </div>
-
-        {/* Row 5: lien réglages */}
-        {detailHref !== null && (
-          <div className="pt-0.5">
-            <Link
-              href={detailHref}
-              className="inline-flex items-center gap-0.5 text-[11px] font-medium text-muted-foreground/70 transition-colors hover:text-foreground"
-            >
-              Réglages
-              <ChevronRight className="size-3" />
-            </Link>
-          </div>
-        )}
       </div>
 
       {/* Right: scope + toggle */}
