@@ -405,14 +405,20 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ## État d'implémentation
 
-> **Chantier en pause (2026-06-13).** Lots 1-4 (managed + multilingual,
-> pilote homepage) implémentés et fonctionnels. Niveau `multilingual`
-> repassé à `managed` (override store) le temps de traiter un autre
-> chantier — sélecteur de langue storefront masqué, code et données
-> conservés. Reprise : généraliser `LocalizedValue` à d'autres contenus
-> (produits, pages, blog, catégories) sur le pattern homepage, et/ou
-> trancher les décisions du cadrage L3 (`localized-routing`, cf.
-> `docs/lots/2026-06-13-localization-l3-cadrage.md`).
+> **Lots 1-5 implémentés (2026-06-16).** Le flag `platform.localization`
+> couvre désormais les niveaux `managed`, `multilingual` et
+> `localized-routing`. Le routing localisé (lot 5 / L3) est fonctionnel :
+> `proxy.ts` (migration Next.js 16 depuis `middleware.ts`) gère les rewrites
+> et redirects de locale, le layout injecte `lang` dynamiquement et gate L3,
+> `generateMetadata` produit les alternates hreflang, `app/sitemap.ts` expose
+> les URLs localisées quand L3 est actif, et le sélecteur de langue redirige
+> vers l'URL localisée (ou non préfixée) selon l'état du flag.
+> Reste hors périmètre : migration des configs copy restantes (cf.
+> `docs/lots/2026-06-13-localization-l4-generalisation-cadrage.md`),
+> câblage multilingue de `HomepageEventsSection`.
+> Configuration Edge-safe : `core/localization/supported-locales.ts`
+> (`DEFAULT_LOCALE_CODE = "fr"`, `SECONDARY_LOCALE_CODES = ["en-GB"]`).
+> À supprimer manuellement : `git rm middleware.ts`.
 
 Référence : `docs/lots/2026-06-12-localization-l1-cadrage.md`.
 

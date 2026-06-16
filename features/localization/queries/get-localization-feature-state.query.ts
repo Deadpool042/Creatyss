@@ -1,8 +1,8 @@
 import "server-only";
 
-import { db } from "@/core/db";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { meetsRequiredLevel, resolveEffectiveLevel } from "@/entities/feature-flags/feature-level";
+import { db } from "@/core/db";
 
 /**
  * Premier guard gradué du repo (cf.

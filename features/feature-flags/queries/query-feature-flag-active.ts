@@ -2,6 +2,7 @@ import "server-only";
 
 import { db } from "@/core/db";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
+import { isOverrideActive } from "./get-feature-level-state.query";
 
 type FlagRow = {
   status: "DRAFT" | "ACTIVE" | "INACTIVE" | "ARCHIVED";
@@ -17,23 +18,21 @@ type FlagRow = {
   }>;
 };
 
-function isOverrideActive(
-  override: FlagRow["overrides"][number],
-  now: Date
-): boolean {
-  if (override.archivedAt !== null) return false;
-  if (override.startsAt !== null && override.startsAt > now) return false;
-  if (override.endsAt !== null && override.endsAt < now) return false;
-  return true;
-}
+type QueryFeatureFlagActiveOptions = {
+  storeId?: string | null;
+};
 
 /**
- * Résout l'état actif d'un feature flag pour le premier store (mono-store canonique).
- * Prend en compte les overrides STORE actifs. Les overrides USER sont ignorés
- * (utiliser readAdminProductModuleFeatureFlags pour une résolution complète).
+ * Résout l'état actif d'un feature flag pour le premier store
+ * (mono-store canonique). Prend en compte les overrides STORE actifs.
+ * Les overrides USER sont ignorés.
  */
-export async function queryFeatureFlagActive(code: string): Promise<boolean> {
-  const storeId = await getCurrentStoreId();
+export async function queryFeatureFlagActive(
+  code: string,
+  options?: QueryFeatureFlagActiveOptions
+): Promise<boolean> {
+  const storeId =
+    options && "storeId" in options ? (options.storeId ?? null) : await getCurrentStoreId();
 
   const flags: FlagRow[] = await db.featureFlag.findMany({
     where: {

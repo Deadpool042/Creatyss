@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useActionState, useMemo, useState, useTransition, type ChangeEvent, type JSX } from "react";
-import { Images, Upload } from "lucide-react";
+import { Images, Sparkles, Upload } from "lucide-react";
 
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
@@ -24,6 +25,8 @@ import {
   type AttachProductImagesResult,
   type DeleteProductImageInput,
   type DeleteProductImageResult,
+  type GenerateMissingProductImageAltTextInput,
+  type GenerateMissingProductImageAltTextResult,
   type ReorderProductImageInput,
   type ReorderProductImageResult,
   type SetProductPrimaryImageInput,
@@ -46,6 +49,9 @@ type DeleteProductImageAction = (input: DeleteProductImageInput) => Promise<Dele
 type UpdateProductImageAltTextAction = (
   input: UpdateProductImageAltTextInput
 ) => Promise<UpdateProductImageAltTextResult>;
+type GenerateMissingProductImageAltTextAction = (
+  input: GenerateMissingProductImageAltTextInput
+) => Promise<GenerateMissingProductImageAltTextResult>;
 type ReorderProductImageAction = (input: ReorderProductImageInput) => Promise<ReorderProductImageResult>;
 type AttachProductImagesAction = (input: AttachProductImagesInput) => Promise<AttachProductImagesResult>;
 
@@ -63,6 +69,7 @@ type ProductImagesTabProps = {
   uploadImagesAction?: UploadProductImagesAction;
   deleteImageAction?: DeleteProductImageAction;
   updateAltTextAction?: UpdateProductImageAltTextAction;
+  generateMissingAltTextAction?: GenerateMissingProductImageAltTextAction;
   reorderImageAction?: ReorderProductImageAction;
   attachImagesAction?: AttachProductImagesAction;
   attachLibraryOpen?: boolean;
@@ -75,6 +82,8 @@ type ProductImagesTabProps = {
    * `docs/lots/2026-06-13-inventory-media-levels-cadrage.md`, sous-lot 2).
    */
   showMediaOptimizationDiagnostics?: boolean;
+  showMediaGenerationTools?: boolean;
+  showMediaAutomationTools?: boolean;
 };
 
 type ProductImageGallerySectionProps = {
@@ -435,6 +444,7 @@ export function ProductImagesTab({
   uploadImagesAction,
   deleteImageAction,
   updateAltTextAction,
+  generateMissingAltTextAction,
   reorderImageAction,
   attachImagesAction,
   attachLibraryOpen,
@@ -442,10 +452,14 @@ export function ProductImagesTab({
   uploadFormOpen,
   onUploadFormOpenChange,
   showMediaOptimizationDiagnostics = false,
+  showMediaGenerationTools = false,
+  showMediaAutomationTools = false,
 }: ProductImagesTabProps): JSX.Element {
+  const router = useRouter();
   const [messageState, setMessageState] = useState<MessageState>(null);
   const [internalLibraryOpen, setInternalLibraryOpen] = useState(false);
   const [internalUploadFormOpen, setInternalUploadFormOpen] = useState(false);
+  const [isGeneratingAltText, startGenerateAltTextTransition] = useTransition();
 
   const effectiveLibraryOpen =
     typeof attachLibraryOpen === "boolean" ? attachLibraryOpen : internalLibraryOpen;
@@ -501,6 +515,12 @@ export function ProductImagesTab({
     [productImages]
   );
 
+  function refreshOnSuccess(result: { status: "success" | "error" }): void {
+    if (result.status === "success") {
+      router.refresh();
+    }
+  }
+
   async function handleSetPrimary(
     mediaAssetId: string
   ): Promise<{ status: "success" | "error"; message: string }> {
@@ -513,6 +533,7 @@ export function ProductImagesTab({
 
     const result = await setPrimaryImageAction({ productId, mediaAssetId });
     setMessageState(result);
+    refreshOnSuccess(result);
     return result;
   }
 
@@ -528,6 +549,7 @@ export function ProductImagesTab({
 
     const result = await deleteImageAction({ productId, imageId });
     setMessageState(result);
+    refreshOnSuccess(result);
     return result;
   }
 
@@ -544,6 +566,7 @@ export function ProductImagesTab({
 
     const result = await updateAltTextAction({ productId, imageId, altText });
     setMessageState(result);
+    refreshOnSuccess(result);
     return result;
   }
 
@@ -560,6 +583,7 @@ export function ProductImagesTab({
 
     const result = await reorderImageAction({ productId, imageId, sortOrder });
     setMessageState(result);
+    refreshOnSuccess(result);
     return result;
   }
 
@@ -590,7 +614,20 @@ export function ProductImagesTab({
     });
 
     setMessageState(result);
+    refreshOnSuccess(result);
     return result;
+  }
+
+  function handleGenerateMissingAltText(): void {
+    if (!generateMissingAltTextAction || missingAltTextCount === 0) {
+      return;
+    }
+
+    startGenerateAltTextTransition(async () => {
+      const result = await generateMissingAltTextAction({ productId });
+      setMessageState(result);
+      refreshOnSuccess(result);
+    });
   }
 
   return (
@@ -665,6 +702,44 @@ export function ProductImagesTab({
                   <div className="text-sm text-muted-foreground">
                     {productImages.length} image{productImages.length > 1 ? "s" : ""}
                   </div>
+
+                  {showMediaGenerationTools ? (
+                    <div className="rounded-xl border border-surface-border/60 bg-surface-panel px-4 py-4">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium text-foreground">
+                            Generation locale des textes alternatifs
+                          </p>
+                          <p className="text-xs leading-5 text-muted-foreground">
+                            Complete uniquement les images sans texte alternatif avec une base
+                            editoriale deterministe issue du nom produit et de l&apos;ordre de la
+                            galerie.
+                          </p>
+                        </div>
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          disabled={!generateMissingAltTextAction || missingAltTextCount === 0 || isGeneratingAltText}
+                          onClick={handleGenerateMissingAltText}
+                        >
+                          <Sparkles className="mr-2 h-4 w-4" />
+                          {isGeneratingAltText ? "Generation..." : "Generer les textes manquants"}
+                        </Button>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {showMediaAutomationTools ? (
+                    <div className="rounded-xl border border-surface-border/60 bg-surface-subtle/20 px-4 py-4">
+                      <p className="text-sm font-medium text-foreground">Automation media active</p>
+                      <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                        Les images ajoutees sans texte alternatif sont completees automatiquement a
+                        l&apos;upload et lors du rattachement depuis la mediatheque. Les textes
+                        deja renseignes ne sont jamais ecrases.
+                      </p>
+                    </div>
+                  ) : null}
 
                   <div
                     className={`grid gap-2 text-xs text-muted-foreground sm:grid-cols-3 ${showMediaOptimizationDiagnostics ? "lg:grid-cols-4" : ""}`}

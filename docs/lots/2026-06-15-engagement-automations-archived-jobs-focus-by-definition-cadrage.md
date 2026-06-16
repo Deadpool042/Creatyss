@@ -41,3 +41,22 @@ Permettre, depuis une automation archivée visible dans
   archivés correspondants ;
 - la section `Jobs archivés` explicite quand le focus automation est actif ;
 - les compteurs et états vides restent cohérents avec le focus courant.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `ArchivedAutomationRow` expose `archivedJobsHref` (« Voir les jobs archivés
+  liés » / « Focus archives jobs actif » si déjà actif) vers
+  `buildAutomationsPageHref({ archivedAutomationId: automation.id,
+  archivedStatus: selectedArchivedJobStatus, hash: "archived-jobs" })`,
+  affiché seulement si `jobActivity.total > 0`.
+- `AdminArchivedAutomationJobsSection` affiche un bloc « Filtre automation
+  archivée : `<code>` » dès que `normalizedSelectedArchivedAutomation` est
+  défini, avec lien « Retirer filtre automation archivée ».
+- `archivedJobsCountSummary` (`getArchivedJobsCountSummary`) et
+  `archivedJobsEmptyStateMessage` (`getArchivedJobsEmptyStateMessage`)
+  intègrent `selectedAutomationCode` issu du focus courant.
+
+Aucun code à écrire pour ce lot.

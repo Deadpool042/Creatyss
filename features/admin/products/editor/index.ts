@@ -126,6 +126,7 @@ export {
 
 export {
   getAdminProductEditorData,
+  getAdminProductInventoryForecast,
   listAdminProductTypeOptions,
   listAttachableMediaAssets,
   readAdminPriceLists,

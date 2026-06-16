@@ -4,11 +4,12 @@ import { notFound } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { Button } from "@/components/ui/button";
-import { meetsFeatureLevel } from "@/features/admin/pilotage/queries/get-feature-level-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import {
   attachProductImagesAction,
   deleteProductAction,
   deleteProductImageAction,
+  generateMissingProductImageAltTextsAction,
   reorderProductImageAction,
   setProductPrimaryImageAction,
   updateProductImageAltTextAction,
@@ -125,10 +126,18 @@ export default async function ProductDetailMediaPage({
     );
   }
 
-  const [imagesData, attachableMediaData, showMediaOptimizationDiagnostics] = await Promise.all([
+  const [
+    imagesData,
+    attachableMediaData,
+    showMediaOptimizationDiagnostics,
+    showMediaGenerationTools,
+    showMediaAutomationTools,
+  ] = await Promise.all([
     readAdminProductImages(product.id),
     listAttachableMediaAssets(product.id),
     meetsFeatureLevel("catalog.products.media", "optimization"),
+    meetsFeatureLevel("catalog.products.media", "generation"),
+    meetsFeatureLevel("catalog.products.media", "automation"),
   ]);
 
   if (imagesData === null) {
@@ -180,9 +189,12 @@ export default async function ProductDetailMediaPage({
           uploadImagesAction={uploadProductImagesAction}
           deleteImageAction={deleteProductImageAction}
           updateAltTextAction={updateProductImageAltTextAction}
+          generateMissingAltTextAction={generateMissingProductImageAltTextsAction}
           reorderImageAction={reorderProductImageAction}
           attachImagesAction={attachProductImagesAction}
           showMediaOptimizationDiagnostics={showMediaOptimizationDiagnostics}
+          showMediaGenerationTools={showMediaGenerationTools}
+          showMediaAutomationTools={showMediaAutomationTools}
         />
       </div>
     </AdminPageShell>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { meetsFeatureLevel } from "@/features/admin/pilotage/queries/get-feature-level-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { storefrontNewsletterSubscribeSchema } from "@/features/storefront/newsletter/schemas/storefront-newsletter-subscribe.schema";
 import { subscribeStorefrontNewsletter } from "@/features/storefront/newsletter/services/subscribe-storefront-newsletter.service";
 

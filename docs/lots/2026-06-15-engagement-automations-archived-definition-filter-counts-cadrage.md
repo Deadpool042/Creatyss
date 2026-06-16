@@ -38,3 +38,19 @@ leurs volumes connus directement dans les chips.
 - les filtres de `Automations archivées` affichent leurs volumes connus ;
 - l'opérateur distingue immédiatement la répartition de la corbeille locale ;
 - aucun comportement opératoire existant n'est modifié.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `getArchivedDefinitionsFilterLabel` (`admin-automations-archives-filters.ts`)
+  ajoute `(${count})` à chaque libellé de `ARCHIVED_DEFINITION_FILTERS`
+  (`Toutes`, `Code libéré`, `Restauration directe`) via
+  `getArchivedDefinitionsFilterCount`.
+- `AdminArchivedAutomationsSection` applique cette fonction sur chaque chip,
+  en réutilisant uniquement `archivedAutomations` déjà chargé.
+- Aucune nouvelle route, action ou query introduite ; le comportement de
+  filtrage (`matchesArchivedDefinitionFilter`) reste inchangé.
+
+Aucun code à écrire pour ce lot.

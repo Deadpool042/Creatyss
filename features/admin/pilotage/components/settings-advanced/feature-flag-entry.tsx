@@ -1,10 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { Globe, Lock, User } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { Notice } from "@/components/shared";
+import type { FeatureFlagFeedback } from "@/features/admin/pilotage/hooks/feature-flag-feedback";
 import type { AdminFeatureFlagView } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
+import { FeatureFlagLevelSelect } from "./feature-flag-level-select";
 import { FeatureFlagToggle } from "./feature-flag-toggle";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -165,6 +169,16 @@ function FeatureLinks({ flag }: { flag: AdminFeatureFlagView }) {
     );
   }
 
+  if (flag.key === "ai.core") {
+    return (
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <Link href="/admin/settings/ai" className={FEATURE_LINK_CLASS}>
+          Reglages
+        </Link>
+      </div>
+    );
+  }
+
   return null;
 }
 
@@ -173,6 +187,7 @@ function FeatureLinks({ flag }: { flag: AdminFeatureFlagView }) {
 export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
   const scopeType = flag.dbState.scopeType;
   const ScopeIcon = scopeType ? (SCOPE_ICONS[scopeType] ?? Globe) : null;
+  const [feedback, setFeedback] = useState<FeatureFlagFeedback | null>(null);
 
   return (
     <div className="flex flex-col gap-2 px-4 py-3.5 transition-colors hover:bg-surface-subtle/12 sm:flex-row sm:items-center sm:gap-3">
@@ -213,13 +228,23 @@ export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
         {/* Row 4: DB state badge + levels */}
         <div className="flex flex-wrap items-center gap-2">
           <DbStateBadge flag={flag} />
-          {flag.levels && flag.levels.length > 0 && (
-            <span className="text-[10px] text-muted-foreground/60">
-              Niveaux : {flag.levels.join(" · ")}
-            </span>
+          {flag.mutability === "level_selectable" ? (
+            <FeatureFlagLevelSelect flag={flag} onFeedback={setFeedback} />
+          ) : (
+            flag.levels &&
+            flag.levels.length > 0 && (
+              <span className="text-[10px] text-muted-foreground/60">
+                Niveaux : {flag.levels.join(" · ")}
+              </span>
+            )
           )}
         </div>
         <FeatureLinks flag={flag} />
+        {feedback !== null && (
+          <Notice tone={feedback.tone === "alert" ? "alert" : "success"}>
+            {feedback.message}
+          </Notice>
+        )}
       </div>
 
       {/* Right: scope + toggle */}
@@ -230,7 +255,7 @@ export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
             {SCOPE_LABELS[scopeType]}
           </div>
         ) : null}
-        <FeatureFlagToggle flag={flag} />
+        <FeatureFlagToggle flag={flag} onFeedback={setFeedback} />
       </div>
     </div>
   );

@@ -39,3 +39,21 @@ liée sans quitter la page.
 - un job archivé peut ouvrir sa définition archivée liée ;
 - le focus correspondant reste visible dans `Automations archivées` ;
 - les filtres déjà actifs de la page restent conservés.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `ArchivedAutomationJobRow` (`admin-archived-automation-jobs-list.tsx`)
+  affiche le code de l'automation comme `Link` vers
+  `buildAutomationsPageHref({ archivedAutomationId: job.automationId,
+  hash: "archived-automations" })` quand `job.automationId !== null`.
+- `isArchivedAutomationFocused` souligne le code et le rend non cliquable
+  visuellement (`underline`) quand le focus correspondant est déjà actif.
+- `buildAutomationsPageHref` propage `selectedAutomationId`,
+  `selectedJobStatus`, `selectedDefinitionFilter`,
+  `selectedArchivedJobStatus` et `selectedArchivedDefinitionFilter`, donc les
+  filtres actifs de la page sont conservés.
+
+Aucun code à écrire pour ce lot.

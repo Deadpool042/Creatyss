@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import type { OnFeatureFlagFeedback } from "@/features/admin/pilotage/hooks/feature-flag-feedback";
 import type { AdminFeatureFlagView } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
 import { useFeatureFlagToggle } from "@/features/admin/pilotage/hooks/use-feature-flag-toggle";
 
@@ -46,13 +47,14 @@ function ToggleButton({
 
 type FeatureFlagToggleProps = Readonly<{
   flag: AdminFeatureFlagView;
+  onFeedback?: OnFeatureFlagFeedback;
 }>;
 
 // ─── Main export — self-contained optimistic toggle ───────────────────────────
 
-export function FeatureFlagToggle({ flag }: FeatureFlagToggleProps) {
+export function FeatureFlagToggle({ flag, onFeedback }: FeatureFlagToggleProps) {
   const { isActive, canToggle, isPending, handleToggle } =
-    useFeatureFlagToggle(flag);
+    useFeatureFlagToggle(flag, onFeedback);
 
   return (
     <ToggleButton

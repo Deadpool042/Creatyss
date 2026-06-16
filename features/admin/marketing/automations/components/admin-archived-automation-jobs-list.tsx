@@ -8,7 +8,7 @@ import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { restoreAutomationJobAction } from "@/features/admin/marketing/automations/actions/restore-automation-job.action";
 import { restoreAutomationJobsBatchAction } from "@/features/admin/marketing/automations/actions/restore-automation-jobs-batch.action";
-import { ADMIN_AUTOMATIONS_PATH } from "@/features/admin/marketing/automations/shared/admin-automations-routes";
+import { buildAutomationsPageHref } from "@/features/admin/marketing/automations/shared/admin-automations-page-href";
 import {
   AUTOMATION_ACTION_LABELS,
   AUTOMATION_TRIGGER_LABELS,
@@ -48,7 +48,11 @@ const STATUS_CONFIG: Record<
   }
 > = {
   PENDING: { label: "En attente", icon: Clock, badge: "bg-surface-subtle text-muted-foreground" },
-  RUNNING: { label: "En cours", icon: Loader2, badge: "bg-sky-50/80 text-sky-700" },
+  RUNNING: {
+    label: "En cours",
+    icon: Loader2,
+    badge: "bg-feedback-info-surface/75 text-feedback-info-foreground",
+  },
   SUCCEEDED: {
     label: "Réussi",
     icon: CheckCircle2,
@@ -129,41 +133,6 @@ function getRestoreHint(job: AdminArchivedAutomationJobSummary): string {
   return "Restaurer remet ce job dans la liste active avec son état actuel.";
 }
 
-function buildArchivedAutomationHref(input: {
-  archivedAutomationId: string;
-  selectedAutomationId: string | null;
-  selectedJobStatus: AdminAutomationJobStatus | null;
-  selectedDefinitionFilter: AdminAutomationDefinitionFilter | null;
-  selectedArchivedJobStatus: AdminAutomationJobStatus | null;
-  selectedArchivedDefinitionFilter: "code-released" | "direct-restore" | null;
-}): string {
-  const params = new URLSearchParams();
-
-  if (input.selectedAutomationId) {
-    params.set("automation", input.selectedAutomationId);
-  }
-
-  if (input.selectedJobStatus) {
-    params.set("status", input.selectedJobStatus);
-  }
-
-  if (input.selectedDefinitionFilter) {
-    params.set("definition", input.selectedDefinitionFilter);
-  }
-
-  params.set("archivedAutomation", input.archivedAutomationId);
-
-  if (input.selectedArchivedJobStatus) {
-    params.set("archivedStatus", input.selectedArchivedJobStatus);
-  }
-
-  if (input.selectedArchivedDefinitionFilter) {
-    params.set("archivedDefinition", input.selectedArchivedDefinitionFilter);
-  }
-
-  return `${ADMIN_AUTOMATIONS_PATH}?${params.toString()}#archived-automations`;
-}
-
 function ArchivedAutomationJobRow({
   job,
   selectedAutomationId,
@@ -189,13 +158,14 @@ function ArchivedAutomationJobRow({
   const StatusIcon = cfg.icon;
   const archivedAutomationHref =
     job.automationId !== null
-      ? buildArchivedAutomationHref({
+      ? buildAutomationsPageHref({
+          automationId: selectedAutomationId,
+          status: selectedJobStatus,
+          definition: selectedDefinitionFilter,
           archivedAutomationId: job.automationId,
-          selectedAutomationId,
-          selectedJobStatus,
-          selectedDefinitionFilter,
-          selectedArchivedJobStatus,
-          selectedArchivedDefinitionFilter,
+          archivedStatus: selectedArchivedJobStatus,
+          archivedDefinition: selectedArchivedDefinitionFilter,
+          hash: "archived-automations",
         })
       : null;
   const isArchivedAutomationFocused =
@@ -250,12 +220,12 @@ function ArchivedAutomationJobRow({
               {job.automationCode ?? "AUTOMATION"}
             </span>
           )}
-          <span className="rounded-full border border-surface-border/60 bg-surface-subtle/20 px-2 py-0.5 font-mono text-[10px] text-muted-foreground/80">
+          <span className="rounded-full border border-surface-border/60 bg-surface-subtle/20 px-2 py-0.5 font-mono text-xs text-muted-foreground/80">
             Job {getJobShortId(job.id)}
           </span>
           <span
             className={cn(
-              "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium",
+              "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium",
               cfg.badge
             )}
           >
@@ -276,12 +246,12 @@ function ArchivedAutomationJobRow({
             <span>Planification immédiate</span>
           )}
         </div>
-        <p className="text-[11px] text-muted-foreground/70">{getRestoreHint(job)}</p>
+        <p className="text-xs text-muted-foreground/70">{getRestoreHint(job)}</p>
         {job.errorMessage ? (
-          <p className="text-[11px] text-muted-foreground/70">Dernier message: {job.errorMessage}</p>
+          <p className="text-xs text-muted-foreground/70">Dernier message: {job.errorMessage}</p>
         ) : null}
-        {message ? <p className="text-[11px] text-feedback-success-foreground">{message}</p> : null}
-        {error ? <p className="text-[11px] text-feedback-error-foreground">{error}</p> : null}
+        {message ? <p className="text-xs text-feedback-success-foreground">{message}</p> : null}
+        {error ? <p className="text-xs text-feedback-error-foreground">{error}</p> : null}
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <Button type="button" variant="outline" size="sm" disabled={isPending} onClick={handleRestore}>

@@ -43,12 +43,82 @@ type AttachProductImageInput = {
 
 type AttachProductImagesServiceInput = {
   images: readonly AttachProductImageInput[];
+  autoGenerateMissingAltText?: boolean;
 };
+
+type ProductImageAltGenerationExecutor = Parameters<typeof withTransaction>[0] extends (
+  executor: infer T
+) => Promise<unknown>
+  ? T
+  : never;
+
+async function generateMissingAltTextForProductAssetIds(
+  executor: ProductImageAltGenerationExecutor,
+  input: {
+    productId: string;
+    productName: string;
+    assetIds: readonly string[];
+  }
+): Promise<number> {
+  if (input.assetIds.length === 0) {
+    return 0;
+  }
+
+  const targetAssetIds = new Set(input.assetIds);
+  const productImages = await executor.mediaReference.findMany({
+    where: {
+      archivedAt: null,
+      subjectType: MediaReferenceSubjectType.PRODUCT,
+      subjectId: input.productId,
+    },
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+    select: {
+      assetId: true,
+      asset: {
+        select: {
+          id: true,
+          altText: true,
+        },
+      },
+    },
+  });
+
+  let generatedCount = 0;
+
+  for (const [index, image] of productImages.entries()) {
+    if (!targetAssetIds.has(image.assetId)) {
+      continue;
+    }
+
+    if (image.asset.altText && image.asset.altText.trim().length > 0) {
+      continue;
+    }
+
+    await executor.mediaAsset.update({
+      where: {
+        id: image.asset.id,
+      },
+      data: {
+        altText: buildGeneratedAltText({
+          productName: input.productName,
+          imageIndex: index,
+          totalImages: productImages.length,
+        }),
+      },
+    });
+
+    generatedCount += 1;
+  }
+
+  return generatedCount;
+}
 
 export async function attachProductImages(
   input: AttachProductImagesServiceInput
-): Promise<{ count: number }> {
+): Promise<{ count: number; generatedCount: number }> {
   return withTransaction(async (tx) => {
+    const productIds = [...new Set(input.images.map((image) => image.productId))];
+
     for (const image of input.images) {
       await assertProductExists(tx, image.productId);
       await assertMediaAssetExists(tx, image.mediaAssetId);
@@ -72,8 +142,37 @@ export async function attachProductImages(
       });
     }
 
+    let generatedCount = 0;
+
+    if (input.autoGenerateMissingAltText) {
+      for (const productId of productIds) {
+        const product = await tx.product.findFirst({
+          where: {
+            id: productId,
+            archivedAt: null,
+          },
+          select: {
+            name: true,
+          },
+        });
+
+        if (product === null) {
+          throw new AdminProductEditorServiceError("product_missing");
+        }
+
+        generatedCount += await generateMissingAltTextForProductAssetIds(tx, {
+          productId,
+          productName: product.name,
+          assetIds: input.images
+            .filter((image) => image.productId === productId)
+            .map((image) => image.mediaAssetId),
+        });
+      }
+    }
+
     return {
       count: input.images.length,
+      generatedCount,
     };
   });
 }
@@ -272,6 +371,72 @@ export async function updateProductImageAltText(
 }
 
 // ---------------------------------------------------------------------------
+// generateMissingProductImageAltTexts
+// ---------------------------------------------------------------------------
+
+type GenerateMissingProductImageAltTextsServiceInput = {
+  productId: string;
+};
+
+function buildGeneratedAltText(input: {
+  productName: string;
+  imageIndex: number;
+  totalImages: number;
+}): string {
+  const productName = input.productName.trim();
+
+  if (input.totalImages <= 1) {
+    return productName;
+  }
+
+  if (input.imageIndex === 0) {
+    return `${productName} - vue principale`;
+  }
+
+  return `${productName} - vue ${input.imageIndex + 1}`;
+}
+
+export async function generateMissingProductImageAltTexts(
+  input: GenerateMissingProductImageAltTextsServiceInput
+): Promise<{ count: number }> {
+  return withTransaction(async (tx) => {
+    const product = await tx.product.findFirst({
+      where: {
+        id: input.productId,
+        archivedAt: null,
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    if (product === null) {
+      throw new AdminProductEditorServiceError("product_missing");
+    }
+
+    return {
+      count: await generateMissingAltTextForProductAssetIds(tx, {
+        productId: input.productId,
+        productName: product.name,
+        assetIds: (
+          await tx.mediaReference.findMany({
+            where: {
+              archivedAt: null,
+              subjectType: MediaReferenceSubjectType.PRODUCT,
+              subjectId: input.productId,
+            },
+            select: {
+              assetId: true,
+            },
+          })
+        ).map((image) => image.assetId),
+      }),
+    };
+  });
+}
+
+// ---------------------------------------------------------------------------
 // uploadProductImages
 // ---------------------------------------------------------------------------
 
@@ -284,6 +449,7 @@ type UploadProductImagesServiceInput = {
   altText: string;
   makePrimary: boolean;
   files: readonly File[];
+  autoGenerateMissingAltText?: boolean;
 };
 
 function normalizeOriginalFilename(name: string): string {
@@ -299,12 +465,12 @@ function normalizeBaseName(name: string): string {
 
 export async function uploadProductImages(
   input: UploadProductImagesServiceInput
-): Promise<{ count: number }> {
+): Promise<{ count: number; generatedCount: number }> {
   // 1. Verify product exists and retrieve slug for upload path construction.
   //    Done outside the transaction so file I/O can use the slug before the tx opens.
   const product = await db.product.findFirst({
     where: { id: input.productId, archivedAt: null },
-    select: { id: true, slug: true },
+    select: { id: true, slug: true, name: true },
   });
 
   if (product === null) {
@@ -396,7 +562,19 @@ export async function uploadProductImages(
         }
       }
 
-      return { count: savedImages.length };
+      const generatedCount =
+        input.autoGenerateMissingAltText && altTextValue === null
+          ? await generateMissingAltTextForProductAssetIds(tx, {
+              productId: input.productId,
+              productName: product.name,
+              assetIds: createdAssetIds,
+            })
+          : 0;
+
+      return {
+        count: savedImages.length,
+        generatedCount,
+      };
     });
   } catch (error) {
     // 5. Clean up saved files if the transaction failed.

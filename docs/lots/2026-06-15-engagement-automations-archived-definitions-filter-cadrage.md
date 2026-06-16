@@ -44,3 +44,25 @@ Permettre, dans la section locale des automations archivées de
 - la section explicite le volume visible vs total ;
 - la section explicite aussi quand le vide vient du filtre actif ;
 - un lien permet de retirer ce filtre sans perdre les autres contextes de page.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `ARCHIVED_DEFINITION_FILTERS` (`Toutes` / `Code libéré` /
+  `Restauration directe`) + `matchesArchivedDefinitionFilter` filtrent
+  `archivedAutomations` selon `restoreOriginalAutomationCode` (code libéré ou
+  non).
+- `getArchivedDefinitionsCountSummary` explicite « N visibles sur M pour le
+  filtre `<label>` » ; `getArchivedDefinitionsEmptyStateMessage` adapte le
+  message vide par filtre.
+- `AdminArchivedAutomationsSection` affiche un bloc « Filtre automations
+  archivées : `<label>` » avec lien « Retirer filtre automations archivées »
+  vers `buildAutomationsPageHref({ ..., archivedDefinition: undefined,
+  hash: "archived-automations" })`, conservant les autres paramètres de page.
+- La restauration simple (`restoreAutomationAction`) et batch
+  (`restoreAutomationsBatchAction`) opèrent sur `filteredArchivedAutomations`
+  (la liste visible).
+
+Aucun code à écrire pour ce lot.

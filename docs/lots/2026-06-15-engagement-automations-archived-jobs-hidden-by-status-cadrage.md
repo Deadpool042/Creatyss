@@ -41,3 +41,24 @@ ses jobs.
   dans le statut choisi, la section l'explicite ;
 - l'opérateur peut retirer le filtre statut sans perdre le focus automation ;
 - la zone ne reste plus silencieusement vide dans ce cas précis.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `page.tsx` calcule `isArchivedJobsStatusMaskingFocusedAutomation`
+  (`normalizedSelectedArchivedAutomation !== null &&
+  selectedArchivedJobStatus !== null && jobActivity.total > 0 &&
+  getArchivedAutomationStatusCount(automation, selectedArchivedJobStatus)
+  === 0`).
+- `AdminArchivedAutomationJobsSection` affiche alors un message « L'automation
+  `<code>` a bien des jobs archivés, mais aucun pour le statut `<label>`. »
+  avec un lien « Retirer filtre archives jobs ».
+- Ce lien pointe vers `buildAutomationsPageHref({ ...,
+  archivedAutomationId: normalizedSelectedArchivedAutomation.id,
+  archivedDefinition: selectedArchivedDefinitionFilter,
+  hash: "archived-jobs" })` (sans `archivedStatus`), conservant le focus
+  automation.
+
+Aucun code à écrire pour ce lot.

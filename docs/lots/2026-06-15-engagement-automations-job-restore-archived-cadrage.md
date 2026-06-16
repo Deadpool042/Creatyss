@@ -46,3 +46,26 @@ et d'en restaurer un sans ouvrir de cockpit transverse `jobs`.
 - un ancien `PENDING` supprimé revient en attente seulement si sa définition le
   permet encore ;
 - les liens et filtres canoniques existants restent inchangés.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `listAdminArchivedAutomationJobs` alimente `AdminArchivedAutomationJobsList`
+  (section `Jobs archivés`, ancre `#archived-jobs`), avec confirmation
+  opératoire (`window.confirm`) avant restauration simple ou batch.
+- `restoreAutomationJobAction` → `restoreAutomationJob` (service) : si
+  `job.status === "CANCELLED" && job.errorCode === "archived_by_admin"`, le
+  service relit `payloadJson.automationId` et ne repasse en `PENDING`
+  (`status, startedAt, finishedAt, errorCode, errorMessage, archivedAt`
+  réinitialisés) que si l'automation liée est `ACTIVE` et non archivée ;
+  sinon `archivedAt: null` seul (`unarchived_only`).
+- `restoreAutomationJobsBatchAction` itère cette même logique sur la liste
+  des jobs visibles et distingue `rearmedPendingCount` /
+  `unarchivedOnlyCount` / `failedCount`.
+- Restauration bornée à `AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE` ; route
+  canonique `/admin/marketing/automations` et tous ses paramètres/ancres
+  inchangés.
+
+Aucun code à écrire pour ce lot.

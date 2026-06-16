@@ -639,6 +639,26 @@ Cf.
 - cette lecture reste purement locale et n'ajoute aucune nouvelle colonne ;
 - elle ne modifie aucune logique d'exécution.
 
+### Exécution automatique bornée des jobs (script + cron) (2026-06-15)
+
+Cf.
+`docs/lots/2026-06-15-engagement-automations-run-jobs-script-cadrage.md`.
+
+- un script `scripts/run-automation-jobs.ts` (commande `pnpm run
+  automations:run-jobs`) sélectionne les jobs `PENDING` dus
+  (`AUTOMATION_NEWSLETTER_SUBSCRIBED`, `archivedAt: null`,
+  `scheduledAt <= now`), limités à un lot borné, et appelle pour chacun
+  l'exécuteur unitaire `executeAutomationJob` ;
+- ce script réutilise strictement le claim atomique existant
+  (PENDING → RUNNING, `count === 1`), ce qui le rend sûr à rejouer ou à
+  chevaucher ;
+- destiné à être déclenché périodiquement par un cron système sur le VPS
+  cible ; la configuration effective de ce cron reste hors périmètre (suite
+  opérationnelle, pas de code) ;
+- le cockpit manuel `/admin/marketing/automations` reste inchangé : ce script
+  est un complément, pas un remplacement ;
+- aucun nouveau modèle Prisma, aucune nouvelle route, aucun retry générique.
+
 Points d'attention persistants :
 
 - reprise manuelle ;

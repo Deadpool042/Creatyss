@@ -457,3 +457,25 @@ commerce uniquement).
 - Restent hors périmètre : pipeline de tracking de trafic, alimentation
   `AnalyticsMetric`/`AnalyticsSnapshot`, niveaux `insights`/`recommendations`,
   modèle `Return` dédié pour `commerce.returns`.
+
+### Cockpit `engagement.analytics` — niveau `insights` sur lectures commerce additionnelles (2026-06-15)
+
+Cf. `docs/lots/2026-06-15-engagement-analytics-insights-cadrage.md`.
+
+- `/admin/insights/analytics` ouvre un deuxième palier si
+  `meetsFeatureLevel("engagement.analytics", "insights")` est atteint.
+- Une nouvelle lecture dédiée
+  (`features/admin/insights/queries/get-commerce-analytics-insights.query.ts`)
+  reste bornée au commerce réel du mois courant :
+  - panier moyen confirmé ;
+  - nombre de commandes confirmées ;
+  - répartition des commandes créées ce mois par statut ;
+  - top produits du mois par revenu/volume depuis `OrderLine`.
+- Cette lecture reste :
+  - live ;
+  - non historisée ;
+  - sans écriture dans `AnalyticsMetric` / `AnalyticsSnapshot` ;
+  - sans dépendance `tracking`.
+- Le cockpit ne devient pas un moteur de recommandations :
+  le niveau `recommendations` reste hors lot et devra être traité, si ouvert,
+  avec le domaine `engagement.recommendations` comme source de vérité.

@@ -7,13 +7,16 @@ import {
 } from "@/features/storefront/catalog";
 import { getPublishedBlogPostsForSitemap } from "@/features/storefront/content/blog";
 import { getAdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
+import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
+import { SECONDARY_LOCALE_CODES } from "@/core/localization/supported-locales";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [products, blogPosts, categories, seoSettings] = await Promise.all([
+  const [products, blogPosts, categories, seoSettings, isL3Active] = await Promise.all([
     getPublishedProductsForSitemap(),
     getPublishedBlogPostsForSitemap(),
     getPublishedCategoriesForSitemap(),
     getAdminSeoSettings().catch(() => null),
+    meetsLocalizationLevel("localized-routing"),
   ]);
 
   const includeHomepage = seoSettings?.sitemapIncluded !== false;
@@ -87,5 +90,54 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-  return [...staticPages, ...productPages, ...blogPages, ...categoryPages];
+  const defaultLocaleSitemap = [...staticPages, ...productPages, ...blogPages, ...categoryPages];
+
+  if (!isL3Active) {
+    return defaultLocaleSitemap;
+  }
+
+  /**
+   * Variantes localisées — L3 `localized-routing` actif.
+   * Miroir préfixé de chaque URL pour chaque locale secondaire.
+   * Les balises hreflang sont portées par `generateMetadata` dans le layout.
+   */
+  const localizedPages: MetadataRoute.Sitemap = SECONDARY_LOCALE_CODES.flatMap((localeCode) => [
+    ...(includeHomepage
+      ? [
+          {
+            url: `${serverEnv.appUrl}/${localeCode}/`,
+            changeFrequency: "daily" as const,
+            priority: 1.0,
+          },
+        ]
+      : []),
+    {
+      url: `${serverEnv.appUrl}/${localeCode}/boutique`,
+      changeFrequency: "daily" as const,
+      priority: 0.9,
+    },
+    {
+      url: `${serverEnv.appUrl}/${localeCode}/blog`,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    },
+    ...products
+      .filter((p) => p.sitemapIncluded)
+      .map((p) => ({
+        url: `${serverEnv.appUrl}/${localeCode}/boutique/${p.slug}`,
+        lastModified: p.updatedAt,
+        changeFrequency: "weekly" as const,
+        priority: 0.8,
+      })),
+    ...blogPosts
+      .filter((p) => p.sitemapIncluded)
+      .map((p) => ({
+        url: `${serverEnv.appUrl}/${localeCode}/blog/${p.slug}`,
+        lastModified: p.updatedAt,
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+      })),
+  ]);
+
+  return [...defaultLocaleSitemap, ...localizedPages];
 }

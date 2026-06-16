@@ -12,14 +12,24 @@ import type { LocaleSelectorOption } from "@/features/localization/queries/get-l
  * Formulaire minimal : un `<select>` soumis via la server action
  * `setLocalePreferenceAction`. Soumission automatique au changement
  * (progressive : sans JS, le bouton reste disponible pour valider).
+ *
+ * Lot 5 sous-lot 3 — L3 `localized-routing` :
+ * `pathWithoutLocale` est transmis en champ hidden pour permettre à l'action
+ * de construire l'URL de destination quand le routing localisé est actif.
  */
 
 type LocaleSelectorFormProps = Readonly<{
   options: readonly LocaleSelectorOption[];
   activeLocaleCode: string;
+  /** Chemin courant sans préfixe de locale, injecté par le middleware. */
+  pathWithoutLocale?: string;
 }>;
 
-export function LocaleSelectorForm({ options, activeLocaleCode }: LocaleSelectorFormProps) {
+export function LocaleSelectorForm({
+  options,
+  activeLocaleCode,
+  pathWithoutLocale = "/",
+}: LocaleSelectorFormProps) {
   const [selectedLocaleCode, setSelectedLocaleCode] = useState(activeLocaleCode);
 
   useEffect(() => {
@@ -36,6 +46,8 @@ export function LocaleSelectorForm({ options, activeLocaleCode }: LocaleSelector
       <label className="sr-only" htmlFor="locale-selector">
         Langue
       </label>
+
+      <input type="hidden" name="pathWithoutLocale" value={pathWithoutLocale} />
 
       <select
         id="locale-selector"

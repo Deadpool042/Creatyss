@@ -17,12 +17,16 @@ import {
   ShippingMethodSelector,
   PaymentMethodSelector,
 } from "@/features/commerce/checkout";
+import { normalizeDiscountCode } from "@/features/commerce/discounts/lib/resolve-order-discount";
+import { resolveCheckoutOrderDiscount } from "@/features/commerce/discounts/queries/resolve-checkout-order-discount.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { formatCatalogMoneyFromCents } from "@/features/storefront/catalog/helpers/catalog-pricing";
 
 export const dynamic = "force-dynamic";
 
 type CheckoutPageProps = Readonly<{
   searchParams: Promise<{
+    discount?: string | string[];
     error?: string | string[];
     status?: string | string[];
   }>;
@@ -85,6 +89,8 @@ function getErrorMessage(error: string | undefined): string | null {
       return "Un article de votre panier n'est plus disponible en quantité suffisante.";
     case "create_failed":
       return "La commande n'a pas pu être créée.";
+    case "invalid_discount_code":
+      return "Le code promo n'est plus valide pour cette commande.";
     default:
       return null;
   }
@@ -112,6 +118,9 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
   const errorParam = Array.isArray(resolvedSearchParams.error)
     ? resolvedSearchParams.error[0]
     : resolvedSearchParams.error;
+  const discountParam = Array.isArray(resolvedSearchParams.discount)
+    ? resolvedSearchParams.discount[0]
+    : resolvedSearchParams.discount;
   const statusMessage = getStatusMessage(statusParam);
   const errorMessage = getErrorMessage(errorParam);
   const checkoutContext = await readCheckoutContext();
@@ -127,10 +136,23 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
   const currentShippingSelection = draft?.shippingSelection ?? null;
   const currentPaymentMethod = draft !== null ? await readCheckoutPaymentMethod() : null;
-
   const storeId = cart !== null ? await getStoreIdByCartId(cart.id) : null;
-  const subtotalCents =
-    cart !== null ? moneyStringToCents(cart.subtotal) : 0;
+  const discountRulesEnabled = await meetsFeatureLevel("commerce.discounts", "rules", { storeId });
+  const discountAutomationEnabled = await meetsFeatureLevel("commerce.discounts", "automation", {
+    storeId,
+  });
+  const normalizedDiscountCode =
+    typeof discountParam === "string" ? normalizeDiscountCode(discountParam) : "";
+  const manualDiscountCode = discountRulesEnabled ? normalizedDiscountCode : "";
+
+  const subtotalCents = cart !== null ? moneyStringToCents(cart.subtotal) : 0;
+  const resolvedDiscount =
+    cart !== null && (manualDiscountCode.length > 0 || discountAutomationEnabled)
+      ? await resolveCheckoutOrderDiscount(cart.id, subtotalCents, {
+          code: manualDiscountCode,
+          allowAutomatic: discountAutomationEnabled && manualDiscountCode.length === 0,
+        })
+      : null;
   const availableMethods =
     storeId !== null
       ? await getAvailableShippingMethods({ storeId, subtotalCents })
@@ -152,11 +174,28 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
   const totalLabel: string | null = (() => {
     if (currentShippingSelection === null) return null;
-    const totalCents = subtotalCents + currentShippingSelection.amountCents;
+    const totalCents =
+      subtotalCents +
+      currentShippingSelection.amountCents -
+      (resolvedDiscount?.amountCents ?? 0);
     return formatCatalogMoneyFromCents(totalCents, currentShippingSelection.currencyCode);
   })();
 
   const subtotalLabel = formatCatalogMoneyFromCents(subtotalCents, "EUR");
+  const discountLabel =
+    resolvedDiscount !== null
+      ? formatCatalogMoneyFromCents(
+          resolvedDiscount.amountCents,
+          currentShippingSelection?.currencyCode ?? "EUR"
+        )
+      : null;
+  const invalidDiscountMessage =
+    discountRulesEnabled &&
+    manualDiscountCode.length > 0 &&
+    resolvedDiscount === null &&
+    errorParam !== "invalid_discount_code"
+      ? "Ce code promo est invalide, inactif, expiré ou non applicable à cette commande."
+      : null;
 
   const paymentLineLabel: string = (() => {
     if (currentPaymentMethod === "bank_transfer") return "Virement bancaire";
@@ -182,6 +221,9 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         {cart ? (
           <div className="grid gap-4">
             <form className="grid gap-4 content-start" noValidate>
+              {discountRulesEnabled && manualDiscountCode.length > 0 ? (
+                <input name="discountCode" type="hidden" value={manualDiscountCode} />
+              ) : null}
               <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
                 <div className="grid gap-1">
                   <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
@@ -463,6 +505,55 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
             />
 
             <aside className="product-panel grid gap-4">
+              {discountRulesEnabled ? (
+                <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
+                  <div className="grid gap-1">
+                    <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
+                      Remise
+                    </p>
+                    <h2>Code promo</h2>
+                  </div>
+
+                  <form action="/checkout" className="grid gap-3" method="get">
+                    <div className="grid gap-2">
+                      <Label htmlFor="discount">Code promo</Label>
+                      <Input
+                        defaultValue={manualDiscountCode}
+                        id="discount"
+                        name="discount"
+                        placeholder="EXEMPLE10"
+                        type="text"
+                      />
+                    </div>
+
+                    <div className="flex flex-wrap gap-3">
+                      <Button type="submit" variant="secondary">
+                        Appliquer
+                      </Button>
+                      {manualDiscountCode.length > 0 ? (
+                        <Link
+                          className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                          href="/checkout"
+                        >
+                          Retirer le code
+                        </Link>
+                      ) : null}
+                    </div>
+                  </form>
+
+                  {resolvedDiscount !== null && discountLabel !== null ? (
+                    <Notice tone="success">
+                      {resolvedDiscount.isAutomatic
+                        ? `Remise automatique ${resolvedDiscount.name} appliquée : ${discountLabel}.`
+                        : `Code ${resolvedDiscount.code} appliqué : ${discountLabel}.`}
+                    </Notice>
+                  ) : null}
+                  {invalidDiscountMessage ? (
+                    <Notice tone="alert">{invalidDiscountMessage}</Notice>
+                  ) : null}
+                </section>
+              ) : null}
+
               <div className="grid gap-1">
                 <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                   Récapitulatif
@@ -556,6 +647,17 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </p>
                 <p className="text-sm text-muted-foreground">{shippingLineLabel}</p>
               </div>
+
+              {resolvedDiscount !== null && discountLabel !== null ? (
+                <div className="grid gap-1">
+                  <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    Remise
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {resolvedDiscount.isAutomatic ? resolvedDiscount.name : resolvedDiscount.code} - {discountLabel}
+                  </p>
+                </div>
+              ) : null}
 
               <div className="grid gap-1">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">

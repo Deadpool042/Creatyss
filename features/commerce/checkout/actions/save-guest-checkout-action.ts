@@ -7,32 +7,63 @@ import {
   upsertGuestCheckoutDetails,
 } from "@/features/commerce/cart/lib/guest-cart.repository";
 import { validateGuestCheckoutInput } from "@/entities/checkout/guest-checkout-input";
+import { normalizeDiscountCode } from "@/features/commerce/discounts/lib/resolve-order-discount";
+
+function buildCheckoutRedirectHref(input: {
+  error?: string;
+  status?: string;
+  discountCode?: string | null;
+}): string {
+  const params = new URLSearchParams();
+
+  if (input.error) {
+    params.set("error", input.error);
+  }
+
+  if (input.status) {
+    params.set("status", input.status);
+  }
+
+  const normalizedDiscountCode =
+    typeof input.discountCode === "string" ? normalizeDiscountCode(input.discountCode) : "";
+
+  if (normalizedDiscountCode.length > 0) {
+    params.set("discount", normalizedDiscountCode);
+  }
+
+  const query = params.toString();
+  return query.length > 0 ? `/checkout?${query}` : "/checkout";
+}
 
 export async function saveGuestCheckoutAction(formData: FormData): Promise<void> {
+  const discountCode =
+    typeof formData.get("discountCode") === "string"
+      ? formData.get("discountCode")?.toString() ?? ""
+      : "";
   const cartToken = await readCartSessionToken();
 
   if (cartToken === null) {
-    redirect("/checkout?error=missing_cart");
+    redirect(buildCheckoutRedirectHref({ error: "missing_cart", discountCode }));
   }
 
   const checkoutContext = await readGuestCheckoutContextByToken(cartToken);
 
   if (checkoutContext === null) {
-    redirect("/checkout?error=missing_cart");
+    redirect(buildCheckoutRedirectHref({ error: "missing_cart", discountCode }));
   }
 
   if (checkoutContext.issues.includes("empty_cart")) {
-    redirect("/checkout?error=empty_cart");
+    redirect(buildCheckoutRedirectHref({ error: "empty_cart", discountCode }));
   }
 
   if (checkoutContext.issues.includes("cart_unavailable")) {
-    redirect("/checkout?error=cart_unavailable");
+    redirect(buildCheckoutRedirectHref({ error: "cart_unavailable", discountCode }));
   }
 
   const cart = checkoutContext.cart;
 
   if (cart === null) {
-    redirect("/checkout?error=empty_cart");
+    redirect(buildCheckoutRedirectHref({ error: "empty_cart", discountCode }));
   }
 
   const validation = validateGuestCheckoutInput({
@@ -55,7 +86,7 @@ export async function saveGuestCheckoutAction(formData: FormData): Promise<void>
   });
 
   if (!validation.ok) {
-    redirect(`/checkout?error=${validation.code}`);
+    redirect(buildCheckoutRedirectHref({ error: validation.code, discountCode }));
   }
 
   try {
@@ -65,8 +96,8 @@ export async function saveGuestCheckoutAction(formData: FormData): Promise<void>
     });
   } catch (error) {
     console.error(error);
-    redirect("/checkout?error=save_failed");
+    redirect(buildCheckoutRedirectHref({ error: "save_failed", discountCode }));
   }
 
-  redirect("/checkout?status=saved");
+  redirect(buildCheckoutRedirectHref({ status: "saved", discountCode }));
 }

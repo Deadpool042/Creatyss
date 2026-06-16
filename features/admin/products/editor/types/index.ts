@@ -59,6 +59,8 @@ export type {
   AttachableMediaAssetsData,
   UpdateProductImageAltTextInput,
   UpdateProductImageAltTextResult,
+  GenerateMissingProductImageAltTextInput,
+  GenerateMissingProductImageAltTextResult,
   AttachProductImagesInput,
   AttachProductImagesResult,
   DeleteProductImageInput,

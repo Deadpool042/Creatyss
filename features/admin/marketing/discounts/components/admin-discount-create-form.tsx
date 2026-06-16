@@ -15,14 +15,29 @@ const selectClassName = cn(
 
 type DiscountType = "PERCENTAGE" | "FIXED_AMOUNT";
 
-export function AdminDiscountCreateForm() {
+type AdminDiscountCreateFormProps = {
+  automationEnabled: boolean;
+};
+
+export function AdminDiscountCreateForm({ automationEnabled }: AdminDiscountCreateFormProps) {
   const [type, setType] = useState<DiscountType>("PERCENTAGE");
 
   return (
     <form action={createDiscountAction} className="grid gap-4 sm:grid-cols-2">
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="discount-code">Code</Label>
-        <Input id="discount-code" name="code" placeholder="ETE2026" required maxLength={40} />
+        <Input
+          id="discount-code"
+          name="code"
+          placeholder={automationEnabled ? "PROMO-ETE-AUTO" : "ETE2026"}
+          required
+          maxLength={40}
+        />
+        {automationEnabled ? (
+          <p className="text-xs text-muted-foreground">
+            Référence interne unique. Une remise automatique n&apos;est pas saisie par le client.
+          </p>
+        ) : null}
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -78,8 +93,20 @@ export function AdminDiscountCreateForm() {
         </div>
       )}
 
+      {automationEnabled ? (
+        <label className="flex items-start gap-3 rounded-xl border border-surface-border/60 bg-white/70 p-3 text-sm text-foreground sm:col-span-2">
+          <input className="mt-0.5 size-4" name="isAutomatic" type="checkbox" value="true" />
+          <span>
+            Application automatique
+            <span className="block text-xs text-muted-foreground">
+              Applique cette remise automatiquement au checkout si aucun code manuel valide n&apos;est utilisé.
+            </span>
+          </span>
+        </label>
+      ) : null}
+
       <div className="sm:col-span-2">
-        <Button type="submit">Créer le code promo</Button>
+        <Button type="submit">{automationEnabled ? "Créer la remise" : "Créer le code promo"}</Button>
       </div>
     </form>
   );

@@ -42,3 +42,22 @@ définition archivée ciblée.
 - ce retrait conserve les autres filtres d'archives encore utiles ;
 - l'opérateur n'a plus besoin de passer par `Jobs archivés` pour supprimer ce
   focus précis.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `AdminArchivedAutomationsSection` affiche, quand
+  `normalizedSelectedArchivedAutomation` est non nul, un bloc « Focus
+  automation archivée : `<code>` » avec un lien « Retirer focus automation
+  archivée ».
+- Ce lien pointe vers `buildAutomationsPageHref({ ...,
+  archivedStatus: selectedArchivedJobStatus, archivedDefinition:
+  selectedArchivedDefinitionFilter, hash: "archived-automations" })`, donc
+  sans `archivedAutomationId` mais en conservant le filtre statut archivé et
+  le filtre type d'archives.
+- Le retrait reste local à `Automations archivées`, sans passer par
+  `Jobs archivés`.
+
+Aucun code à écrire pour ce lot.

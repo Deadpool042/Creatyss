@@ -109,14 +109,6 @@ function toRegExpEscaped(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function mapProductTypeToVisibleLabel(code: "simple" | "variable"): string {
-  if (code === "simple") {
-    return "Produit simple";
-  }
-
-  return "Produit à variantes";
-}
-
 function toCanonicalEditUrl(url: string): string {
   const withoutQuery = url.split("?")[0] ?? url;
   const trimmed = withoutQuery.replace(/\/$/, "");
@@ -134,7 +126,7 @@ async function completeCreateWizardIdentityStep(
 ): Promise<void> {
   const nameInput = page.locator("#new-name");
   const slugInput = page.locator("#new-slug");
-  const nextButton = page.getByRole("button", { name: "Suivant" });
+  const submitButton = page.getByRole("button", { name: "Créer la fiche produit" });
 
   await expect(nameInput).toBeVisible();
   await expect(slugInput).toBeVisible();
@@ -148,19 +140,14 @@ async function completeCreateWizardIdentityStep(
     await nameInput.pressSequentially(input.name, { delay: 12 });
 
     const slugValue = await slugInput.inputValue();
-    if (slugValue.trim().length === 0) {
-      await page.waitForTimeout(500);
-      continue;
-    }
-
-    if (await nextButton.isEnabled()) {
+    if (slugValue.trim().length > 0 && (await submitButton.isEnabled())) {
       return;
     }
 
     await page.waitForTimeout(500);
   }
 
-  await expect(nextButton).toBeEnabled({ timeout: 1_000 });
+  await expect(submitButton).toBeEnabled({ timeout: 1_000 });
 }
 
 export async function createSimpleAdminProduct(
@@ -168,37 +155,23 @@ export async function createSimpleAdminProduct(
   input: CreateSimpleAdminProductInput
 ): Promise<string> {
   await waitForAdminShell(page);
-  await gotoAdminPageWithRetry(page, "/admin/products/new");
+  await gotoAdminPageWithRetry(page, "/admin/catalog/products/new");
 
-  await expect(page.getByLabel("Nom")).toBeVisible();
-  await expect(page.getByLabel("Slug")).toBeVisible();
+  await expect(page.locator("#new-name")).toBeVisible();
+  await expect(page.locator("#new-slug")).toBeVisible();
 
   await completeCreateWizardIdentityStep(page, input);
-  await page.getByRole("button", { name: "Suivant" }).click();
-
-  const productTypeCode = input.productTypeCode ?? "simple";
-  const productTypeLabel = mapProductTypeToVisibleLabel(productTypeCode);
-  const submitButton = page.getByRole("button", { name: "Créer le produit" });
-
-  await expect(page.getByText("Étape 2 sur 2")).toBeVisible();
+  const submitButton = page.getByRole("button", { name: "Créer la fiche produit" });
   await expect(submitButton).toBeVisible();
 
   let redirectedToEditor = false;
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
-    const productTypeSelect = page.getByRole("combobox").first();
-
-    await expect(productTypeSelect).toBeVisible({ timeout: 10_000 });
-    await expect(productTypeSelect).toBeEnabled();
-
-    await productTypeSelect.click();
-    await page.getByRole("option", { name: productTypeLabel, exact: true }).click();
-
     await expect(submitButton).toBeEnabled({ timeout: 5_000 });
     await submitButton.click();
 
     try {
-      await page.waitForURL(/\/admin\/products\/[^/]+\/edit(?:\?.*)?$/, {
+      await page.waitForURL(/\/admin\/catalog\/products\/[^/]+\/edit(?:\?.*)?$/, {
         timeout: 10_000,
       });
       redirectedToEditor = true;
@@ -242,12 +215,12 @@ export async function setupAdminEditorScenario(page: Page): Promise<SeededAdminE
   return {
     relatedTargetProduct: {
       name: targetIdentity.name,
-      slug: targetIdentity.slug,
+      slug: getAdminProductSlugFromDetailUrl(relatedTargetDetailUrl),
       detailUrl: relatedTargetDetailUrl,
     },
     editorProduct: {
       name: editorIdentity.name,
-      slug: editorIdentity.slug,
+      slug: getAdminProductSlugFromDetailUrl(editorDetailUrl),
       detailUrl: editorDetailUrl,
     },
   };
@@ -264,9 +237,20 @@ export function getAdminProductDetailUrlWithoutSearch(url: string): string {
   return withoutQuery;
 }
 
+export function getAdminProductSlugFromDetailUrl(url: string): string {
+  const canonicalUrl = toCanonicalEditUrl(url);
+  const match = canonicalUrl.match(/\/admin\/catalog\/products\/([^/]+)\/edit$/);
+
+  if (!match?.[1]) {
+    throw new Error(`Impossible de resoudre le slug produit depuis l'URL: ${url}`);
+  }
+
+  return match[1];
+}
+
 export async function openAdminProductFromList(page: Page, productName: string): Promise<void> {
   await waitForAdminShell(page);
-  await gotoAdminPageWithRetry(page, "/admin/products");
+  await gotoAdminPageWithRetry(page, "/admin/catalog/products");
 
   const row = page
     .locator("tr")

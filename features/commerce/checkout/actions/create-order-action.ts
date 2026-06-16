@@ -13,32 +13,54 @@ import { validateGuestCheckoutInput } from "@/entities/checkout/guest-checkout-i
 import { sendOrderTransactionalEmail } from "@/features/email";
 import { getAvailablePaymentMethods } from "@/features/commerce/checkout/queries/get-available-payment-methods.query";
 import { getStoreIdByCartId } from "@/features/commerce/checkout/queries/get-store-id-by-cart.query";
+import { normalizeDiscountCode } from "@/features/commerce/discounts/lib/resolve-order-discount";
+
+function buildCheckoutRedirectHref(input: {
+  error: string;
+  discountCode?: string | null;
+}): string {
+  const params = new URLSearchParams();
+  params.set("error", input.error);
+
+  const normalizedDiscountCode =
+    typeof input.discountCode === "string" ? normalizeDiscountCode(input.discountCode) : "";
+
+  if (normalizedDiscountCode.length > 0) {
+    params.set("discount", normalizedDiscountCode);
+  }
+
+  return `/checkout?${params.toString()}`;
+}
 
 export async function createOrderAction(formData: FormData): Promise<void> {
+  const discountCode =
+    typeof formData.get("discountCode") === "string"
+      ? formData.get("discountCode")?.toString() ?? ""
+      : "";
   const cartToken = await readCartSessionToken();
 
   if (cartToken === null) {
-    redirect("/checkout?error=missing_cart");
+    redirect(buildCheckoutRedirectHref({ error: "missing_cart", discountCode }));
   }
 
   const checkoutContext = await readGuestCheckoutContextByToken(cartToken);
 
   if (checkoutContext === null) {
-    redirect("/checkout?error=missing_cart");
+    redirect(buildCheckoutRedirectHref({ error: "missing_cart", discountCode }));
   }
 
   if (checkoutContext.issues.includes("empty_cart")) {
-    redirect("/checkout?error=empty_cart");
+    redirect(buildCheckoutRedirectHref({ error: "empty_cart", discountCode }));
   }
 
   if (checkoutContext.issues.includes("cart_unavailable")) {
-    redirect("/checkout?error=cart_unavailable");
+    redirect(buildCheckoutRedirectHref({ error: "cart_unavailable", discountCode }));
   }
 
   const cart = checkoutContext.cart;
 
   if (cart === null) {
-    redirect("/checkout?error=empty_cart");
+    redirect(buildCheckoutRedirectHref({ error: "empty_cart", discountCode }));
   }
 
   const validation = validateGuestCheckoutInput({
@@ -61,7 +83,7 @@ export async function createOrderAction(formData: FormData): Promise<void> {
   });
 
   if (!validation.ok) {
-    redirect(`/checkout?error=${validation.code}`);
+    redirect(buildCheckoutRedirectHref({ error: validation.code, discountCode }));
   }
 
   try {
@@ -71,7 +93,7 @@ export async function createOrderAction(formData: FormData): Promise<void> {
     });
   } catch (error) {
     console.error(error);
-    redirect("/checkout?error=save_failed");
+    redirect(buildCheckoutRedirectHref({ error: "save_failed", discountCode }));
   }
 
   // Re-read the checkout context after upsert to get the persisted shipping selection.
@@ -80,13 +102,13 @@ export async function createOrderAction(formData: FormData): Promise<void> {
   const refreshedContext = await readGuestCheckoutContextByToken(cartToken);
 
   if (!refreshedContext?.draft?.shippingSelection) {
-    redirect("/checkout?error=missing_shipping_selection");
+    redirect(buildCheckoutRedirectHref({ error: "missing_shipping_selection", discountCode }));
   }
 
   const selectedPaymentMethod = await readCheckoutPaymentMethod();
 
   if (selectedPaymentMethod === null) {
-    redirect("/checkout?error=missing_payment_method");
+    redirect(buildCheckoutRedirectHref({ error: "missing_payment_method", discountCode }));
   }
 
   // Re-validate the selected payment method against the current store settings.
@@ -99,14 +121,18 @@ export async function createOrderAction(formData: FormData): Promise<void> {
 
     if (!isMethodStillAvailable) {
       await clearCheckoutPaymentMethod();
-      redirect("/checkout?error=payment_method_unavailable");
+      redirect(buildCheckoutRedirectHref({ error: "payment_method_unavailable", discountCode }));
     }
   }
 
   let orderReference: string;
 
   try {
-    const order = await createOrderFromGuestCartToken(cartToken, selectedPaymentMethod);
+    const order = await createOrderFromGuestCartToken(
+      cartToken,
+      selectedPaymentMethod,
+      discountCode
+    );
     orderReference = order.reference;
 
     try {
@@ -122,11 +148,11 @@ export async function createOrderAction(formData: FormData): Promise<void> {
     await clearCheckoutPaymentMethod();
   } catch (error) {
     if (error instanceof OrderRepositoryError) {
-      redirect(`/checkout?error=${error.code}`);
+      redirect(buildCheckoutRedirectHref({ error: error.code, discountCode }));
     }
 
     console.error(error);
-    redirect("/checkout?error=create_failed");
+    redirect(buildCheckoutRedirectHref({ error: "create_failed", discountCode }));
   }
 
   redirect(`/checkout/confirmation/${orderReference}`);

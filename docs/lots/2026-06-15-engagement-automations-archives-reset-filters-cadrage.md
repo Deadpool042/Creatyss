@@ -40,3 +40,22 @@ retirer d'un seul geste tous les filtres locaux d'archives déjà actifs.
 - ce retrait supprime le focus automation archivée, le filtre statut archivé et
   le filtre de définitions archivées ;
 - les filtres des sections non archivées restent conservés.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `page.tsx` calcule `hasActiveArchivesFilters`
+  (`normalizedSelectedArchivedAutomation !== null ||
+  selectedArchivedJobStatus !== null ||
+  selectedArchivedDefinitionFilter !== null`).
+- Quand vrai, la `section#archives` affiche un lien « Retirer tous les
+  filtres archives » vers `buildAutomationsPageHref({ automationId:
+  selectedAutomationId, status: selectedJobStatus, definition:
+  selectedDefinitionFilter, hash: "archives" })` — donc sans
+  `archivedAutomation`, `archivedStatus` ni `archivedDefinition`.
+- Les paramètres `automation`, `status` et `definition` (sections
+  non archivées) sont explicitement conservés dans ce lien.
+
+Aucun code à écrire pour ce lot.

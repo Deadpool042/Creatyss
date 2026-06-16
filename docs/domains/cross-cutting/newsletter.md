@@ -383,6 +383,49 @@ Cf.
   - réactivation explicite (`SUBSCRIBED`, horodatages nettoyés) sinon ;
 - aucune automation, aucun job ni envoi provider ne sont branchés ici.
 
+### Segmentation opératoire locale du référentiel (2026-06-15)
+
+Cf.
+`docs/lots/2026-06-15-engagement-newsletter-segmentation-cadrage.md`.
+
+- `/admin/marketing/newsletter` dépasse le simple niveau `basic` quand
+  `meetsFeatureLevel("engagement.newsletter","segmentation")` est atteint :
+  le même cockpit expose maintenant une segmentation bornée au référentiel
+  réel des abonnés.
+- La lecture admin (`listAdminNewsletterSubscribers`) accepte désormais des
+  filtres lisibles :
+  - `status`
+  - `source`
+  - `customerLink`
+  - `recency`
+- La même lecture remonte aussi les champs nécessaires à cette segmentation :
+  `customerId`, `subscribedAt`, `unsubscribedAt`, ainsi que des compteurs de
+  synthèse (abonnés, désabonnés, origine admin/storefront, abonnés liés à un
+  client, abonnements récents).
+- La page reste bornée au domaine `newsletter` :
+  - aucun `NewsletterCampaign` créé ;
+  - aucun envoi email ;
+  - aucun branchement `Behavior*` / `Crm*` ;
+  - aucune automation nouvelle.
+- La segmentation ouverte ici reste donc une **segmentation de référentiel**,
+  pas une segmentation comportementale ou CRM.
+
+### Pont réel vers `automations`, niveau `automation` (2026-06-16)
+
+Cf.
+`docs/lots/2026-06-16-engagement-newsletter-automation-cadrage.md`.
+
+- la souscription storefront reste ouverte dès le niveau `basic` ;
+- en revanche, la planification de jobs `NEWSLETTER_SUBSCRIBED` est désormais
+  explicitement gouvernée par `meetsFeatureLevel("engagement.newsletter",
+  "automation")` ;
+- le pont runtime ne s'active que si :
+  - le niveau newsletter `automation` est atteint ;
+  - `engagement.automations` est lui-même actif ;
+- `/admin/marketing/newsletter` expose aussi une lecture locale de ce pont :
+  compte d'automations actives, jobs en attente, jobs prêts, jobs échoués ;
+- aucun nouveau déclencheur ni aucune campagne n'est ajoutée dans ce lot.
+
 ## Documents liés
 
 - `consent.md`

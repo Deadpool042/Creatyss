@@ -79,10 +79,18 @@ function SubscriberRow({ subscriber }: { subscriber: AdminNewsletterSubscriberSu
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm font-semibold text-foreground">{subscriber.email}</span>
           <Badge variant={getStatusBadgeVariant(optimisticStatus)}>{getStatusLabel(optimisticStatus)}</Badge>
+          {subscriber.source ? <Badge variant="outline">{subscriber.source}</Badge> : null}
+          {subscriber.customerId ? <Badge variant="outline">Client lié</Badge> : null}
         </div>
         {displayName ? <p className="truncate text-xs text-muted-foreground">{displayName}</p> : null}
         <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
           <span>Ajouté le {dateFormatter.format(new Date(subscriber.createdAt))}</span>
+          {subscriber.subscribedAt ? (
+            <span>Abonné le {dateFormatter.format(new Date(subscriber.subscribedAt))}</span>
+          ) : null}
+          {optimisticStatus === "UNSUBSCRIBED" && subscriber.unsubscribedAt ? (
+            <span>Désabonné le {dateFormatter.format(new Date(subscriber.unsubscribedAt))}</span>
+          ) : null}
         </div>
       </div>
       <Button type="button" variant="outline" size="sm" disabled={isPending} onClick={handleToggle}>
@@ -96,7 +104,7 @@ export function AdminNewsletterSubscribersList({ subscribers }: AdminNewsletterS
   if (subscribers.length === 0) {
     return (
       <p className="py-10 text-center text-sm text-muted-foreground">
-        Aucun abonné pour le moment.
+        Aucun abonné ne correspond aux filtres actuels.
       </p>
     );
   }

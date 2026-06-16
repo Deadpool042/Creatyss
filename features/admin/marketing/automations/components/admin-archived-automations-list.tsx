@@ -13,7 +13,8 @@ import {
   AUTOMATION_ACTION_LABELS,
   AUTOMATION_TRIGGER_LABELS,
 } from "@/features/admin/marketing/automations/shared/admin-automation-options";
-import { ADMIN_AUTOMATIONS_PATH } from "@/features/admin/marketing/automations/shared/admin-automations-routes";
+import { getArchivedAutomationJobActivitySummary } from "@/features/admin/marketing/automations/shared/admin-automations-archives-filters";
+import { buildAutomationsPageHref } from "@/features/admin/marketing/automations/shared/admin-automations-page-href";
 import type {
   AdminArchivedAutomationSummary,
   AdminAutomationDefinitionFilter,
@@ -40,6 +41,15 @@ const dateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   minute: "2-digit",
 });
 
+/**
+ * Badges cliquables (liens de filtrage par statut) pour l'activité jobs
+ * archivés d'une automation.
+ *
+ * Distinct intentionnellement de `getArchivedAutomationJobActivitySummary`
+ * (shared/admin-automations-archives-filters.ts) : même `jobActivity` en
+ * entrée, mais sortie structurée pour des liens plutôt qu'une phrase
+ * résumée. Pas de fusion pour éviter une abstraction commune sans gain net.
+ */
 function formatArchivedActivityBadges(automation: AdminArchivedAutomationSummary): Array<{
   label: string;
   status: AdminAutomationJobStatus | null;
@@ -91,79 +101,6 @@ function formatArchivedActivityBadges(automation: AdminArchivedAutomationSummary
   return items;
 }
 
-function getArchivedJobActivitySummary(automation: AdminArchivedAutomationSummary): string {
-  const { jobActivity } = automation;
-
-  if (jobActivity.total === 0) {
-    return "Aucun job archivé lié.";
-  }
-
-  const parts = [
-    jobActivity.total > 1 ? `${jobActivity.total} jobs archivés liés` : "1 job archivé lié",
-  ];
-
-  if (jobActivity.pending > 0) {
-    parts.push(
-      jobActivity.pending > 1
-        ? `${jobActivity.pending} en attente`
-        : "1 en attente"
-    );
-  }
-
-  if (jobActivity.running > 0) {
-    parts.push(jobActivity.running > 1 ? `${jobActivity.running} en cours` : "1 en cours");
-  }
-
-  if (jobActivity.failed > 0) {
-    parts.push(jobActivity.failed > 1 ? `${jobActivity.failed} échoués` : "1 échoué");
-  }
-
-  if (jobActivity.succeeded > 0) {
-    parts.push(jobActivity.succeeded > 1 ? `${jobActivity.succeeded} réussis` : "1 réussi");
-  }
-
-  if (jobActivity.cancelled > 0) {
-    parts.push(jobActivity.cancelled > 1 ? `${jobActivity.cancelled} annulés` : "1 annulé");
-  }
-
-  return parts.join(" · ");
-}
-
-function buildArchivedAutomationJobsHref(input: {
-  automationId: string;
-  selectedAutomationId: string | null;
-  selectedJobStatus: AdminAutomationJobStatus | null;
-  selectedDefinitionFilter: AdminAutomationDefinitionFilter | null;
-  selectedArchivedJobStatus: AdminAutomationJobStatus | null;
-  selectedArchivedDefinitionFilter: "code-released" | "direct-restore" | null;
-}): string {
-  const params = new URLSearchParams();
-
-  if (input.selectedAutomationId) {
-    params.set("automation", input.selectedAutomationId);
-  }
-
-  if (input.selectedJobStatus) {
-    params.set("status", input.selectedJobStatus);
-  }
-
-  if (input.selectedDefinitionFilter) {
-    params.set("definition", input.selectedDefinitionFilter);
-  }
-
-  params.set("archivedAutomation", input.automationId);
-
-  if (input.selectedArchivedJobStatus) {
-    params.set("archivedStatus", input.selectedArchivedJobStatus);
-  }
-
-  if (input.selectedArchivedDefinitionFilter) {
-    params.set("archivedDefinition", input.selectedArchivedDefinitionFilter);
-  }
-
-  return `${ADMIN_AUTOMATIONS_PATH}?${params.toString()}#archived-jobs`;
-}
-
 function formatDelay(delayMinutes: number): string {
   if (delayMinutes <= 0) {
     return "Immédiat";
@@ -210,13 +147,14 @@ function ArchivedAutomationRow({
   const activityBadges = formatArchivedActivityBadges(automation);
   const archivedJobsHref =
     automation.jobActivity.total > 0
-      ? buildArchivedAutomationJobsHref({
-          automationId: automation.id,
-          selectedAutomationId,
-          selectedJobStatus,
-          selectedDefinitionFilter,
-          selectedArchivedJobStatus,
-          selectedArchivedDefinitionFilter,
+      ? buildAutomationsPageHref({
+          automationId: selectedAutomationId,
+          status: selectedJobStatus,
+          definition: selectedDefinitionFilter,
+          archivedAutomationId: automation.id,
+          archivedStatus: selectedArchivedJobStatus,
+          archivedDefinition: selectedArchivedDefinitionFilter,
+          hash: "archived-jobs",
         })
       : null;
   const isArchivedAutomationFocused = selectedArchivedAutomationId === automation.id;
@@ -276,8 +214,8 @@ function ArchivedAutomationRow({
           <span>Archivée le {dateTimeFormatter.format(new Date(automation.archivedAt))}</span>
           {automation.templateCode ? <span>Template : {automation.templateCode}</span> : null}
         </div>
-        <p className="text-[11px] text-muted-foreground/70">
-          {getArchivedJobActivitySummary(automation)}
+        <p className="text-xs text-muted-foreground/70">
+          {getArchivedAutomationJobActivitySummary(automation)}
         </p>
         {activityBadges.length > 0 ? (
           <div className="flex flex-wrap items-center gap-2 text-xs">
@@ -288,13 +226,14 @@ function ArchivedAutomationRow({
               return (
                 <Link
                   key={`${item.label}-${item.status ?? "all"}`}
-                  href={buildArchivedAutomationJobsHref({
-                    automationId: automation.id,
-                    selectedAutomationId,
-                    selectedJobStatus,
-                    selectedDefinitionFilter,
-                    selectedArchivedJobStatus: item.status,
-                    selectedArchivedDefinitionFilter,
+                  href={buildAutomationsPageHref({
+                    automationId: selectedAutomationId,
+                    status: selectedJobStatus,
+                    definition: selectedDefinitionFilter,
+                    archivedAutomationId: automation.id,
+                    archivedStatus: item.status,
+                    archivedDefinition: selectedArchivedDefinitionFilter,
+                    hash: "archived-jobs",
                   })}
                   className={cn(
                     "rounded-full border border-surface-border/60 px-2 py-0.5 text-muted-foreground transition-colors hover:border-control-border-strong hover:bg-surface-subtle/40",

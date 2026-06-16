@@ -6,94 +6,14 @@ import {
   AUTOMATION_NEWSLETTER_SUBSCRIBED_PAYLOAD_SCHEMA,
   AUTOMATION_NEWSLETTER_SUBSCRIBER_SUBJECT_TYPE,
 } from "@/features/automations/shared/automation-job.constants";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
 
 type QueueNewsletterSubscribedAutomationJobsInput = {
   storeId: string;
   newsletterSubscriberId: string;
   occurredAt: Date;
 };
-
-type FeatureFlagRow = {
-  status: "DRAFT" | "ACTIVE" | "INACTIVE" | "ARCHIVED";
-  isEnabledByDefault: boolean;
-  storeId: string | null;
-  overrides: Array<{
-    scopeType: string;
-    scopeId: string;
-    isEnabled: boolean;
-    startsAt: Date | null;
-    endsAt: Date | null;
-    archivedAt: Date | null;
-  }>;
-};
-
-function isOverrideActive(
-  override: FeatureFlagRow["overrides"][number],
-  now: Date
-): boolean {
-  if (override.archivedAt !== null) return false;
-  if (override.startsAt !== null && override.startsAt > now) return false;
-  if (override.endsAt !== null && override.endsAt < now) return false;
-  return true;
-}
-
-async function isAutomationsFeatureActive(tx: DbTx, storeId: string): Promise<boolean> {
-  const flags: FeatureFlagRow[] = await tx.featureFlag.findMany({
-    where: {
-      code: "engagement.automations",
-      archivedAt: null,
-      OR: [{ storeId }, { storeId: null }],
-    },
-    select: {
-      status: true,
-      isEnabledByDefault: true,
-      storeId: true,
-      overrides: {
-        where: {
-          archivedAt: null,
-          scopeType: "STORE",
-          scopeId: storeId,
-        },
-        select: {
-          scopeType: true,
-          scopeId: true,
-          isEnabled: true,
-          startsAt: true,
-          endsAt: true,
-          archivedAt: true,
-        },
-      },
-    },
-  });
-
-  if (flags.length === 0) {
-    return false;
-  }
-
-  const selectedFlag =
-    flags.find((flag) => flag.storeId === storeId) ??
-    flags.find((flag) => flag.storeId === null) ??
-    null;
-
-  if (selectedFlag === null) {
-    return false;
-  }
-
-  const now = new Date();
-  const storeOverride =
-    selectedFlag.overrides.find(
-      (override) =>
-        override.scopeType === "STORE" &&
-        override.scopeId === storeId &&
-        isOverrideActive(override, now)
-    ) ?? null;
-
-  if (storeOverride !== null) {
-    return storeOverride.isEnabled;
-  }
-
-  return selectedFlag.status === "ACTIVE" && selectedFlag.isEnabledByDefault;
-}
 
 function buildScheduledAt(occurredAt: Date, delayMinutes: number): Date {
   return new Date(occurredAt.getTime() + delayMinutes * 60_000);
@@ -134,9 +54,12 @@ export async function queueNewsletterSubscribedAutomationJobs(
   tx: DbTx,
   input: QueueNewsletterSubscribedAutomationJobsInput
 ): Promise<number> {
-  const featureActive = await isAutomationsFeatureActive(tx, input.storeId);
+  const [newsletterAutomationLevelMet, automationsFeatureActive] = await Promise.all([
+    meetsFeatureLevel("engagement.newsletter", "automation", { storeId: input.storeId }),
+    queryFeatureFlagActive("engagement.automations", { storeId: input.storeId }),
+  ]);
 
-  if (!featureActive) {
+  if (!newsletterAutomationLevelMet || !automationsFeatureActive) {
     return 0;
   }
 

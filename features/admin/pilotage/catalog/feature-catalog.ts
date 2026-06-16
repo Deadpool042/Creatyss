@@ -264,7 +264,7 @@ export const FEATURE_CATALOG = [
     key: "catalog.products.related",
     label: "Produits associés",
     description: "Gestion des suggestions de produits similaires ou complémentaires.",
-    family: "core",
+    family: "optional",
     module: "catalog",
     capability: "catalog.products.related",
     defaultState: "active",

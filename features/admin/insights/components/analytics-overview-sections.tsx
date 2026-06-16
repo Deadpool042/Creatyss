@@ -13,6 +13,7 @@
 import { Activity, Eye, ShoppingCart, TrendingDown, TrendingUp, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import type { CommerceAnalyticsInsights } from "@/features/admin/insights/queries/get-commerce-analytics-insights.query";
 import type { MonthlyCommerceAnalytics } from "@/features/admin/insights/queries/get-monthly-commerce-analytics.query";
 
 // ── Mock data ─────────────────────────────────────────────────────────────
@@ -106,9 +107,13 @@ type AnalyticsOverviewSectionsProps = {
    * "Ce mois" reste alors un mock (comportement antérieur).
    */
   monthly?: MonthlyCommerceAnalytics | null;
+  insights?: CommerceAnalyticsInsights | null;
 };
 
-export function AnalyticsOverviewSections({ monthly = null }: AnalyticsOverviewSectionsProps) {
+export function AnalyticsOverviewSections({
+  monthly = null,
+  insights = null,
+}: AnalyticsOverviewSectionsProps) {
   return (
     <div>
       {/* KPI Hero — aujourd'hui */}
@@ -171,46 +176,89 @@ export function AnalyticsOverviewSections({ monthly = null }: AnalyticsOverviewS
       {/* Body */}
       <div className="mt-6 grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.8fr)]">
         {/* Pages les plus visitées */}
-        <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
-          <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
-            Trafic
-          </p>
-          <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
-            Pages les plus visitées
-          </h2>
-          <div className="divide-y divide-surface-border/30">
-            {TOP_PAGES.map((page) => {
-              const isPositive = page.delta >= 0;
-              const DeltaIcon = isPositive ? TrendingUp : TrendingDown;
-              return (
-                <div
-                  key={page.path}
-                  className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
-                >
-                  <p className="min-w-0 truncate font-mono text-[12px] text-foreground">
-                    {page.path}
-                  </p>
-                  <div className="flex shrink-0 items-center gap-3">
-                    <span
-                      className={cn(
-                        "inline-flex items-center gap-0.5 text-xs",
-                        isPositive
-                          ? "text-feedback-success-foreground"
-                          : "text-feedback-error-foreground"
-                      )}
-                    >
-                      <DeltaIcon className="size-3" />
-                      {Math.abs(page.delta).toFixed(1)}%
-                    </span>
-                    <span className="w-14 text-right text-sm font-medium tabular-nums text-foreground">
-                      {page.views.toLocaleString("fr-FR")}
-                    </span>
+        <div className="grid gap-4">
+          <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+              Trafic
+            </p>
+            <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
+              Pages les plus visitées
+            </h2>
+            <div className="divide-y divide-surface-border/30">
+              {TOP_PAGES.map((page) => {
+                const isPositive = page.delta >= 0;
+                const DeltaIcon = isPositive ? TrendingUp : TrendingDown;
+                return (
+                  <div
+                    key={page.path}
+                    className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
+                  >
+                    <p className="min-w-0 truncate font-mono text-[12px] text-foreground">
+                      {page.path}
+                    </p>
+                    <div className="flex shrink-0 items-center gap-3">
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-0.5 text-xs",
+                          isPositive
+                            ? "text-feedback-success-foreground"
+                            : "text-feedback-error-foreground"
+                        )}
+                      >
+                        <DeltaIcon className="size-3" />
+                        {Math.abs(page.delta).toFixed(1)}%
+                      </span>
+                      <span className="w-14 text-right text-sm font-medium tabular-nums text-foreground">
+                        {page.views.toLocaleString("fr-FR")}
+                      </span>
+                    </div>
                   </div>
+                );
+              })}
+            </div>
+          </section>
+
+          {insights !== null ? (
+            <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+                Insights
+              </p>
+              <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
+                Top produits du mois
+              </h2>
+              {insights.topProducts.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  Aucune vente confirmée sur la période courante.
+                </p>
+              ) : (
+                <div className="divide-y divide-surface-border/30">
+                  {insights.topProducts.map((product) => (
+                    <div
+                      key={`${product.productId ?? "product"}-${product.productName}`}
+                      className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium text-foreground">
+                          {product.productName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {product.quantitySold} article{product.quantitySold > 1 ? "s" : ""} vendus
+                        </p>
+                      </div>
+                      <span className="text-sm font-semibold tabular-nums text-foreground">
+                        {product.revenue.toLocaleString("fr-FR", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                        €
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              );
-            })}
-          </div>
-        </section>
+              )}
+            </section>
+          ) : null}
+        </div>
 
         {/* Résumé du mois */}
         <div className="flex flex-col gap-4">
@@ -249,6 +297,55 @@ export function AnalyticsOverviewSections({ monthly = null }: AnalyticsOverviewS
               ))}
             </div>
           </section>
+
+          {insights !== null ? (
+            <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+                Insights
+              </p>
+              <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
+                Lecture commerce additionnelle
+              </h2>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs text-muted-foreground">Panier moyen confirmé</p>
+                  <p className="text-sm font-semibold tabular-nums text-foreground">
+                    {insights.averageOrderValue.toLocaleString("fr-FR", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    €
+                  </p>
+                </div>
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs text-muted-foreground">Commandes confirmées</p>
+                  <p className="text-sm font-semibold tabular-nums text-foreground">
+                    {insights.totalConfirmedOrders}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 grid gap-2">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/70">
+                  Statuts des commandes créées ce mois
+                </p>
+                {insights.statusBreakdown.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Aucune commande créée sur la période courante.</p>
+                ) : (
+                  <div className="grid gap-2">
+                    {insights.statusBreakdown.map((status) => (
+                      <div key={status.status} className="flex items-center justify-between gap-3">
+                        <p className="text-xs text-muted-foreground">{status.status}</p>
+                        <p className="text-sm font-semibold tabular-nums text-foreground">
+                          {status.count}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
+          ) : null}
 
           <section className="rounded-2xl border border-surface-border/40 bg-surface-panel/30 p-4">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
@@ -289,8 +386,9 @@ export function AnalyticsOverviewSections({ monthly = null }: AnalyticsOverviewS
                 <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
                   AnalyticsSnapshot
                 </code>{" "}
-                non alimentés). Bloc "Aujourd'hui vs hier" : mock, source
-                tracking absente.
+                non alimentés). Niveau `insights` : lectures commerce
+                additionnelles (`Order` / `OrderLine`). Bloc "Aujourd'hui vs
+                hier" : mock, source tracking absente.
                 <br />
                 Doctrine :{" "}
                 <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">

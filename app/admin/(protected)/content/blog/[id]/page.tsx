@@ -10,7 +10,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { getUploadsPublicPath } from "@/core/uploads";
-import { BlogImagePickerField } from "@/features/admin/blog";
+import { BlogImagePickerField, requestBlogPostSeoSuggestionAction } from "@/features/admin/blog";
+import { BlogSeoFieldsWithAi } from "@/features/admin/blog/components/blog-seo-fields-with-ai";
+import { listSeoSuggestionHistory } from "@/features/ai-assistance/queries";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { updateBlogPostAction } from "@/features/admin/blog/actions/update-blog-post-action";
 import { getAdminBlogPostDetail } from "@/features/admin/blog/queries/get-admin-blog-post-detail.query";
 import { listAdminMediaAssets } from "@/features/admin/media";
@@ -40,15 +43,33 @@ export default async function EditAdminBlogPostPage({
     : resolvedSearchParams.error;
   const errorMessage = errorCode !== undefined ? (ERROR_MESSAGES[errorCode] ?? null) : null;
 
-  const [post, assets, uploadsPublicPath] = await Promise.all([
-    getAdminBlogPostDetail({ postId: id }),
-    listAdminMediaAssets(),
-    Promise.resolve(getUploadsPublicPath()),
-  ]);
+  const [
+    post,
+    assets,
+    uploadsPublicPath,
+    aiSuggestionEnabled,
+    aiSuggestionHistoryEnabled,
+    aiSuggestionAutomationEnabled,
+  ] =
+    await Promise.all([
+      getAdminBlogPostDetail({ postId: id }),
+      listAdminMediaAssets(),
+      Promise.resolve(getUploadsPublicPath()),
+      meetsFeatureLevel("ai.core", "assistant"),
+      meetsFeatureLevel("ai.core", "advanced"),
+      meetsFeatureLevel("ai.core", "automation"),
+    ]);
 
   if (post === null) {
     notFound();
   }
+
+  const aiSuggestionHistory = aiSuggestionHistoryEnabled
+    ? await listSeoSuggestionHistory({
+        subjectType: "BLOG_POST",
+        subjectId: post.id,
+      })
+    : [];
 
   return (
     <AdminPageShell
@@ -104,23 +125,16 @@ export default async function EditAdminBlogPostPage({
             <Textarea id="blog-content" name="content" rows={10} defaultValue={post.content ?? ""} />
           </AdminFormField>
 
-          <AdminFormField htmlFor="blog-seo-title" label="Titre SEO">
-            <Input
-              id="blog-seo-title"
-              name="seoTitle"
-              type="text"
-              defaultValue={post.seoTitle ?? ""}
-            />
-          </AdminFormField>
-
-          <AdminFormField htmlFor="blog-seo-description" label="Description SEO">
-            <Textarea
-              id="blog-seo-description"
-              name="seoDescription"
-              rows={3}
-              defaultValue={post.seoDescription ?? ""}
-            />
-          </AdminFormField>
+          <BlogSeoFieldsWithAi
+            postId={post.id}
+            defaultSeoTitle={post.seoTitle ?? ""}
+            defaultSeoDescription={post.seoDescription ?? ""}
+            aiSuggestionEnabled={aiSuggestionEnabled}
+            aiSuggestionAutomationEnabled={aiSuggestionAutomationEnabled}
+            aiSuggestionHistory={aiSuggestionHistory}
+            aiSuggestionHistoryEnabled={aiSuggestionHistoryEnabled}
+            aiSuggestionAction={requestBlogPostSeoSuggestionAction}
+          />
 
           <input type="hidden" name="status" value={post.status} />
 

@@ -11,6 +11,7 @@ export {
 export {
   attachProductImages,
   deleteProductImage,
+  generateMissingProductImageAltTexts,
   reorderProductImage,
   setProductPrimaryImage,
   updateProductImageAltText,

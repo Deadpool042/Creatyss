@@ -14,5 +14,45 @@ export type AdminNewsletterSubscriberSummary = {
   lastName: string | null;
   status: NewsletterSubscriberStatus;
   source: string | null;
+  customerId: string | null;
+  subscribedAt: Date | null;
+  unsubscribedAt: Date | null;
   createdAt: Date;
+};
+
+export type AdminNewsletterSubscriberStatusFilter =
+  | "all"
+  | "SUBSCRIBED"
+  | "UNSUBSCRIBED"
+  | "BOUNCED"
+  | "PENDING";
+
+export type AdminNewsletterSubscriberSourceFilter = "all" | "admin" | "storefront";
+
+export type AdminNewsletterSubscriberCustomerLinkFilter = "all" | "linked" | "unlinked";
+
+export type AdminNewsletterSubscriberRecencyFilter = "all" | "recent";
+
+export type AdminNewsletterSubscriberFilters = {
+  status?: AdminNewsletterSubscriberStatusFilter | undefined;
+  source?: AdminNewsletterSubscriberSourceFilter | undefined;
+  customerLink?: AdminNewsletterSubscriberCustomerLinkFilter | undefined;
+  recency?: AdminNewsletterSubscriberRecencyFilter | undefined;
+};
+
+export type AdminNewsletterSubscriberSummaryCounts = {
+  total: number;
+  subscribed: number;
+  unsubscribed: number;
+  bounced: number;
+  pending: number;
+  adminSource: number;
+  storefrontSource: number;
+  linkedCustomers: number;
+  recentSubscriptions: number;
+};
+
+export type AdminNewsletterSubscriberListResult = {
+  items: AdminNewsletterSubscriberSummary[];
+  counts: AdminNewsletterSubscriberSummaryCounts;
 };

@@ -8,7 +8,7 @@ import { findFeatureCatalogEntry } from "@/features/admin/pilotage/catalog";
 import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 
 export type ToggleFeatureFlagResult =
-  | { ok: true; newStatus: string }
+  | { ok: true; newStatus: string; message: string }
   | { ok: false; error: string };
 
 export async function toggleFeatureFlagAction(flagId: string): Promise<ToggleFeatureFlagResult> {
@@ -107,5 +107,9 @@ export async function toggleFeatureFlagAction(flagId: string): Promise<ToggleFea
   revalidatePath("/admin/settings/localization/translations");
   revalidatePath("/", "layout");
 
-  return { ok: true, newStatus: nextStatus };
+  return {
+    ok: true,
+    newStatus: nextStatus,
+    message: nextStatus === "ACTIVE" ? "Fonctionnalité activée." : "Fonctionnalité désactivée.",
+  };
 }

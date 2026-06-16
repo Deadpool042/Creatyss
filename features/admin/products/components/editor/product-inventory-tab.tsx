@@ -13,6 +13,7 @@ import {
   type AdminProductVariantListItem,
   type ProductInventoryFormAction,
 } from "@/features/admin/products/editor/types";
+import type { AdminInventoryForecastItem } from "@/features/admin/products/editor/queries/get-admin-product-inventory-forecast.query";
 
 type ProductInventorySectionIntroProps = {
   eyebrow: string;
@@ -93,6 +94,46 @@ function InventoryFields({
   );
 }
 
+function formatCoverageDays(value: number | null): string {
+  if (value === null) {
+    return "Signal insuffisant";
+  }
+
+  if (value < 1) {
+    return "Moins d'un jour";
+  }
+
+  return `${Math.round(value)} jours`;
+}
+
+function formatAverageDailyUnits(value: number): string {
+  if (value <= 0) {
+    return "0 / jour";
+  }
+
+  return `${value.toFixed(value < 1 ? 2 : 1)} / jour`;
+}
+
+function getForecastStatusLabel(forecast: AdminInventoryForecastItem | null): string {
+  if (forecast === null || forecast.soldQuantityLast30Days <= 0) {
+    return "Aucune vente récente";
+  }
+
+  if (forecast.estimatedCoverageDays === null) {
+    return "Signal insuffisant";
+  }
+
+  if (forecast.estimatedCoverageDays <= 7) {
+    return "Couverture courte";
+  }
+
+  if (forecast.estimatedCoverageDays <= 14) {
+    return "À surveiller";
+  }
+
+  return "Couverture stable";
+}
+
 function ProductInventorySectionIntro({
   eyebrow,
   title,
@@ -112,9 +153,13 @@ function ProductInventorySectionIntro({
 function VariantInventoryCard({
   variant,
   showLowStockThreshold,
+  forecast,
+  showInventoryForecasting,
 }: {
   variant: AdminProductVariantListItem;
   showLowStockThreshold: boolean;
+  forecast: AdminInventoryForecastItem | null;
+  showInventoryForecasting: boolean;
 }): JSX.Element {
   return (
     <div
@@ -132,6 +177,35 @@ function VariantInventoryCard({
         availability={variant.availability}
         showLowStockThreshold={showLowStockThreshold}
       />
+
+      {showInventoryForecasting ? (
+        <div className="grid gap-3 rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-3 text-xs text-muted-foreground md:grid-cols-2">
+          <p>
+            Ventes 30 jours :{" "}
+            <span className="font-medium text-foreground">
+              {forecast?.soldQuantityLast30Days ?? 0}
+            </span>
+          </p>
+          <p>
+            Débit moyen :{" "}
+            <span className="font-medium text-foreground">
+              {formatAverageDailyUnits(forecast?.averageDailyUnits ?? 0)}
+            </span>
+          </p>
+          <p>
+            Couverture estimée :{" "}
+            <span className="font-medium text-foreground">
+              {formatCoverageDays(forecast?.estimatedCoverageDays ?? null)}
+            </span>
+          </p>
+          <p>
+            Lecture :{" "}
+            <span className="font-medium text-foreground">
+              {getForecastStatusLabel(forecast)}
+            </span>
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -144,6 +218,8 @@ type ProductInventoryTabProps = {
   variants: AdminProductVariantListItem[];
   isStandalone: boolean;
   showLowStockThreshold: boolean;
+  showInventoryForecasting: boolean;
+  inventoryForecast: Map<string, AdminInventoryForecastItem>;
 };
 
 export function ProductInventoryTab({
@@ -152,6 +228,8 @@ export function ProductInventoryTab({
   variants,
   isStandalone,
   showLowStockThreshold,
+  showInventoryForecasting,
+  inventoryForecast,
 }: ProductInventoryTabProps): JSX.Element {
   const [state, formAction, pending] = useActionState(action, productInventoryFormInitialState);
   const hasVariants = variants.length > 0;
@@ -159,6 +237,16 @@ export function ProductInventoryTab({
   const standaloneVariant = isStandalone
     ? (variants.find((variant) => variant.isDefault) ?? variants[0] ?? null)
     : null;
+  const forecastItems = variants
+    .map((variant) => inventoryForecast.get(variant.id) ?? null)
+    .filter((item): item is AdminInventoryForecastItem => item !== null);
+  const variantsAtRiskCount = forecastItems.filter(
+    (item) => item.estimatedCoverageDays !== null && item.estimatedCoverageDays <= 14
+  ).length;
+  const totalSoldLast30Days = forecastItems.reduce(
+    (sum, item) => sum + item.soldQuantityLast30Days,
+    0
+  );
 
   return (
     <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -205,6 +293,42 @@ export function ProductInventoryTab({
                         availability={standaloneVariant.availability}
                         showLowStockThreshold={showLowStockThreshold}
                       />
+
+                      {showInventoryForecasting ? (
+                        <div className="grid gap-3 rounded-lg border border-surface-border bg-surface-panel-soft px-3 py-3 text-xs text-muted-foreground md:grid-cols-2">
+                          <p>
+                            Ventes 30 jours :{" "}
+                            <span className="font-medium text-foreground">
+                              {inventoryForecast.get(standaloneVariant.id)?.soldQuantityLast30Days ?? 0}
+                            </span>
+                          </p>
+                          <p>
+                            Débit moyen :{" "}
+                            <span className="font-medium text-foreground">
+                              {formatAverageDailyUnits(
+                                inventoryForecast.get(standaloneVariant.id)?.averageDailyUnits ?? 0
+                              )}
+                            </span>
+                          </p>
+                          <p>
+                            Couverture estimée :{" "}
+                            <span className="font-medium text-foreground">
+                              {formatCoverageDays(
+                                inventoryForecast.get(standaloneVariant.id)?.estimatedCoverageDays ??
+                                  null
+                              )}
+                            </span>
+                          </p>
+                          <p>
+                            Lecture :{" "}
+                            <span className="font-medium text-foreground">
+                              {getForecastStatusLabel(
+                                inventoryForecast.get(standaloneVariant.id) ?? null
+                              )}
+                            </span>
+                          </p>
+                        </div>
+                      ) : null}
                     </>
                   ) : (
                     <p className="rounded-xl border border-dashed border-surface-border bg-surface-panel-soft px-4 py-3 text-sm text-muted-foreground">
@@ -227,6 +351,8 @@ export function ProductInventoryTab({
                           key={variant.id}
                           variant={variant}
                           showLowStockThreshold={showLowStockThreshold}
+                          forecast={inventoryForecast.get(variant.id) ?? null}
+                          showInventoryForecasting={showInventoryForecasting}
                         />
                       ))}
                     </div>
@@ -274,6 +400,21 @@ export function ProductInventoryTab({
                       L’autorisation de vente en rupture reste pilotée depuis le module Disponibilité.
                     </p>
                   </div>
+
+                  {showInventoryForecasting ? (
+                    <div className="grid gap-1.5 py-3 last:pb-0">
+                      <ProductSectionEyebrow className="tracking-[0.14em]">Prévision</ProductSectionEyebrow>
+                      <p className="text-sm font-medium text-foreground">
+                        {variantsAtRiskCount > 0
+                          ? `${variantsAtRiskCount} variante(s) à surveiller`
+                          : "Couverture sans alerte immédiate"}
+                      </p>
+                      <p className="text-sm leading-6 text-muted-foreground">
+                        {totalSoldLast30Days} unité(s) vendue(s) sur 30 jours. Estimation simple :
+                        stock disponible rapporté au débit observé récent.
+                      </p>
+                    </div>
+                  ) : null}
                 </div>
               </section>
             </div>

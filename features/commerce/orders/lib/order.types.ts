@@ -76,6 +76,7 @@ export type OrderRepositoryErrorCode =
   | "missing_checkout"
   | "missing_shipping_selection"
   | "missing_payment_method"
+  | "invalid_discount_code"
   | "shipping_method_unavailable"
   | "insufficient_stock"
   | "tax_address_missing"

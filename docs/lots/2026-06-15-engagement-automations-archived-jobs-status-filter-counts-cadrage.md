@@ -38,3 +38,21 @@ automation archivée est focalisée.
   `Jobs archivés` affichent les volumes connus ;
 - la lecture des statuts disponibles devient immédiate ;
 - aucun comportement opératoire existant n'est modifié.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `getArchivedJobsFilterLabel` (`admin-automations-archives-filters.ts`)
+  retourne `baseLabel` seul si `focusedAutomation === null`, sinon
+  `${baseLabel} (${getArchivedAutomationStatusCount(focusedAutomation,
+  status)})`.
+- `AdminArchivedAutomationJobsSection` applique cette fonction sur chaque chip
+  `JOB_STATUS_FILTERS`, avec `focusedAutomation:
+  normalizedSelectedArchivedAutomation`.
+- `getArchivedAutomationStatusCount` lit directement `jobActivity` (pending,
+  running, failed, succeeded, cancelled, total) déjà chargé : aucune requête
+  ni filtrage supplémentaire.
+
+Aucun code à écrire pour ce lot.

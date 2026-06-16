@@ -17,6 +17,8 @@ import {
   mapCheckoutPaymentMethodToPrisma,
   type CheckoutPaymentMethod,
 } from "@/features/commerce/checkout/types/checkout-payment-method.types";
+import { resolveApplicableOrderDiscount } from "@/features/commerce/discounts/lib/resolve-order-discount";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import {
   OrderRepositoryError,
   type PaymentStatus,
@@ -172,7 +174,8 @@ function mapPublicOrderConfirmation(input: {
 
 export async function createOrderFromGuestCartToken(
   cartToken: string,
-  paymentMethod: CheckoutPaymentMethod
+  paymentMethod: CheckoutPaymentMethod,
+  discountCode?: string
 ): Promise<CreatedOrderRow> {
   return db.$transaction(async (tx) => {
     const cart = await tx.cart.findUnique({
@@ -291,7 +294,28 @@ export async function createOrderFromGuestCartToken(
     }
 
     const shippingCents = Math.round(Number(shippingMethod.amount) * 100);
-    const totalCents = subtotalCents + shippingCents;
+    const discountAutomationEnabled = await meetsFeatureLevel(
+      "commerce.discounts",
+      "automation",
+      { storeId: cart.storeId }
+    );
+    const appliedDiscount = await resolveApplicableOrderDiscount({
+      executor: tx,
+      storeId: cart.storeId,
+      code: typeof discountCode === "string" ? discountCode : null,
+      allowAutomatic: discountAutomationEnabled,
+      subtotalCents,
+      currencyCode: cart.currencyCode,
+    });
+    const discountCents = appliedDiscount?.amountCents ?? 0;
+    const totalCents = subtotalCents + shippingCents - discountCents;
+
+    if (typeof discountCode === "string" && discountCode.trim().length > 0 && appliedDiscount === null) {
+      throw new OrderRepositoryError(
+        "invalid_discount_code",
+        "Discount code is invalid or no longer applicable."
+      );
+    }
 
     const shippingAddress = checkout.addresses.find((a) => a.type === "SHIPPING") ?? null;
 
@@ -361,7 +385,7 @@ export async function createOrderFromGuestCartToken(
             currencyCode: cart.currencyCode,
             subtotalAmount: subtotalCents / 100,
             shippingAmount: shippingCents / 100,
-            discountAmount: 0,
+            discountAmount: discountCents / 100,
             taxAmount: taxCents / 100,
             totalAmount: totalCents / 100,
             customerEmail: checkout.email,
@@ -454,6 +478,18 @@ export async function createOrderFromGuestCartToken(
           quantityDelta: -line.quantity,
           referenceType: "order",
           referenceId: createdOrder.id,
+        },
+      });
+    }
+
+    if (appliedDiscount !== null) {
+      await tx.discountRedemption.create({
+        data: {
+          discountId: appliedDiscount.discountId,
+          orderId: createdOrder.id,
+          customerId: checkout.customerId ?? cart.customerId,
+          amountApplied: discountCents / 100,
+          currencyCode: cart.currencyCode,
         },
       });
     }

@@ -40,3 +40,20 @@ archivée et les jobs archivés éventuellement liés à cette définition.
 - une automation archivée avec jobs liés affiche un résumé lisible ;
 - ce résumé n'altère ni la restauration des définitions ni la section
   `Jobs archivés`.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `getArchivedAutomationJobActivitySummary`
+  (`admin-automations-archives-filters.ts`) retourne « Aucun job archivé
+  lié. » si `jobActivity.total === 0`, sinon une phrase agrégée
+  (`"N jobs archivés liés · M en attente · ..."`).
+- `ArchivedAutomationRow` affiche ce résumé sous chaque ligne de définition
+  archivée, indépendamment des badges cliquables
+  (`formatArchivedActivityBadges`).
+- Lecture purement locale de `automation.jobActivity` déjà chargé : aucune
+  action de restauration ni la section `Jobs archivés` ne sont modifiées.
+
+Aucun code à écrire pour ce lot.

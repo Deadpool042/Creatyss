@@ -40,3 +40,22 @@ nouvel écran ni casser la lecture locale des jobs liés.
 - une définition test peut être retirée de la liste active ;
 - les jobs `PENDING` liés sont annulés lors de cette suppression locale ;
 - la navigation canonique et les filtres existants restent compatibles.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `AdminAutomationsList` (`admin-automations-list.tsx`) expose un formulaire
+  d'édition inline par ligne (`isEditing`) soumis via
+  `updateAutomationAction`, qui gère le conflit de code (libère le code de
+  l'archivée en conflit via `buildArchivedAutomationCode`).
+- Le bouton "Supprimer" appelle `archiveAutomationAction`, qui archive la
+  définition (`buildArchivedAutomationCode`, `status: "ARCHIVED"`) et annule
+  en transaction les jobs `PENDING` liés
+  (`deduplicationKey: automation:<id>:...`), retournant
+  `cancelledJobsCount` affiché à l'opérateur.
+- Liens canoniques et filtres (`buildAutomationJobsHref`,
+  `buildAutomationsPageHref`) inchangés.
+
+Aucun code à écrire pour ce lot.

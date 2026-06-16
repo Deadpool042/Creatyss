@@ -39,3 +39,23 @@ ligne.
   la section l'explicite localement ;
 - l'opérateur peut retirer ce filtre masquant sans perdre le focus définition ;
 - la disparition de la ligne ciblée ne reste plus silencieuse.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `page.tsx` calcule `isSelectedArchivedAutomationVisible` (l'automation
+  focalisée appartient-elle à `filteredArchivedAutomations` ?).
+- `AdminArchivedAutomationsSection` affiche, quand
+  `normalizedSelectedArchivedAutomation && selectedArchivedDefinitionLabel &&
+  !isSelectedArchivedAutomationVisible`, un message « Le focus courant est
+  masqué par le filtre `<label>`. » avec un lien « Retirer filtre
+  automations archivées ».
+- Ce lien pointe vers `buildAutomationsPageHref({ ...,
+  archivedAutomationId: normalizedSelectedArchivedAutomation.id,
+  archivedStatus: selectedArchivedJobStatus, hash: "archived-automations" })`
+  (sans `archivedDefinition`), donc retire uniquement le filtre masquant en
+  conservant le focus.
+
+Aucun code à écrire pour ce lot.

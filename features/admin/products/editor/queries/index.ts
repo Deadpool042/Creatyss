@@ -21,3 +21,5 @@ export {
   readAdminProductVariants,
 } from "./product-editor-read-queries";
 export type { AdminProductPageContext } from "./product-editor-read-queries";
+export { getAdminProductInventoryForecast } from "./get-admin-product-inventory-forecast.query";
+export type { AdminInventoryForecastItem } from "./get-admin-product-inventory-forecast.query";

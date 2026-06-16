@@ -1,25 +1,18 @@
 <!-- docs/lots/2026-06-13-localization-l3-cadrage.md -->
 
-# Cadrage — `localization` niveau `localized-routing` (lot 5, proposition à valider)
+# Cadrage — `localization` niveau `localized-routing` (lot 5)
 
-> **Statut : proposition.** Aucun code de ce cadrage n'est implémenté.
+> **Statut : sous-lot 1 implémenté (2026-06-16).** Sous-lots 2 et 3 à faire.
 > Référence : `docs/lots/2026-06-12-localization-l1-cadrage.md`,
 > `docs/lots/2026-06-13-localization-l2-cadrage.md` (lots 1-4 faits),
 > `docs/domains/cross-cutting/localization.md`,
 > `docs/domains/cross-cutting/seo.md`.
->
-> **Chantier en pause (2026-06-13)** — décisions 1-5 ci-dessous non
-> tranchées, aucun sous-lot proposé. À reprendre après le chantier en
-> cours sur un autre périmètre.
 
 ## Objectif
 
 Le lot 5 (« L3 `localized-routing` ») est le dernier niveau gradué de
-`platform.localization` : routing localisé (`/fr`, `/en`, …) et SEO
-multilingue (hreflang, sitemaps par locale). Il est sizé « gros » dans le
-cadrage initial. Ce cadrage fait l'état des lieux du repo réel et identifie
-la décision d'architecture préalable avant tout découpage en sous-lots —
-**aucun sous-lot d'implémentation n'est proposé à ce stade**.
+`platform.localization` : routing localisé (`/en-GB/...`) et SEO
+multilingue (hreflang, sitemaps par locale).
 
 ## Acquis (lots 1-4, faits au 2026-06-13)
 
@@ -34,119 +27,91 @@ la décision d'architecture préalable avant tout découpage en sous-lots —
 - Sélecteur de langue storefront **sans routing** (lot 4 sous-lot 3) : la
   locale active est portée par un cookie visiteur non signé
   (`creatyss_locale`, `core/sessions/locale-preference.ts`), résolue par
-  `resolvePreferredLocaleCode` (préférence cookie si locale active, sinon
-  locale par défaut du store). Aucune URL ne varie selon la locale.
+  `resolvePreferredLocaleCode`. Aucune URL ne varie selon la locale.
 
-## État des lieux (constat factuel)
+## Décisions tranchées (2026-06-16)
 
-- **Routing storefront** : `app/` ne contient aucun segment dynamique de
-  type `app/[locale]/...`. Le storefront vit sous `app/(public)/` (group
-  de routes, préfixe non visible dans l'URL) + fichiers racine (`page.tsx`,
-  `layout.tsx`, `error.tsx`, `not-found.tsx`, `sitemap.ts`, `robots.ts`).
-  L'admin vit sous `app/admin/`.
-- **Middleware** : aucun `middleware.ts`, ni à la racine ni dans `app/`.
-  Aucune détection ou redirection de locale au niveau requête.
-- **`next.config.ts`** : pas de config `i18n` (Pages Router legacy), pas de
-  `rewrites`/`redirects` liés à la locale. Seuls les `instanceRedirects`
-  (hors sujet localisation) sont configurés.
-- **`app/layout.tsx`** : `<html lang="fr">` codé en dur, ne dépend d'aucune
-  locale runtime. `<LocaleSelector />` (lot 4.3) est rendu dans
-  `PublicSiteShell`, mais ne change aucune URL — uniquement le cookie
-  `creatyss_locale` puis `revalidatePath("/", "layout")`.
-- **SEO** : `docs/domains/cross-cutting/seo.md` ne mentionne ni `hreflang`
-  ni `alternate links` ni sitemap par locale. `app/sitemap.ts` et
-  `app/robots.ts` produisent une sortie unique, sans variation de locale ;
-  les URLs du sitemap (`/boutique`, `/blog/<slug>`, etc.) n'ont pas
-  d'équivalent par locale.
-- **Aucun code runtime** n'implémente `hreflang`, `alternate`, segment
-  `[locale]` ou logique de routing localisé. Les seules mentions de
-  `localized-routing` sont dans la doc de cadrage et dans le catalogue de
-  features (`allowedLevels` du flag).
+| # | Décision | Choix retenu |
+|---|---|---|
+| D1 | Routing par préfixe requis ? | **Oui** — hreflang et sitemap multilingue nécessitent des URLs distinctes par locale. |
+| D2 | Convention de préfixe | **Locale par défaut (`fr`) non préfixée** — `/boutique` reste `/boutique`, locales secondaires préfixées `/en-GB/boutique`. Préserve les URLs actuelles et leur valeur SEO. |
+| D3 | Périmètre v1 + approche | **Middleware Edge** (rewrite + headers, pas de `[locale]` dans `app/`). Scope : toutes les routes storefront (pas d'approche pilote partiel — cohérence routing). Admin et API exclus. |
+| D4 | Cookie vs préfixe URL | **Les deux** — cookie = préférence persistante, préfixe URL = source de vérité par requête. Le middleware injecte `x-next-locale` dans les headers request. |
+| D5 | Flag `localized-routing` pendant la transition | **Le flag gate l'exposition du contenu** aux URLs `/[locale]/...` (redirect vers défaut si inactif). La structure middleware existe dès le déploiement. |
 
-## Enjeu et risque
+## Architecture retenue (sous-lot 1)
 
-Un routing localisé par préfixe d'URL (`/fr/...`, `/en/...`) implique, pour
-être cohérent :
+```
+/en-GB/boutique  →  middleware rewrite  →  /boutique  (x-next-locale: en-GB)
+/fr/boutique     →  middleware redirect 301  →  /boutique
+```
 
-- déplacer l'ensemble de `app/(public)/` (et les fichiers racine
-  `page.tsx`, `layout.tsx`, `sitemap.ts`, `robots.ts`, `error.tsx`,
-  `not-found.tsx`) sous un segment `app/[locale]/...` ;
-- introduire un `middleware.ts` de détection/redirection de locale (premier
-  middleware du repo) ;
-- décider du traitement de la locale par défaut (préfixée comme les autres,
-  ou non préfixée — deux conventions i18n courantes aux implications SEO et
-  de routing différentes) ;
-- faire calculer `<html lang>` dynamiquement par locale active ;
-- générer des sitemaps et des balises `hreflang`/`alternate` par locale,
-  pour des URLs qui n'existent pas encore aujourd'hui ;
-- garantir que `app/admin/**` et `app/api/**` restent **hors** du segment
-  `[locale]` (aucun changement d'URL admin/API).
+- **`middleware.ts`** (Edge runtime) : rewrite interne + injection des headers
+  `x-next-locale` et `x-next-path-without-locale`. Aucun appel Prisma.
+- **`core/localization/supported-locales.ts`** : config Edge-safe
+  (`DEFAULT_LOCALE_CODE = "fr"`, `SECONDARY_LOCALE_CODES = ["en-GB"]`).
+  À étendre lors de l'ajout d'une nouvelle locale active.
+- **`app/layout.tsx`** : lit `x-next-locale` via `headers()`, injecte
+  `<html lang={locale}>`, et redirige vers `pathWithoutLocale` si la locale
+  est secondaire mais que `localized-routing` n'est pas actif (gate L3).
 
-C'est une refonte structurelle qui touche **toutes** les routes storefront
-existantes (catalogue, fiches produit, blog, pages légales, checkout,
-compte client, etc.), à fort risque de régression de routing — directement
-en tension avec les règles de prudence du repo (« plus petits changements
-sûrs », « pas de refactor opportuniste hors périmètre », « ne jamais
-modifier silencieusement un contrat public »). Toutes les routes
-storefront sont des contrats publics (URLs indexées, partagées, en
-production).
+## Sous-lots
 
-## Décision préalable à trancher (avant tout sous-lot)
+### Sous-lot 1 — Middleware + locale context ✅ (2026-06-16)
 
-Aucun sous-lot d'implémentation n'est proposé avant que les points suivants
-soient explicitement tranchés côté produit :
+**Fichiers créés :**
+- `core/localization/supported-locales.ts`
+- `middleware.ts`
 
-1. **Le routing par préfixe est-il réellement requis pour ce lot ?**
-   `hreflang` et un sitemap multilingue n'ont de sens que s'il existe des
-   URLs distinctes par locale. Sans décision de créer ces URLs (`/fr/...`,
-   `/en/...` ou équivalent), le volet « SEO multilingue » du niveau
-   `localized-routing` n'est pas réalisable indépendamment du routing —
-   contrairement aux lots 1-4 qui ont pu avancer sans changement d'URL.
+**Fichiers modifiés :**
+- `app/layout.tsx` : async, `<html lang={locale}>` dynamique, gate L3
 
-2. **Si oui, quelle convention de préfixe ?**
-   - toutes les locales préfixées, y compris la locale par défaut
-     (`/fr/...`, `/en/...`) — cohérent, mais change toutes les URLs
-     actuelles (rupture de contrat public, nécessite des redirections
-     permanentes `/boutique` → `/fr/boutique`) ;
-   - locale par défaut non préfixée (`/boutique`), locales secondaires
-     préfixées (`/en/boutique`) — préserve les URLs actuelles pour la
-     locale par défaut, mais introduit une asymétrie de routing entre
-     locale par défaut et secondaires.
+**Testable :** lancer `pnpm dev`. Accéder à `/en-GB/boutique` quand
+`localized-routing` est DRAFT → redirigé vers `/boutique`. Quand actif →
+servi en `lang="en-GB"`.
 
-3. **Quel périmètre v1 ?**
-   Routing complet du storefront en une fois, ou pilote sur un sous-ensemble
-   de routes (à l'image du pilote homepage des lots 4.4/4.5) avant
-   généralisation ? Un pilote partiel sur le routing pose la question de la
-   cohérence (certaines URLs préfixées, d'autres non) pendant la transition.
+---
 
-4. **Devenir du sélecteur de langue cookie (lot 4.3)** : conservé en
-   complément (détection initiale / redirection), remplacé par le
-   préfixe d'URL comme source de vérité de la locale active, ou les deux
-   (cookie = préférence, préfixe = état courant) ?
+### Sous-lot 2 — Alternates + hreflang + sitemap ✅ (2026-06-16)
 
-5. **Statut du flag `localized-routing` pendant la transition** : le flag
-   `platform.localization` reste DRAFT (comme aujourd'hui) — mais un
-   routing par préfixe, une fois introduit, n'est pas un comportement
-   « invisible si le flag est DRAFT » comme les lots précédents : changer
-   la structure de `app/` a un impact même si le niveau gradué n'est pas
-   activé pour un store donné (sauf à dupliquer le routing, ce qui est
-   hors de question). Ce point doit être clarifié : le flag gradué
-   gouverne-t-il encore un comportement runtime, ou seulement l'activation
-   du *contenu* multilingue (lot 4) une fois le routing en place pour
-   tous ?
+**Fichiers modifiés :**
+- `middleware.ts` : pass-through injecte maintenant `x-next-path-without-locale`
+  pour toutes les routes storefront (nécessaire aux alternates de la locale par défaut).
+- `app/layout.tsx` : `export const metadata` remplacé par
+  `export async function generateMetadata()`. Génère `alternates.languages`
+  (hreflang fr + en-GB + x-default) quand L3 est actif. Utilise `cache()` de React
+  pour mémoïser `meetsLocalizationLevel` par requête (shared avec `RootLayout`).
+- `app/sitemap.ts` : entrées locale secondaire ajoutées en fin de sitemap quand L3
+  est actif (`/en-GB/boutique`, `/en-GB/blog/<slug>`, etc.). Catégories exclues des
+  variantes localisées (URLs avec `?category=` — hors périmètre v1).
 
-## Hors périmètre (rappel, inchangé)
+---
+
+### Sous-lot 3 — Sélecteur de langue + action ✅ (2026-06-16)
+
+**Fichiers modifiés :**
+- `features/localization/actions/set-locale-preference.action.ts` : quand L3
+  actif, `redirect` vers `/${localeCode}${pathWithoutLocale}` (locale secondaire)
+  ou `${pathWithoutLocale}` (locale par défaut). `revalidatePath` conservé si L3 inactif.
+- `components/storefront/topbar/locale-selector.tsx` : lit
+  `x-next-path-without-locale` depuis `headers()` et le passe à `LocaleSelectorForm`.
+- `components/storefront/topbar/locale-selector-form.tsx` : prop
+  `pathWithoutLocale?: string` (défaut `"/"`), champ hidden `pathWithoutLocale`
+  dans le `<form>`.
+
+**Migration Next.js 16 (bonus) :**
+- `middleware.ts` → `proxy.ts` + renommage de la fonction `middleware` → `proxy`
+  (cf. https://nextjs.org/docs/messages/middleware-to-proxy).
+- Note : en Next.js 16, proxy tourne en Node.js runtime par défaut (plus Edge).
+  Prisma serait techniquement accessible, mais on conserve l'approche sans DB
+  pour garder le proxy minimal et réversible.
+- `middleware.ts` vidé (commentaire seulement). À supprimer manuellement :
+  `git rm middleware.ts`.
+
+---
+
+## Hors périmètre (inchangé)
 
 - Multi-devise.
 - Traduction automatique (IA).
-- Migration des configs copy restantes vers la convention dictionnaires
-  (incrémentale, indépendante de ce lot).
-
-## Prochaine étape proposée
-
-Obtenir une décision explicite sur les points 1-5 ci-dessus (probablement
-via un échange produit dédié, pas un cadrage technique supplémentaire). Une
-fois ces points tranchés, revenir à `architect-review` pour découper le lot
-5 en sous-lots séquencés selon le pattern Horizon 4 (chacun testable,
-réversible, fiche domaine mise à jour) — sur le même modèle que
-`docs/lots/2026-06-13-localization-l2-cadrage.md`.
+- Migration des configs copy restantes vers la convention dictionnaires.

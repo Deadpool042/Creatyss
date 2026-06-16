@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { meetsFeatureLevel } from "@/features/admin/pilotage/queries/get-feature-level-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import {
   deleteProductAction,
   updateProductInventoryAction,
 } from "@/features/admin/products/editor/actions";
 import {
+  getAdminProductInventoryForecast,
   readAdminProductPageContextBySlug,
   readAdminProductVariants,
 } from "@/features/admin/products/editor/queries";
@@ -30,7 +31,20 @@ export default async function ProductDetailInventoryPage({
   }
 
   const variantsData = await readAdminProductVariants(product.id);
-  const showLowStockThreshold = await meetsFeatureLevel("catalog.products.inventory", "alerts");
+  const [showLowStockThreshold, showInventoryForecasting] = await Promise.all([
+    meetsFeatureLevel("catalog.products.inventory", "alerts"),
+    meetsFeatureLevel("catalog.products.inventory", "forecasting"),
+  ]);
+  const inventoryForecast =
+    showInventoryForecasting && variantsData !== null
+      ? await getAdminProductInventoryForecast(
+          product.id,
+          variantsData.variants.map((variant) => ({
+            id: variant.id,
+            availableQuantity: variant.inventory.availableQuantity,
+          }))
+        )
+      : new Map();
 
   return (
     <AdminPageShell
@@ -57,6 +71,8 @@ export default async function ProductDetailInventoryPage({
         variants={variantsData?.variants ?? []}
         isStandalone={product.isStandalone}
         showLowStockThreshold={showLowStockThreshold}
+        showInventoryForecasting={showInventoryForecasting}
+        inventoryForecast={inventoryForecast}
       />
     </AdminPageShell>
   );

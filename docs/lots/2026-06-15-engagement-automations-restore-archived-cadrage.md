@@ -43,3 +43,22 @@ logique canonique actuelle du cockpit.
 - un opérateur peut aussi restaurer en lot les définitions archivées visibles ;
 - si le code initial a été repris, la restauration garde un code de repli lisible ;
 - la navigation et les liens canoniques existants restent inchangés.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `AdminArchivedAutomationsSection` + `AdminArchivedAutomationsList` affichent
+  les définitions archivées dans `/admin/marketing/automations#archives`.
+- `restoreAutomationAction` → `restoreAutomationDefinition` restaure une
+  définition (bouton "Restaurer" par ligne), `restoreAutomationsBatchAction`
+  restaure en lot les définitions visibles.
+- `restoreAutomationDefinition` (`features/automations/services/`) repasse la
+  définition en `INACTIVE`, vérifie l'unicité `(storeId, code)` sur les
+  automations actives et applique `buildRestoredAutomationCode` (suffixe
+  `__restored__<id6>` lisible) en cas de conflit ; `usedFallbackCode` est
+  remonté à l'UI ("Code libéré pour recréation", message de restauration).
+- Route canonique et ancres (`#archives`, `#archived-automations`) inchangées.
+
+Aucun code à écrire pour ce lot.

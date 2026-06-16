@@ -79,6 +79,7 @@ function DiscountRow({ discount }: { discount: AdminDiscountSummary }) {
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-sm font-semibold text-foreground">{discount.code}</span>
           <Badge variant={getStatusBadgeVariant(optimisticStatus)}>{getStatusLabel(optimisticStatus)}</Badge>
+          <Badge variant="outline">{discount.isAutomatic ? "Automatique" : "Code manuel"}</Badge>
         </div>
         <p className="truncate text-xs text-muted-foreground">{discount.name}</p>
         <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
@@ -97,7 +98,7 @@ export function AdminDiscountsList({ discounts }: AdminDiscountsListProps) {
   if (discounts.length === 0) {
     return (
       <p className="py-10 text-center text-sm text-muted-foreground">
-        Aucun code promo pour le moment.
+        Aucune remise pour le moment.
       </p>
     );
   }

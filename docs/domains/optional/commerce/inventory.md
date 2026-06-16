@@ -322,7 +322,24 @@ Cf. `docs/lots/2026-06-13-inventory-media-levels-cadrage.md`.
   (`ProductInventoryTab` / `InventoryFields`), affiché uniquement si le
   niveau effectif de `catalog.products.inventory` est `alerts` ou
   `forecasting` (résolu via `meetsFeatureLevel`,
-  `features/admin/pilotage/queries/get-feature-level-state.query.ts`). Au
+  `features/feature-flags/queries/get-feature-level-state.query.ts`). Au
   niveau `manual`, le champ est masqué et le seuil reste fixe (2).
 - Restent hors périmètre : agrégation « stock faible » au niveau liste
   produits, alertes/notifications, prévisions (`forecasting`).
+
+### Lecture de couverture locale — niveau `forecasting` (2026-06-16)
+
+Cf. `docs/lots/2026-06-16-inventory-forecasting-cadrage.md`.
+
+- l'onglet stock produit peut maintenant afficher une lecture locale de
+  couverture si `meetsFeatureLevel("catalog.products.inventory",
+  "forecasting")` est atteint ;
+- la lecture repose sur :
+  - le stock disponible par variante ;
+  - les ventes observées sur 30 jours via `OrderLine` liées à des commandes
+    non `CANCELLED` / non `ARCHIVED` ;
+  - une estimation simple `stock disponible / débit moyen quotidien`.
+- l'effet reste strictement en lecture seule :
+  - aucune mutation de stock ;
+  - aucune notification ;
+  - aucune recommandation d'achat.

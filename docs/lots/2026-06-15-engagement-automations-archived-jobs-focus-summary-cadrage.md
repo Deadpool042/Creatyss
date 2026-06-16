@@ -39,3 +39,21 @@ automation archivée en rappelant le volume global de jobs liés.
   volume global de jobs liés ;
 - la lecture du filtre statut devient plus explicite ;
 - aucun comportement opératoire existant n'est modifié.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `AdminArchivedAutomationJobsSection` affiche, quand
+  `normalizedSelectedArchivedAutomation` est défini,
+  `getArchivedAutomationJobActivitySummary(normalizedSelectedArchivedAutomation)`
+  — le même résumé global déjà utilisé sur la ligne de définition archivée
+  (`archived-definition-job-visibility`).
+- Cette information est purement locale (réutilise `jobActivity` déjà
+  chargé), sans nouvelle requête ni changement de la lecture des jobs
+  archivés.
+- Les filtres de statut (`JOB_STATUS_FILTERS`) et les actions de restauration
+  ne sont pas modifiés.
+
+Aucun code à écrire pour ce lot.

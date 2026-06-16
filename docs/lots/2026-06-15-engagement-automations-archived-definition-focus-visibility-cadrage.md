@@ -41,3 +41,20 @@ actif.
 - la ligne correspondante reste identifiable visuellement ;
 - la navigation croisée `job archivé -> définition archivée` gagne en lisibilité
   sans élargir le périmètre du cockpit.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `AdminArchivedAutomationsSection` affiche un bloc « Focus automation
+  archivée : `<code>` » dès que `normalizedSelectedArchivedAutomation` est
+  défini.
+- `ArchivedAutomationRow` (`admin-archived-automations-list.tsx`) applique un
+  fond distinct (`bg-surface-subtle/30 px-3`) et un badge « Focus actif » sur
+  la ligne dont `isArchivedAutomationFocused` est vrai.
+- La navigation croisée `job archivé -> définition archivée`
+  (`archived-definition-focus-from-job`) aboutit donc à une ligne identifiable
+  sans aucun nouveau filtre ni route.
+
+Aucun code à écrire pour ce lot.

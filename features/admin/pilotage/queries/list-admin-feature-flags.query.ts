@@ -1,4 +1,6 @@
 import { db } from "@/core/db";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
+import { resolveEffectiveLevel } from "@/entities/feature-flags/feature-level";
 import {
   getFeatureCatalogEntries,
   findFeatureCatalogEntry,
@@ -9,6 +11,7 @@ import type {
   FeatureScope,
   FeatureLevelKey,
 } from "../catalog/feature-catalog.types";
+import { isOverrideActive } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 /** @deprecated Utiliser AdminFeatureFlagView */
 export type AdminFeatureFlagSummary = {
@@ -45,6 +48,10 @@ export type AdminFeatureFlagView = Readonly<{
     scopeType: "GLOBAL" | "STORE" | "USER" | null;
     overridesCount: number;
     updatedAt: string | null;
+    /** Niveaux autorisés en base (FeatureFlag.allowedLevels) — [] si non graduée */
+    allowedLevels: readonly string[];
+    /** Niveau effectif résolu (override actif sinon defaultLevel) — null si non graduée ou inactive */
+    effectiveLevel: string | null;
   }>;
 
   /** true si un FeatureFlag DB existe pour cette clé mais absente du catalogue TS */
@@ -52,6 +59,8 @@ export type AdminFeatureFlagView = Readonly<{
 }>;
 
 export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlagView[]> {
+  const storeId = await getCurrentStoreId();
+
   const rows = await db.featureFlag.findMany({
     where: { archivedAt: null },
     orderBy: [{ status: "asc" }, { code: "asc" }],
@@ -63,13 +72,58 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
       status: true,
       scopeType: true,
       isEnabledByDefault: true,
+      allowedLevels: true,
+      defaultLevel: true,
       updatedAt: true,
       _count: { select: { overrides: true } },
+      overrides: {
+        where: {
+          archivedAt: null,
+          ...(storeId !== null
+            ? { scopeType: "STORE" as const, scopeId: storeId }
+            : { scopeType: "STORE" as const, scopeId: "" }),
+        },
+        select: {
+          scopeType: true,
+          scopeId: true,
+          isEnabled: true,
+          level: true,
+          startsAt: true,
+          endsAt: true,
+          archivedAt: true,
+        },
+      },
     },
   });
 
   const dbByCode = new Map(rows.map((r) => [r.code, r]));
   const catalogEntries = getFeatureCatalogEntries();
+
+  const now = new Date();
+
+  function effectiveLevelFor(row: (typeof rows)[number]): string | null {
+    const storeOverride =
+      storeId !== null
+        ? (row.overrides.find(
+            (o) => o.scopeType === "STORE" && o.scopeId === storeId && isOverrideActive(o, now)
+          ) ?? null)
+        : null;
+
+    const isActive =
+      storeOverride !== null
+        ? storeOverride.isEnabled
+        : row.status === "ACTIVE" && row.isEnabledByDefault;
+
+    if (!isActive) {
+      return null;
+    }
+
+    return resolveEffectiveLevel({
+      allowedLevels: row.allowedLevels,
+      defaultLevel: row.defaultLevel,
+      overrideLevel: storeOverride?.level ?? null,
+    });
+  }
 
   const views: AdminFeatureFlagView[] = [];
 
@@ -98,6 +152,8 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
           : null,
         overridesCount: row?._count.overrides ?? 0,
         updatedAt: row?.updatedAt.toISOString() ?? null,
+        allowedLevels: row?.allowedLevels ?? [],
+        effectiveLevel: row ? effectiveLevelFor(row) : null,
       },
     });
   }
@@ -121,6 +177,8 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
         scopeType: row.scopeType as AdminFeatureFlagView["dbState"]["scopeType"],
         overridesCount: row._count.overrides,
         updatedAt: row.updatedAt.toISOString(),
+        allowedLevels: row.allowedLevels,
+        effectiveLevel: effectiveLevelFor(row),
       },
       unmapped: true,
     });

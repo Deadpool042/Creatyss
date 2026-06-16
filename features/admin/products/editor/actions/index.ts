@@ -1,6 +1,7 @@
 export {
   attachProductImagesAction,
   deleteProductImageAction,
+  generateMissingProductImageAltTextsAction,
   reorderProductImageAction,
   setProductPrimaryImageAction,
   updateProductImageAltTextAction,
@@ -27,6 +28,9 @@ export {
   updateProductRelatedProductsAction,
   updateProductSeoAction,
 } from "./product-update-editor-actions";
+export {
+  requestProductSeoSuggestionAction,
+} from "./request-product-seo-suggestion.action";
 
 export type {
   CreateProductOptionColorValueInput,

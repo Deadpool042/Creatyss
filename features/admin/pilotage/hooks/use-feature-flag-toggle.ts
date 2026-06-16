@@ -3,12 +3,17 @@
 import { useRouter } from "next/navigation";
 import { useOptimistic, useTransition } from "react";
 
+import { toast } from "@/components/shared";
 import { toggleFeatureFlagAction } from "@/features/admin/pilotage/actions/toggle-feature-flag.action";
+import type { OnFeatureFlagFeedback } from "@/features/admin/pilotage/hooks/feature-flag-feedback";
 import type { AdminFeatureFlagView } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
 
 type ToggleStatus = "ACTIVE" | "INACTIVE" | "DRAFT" | "ARCHIVED" | null;
 
-export function useFeatureFlagToggle(flag: AdminFeatureFlagView) {
+export function useFeatureFlagToggle(
+  flag: AdminFeatureFlagView,
+  onFeedback?: OnFeatureFlagFeedback
+) {
   const router = useRouter();
   const dbStatus: ToggleStatus = flag.dbState.status ?? null;
 
@@ -29,9 +34,22 @@ export function useFeatureFlagToggle(flag: AdminFeatureFlagView) {
   function handleToggle() {
     if (!canToggle || flag.dbState.id === null) return;
     const flagId = flag.dbState.id;
+    const previousStatus = optimisticStatus;
+    const nextStatus: ToggleStatus = isActive ? "INACTIVE" : "ACTIVE";
+
     startTransition(async () => {
-      setOptimisticStatus(isActive ? "INACTIVE" : "ACTIVE");
-      await toggleFeatureFlagAction(flagId);
+      setOptimisticStatus(nextStatus);
+      const result = await toggleFeatureFlagAction(flagId);
+
+      if (!result.ok) {
+        setOptimisticStatus(previousStatus);
+        toast.error(result.error);
+        onFeedback?.({ tone: "alert", message: result.error });
+        return;
+      }
+
+      toast.success(result.message);
+      onFeedback?.({ tone: "success", message: result.message });
       router.refresh();
     });
   }

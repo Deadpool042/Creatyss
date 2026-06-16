@@ -4,10 +4,20 @@ import { Mail } from "lucide-react";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
 import { isNewsletterFeatureActive } from "@/features/admin/marketing/queries/is-newsletter-feature-active.query";
-import { meetsFeatureLevel } from "@/features/admin/pilotage/queries/get-feature-level-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { listAdminNewsletterSubscribers } from "@/features/admin/marketing/newsletter/queries/list-admin-newsletter-subscribers.query";
+import { getAdminNewsletterAutomationSnapshot } from "@/features/admin/marketing/newsletter/queries/get-admin-newsletter-automation-snapshot.query";
+import { AdminNewsletterAutomationPanel } from "@/features/admin/marketing/newsletter/components/admin-newsletter-automation-panel";
+import { AdminNewsletterSegmentationPanel } from "@/features/admin/marketing/newsletter/components/admin-newsletter-segmentation-panel";
 import { AdminNewsletterSubscribersList } from "@/features/admin/marketing/newsletter/components/admin-newsletter-subscribers-list";
 import { AdminNewsletterSubscriberCreateForm } from "@/features/admin/marketing/newsletter/components/admin-newsletter-subscriber-create-form";
+import type {
+  AdminNewsletterSubscriberCustomerLinkFilter,
+  AdminNewsletterSubscriberRecencyFilter,
+  AdminNewsletterSubscriberSourceFilter,
+  AdminNewsletterSubscriberStatusFilter,
+} from "@/features/admin/marketing/newsletter/types/admin-newsletter-subscriber.types";
+import type { AdminNewsletterSearchParams } from "@/features/admin/marketing/newsletter/shared/admin-newsletter-routes";
 
 export const dynamic = "force-dynamic";
 
@@ -15,8 +25,55 @@ type AdminMarketingNewsletterPageProps = Readonly<{
   searchParams: Promise<{
     newsletter_created?: string;
     newsletter_error?: string;
+    status?: string;
+    source?: string;
+    customerLink?: string;
+    recency?: string;
   }>;
 }>;
+
+function parseStatusFilter(value: string | undefined): AdminNewsletterSubscriberStatusFilter | undefined {
+  switch (value) {
+    case "SUBSCRIBED":
+    case "UNSUBSCRIBED":
+    case "BOUNCED":
+    case "PENDING":
+      return value;
+    default:
+      return undefined;
+  }
+}
+
+function parseSourceFilter(value: string | undefined): AdminNewsletterSubscriberSourceFilter | undefined {
+  switch (value) {
+    case "admin":
+    case "storefront":
+      return value;
+    default:
+      return undefined;
+  }
+}
+
+function parseCustomerLinkFilter(
+  value: string | undefined
+): AdminNewsletterSubscriberCustomerLinkFilter | undefined {
+  switch (value) {
+    case "linked":
+    case "unlinked":
+      return value;
+    default:
+      return undefined;
+  }
+}
+
+function parseRecencyFilter(value: string | undefined): AdminNewsletterSubscriberRecencyFilter | undefined {
+  switch (value) {
+    case "recent":
+      return value;
+    default:
+      return undefined;
+  }
+}
 
 function getErrorMessage(code: string): string {
   switch (code) {
@@ -37,7 +94,11 @@ export default async function AdminMarketingNewsletterPage({
   const featureActive = await isNewsletterFeatureActive();
   if (!featureActive) notFound();
 
-  const basicLevelMet = await meetsFeatureLevel("engagement.newsletter", "basic");
+  const [basicLevelMet, segmentationLevelMet, automationSnapshot] = await Promise.all([
+    meetsFeatureLevel("engagement.newsletter", "basic"),
+    meetsFeatureLevel("engagement.newsletter", "segmentation"),
+    getAdminNewsletterAutomationSnapshot(),
+  ]);
 
   if (!basicLevelMet) {
     return (
@@ -63,10 +124,16 @@ export default async function AdminMarketingNewsletterPage({
     );
   }
 
-  const [subscribers, resolvedSearchParams] = await Promise.all([
-    listAdminNewsletterSubscribers(),
-    searchParams,
-  ]);
+  const resolvedSearchParams = await searchParams;
+  const filters = {
+    status: segmentationLevelMet ? parseStatusFilter(resolvedSearchParams.status) : undefined,
+    source: segmentationLevelMet ? parseSourceFilter(resolvedSearchParams.source) : undefined,
+    customerLink: segmentationLevelMet
+      ? parseCustomerLinkFilter(resolvedSearchParams.customerLink)
+      : undefined,
+    recency: segmentationLevelMet ? parseRecencyFilter(resolvedSearchParams.recency) : undefined,
+  } satisfies AdminNewsletterSearchParams;
+  const subscriberResult = await listAdminNewsletterSubscribers(filters);
 
   return (
     <AdminPageShell
@@ -105,11 +172,25 @@ export default async function AdminMarketingNewsletterPage({
           <AdminNewsletterSubscriberCreateForm />
         </section>
 
+        {segmentationLevelMet ? (
+          <AdminNewsletterSegmentationPanel counts={subscriberResult.counts} filters={filters} />
+        ) : (
+          <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
+            <h2 className="text-lg font-semibold tracking-tight text-foreground">Segmentation</h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Niveau `segmentation` non actif : le référentiel reste consultable au niveau
+              `basic`, sans filtres opératoires avancés.
+            </p>
+          </section>
+        )}
+
+        <AdminNewsletterAutomationPanel snapshot={automationSnapshot} />
+
         <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
           <h2 className="mb-4 text-lg font-semibold tracking-tight text-foreground">
             Abonnés
           </h2>
-          <AdminNewsletterSubscribersList subscribers={subscribers} />
+          <AdminNewsletterSubscribersList subscribers={subscriberResult.items} />
         </section>
       </div>
     </AdminPageShell>

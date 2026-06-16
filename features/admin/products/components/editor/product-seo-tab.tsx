@@ -2,7 +2,7 @@
 
 import { AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState, type JSX } from "react";
+import { useActionState, useEffect, useRef, useState, type JSX } from "react";
 
 import { AdminCharCounter } from "@/components/admin/forms/admin-char-counter";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { clientEnv } from "@/core/config/env/client";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import type { SeoSuggestionHistoryEntry } from "@/features/ai-assistance/queries";
 import {
   Select,
   SelectContent,
@@ -32,11 +33,53 @@ const SITE_NAME = "Creatyss";
 
 type ProductSeoTabProps = {
   action: ProductSeoFormAction;
+  aiSuggestionAction: ProductSeoSuggestionAction;
+  aiSuggestionEnabled: boolean;
+  aiSuggestionAutomationEnabled: boolean;
+  aiSuggestionHistoryEnabled: boolean;
+  aiSuggestionHistory: SeoSuggestionHistoryEntry[];
   product: AdminProductEditorData;
 };
 
 type ProductSeoTabInnerProps = ProductSeoTabProps & {
   onReset: () => void;
+};
+
+type ProductSeoSuggestionActionState = {
+  status: "idle" | "success" | "error";
+  message: string | null;
+  suggestionTitle: string;
+  suggestionDescription: string;
+  taskId: string | null;
+  strategy: string | null;
+};
+
+type ProductSeoSuggestionAction = (
+  prevState: ProductSeoSuggestionActionState,
+  formData: FormData
+) => Promise<ProductSeoSuggestionActionState>;
+
+type ProductSeoSuggestionPanelProps = {
+  enabled: boolean;
+  formId: string;
+  onApplySuggestion: (input: { title: string; description: string }) => void;
+  pending: boolean;
+  state: ProductSeoSuggestionActionState;
+};
+
+type ProductSeoSuggestionHistoryProps = {
+  enabled: boolean;
+  entries: SeoSuggestionHistoryEntry[];
+  onApplySuggestion: (input: { title: string; description: string }) => void;
+};
+
+const productSeoSuggestionActionInitialState: ProductSeoSuggestionActionState = {
+  status: "idle",
+  message: null,
+  suggestionTitle: "",
+  suggestionDescription: "",
+  taskId: null,
+  strategy: null,
 };
 
 const SEO_TITLE_MIN = 20;
@@ -268,15 +311,223 @@ function SeoNextSteps({ items }: { items: SeoCheckItem[] }): JSX.Element | null 
   );
 }
 
-function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProps): JSX.Element {
+function ProductSeoSuggestionPanel({
+  enabled,
+  automationEnabled,
+  formId,
+  onApplySuggestion,
+  pending,
+  state,
+}: ProductSeoSuggestionPanelProps & { automationEnabled: boolean }): JSX.Element | null {
+  if (!enabled) {
+    return null;
+  }
+
+  return (
+    <section className="grid gap-4 rounded-2xl border border-brand/15 bg-brand/[0.03] p-4">
+      <div className="grid gap-1">
+        <ProductSectionEyebrow>Suggestion assistee</ProductSectionEyebrow>
+        <h3 className="text-base font-semibold tracking-tight text-foreground">
+          Proposition SEO IA
+        </h3>
+        <p className="text-sm leading-6 text-muted-foreground">
+          Genere une proposition manuelle pour le titre et la description SEO.
+          Rien n&apos;est enregistre tant que vous n&apos;appliquez pas puis ne sauvegardez
+          pas explicitement le formulaire.
+        </p>
+        {automationEnabled ? (
+          <p className="text-xs leading-5 text-muted-foreground">
+            En niveau automation, une premiere suggestion est preparee automatiquement
+            quand aucun historique n&apos;existe encore pour ce produit.
+          </p>
+        ) : null}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <Button
+          type="submit"
+          variant="secondary"
+          size="sm"
+          disabled={pending}
+          form={formId}
+        >
+          {pending ? "Generation..." : "Suggérer avec l'IA"}
+        </Button>
+        {state.taskId ? (
+          <p className="text-[11px] text-muted-foreground">Trace AiTask : {state.taskId}</p>
+        ) : null}
+      </div>
+
+      {state.message ? (
+        <div
+          className={[
+            "rounded-xl border px-3 py-2 text-sm",
+            state.status === "success"
+              ? "border-emerald-200 bg-emerald-50 text-emerald-900"
+              : state.status === "error"
+                ? "border-red-200 bg-red-50 text-red-900"
+                : "border-surface-border/60 bg-white/70 text-foreground",
+          ].join(" ")}
+        >
+          {state.message}
+        </div>
+      ) : null}
+
+      {state.status === "success" &&
+      state.suggestionTitle.trim().length > 0 &&
+      state.suggestionDescription.trim().length > 0 ? (
+        <div className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-4">
+          <div className="grid gap-1">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+              Proposition
+            </p>
+            <p className="text-sm font-medium text-foreground">{state.suggestionTitle}</p>
+            <p className="text-sm leading-6 text-muted-foreground">
+              {state.suggestionDescription}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <Button
+              type="button"
+              size="sm"
+              onClick={() =>
+                onApplySuggestion({
+                  title: state.suggestionTitle,
+                  description: state.suggestionDescription,
+                })
+              }
+            >
+              Remplir les champs
+            </Button>
+            {state.strategy ? (
+              <p className="text-[11px] text-muted-foreground">Strategie : {state.strategy}</p>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+function ProductSeoSuggestionHistory({
+  enabled,
+  entries,
+  onApplySuggestion,
+}: ProductSeoSuggestionHistoryProps): JSX.Element | null {
+  if (!enabled) {
+    return null;
+  }
+
+  return (
+    <section className="grid gap-4 rounded-2xl border border-surface-border/70 bg-background p-4">
+      <div className="grid gap-1">
+        <ProductSectionEyebrow>Historique assiste</ProductSectionEyebrow>
+        <h3 className="text-base font-semibold tracking-tight text-foreground">
+          Suggestions SEO precedentes
+        </h3>
+        <p className="text-sm leading-6 text-muted-foreground">
+          Reprenez une suggestion deja produite pour ce produit, sans regeneration.
+        </p>
+      </div>
+
+      {entries.length === 0 ? (
+        <p className="text-sm text-muted-foreground">
+          Aucune suggestion SEO tracee pour ce produit.
+        </p>
+      ) : (
+        <div className="grid gap-3">
+          {entries.map((entry) => (
+            <article
+              key={entry.id}
+              className="grid gap-3 rounded-xl border border-surface-border/60 bg-surface/20 p-3"
+            >
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+                <span>{entry.createdAt.toLocaleString("fr-FR")}</span>
+                <span>Statut : {entry.status}</span>
+                {entry.strategy ? <span>Strategie : {entry.strategy}</span> : null}
+                {entry.requestedByEmail ? <span>Par : {entry.requestedByEmail}</span> : null}
+              </div>
+
+              <div className="grid gap-1">
+                <p className="text-sm font-medium text-foreground">{entry.seoTitle}</p>
+                <p className="text-sm leading-6 text-muted-foreground">{entry.seoDescription}</p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    onApplySuggestion({
+                      title: entry.seoTitle,
+                      description: entry.seoDescription,
+                    })
+                  }
+                >
+                  Reutiliser
+                </Button>
+                {entry.reviewRequired ? (
+                  <p className="text-[11px] text-muted-foreground">
+                    Validation editoriale requise avant enregistrement.
+                  </p>
+                ) : null}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function ProductSeoTabInner({
+  action,
+  aiSuggestionAction,
+  aiSuggestionEnabled,
+  aiSuggestionAutomationEnabled,
+  aiSuggestionHistory,
+  aiSuggestionHistoryEnabled,
+  product,
+  onReset,
+}: ProductSeoTabInnerProps): JSX.Element {
   const router = useRouter();
   const [state, formAction, pending] = useActionState(action, productSeoFormInitialState);
+  const [aiSuggestionState, aiSuggestionFormAction, aiSuggestionPending] = useActionState(
+    aiSuggestionAction,
+    productSeoSuggestionActionInitialState
+  );
+  const aiSuggestionFormId = `product-seo-ai-suggestion-${product.product.id}`;
+  const aiSuggestionAutoTriggeredRef = useRef(false);
 
   useEffect(() => {
     if (state.status === "success") {
       router.refresh();
     }
   }, [state.status, router]);
+
+  useEffect(() => {
+    if (
+      !aiSuggestionAutomationEnabled ||
+      aiSuggestionAutoTriggeredRef.current ||
+      aiSuggestionHistory.length > 0 ||
+      aiSuggestionPending
+    ) {
+      return;
+    }
+
+    aiSuggestionAutoTriggeredRef.current = true;
+    const formData = new FormData();
+    formData.set("productId", product.product.id);
+    aiSuggestionFormAction(formData);
+  }, [
+    aiSuggestionAutomationEnabled,
+    aiSuggestionFormAction,
+    aiSuggestionHistory.length,
+    aiSuggestionPending,
+    product.product.id,
+  ]);
 
   // Pre-fill: use saved value if non-empty, otherwise fallback to product data
   const initialTitle = product.seo.title.trim() || product.seo.fallbackTitle;
@@ -424,8 +675,13 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
   ];
 
   return (
-    <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
-      <input type="hidden" name="productId" value={product.product.id} />
+    <>
+      <form id={aiSuggestionFormId} action={aiSuggestionFormAction}>
+        <input type="hidden" name="productId" value={product.product.id} />
+      </form>
+
+      <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+        <input type="hidden" name="productId" value={product.product.id} />
 
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
         <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3">
@@ -441,6 +697,27 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
                   eyebrow="Visibilité Google"
                   title="Référencement principal"
                   description="Ces informations alimentent le résultat Google. Elles partent du produit existant, puis peuvent être affinées sans surcharger la fiche."
+                />
+
+                <ProductSeoSuggestionPanel
+                  enabled={aiSuggestionEnabled}
+                  automationEnabled={aiSuggestionAutomationEnabled}
+                  formId={aiSuggestionFormId}
+                  pending={aiSuggestionPending}
+                  state={aiSuggestionState}
+                  onApplySuggestion={({ title, description }) => {
+                    setTitleValue(title);
+                    setDescValue(description);
+                  }}
+                />
+
+                <ProductSeoSuggestionHistory
+                  enabled={aiSuggestionHistoryEnabled}
+                  entries={aiSuggestionHistory}
+                  onApplySuggestion={({ title, description }) => {
+                    setTitleValue(title);
+                    setDescValue(description);
+                  }}
                 />
 
                 <div className="space-y-5 lg:grid lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-8 lg:space-y-0 lg:items-start">
@@ -843,7 +1120,7 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
         </div>
       </div>
 
-      <AdminFormFooter
+        <AdminFormFooter
         actionsClassName="w-full justify-between gap-2 sm:w-auto sm:justify-end"
         className={[
           "bottom-[calc(3.5rem+env(safe-area-inset-bottom))]",
@@ -872,7 +1149,8 @@ function ProductSeoTabInner({ action, product, onReset }: ProductSeoTabInnerProp
           {pending ? "Mise à jour…" : "Enregistrer"}
         </Button>
       </AdminFormFooter>
-    </form>
+      </form>
+    </>
   );
 }
 

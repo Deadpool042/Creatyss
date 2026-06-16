@@ -407,6 +407,33 @@ CRUD seul, sans application panier/checkout).
 - `DiscountRedemption`, `DiscountCode` et les tables `*Target` restent non
   alimentés par ce lot.
 
+### Checkout code promo `ORDER`, niveau `rules` (2026-06-15)
+
+Cf. `docs/lots/2026-06-15-commerce-discounts-rules-cadrage.md` (premier lot
+borné de consommation storefront/commande).
+
+- `app/(public)/checkout/page.tsx` expose un bloc `Code promo` seulement si
+  `meetsFeatureLevel("commerce.discounts","rules")` est vrai.
+- Le checkout porte le code promo via l'URL (`/checkout?discount=...`) et les
+  formulaires serveur ; aucun champ Prisma `Checkout.discountCode` n'est ajouté
+  dans cette première marche.
+- La prévisualisation storefront passe par une résolution serveur bornée
+  (`resolveCheckoutOrderDiscount`) ; elle n'est jamais la source de vérité
+  finale.
+- `features/commerce/orders/lib/order.repository.ts` relit et recalcule la
+  remise juste avant création de commande, persiste `discountAmount` et crée
+  une `DiscountRedemption` minimale si la remise est effectivement appliquée.
+- Périmètre supporté :
+  - une seule remise à la fois ;
+  - scope `ORDER` uniquement ;
+  - types `PERCENTAGE` et `FIXED_AMOUNT` uniquement.
+- Restent explicitement hors lot :
+  - `DiscountCode` ;
+  - `FREE_SHIPPING` ;
+  - remises automatiques ;
+  - ciblage `PRODUCT` / `PRODUCT_VARIANT` / `CATEGORY` ;
+  - ventilation ligne par ligne (`lineDiscountAmount` reste à `0`).
+
 ## Documents liés
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`

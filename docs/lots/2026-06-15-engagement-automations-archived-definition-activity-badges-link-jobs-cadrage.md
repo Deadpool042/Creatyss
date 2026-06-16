@@ -39,3 +39,20 @@ Permettre, depuis une définition archivée visible dans
 - cliquer un badge ouvre `Jobs archivés` sur le bon statut pour cette
   automation ;
 - aucun comportement opératoire existant n'est modifié.
+
+## Statut — déjà implémenté
+
+Tous les critères de fin sont déjà satisfaits par le code existant, vérifié le
+2026-06-15 :
+
+- `formatArchivedActivityBadges` (`admin-archived-automations-list.tsx`)
+  génère un badge cliquable par statut présent (`pending`, `running`,
+  `failed`, `succeeded`, `cancelled`, total).
+- Chaque badge est un `Link` vers `buildAutomationsPageHref({
+  archivedAutomationId: automation.id, archivedStatus: item.status,
+  hash: "archived-jobs" })`, ouvrant `Jobs archivés` focalisé sur cette
+  automation et ce statut.
+- Aucune nouvelle requête ni action : les badges réutilisent
+  `automation.jobActivity` déjà chargé.
+
+Aucun code à écrire pour ce lot.

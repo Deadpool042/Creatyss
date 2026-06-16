@@ -129,6 +129,17 @@ Les invariants minimaux sont les suivants :
 
 Le domaine protège la gouvernance des usages IA, pas la vérité métier finale des autres domaines.
 
+### Gradation actuellement cablee
+
+Au 16 juin 2026, le niveau fonctionnel `ai.core` est consomme ainsi :
+
+- `basic` : lecture et observabilite admin du modele `AiProvider` / `AiTask`
+- `assistant` : suggestion SEO manuelle pour produit et article de blog, avec application explicite par l'operateur
+- `advanced` : historique local reutilisable des suggestions SEO deja tracees sur le meme sujet
+- `automation` : preparation automatique d'une premiere suggestion SEO quand aucun historique n'existe encore pour le sujet courant
+
+Les niveaux superieurs n'introduisent pas, a ce stade, de publication automatique ni de delegation de decision metier.
+
 ---
 
 ## Dépendances
@@ -238,6 +249,27 @@ Le domaine doit éviter :
 Le domaine `ai-assistance` expose principalement :
 
 - des lectures d’interactions assistées ;
+
+---
+
+## Decisions d'implementation
+
+### `ai.core` niveau `basic` - suggestion SEO produit (2026-06-15)
+
+- `requestProductSeoSuggestion` ouvre une suggestion SEO manuelle et traçable
+  sur la fiche produit.
+- la strategie reste locale (`local-seo-suggestion-v1`) ;
+- aucune sauvegarde SEO n'est faite sans action explicite de l'operateur.
+
+### `ai.core` niveau `assistant` - suggestion SEO blog (2026-06-16)
+
+- l'edition d'un article de blog existant peut maintenant demander une
+  suggestion SEO manuelle quand `meetsFeatureLevel("ai.core", "assistant")`
+  est vrai ;
+- la suggestion reste locale, manuelle et traçable via `AiTask` ;
+- aucun auto-remplissage definitif ni publication implicite n'est introduit ;
+- la creation d'article reste hors lot : pas de suggestion sans `subjectId`
+  stabilise.
 - des lectures de suggestions ou artefacts générés ;
 - des lectures de statut d’acceptation ou de rejet ;
 - des lectures exploitables par `pages`, `blog`, `products`, `support`, `seo` et certaines couches d’administration ;
@@ -391,6 +423,42 @@ Il ne doit pas devenir un moteur global opaque ni un doublon des domaines métie
 - la hiérarchie entre vérité interne et provider externe éventuel.
 
 Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+
+---
+
+## Décisions d'implémentation
+
+### Ouverture admin bornée `ai.core` — lecture seule du référentiel (2026-06-15)
+
+Cf. `docs/lots/2026-06-15-ai-core-admin-read-cadrage.md`.
+
+- `ai.core` reste inactif par défaut et gradué (`basic`, `assistant`, `advanced`,
+  `automation`) via `FeatureFlag`.
+- Le premier lot n'ouvre **aucune** génération, aucun provider SDK ni aucun
+  workflow de validation.
+- Une page discrète `/admin/settings/ai`, gated par `ai.core`, expose seulement
+  une lecture admin de `AiProvider` et `AiTask`.
+- Cette ouverture confirme le modèle réel existant sans prétendre que l'IA
+  produit est ouverte : la vérité métier finale reste hors de `ai-assistance`,
+  conformément aux invariants du domaine.
+
+### Suggestion SEO produit manuelle, niveau `basic` (2026-06-15)
+
+Cf. `docs/lots/2026-06-15-ai-core-first-usage-cadrage.md`.
+
+- `ai.core` niveau `basic` ouvre un premier usage borné sur
+  `/admin/catalog/products/[slug]/seo`.
+- L'opérateur peut demander une suggestion de `seoTitle` et
+  `seoDescription`, puis choisir explicitement de remplir les champs du
+  formulaire.
+- Aucune suggestion n'est publiée ni persistée dans `seoMetadata` sans
+  sauvegarde manuelle du formulaire produit.
+- Chaque demande crée une trace `AiTask` de type `SEO_SUGGESTION` avec sujet
+  `PRODUCT`, input minimal et output structuré.
+- En l'absence de provider runtime doctriné dans le repo, ce lot utilise une
+  stratégie locale bornée (`local-seo-suggestion-v1`) plutôt qu'un SDK externe.
+- Restent hors lot : provider SDK, blog, Open Graph/Twitter, historique riche,
+  automatisation, enrichissement catalogue.
 
 ---
 

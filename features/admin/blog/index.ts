@@ -3,6 +3,7 @@ export { BlogImagePickerField } from "./components/blog-image-picker-field";
 export {
   createBlogPostAction,
   deleteBlogPostAction,
+  requestBlogPostSeoSuggestionAction,
   toggleBlogPostStatusAction,
   updateBlogPostAction,
 } from "./actions";

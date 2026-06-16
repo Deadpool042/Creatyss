@@ -26,6 +26,7 @@ export async function listAdminDiscounts(): Promise<AdminDiscountSummary[]> {
       description: true,
       status: true,
       type: true,
+      isAutomatic: true,
       percentageValue: true,
       fixedAmountValue: true,
       currencyCode: true,

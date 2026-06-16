@@ -16,6 +16,7 @@ export type AdminDiscountSummary = {
   description: string | null;
   status: DiscountStatus;
   type: DiscountType;
+  isAutomatic: boolean;
   percentageValue: number | null;
   fixedAmountValue: number | null;
   currencyCode: string | null;

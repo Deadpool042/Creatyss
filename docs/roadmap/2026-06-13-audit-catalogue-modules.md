@@ -48,15 +48,15 @@ depuis l'admin aujourd'hui.
 | `catalog.products.categories` | L3 | |
 | `catalog.products.seo` | L3 | dépend de `engagement.analytics` (déclaré, sans effet observé) |
 | `catalog.products.related` | L3 | gating posé (`is-related-products-feature-active`), utilisé admin + boutique |
-| `catalog.products.inventory` | L3 (niveaux `manual`/`alerts` câblés, 2026-06-13) | seed `allowedLevels`/`defaultLevel` + résolveur générique de niveau (`meetsFeatureLevel`) ; niveau `alerts` câblé : `InventoryItem.lowStockThreshold` configurable, `getStockBadge()` utilise le seuil configuré. `forecasting` reste déclaré sans implémentation |
-| `catalog.products.media` | L3 (niveaux `basic`/`optimization` câblés, 2026-06-13) | seed `allowedLevels`/`defaultLevel` + résolveur générique de niveau ; niveau `optimization` câblé : diagnostic « sans texte alternatif » gated. Diagnostic ratio 4:5 déjà existant, ungated, laissé tel quel (cf. `docs/domains/satellites/media.md`). `generation`/`automation` restent déclarés sans implémentation |
+| `catalog.products.inventory` | L3 (niveaux `manual`/`alerts`/`forecasting` câblés, 2026-06-16) | seed `allowedLevels`/`defaultLevel` + résolveur générique de niveau (`meetsFeatureLevel`) ; niveau `alerts` câblé : `InventoryItem.lowStockThreshold` configurable, `getStockBadge()` utilise le seuil configuré. 2026-06-16 : niveau `forecasting` branché en lecture locale sur l'onglet stock produit (ventes 30 jours, débit moyen, couverture estimée par variante), sans notifications ni moteur prédictif |
+| `catalog.products.media` | L3 (niveaux `basic`/`optimization`/`generation`/`automation` câblés, 2026-06-16) | seed `allowedLevels`/`defaultLevel` + résolveur générique de niveau ; niveau `optimization` câblé : diagnostic « sans texte alternatif » gated. Niveau `generation` câblé : action admin explicite pour compléter uniquement les `altText` manquants de la galerie produit, de façon locale et déterministe. Niveau `automation` câblé : les mutations `upload` et `attach` complètent automatiquement les `altText` manquants sans écraser ceux déjà saisis. Diagnostic ratio 4:5 déjà existant, ungated, laissé tel quel (cf. `docs/domains/satellites/media.md`). |
 | `settings.advanced` | L3 | le pilotage lui-même |
 
 **Constat :** le socle catalogue est solide. La **gradation
 annoncée mais non câblée** de `catalog.products.inventory` et
 `catalog.products.media` a été comblée pour les niveaux `alerts`/`optimization`
 (2026-06-13, cf. `docs/lots/2026-06-13-inventory-media-levels-cadrage.md`) ;
-les niveaux supérieurs (`forecasting`, `generation`/`automation`) restent
+le niveau supérieur `forecasting` reste
 déclarés sans implémentation.
 
 ### `cross_cutting` (6) — fonctions transverses actives
@@ -80,13 +80,13 @@ cf. section optional).
 | Clé | Maturité | Note |
 |---|---|---|
 | `platform.localization` | L2/L3 partiel, **en pause** | lots 1-4 faits (2026-06-13) : guard gradué, niveau `managed`, admin `/admin/settings/localization`, pilote homepage multilingue. Niveau repassé à `managed`, sélecteur masqué. Lot `localized-routing` (L3) cadré non tranché (`docs/lots/2026-06-13-localization-l3-cadrage.md`) |
-| `engagement.analytics` | L3 (périmètre commerce, 2026-06-13), **inactif par défaut** | `/admin/insights/analytics` — flag seedé (`status: DRAFT`, `isEnabledByDefault: false`, niveaux `read/insights/recommendations`) ; bloc « Ce mois » branché sur `Order`/`Customer` réels (lecture live, gated `meetsFeatureLevel("engagement.analytics","read")`) ; bloc « Aujourd'hui vs hier » reste mock (tracking absent, hors périmètre). `AnalyticsMetric`/`AnalyticsSnapshot` toujours non lus/écrits |
-| `engagement.newsletter` | L3 (inactif par défaut, niveau `basic`) | 2026-06-13 : `/admin/marketing/newsletter` remplace `AdminComingSoon` — CRUD `NewsletterSubscriber` (ajout + bascule SUBSCRIBED/UNSUBSCRIBED), gated `meetsFeatureLevel("engagement.newsletter","basic")`. 2026-06-14 : la homepage storefront branche enfin `POST /api/newsletter` sur une création/réactivation idempotente du référentiel. Aucune campagne (`NewsletterCampaign`/`NewsletterCampaignRecipient` non alimentés, aucun envoi email). Niveaux `segmentation`/`automation` non implémentés |
+| `engagement.analytics` | L3 (périmètre commerce, niveaux `read` + `insights`, inactif par défaut) | `/admin/insights/analytics` — flag seedé (`status: DRAFT`, `isEnabledByDefault: false`, niveaux `read/insights/recommendations`) ; bloc « Ce mois » branché sur `Order`/`Customer` réels (lecture live, gated `meetsFeatureLevel("engagement.analytics","read")`) ; niveau `insights` branché sur des lectures commerce additionnelles (`Order` / `OrderLine`) : panier moyen confirmé, commandes confirmées, statuts du mois, top produits. Bloc « Aujourd'hui vs hier » reste mock (tracking absent, hors périmètre). `AnalyticsMetric`/`AnalyticsSnapshot` toujours non lus/écrits ; `recommendations` reste hors lot |
+| `engagement.newsletter` | L3 (inactif par défaut, niveaux `basic` + `segmentation` + `automation`) | 2026-06-13 : `/admin/marketing/newsletter` remplace `AdminComingSoon` — CRUD `NewsletterSubscriber` (ajout + bascule SUBSCRIBED/UNSUBSCRIBED), gated `meetsFeatureLevel("engagement.newsletter","basic")`. 2026-06-14 : la homepage storefront branche enfin `POST /api/newsletter` sur une création/réactivation idempotente du référentiel. 2026-06-15 : niveau `segmentation` branché sur le référentiel réel (filtres `status`, `source`, rattachement client, récence), sans campagne, sans `Behavior*`, sans `Crm*`. 2026-06-16 : niveau `automation` branché sur le pont réel vers `engagement.automations` — la planification de jobs `NEWSLETTER_SUBSCRIBED` dépend désormais du niveau newsletter `automation`, et la page newsletter expose une lecture locale de cet état opératoire. `NewsletterCampaign`/`NewsletterCampaignRecipient` restent non alimentés |
 | `engagement.automations` | L3 (inactif par défaut, boucle bornée exécutable) | 2026-06-14 : `FeatureFlag` seedé (`prisma/seed/automations-feature-flag.seed.ts`, DRAFT). Schéma Prisma minimal posé (`prisma/optional/engagement/automations.prisma`) puis `/admin/marketing/automations` branché sur un CRUD admin de définitions `Automation` (création, liste, activation/désactivation, puis édition inline et archivage local). Suite du même jour : la souscription storefront newsletter planifie désormais un `Job` par automation `ACTIVE` avec `triggerType = NEWSLETTER_SUBSCRIBED`, `scheduledAt` dérivé de `delayMinutes`, la page admin expose une lecture locale de ces jobs planifiés, permet maintenant aussi de modifier localement le `scheduledAt` d'un job `PENDING` ou de l'archiver depuis sa propre ligne, un exécuteur manuel borné permet de traiter les jobs prêts pour `actionType = EMAIL_MESSAGE`, puis un batch borné permet d'exécuter les jobs prêts déjà visibles ; la même page expose aussi la trace minimale `EmailMessage` liée à chaque job, désormais rendue de façon plus structurée ligne par ligne, et explicite aussi l'absence de trace locale quand elle n'existe pas, y compris avant exécution sur un job `PENDING`, la désactivation d'une automation annule ses jobs `PENDING` encore planifiés, l'archivage d'une définition annule aussi ses jobs `PENDING` encore liés, un job `PENDING` supprimé localement est lui aussi annulé avant archivage, un opérateur peut annuler manuellement un job `PENDING` ligne par ligne, relancer localement un job `FAILED`, relancer en lot les jobs échoués déjà visibles, annuler en lot les jobs en attente déjà visibles, voir sur chaque définition un résumé local de l'activité jobs liée, focaliser la section jobs sur une définition précise depuis la même page, filtrer localement cette section par statut, utiliser directement les badges d'activité des définitions comme points d'entrée vers la vue jobs cohérente, filtrer localement la liste des définitions elles-mêmes selon cette activité, utiliser aussi les cartes de synthèse jobs comme raccourcis vers ce filtre statut, utiliser aussi le résumé du dernier job comme raccourci vers cette même vue cohérente, avec un état visuel actif quand ce raccourci cible déjà la vue ouverte, rendre l'état vide des jobs filtrés explicite et réversible dans la même page, permettre depuis une ligne job de refocaliser directement la page sur son automation, utiliser aussi le badge statut de cette ligne comme raccourci vers la vue cohérente de ce statut, expliciter la nature de la date principale affichée sur chaque ligne job, distinguer visuellement un `PENDING` prêt à exécuter d'un `PENDING` simplement programmé, expliciter aussi si l'exécution est immédiate, déjà échue ou encore future, rappeler dans la zone d'action qu'un job non prêt reste en attente d'échéance, éviter aussi le simple tiret muet sur les états sans action locale, distinguer aussi dans le résumé batch les jobs déjà prêts des jobs encore en attente d'échéance, faire aussi porter aux boutons batch eux-mêmes le volume visible ciblé, distinguer plus clairement l'erreur du job de l'erreur email éventuelle, permettre de retirer explicitement le filtre statut actif depuis l'entête jobs, retirer d'un coup l'ensemble des filtres jobs actifs sans perdre le contexte `definition`, retirer explicitement le filtre `definition` actif depuis sa propre section sans perdre les autres contextes locaux utiles, expliciter aussi sur chaque ligne job les libellés métier du déclencheur et de l'action, rendre visibles les comptages de définitions et de jobs réellement affichés dans le cockpit filtré, afficher un identifiant court de référence sur chaque ligne job, puis permettre aussi de réinitialiser d'un coup l'ensemble des filtres de page actifs. Suite 2026-06-15 : la même page expose aussi les définitions archivées et permet leur restauration locale vers `INACTIVE`, avec code de repli lisible si le code d'origine a déjà été repris ; elle expose aussi désormais les jobs archivés et peut restaurer localement un ancien `PENDING` vers `PENDING` seulement si son automation liée reste `ACTIVE`, sinon simple réaffichage historique ; enfin, les deux sections d'archives visibles supportent maintenant aussi une restauration batch strictement locale. Aucun worker générique, aucun run model, aucun template éditable dans ce lot |
 | `platform.notifications` | L3 (inactif par défaut, lecture seule) | 2026-06-14 : `FeatureFlag` seedé (`prisma/seed/notifications-feature-flag.seed.ts`, DRAFT). `/admin/settings/notifications` conserve la config email transactionnelle et expose, une fois la feature active, une lecture admin réelle de `Notification` / `NotificationPreference` (compteurs + dernières entrées). Aucun moteur d'émission, aucun provider externe, aucun CRUD dans ce lot |
 | `platform.integrations` | L3 (inactif par défaut, lecture seule) | 2026-06-14 : `FeatureFlag` seedé (`prisma/seed/integrations-feature-flag.seed.ts`, DRAFT). Page discrète `/admin/settings/integrations` avec lecture admin de `Integration`, `IntegrationCredential` redacts et `IntegrationSyncState`. Aucun secret brut, aucun adaptateur provider, aucune action opératoire dans ce lot |
 | `platform.webhooks` | L3 (inactif par défaut, lecture seule, sémantique à clarifier) | 2026-06-14 : `FeatureFlag` seedé (`prisma/seed/webhooks-feature-flag.seed.ts`, DRAFT). Page discrète `/admin/settings/webhooks` avec lecture admin de `WebhookEndpoint` / `WebhookDelivery`. Lot volontairement limité à l’observation du modèle réel, sans masquer l’écart avec la doctrine `webhooks entrants` |
-| `ai.core` | L0 | aucune query, aucune page — **cf. point de doctrine section 5** |
+| `ai.core` | L3 (inactif par défaut, lecture admin + usages `basic`/`assistant`/`advanced`/`automation`) | 2026-06-15 : `FeatureFlag` seedé (`prisma/seed/ai-feature-flag.seed.ts`, DRAFT) désormais consommé par `/admin/settings/ai`, page discrète gated qui lit `AiProvider` / `AiTask`. Même jour : premier usage `basic` branché sur l'onglet SEO produit avec suggestion manuelle `SEO_SUGGESTION`, traçable dans `AiTask`, sans auto-publication. 2026-06-16 : niveau `assistant` étendu à l'édition d'un article de blog existant, avec la même logique de suggestion SEO manuelle et traçable. Le même jour, niveau `advanced` branché sur les écrans SEO produit et blog via un historique local réutilisable des suggestions déjà tracées pour le sujet courant, sans régénération implicite. Toujours le 2026-06-16, niveau `automation` branché sur ces mêmes écrans via une preparation automatique de la premiere suggestion quand aucun historique n'existe encore, sans application ni sauvegarde implicites. Restent hors lot : provider SDK, multi-surfaces, workflow d'acceptation transverse |
 
 ### `satellite` (9) — extensions commerce et plateforme
 
@@ -94,7 +94,7 @@ cf. section optional).
 |---|---|---|
 | `commerce.payments` | L3 (actif) | `/admin/commerce/payments`, liste paiements réelle |
 | `commerce.documents` | L3 (inactif par défaut) | 2026-06-14 : `FeatureFlag` seedé (`prisma/seed/documents-feature-flag.seed.ts`, DRAFT, non gradué) — corrige l'écart « code prêt mais inaccessible ». Génération "confirmation de commande" **et** "bon de préparation" (`DELIVERY_NOTE`, même pattern : `documentNumber` null, un actif par commande) utilisables une fois activé via `/admin/settings/advanced`. Pas de génération PDF réelle, schéma inchangé. `INVOICE`/`CREDIT_NOTE` réservés au chantier factures |
-| `commerce.discounts` | L3 (inactif par défaut, niveau `simple`) | 2026-06-13 : `/admin/marketing/discounts` remplace `AdminComingSoon` — CRUD `Discount` (création + activation/désactivation), PERCENTAGE/FIXED_AMOUNT, scope ORDER. Aucun effet panier/checkout (`discountAmount` reste à 0). Niveaux `rules`/`automation` (autres scopes, FREE_SHIPPING, codes, automatisation) non implémentés |
+| `commerce.discounts` | L3 (inactif par défaut, niveaux `simple` + `rules`) | 2026-06-13 : `/admin/marketing/discounts` remplace `AdminComingSoon` — CRUD `Discount` (création + activation/désactivation), PERCENTAGE/FIXED_AMOUNT, scope ORDER. 2026-06-15 : niveau `rules` branché sur le checkout public via code promo manuel `ORDER`, prévisualisation serveur, recalcul autoritatif à la création de commande, persistance `discountAmount`, création minimale de `DiscountRedemption`. Restent hors lot : `DiscountCode`, `FREE_SHIPPING`, ciblage catalogue, remises automatiques, `automation` |
 | `commerce.shipping` | L3 (actif par défaut) | 2026-06-13 : `/admin/commerce/shipping` remplacé par une vue de suivi des `Shipment` (filtrable par statut, lien commande) ; action "Marquer comme expédiée" capture `carrier`/`trackingUrl` ; nouvelle action "Marquer comme livrée" (`SHIPPED → DELIVERED`, `deliveredAt`). Toujours pas d'intégration transporteur (saisie manuelle uniquement) |
 | `commerce.fulfillment` | L3 (inactif par défaut) | 2026-06-14 : préparation logistique V1 (`features/admin/commerce/fulfillment/*`) — création « tout ou rien », transitions PENDING→READY→FULFILLED/CANCELLED, carte dans le détail commande, gated. Indépendant de l'expédition, sans impact stock. Reste : partiel, lien shipment, inventaire |
 | `commerce.returns` | L3 (inactif par défaut) | 2026-06-14 : retours V1 (`features/admin/commerce/returns/*`) — demande commande entière, workflow REQUESTED→…→CLOSED avec décisions, réf `RET-…`, carte dans le détail commande, gated. `REFUNDED` déclaratif, sans remboursement ni restock. Reste : sélection lignes, avoir, inventaire, client |
@@ -104,11 +104,11 @@ cf. section optional).
 
 ## 4. Synthèse
 
-- **L3 fonctionnel** : 24/32 (core catalogue produit, content/maintenance, commerce.payments, commerce.documents, commerce.products.related, commerce.shipping, commerce.discounts [niveau `simple`, inactif par défaut], engagement.analytics [périmètre commerce, inactif par défaut], engagement.newsletter [niveau `basic`, inactif par défaut], engagement.automations [référentiel admin, inactif par défaut], platform.notifications [lecture admin, inactif par défaut], satellite.search [lecture admin, inactif par défaut], satellite.channels [lecture admin, inactif par défaut], platform.integrations [lecture admin, inactif par défaut], platform.webhooks [lecture admin, sémantique à clarifier])
+- **L3 fonctionnel** : 25/32 (core catalogue produit, content/maintenance, commerce.payments, commerce.documents, commerce.products.related, commerce.shipping, commerce.discounts [niveau `simple`, inactif par défaut], engagement.analytics [périmètre commerce, inactif par défaut], engagement.newsletter [niveau `basic`, inactif par défaut], engagement.automations [référentiel admin, inactif par défaut], platform.notifications [lecture admin, inactif par défaut], satellite.search [lecture admin, inactif par défaut], satellite.channels [lecture admin, inactif par défaut], platform.integrations [lecture admin, inactif par défaut], platform.webhooks [lecture admin, sémantique à clarifier], ai.core [lecture admin bornée, inactif par défaut])
 - **L2 mock** : 1/32 (localization en pause)
 - **L1 placeholder (Coming Soon)** : 0/32
-- **L0 catalogué sans code** : 1/32 (`ai.core`) — `commerce.taxation`, `commerce.fulfillment`, `commerce.returns`, `platform.notifications`, `satellite.search`, `satellite.channels`, `platform.integrations` et `platform.webhooks` faits le 2026-06-14
-- **Niveaux annoncés non câblés** : catalog.products.inventory (`alerts` câblé le 2026-06-13, `forecasting` restant), catalog.products.media (`optimization` câblé le 2026-06-13, `generation`/`automation` restants)
+- **L0 catalogué sans code** : 0/32
+- **Niveaux annoncés non câblés** : aucun sur `catalog.products.media` ; `catalog.products.inventory` reste avec `forecasting` câblé le 2026-06-16
 
 ## 5. Point de doctrine à signaler (écart catalogue / roadmap)
 
@@ -129,7 +129,15 @@ le catalogue.
 périmètre réduit à `commerce` (`Order`/`Customer`, déjà `core`/actifs) ; le
 bloc nécessitant un pipeline de tracking (« Aujourd'hui vs hier ») reste mock
 et hors périmètre. « Analytics complexes » reste exclu sans validation
-ultérieure. `ai.core` reste non ouvert.
+ultérieure.
+
+**`ai.core` (2026-06-15)** : clarification minimale faite puis premier usage
+borné ouvert. Le module expose une lecture admin du modèle réel
+`AiProvider` / `AiTask` via `/admin/settings/ai`, puis un premier usage
+`basic` sur l'onglet SEO produit : suggestion manuelle, réversible et traçable,
+sans provider SDK doctriné, sans auto-publication et sans assistant global.
+« IA produit » au sens large reste donc hors périmètre tant qu'un cadrage dédié
+n'ouvre pas d'autres usages.
 
 ## 6. Roadmap proposée (ordre indicatif, à valider lot par lot)
 
@@ -157,10 +165,14 @@ Ordre proposé, du plus proche du fonctionnel au plus loin :
    `AnalyticsMetric`/`AnalyticsSnapshot` restent non alimentés.
    `insights.analyticsRead` continue de gouverner l'accès à la page, sans
    changement de sémantique au-delà de sa dépendance déclarative.
-5. **Modules L1 → L3** : ~~`commerce.discounts`~~ **fait (2026-06-13)**, cf.
-   `docs/lots/2026-06-13-commerce-discounts-cadrage.md` — admin CRUD niveau
-   `simple` (PERCENTAGE/FIXED_AMOUNT, scope ORDER), inactif par défaut, sans
-   effet panier/checkout. ~~`engagement.newsletter`~~ **fait (2026-06-13)**,
+5. **Modules L1 → L3** : ~~`commerce.discounts`~~ **fait (2026-06-13 puis
+   2026-06-15)**, cf. `docs/lots/2026-06-13-commerce-discounts-cadrage.md` puis
+   `docs/lots/2026-06-15-commerce-discounts-rules-cadrage.md` — admin CRUD
+   niveau `simple` puis lot `rules` borné au checkout avec code promo manuel
+   `ORDER`, persistance `discountAmount` et `DiscountRedemption`. **Prochaine
+   marche recommandée :** arbitrer soit `DiscountCode`, soit `FREE_SHIPPING`,
+   mais dans un lot dédié séparé du ciblage catalogue.
+   ~~`engagement.newsletter`~~ **fait (2026-06-13)**,
    cf. `docs/lots/2026-06-13-engagement-newsletter-automations-cadrage.md` —
    admin CRUD `NewsletterSubscriber` niveau `basic` (ajout + bascule
    SUBSCRIBED/UNSUBSCRIBED), inactif par défaut, sans campagne. Reste :
@@ -202,7 +214,13 @@ Ordre proposé, du plus proche du fonctionnel au plus loin :
    referentiel `WebhookEndpoint` / `WebhookDelivery` sur
    `/admin/settings/webhooks`, avec divergence doctrine/modele explicitement
    documentee, cf. `docs/lots/2026-06-14-platform-webhooks-cadrage.md`.
-7. **`ai.core`** : en dernier, et seulement après clarification du point 5.
+7. **`ai.core`** : ~~en dernier, et seulement après clarification du point 5.~~
+   **Clarification minimale + lecture admin bornée + premier usage `basic`
+   faits (2026-06-15)**, cf.
+   `docs/lots/2026-06-15-ai-core-admin-read-cadrage.md` puis
+   `docs/lots/2026-06-15-ai-core-first-usage-cadrage.md`. Prochaine marche :
+   arbitrer soit l'extension `assistant` au blog / Open Graph, soit un vrai
+   contrat provider runtime, mais pas les deux dans le même lot.
 
 ## 7. Checklist générique par module (pattern canonique H4)
 

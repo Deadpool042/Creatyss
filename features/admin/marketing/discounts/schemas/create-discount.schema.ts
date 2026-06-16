@@ -28,6 +28,7 @@ export const createDiscountSchema = z
       .max(500, "La description est trop longue (500 caractères maximum).")
       .nullable(),
     type: z.enum(["PERCENTAGE", "FIXED_AMOUNT"]),
+    isAutomatic: z.boolean(),
     percentageValue: z.number().min(0, "Le pourcentage doit être positif.").max(100, "Le pourcentage ne peut pas dépasser 100.").nullable(),
     fixedAmountValue: z.number().min(0, "Le montant doit être positif.").nullable(),
   })

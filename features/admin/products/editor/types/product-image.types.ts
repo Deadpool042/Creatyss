@@ -57,6 +57,14 @@ export type UpdateProductImageAltTextInput = {
 
 export type UpdateProductImageAltTextResult = AdminProductActionResult;
 
+export type GenerateMissingProductImageAltTextInput = {
+  productId: string;
+};
+
+export type GenerateMissingProductImageAltTextResult = AdminProductActionResult & {
+  generatedCount?: number;
+};
+
 export type AttachProductImagesInput = {
   images: Array<{
     productId: string;

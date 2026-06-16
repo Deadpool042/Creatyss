@@ -454,7 +454,7 @@ Cf. `docs/lots/2026-06-13-inventory-media-levels-cadrage.md`.
   null) dans l'onglet médias de l'éditeur produit
   (`product-images-tab.tsx`), affiché uniquement si le niveau effectif de
   `catalog.products.media` est `optimization` (ou plus), résolu via
-  `meetsFeatureLevel` (`features/admin/pilotage/queries/get-feature-level-state.query.ts`).
+  `meetsFeatureLevel` (`features/feature-flags/queries/get-feature-level-state.query.ts`).
 - **Écart constaté avec le cadrage** : le cadrage (écart n°3) supposait
   qu'aucun diagnostic de conformité au ratio 4:5 (convention galerie produit
   V1, cf. ci-dessus) n'existait. En réalité, `ratioStats` (compteurs
@@ -467,3 +467,34 @@ Cf. `docs/lots/2026-06-13-inventory-media-levels-cadrage.md`.
 - Restent hors périmètre : génération de `MediaVariant` responsive,
   remplacement/recompression d'images existantes, vérification automatique
   de l'ordre des images (`generation`/`automation`).
+
+### Generation locale des textes alternatifs — niveau `generation` (2026-06-16)
+
+Cf. `docs/lots/2026-06-16-media-generation-cadrage.md`.
+
+- L'onglet medias de l'editeur produit expose un bloc de `generation`
+  uniquement si le niveau effectif de `catalog.products.media` est
+  `generation` (ou plus), resolu via `meetsFeatureLevel`.
+- L'action reste volontairement locale et deterministe : elle complete
+  uniquement les `MediaAsset.altText` manquants d'un produit a partir du nom
+  produit et de l'ordre de galerie (`vue principale`, puis `vue N`).
+- Aucun `altText` existant n'est ecrase. L'edition manuelle garde donc la
+  priorite.
+- Restent hors perimetre : IA, suggestion semantique riche, traitements
+  asynchrones, recompression et `automation`.
+
+### Completion automatique locale des textes alternatifs — niveau `automation` (2026-06-16)
+
+Cf. `docs/lots/2026-06-16-media-automation-cadrage.md`.
+
+- Quand `catalog.products.media` atteint `automation`, l'onglet medias
+  explicite que les images ajoutees sans `altText` sont completees
+  automatiquement.
+- Cette completion se fait uniquement sur les mutations `upload` et `attach`
+  de la galerie produit.
+- Le comportement reste local et deterministe, sur le meme patron que le
+  niveau `generation`.
+- Aucun texte alternatif deja present n'est ecrase ; l'edition manuelle garde
+  la priorite.
+- Restent hors perimetre : regeneration sur lecture, resynchronisation apres
+  reordonnancement, IA, worker et `MediaVariant`.

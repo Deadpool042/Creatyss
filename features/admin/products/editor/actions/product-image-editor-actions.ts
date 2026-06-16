@@ -1,9 +1,12 @@
 "use server";
 
+import { db } from "@/core/db";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import {
   attachProductImages,
   AdminProductEditorServiceError,
   deleteProductImage,
+  generateMissingProductImageAltTexts,
   reorderProductImage,
   setProductPrimaryImage,
   updateProductImageAltText,
@@ -15,6 +18,8 @@ import {
   type AttachProductImagesResult,
   type DeleteProductImageInput,
   type DeleteProductImageResult,
+  type GenerateMissingProductImageAltTextInput,
+  type GenerateMissingProductImageAltTextResult,
   type ReorderProductImageInput,
   type ReorderProductImageResult,
   type SetProductPrimaryImageInput,
@@ -26,6 +31,26 @@ import {
 import { uploadProductImagesSchema } from "../schemas";
 import { isSupportedImageMimeType, MAX_IMAGE_FILE_SIZE_BYTES } from "@/core/uploads";
 
+async function isMediaAutomationEnabled(productId: string): Promise<boolean> {
+  const product = await db.product.findFirst({
+    where: {
+      id: productId,
+      archivedAt: null,
+    },
+    select: {
+      storeId: true,
+    },
+  });
+
+  if (product === null) {
+    throw new AdminProductEditorServiceError("product_missing");
+  }
+
+  return meetsFeatureLevel("catalog.products.media", "automation", {
+    storeId: product.storeId,
+  });
+}
+
 // ---------------------------------------------------------------------------
 // attachProductImagesAction
 // ---------------------------------------------------------------------------
@@ -34,13 +59,21 @@ export async function attachProductImagesAction(
   input: AttachProductImagesInput
 ): Promise<AttachProductImagesResult> {
   try {
-    await attachProductImages({
+    const productIds = [...new Set(input.images.map((image) => image.productId))];
+    const automationEnabled =
+      productIds.length === 1 ? await isMediaAutomationEnabled(productIds[0]!) : false;
+
+    const result = await attachProductImages({
       images: input.images,
+      autoGenerateMissingAltText: automationEnabled,
     });
 
     return {
       status: "success",
-      message: "Association effectuée.",
+      message:
+        automationEnabled && result.generatedCount > 0
+          ? `Association effectuée. ${result.generatedCount} texte${result.generatedCount > 1 ? "s" : ""} alternatif${result.generatedCount > 1 ? "s ont" : " a"} ete complete${result.generatedCount > 1 ? "s" : ""} automatiquement.`
+          : "Association effectuée.",
     };
   } catch (error: unknown) {
     if (error instanceof AdminProductEditorServiceError) {
@@ -79,6 +112,41 @@ export async function deleteProductImageAction(
       return {
         status: "error",
         message: "Suppression impossible.",
+      };
+    }
+
+    return {
+      status: "error",
+      message: "Erreur inattendue.",
+    };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// generateMissingProductImageAltTextsAction
+// ---------------------------------------------------------------------------
+
+export async function generateMissingProductImageAltTextsAction(
+  input: GenerateMissingProductImageAltTextInput
+): Promise<GenerateMissingProductImageAltTextResult> {
+  try {
+    const result = await generateMissingProductImageAltTexts({
+      productId: input.productId,
+    });
+
+    return {
+      status: "success",
+      message:
+        result.count > 0
+          ? `${result.count} texte${result.count > 1 ? "s" : ""} alternatif${result.count > 1 ? "s ont" : " a"} ete genere${result.count > 1 ? "s" : ""}.`
+          : "Aucun texte alternatif manquant a generer.",
+      generatedCount: result.count,
+    };
+  } catch (error: unknown) {
+    if (error instanceof AdminProductEditorServiceError) {
+      return {
+        status: "error",
+        message: "Generation impossible.",
       };
     }
 
@@ -254,16 +322,22 @@ export async function uploadProductImagesAction(
 
   // 3. Delegate to service.
   try {
+    const automationEnabled = await isMediaAutomationEnabled(parsed.data.productId);
     const result = await uploadProductImages({
       productId: parsed.data.productId,
       altText: parsed.data.altText,
       makePrimary: parsed.data.makePrimary,
       files: validFiles,
+      autoGenerateMissingAltText: automationEnabled,
     });
 
     const count = result.count;
-    const message =
+    const baseMessage =
       count === 1 ? "1 image importée avec succès." : `${count} images importées avec succès.`;
+    const message =
+      automationEnabled && result.generatedCount > 0
+        ? `${baseMessage} ${result.generatedCount} texte${result.generatedCount > 1 ? "s" : ""} alternatif${result.generatedCount > 1 ? "s ont" : " a"} ete complete${result.generatedCount > 1 ? "s" : ""} automatiquement.`
+        : baseMessage;
 
     return { ...uploadProductImagesFormInitialState, status: "success", message };
   } catch (error: unknown) {
