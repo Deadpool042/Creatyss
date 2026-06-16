@@ -1,5 +1,8 @@
 # Cadrage - `ai.core` niveau `assistant` sur le blog
 
+**Date :** 2026-06-16
+**Statut :** cadrage court + lot borné exécuté (2026-06-16)
+
 ## Objectif
 
 Ouvrir le niveau `assistant` de `ai.core` par extension du pattern SEO deja

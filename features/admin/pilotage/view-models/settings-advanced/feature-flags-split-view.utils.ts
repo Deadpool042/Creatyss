@@ -87,6 +87,37 @@ function buildModuleGroups(
 }
 
 // ---------------------------------------------------------------------------
+// Helpers slug par flag
+// ---------------------------------------------------------------------------
+
+/**
+ * Dérive un slug URL depuis une clé de catalogue.
+ * Convention : dernier segment de la clé (après le dernier `.`).
+ * Exemples :
+ *   "platform.localization" → "localization"
+ *   "ai.core"               → "ai"
+ *   "catalog.products.media"→ "media"
+ */
+export function flagSlugFromKey(key: string): string {
+  const parts = key.split(".");
+  return parts[parts.length - 1] ?? key;
+}
+
+/**
+ * Résout un flag depuis son slug et sa famille.
+ * En cas de collision (deux flags du même slug dans la même famille),
+ * retourne le premier trouvé (cas non présent dans le catalogue actuel).
+ */
+export function findFlagBySlug(
+  flags: readonly AdminFeatureFlagView[],
+  family: FeatureFamilySlug,
+  slug: string
+): AdminFeatureFlagView | null {
+  const familyFlags = flagsForFamily(flags, family);
+  return familyFlags.find((f) => flagSlugFromKey(f.key) === slug) ?? null;
+}
+
+// ---------------------------------------------------------------------------
 // Helpers publics
 // ---------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 # Cadrage — `engagement.newsletter` niveau `segmentation`
 
 **Date :** 2026-06-15
-**Statut :** cadrage court
+**Statut :** cadrage court + lot borné exécuté (2026-06-15)
 
 ## Objectif
 

@@ -1,5 +1,8 @@
 # Lot `ai.core` automation - suggestion SEO preparee automatiquement
 
+**Date :** 2026-06-16
+**Statut :** cadrage court + lot borné exécuté (2026-06-16)
+
 ## Objectif
 
 Donner un effet metier explicite au niveau `automation` de `ai.core` sans introduire de provider externe, de publication implicite ni d'acceptation silencieuse.

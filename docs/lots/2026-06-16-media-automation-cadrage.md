@@ -1,5 +1,8 @@
 # Cadrage - `catalog.products.media` niveau `automation`
 
+**Date :** 2026-06-16
+**Statut :** cadrage court + lot borné exécuté (2026-06-16)
+
 ## Objectif
 
 Donner un effet fonctionnel au niveau `automation` sans ouvrir de worker, de

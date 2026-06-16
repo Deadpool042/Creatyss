@@ -13,4 +13,6 @@ export {
   buildFamilyNavItems,
   buildOverviewStats,
   buildFamilyDetailViewModel,
+  flagSlugFromKey,
+  findFlagBySlug,
 } from "./feature-flags-split-view.utils";

@@ -7,6 +7,7 @@ import {
 import { createScriptPrismaClient } from "../scripts/helpers/prisma-client";
 import { seedAdminNavigationAccess } from "./seed/admin-navigation-access.seed";
 import { seedAiFeatureFlag } from "./seed/ai-feature-flag.seed";
+import { seedCoreCrossCuttingFlags } from "./seed/core-cross-cutting-flags.seed";
 import { seedAnalyticsFeatureFlag } from "./seed/analytics-feature-flag.seed";
 import { seedAutomationsFeatureFlag } from "./seed/automations-feature-flag.seed";
 import { seedBlogPosts } from "./seed/blog-posts.seed";
@@ -40,6 +41,7 @@ async function main(): Promise<void> {
   await seedAdminNavigationAccess(prisma);
   await seedBlogPosts(prisma, store.id);
   await seedFeatureFlagsCatalog(prisma);
+  await seedCoreCrossCuttingFlags(prisma);
   await seedAiFeatureFlag(prisma);
   await seedAnalyticsFeatureFlag(prisma);
   await seedAutomationsFeatureFlag(prisma);

@@ -1,14 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Globe, Lock, User } from "lucide-react";
+import { ChevronRight, Globe, Lock, User } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Notice } from "@/components/shared";
-import type { FeatureFlagFeedback } from "@/features/admin/pilotage/hooks/feature-flag-feedback";
 import type { AdminFeatureFlagView } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
-import { FeatureFlagLevelSelect } from "./feature-flag-level-select";
+import { flagSlugFromKey } from "@/features/admin/pilotage/view-models/settings-advanced";
 import { FeatureFlagToggle } from "./feature-flag-toggle";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -82,112 +79,20 @@ type FeatureFlagEntryProps = Readonly<{
   flag: AdminFeatureFlagView;
 }>;
 
-const FEATURE_LINK_CLASS =
-  "rounded-full border border-surface-border/60 px-2.5 py-1 text-[11px] font-medium text-foreground transition-colors hover:bg-surface-subtle/30";
-
-function FeatureLinks({ flag }: { flag: AdminFeatureFlagView }) {
-  if (flag.dbState.status !== "ACTIVE") {
-    return null;
-  }
-
-  if (flag.key === "platform.localization") {
-    return (
-      <div className="flex flex-wrap items-center gap-2 pt-1">
-        <Link
-          href="/admin/settings/advanced/optional/localization/settings"
-          className={FEATURE_LINK_CLASS}
-        >
-          Reglages
-        </Link>
-        <Link
-          href="/admin/settings/advanced/optional/localization/translations"
-          className={FEATURE_LINK_CLASS}
-        >
-          Traductions
-        </Link>
-      </div>
-    );
-  }
-
-  if (flag.key === "commerce.taxation") {
-    return (
-      <div className="flex flex-wrap items-center gap-2 pt-1">
-        <Link href="/admin/commerce/taxation" className={FEATURE_LINK_CLASS}>
-          Réglages
-        </Link>
-      </div>
-    );
-  }
-
-  if (flag.key === "platform.notifications") {
-    return (
-      <div className="flex flex-wrap items-center gap-2 pt-1">
-        <Link href="/admin/settings/notifications" className={FEATURE_LINK_CLASS}>
-          Reglages
-        </Link>
-      </div>
-    );
-  }
-
-  if (flag.key === "satellite.search") {
-    return (
-      <div className="flex flex-wrap items-center gap-2 pt-1">
-        <Link href="/admin/settings/search" className={FEATURE_LINK_CLASS}>
-          Reglages
-        </Link>
-      </div>
-    );
-  }
-
-  if (flag.key === "satellite.channels") {
-    return (
-      <div className="flex flex-wrap items-center gap-2 pt-1">
-        <Link href="/admin/settings/channels" className={FEATURE_LINK_CLASS}>
-          Reglages
-        </Link>
-      </div>
-    );
-  }
-
-  if (flag.key === "platform.integrations") {
-    return (
-      <div className="flex flex-wrap items-center gap-2 pt-1">
-        <Link href="/admin/settings/integrations" className={FEATURE_LINK_CLASS}>
-          Reglages
-        </Link>
-      </div>
-    );
-  }
-
-  if (flag.key === "platform.webhooks") {
-    return (
-      <div className="flex flex-wrap items-center gap-2 pt-1">
-        <Link href="/admin/settings/webhooks" className={FEATURE_LINK_CLASS}>
-          Reglages
-        </Link>
-      </div>
-    );
-  }
-
-  if (flag.key === "ai.core") {
-    return (
-      <div className="flex flex-wrap items-center gap-2 pt-1">
-        <Link href="/admin/settings/ai" className={FEATURE_LINK_CLASS}>
-          Reglages
-        </Link>
-      </div>
-    );
-  }
-
-  return null;
-}
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
   const scopeType = flag.dbState.scopeType;
   const ScopeIcon = scopeType ? (SCOPE_ICONS[scopeType] ?? Globe) : null;
-  const [feedback, setFeedback] = useState<FeatureFlagFeedback | null>(null);
+
+  const hasDetailPage =
+    flag.unmapped !== true &&
+    flag.family !== null &&
+    flag.mutability !== "readonly";
+
+  const detailHref = hasDetailPage
+    ? `/admin/settings/advanced/${flag.family}/${flagSlugFromKey(flag.key)}`
+    : null;
 
   return (
     <div className="flex flex-col gap-2 px-4 py-3.5 transition-colors hover:bg-surface-subtle/12 sm:flex-row sm:items-center sm:gap-3">
@@ -225,25 +130,22 @@ export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
           )}
         </div>
 
-        {/* Row 4: DB state badge + levels */}
+        {/* Row 4: DB state badge */}
         <div className="flex flex-wrap items-center gap-2">
           <DbStateBadge flag={flag} />
-          {flag.mutability === "level_selectable" ? (
-            <FeatureFlagLevelSelect flag={flag} onFeedback={setFeedback} />
-          ) : (
-            flag.levels &&
-            flag.levels.length > 0 && (
-              <span className="text-[10px] text-muted-foreground/60">
-                Niveaux : {flag.levels.join(" · ")}
-              </span>
-            )
-          )}
         </div>
-        <FeatureLinks flag={flag} />
-        {feedback !== null && (
-          <Notice tone={feedback.tone === "alert" ? "alert" : "success"}>
-            {feedback.message}
-          </Notice>
+
+        {/* Row 5: lien réglages */}
+        {detailHref !== null && (
+          <div className="pt-0.5">
+            <Link
+              href={detailHref}
+              className="inline-flex items-center gap-0.5 text-[11px] font-medium text-muted-foreground/70 transition-colors hover:text-foreground"
+            >
+              Réglages
+              <ChevronRight className="size-3" />
+            </Link>
+          </div>
         )}
       </div>
 
@@ -255,7 +157,7 @@ export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
             {SCOPE_LABELS[scopeType]}
           </div>
         ) : null}
-        <FeatureFlagToggle flag={flag} onFeedback={setFeedback} />
+        <FeatureFlagToggle flag={flag} />
       </div>
     </div>
   );

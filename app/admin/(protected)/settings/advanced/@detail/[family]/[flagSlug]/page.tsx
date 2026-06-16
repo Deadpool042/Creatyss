@@ -4,18 +4,23 @@ import { AdminSplitDetailPaneShell } from "@/components/admin/layout/admin-split
 import { AdminSplitDetailSectionCard } from "@/components/admin/layout/admin-split-detail-section-card";
 import { FeatureFlagDetail } from "@/features/admin/pilotage/components/settings-advanced";
 import { listAdminFeatureFlags } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
-import { findFlagBySlug } from "@/features/admin/pilotage/view-models/settings-advanced";
+import {
+  FAMILY_SLUGS,
+  findFlagBySlug,
+  type FeatureFamilySlug,
+} from "@/features/admin/pilotage/view-models/settings-advanced";
 
 export const dynamic = "force-dynamic";
 
 type PageProps = {
-  params: Promise<{ family: string }>;
+  params: Promise<{ family: string; flagSlug: string }>;
 };
 
-export default async function AdvancedSettingsDetailLocalizationPage({ params }: PageProps) {
-  const { family } = await params;
+export default async function AdvancedSettingsDetailFlagPage({ params }: PageProps) {
+  const { family, flagSlug } = await params;
 
-  if (family !== "optional") {
+  const validSlugs: readonly string[] = FAMILY_SLUGS;
+  if (!validSlugs.includes(family)) {
     notFound();
   }
 
@@ -27,7 +32,7 @@ export default async function AdvancedSettingsDetailLocalizationPage({ params }:
     // Table non disponible
   }
 
-  const flag = findFlagBySlug(flags, "optional", "localization");
+  const flag = findFlagBySlug(flags, family as FeatureFamilySlug, flagSlug);
 
   if (flag === null) {
     notFound();

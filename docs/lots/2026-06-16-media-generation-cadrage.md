@@ -1,5 +1,8 @@
 # Cadrage - `catalog.products.media` niveau `generation`
 
+**Date :** 2026-06-16
+**Statut :** cadrage court + lot borné exécuté (2026-06-16)
+
 ## Objectif
 
 Donner un effet fonctionnel reel au niveau `generation` de `catalog.products.media`

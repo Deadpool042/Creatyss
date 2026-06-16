@@ -1,5 +1,8 @@
 # Lot `ai.core` advanced - historique SEO reutilisable
 
+**Date :** 2026-06-16
+**Statut :** cadrage court + lot borné exécuté (2026-06-16)
+
 ## Objectif
 
 Donner un effet metier explicite au niveau `advanced` de `ai.core` sur les ecrans SEO admin deja equipes en niveau `assistant`.

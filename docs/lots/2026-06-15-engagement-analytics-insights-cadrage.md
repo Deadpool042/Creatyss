@@ -1,7 +1,7 @@
 # Cadrage — `engagement.analytics` niveaux `insights` puis `recommendations`
 
 **Date :** 2026-06-15
-**Statut :** cadrage court
+**Statut :** cadrage court + niveau `insights` exécuté (2026-06-15) ; niveau `recommendations` hors périmètre
 
 ## Objectif
 

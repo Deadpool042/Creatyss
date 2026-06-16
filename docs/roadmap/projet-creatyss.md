@@ -210,7 +210,7 @@ Référence : `docs/audit/audit-clonabilite-2026-06-12.md` (inventaire des spéc
 - [x] Résolution de boutique unifiée — convention premier-store partout, `CANONICAL_STORE_CODE` supprimé (2026-06-12)
 - [x] Statut bootstrap Woo explicite (R4) — `scripts/import-woocommerce/README.md` documente le périmètre instance Creatyss, `WC_*` hors runtime socle, couplage `seed:dev`, capacité durable = import générique CSV (déjà fait, non daté)
 - [x] Décision `availability`/`inventory` documentée et implémentée côté panier (2026-06-12)
-- [ ] Clone à blanc : repo cloné, marque/contenu/config changés, boutique fonctionnelle sans modification du cœur — cadré (`docs/lots/2026-06-13-clone-a-blanc-cadrage.md`). Sous-lots 1-3 faits (2026-06-13) : inventaire des points de config (`docs/exploitation/05-clonage-instance.md`), identité du store au premier seed centralisée via `brandConfig.storeCode`/`storeSlug`, contenu légal seedé documenté comme bootstrap Creatyss. Reste le sous-lot 4 (exécution réelle de la validation, en local — DB `localhost:5434` hors de portée du sandbox).
+- [x] Clone à blanc : repo cloné, marque/contenu/config changés, boutique fonctionnelle sans modification du cœur — validé (2026-06-16). Sous-lots 1-4 complets : inventaire des points de config (`docs/exploitation/05-clonage-instance.md`), identité du store centralisée via `brandConfig`, contenu légal documenté comme bootstrap Creatyss, validation runtime réussie avec marque fictive « AtelierXX » sur DB isolée (`creatyss_clone_test`). Cf. `docs/audit/clone-a-blanc-validation-2026-06-16.md`.
 
 ---
 

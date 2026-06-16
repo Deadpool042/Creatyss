@@ -2,7 +2,7 @@
 
 # Audit — Catalogue de pilotage (settings/advanced) et roadmap de développement
 
-**Date :** 2026-06-13
+**Date :** 2026-06-13 (mis à jour 2026-06-16)
 **Statut :** photographie + roadmap de suivi (pas un engagement de calendrier)
 
 ## 1. Périmètre de cet audit
@@ -50,14 +50,9 @@ depuis l'admin aujourd'hui.
 | `catalog.products.related` | L3 | gating posé (`is-related-products-feature-active`), utilisé admin + boutique |
 | `catalog.products.inventory` | L3 (niveaux `manual`/`alerts`/`forecasting` câblés, 2026-06-16) | seed `allowedLevels`/`defaultLevel` + résolveur générique de niveau (`meetsFeatureLevel`) ; niveau `alerts` câblé : `InventoryItem.lowStockThreshold` configurable, `getStockBadge()` utilise le seuil configuré. 2026-06-16 : niveau `forecasting` branché en lecture locale sur l'onglet stock produit (ventes 30 jours, débit moyen, couverture estimée par variante), sans notifications ni moteur prédictif |
 | `catalog.products.media` | L3 (niveaux `basic`/`optimization`/`generation`/`automation` câblés, 2026-06-16) | seed `allowedLevels`/`defaultLevel` + résolveur générique de niveau ; niveau `optimization` câblé : diagnostic « sans texte alternatif » gated. Niveau `generation` câblé : action admin explicite pour compléter uniquement les `altText` manquants de la galerie produit, de façon locale et déterministe. Niveau `automation` câblé : les mutations `upload` et `attach` complètent automatiquement les `altText` manquants sans écraser ceux déjà saisis. Diagnostic ratio 4:5 déjà existant, ungated, laissé tel quel (cf. `docs/domains/satellites/media.md`). |
-| `settings.advanced` | L3 | le pilotage lui-même |
+| `settings.advanced` | L3 | le pilotage lui-même — 2026-06-16 : UX refactorisée (liste → sélecteur de niveau + liens contextuels sur page détail `[family]/[flagSlug]`) ; seeds des 7 flags `cross_cutting`/`core` manquants ajoutés (`prisma/seed/core-cross-cutting-flags.seed.ts`) |
 
-**Constat :** le socle catalogue est solide. La **gradation
-annoncée mais non câblée** de `catalog.products.inventory` et
-`catalog.products.media` a été comblée pour les niveaux `alerts`/`optimization`
-(2026-06-13, cf. `docs/lots/2026-06-13-inventory-media-levels-cadrage.md`) ;
-le niveau supérieur `forecasting` reste
-déclarés sans implémentation.
+**Constat :** le socle catalogue est solide. Tous les niveaux déclarés sont câblés : `alerts`/`optimization` (2026-06-13), `forecasting`/`generation`/`automation` (2026-06-16). Aucun écart niveau déclaré/câblé restant.
 
 ### `cross_cutting` (6) — fonctions transverses actives
 
@@ -79,7 +74,7 @@ cf. section optional).
 
 | Clé | Maturité | Note |
 |---|---|---|
-| `platform.localization` | L2/L3 partiel, **en pause** | lots 1-4 faits (2026-06-13) : guard gradué, niveau `managed`, admin `/admin/settings/localization`, pilote homepage multilingue. Niveau repassé à `managed`, sélecteur masqué. Lot `localized-routing` (L3) cadré non tranché (`docs/lots/2026-06-13-localization-l3-cadrage.md`) |
+| `platform.localization` | L3 complet (2026-06-16) | lots 1-4 faits (2026-06-13) : guard gradué, niveau `managed`, admin `/admin/settings/localization`, pilote homepage multilingue, sélecteur langue storefront. Lot 5 `localized-routing` implémenté (2026-06-16, 3 sous-lots) : `proxy.ts` (rewrite Edge `/en-GB/*` → `/*` + `x-next-locale`), `app/layout.tsx` async (`lang` dynamique, gate L3, hreflang via `generateMetadata`), `app/sitemap.ts` (entrées localisées), `set-locale-preference.action.ts` (redirect vers `/[locale]/path`). `core/localization/supported-locales.ts` : config Edge-safe. Cf. `docs/lots/2026-06-13-localization-l3-cadrage.md` |
 | `engagement.analytics` | L3 (périmètre commerce, niveaux `read` + `insights`, inactif par défaut) | `/admin/insights/analytics` — flag seedé (`status: DRAFT`, `isEnabledByDefault: false`, niveaux `read/insights/recommendations`) ; bloc « Ce mois » branché sur `Order`/`Customer` réels (lecture live, gated `meetsFeatureLevel("engagement.analytics","read")`) ; niveau `insights` branché sur des lectures commerce additionnelles (`Order` / `OrderLine`) : panier moyen confirmé, commandes confirmées, statuts du mois, top produits. Bloc « Aujourd'hui vs hier » reste mock (tracking absent, hors périmètre). `AnalyticsMetric`/`AnalyticsSnapshot` toujours non lus/écrits ; `recommendations` reste hors lot |
 | `engagement.newsletter` | L3 (inactif par défaut, niveaux `basic` + `segmentation` + `automation`) | 2026-06-13 : `/admin/marketing/newsletter` remplace `AdminComingSoon` — CRUD `NewsletterSubscriber` (ajout + bascule SUBSCRIBED/UNSUBSCRIBED), gated `meetsFeatureLevel("engagement.newsletter","basic")`. 2026-06-14 : la homepage storefront branche enfin `POST /api/newsletter` sur une création/réactivation idempotente du référentiel. 2026-06-15 : niveau `segmentation` branché sur le référentiel réel (filtres `status`, `source`, rattachement client, récence), sans campagne, sans `Behavior*`, sans `Crm*`. 2026-06-16 : niveau `automation` branché sur le pont réel vers `engagement.automations` — la planification de jobs `NEWSLETTER_SUBSCRIBED` dépend désormais du niveau newsletter `automation`, et la page newsletter expose une lecture locale de cet état opératoire. `NewsletterCampaign`/`NewsletterCampaignRecipient` restent non alimentés |
 | `engagement.automations` | L3 (inactif par défaut, boucle bornée exécutable) | 2026-06-14 : `FeatureFlag` seedé (`prisma/seed/automations-feature-flag.seed.ts`, DRAFT). Schéma Prisma minimal posé (`prisma/optional/engagement/automations.prisma`) puis `/admin/marketing/automations` branché sur un CRUD admin de définitions `Automation` (création, liste, activation/désactivation, puis édition inline et archivage local). Suite du même jour : la souscription storefront newsletter planifie désormais un `Job` par automation `ACTIVE` avec `triggerType = NEWSLETTER_SUBSCRIBED`, `scheduledAt` dérivé de `delayMinutes`, la page admin expose une lecture locale de ces jobs planifiés, permet maintenant aussi de modifier localement le `scheduledAt` d'un job `PENDING` ou de l'archiver depuis sa propre ligne, un exécuteur manuel borné permet de traiter les jobs prêts pour `actionType = EMAIL_MESSAGE`, puis un batch borné permet d'exécuter les jobs prêts déjà visibles ; la même page expose aussi la trace minimale `EmailMessage` liée à chaque job, désormais rendue de façon plus structurée ligne par ligne, et explicite aussi l'absence de trace locale quand elle n'existe pas, y compris avant exécution sur un job `PENDING`, la désactivation d'une automation annule ses jobs `PENDING` encore planifiés, l'archivage d'une définition annule aussi ses jobs `PENDING` encore liés, un job `PENDING` supprimé localement est lui aussi annulé avant archivage, un opérateur peut annuler manuellement un job `PENDING` ligne par ligne, relancer localement un job `FAILED`, relancer en lot les jobs échoués déjà visibles, annuler en lot les jobs en attente déjà visibles, voir sur chaque définition un résumé local de l'activité jobs liée, focaliser la section jobs sur une définition précise depuis la même page, filtrer localement cette section par statut, utiliser directement les badges d'activité des définitions comme points d'entrée vers la vue jobs cohérente, filtrer localement la liste des définitions elles-mêmes selon cette activité, utiliser aussi les cartes de synthèse jobs comme raccourcis vers ce filtre statut, utiliser aussi le résumé du dernier job comme raccourci vers cette même vue cohérente, avec un état visuel actif quand ce raccourci cible déjà la vue ouverte, rendre l'état vide des jobs filtrés explicite et réversible dans la même page, permettre depuis une ligne job de refocaliser directement la page sur son automation, utiliser aussi le badge statut de cette ligne comme raccourci vers la vue cohérente de ce statut, expliciter la nature de la date principale affichée sur chaque ligne job, distinguer visuellement un `PENDING` prêt à exécuter d'un `PENDING` simplement programmé, expliciter aussi si l'exécution est immédiate, déjà échue ou encore future, rappeler dans la zone d'action qu'un job non prêt reste en attente d'échéance, éviter aussi le simple tiret muet sur les états sans action locale, distinguer aussi dans le résumé batch les jobs déjà prêts des jobs encore en attente d'échéance, faire aussi porter aux boutons batch eux-mêmes le volume visible ciblé, distinguer plus clairement l'erreur du job de l'erreur email éventuelle, permettre de retirer explicitement le filtre statut actif depuis l'entête jobs, retirer d'un coup l'ensemble des filtres jobs actifs sans perdre le contexte `definition`, retirer explicitement le filtre `definition` actif depuis sa propre section sans perdre les autres contextes locaux utiles, expliciter aussi sur chaque ligne job les libellés métier du déclencheur et de l'action, rendre visibles les comptages de définitions et de jobs réellement affichés dans le cockpit filtré, afficher un identifiant court de référence sur chaque ligne job, puis permettre aussi de réinitialiser d'un coup l'ensemble des filtres de page actifs. Suite 2026-06-15 : la même page expose aussi les définitions archivées et permet leur restauration locale vers `INACTIVE`, avec code de repli lisible si le code d'origine a déjà été repris ; elle expose aussi désormais les jobs archivés et peut restaurer localement un ancien `PENDING` vers `PENDING` seulement si son automation liée reste `ACTIVE`, sinon simple réaffichage historique ; enfin, les deux sections d'archives visibles supportent maintenant aussi une restauration batch strictement locale. Aucun worker générique, aucun run model, aucun template éditable dans ce lot |
@@ -104,11 +99,11 @@ cf. section optional).
 
 ## 4. Synthèse
 
-- **L3 fonctionnel** : 25/32 (core catalogue produit, content/maintenance, commerce.payments, commerce.documents, commerce.products.related, commerce.shipping, commerce.discounts [niveau `simple`, inactif par défaut], engagement.analytics [périmètre commerce, inactif par défaut], engagement.newsletter [niveau `basic`, inactif par défaut], engagement.automations [référentiel admin, inactif par défaut], platform.notifications [lecture admin, inactif par défaut], satellite.search [lecture admin, inactif par défaut], satellite.channels [lecture admin, inactif par défaut], platform.integrations [lecture admin, inactif par défaut], platform.webhooks [lecture admin, sémantique à clarifier], ai.core [lecture admin bornée, inactif par défaut])
-- **L2 mock** : 1/32 (localization en pause)
+- **L3 fonctionnel** : 32/32 — catalogue produit (core), content/maintenance (cross_cutting), platform.localization (L3 complet 2026-06-16), engagement.analytics/newsletter/automations, ai.core (niveaux `basic`/`assistant`/`advanced`/`automation`), platform.notifications/integrations/webhooks (lecture admin), satellite.search/channels (lecture admin), commerce.payments/documents/discounts/shipping/fulfillment/returns/taxation
+- **L2 mock** : 0/32
 - **L1 placeholder (Coming Soon)** : 0/32
 - **L0 catalogué sans code** : 0/32
-- **Niveaux annoncés non câblés** : aucun sur `catalog.products.media` ; `catalog.products.inventory` reste avec `forecasting` câblé le 2026-06-16
+- **Niveaux annoncés non câblés** : aucun — tous les niveaux déclarés sont câblés au 2026-06-16
 
 ## 5. Point de doctrine à signaler (écart catalogue / roadmap)
 
@@ -148,8 +143,12 @@ construction libre — c'est une **activation gouvernée**, précédée d'un cad
 
 Ordre proposé, du plus proche du fonctionnel au plus loin :
 
-1. **Finir ce qui est en pause** : `platform.localization` — trancher le cadrage
-   `localized-routing` (L3) ou généraliser `LocalizedValue` à d'autres contenus.
+1. ~~**Finir ce qui est en pause** : `platform.localization` — trancher le cadrage
+   `localized-routing` (L3) ou généraliser `LocalizedValue` à d'autres contenus.~~
+   **Fait (2026-06-16)** : lot 5 `localized-routing` complet (proxy, hreflang, sitemap,
+   sélecteur); seeds `cross_cutting`/`core` ajoutés; UX pilotage refactorisée
+   (liste → page détail). Cf. `docs/lots/2026-06-13-localization-l3-cadrage.md`.
+   **Candidat restant H4** : clone-à-blanc (`docs/lots/2026-06-13-clone-a-blanc-cadrage.md`).
 2. **Compléter un module déjà L3 partiel** : `commerce.shipping` — admin
    transporteurs/suivi, pour atteindre la cohérence avec son `defaultState: active`.
 3. ~~**Combler l'écart niveaux déclarés/câblés** sur `catalog.products.inventory`
@@ -214,13 +213,15 @@ Ordre proposé, du plus proche du fonctionnel au plus loin :
    referentiel `WebhookEndpoint` / `WebhookDelivery` sur
    `/admin/settings/webhooks`, avec divergence doctrine/modele explicitement
    documentee, cf. `docs/lots/2026-06-14-platform-webhooks-cadrage.md`.
-7. **`ai.core`** : ~~en dernier, et seulement après clarification du point 5.~~
-   **Clarification minimale + lecture admin bornée + premier usage `basic`
-   faits (2026-06-15)**, cf.
-   `docs/lots/2026-06-15-ai-core-admin-read-cadrage.md` puis
-   `docs/lots/2026-06-15-ai-core-first-usage-cadrage.md`. Prochaine marche :
-   arbitrer soit l'extension `assistant` au blog / Open Graph, soit un vrai
-   contrat provider runtime, mais pas les deux dans le même lot.
+7. ~~**`ai.core`** : en dernier, et seulement après clarification du point 5.~~
+   **Fait (2026-06-15/16)** : lecture admin + niveaux `basic`/`assistant`/`advanced`/`automation`
+   câblés sur SEO produit et blog. Cf.
+   `docs/lots/2026-06-15-ai-core-admin-read-cadrage.md`,
+   `docs/lots/2026-06-15-ai-core-first-usage-cadrage.md`,
+   `docs/lots/2026-06-16-ai-core-assistant-blog-seo-cadrage.md`,
+   `docs/lots/2026-06-16-ai-core-advanced-seo-history-cadrage.md`,
+   `docs/lots/2026-06-16-ai-core-automation-seo-prefill-cadrage.md`.
+   Restent hors lot : provider SDK, multi-surfaces, workflow d'acceptation transverse.
 
 ## 7. Checklist générique par module (pattern canonique H4)
 

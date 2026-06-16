@@ -2,7 +2,7 @@
 
 # Cadrage — Validation « Clone à blanc » (Horizon 4, proposition à valider)
 
-> **Statut : proposition.** Aucun code de ce cadrage n'est implémenté.
+> **Statut : validé (2026-06-16).** Cf. `docs/audit/clone-a-blanc-validation-2026-06-16.md`.
 > Référence : `docs/roadmap/projet-creatyss.md` (Horizon 4, dernière case
 > non cochée), `docs/audit/audit-clonabilite-2026-06-12.md`,
 > `docs/architecture/10-fondations/10-principes-d-architecture.md`.
