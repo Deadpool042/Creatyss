@@ -3,31 +3,50 @@ import { CheckCircle2, Clock, Euro, Star, Tag } from "lucide-react";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
-
 import { listAdminPriceLists, type AdminPriceListSummary } from "@/features/admin/catalog/queries/list-admin-price-lists.query";
+import { PriceListCreateDialog } from "@/features/admin/catalog/components/price-list-create-dialog";
+import { PriceListRowActions } from "@/features/admin/catalog/components/price-list-row-actions";
 
 export const dynamic = "force-dynamic";
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
 
-const STATUS_CONFIG: Record<AdminPriceListSummary["status"], {
-  label: string;
-  badge: string;
-}> = {
+const STATUS_CONFIG: Record<AdminPriceListSummary["status"], { label: string; badge: string }> = {
   DRAFT: { label: "Brouillon", badge: "bg-surface-subtle text-muted-foreground" },
   ACTIVE: { label: "Actif", badge: "bg-feedback-success-surface/75 text-feedback-success-foreground" },
   INACTIVE: { label: "Inactif", badge: "bg-surface-subtle text-muted-foreground/70" },
   ARCHIVED: { label: "Archivé", badge: "bg-surface-subtle text-muted-foreground/50" },
 };
 
-export default async function AdminCatalogPricingPage() {
+function getPricingErrorMessage(code: string): string {
+  switch (code) {
+    case "duplicate_code": return "Une liste avec ce code existe déjà.";
+    case "invalid_input": return "Formulaire invalide — vérifiez les champs.";
+    case "missing_store": return "Aucune boutique trouvée.";
+    case "not_found": return "Liste de prix introuvable.";
+    case "not_active": return "Seule une liste active peut être définie par défaut.";
+    case "invalid_transition": return "Cette transition de statut n'est pas autorisée.";
+    default: return "L'opération a échoué.";
+  }
+}
+
+type AdminCatalogPricingPageProps = Readonly<{
+  searchParams: Promise<{ pl_created?: string; pl_updated?: string; pl_error?: string }>;
+}>;
+
+export default async function AdminCatalogPricingPage({ searchParams }: AdminCatalogPricingPageProps) {
   let priceLists: AdminPriceListSummary[] = [];
 
-  try {
-    priceLists = await listAdminPriceLists();
-  } catch {
-    // Table non disponible
-  }
+  const [resolvedSearchParams] = await Promise.all([
+    searchParams,
+    (async () => {
+      try {
+        priceLists = await listAdminPriceLists();
+      } catch {
+        // Table non disponible
+      }
+    })(),
+  ]);
 
   const activeLists = priceLists.filter((p) => p.status === "ACTIVE").length;
   const totalEntries = priceLists.reduce((sum, p) => sum + p.productPricesCount + p.variantPricesCount, 0);
@@ -45,7 +64,25 @@ export default async function AdminCatalogPricingPage() {
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
+      topbarAction={<PriceListCreateDialog />}
     >
+      {/* Feedback */}
+      {resolvedSearchParams.pl_created ? (
+        <div className="rounded-xl border border-feedback-success-border bg-feedback-success-surface/60 px-4 py-2.5 text-sm text-feedback-success-foreground">
+          Liste de prix créée avec succès.
+        </div>
+      ) : null}
+      {resolvedSearchParams.pl_updated ? (
+        <div className="rounded-xl border border-feedback-success-border bg-feedback-success-surface/60 px-4 py-2.5 text-sm text-feedback-success-foreground">
+          Liste de prix mise à jour.
+        </div>
+      ) : null}
+      {resolvedSearchParams.pl_error ? (
+        <div className="rounded-xl border border-feedback-error-border bg-feedback-error-surface/60 px-4 py-2.5 text-sm text-feedback-error-foreground">
+          {getPricingErrorMessage(resolvedSearchParams.pl_error)}
+        </div>
+      ) : null}
+
       {priceLists.length === 0 ? (
         <AdminEmptyState
           eyebrow="Tarification"
@@ -59,17 +96,28 @@ export default async function AdminCatalogPricingPage() {
           <div className="grid grid-cols-3 gap-3">
             {[
               { label: "Listes total", value: priceLists.length },
-              { label: "Actives", value: activeLists, accent: activeLists > 0 ? "text-feedback-success-foreground" : undefined },
+              {
+                label: "Actives",
+                value: activeLists,
+                accent: activeLists > 0 ? "text-feedback-success-foreground" : undefined,
+              },
               { label: "Entrées de prix", value: totalEntries },
             ].map((s) => (
-              <div key={s.label} className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 px-4 py-3 shadow-sm backdrop-blur-sm">
-                <p className={cn("text-2xl font-semibold tracking-tight", s.accent ?? "text-foreground")}>{s.value}</p>
-                <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">{s.label}</p>
+              <div
+                key={s.label}
+                className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 px-4 py-3 shadow-sm backdrop-blur-sm"
+              >
+                <p className={cn("text-2xl font-semibold tracking-tight", s.accent ?? "text-foreground")}>
+                  {s.value}
+                </p>
+                <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+                  {s.label}
+                </p>
               </div>
             ))}
           </div>
 
-          {/* Liste de prix par défaut mise en avant */}
+          {/* Défaut mis en avant */}
           {defaultList ? (
             <div className="rounded-2xl border border-feedback-success-border bg-feedback-success-surface/20 px-5 py-4">
               <div className="flex items-center gap-3">
@@ -79,7 +127,8 @@ export default async function AdminCatalogPricingPage() {
                     Liste par défaut : {defaultList.name}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {defaultList.currencyCode} · {defaultList.productPricesCount + defaultList.variantPricesCount} prix configurés
+                    {defaultList.currencyCode} ·{" "}
+                    {defaultList.productPricesCount + defaultList.variantPricesCount} prix configurés
                   </p>
                 </div>
                 <span className="ml-auto shrink-0 inline-flex h-6 items-center rounded-md bg-feedback-success-surface/75 px-2 text-[11px] font-medium text-feedback-success-foreground">
@@ -90,21 +139,26 @@ export default async function AdminCatalogPricingPage() {
             </div>
           ) : null}
 
-          {/* Toutes les listes */}
+          {/* Liste complète */}
           <div className="divide-y divide-surface-border/40 overflow-hidden rounded-2xl border border-surface-border/60 bg-surface-panel/60 shadow-sm backdrop-blur-sm">
             {priceLists.map((list) => {
               const cfg = STATUS_CONFIG[list.status];
-              const hasSchedule = list.startsAt || list.endsAt;
+              const hasSchedule = list.startsAt !== null || list.endsAt !== null;
 
               return (
-                <div key={list.id} className="flex items-center gap-3 px-4 py-3.5 hover:bg-surface-subtle/20 transition-colors">
-                  {/* Icon */}
-                  <div className={cn(
-                    "flex size-9 shrink-0 items-center justify-center rounded-xl border",
-                    list.isDefault
-                      ? "border-feedback-success-border/50 bg-feedback-success-surface/20"
-                      : "border-surface-border/60 bg-surface-subtle"
-                  )}>
+                <div
+                  key={list.id}
+                  className="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-surface-subtle/20"
+                >
+                  {/* Icône */}
+                  <div
+                    className={cn(
+                      "flex size-9 shrink-0 items-center justify-center rounded-xl border",
+                      list.isDefault
+                        ? "border-feedback-success-border/50 bg-feedback-success-surface/20"
+                        : "border-surface-border/60 bg-surface-subtle"
+                    )}
+                  >
                     {list.isDefault ? (
                       <Star className="size-4 text-feedback-success-foreground" />
                     ) : (
@@ -125,25 +179,33 @@ export default async function AdminCatalogPricingPage() {
                       {hasSchedule ? (
                         <span className="ml-2 inline-flex items-center gap-1">
                           <Clock className="size-3" />
-                          {list.startsAt && dateFormatter.format(new Date(list.startsAt))}
-                          {list.startsAt && list.endsAt ? " → " : ""}
-                          {list.endsAt && dateFormatter.format(new Date(list.endsAt))}
+                          {list.startsAt !== null && dateFormatter.format(new Date(list.startsAt))}
+                          {list.startsAt !== null && list.endsAt !== null ? " → " : ""}
+                          {list.endsAt !== null && dateFormatter.format(new Date(list.endsAt))}
                         </span>
                       ) : null}
                     </p>
                   </div>
 
-                  {/* Statut */}
-                  <span className={cn("shrink-0 inline-flex h-6 items-center rounded-md px-2 text-[11px] font-medium", cfg.badge)}>
-                    {cfg.label}
-                  </span>
+                  {/* Statut + actions */}
+                  <div className="flex shrink-0 items-center gap-2">
+                    <span
+                      className={cn(
+                        "inline-flex h-6 items-center rounded-md px-2 text-[11px] font-medium",
+                        cfg.badge
+                      )}
+                    >
+                      {cfg.label}
+                    </span>
+                    <PriceListRowActions list={list} />
+                  </div>
                 </div>
               );
             })}
           </div>
 
           <p className="text-xs text-muted-foreground/50">
-            Création et édition des listes de prix à venir. Les prix par produit se configurent dans l'onglet Prix de chaque fiche produit.
+            Les prix par produit se configurent dans l&apos;onglet Prix de chaque fiche produit.
           </p>
         </>
       )}
