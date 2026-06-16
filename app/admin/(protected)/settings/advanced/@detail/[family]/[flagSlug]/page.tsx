@@ -2,7 +2,10 @@ import { notFound } from "next/navigation";
 
 import { AdminSplitDetailPaneShell } from "@/components/admin/layout/admin-split-detail-pane-shell";
 import { AdminSplitDetailSectionCard } from "@/components/admin/layout/admin-split-detail-section-card";
-import { FeatureFlagDetail } from "@/features/admin/pilotage/components/settings-advanced";
+import {
+  FeatureFlagDetail,
+  FlagGovernancePanel,
+} from "@/features/admin/pilotage/components/settings-advanced";
 import { listAdminFeatureFlags } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
 import {
   FAMILY_SLUGS,
@@ -38,11 +41,18 @@ export default async function AdvancedSettingsDetailFlagPage({ params }: PagePro
     notFound();
   }
 
+  const governancePanel = await FlagGovernancePanel({ flagKey: flag.key });
+
   return (
     <AdminSplitDetailPaneShell>
       <AdminSplitDetailSectionCard className="overflow-hidden">
         <FeatureFlagDetail flag={flag} />
       </AdminSplitDetailSectionCard>
+      {governancePanel !== null && (
+        <AdminSplitDetailSectionCard>
+          {governancePanel}
+        </AdminSplitDetailSectionCard>
+      )}
     </AdminSplitDetailPaneShell>
   );
 }

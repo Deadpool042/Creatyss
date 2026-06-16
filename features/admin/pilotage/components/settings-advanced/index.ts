@@ -3,3 +3,4 @@ export { FeatureFlagsOverview } from "./feature-flags-overview";
 export { FeatureFlagsFamilyDetail } from "./feature-flags-family-detail";
 export { LocalizationModuleShell } from "./localization-module-shell";
 export { FeatureFlagDetail } from "./feature-flag-detail";
+export { FlagGovernancePanel } from "./flag-governance-panel";

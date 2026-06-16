@@ -63,26 +63,25 @@ function StatusBadge({ flag }: { flag: AdminFeatureFlagView }) {
 // ─── Contextual links ─────────────────────────────────────────────────────────
 
 /**
- * Liens de paramètres contextuels selon la clé du flag et le niveau effectif.
- * Chaque flag actif avec des réglages dédiés expose ses liens ici.
+ * Liens de navigation vers les sections admin liées au flag.
+ * - Flags readonly : toujours affichés (fonctionnalité toujours active).
+ * - Autres flags : affichés uniquement si le flag est actif en DB.
  */
-function ContextualLinks({
-  flag,
-}: {
-  flag: AdminFeatureFlagView;
-}) {
+function ContextualLinks({ flag }: { flag: AdminFeatureFlagView }) {
+  const isReadonly = flag.mutability === "readonly";
   const isActive = flag.dbState.status === "ACTIVE";
-  if (!isActive) return null;
 
-  const level = flag.dbState.effectiveLevel;
+  if (!isReadonly && !isActive) return null;
 
-  const links = resolveContextualLinks(flag.key, level);
+  const links = resolveContextualLinks(flag.key, flag.dbState.effectiveLevel);
   if (links.length === 0) return null;
+
+  const sectionLabel = isReadonly ? "GÉRER" : "PARAMÈTRES DISPONIBLES";
 
   return (
     <div className="space-y-2">
       <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground/60">
-        Paramètres disponibles
+        {sectionLabel}
       </p>
       <div className="flex flex-wrap gap-2">
         {links.map((link) => (
@@ -193,6 +192,8 @@ type FeatureFlagDetailProps = Readonly<{
 export function FeatureFlagDetail({ flag }: FeatureFlagDetailProps) {
   const [feedback, setFeedback] = useState<FeatureFlagFeedback | null>(null);
 
+  const isReadonly = flag.mutability === "readonly";
+
   const isLevelSelectable =
     flag.mutability === "level_selectable" &&
     flag.dbState.status === "ACTIVE" &&
@@ -200,7 +201,7 @@ export function FeatureFlagDetail({ flag }: FeatureFlagDetailProps) {
 
   return (
     <div className="space-y-5">
-      {/* Header : label + toggle */}
+      {/* Header : label + toggle (ou note "inclus par défaut" pour readonly) */}
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 space-y-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -217,10 +218,19 @@ export function FeatureFlagDetail({ flag }: FeatureFlagDetailProps) {
           ) : null}
           <code className="text-[10px] font-mono text-muted-foreground/50">{flag.key}</code>
         </div>
-        <div className="shrink-0 pt-0.5">
-          <FeatureFlagToggle flag={flag} onFeedback={setFeedback} />
-        </div>
+        {!isReadonly && (
+          <div className="shrink-0 pt-0.5">
+            <FeatureFlagToggle flag={flag} onFeedback={setFeedback} />
+          </div>
+        )}
       </div>
+
+      {/* Note "inclus par défaut" pour les flags non configurables */}
+      {isReadonly && (
+        <p className="text-xs text-muted-foreground/60 italic">
+          Cette fonctionnalité est incluse par défaut et ne peut pas être désactivée.
+        </p>
+      )}
 
       {/* Niveau */}
       {isLevelSelectable && (

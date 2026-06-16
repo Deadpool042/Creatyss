@@ -142,7 +142,7 @@ export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
         </div>
       </div>
 
-      {/* Right: scope + toggle */}
+      {/* Right: scope + toggle (toggle masqué pour les flags readonly) */}
       <div className="flex shrink-0 items-center gap-3">
         {ScopeIcon !== null && scopeType !== null ? (
           <div className="flex items-center gap-1 text-[11px] text-muted-foreground/60">
@@ -150,7 +150,7 @@ export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
             {SCOPE_LABELS[scopeType]}
           </div>
         ) : null}
-        <FeatureFlagToggle flag={flag} />
+        {flag.mutability !== "readonly" && <FeatureFlagToggle flag={flag} />}
       </div>
     </div>
   );
