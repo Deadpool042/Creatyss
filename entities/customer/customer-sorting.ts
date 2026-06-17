@@ -1,7 +1,3 @@
-import {
-  parseAdminListSortParam,
-} from "@/components/admin/tables/state/admin-list-search-params";
-
 export const CUSTOMER_SORT_OPTIONS = [
   "created-desc",
   "created-asc",
@@ -40,5 +36,11 @@ export const CUSTOMER_SORT_LABEL_OPTIONS: ReadonlyArray<{
 ] as const;
 
 export function parseCustomerSortOption(value: string | null | undefined): CustomerSortOption {
-  return parseAdminListSortParam(value, CUSTOMER_SORT_OPTIONS, CUSTOMER_DEFAULT_SORT);
+  if (!value) {
+    return CUSTOMER_DEFAULT_SORT;
+  }
+
+  return CUSTOMER_SORT_OPTIONS.includes(value as CustomerSortOption)
+    ? (value as CustomerSortOption)
+    : CUSTOMER_DEFAULT_SORT;
 }
