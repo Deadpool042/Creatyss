@@ -48,7 +48,7 @@ export function getProductModulePageShellProps({
   return {
     title: product.name,
     navigation: { label: PRODUCT_EDITOR_NAV_COPY.navLabel, href: ADMIN_PRODUCTS_LIST_PATH },
-    ...((topbarAction || headerActions)
+    ...(topbarAction || headerActions
       ? {
           topbarAction: (
             <div className="flex items-center gap-2">
@@ -59,7 +59,7 @@ export function getProductModulePageShellProps({
         }
       : {}),
     scrollBehavior: "page",
-    contentPreset: "full-width",
+    contentPreset: "detail",
     contentClassName: PRODUCT_MODULE_PAGE_CONTENT_CLASSNAME,
     breadcrumbs: [
       { label: "Admin", href: "/admin" },
