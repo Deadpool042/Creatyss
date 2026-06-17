@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { AdminStatusBadge, type AdminStatusVariant } from "@/components/admin/shared/admin-status-badge";
 import {
+  EditorialPageForm,
   PageBodyForm,
   PageStatusToggle,
   PagesPageHeader,
@@ -59,11 +60,14 @@ export default async function AdminContentPageDetailPage({
       {page.isSystemPage ? (
         <PageBodyForm pageId={page.id} body={page.body ?? ""} />
       ) : (
-        <div className="rounded-2xl border border-surface-border bg-surface-panel p-6">
-          <p className="text-sm text-muted-foreground">
-            L&apos;édition des pages éditoriales sera disponible dans un prochain lot.
-          </p>
-        </div>
+        <EditorialPageForm
+          pageId={page.id}
+          title={page.title}
+          slug={page.slug}
+          excerpt={page.excerpt}
+          body={page.body}
+          status={page.status}
+        />
       )}
     </PagesPageShell>
   );
