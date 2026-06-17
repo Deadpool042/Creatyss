@@ -20,7 +20,10 @@ import {
   readAdminProductImages,
   readAdminProductPageContextBySlug,
 } from "@/features/admin/products/editor/queries";
-import { ProductArchivedActions, ProductArchivedBanner } from "@/features/admin/products/components/editor/product-archived-actions";
+import {
+  ProductArchivedActions,
+  ProductArchivedBanner,
+} from "@/features/admin/products/components/editor/product-archived-actions";
 import { ProductImagesTab } from "@/features/admin/products/components/editor/product-images-tab";
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
@@ -59,14 +62,10 @@ export default async function ProductDetailMediaPage({
         title={product.name}
         navigation={{ label: PRODUCT_EDITOR_NAV_COPY.navLabel, href: ADMIN_PRODUCTS_LIST_PATH }}
         topbarAction={
-          <ProductEditorTopbarMenu
-            productId={product.id}
-            productSlug={product.slug}
-            isArchived
-          />
+          <ProductEditorTopbarMenu productId={product.id} productSlug={product.slug} isArchived />
         }
         scrollBehavior="page"
-        contentPreset="full-width"
+        contentPreset="detail"
         header={
           <AdminPageHeader
             className="hidden lg:block"
@@ -74,7 +73,7 @@ export default async function ProductDetailMediaPage({
             hideDescriptionOnMobile
             eyebrow={PRODUCT_EDITOR_NAV_COPY.eyebrow}
             title={product.name}
-            description="Produit archive."
+            description="Produit archivé."
             actions={
               <div className="hidden lg:flex lg:items-center lg:gap-2">
                 <ProductArchivedActions productSlug={product.slug} />

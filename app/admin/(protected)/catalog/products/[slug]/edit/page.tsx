@@ -11,7 +11,11 @@ import {
   listAdminProductTypeOptions,
   readAdminProductEditorBySlug,
 } from "@/features/admin/products/editor/queries";
-import { DeleteProductButton, ProductArchivedActions, ProductArchivedBanner } from "@/features/admin/products/components/editor/product-archived-actions";
+import {
+  DeleteProductButton,
+  ProductArchivedActions,
+  ProductArchivedBanner,
+} from "@/features/admin/products/components/editor/product-archived-actions";
 import { ProductGeneralTab } from "@/features/admin/products/components/editor/product-general-tab";
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
@@ -46,7 +50,7 @@ function ProductEditorNotFoundState() {
     <AdminPageShell
       title={PRODUCT_EDITOR_PAGE_COPY.notFoundMessage}
       navigation={{ label: PRODUCT_EDITOR_NAV_COPY.navLabel, href: ADMIN_PRODUCTS_LIST_PATH }}
-      contentPreset="full-width"
+      contentPreset="detail"
       contentClassName="lg:pb-6"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
@@ -98,7 +102,7 @@ function ProductArchivedState({ product }: ProductArchivedStateProps) {
         <ProductEditorTopbarMenu productId={product.id} productSlug={product.slug} isArchived />
       }
       scrollBehavior="page"
-      contentPreset="full-width"
+      contentPreset="detail"
       contentClassName="lg:pb-6"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
