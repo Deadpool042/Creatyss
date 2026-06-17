@@ -69,7 +69,7 @@ export function AdminSplitListPane({
           </header>
         </div>
 
-        <div className="flex min-h-full min-w-0 flex-col  space-y-4 pt-2 safe-px-layout md:px-2">
+        <div className="admin-split-list-content-padding flex min-h-full min-w-0 flex-col space-y-4 pt-2">
           {overview !== undefined ? <div className="pb-2.5">{overview}</div> : null}
           <div className="-mt-px">
             {isEmpty && emptyState !== undefined ? emptyState : children}

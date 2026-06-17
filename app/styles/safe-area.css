@@ -53,7 +53,6 @@
   }
   .safe-px-compact {
     --safe-compact-inline-padding: 0.75rem;
-    background-color: red !important; /* debug */
   }
 }
 
@@ -63,10 +62,25 @@
     --safe-layout-inline-padding: 1rem;
   }
   .safe-px-compact {
-    /* background-color: green !important; debug */
-
     --safe-compact-inline-padding: 0.25rem;
     --safe-compact-area-ratio: 0.62;
+  }
+}
+
+/* ── Padding horizontal liste split ─────────────────────────────────────────
+   Padding compact du contenu des listes split.
+   Le contenu visuel peut être plus serré qu'une page standard, mais la safe
+   area physique reste toujours entièrement respectée. */
+.admin-split-list-content-padding {
+  --admin-split-list-inline-padding: 1rem;
+
+  padding-left: max(var(--admin-split-list-inline-padding), var(--admin-safe-area-left));
+  padding-right: max(var(--admin-split-list-inline-padding), var(--admin-safe-area-right));
+}
+
+@media (min-width: 768px) {
+  .admin-split-list-content-padding {
+    --admin-split-list-inline-padding: 0.5rem;
   }
 }
 
