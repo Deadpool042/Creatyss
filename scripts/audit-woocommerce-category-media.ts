@@ -63,20 +63,20 @@ async function main(): Promise<number> {
       orderBy: { storageKey: "asc" },
     });
 
-    console.info(`=== Assets Woo catégories (${assets.length}) ===`);
+    console.warn(`=== Assets Woo catégories (${assets.length}) ===`);
 
     for (const asset of assets) {
       const wooSlug = wooSlugFromStorageKey(asset.storageKey);
-      console.info(
+      console.warn(
         `\n${asset.id} | ${asset.storageKey}\n  status=${asset.status} archivedAt=${asset.archivedAt?.toISOString() ?? "null"} storeId=${asset.storeId ?? "null"}`
       );
 
       if (asset.references.length === 0) {
-        console.info("  MediaReference : (aucune)");
+        console.warn("  MediaReference : (aucune)");
       }
 
       for (const ref of asset.references) {
-        console.info(
+        console.warn(
           `  MediaReference ${ref.id} : ${ref.subjectType}/${ref.subjectId} role=${ref.role} sortOrder=${ref.sortOrder} isPrimary=${ref.isPrimary} isActive=${ref.isActive} archivedAt=${ref.archivedAt?.toISOString() ?? "null"}`
         );
 
@@ -93,7 +93,7 @@ async function main(): Promise<number> {
               coverImageId: true,
             },
           });
-          console.info(
+          console.warn(
             category === null
               ? "    → Category INTROUVABLE (référence orpheline : subjectId sans ligne)"
               : `    → Category ${category.id} | ${category.name} | slug=${category.slug} | status=${category.status} | archivedAt=${category.archivedAt?.toISOString() ?? "null"} | primaryImageId=${category.primaryImageId ?? "null"} | coverImageId=${category.coverImageId ?? "null"}`
@@ -107,7 +107,7 @@ async function main(): Promise<number> {
         select: { id: true, name: true, slug: true, status: true },
       });
       for (const cat of fkCategories) {
-        console.info(
+        console.warn(
           `  FK directe : Category ${cat.id} | ${cat.name} | slug=${cat.slug} | status=${cat.status}`
         );
       }
@@ -126,7 +126,7 @@ async function main(): Promise<number> {
         },
         select: { id: true, name: true, slug: true, status: true, primaryImageId: true },
       });
-      console.info(
+      console.warn(
         `  Catégories proches (slug Woo "${wooSlug}") : ${
           near.length === 0
             ? "(aucune)"
@@ -147,9 +147,9 @@ async function main(): Promise<number> {
       },
       orderBy: [{ status: "asc" }, { slug: "asc" }],
     });
-    console.info(`\n=== Toutes les catégories (${allCategories.length}) ===`);
+    console.warn(`\n=== Toutes les catégories (${allCategories.length}) ===`);
     for (const cat of allCategories) {
-      console.info(
+      console.warn(
         `  ${cat.id} | ${cat.slug} | ${cat.name} | ${cat.status} | primaryImageId=${cat.primaryImageId ?? "null"} | coverImageId=${cat.coverImageId ?? "null"}`
       );
     }
@@ -159,18 +159,18 @@ async function main(): Promise<number> {
       where: { storageKey: { in: [...SEED_STORAGE_KEYS] } },
       select: { id: true, storageKey: true, status: true, archivedAt: true, storeId: true },
     });
-    console.info(`\n=== MediaAsset des fichiers seed (${seedAssets.length}/${SEED_STORAGE_KEYS.length}) ===`);
+    console.warn(`\n=== MediaAsset des fichiers seed (${seedAssets.length}/${SEED_STORAGE_KEYS.length}) ===`);
     const seedKeysFound = new Set(seedAssets.map((a) => a.storageKey));
     for (const asset of seedAssets) {
-      console.info(`  ${asset.id} | ${asset.storageKey} | ${asset.status} | archivedAt=${asset.archivedAt?.toISOString() ?? "null"}`);
+      console.warn(`  ${asset.id} | ${asset.storageKey} | ${asset.status} | archivedAt=${asset.archivedAt?.toISOString() ?? "null"}`);
     }
     for (const key of SEED_STORAGE_KEYS) {
       if (!seedKeysFound.has(key)) {
-        console.info(`  (absent en DB) ${key} — fichier sur disque sans MediaAsset`);
+        console.warn(`  (absent en DB) ${key} — fichier sur disque sans MediaAsset`);
       }
     }
 
-    console.info("\nAudit terminé — aucune mutation effectuée (exit 0).");
+    console.warn("\nAudit terminé — aucune mutation effectuée (exit 0).");
     return 0;
   } finally {
     await prisma.$disconnect();
