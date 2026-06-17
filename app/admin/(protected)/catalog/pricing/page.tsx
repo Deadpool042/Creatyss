@@ -35,17 +35,9 @@ type AdminCatalogPricingPageProps = Readonly<{
 }>;
 
 export default async function AdminCatalogPricingPage({ searchParams }: AdminCatalogPricingPageProps) {
-  let priceLists: AdminPriceListSummary[] = [];
-
-  const [resolvedSearchParams] = await Promise.all([
+  const [resolvedSearchParams, priceLists] = await Promise.all([
     searchParams,
-    (async () => {
-      try {
-        priceLists = await listAdminPriceLists();
-      } catch {
-        // Table non disponible
-      }
-    })(),
+    listAdminPriceLists().catch((): AdminPriceListSummary[] => []),
   ]);
 
   const activeLists = priceLists.filter((p) => p.status === "ACTIVE").length;
