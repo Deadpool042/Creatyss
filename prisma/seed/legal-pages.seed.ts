@@ -334,12 +334,12 @@ export async function seedLegalPages(prisma: PrismaClient, storeId: string): Pro
 
     if (existing !== null && (existing.body?.trim() ?? "") !== "") {
       // Contenu déjà présent (probablement édité en admin) : ne pas écraser.
-      console.info(`[legal-pages] ${page.code} : body existant conservé (skip)`);
+      console.warn(`[legal-pages] ${page.code} : body existant conservé (skip)`);
       continue;
     }
 
     const status = resolveLegalPageStatus(page.body);
-    console.info(
+    console.warn(
       `[legal-pages] ${page.code} : ${existing === null ? "création" : "mise à jour"} en ${status}`
     );
 
