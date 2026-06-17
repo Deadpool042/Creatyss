@@ -96,35 +96,6 @@
   }
 }
 
-/* ── Padding vertical bottom — layout scrollable ─────────────────────────── */
-/* À utiliser sur le contenu d'une page scrollable, pas sur une barre fixe.  */
-.safe-pb-layout {
-  --safe-area-bottom: 0px;
-  padding-bottom: var(--safe-area-bottom);
-}
-
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
-  .safe-pb-layout {
-    --safe-area-bottom: env(safe-area-inset-bottom);
-  }
-}
-
-/* ── Padding vertical bottom — barres FIXÉES en bas (bottom nav, CTA) ──────
-   Différent de safe-pb-layout : ajoute un minimum de 0.5rem en plus du safe area
-   car les barres fixées doivent toujours avoir un minimum de séparation visuelle. */
-.safe-pb-mobile-bar {
-  --safe-area-bottom: 0px;
-  --safe-mobile-bar-padding: 0.5rem;
-
-  padding-bottom: max(var(--safe-mobile-bar-padding), var(--safe-area-bottom));
-}
-
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
-  .safe-pb-mobile-bar {
-    --safe-area-bottom: env(safe-area-inset-bottom);
-  }
-}
-
 /* ── Variables canoniques bottom nav mobile ──────────────────────────────────
    Source unique pour la hauteur de la bottom nav mobile et son offset safe-area.
    --admin-bottom-nav-height  : hauteur de la barre (h-14 = 3.5rem)
@@ -190,28 +161,6 @@
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .admin-mobile-bottom-nav-frame {
     padding-bottom: env(safe-area-inset-bottom);
-  }
-}
-
-/* ── Bottom spacing générique du contenu admin ─────────────────────────────
-   Utilisé par les presets qui doivent réserver l'espace de la bottom nav
-   mobile sans réécrire des formules Tailwind dans les presets TS.
-   Mobile/tablette : réserve basée sur l'offset de la bottom nav.
-   Desktop : respiration basse canonique.
-   Landscape compact : supprime la réserve pour préserver la hauteur utile. */
-.admin-content-bottom-spacing {
-  padding-bottom: var(--admin-bottom-nav-offset);
-}
-
-@media (min-width: 1024px) {
-  .admin-content-bottom-spacing {
-    padding-bottom: 2rem;
-  }
-}
-
-@media (max-height: 480px) and (min-width: 1024px) {
-  .admin-content-bottom-spacing {
-    padding-bottom: 0;
   }
 }
 
