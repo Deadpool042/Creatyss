@@ -131,7 +131,7 @@ Une case n'est cochée qu'au stade « recetté » minimum.
 
 **État 2026-06-12 :** le flux Checkout V1 est implémenté de bout en bout (panier cookie signé, checkout invité, transaction atomique, email non fatal, confirmation, admin paiements) — référence : `docs/lots/2026-06-10-checkout-v1-reference.md`.
 
-**Mise à jour 2026-06-12 (smoke E2E) :** le smoke `tests/e2e/public/commerce-smoke.spec.ts` passe localement. Parcours couvert : produit test vendable → ajout panier → panier visible → checkout invité (informations enregistrées) → livraison sélectionnée → paiement `Virement bancaire` → création commande → confirmation publique (référence `CMD-*`, email client, paiement en attente) → panier vidé → connexion admin → commande visible dans la vue d'ensemble → détail admin (email client, statut paiement, méthode `Virement bancaire`).
+**Mise à jour 2026-06-17 (smoke E2E) :** le smoke `tests/e2e/public/commerce-smoke.spec.ts` passe localement après réalignement sur le contrat actuel des références de commande. Parcours couvert : produit test vendable → ajout panier → panier visible → checkout invité (informations enregistrées) → livraison sélectionnée → paiement `Virement bancaire` → création commande → confirmation publique (référence à préfixe boutique configurable, forme `PREFIX-XXXXXXXXXX`, email client, paiement en attente) → panier vidé → connexion admin → commande visible dans la vue d'ensemble → détail admin (email client, statut paiement, méthode `Virement bancaire`).
 
 Limites du smoke : paiement limité à `Virement bancaire` (pas de paiement en ligne, conforme au hors périmètre H2) ; l'email transactionnel est non fatal — le smoke vérifie l'enregistrement de l'événement `order_created` en DB (destinataire, statut), pas la délivrance réelle. La contrainte de disponibilité/stock est couverte séparément par `tests/e2e/public/commerce-availability.spec.ts` (refus `insufficient_stock`, panier inchangé), vert localement le 2026-06-12. `cart.spec.ts` et `checkout.spec.ts` sont alignés sur les fixtures auto-provisionnées et les contrats UI actuels, verts localement le 2026-06-12.
 
@@ -142,7 +142,7 @@ Limites du smoke : paiement limité à `Virement bancaire` (pas de paiement en l
 - [x] Commande créée et consultable en admin — implémenté, couvert par le smoke E2E minimal (vue d'ensemble + détail) (2026-06-12)
 - [x] Disponibilité produit respectée — implémenté, couvert par test E2E ciblé `insufficient_stock` (`commerce-availability.spec.ts`, 2026-06-12)
 - [x] Emails ou confirmations minimales cadrées — confirmation publique couverte par le smoke ; événement email `order_created` vérifié en DB par le smoke (destinataire correct, statut tracé) ; email non fatal, envoi réel non garanti par le test (2026-06-12)
-- [x] Parcours testé de bout en bout — smoke E2E minimal vert localement (2026-06-12)
+- [x] Parcours testé de bout en bout — smoke E2E minimal vert localement, revalidé le 2026-06-17 avec le format de référence configurable
 
 ---
 

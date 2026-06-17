@@ -6,7 +6,7 @@ import {
 } from "../commerce-db";
 
 function extractOrderReference(page: Page): string {
-  const match = page.url().match(/\/checkout\/confirmation\/(CMD-[A-Z0-9]{10})(?:\?.*)?$/);
+  const match = page.url().match(/\/checkout\/confirmation\/([A-Z0-9]+-[A-Z2-9]{10})(?:\?.*)?$/);
 
   if (match?.[1] === undefined) {
     throw new Error(`Unable to extract order reference from URL: ${page.url()}`);
@@ -88,7 +88,7 @@ test("creates a guest order and exposes it in admin orders", async ({ page }) =>
 
   await page.getByRole("button", { name: "Créer la commande" }).click();
 
-  await expect(page).toHaveURL(/\/checkout\/confirmation\/CMD-[A-Z0-9]{10}$/);
+  await expect(page).toHaveURL(/\/checkout\/confirmation\/[A-Z0-9]+-[A-Z2-9]{10}$/);
   const reference = extractOrderReference(page);
 
   await expect(

@@ -36,6 +36,16 @@ La montée en charge est découpée en quatre lots :
 3. E2E smoke des parcours critiques
 4. consolidation et élargissement ciblé
 
+## État factuel au 17 juin 2026
+
+- Socle Vitest opérationnel : `pnpm run test:unit`.
+- Suite unitaire locale validée : **182 tests passés**.
+- Infrastructure Playwright opérationnelle : `pnpm run test:e2e`.
+- Smoke commerce critique validé isolément :
+  `tests/e2e/public/commerce-smoke.spec.ts` — **1 test passé**.
+- La suite E2E complète n'est pas déclarée verte : son exécution intégrale a été interrompue car trop longue.
+- Les recettes humaines restent distinctes des validations automatisées.
+
 ---
 
 ## Lot 1 — Socle minimal de test
