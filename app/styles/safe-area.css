@@ -11,27 +11,9 @@
   padding-right: max(var(--safe-layout-inline-padding), var(--safe-area-right));
 }
 
-/* ── Padding horizontal compact — topbar, toolbar ────────────────────────── */
-.safe-px-compact {
-  --safe-area-left: 0px;
-  --safe-area-right: 0px;
-  --safe-compact-inline-padding: 0.375rem;
-  --safe-compact-area-ratio: 0.72;
-
-  padding-left: max(
-    var(--safe-compact-inline-padding),
-    calc(var(--safe-area-left) * var(--safe-compact-area-ratio))
-  );
-  padding-right: max(
-    var(--safe-compact-inline-padding),
-    calc(var(--safe-area-right) * var(--safe-compact-area-ratio))
-  );
-}
-
 /* Injection des vraies valeurs env() si supportées */
 @supports (padding-left: env(safe-area-inset-left)) {
-  .safe-px-layout,
-  .safe-px-compact {
+  .safe-px-layout {
     --safe-area-left: env(safe-area-inset-left);
     --safe-area-right: env(safe-area-inset-right);
   }
@@ -42,17 +24,11 @@
   .safe-px-layout {
     --safe-layout-inline-padding: 1.25rem; /* = px-5 */
   }
-  .safe-px-compact {
-    --safe-compact-inline-padding: 0.5rem;
-  }
 }
 
 @media (min-width: 1024px) {
   .safe-px-layout {
     --safe-layout-inline-padding: 1.5rem; /* = px-6 */
-  }
-  .safe-px-compact {
-    --safe-compact-inline-padding: 0.75rem;
   }
 }
 
@@ -60,10 +36,6 @@
 @media (max-height: 480px) and (min-width: 481px) and (max-width: 1023px) {
   .safe-px-layout {
     --safe-layout-inline-padding: 1rem;
-  }
-  .safe-px-compact {
-    --safe-compact-inline-padding: 0.25rem;
-    --safe-compact-area-ratio: 0.62;
   }
 }
 
