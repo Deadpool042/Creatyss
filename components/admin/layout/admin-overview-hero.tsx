@@ -34,10 +34,12 @@ export function AdminOverviewHero({
 }: AdminOverviewHeroProps) {
   const rootClassName = mobileHidden
     ? cn(
-        "hidden px-4 pt-1 md:px-5 lg:flex lg:flex-col lg:gap-4 lg:px-6 lg:pb-1",
-        align === "leading" ? "lg:items-start lg:justify-start" : "lg:items-center lg:justify-center"
+        "hidden pt-1 lg:flex lg:flex-col lg:gap-4 lg:pb-1",
+        align === "leading"
+          ? "lg:items-start lg:justify-start"
+          : "lg:items-center lg:justify-center"
       )
-    : "safe-px-layout px-4 pt-4 md:px-5 md:pt-5 lg:px-6";
+    : "pt-4 md:pt-5";
 
   return (
     <div className={cn(rootClassName, className)}>
