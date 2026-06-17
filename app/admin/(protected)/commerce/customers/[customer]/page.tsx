@@ -49,7 +49,9 @@ function formatAddressName(address: {
   lastName: string | null;
   company: string | null;
 }) {
-  return [address.firstName, address.lastName].filter(Boolean).join(" ") || address.company || "Contact";
+  return (
+    [address.firstName, address.lastName].filter(Boolean).join(" ") || address.company || "Contact"
+  );
 }
 
 function formatAddressBlock(address: {
@@ -69,9 +71,7 @@ function formatAddressBlock(address: {
   ].filter(Boolean);
 }
 
-export default async function AdminCustomerDetailPage({
-  params,
-}: AdminCustomerDetailPageProps) {
+export default async function AdminCustomerDetailPage({ params }: AdminCustomerDetailPageProps) {
   const { customer: routeKey } = await params;
   const customerId = parseAdminCustomerRouteKey(routeKey);
   const customer = await getAdminCustomerDetail(customerId);
@@ -97,7 +97,7 @@ export default async function AdminCustomerDetailPage({
         { label: fullName },
       ]}
       showBreadcrumbsInContent={false}
-      contentPreset="full-width"
+      contentPreset="detail"
     >
       <div className="space-y-6">
         <AdminPageHeader
@@ -109,22 +109,13 @@ export default async function AdminCustomerDetailPage({
 
         <section className="overflow-hidden rounded-[28px] border border-surface-border bg-surface-panel shadow-card">
           <div className="grid gap-0 border-b border-surface-border-subtle md:grid-cols-4">
-            <CustomerMetric
-              label="Statut"
-              value={CUSTOMER_STATUS_LABELS[customer.status]}
-            />
+            <CustomerMetric label="Statut" value={CUSTOMER_STATUS_LABELS[customer.status]} />
             <CustomerMetric
               label={CUSTOMER_EMAIL_CONSENT_LABEL}
               value={getCustomerEmailOptInLabel(customer.acceptsEmail)}
             />
-            <CustomerMetric
-              label="Consentement SMS"
-              value={customer.acceptsSms ? "Oui" : "Non"}
-            />
-            <CustomerMetric
-              label="Commandes"
-              value={String(customer._count.orders)}
-            />
+            <CustomerMetric label="Consentement SMS" value={customer.acceptsSms ? "Oui" : "Non"} />
+            <CustomerMetric label="Commandes" value={String(customer._count.orders)} />
           </div>
 
           <CustomerSection
@@ -168,7 +159,10 @@ export default async function AdminCustomerDetailPage({
             ) : (
               <div className="divide-y divide-surface-border-subtle">
                 {customer.addresses.map((address) => (
-                  <div key={address.id} className="grid gap-4 py-5 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+                  <div
+                    key={address.id}
+                    className="grid gap-4 py-5 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]"
+                  >
                     <div className="space-y-2">
                       <div className="flex flex-wrap items-center gap-2">
                         <p className="text-sm font-medium text-foreground">
@@ -208,7 +202,9 @@ export default async function AdminCustomerDetailPage({
             className="border-t border-surface-border-subtle"
           >
             {customer.orders.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Aucune commande rattachee a ce client.</p>
+              <p className="text-sm text-muted-foreground">
+                Aucune commande rattachee a ce client.
+              </p>
             ) : (
               <div className="divide-y divide-surface-border-subtle">
                 {customer.orders.map((order) => (

@@ -2,9 +2,7 @@ import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { ProductCreateTopbarMenu } from "@/features/admin/products/components/create/product-create-topbar-menu";
 import { ProductTableProvider } from "@/features/admin/products/components/list/desktop/product-table-context";
 import { ProductTable } from "@/features/admin/products/components/list/table/product-table";
-import {
-  PRODUCT_LIST_PAGE_COPY,
-} from "@/features/admin/products/config";
+import { PRODUCT_LIST_PAGE_COPY } from "@/features/admin/products/config";
 import { mapProductTableItem } from "@/features/admin/products/list/mappers";
 import {
   listAdminProducts,
@@ -77,7 +75,7 @@ export async function ProductsListPanel({
         { label: "Catalogue", href: "/admin/catalog/overview" },
         { label: "Produits" },
       ]}
-      contentPreset="full-width"
+      contentPreset="table"
       showBreadcrumbsInContent={false}
       scrollBehavior="external"
     >

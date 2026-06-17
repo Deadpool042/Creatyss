@@ -20,9 +20,7 @@ function getSingleParam(value: string | string[] | undefined): string | undefine
   return typeof value === "string" ? value : Array.isArray(value) ? value[0] : undefined;
 }
 
-export async function CustomersListPage({
-  searchParams = {},
-}: CustomersListPageProps) {
+export async function CustomersListPage({ searchParams = {} }: CustomersListPageProps) {
   const search = getSingleParam(searchParams.search)?.trim() || undefined;
   const page = parseCustomerPage(getSingleParam(searchParams.page));
   const perPage = parseCustomerPerPage(getSingleParam(searchParams.perPage));
@@ -107,7 +105,7 @@ export async function CustomersListPage({
         { label: "Clients" },
       ]}
       showBreadcrumbsInContent={false}
-      contentPreset="full-width"
+      contentPreset="table"
     >
       {content}
     </AdminPageShell>
