@@ -1,14 +1,23 @@
 import { expect, test, type Page } from "@playwright/test";
+import { ensureBoutiquePageFixture } from "../commerce-db";
 
 const COUNT_CASES = [
-  { url: "/boutique", expectedCountLabel: "50 produits", hasPagination: true },
-  { url: "/boutique?category=sacs", expectedCountLabel: "40 produits", hasPagination: true },
-  { url: "/boutique?category=mini-sacs", expectedCountLabel: "11 produits", hasPagination: false },
-  { url: "/boutique?category=cabas", expectedCountLabel: "4 produits", hasPagination: false },
-  { url: "/boutique?category=accessoires", expectedCountLabel: "9 produits", hasPagination: false },
-  { url: "/boutique?category=pochettes", expectedCountLabel: "3 produits", hasPagination: false },
-  { url: "/boutique?category=trousses", expectedCountLabel: "6 produits", hasPagination: false },
+  { url: "/boutique" },
+  { url: "/boutique?category=sacs" },
+  { url: "/boutique?category=mini-sacs" },
+  { url: "/boutique?category=cabas" },
+  { url: "/boutique?category=accessoires" },
+  { url: "/boutique?category=pochettes" },
+  { url: "/boutique?category=trousses" },
 ] as const;
+
+const BOUTIQUE_PAGE_SIZE = 12;
+
+let boutiqueFixture: Awaited<ReturnType<typeof ensureBoutiquePageFixture>>;
+
+function formatProductCountLabel(count: number): string {
+  return `${count} ${count > 1 ? "produits" : "produit"}`;
+}
 
 async function getVisibleHeaderCountLabel(page: Page) {
   return page.evaluate(() => {
@@ -302,6 +311,10 @@ async function expectNoVisibleInertInteractive(page: Page) {
 }
 
 test.describe("boutique page smoke", () => {
+  test.beforeAll(async () => {
+    boutiqueFixture = await ensureBoutiquePageFixture();
+  });
+
   test.describe("catalogue / counts", () => {
     for (const countCase of COUNT_CASES) {
       test(`shows expected total and pagination state for ${countCase.url}`, async ({ page }) => {
@@ -310,17 +323,25 @@ test.describe("boutique page smoke", () => {
         await expect(
           page.getByRole("heading", { level: 1, name: "Boutique" }).first()
         ).toBeVisible();
+        const expectedCount = boutiqueFixture.countsByUrl[countCase.url];
+
+        if (expectedCount === undefined) {
+          throw new Error(`Missing boutique fixture count for ${countCase.url}`);
+        }
+
+        const expectedCountLabel = formatProductCountLabel(expectedCount);
+
         await expect
           .poll(async () => getVisibleHeaderCountLabel(page))
-          .toBe(countCase.expectedCountLabel);
+          .toBe(expectedCountLabel);
         await expect(page.locator('[data-testid="boutique-listing-actions-count"]')).toHaveText(
-          countCase.expectedCountLabel
+          expectedCountLabel
             .replace("produits", "créations")
             .replace("produit", "création")
         );
 
         const pagination = page.getByRole("navigation", { name: "Pagination" });
-        if (countCase.hasPagination) {
+        if (expectedCount > BOUTIQUE_PAGE_SIZE) {
           await expect(pagination).toBeVisible();
           await expect(
             pagination.getByRole("link", { name: "Voir plus de créations", exact: true })

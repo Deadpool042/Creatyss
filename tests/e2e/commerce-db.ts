@@ -445,72 +445,121 @@ export async function markOrderAsPaid(reference: string): Promise<void> {
 }
 
 export async function resetSimpleProductCatalogState(): Promise<void> {
+  const store = await readDefaultStore();
   const now = new Date();
-  const products = await prisma.product.findMany({
-    where: {
-      slug: {
-        in: ["pochette-sable", "besace-nuit"],
-      },
-    },
-    select: {
-      id: true,
-      slug: true,
-      storeId: true,
-      variants: {
-        orderBy: [{ isDefault: "desc" }, { createdAt: "asc" }],
-        select: { id: true, sku: true },
-      },
-    },
-  });
 
-  for (const product of products) {
-    const defaultVariant = product.variants[0] ?? null;
-    const availableQuantity = product.slug === "pochette-sable" ? 12 : 0;
+  const fixtures = [
+    {
+      slug: "pochette-sable",
+      name: "Pochette Sable",
+      sku: "E2E-POC-SABLE",
+      priceCents: 5900,
+      availableQuantity: 12,
+    },
+    {
+      slug: "besace-nuit",
+      name: "Besace Nuit",
+      sku: "E2E-BES-NUIT",
+      priceCents: 8900,
+      availableQuantity: 0,
+    },
+  ] as const;
 
-    await prisma.product.update({
-      where: { id: product.id },
-      data: {
+  for (const fixture of fixtures) {
+    const product = await prisma.product.upsert({
+      where: {
+        storeId_slug: {
+          storeId: store.id,
+          slug: fixture.slug,
+        },
+      },
+      update: {
+        name: fixture.name,
+        shortDescription: "Produit simple déterministe pour les tests E2E.",
         status: "ACTIVE",
         isStandalone: true,
+        catalogPriceCents: fixture.priceCents,
+        catalogPriceCurrencyCode: "EUR",
         publishedAt: now,
         archivedAt: null,
+      },
+      create: {
+        storeId: store.id,
+        slug: fixture.slug,
+        name: fixture.name,
+        shortDescription: "Produit simple déterministe pour les tests E2E.",
+        status: "ACTIVE",
+        isStandalone: true,
+        catalogPriceCents: fixture.priceCents,
+        catalogPriceCurrencyCode: "EUR",
+        publishedAt: now,
+      },
+      select: {
+        id: true,
       },
     });
 
-    if (defaultVariant === null) {
-      continue;
-    }
-
-    await prisma.productVariant.update({
-      where: { id: defaultVariant.id },
-      data: {
+    const variant = await prisma.productVariant.upsert({
+      where: {
+        productId_sku: {
+          productId: product.id,
+          sku: fixture.sku,
+        },
+      },
+      update: {
+        name: "Produit simple",
         status: "ACTIVE",
         isDefault: true,
+        sortOrder: 0,
         publishedAt: now,
         archivedAt: null,
+      },
+      create: {
+        productId: product.id,
+        sku: fixture.sku,
+        name: "Produit simple",
+        status: "ACTIVE",
+        isDefault: true,
+        sortOrder: 0,
+        publishedAt: now,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    await prisma.productVariant.updateMany({
+      where: {
+        productId: product.id,
+        id: {
+          not: variant.id,
+        },
+      },
+      data: {
+        isDefault: false,
       },
     });
 
     await prisma.inventoryItem.upsert({
       where: {
         storeId_variantId: {
-          storeId: product.storeId,
-          variantId: defaultVariant.id,
+          storeId: store.id,
+          variantId: variant.id,
         },
       },
       update: {
-        sku: defaultVariant.sku,
+        sku: fixture.sku,
         status: "ACTIVE",
-        onHandQuantity: availableQuantity,
+        onHandQuantity: fixture.availableQuantity,
         reservedQuantity: 0,
         archivedAt: null,
       },
       create: {
-        storeId: product.storeId,
-        variantId: defaultVariant.id,
-        sku: defaultVariant.sku,
+        storeId: store.id,
+        variantId: variant.id,
+        sku: fixture.sku,
         status: "ACTIVE",
-        onHandQuantity: availableQuantity,
+        onHandQuantity: fixture.availableQuantity,
         reservedQuantity: 0,
       },
     });
@@ -518,23 +567,262 @@ export async function resetSimpleProductCatalogState(): Promise<void> {
     await prisma.availabilityRecord.upsert({
       where: {
         storeId_variantId: {
-          storeId: product.storeId,
-          variantId: defaultVariant.id,
+          storeId: store.id,
+          variantId: variant.id,
         },
       },
       update: {
-        status: availableQuantity > 0 ? "AVAILABLE" : "UNAVAILABLE",
-        isSellable: availableQuantity > 0,
+        status: fixture.availableQuantity > 0 ? "AVAILABLE" : "UNAVAILABLE",
+        isSellable: fixture.availableQuantity > 0,
         backorderAllowed: false,
         archivedAt: null,
       },
       create: {
-        storeId: product.storeId,
-        variantId: defaultVariant.id,
-        status: availableQuantity > 0 ? "AVAILABLE" : "UNAVAILABLE",
-        isSellable: availableQuantity > 0,
+        storeId: store.id,
+        variantId: variant.id,
+        status: fixture.availableQuantity > 0 ? "AVAILABLE" : "UNAVAILABLE",
+        isSellable: fixture.availableQuantity > 0,
         backorderAllowed: false,
       },
     });
   }
+}
+
+const BOUTIQUE_FIXTURE_PRODUCT_COUNT = 13;
+
+const BOUTIQUE_FIXTURE_CATEGORY_CODES = [
+  "mini-sacs",
+  "cabas",
+  "pochettes",
+  "trousses",
+] as const;
+
+export type BoutiquePageFixture = Readonly<{
+  countsByUrl: Readonly<Record<string, number>>;
+}>;
+
+/**
+ * Catalogue public E2E minimal et idempotent.
+ *
+ * Il garantit une pagination sur `/boutique` sans dépendre de l'import Woo
+ * local, tout en réutilisant la taxonomie canonique Creatyss.
+ */
+export async function ensureBoutiquePageFixture(): Promise<BoutiquePageFixture> {
+  const { seedCreatyssCategories } = await import(
+    "../../scripts/helpers/category-seed"
+  );
+
+  await seedCreatyssCategories(prisma);
+
+  const store = await readDefaultStore();
+  const now = new Date();
+
+  const categories = await prisma.category.findMany({
+    where: {
+      storeId: store.id,
+      code: {
+        in: [...BOUTIQUE_FIXTURE_CATEGORY_CODES],
+      },
+    },
+    select: {
+      id: true,
+      code: true,
+    },
+  });
+
+  const categoryIdByCode = new Map(
+    categories.map((category) => [category.code, category.id] as const)
+  );
+
+  for (const categoryCode of BOUTIQUE_FIXTURE_CATEGORY_CODES) {
+    if (!categoryIdByCode.has(categoryCode)) {
+      throw new Error(`Missing boutique E2E category: ${categoryCode}`);
+    }
+  }
+
+  for (let index = 1; index <= BOUTIQUE_FIXTURE_PRODUCT_COUNT; index += 1) {
+    const sequence = String(index).padStart(2, "0");
+    const slug = `e2e-boutique-product-${sequence}`;
+    const sku = `E2E-BOUTIQUE-${sequence}`;
+    const categoryCode =
+      BOUTIQUE_FIXTURE_CATEGORY_CODES[
+        (index - 1) % BOUTIQUE_FIXTURE_CATEGORY_CODES.length
+      ];
+
+    if (categoryCode === undefined) {
+      throw new Error(`Unable to resolve category for boutique fixture ${sequence}`);
+    }
+
+    const categoryId = categoryIdByCode.get(categoryCode);
+
+    if (categoryId === undefined) {
+      throw new Error(`Missing boutique E2E category id: ${categoryCode}`);
+    }
+
+    const product = await prisma.product.upsert({
+      where: {
+        storeId_slug: {
+          storeId: store.id,
+          slug,
+        },
+      },
+      update: {
+        name: `Création Boutique E2E ${sequence}`,
+        shortDescription: "Produit déterministe pour les tests du listing boutique.",
+        status: "ACTIVE",
+        isStandalone: true,
+        catalogPriceCents: 5000 + index * 100,
+        catalogPriceCurrencyCode: "EUR",
+        publishedAt: now,
+        archivedAt: null,
+      },
+      create: {
+        storeId: store.id,
+        slug,
+        name: `Création Boutique E2E ${sequence}`,
+        shortDescription: "Produit déterministe pour les tests du listing boutique.",
+        status: "ACTIVE",
+        isStandalone: true,
+        catalogPriceCents: 5000 + index * 100,
+        catalogPriceCurrencyCode: "EUR",
+        publishedAt: now,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    const variant = await prisma.productVariant.upsert({
+      where: {
+        productId_sku: {
+          productId: product.id,
+          sku,
+        },
+      },
+      update: {
+        name: "Version par défaut",
+        status: "ACTIVE",
+        isDefault: true,
+        sortOrder: 0,
+        publishedAt: now,
+        archivedAt: null,
+      },
+      create: {
+        productId: product.id,
+        sku,
+        name: "Version par défaut",
+        status: "ACTIVE",
+        isDefault: true,
+        sortOrder: 0,
+        publishedAt: now,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    await prisma.productCategory.deleteMany({
+      where: {
+        productId: product.id,
+      },
+    });
+
+    await prisma.productCategory.create({
+      data: {
+        productId: product.id,
+        categoryId,
+        isPrimary: true,
+        sortOrder: 0,
+      },
+    });
+
+    await prisma.inventoryItem.upsert({
+      where: {
+        storeId_variantId: {
+          storeId: store.id,
+          variantId: variant.id,
+        },
+      },
+      update: {
+        sku,
+        status: "ACTIVE",
+        onHandQuantity: 10,
+        reservedQuantity: 0,
+        archivedAt: null,
+      },
+      create: {
+        storeId: store.id,
+        variantId: variant.id,
+        sku,
+        status: "ACTIVE",
+        onHandQuantity: 10,
+        reservedQuantity: 0,
+      },
+    });
+
+    await prisma.availabilityRecord.upsert({
+      where: {
+        storeId_variantId: {
+          storeId: store.id,
+          variantId: variant.id,
+        },
+      },
+      update: {
+        status: "AVAILABLE",
+        isSellable: true,
+        backorderAllowed: false,
+        archivedAt: null,
+      },
+      create: {
+        storeId: store.id,
+        variantId: variant.id,
+        status: "AVAILABLE",
+        isSellable: true,
+        backorderAllowed: false,
+      },
+    });
+  }
+
+  const urls = [
+    "/boutique",
+    "/boutique?category=sacs",
+    "/boutique?category=mini-sacs",
+    "/boutique?category=cabas",
+    "/boutique?category=accessoires",
+    "/boutique?category=pochettes",
+    "/boutique?category=trousses",
+  ] as const;
+
+  const countsByUrl: Record<string, number> = {};
+
+  for (const url of urls) {
+    const parsed = new URL(url, "http://e2e.local");
+    const categorySlug = parsed.searchParams.get("category");
+
+    countsByUrl[url] = await prisma.product.count({
+      where: {
+        storeId: store.id,
+        status: "ACTIVE",
+        archivedAt: null,
+        ...(categorySlug !== null
+          ? {
+              productCategories: {
+                some: {
+                  category: {
+                    OR: [
+                      { slug: categorySlug },
+                      { parent: { slug: categorySlug } },
+                    ],
+                  },
+                },
+              },
+            }
+          : {}),
+      },
+    });
+  }
+
+  return {
+    countsByUrl,
+  };
 }
