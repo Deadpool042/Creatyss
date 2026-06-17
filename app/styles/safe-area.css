@@ -124,114 +124,6 @@
   }
 }
 
-.admin-split-compact-landscape-shell {
-  min-height: var(--admin-compact-vh, calc(100svh - var(--admin-topbar-height)));
-  height: auto;
-  max-height: none;
-  overflow: visible;
-}
-
-.admin-split-compact-landscape-root {
-  --admin-split-compact-landscape-list-width: clamp(16rem, 34vw, 19rem);
-  --admin-split-compact-landscape-focus-rail: 20px;
-  --admin-compact-right-inset: var(--admin-safe-area-right, 0px);
-  --admin-ios-motion-fast: 360ms;
-  --admin-ios-motion-medium: 820ms;
-  --admin-ios-motion-curve: cubic-bezier(0.22, 1, 0.36, 1);
-  display: grid;
-  grid-template-columns: var(--admin-split-compact-landscape-list-width) minmax(0, 1fr);
-  align-items: stretch;
-  isolation: isolate;
-  transition:
-    grid-template-columns var(--admin-ios-motion-medium) var(--admin-ios-motion-curve),
-    column-gap var(--admin-ios-motion-fast) var(--admin-ios-motion-curve);
-  will-change: transform;
-}
-
-.admin-split-compact-landscape-root[data-detail-focused="true"] {
-  grid-template-columns: var(--admin-split-compact-landscape-focus-rail) minmax(0, 1fr);
-}
-
-.admin-split-focus-toggle {
-  transform: translate3d(0, 0, 0) scale(1);
-}
-
-.admin-split-focus-toggle:hover {
-  background: color-mix(in srgb, var(--color-surface-floating) 88%, white 12%);
-}
-
-.admin-split-focus-toggle:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--color-accent-primary) 82%, white 18%);
-  outline-offset: 2px;
-}
-
-.admin-split-compact-landscape-list {
-  min-width: 0;
-  width: auto;
-  filter: none;
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-  transition:
-    transform var(--admin-ios-motion-medium) var(--admin-ios-motion-curve),
-    opacity var(--admin-ios-motion-fast) var(--admin-ios-motion-curve);
-  will-change: transform;
-}
-
-.admin-split-compact-landscape-list--focused {
-  filter: none;
-  opacity: 0.5;
-  pointer-events: none;
-  overflow: hidden;
-  box-shadow: inset -1px 0 0 color-mix(in srgb, var(--color-surface-border) 92%, transparent);
-}
-
-.admin-split-compact-landscape-detail {
-  position: relative;
-  min-width: 0;
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.025)),
-    color-mix(in srgb, var(--color-surface-panel) 62%, transparent);
-  contain: paint;
-  transition: none;
-  will-change: auto;
-}
-
-.admin-split-compact-landscape-detail--focused {
-  position: relative;
-  z-index: 1;
-  border-inline-start-width: 1px;
-  border-inline-start-color: color-mix(in srgb, white 22%, var(--color-surface-border) 78%);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.025)),
-    color-mix(in srgb, var(--color-surface-panel) 62%, transparent);
-  box-shadow:
-    -24px 0 60px rgba(0, 0, 0, 0.18),
-    inset 1px 0 0 rgba(255, 255, 255, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}
-
-.admin-split-compact-landscape-root[data-detail-focused="true"] .admin-split-focus-toggle {
-  transform: translate3d(0, 0, 0);
-}
-
-@supports ((backdrop-filter: blur(16px)) or (-webkit-backdrop-filter: blur(16px))) {
-  .admin-split-compact-landscape-detail {
-    -webkit-backdrop-filter: blur(26px) saturate(1.18) brightness(1.04);
-    backdrop-filter: blur(26px) saturate(1.18) brightness(1.04);
-  }
-
-  .admin-split-compact-landscape-detail--focused {
-    -webkit-backdrop-filter: blur(26px) saturate(1.18) brightness(1.04);
-    backdrop-filter: blur(26px) saturate(1.18) brightness(1.04);
-  }
-}
-
 .admin-split-detail-pane-scroll {
   position: relative;
   scrollbar-gutter: stable both-edges;
@@ -246,10 +138,6 @@
     .admin-shell-inset,
     .admin-split-page-shell,
     .admin-split-page-content,
-    .admin-split-compact-landscape-shell,
-    .admin-split-compact-landscape-root,
-    .admin-split-compact-landscape-list,
-    .admin-split-compact-landscape-detail
   ) {
     height: auto !important;
     max-height: none !important;
@@ -268,72 +156,7 @@
     min-height: 0;
   }
 
-  .admin-split-compact-landscape-shell {
-    min-height: var(--admin-compact-vh, 100svh);
-    height: var(--admin-compact-vh, 100svh) !important;
-    max-height: var(--admin-compact-vh, 100svh) !important;
-    overflow: hidden !important;
-  }
 
-  .admin-split-compact-landscape-root {
-    min-height: var(--admin-compact-vh, 100svh);
-    height: var(--admin-compact-vh, 100svh) !important;
-    max-height: var(--admin-compact-vh, 100svh) !important;
-    display: block;
-    align-items: stretch;
-    overflow-x: clip !important;
-    overflow-y: hidden !important;
-  }
-
-  .admin-split-compact-landscape-list {
-    position: absolute;
-    inset: 0 auto 0 0;
-    z-index: 2;
-    width: var(--admin-split-compact-landscape-list-width);
-    min-height: var(--admin-compact-vh, 100svh);
-    height: var(--admin-compact-vh, 100svh);
-    transform: translate3d(0, 0, 0);
-    overflow: hidden !important;
-  }
-
-  .admin-split-compact-landscape-list--focused {
-    transform: translate3d(
-      calc(
-        var(--admin-split-compact-landscape-focus-rail) -
-          var(--admin-split-compact-landscape-list-width)
-      ),
-      0,
-      0
-    );
-  }
-
-  .admin-split-compact-landscape-detail {
-    position: relative;
-    z-index: 1;
-    width: calc(100% - var(--admin-split-compact-landscape-list-width));
-    margin-left: var(--admin-split-compact-landscape-list-width);
-    min-height: var(--admin-compact-vh, 100svh);
-    height: var(--admin-compact-vh, 100svh);
-    transform: translate3d(0, 0, 0);
-    overflow: hidden !important;
-  }
-
-  .admin-split-compact-landscape-detail--focused {
-    width: calc(100% - var(--admin-split-compact-landscape-focus-rail));
-    margin-left: var(--admin-split-compact-landscape-focus-rail);
-    transform: translate3d(0, 0, 0);
-  }
-
-  .admin-split-compact-landscape-list > section,
-  .admin-split-compact-landscape-list > section > div,
-  .admin-split-compact-landscape-list .admin-split-list-pane-scroll,
-  .admin-split-compact-landscape-detail .admin-split-detail-pane-scroll {
-    height: 100% !important;
-    max-height: var(--admin-compact-vh, 100svh) !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    overscroll-behavior: contain;
-  }
 }
 
 .admin-split-detail-pane-column,
@@ -415,60 +238,7 @@
   }
 }
 
-@media (pointer: coarse) and (orientation: landscape) and (max-height: 480px) {
-  .admin-split-compact-landscape-detail .admin-split-detail-pane-content {
-    gap: 0.875rem;
-    padding-inline-start: max(0.875rem, var(--admin-safe-area-left));
-    padding-inline-end: max(0.875rem, var(--admin-safe-area-right));
-    padding-top: 0.875rem;
-  }
 
-  .admin-split-compact-landscape-detail .admin-split-detail-pane-column {
-    max-width: none;
-    margin-inline: 0;
-  }
-
-  .admin-split-compact-landscape-detail .admin-split-detail-overview-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.75rem;
-  }
-
-  .admin-split-compact-landscape-detail .admin-split-detail-overview-card {
-    border-radius: 1.5rem;
-    padding: 1rem;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 10px 30px rgba(0, 0, 0, 0.14);
-  }
-
-  .admin-split-compact-landscape-detail
-    .admin-split-detail-overview-card
-    + .admin-split-detail-overview-card {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018)),
-      color-mix(in srgb, var(--color-surface-panel) 42%, transparent);
-  }
-
-  .admin-split-compact-landscape-detail .admin-split-detail-overview-card [data-slot="card"] {
-    border-color: color-mix(in srgb, white 24%, var(--color-surface-border) 76%);
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.022)),
-      color-mix(in srgb, var(--color-surface-panel) 28%, transparent);
-    -webkit-backdrop-filter: blur(22px) saturate(1.14);
-    backdrop-filter: blur(22px) saturate(1.14);
-  }
-
-  .admin-split-compact-landscape-detail .admin-split-detail-overview-section-header {
-    gap: 0.75rem;
-  }
-
-  .admin-split-compact-landscape-detail
-    .admin-split-detail-overview-section-header
-    > div:first-child {
-    min-width: 0;
-  }
-}
 
 .admin-split-detail-mobile-backbar {
   border-bottom: 1px solid color-mix(in srgb, var(--color-surface-border) 82%, transparent);
@@ -495,42 +265,7 @@
   );
 }
 
-.admin-split-detail-overview-hero,
-.admin-split-detail-pane-column {
-  transform-origin: left top;
-  transition:
-    transform var(--admin-ios-motion-medium) var(--admin-ios-motion-curve),
-    opacity var(--admin-ios-motion-medium) var(--admin-ios-motion-curve);
-}
 
-.admin-split-compact-landscape-detail .admin-split-detail-overview-hero,
-.admin-split-compact-landscape-detail .admin-split-detail-pane-column {
-  will-change: transform, opacity;
-}
-
-.admin-split-compact-landscape-detail--focused .admin-split-detail-overview-hero,
-.admin-split-compact-landscape-detail--focused .admin-split-detail-pane-column {
-  max-width: none;
-  margin-inline-end: 0;
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .admin-split-compact-landscape-list,
-  .admin-split-compact-landscape-root,
-  .admin-split-compact-landscape-detail,
-  .admin-split-focus-toggle,
-  .admin-split-detail-overview-hero,
-  .admin-split-detail-pane-column {
-    transition: none;
-  }
-
-  .admin-split-compact-landscape-detail--focused .admin-split-detail-overview-hero,
-  .admin-split-compact-landscape-detail--focused .admin-split-detail-pane-column,
-  .admin-split-compact-landscape-detail--focused {
-    animation: none;
-  }
-}
 
 @media (min-width: 1024px) {
   .admin-split-detail-pane-content {
