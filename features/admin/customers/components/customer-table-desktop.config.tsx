@@ -3,7 +3,10 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 
-import { AdminSortableTableHead } from "@/components/admin/tables/head/admin-sortable-table-head";
+import {
+  AdminSortableTableHead,
+  type SortableColumnConfig,
+} from "@/components/admin/tables/head/admin-sortable-table-head";
 import { AdminTableIdentityStack } from "@/components/admin/tables/layout/admin-table-identity-stack";
 import { ADMIN_TABLE_HEAD_CLASSNAME } from "@/components/admin/tables/styles/admin-table-head.styles";
 import {
@@ -67,7 +70,7 @@ const CUSTOMER_SORTABLE_COLUMNS = {
     desc: "last-seen-desc",
     className: "w-32",
   },
-} as const satisfies Record<string, import("@/components/admin/tables/head/admin-sortable-table-head").SortableColumnConfig<CustomerSortOption>>;
+} as const satisfies Record<string, SortableColumnConfig<CustomerSortOption>>;
 
 function renderDate(value: string | null): string {
   if (value === null) {
