@@ -52,6 +52,13 @@ export default defineConfig([
   },
 
   {
+    files: ["scripts/**/*.{ts,tsx,js,mjs}", "prisma/seed.ts", "prisma/seed/**/*.{ts,tsx}"],
+    rules: {
+      "no-console": ["warn", { allow: ["log", "info", "warn", "error"] }],
+    },
+  },
+
+  {
     files: ["**/*.{ts,tsx}"],
     plugins: { "@typescript-eslint": tsPlugin },
     rules: {
