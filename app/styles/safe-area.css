@@ -84,18 +84,6 @@
   }
 }
 
-/* ── Padding vertical top ────────────────────────────────────────────────── */
-.safe-pt-layout {
-  --safe-area-top: 0px;
-  padding-top: var(--safe-area-top);
-}
-
-@supports (padding-top: env(safe-area-inset-top)) {
-  .safe-pt-layout {
-    --safe-area-top: env(safe-area-inset-top);
-  }
-}
-
 /* ── Variables canoniques bottom nav mobile ──────────────────────────────────
    Source unique pour la hauteur de la bottom nav mobile et son offset safe-area.
    --admin-bottom-nav-height  : hauteur de la barre (h-14 = 3.5rem)
