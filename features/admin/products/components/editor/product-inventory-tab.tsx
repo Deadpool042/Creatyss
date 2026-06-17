@@ -13,7 +13,7 @@ import {
   type AdminProductVariantListItem,
   type ProductInventoryFormAction,
 } from "@/features/admin/products/editor/types";
-import type { AdminInventoryForecastItem } from "@/features/admin/products/editor/queries/get-admin-product-inventory-forecast.query";
+import type { AdminInventoryForecastItem } from "@/features/admin/products/editor/queries";
 
 type ProductInventorySectionIntroProps = {
   eyebrow: string;
