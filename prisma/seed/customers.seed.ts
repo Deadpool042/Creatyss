@@ -153,5 +153,5 @@ export async function seedCustomers(prisma: PrismaClient, storeId: string): Prom
     });
   }
 
-  console.warn(`Seed customers OK — ${DEV_CUSTOMERS.length} clients`);
+  console.info(`Seed customers OK — ${DEV_CUSTOMERS.length} clients`);
 }

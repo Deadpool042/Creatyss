@@ -64,7 +64,7 @@ async function main(): Promise<void> {
   await seedCustomers(prisma, store.id);
 
   const pagesCount = await prisma.page.count({ where: { storeId: store.id } });
-  console.warn(`Seed OK — store ${store.id} (${store.code}), pages en base : ${pagesCount}`);
+  console.info(`Seed OK — store ${store.id} (${store.code}), pages en base : ${pagesCount}`);
 }
 
 main()

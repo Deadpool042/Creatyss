@@ -50,7 +50,7 @@ async function main(): Promise<void> {
     throw new Error("--apply et --revert sont exclusifs.");
   }
 
-  console.warn(`DATABASE_URL : ${maskedDatabaseUrl()}`);
+  console.info(`DATABASE_URL : ${maskedDatabaseUrl()}`);
 
   const store = await prisma.store.findFirst({
     orderBy: { createdAt: "asc" },
@@ -58,11 +58,11 @@ async function main(): Promise<void> {
   });
 
   if (!store) {
-    console.warn("Aucun store trouvé — rien à faire.");
+    console.info("Aucun store trouvé — rien à faire.");
     return;
   }
 
-  console.warn(`Store cible : ${store.id} | ${store.code} | ${store.name}`);
+  console.info(`Store cible : ${store.id} | ${store.code} | ${store.name}`);
 
   const flag = await prisma.featureFlag.findUnique({
     where: { storeId_code: { storeId: store.id, code: FEATURE_CODE } },
@@ -70,7 +70,7 @@ async function main(): Promise<void> {
   });
 
   if (!flag) {
-    console.warn(
+    console.info(
       `Flag "${FEATURE_CODE}" introuvable pour ce store — exécuter "pnpm run db:seed" d'abord.`
     );
     return;
@@ -93,13 +93,13 @@ async function main(): Promise<void> {
     select: { id: true, isEnabled: true, level: true, archivedAt: true },
   });
 
-  console.warn(
+  console.info(
     `État actuel — flag.status=${flag.status}, flag.defaultLevel=${flag.defaultLevel}, ` +
       `override=${override ? `{isEnabled: ${override.isEnabled}, level: ${override.level}, archivedAt: ${override.archivedAt}}` : "absent"}`
   );
 
   if (!apply && !revert) {
-    console.warn("Dry-run — aucune écriture. Relancer avec --apply ou --revert.");
+    console.info("Dry-run — aucune écriture. Relancer avec --apply ou --revert.");
     return;
   }
 
@@ -116,7 +116,7 @@ async function main(): Promise<void> {
       });
     }
 
-    console.warn(`OK — flag "${FEATURE_CODE}" remis en DRAFT, override désactivé.`);
+    console.info(`OK — flag "${FEATURE_CODE}" remis en DRAFT, override désactivé.`);
     return;
   }
 
@@ -150,7 +150,7 @@ async function main(): Promise<void> {
     },
   });
 
-  console.warn(
+  console.info(
     `OK — flag "${FEATURE_CODE}" ACTIVE, override STORE/${store.id} → level="${TARGET_LEVEL}".`
   );
 }
