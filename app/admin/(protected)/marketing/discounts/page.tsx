@@ -3,6 +3,8 @@ import { Percent } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
+import { AdminDataTableFeedbackBanner } from "@/components/admin/tables/layout/admin-data-table-feedback-banner";
+import { listDiscountTargetOptions } from "@/features/admin/marketing/discounts/queries/list-discount-target-options.query";
 import { isDiscountsFeatureActive } from "@/features/admin/marketing/queries/is-discounts-feature-active.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { listAdminDiscounts } from "@/features/admin/marketing/discounts/queries/list-admin-discounts.query";
@@ -24,6 +26,8 @@ function getErrorMessage(code: string): string {
       return "Ce code promo existe déjà.";
     case "automation_unavailable":
       return "Le niveau actuel n'autorise pas encore les remises automatiques.";
+    case "rules_unavailable":
+      return "Le niveau actuel n'autorise pas encore les remises avancées ciblées.";
     case "invalid_input":
       return "Formulaire invalide — vérifiez les champs.";
     case "missing_store":
@@ -40,6 +44,7 @@ export default async function AdminMarketingDiscountsPage({
   if (!featureActive) notFound();
 
   const simpleLevelMet = await meetsFeatureLevel("commerce.discounts", "simple");
+  const rulesLevelMet = await meetsFeatureLevel("commerce.discounts", "rules");
   const automationLevelMet = await meetsFeatureLevel("commerce.discounts", "automation");
 
   if (!simpleLevelMet) {
@@ -66,7 +71,11 @@ export default async function AdminMarketingDiscountsPage({
     );
   }
 
-  const [discounts, resolvedSearchParams] = await Promise.all([listAdminDiscounts(), searchParams]);
+  const [discounts, targetOptions, resolvedSearchParams] = await Promise.all([
+    listAdminDiscounts(),
+    listDiscountTargetOptions(),
+    searchParams,
+  ]);
 
   return (
     <AdminPageShell
@@ -82,16 +91,17 @@ export default async function AdminMarketingDiscountsPage({
       contentPreset="table"
     >
       <div className="grid gap-6">
-        {resolvedSearchParams.discount_created ? (
-          <p className="rounded-lg border border-feedback-success-border bg-feedback-success-surface px-3 py-2 text-sm text-feedback-success-foreground">
-            {automationLevelMet ? "Remise créée." : "Code promo créé."}
-          </p>
-        ) : null}
-        {resolvedSearchParams.discount_error ? (
-          <p className="rounded-lg border border-feedback-error-border bg-feedback-error-surface px-3 py-2 text-sm text-feedback-error-foreground">
-            {getErrorMessage(resolvedSearchParams.discount_error)}
-          </p>
-        ) : null}
+        <AdminDataTableFeedbackBanner
+          message={resolvedSearchParams.discount_created ? (automationLevelMet ? "Remise créée." : "Code promo créé.") : null}
+        />
+        <AdminDataTableFeedbackBanner
+          message={
+            resolvedSearchParams.discount_error
+              ? getErrorMessage(resolvedSearchParams.discount_error)
+              : null
+          }
+          tone="error"
+        />
 
         <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
           <h2 className="mb-1 text-lg font-semibold tracking-tight text-foreground">
@@ -99,10 +109,16 @@ export default async function AdminMarketingDiscountsPage({
           </h2>
           <p className="mb-4 text-xs text-muted-foreground">
             {automationLevelMet
-              ? "Pourcentage ou montant fixe, applicable au total de la commande. Une remise peut rester manuelle ou devenir automatique au checkout."
-              : "Pourcentage ou montant fixe, applicable au total de la commande. Le code n'a d'effet au checkout qu'à partir du niveau « rules »."}
+              ? "Pourcentage ou montant fixe, applicable au panier ou à une sélection catalogue. Une remise peut rester manuelle ou devenir automatique au checkout."
+              : "Pourcentage ou montant fixe, applicable au panier. Les remises automatiques et le ciblage catalogue nécessitent des niveaux supérieurs."}
           </p>
-          <AdminDiscountCreateForm automationEnabled={automationLevelMet} />
+          <AdminDiscountCreateForm
+            automationEnabled={automationLevelMet}
+            rulesEnabled={rulesLevelMet}
+            products={targetOptions.products}
+            variants={targetOptions.variants}
+            categories={targetOptions.categories}
+          />
         </section>
 
         <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">

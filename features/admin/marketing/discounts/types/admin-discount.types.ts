@@ -17,8 +17,16 @@ export type AdminDiscountSummary = {
   status: DiscountStatus;
   type: DiscountType;
   isAutomatic: boolean;
+  priority: number;
   percentageValue: number | null;
   fixedAmountValue: number | null;
   currencyCode: string | null;
+  startsAt: Date | null;
+  endsAt: Date | null;
+  maxRedemptions: number | null;
+  maxRedemptionsPerCode: number | null;
+  maxRedemptionsPerUser: number | null;
+  redemptionsCount: number;
+  codesCount: number;
   createdAt: Date;
 };

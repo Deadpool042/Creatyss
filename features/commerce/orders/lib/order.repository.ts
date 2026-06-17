@@ -183,7 +183,16 @@ export async function createOrderFromGuestCartToken(
       include: {
         lines: {
           include: {
-            product: { select: { slug: true } },
+            product: {
+              select: {
+                slug: true,
+                productCategories: {
+                  select: {
+                    categoryId: true,
+                  },
+                },
+              },
+            },
             variant: { select: { slug: true } },
           },
         },
@@ -302,11 +311,21 @@ export async function createOrderFromGuestCartToken(
     const appliedDiscount = await resolveApplicableOrderDiscount({
       executor: tx,
       storeId: cart.storeId,
+      customerId: checkout.customerId ?? cart.customerId,
       code: typeof discountCode === "string" ? discountCode : null,
       allowAutomatic: discountAutomationEnabled,
       subtotalCents,
       currencyCode: cart.currencyCode,
+      shippingCents,
+      lines: cart.lines.map((line) => ({
+        productId: line.productId,
+        variantId: line.variantId,
+        quantity: line.quantity,
+        unitPriceCents: Math.round(Number(line.unitPriceAmount) * 100),
+        categoryIds: line.product.productCategories.map((link) => link.categoryId),
+      })),
     });
+    // FREE_SHIPPING : amountCents est déjà égal à shippingCents (calculé dans le resolver).
     const discountCents = appliedDiscount?.amountCents ?? 0;
     const totalCents = subtotalCents + shippingCents - discountCents;
 
@@ -486,12 +505,26 @@ export async function createOrderFromGuestCartToken(
       await tx.discountRedemption.create({
         data: {
           discountId: appliedDiscount.discountId,
+          ...(appliedDiscount.discountCodeId
+            ? { discountCodeId: appliedDiscount.discountCodeId }
+            : {}),
           orderId: createdOrder.id,
           customerId: checkout.customerId ?? cart.customerId,
           amountApplied: discountCents / 100,
           currencyCode: cart.currencyCode,
         },
       });
+
+      if (appliedDiscount.discountCodeId) {
+        await tx.discountCode.update({
+          where: { id: appliedDiscount.discountCodeId },
+          data: {
+            redeemedCount: {
+              increment: 1,
+            },
+          },
+        });
+      }
     }
 
     // Create Payment in the same transaction — atomicity guaranteed

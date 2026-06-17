@@ -407,10 +407,10 @@ CRUD seul, sans application panier/checkout).
 - `DiscountRedemption`, `DiscountCode` et les tables `*Target` restent non
   alimentés par ce lot.
 
-### Checkout code promo `ORDER`, niveau `rules` (2026-06-15)
+### Checkout remises appliquées, niveaux `rules` puis `automation` (2026-06-15 → 2026-06-17)
 
-Cf. `docs/lots/2026-06-15-commerce-discounts-rules-cadrage.md` (premier lot
-borné de consommation storefront/commande).
+Cf. `docs/lots/2026-06-15-commerce-discounts-rules-cadrage.md` puis
+`docs/lots/2026-06-15-commerce-discounts-automation-cadrage.md`.
 
 - `app/(public)/checkout/page.tsx` expose un bloc `Code promo` seulement si
   `meetsFeatureLevel("commerce.discounts","rules")` est vrai.
@@ -425,13 +425,35 @@ borné de consommation storefront/commande).
   une `DiscountRedemption` minimale si la remise est effectivement appliquée.
 - Périmètre supporté :
   - une seule remise à la fois ;
-  - scope `ORDER` uniquement ;
-  - types `PERCENTAGE` et `FIXED_AMOUNT` uniquement.
+  - code manuel prioritaire s'il est valide ;
+  - fallback automatique seulement si aucun code manuel valide n'est saisi ;
+  - aucun fallback silencieux après un code invalide.
+- `resolve-order-discount` supporte maintenant :
+  - scope `ORDER`, `PRODUCT`, `PRODUCT_VARIANT`, `CATEGORY` ;
+  - types `PERCENTAGE`, `FIXED_AMOUNT`, `FREE_SHIPPING` ;
+  - remises automatiques `ORDER` simples via `isAutomatic`.
+- `/admin/marketing/discounts` permet maintenant aussi :
+  - la saisie de codes secondaires (`DiscountCode`) a la creation ;
+  - le type `FREE_SHIPPING` ;
+  - le ciblage catalogue `PRODUCT` / `PRODUCT_VARIANT` / `CATEGORY` au niveau `rules` ;
+  - le marquage `Application automatique` au niveau `automation` ;
+  - la saisie initiale de `priority` pour les remises automatiques ;
+  - la saisie de `maxRedemptionsPerCode` pour plafonner chaque code individuellement ;
+  - la saisie de `maxRedemptionsPerUser` pour plafonner un client identifie ;
+  - l'affichage distinct remises manuelles / automatiques dans la liste.
+- un code manuel peut maintenant correspondre soit au `Discount.code`
+  principal, soit a un `DiscountCode.code` secondaire actif ; dans ce cas, la
+  redemption persiste aussi `discountCodeId` et incremente `redeemedCount`.
+- le resolver manuel fait maintenant respecter `maxRedemptionsPerCode` :
+  - sur le code principal via les redemptions du `Discount` sans `discountCodeId` ;
+  - sur un code secondaire via les redemptions du `DiscountCode` correspondant.
+- le resolver fait maintenant respecter `maxRedemptionsPerUser` seulement quand
+  un `customerId` est present ; en checkout invite sans client rattache, une
+  remise avec ce plafond est consideree non applicable.
+- `FREE_SHIPPING` reste borné au scope `ORDER` dans ce lot.
 - Restent explicitement hors lot :
-  - `DiscountCode` ;
-  - `FREE_SHIPPING` ;
-  - remises automatiques ;
-  - ciblage `PRODUCT` / `PRODUCT_VARIANT` / `CATEGORY` ;
+  - UI dédiée d'edition / archivage / plafonds par code ;
+  - UI admin d'edition avancee de priorité (`priority`) ;
   - ventilation ligne par ligne (`lineDiscountAmount` reste à `0`).
 
 ## Documents liés

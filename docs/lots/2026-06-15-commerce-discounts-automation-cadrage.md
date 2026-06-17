@@ -78,3 +78,32 @@ déterministe et non cumulatif.
 - test manuel checkout avec remise automatique seule
 - test manuel checkout avec code valide prioritaire
 - test manuel checkout avec code invalide sans fallback silencieux
+
+## Bilan d'exécution
+
+Le lot `automation` borné a été implémenté.
+
+### Ce qui est maintenant branché
+
+- l'admin peut cocher `Application automatique` sur une remise seulement si le
+  niveau effectif atteint `automation` ;
+- la liste admin distingue les remises manuelles et automatiques ;
+- `resolveApplicableOrderDiscount()` conserve la priorité suivante :
+  - code manuel valide ;
+  - sinon remise automatique active la plus prioritaire ;
+- si un code manuel invalide est saisi, aucun fallback silencieux ne bascule
+  vers une remise automatique ;
+- la commande persiste toujours `discountAmount` et une
+  `DiscountRedemption` minimale quand une remise est effectivement appliquée.
+
+### Ce qui reste explicitement hors lot
+
+- `FREE_SHIPPING` automatique ;
+- ciblage `PRODUCT`, `PRODUCT_VARIANT`, `CATEGORY` pour les remises automatiques ;
+- UI admin de gestion de `priority` ;
+- cumul de plusieurs remises automatiques ;
+- personnalisation par segment ou canal.
+
+### Vérification exécutée
+
+- typecheck natif : OK

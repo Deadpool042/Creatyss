@@ -27,9 +27,21 @@ export async function listAdminDiscounts(): Promise<AdminDiscountSummary[]> {
       status: true,
       type: true,
       isAutomatic: true,
+      priority: true,
       percentageValue: true,
       fixedAmountValue: true,
       currencyCode: true,
+      startsAt: true,
+      endsAt: true,
+      maxRedemptions: true,
+      maxRedemptionsPerCode: true,
+      maxRedemptionsPerUser: true,
+      _count: {
+        select: {
+          redemptions: true,
+          codes: true,
+        },
+      },
       createdAt: true,
     },
   });
@@ -38,5 +50,7 @@ export async function listAdminDiscounts(): Promise<AdminDiscountSummary[]> {
     ...discount,
     percentageValue: discount.percentageValue?.toNumber() ?? null,
     fixedAmountValue: discount.fixedAmountValue?.toNumber() ?? null,
+    redemptionsCount: discount._count.redemptions,
+    codesCount: discount._count.codes,
   }));
 }

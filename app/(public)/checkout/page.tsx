@@ -151,6 +151,9 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
       ? await resolveCheckoutOrderDiscount(cart.id, subtotalCents, {
           code: manualDiscountCode,
           allowAutomatic: discountAutomationEnabled && manualDiscountCode.length === 0,
+          ...(currentShippingSelection !== null
+            ? { shippingCents: currentShippingSelection.amountCents }
+            : {}),
         })
       : null;
   const availableMethods =
@@ -182,13 +185,15 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
   })();
 
   const subtotalLabel = formatCatalogMoneyFromCents(subtotalCents, "EUR");
-  const discountLabel =
-    resolvedDiscount !== null
-      ? formatCatalogMoneyFromCents(
-          resolvedDiscount.amountCents,
-          currentShippingSelection?.currencyCode ?? "EUR"
-        )
-      : null;
+  const discountLabel: string | null = (() => {
+    if (resolvedDiscount === null) return null;
+    // FREE_SHIPPING : affiche toujours un libellé métier — le montant annulé est visible dans le total.
+    if (resolvedDiscount.isShippingDiscount === true) return "Livraison offerte";
+    return formatCatalogMoneyFromCents(
+      resolvedDiscount.amountCents,
+      currentShippingSelection?.currencyCode ?? "EUR"
+    );
+  })();
   const invalidDiscountMessage =
     discountRulesEnabled &&
     manualDiscountCode.length > 0 &&
@@ -540,6 +545,11 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                       ) : null}
                     </div>
                   </form>
+
+                  <p className="text-xs leading-5 text-muted-foreground">
+                    Les remises limitees par client necessitent un client identifie par
+                    `customerId`. Dans ce checkout invite, elles ne s&apos;appliquent pas.
+                  </p>
 
                   {resolvedDiscount !== null && discountLabel !== null ? (
                     <Notice tone="success">
