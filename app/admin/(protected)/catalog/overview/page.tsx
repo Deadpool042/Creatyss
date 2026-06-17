@@ -9,11 +9,8 @@ export default async function CatalogOverviewPage() {
     <AdminPageShell
       scrollBehavior="page"
       title="Vue d'ensemble du catalogue"
-      contentPreset="overview"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Catalogue" },
-      ]}
+      contentPreset="dashboard"
+      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Catalogue" }]}
     >
       <CatalogOverviewSections stats={stats} />
     </AdminPageShell>

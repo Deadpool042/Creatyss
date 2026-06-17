@@ -160,9 +160,7 @@ export default async function AdminProductDetailLayout({
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       <ProductRouteNav items={items} className="px-4 lg:px-6" />
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-        {children}
-      </div>
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">{children}</div>
     </div>
   );
 }

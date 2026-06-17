@@ -160,7 +160,7 @@ function ProductGeneralTabInner({
       <div>
         <input type="hidden" name="productId" value={product.product.id} />
 
-        <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3">
+        <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3 ">
           <div className="min-w-0 space-y-5 md:space-y-6">
             <AdminFormMessage
               tone="error"
@@ -222,7 +222,9 @@ function ProductGeneralTabInner({
                         <SelectValue placeholder={PRODUCT_GENERAL_TAB_COPY.typeNone} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="__none__">{PRODUCT_GENERAL_TAB_COPY.typeNone}</SelectItem>
+                        <SelectItem value="__none__">
+                          {PRODUCT_GENERAL_TAB_COPY.typeNone}
+                        </SelectItem>
                         {productTypeOptions.map((option) => (
                           <SelectItem key={option.id} value={option.id}>
                             {getProductTypeLabel(option, PRODUCT_GENERAL_TAB_COPY)}
@@ -304,7 +306,9 @@ function ProductGeneralTabInner({
                   hint={PRODUCT_GENERAL_TAB_COPY.descriptionHint}
                   preset="full"
                   initialValue={product.product.description ?? ""}
-                  {...(state.fieldErrors.description ? { error: state.fieldErrors.description } : {})}
+                  {...(state.fieldErrors.description
+                    ? { error: state.fieldErrors.description }
+                    : {})}
                 />
 
                 <AdminRichTextEditor
@@ -345,9 +349,15 @@ function ProductGeneralTabInner({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="draft">{PRODUCT_GENERAL_TAB_COPY.statusDraft}</SelectItem>
-                      <SelectItem value="active">{PRODUCT_GENERAL_TAB_COPY.statusActive}</SelectItem>
-                      <SelectItem value="inactive">{PRODUCT_GENERAL_TAB_COPY.statusInactive}</SelectItem>
-                      <SelectItem value="archived">{PRODUCT_GENERAL_TAB_COPY.statusArchived}</SelectItem>
+                      <SelectItem value="active">
+                        {PRODUCT_GENERAL_TAB_COPY.statusActive}
+                      </SelectItem>
+                      <SelectItem value="inactive">
+                        {PRODUCT_GENERAL_TAB_COPY.statusInactive}
+                      </SelectItem>
+                      <SelectItem value="archived">
+                        {PRODUCT_GENERAL_TAB_COPY.statusArchived}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </AdminFormField>
@@ -374,10 +384,7 @@ function ProductGeneralTabInner({
               </section>
 
               <section className="grid gap-1 border-t border-surface-border px-5 py-5">
-                <ProductGeneralSectionIntro
-                  eyebrow="Repères"
-                  title="Contexte produit"
-                />
+                <ProductGeneralSectionIntro eyebrow="Repères" title="Contexte produit" />
 
                 <div className="divide-y divide-surface-border">
                   <ProductGeneralContextItem
@@ -408,7 +415,7 @@ function ProductGeneralTabInner({
       </div>
 
       <AdminFormFooter
-        actionsClassName="w-full justify-between gap-2 sm:w-auto sm:justify-end"
+        actionsClassName="w-full justify-between gap-2 sm:w-auto sm:justify-end "
         className="sticky bottom-[calc(3.5rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:bottom-[calc(2.75rem+env(safe-area-inset-bottom))] lg:bottom-0"
       >
         <Button

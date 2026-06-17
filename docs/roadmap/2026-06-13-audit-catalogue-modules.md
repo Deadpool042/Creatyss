@@ -2,7 +2,7 @@
 
 # Audit — Catalogue de pilotage (settings/advanced) et roadmap de développement
 
-**Date :** 2026-06-13 (mis à jour 2026-06-16)
+**Date :** 2026-06-13 (mis à jour 2026-06-16, 2026-06-17)
 **Statut :** photographie + roadmap de suivi (pas un engagement de calendrier)
 
 ## 1. Périmètre de cet audit
@@ -89,7 +89,7 @@ cf. section optional).
 |---|---|---|
 | `commerce.payments` | L3 (actif) | `/admin/commerce/payments`, liste paiements réelle |
 | `commerce.documents` | L3 (inactif par défaut) | 2026-06-14 : `FeatureFlag` seedé (`prisma/seed/documents-feature-flag.seed.ts`, DRAFT, non gradué) — corrige l'écart « code prêt mais inaccessible ». Génération "confirmation de commande" **et** "bon de préparation" (`DELIVERY_NOTE`, même pattern : `documentNumber` null, un actif par commande) utilisables une fois activé via `/admin/settings/advanced`. Pas de génération PDF réelle, schéma inchangé. `INVOICE`/`CREDIT_NOTE` réservés au chantier factures |
-| `commerce.discounts` | L3 (inactif par défaut, niveaux `simple` + `rules`) | 2026-06-13 : `/admin/marketing/discounts` remplace `AdminComingSoon` — CRUD `Discount` (création + activation/désactivation), PERCENTAGE/FIXED_AMOUNT, scope ORDER. 2026-06-15 : niveau `rules` branché sur le checkout public via code promo manuel `ORDER`, prévisualisation serveur, recalcul autoritatif à la création de commande, persistance `discountAmount`, création minimale de `DiscountRedemption`. Restent hors lot : `DiscountCode`, `FREE_SHIPPING`, ciblage catalogue, remises automatiques, `automation` |
+| `commerce.discounts` | L3 (inactif par défaut, niveaux `simple` + `rules` + `automation`) | 2026-06-13 : `/admin/marketing/discounts` remplace `AdminComingSoon` — CRUD `Discount` (création + activation/désactivation), PERCENTAGE/FIXED_AMOUNT, scope ORDER. 2026-06-15 : niveau `rules` branché sur le checkout public via code promo manuel `ORDER`, prévisualisation serveur, recalcul autoritatif à la création de commande, persistance `discountAmount`, création minimale de `DiscountRedemption`. 2026-06-17 : `FREE_SHIPPING` branché ; le resolver couvre désormais `ORDER` / `PRODUCT` / `PRODUCT_VARIANT` / `CATEGORY`, `PERCENTAGE` / `FIXED_AMOUNT` / `FREE_SHIPPING`, le form admin expose le ciblage catalogue `PRODUCT` / `PRODUCT_VARIANT` / `CATEGORY`, le niveau `automation` applique une remise `ORDER` automatique quand aucun code manuel valide n'est saisi, un premier support `DiscountCode` permet de creer des codes secondaires resolus au checkout avec persistance `discountCodeId`, `priority` est pilotable en creation admin pour les remises automatiques, `maxRedemptionsPerCode` est applique pour le code principal comme pour les codes secondaires, et `maxRedemptionsPerUser` est applique quand un `customerId` reel est disponible. Restent hors lot : back-office dedie par code, edition avancee de priorite |
 | `commerce.shipping` | L3 (actif par défaut) | 2026-06-13 : `/admin/commerce/shipping` remplacé par une vue de suivi des `Shipment` (filtrable par statut, lien commande) ; action "Marquer comme expédiée" capture `carrier`/`trackingUrl` ; nouvelle action "Marquer comme livrée" (`SHIPPED → DELIVERED`, `deliveredAt`). Toujours pas d'intégration transporteur (saisie manuelle uniquement) |
 | `commerce.fulfillment` | L3 (inactif par défaut) | 2026-06-14 : préparation logistique V1 (`features/admin/commerce/fulfillment/*`) — création « tout ou rien », transitions PENDING→READY→FULFILLED/CANCELLED, carte dans le détail commande, gated. Indépendant de l'expédition, sans impact stock. Reste : partiel, lien shipment, inventaire |
 | `commerce.returns` | L3 (inactif par défaut) | 2026-06-14 : retours V1 (`features/admin/commerce/returns/*`) — demande commande entière, workflow REQUESTED→…→CLOSED avec décisions, réf `RET-…`, carte dans le détail commande, gated. `REFUNDED` déclaratif, sans remboursement ni restock. Reste : sélection lignes, avoir, inventaire, client |
@@ -164,13 +164,19 @@ Ordre proposé, du plus proche du fonctionnel au plus loin :
    `AnalyticsMetric`/`AnalyticsSnapshot` restent non alimentés.
    `insights.analyticsRead` continue de gouverner l'accès à la page, sans
    changement de sémantique au-delà de sa dépendance déclarative.
-5. **Modules L1 → L3** : ~~`commerce.discounts`~~ **fait (2026-06-13 puis
-   2026-06-15)**, cf. `docs/lots/2026-06-13-commerce-discounts-cadrage.md` puis
-   `docs/lots/2026-06-15-commerce-discounts-rules-cadrage.md` — admin CRUD
-   niveau `simple` puis lot `rules` borné au checkout avec code promo manuel
-   `ORDER`, persistance `discountAmount` et `DiscountRedemption`. **Prochaine
-   marche recommandée :** arbitrer soit `DiscountCode`, soit `FREE_SHIPPING`,
-   mais dans un lot dédié séparé du ciblage catalogue.
+5. **Modules L1 → L3** : ~~`commerce.discounts`~~ **fait (2026-06-13, 2026-06-15, 2026-06-17)**,
+   cf. `docs/lots/2026-06-13-commerce-discounts-cadrage.md`,
+   `docs/lots/2026-06-15-commerce-discounts-rules-cadrage.md` et
+   `docs/lots/2026-06-15-commerce-discounts-automation-cadrage.md` — admin CRUD
+   niveau `simple`, checkout avec code promo manuel `ORDER`, persistance
+   `discountAmount` et `DiscountRedemption`, puis extension `rules`/`automation`
+   sur `FREE_SHIPPING`, ciblage catalogue `PRODUCT`/`CATEGORY` et fallback
+   automatique `ORDER` sans cumul silencieux, puis premier support
+   `DiscountCode` (codes secondaires resolus au checkout), premiere
+   gouvernance `priority` en creation admin, `maxRedemptionsPerCode`, puis
+   `maxRedemptionsPerUser` borne au `customerId`. **Prochaine marche
+   recommandée :** ouvrir un back-office dedie `DiscountCode` et, si
+   necessaire, une edition avancee de priorite.
    ~~`engagement.newsletter`~~ **fait (2026-06-13)**,
    cf. `docs/lots/2026-06-13-engagement-newsletter-automations-cadrage.md` —
    admin CRUD `NewsletterSubscriber` niveau `basic` (ajout + bascule

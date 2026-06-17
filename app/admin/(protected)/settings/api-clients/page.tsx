@@ -154,9 +154,6 @@ export default async function AdminSettingsApiClientsPage() {
               })}
             </div>
 
-            <p className="mt-3 text-xs text-muted-foreground/50">
-              Création de clés disponible prochainement.
-            </p>
           </>
         )}
       </div>

@@ -202,9 +202,6 @@ export default async function AdminSettingsTeamPage() {
               })}
             </div>
 
-            <p className="mt-3 text-xs text-muted-foreground/50">
-              Invitation de membres et gestion des rôles disponibles prochainement.
-            </p>
           </>
         )}
       </div>

@@ -32,6 +32,7 @@ export function AdminTopbar({ displayName, email }: AdminTopbarProps): JSX.Eleme
         "site-header-blur z-40 shrink-0",
         "border-b border-shell-border/40",
         "admin-topbar-height",
+        "sticky top-0 w-full",
       ].join(" ")}
     >
       <div className="safe-px-layout flex h-full w-full items-center justify-between gap-3">
