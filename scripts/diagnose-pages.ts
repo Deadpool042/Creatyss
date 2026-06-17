@@ -13,15 +13,15 @@ function maskedDatabaseUrl(): string {
 }
 
 async function main(): Promise<void> {
-  console.info(`DATABASE_URL : ${maskedDatabaseUrl()}`);
+  console.warn(`DATABASE_URL : ${maskedDatabaseUrl()}`);
 
   const stores = await prisma.store.findMany({
     orderBy: { createdAt: "asc" },
     select: { id: true, code: true, name: true, createdAt: true },
   });
-  console.info(`Stores (${stores.length}) :`);
+  console.warn(`Stores (${stores.length}) :`);
   for (const store of stores) {
-    console.info(`  - ${store.id} | ${store.code} | ${store.name}`);
+    console.warn(`  - ${store.id} | ${store.code} | ${store.name}`);
   }
 
   const pages = await prisma.page.findMany({
@@ -37,16 +37,16 @@ async function main(): Promise<void> {
     },
   });
 
-  console.info(`Pages (${pages.length}) :`);
+  console.warn(`Pages (${pages.length}) :`);
   for (const page of pages) {
     const bodyState = (page.body?.trim() ?? "") === "" ? "body vide" : `${page.body?.length} car.`;
-    console.info(
+    console.warn(
       `  - store ${page.storeId} | ${page.code} | ${page.status} | system=${page.isSystemPage} | ${bodyState}`
     );
   }
 
   if (pages.length === 0) {
-    console.info(
+    console.warn(
       "Aucune page en base : le seed n'a pas écrit ici (échec en amont ou autre DATABASE_URL)."
     );
   }
