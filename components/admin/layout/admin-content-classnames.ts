@@ -67,18 +67,10 @@ export const ADMIN_CONTENT_DASHBOARD =
 
 // Presets consommables. "full-width" reste rétro-compatible et conserve sa
 // sémantique historique de page standard paddée.
-export type AdminContentPreset =
-  | "full-width"
-  | "dashboard"
-  | "overview"
-  | "table"
-  | "form"
-  | "detail";
+export type AdminContentPreset = "dashboard" | "overview" | "table" | "form" | "detail";
 
 export function getAdminContentClassName(preset: AdminContentPreset): string {
   switch (preset) {
-    case "full-width":
-      return ADMIN_CONTENT_PAGE;
     case "overview":
       return ADMIN_CONTENT_OVERVIEW;
     case "table":
