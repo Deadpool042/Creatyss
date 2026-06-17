@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useEffect, useMemo, useState } from "react";
+import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Filter } from "lucide-react";
 
@@ -48,11 +48,11 @@ export function CustomerListFilters({
     setDraftSearch(currentSearch);
   }, [currentSearch]);
 
-  function buildParams(
+  const buildParams = useCallback((
     nextSearch: string,
     nextStatus: CustomerStatusFilterValue,
     nextSort: CustomerSortOption
-  ): string {
+  ): string => {
     const params = new URLSearchParams(searchParams.toString());
     const trimmedSearch = nextSearch.trim();
 
@@ -77,19 +77,19 @@ export function CustomerListFilters({
     params.delete("page");
 
     return params.toString();
-  }
+  }, [searchParams]);
 
-  function navigate(
+  const navigate = useCallback((
     nextSearch: string,
     nextStatus: CustomerStatusFilterValue,
     nextSort: CustomerSortOption
-  ) {
+  ): void => {
     const queryString = buildParams(nextSearch, nextStatus, nextSort);
 
     startTransition(() => {
       router.replace(queryString ? `${pathname}?${queryString}` : pathname);
     });
-  }
+  }, [buildParams, pathname, router]);
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
@@ -101,7 +101,7 @@ export function CustomerListFilters({
     }, SEARCH_DEBOUNCE_MS);
 
     return () => window.clearTimeout(handle);
-  }, [activeStatus, currentSearch, draftSearch, sort]);
+  }, [activeStatus, currentSearch, draftSearch, navigate, sort]);
 
   const activeFilters = useMemo<AdminDataTableActiveFilterItem[]>(() => {
     const items: AdminDataTableActiveFilterItem[] = [];
@@ -119,7 +119,7 @@ export function CustomerListFilters({
     }
 
     return items;
-  }, [activeStatus, draftSearch, sort]);
+  }, [activeStatus, draftSearch, navigate, sort]);
 
   const hasActiveFilters = activeStatus !== CUSTOMER_STATUS_FILTER_ALL || sort !== CUSTOMER_DEFAULT_SORT;
   const activeFiltersCount = activeFilters.length + (sort !== CUSTOMER_DEFAULT_SORT ? 1 : 0);
