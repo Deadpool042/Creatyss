@@ -55,10 +55,6 @@ type AdminPageContentProps = Readonly<{
   className?: string;
 }>;
 
-function resolveScrollBehavior(scrollBehavior?: AdminPageScrollBehavior): AdminPageScrollBehavior {
-  return scrollBehavior ?? "page";
-}
-
 function AdminPageContextBar({
   breadcrumbs,
   navigation,
@@ -73,7 +69,7 @@ function AdminPageContextBar({
   }
 
   return (
-    <div className="shrink-0 border-b border-shell-border/60 bg-shell-surface/88 supports-backdrop-filter:bg-shell-surface/72 supports-backdrop-filter:backdrop-blur-xl">
+    <div className="shrink-0 border-b border-shell-border/60 bg-shell-surface/88 supports-backdrop-filter:bg-shell-surface/72 supports-backdrop-filter:backdrop-blur-xl ">
       <div className="safe-px-layout flex flex-col gap-2 py-2.5 sm:flex-row sm:items-center sm:justify-between [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:gap-1.5 [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:py-1.5">
         <div className="flex min-w-0 items-center gap-2 overflow-hidden">
           {navigation ? <AdminPageBackLink navigation={navigation} /> : null}
@@ -134,19 +130,24 @@ function AdminPageTitleBlock({ title, header, showTitle }: AdminPageTitleBlockPr
 }
 
 function AdminPageContent({ children, scrollBehavior, className }: AdminPageContentProps) {
-  if (scrollBehavior === "page") {
-    return (
-      <div className="min-h-0 flex-1 lg:overflow-y-auto lg:overscroll-contain">
-        <div className={cn("flex min-w-0 flex-col lg:min-h-full", className)}>{children}</div>
-      </div>
-    );
-  }
-
   return (
     <div
-      className={cn("flex min-h-0 flex-1 flex-col overflow-visible lg:overflow-hidden", className)}
+      className={cn(
+        "min-h-0 flex-1",
+        scrollBehavior === "page"
+          ? "lg:overflow-y-auto lg:overscroll-contain"
+          : "overflow-visible lg:overflow-hidden"
+      )}
     >
-      {children}
+      <div
+        className={cn(
+          "flex min-w-0 flex-col",
+          scrollBehavior === "page" && "lg:min-h-full",
+          className
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }
@@ -158,15 +159,17 @@ export function AdminPageShell({
   navigation,
   topbarAction,
   breadcrumbs,
-  scrollBehavior,
-  contentPreset = "none",
+  scrollBehavior = "page",
+  contentPreset,
   className,
   contentClassName,
   showBreadcrumbsInContent = true,
   showTitleInContent = true,
 }: AdminPageShellProps) {
-  const effectiveScrollBehavior = resolveScrollBehavior(scrollBehavior);
-  const resolvedContentClassName = cn(getAdminContentClassName(contentPreset), contentClassName);
+  const resolvedContentClassName = cn(
+    contentPreset ? getAdminContentClassName(contentPreset) : undefined,
+    contentClassName
+  );
 
   return (
     <div className={cn("flex min-h-0 flex-1 flex-col", className)}>
@@ -179,10 +182,7 @@ export function AdminPageShell({
 
       <AdminPageTitleBlock title={title} header={header} showTitle={showTitleInContent} />
 
-      <AdminPageContent
-        scrollBehavior={effectiveScrollBehavior}
-        className={resolvedContentClassName}
-      >
+      <AdminPageContent scrollBehavior={scrollBehavior} className={resolvedContentClassName}>
         {children}
       </AdminPageContent>
     </div>

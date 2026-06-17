@@ -37,7 +37,7 @@
 // Ici : uniquement espacement et padding. Pas de max-width pour préserver la
 // compatibilité de "full-width" jusqu'aux migrations explicites.
 export const ADMIN_CONTENT_PAGE =
-  "safe-px-layout gap-4 overflow-x-hidden pt-4 max-sm:landscape:gap-3 max-sm:landscape:pt-3 md:gap-6 md:pt-5 lg:gap-6 lg:pt-0 lg:pb-8";
+  " gap-4 overflow-x-hidden pt-4 max-sm:landscape:gap-3 max-sm:landscape:pt-3 md:gap-6 md:pt-5 lg:gap-6 lg:pt-0 lg:pb-8";
 
 // Overview métier : page paddée, cadrée et centrée pour les grilles/cards.
 export const ADMIN_CONTENT_OVERVIEW = `${ADMIN_CONTENT_PAGE} mx-auto w-full max-w-7xl`;
@@ -58,14 +58,12 @@ export const ADMIN_CONTENT_DETAIL = `${ADMIN_CONTENT_PAGE} mx-auto w-full max-w-
 // Le shell admin ajoute déjà son spacer universel ; ici le preset dashboard
 // n'ajoute que sa largeur/gap/padding horizontal/top.
 export const ADMIN_CONTENT_DASHBOARD =
-  "mx-auto w-full max-w-7xl safe-px-layout gap-4 overflow-x-hidden pt-4 admin-content-bottom-spacing max-sm:landscape:gap-3 max-sm:landscape:pt-3 md:gap-6 md:pt-5 lg:gap-6 lg:pt-6";
+  "mx-auto w-full max-w-7xl safe-px-layout gap-4 overflow-x-hidden pt-4  max-sm:landscape:gap-3 max-sm:landscape:pt-3 md:gap-6 md:pt-5 lg:gap-6 lg:pt-6 landscape:pb-2";
 
 // Panneau split-view : aucun max-width global.
 // Les panes et leurs scroll containers sont propriétaires de leurs dimensions.
 // Ne pas utiliser ADMIN_CONTENT_PAGE ici : cela ajouterait un padding de page
 // autour d'une UI mail-like qui doit coller aux rails du split.
-// export const ADMIN_CONTENT_SPLIT_PANEL = "px-4 pb-4 md:px-5 md:pb-5 lg:px-6 lg:pb-6";
-export const ADMIN_CONTENT_SPLIT_PANEL = "";
 
 // Presets consommables. "full-width" reste rétro-compatible et conserve sa
 // sémantique historique de page standard paddée.
@@ -73,7 +71,6 @@ export type AdminContentPreset =
   | "none"
   | "full-width"
   | "dashboard"
-  | "split-panel"
   | "overview"
   | "table"
   | "form"
@@ -93,8 +90,6 @@ export function getAdminContentClassName(preset: AdminContentPreset): string {
       return ADMIN_CONTENT_DETAIL;
     case "dashboard":
       return ADMIN_CONTENT_DASHBOARD;
-    case "split-panel":
-      return ADMIN_CONTENT_SPLIT_PANEL;
     case "none":
     default:
       return "";

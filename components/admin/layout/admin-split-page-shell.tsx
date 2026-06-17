@@ -17,7 +17,6 @@ export function AdminSplitPageShell({ title, breadcrumbs, children }: AdminSplit
       breadcrumbs={breadcrumbs}
       scrollBehavior="external"
       className="admin-split-page-shell min-h-0 lg:h-dvh lg:overflow-hidden"
-      contentPreset="split-panel"
       contentClassName="admin-split-page-content min-h-0 lg:h-full lg:overflow-hidden"
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
