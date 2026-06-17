@@ -3,8 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
-import { db } from "@/core/db";
-import { withTransaction } from "@/core/db";
+import { db, withTransaction } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { ADMIN_PRICING_PATH } from "@/features/admin/catalog/shared/admin-pricing-routes";
 
