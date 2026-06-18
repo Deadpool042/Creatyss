@@ -5,9 +5,11 @@ import { LocalizationModuleShell } from "@/features/admin/pilotage/components/se
 import { HomepageTranslationsForm } from "@/features/admin/settings/components/homepage-translations-form";
 import { ProductPageTranslationsForm } from "@/features/admin/settings/components/product-page-translations-form";
 import { BoutiquePageTranslationsForm } from "@/features/admin/settings/components/boutique-page-translations-form";
+import { ContactPageTranslationsForm } from "@/features/admin/settings/components/contact-page-translations-form";
 import { listHomepageTranslations } from "@/features/admin/settings/queries/list-homepage-translations.query";
 import { listProductPageTranslations } from "@/features/admin/settings/queries/list-product-page-translations.query";
 import { listBoutiquePageTranslations } from "@/features/admin/settings/queries/list-boutique-page-translations.query";
+import { listContactPageTranslations } from "@/features/admin/settings/queries/list-contact-page-translations.query";
 import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
 
 export const dynamic = "force-dynamic";
@@ -31,11 +33,13 @@ export default async function AdvancedSettingsDetailLocalizationTranslationsPage
     redirect("/admin/settings/advanced/optional");
   }
 
-  const [homepageState, productPageState, boutiquePageState] = await Promise.all([
-    listHomepageTranslations(),
-    listProductPageTranslations(),
-    listBoutiquePageTranslations(),
-  ]);
+  const [homepageState, productPageState, boutiquePageState, contactPageState] =
+    await Promise.all([
+      listHomepageTranslations(),
+      listProductPageTranslations(),
+      listBoutiquePageTranslations(),
+      listContactPageTranslations(),
+    ]);
 
   if (!homepageState.hasTargetLocale) {
     return (
@@ -101,6 +105,25 @@ export default async function AdvancedSettingsDetailLocalizationTranslationsPage
             <BoutiquePageTranslationsForm
               targetLocaleName={boutiquePageState.targetLocale.name}
               fields={boutiquePageState.fields}
+            />
+          </section>
+        ) : null}
+
+        {contactPageState.hasTargetLocale ? (
+          <section className="space-y-4 border-t border-surface-border/40 pt-8">
+            <div>
+              <h3 className="text-sm font-semibold text-foreground">Page Contact</h3>
+              <p className="text-sm text-muted-foreground">
+                Langue cible :{" "}
+                <span className="font-medium text-foreground">
+                  {contactPageState.targetLocale.name}
+                </span>{" "}
+                (<code className="font-mono text-[11px]">{contactPageState.targetLocale.code}</code>)
+              </p>
+            </div>
+            <ContactPageTranslationsForm
+              targetLocaleName={contactPageState.targetLocale.name}
+              fields={contactPageState.fields}
             />
           </section>
         ) : null}
