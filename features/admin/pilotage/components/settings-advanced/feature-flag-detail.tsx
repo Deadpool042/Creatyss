@@ -193,6 +193,9 @@ export function FeatureFlagDetail({ flag }: FeatureFlagDetailProps) {
   const [feedback, setFeedback] = useState<FeatureFlagFeedback | null>(null);
 
   const isReadonly = flag.mutability === "readonly";
+  const canRenderToggle =
+    flag.mutability === "toggleable" ||
+    flag.mutability === "level_selectable";
 
   const isLevelSelectable =
     flag.mutability === "level_selectable" &&
@@ -218,7 +221,7 @@ export function FeatureFlagDetail({ flag }: FeatureFlagDetailProps) {
           ) : null}
           <code className="text-[10px] font-mono text-muted-foreground/50">{flag.key}</code>
         </div>
-        {!isReadonly && (
+        {canRenderToggle && (
           <div className="shrink-0 pt-0.5">
             <FeatureFlagToggle flag={flag} onFeedback={setFeedback} />
           </div>

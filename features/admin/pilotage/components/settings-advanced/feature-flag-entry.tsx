@@ -84,6 +84,9 @@ type FeatureFlagEntryProps = Readonly<{
 export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
   const scopeType = flag.dbState.scopeType;
   const ScopeIcon = scopeType ? (SCOPE_ICONS[scopeType] ?? Globe) : null;
+  const canRenderToggle =
+    flag.mutability === "toggleable" ||
+    flag.mutability === "level_selectable";
 
   const detailHref =
     flag.unmapped !== true && flag.family !== null
@@ -150,7 +153,7 @@ export function FeatureFlagEntry({ flag }: FeatureFlagEntryProps) {
             {SCOPE_LABELS[scopeType]}
           </div>
         ) : null}
-        {flag.mutability !== "readonly" && <FeatureFlagToggle flag={flag} />}
+        {canRenderToggle && <FeatureFlagToggle flag={flag} />}
       </div>
     </div>
   );
