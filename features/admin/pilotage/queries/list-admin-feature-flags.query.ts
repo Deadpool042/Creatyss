@@ -38,6 +38,12 @@ export type AdminFeatureFlagView = Readonly<{
   mutability: FeatureMutability | null;
   scopes: readonly FeatureScope[];
   levels?: readonly FeatureLevelKey[];
+  dependencies?: readonly Readonly<{
+    key: string;
+    label: string;
+    exists: boolean;
+    isEffectivelyActive: boolean;
+  }>[];
 
   dbState: Readonly<{
     exists: boolean;
@@ -142,6 +148,22 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
         ? effectiveStateFor(row)
         : { isActive: false, level: null };
 
+    const dependencies = entry.dependencies?.map((dependencyKey) => {
+      const dependencyEntry = findFeatureCatalogEntry(dependencyKey);
+      const dependencyRow = dbByCode.get(dependencyKey) ?? null;
+      const dependencyState =
+        dependencyRow !== null
+          ? effectiveStateFor(dependencyRow)
+          : { isActive: false, level: null };
+
+      return {
+        key: dependencyKey,
+        label: dependencyEntry?.label ?? dependencyKey,
+        exists: dependencyRow !== null,
+        isEffectivelyActive: dependencyState.isActive,
+      };
+    });
+
     views.push({
       key: entry.key,
       label: entry.label,
@@ -152,6 +174,7 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
       mutability: entry.mutability,
       scopes: entry.scopes,
       ...(entry.levels !== undefined ? { levels: entry.levels } : {}),
+      ...(dependencies !== undefined ? { dependencies } : {}),
       dbState: {
         exists: row !== null,
         id: row?.id ?? null,

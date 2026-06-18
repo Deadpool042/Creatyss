@@ -244,6 +244,48 @@ export function FeatureFlagDetail({ flag }: FeatureFlagDetailProps) {
         </div>
       )}
 
+      {flag.dependencies !== undefined && flag.dependencies.length > 0 ? (
+        <div className="space-y-2">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground/60">
+            Prérequis
+          </p>
+          <div className="space-y-2">
+            {flag.dependencies.map((dependency) => (
+              <div
+                key={dependency.key}
+                className="flex items-center justify-between gap-3 rounded-lg border border-surface-border/60 bg-surface-panel-soft/60 px-3 py-2"
+              >
+                <div className="min-w-0">
+                  <p className="truncate text-xs font-medium text-foreground">
+                    {dependency.label}
+                  </p>
+                  <code className="text-[10px] text-muted-foreground/50">
+                    {dependency.key}
+                  </code>
+                </div>
+                <Badge
+                  variant="outline"
+                  className={
+                    dependency.isEffectivelyActive
+                      ? "shrink-0 text-[10px] text-feedback-success-foreground border-feedback-success-foreground/40 bg-feedback-success-surface/50"
+                      : "shrink-0 text-[10px] text-muted-foreground"
+                  }
+                >
+                  {dependency.isEffectivelyActive
+                    ? "Disponible"
+                    : dependency.exists
+                      ? "Inactif"
+                      : "Non créé"}
+                </Badge>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs leading-5 text-muted-foreground/60">
+            Ces prérequis sont informatifs. Les règles serveur restent la source d’autorité.
+          </p>
+        </div>
+      ) : null}
+
       {/* Liens contextuels */}
       <ContextualLinks flag={flag} />
 
