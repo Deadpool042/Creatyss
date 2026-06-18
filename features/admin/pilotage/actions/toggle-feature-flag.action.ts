@@ -97,6 +97,16 @@ export async function toggleFeatureFlagAction(flagId: string): Promise<ToggleFea
           },
         });
       }
+    } else {
+      await tx.featureFlagOverride.updateMany({
+        where: {
+          featureFlagId: flag.id,
+          archivedAt: null,
+        },
+        data: {
+          isEnabled: nextStatus === "ACTIVE",
+        },
+      });
     }
   });
 
