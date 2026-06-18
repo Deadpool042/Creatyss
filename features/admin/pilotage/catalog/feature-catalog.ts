@@ -247,7 +247,6 @@ export const FEATURE_CATALOG = [
     defaultState: "active",
     mutability: "readonly",
     scopes: ["store"],
-    dependencies: ["engagement.analytics"],
   },
   {
     key: "catalog.products.categories",
