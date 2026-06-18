@@ -66,7 +66,6 @@ export async function toggleFeatureFlagAction(flagId: string): Promise<ToggleFea
             },
             update: {
               isEnabled: true,
-              level: "multilingual",
               archivedAt: null,
               reasonCode: "advanced-localization-enabled",
               notes:
@@ -77,7 +76,6 @@ export async function toggleFeatureFlagAction(flagId: string): Promise<ToggleFea
               scopeType: "STORE",
               scopeId: storeScopedFlag.storeId,
               isEnabled: true,
-              level: "multilingual",
               reasonCode: "advanced-localization-enabled",
               notes:
                 "Activation du module localisation depuis /admin/settings/advanced.",
@@ -92,7 +90,6 @@ export async function toggleFeatureFlagAction(flagId: string): Promise<ToggleFea
           },
           data: {
             isEnabled: false,
-            level: null,
             archivedAt: new Date(),
           },
         });
