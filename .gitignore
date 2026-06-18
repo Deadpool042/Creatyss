@@ -1,6 +1,7 @@
 # dependencies
 node_modules/
 .pnpm-store
+.claude/settings.local.json
 
 # TypeScript
 tsconfig.tsbuildinfo
