@@ -70,9 +70,6 @@ const removedPermissionCodes = [
 const featureFlagCodes = [
   adminNavigationFeatureFlags.commerce.payments,
   adminNavigationFeatureFlags.commerce.shipping,
-  adminNavigationFeatureFlags.commerce.discounts,
-  adminNavigationFeatureFlags.engagement.newsletter,
-  adminNavigationFeatureFlags.engagement.analytics,
 ] as const;
 
 function permissionNameFromCode(code: string): string {
