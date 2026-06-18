@@ -7,21 +7,85 @@ memory: docs-keeper
 
 # Mission
 
-Maintenir la cohérence documentaire du repo et vérifier l’alignement entre doctrine, domaines et implémentation.
+Maintenir la cohérence documentaire du repo et vérifier l’alignement entre doctrine, documentation et implémentation observée.
 
-# Source de vérité
+## Source de vérité
 
-Toujours lire d’abord :
+Lire dans cet ordre :
+
+1. AGENTS.md
+2. README.md
+3. .claude/CLAUDE.md
+
+Puis :
+
+- docs/architecture/**
+- docs/domains/**
+- docs/testing/**
+- roadmap concernée
+- lot concerné
+
+Comparer ensuite avec :
+
+- prisma/**
+- app/**
+- features/**
+- entities/**
+- tests/**
+
+## Règles de preuve
+
+La documentation constitue une preuve documentaire.
+
+Elle permet uniquement de conclure :
+
+- documenté
+- décrit
+- spécifié
+
+Elle ne permet jamais de conclure :
+
+- implémenté
+- actif
+- utilisé
+- opérationnel
+
+sans preuve complémentaire.
+
+## Vérifications
+
+Identifier :
+
+- documenté mais non observé
+- observé mais non documenté
+- documentation obsolète
+- documentation contradictoire
+- écarts AGENTS ↔ documentation
+- écarts architecture ↔ domaines
+- écarts documentation ↔ Prisma
+- écarts documentation ↔ features
+- écarts documentation ↔ tests
+
+## Doctrine documentaire
+
+Vérifier la cohérence entre :
 
 - AGENTS.md
 - README.md
 - .claude/CLAUDE.md
+- docs/architecture/**
+- docs/domains/**
+- docs/testing/**
 
-Puis la documentation ciblée concernée.
+Ne jamais présenter :
 
-# Règles
+- une cible future comme existante
+- une documentation comme preuve d’implémentation
+- une hypothèse comme un fait
 
-- ne pas inventer de doctrine parallèle
-- ne pas conserver une doc legacy comme source canonique par défaut
-- signaler les divergences entre doc et repo
-- préserver la hiérarchie documentaire courante
+## Toujours distinguer
+
+- Observé
+- Documenté
+- Déduit
+- Inconnu

@@ -22,24 +22,18 @@ Creatyss est un socle e-commerce custom.
 
 Le projet est conçu pour être :
 
-- local-first via développement natif `pnpm dev ou make local-dev` ;
-- compatible avec Docker Compose pour les vérifications prod-like locales ;
-- maintenable ;
-- lisible ;
+- local-first ;
 - strictement typé ;
 - documenté ;
-- déployable ensuite sur un VPS OVH ;
-- réutilisable pour d’autres projets e-commerce au-delà du seul cas Creatyss.
+- déployable sur VPS OVH ;
+- réutilisable pour d’autres projets e-commerce.
 
-Creatyss est un **codebase unique** avec une **architecture modulaire réutilisable**.
+Creatyss est un codebase unique destiné à une boutique e-commerce artisanale.
 
-Creatyss n’est pas, à ce stade :
+Ne pas traiter le projet comme :
 
-- une site-factory ;
-- une plateforme multi-tenant ;
-- un moteur de provisioning de boutiques ;
-- un système de plugins runtime ;
-- un orchestrateur générique de sites clients.
+- un SaaS multi-tenant ;
+- une marketplace.
 
 ---
 
@@ -107,22 +101,63 @@ Ensuite seulement, lire la documentation ciblée par la demande :
 
 ---
 
+## Règle de factualité
+
+Toujours distinguer :
+
+- Observé
+- Documenté
+- Déduit
+- Inconnu
+
+La documentation permet d'affirmer :
+
+- documenté
+- décrit
+- spécifié
+
+Elle ne permet pas d'affirmer :
+
+- implémenté
+- actif
+- utilisé
+- opérationnel
+
+sans preuve complémentaire.
+
+Les preuves recevables sont :
+
+- code observé
+- modèle Prisma observé
+- route observée
+- feature observée
+- test observé
+- commit observé
+
+La présence d'un dossier seul ne constitue pas une preuve d'implémentation.
+
+Si une information n'est pas démontrable :
+
+"Inconnu"
+
+Ne jamais présenter une hypothèse, une extrapolation ou une intention future comme un fait.
+
+---
+
 ## Doctrine repo
 
-Le repo est structuré autour d’une doctrine explicite portée par `docs/architecture/`.
+La doctrine du projet est portée par :
 
-La colonne vertébrale documentaire est :
+- AGENTS.md
+- docs/architecture/
+- docs/domains/
 
-- `00-introduction/`
-- `10-fondations/`
-- `20-structure/`
-- `30-execution/`
-- `40-exploitation/`
-- `90-reference/`
+Ordre de priorité :
 
-La documentation détaillée des domaines se trouve dans `docs/domains/`.
-
-La stratégie de validation se trouve dans `docs/testing/`.
+1. AGENTS.md
+2. docs/architecture/
+3. docs/domains/
+4. documentation locale concernée
 
 ---
 
@@ -179,51 +214,32 @@ Points doctrinaux stabilisés :
 Toujours :
 
 - rester dans le périmètre demandé ;
-- proposer un plan avant un lot non trivial ;
-- privilégier de petits lots sûrs ;
 - partir de la structure réellement observée dans le repo ;
 - préserver les contrats publics sauf demande explicite ;
-- expliciter les impacts sur signatures, comportement métier ou structure publique ;
-- préférer une extraction locale à une nouvelle abstraction publique ;
+- privilégier les plus petits changements sûrs ;
 - préférer la solution la plus simple compatible avec l’évolution future.
 
 Ne jamais :
 
-- faire de refactor opportuniste hors périmètre ;
-- ajouter une dépendance sans nécessité explicite ;
 - modifier le comportement métier sans demande explicite ;
-- réintroduire une architecture legacy sans validation explicite ;
-- utiliser `any` sauf justification explicite ;
-- traiter Creatyss comme une site-factory ou une plateforme multi-tenant sans besoin explicite ;
-- contourner la doctrine portée par `docs/architecture/` au nom de la vitesse.
+- ajouter une dépendance sans nécessité explicite ;
+- utiliser `any` sans justification ;
+- contourner la doctrine portée par `docs/architecture/`.
 
 ---
 
-## Doctrine architecture
+## Principes architecturaux
 
-Principes directeurs :
+Toujours respecter la doctrine décrite dans `docs/architecture/`.
 
-- le métier passe avant la technique ;
-- le coeur doit rester identifiable ;
-- les capacités optionnelles doivent rester bornées ;
-- les dépendances externes doivent être encapsulées ;
-- la source de vérité doit être explicite ;
-- les événements expriment des faits ; ils ne corrigent pas une mauvaise modélisation ;
-- les préoccupations transverses doivent être traitées explicitement ;
-- les frontières doivent être compréhensibles ;
-- le système doit rester testable par responsabilité ;
-- la documentation doit refléter la structure réelle.
+Invariants majeurs :
 
-Séparer clairement :
-
-- domaine métier ;
-- structure d’accès ;
-- intégration ;
-- exécution ;
-- données ;
-- UI.
-
-Ne pas mélanger logique métier et composants de présentation.
+- métier avant technique ;
+- frontières explicites ;
+- source de vérité explicite ;
+- logique métier hors UI ;
+- séparation claire entre domaine, données, exécution et présentation ;
+- documentation alignée sur la structure réelle du système.
 
 ---
 
@@ -431,14 +447,8 @@ En cas de doute :
 
 ## Relation avec les autres couches d’instructions
 
-`AGENTS.md` porte la doctrine canonique du repo.
+AGENTS.md est la doctrine canonique du repo.
 
-Les autres couches ont des rôles distincts :
+Les autres couches complètent AGENTS.md mais ne le remplacent pas.
 
-- `.claude/CLAUDE.md` : routage, séquencement et règles opérationnelles propres à Claude Code
-- `.github/copilot-instructions.md` : version courte et compatible Copilot
-- skills projet : protocoles réutilisables
-- instructions contextuelles : garde-fous locaux par zone de fichiers
-- agents spécialisés : mission, périmètre et critères propres à chaque rôle
-
-En cas d’écart, réaligner les autres couches sur `AGENTS.md`.
+En cas de conflit, réaligner les autres couches sur AGENTS.md.

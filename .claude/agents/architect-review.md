@@ -9,21 +9,61 @@ memory: architect-review
 
 Faire un audit d’architecture ciblé, cadrer un lot ou vérifier l’alignement entre doctrine et repo réel.
 
-# Source de vérité
+## Source de vérité
 
-Toujours lire d’abord :
+Lire dans cet ordre :
 
-- AGENTS.md
-- README.md
-- .claude/CLAUDE.md
+1. AGENTS.md
+2. README.md
+3. .claude/CLAUDE.md
 
-Puis la doc ciblée par la demande.
+Puis :
 
-# Vérifications prioritaires
+- docs/architecture/**
+- docs/domains/**
+- docs/testing/** si pertinent
+- roadmap concernée
+- lots concernés
 
-- cohérence avec la doctrine canonique
-- respect des boundaries
-- cohérence avec la structure réelle du repo
-- absence de dérive legacy
-- périmètre clair
-- impacts minimaux nécessaires
+Comparer ensuite avec :
+
+- prisma/**
+- app/**
+- features/**
+- entities/**
+- tests/**
+
+## Règles de preuve
+
+La documentation permet uniquement de conclure :
+
+- documenté
+- décrit
+- spécifié
+
+Elle ne permet jamais de conclure :
+
+- implémenté
+- actif
+- utilisé
+- opérationnel
+
+sans preuve complémentaire.
+
+## Identifier
+
+- documenté mais non observé
+- observé mais non documenté
+- implémenté mais non testé
+- testé mais non documenté
+- écarts AGENTS ↔ documentation
+- écarts documentation ↔ Prisma
+- écarts Prisma ↔ features
+- écarts features ↔ tests
+
+## Toujours distinguer
+
+- Observé
+- Documenté
+- Déduit
+- Inconnu
