@@ -49,7 +49,7 @@ function DbStateBadge({ flag }: { flag: AdminFeatureFlagView }) {
       </Badge>
     );
   }
-  if (flag.dbState.status === "ACTIVE") {
+  if (flag.dbState.isEffectivelyActive) {
     return (
       <Badge
         variant="outline"

@@ -36,7 +36,7 @@ function StatusBadge({ flag }: { flag: AdminFeatureFlagView }) {
       </Badge>
     );
   }
-  if (flag.dbState.status === "ACTIVE") {
+  if (flag.dbState.isEffectivelyActive) {
     return (
       <Badge
         variant="outline"
@@ -65,13 +65,12 @@ function StatusBadge({ flag }: { flag: AdminFeatureFlagView }) {
 /**
  * Liens de navigation vers les sections admin liées au flag.
  * - Flags readonly : toujours affichés (fonctionnalité toujours active).
- * - Autres flags : affichés uniquement si le flag est actif en DB.
+ * - Autres flags : affichés uniquement si la feature est effectivement active.
  */
 function ContextualLinks({ flag }: { flag: AdminFeatureFlagView }) {
   const isReadonly = flag.mutability === "readonly";
-  const isActive = flag.dbState.status === "ACTIVE";
 
-  if (!isReadonly && !isActive) return null;
+  if (!isReadonly && !flag.dbState.isEffectivelyActive) return null;
 
   const links = resolveContextualLinks(flag.key, flag.dbState.effectiveLevel);
   if (links.length === 0) return null;
@@ -199,7 +198,7 @@ export function FeatureFlagDetail({ flag }: FeatureFlagDetailProps) {
 
   const isLevelSelectable =
     flag.mutability === "level_selectable" &&
-    flag.dbState.status === "ACTIVE" &&
+    flag.dbState.isEffectivelyActive &&
     (flag.dbState.allowedLevels?.length ?? 0) > 0;
 
   return (
