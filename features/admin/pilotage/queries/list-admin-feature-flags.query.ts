@@ -50,6 +50,8 @@ export type AdminFeatureFlagView = Readonly<{
     updatedAt: string | null;
     /** Niveaux autorisés en base (FeatureFlag.allowedLevels) — [] si non graduée */
     allowedLevels: readonly string[];
+    /** Activation effective résolue pour la boutique courante. */
+    isEffectivelyActive: boolean;
     /** Niveau effectif résolu (override actif sinon defaultLevel) — null si non graduée ou inactive */
     effectiveLevel: string | null;
   }>;
@@ -101,7 +103,9 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
 
   const now = new Date();
 
-  function effectiveLevelFor(row: (typeof rows)[number]): string | null {
+  function effectiveStateFor(
+    row: (typeof rows)[number]
+  ): Readonly<{ isActive: boolean; level: string | null }> {
     const storeOverride =
       storeId !== null
         ? (row.overrides.find(
@@ -115,14 +119,17 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
         : row.status === "ACTIVE" && row.isEnabledByDefault;
 
     if (!isActive) {
-      return null;
+      return { isActive: false, level: null };
     }
 
-    return resolveEffectiveLevel({
-      allowedLevels: row.allowedLevels,
-      defaultLevel: row.defaultLevel,
-      overrideLevel: storeOverride?.level ?? null,
-    });
+    return {
+      isActive: true,
+      level: resolveEffectiveLevel({
+        allowedLevels: row.allowedLevels,
+        defaultLevel: row.defaultLevel,
+        overrideLevel: storeOverride?.level ?? null,
+      }),
+    };
   }
 
   const views: AdminFeatureFlagView[] = [];
@@ -130,6 +137,11 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
   // 1. Toutes les entrées catalogue — avec ou sans row DB
   for (const entry of catalogEntries) {
     const row = dbByCode.get(entry.key) ?? null;
+    const effectiveState =
+      row !== null
+        ? effectiveStateFor(row)
+        : { isActive: false, level: null };
+
     views.push({
       key: entry.key,
       label: entry.label,
@@ -153,7 +165,8 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
         overridesCount: row?._count.overrides ?? 0,
         updatedAt: row?.updatedAt.toISOString() ?? null,
         allowedLevels: row?.allowedLevels ?? [],
-        effectiveLevel: row ? effectiveLevelFor(row) : null,
+        isEffectivelyActive: effectiveState.isActive,
+        effectiveLevel: effectiveState.level,
       },
     });
   }
@@ -161,6 +174,9 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
   // 2. Flags DB sans entrée catalogue (unmapped)
   for (const row of rows) {
     if (findFeatureCatalogEntry(row.code) !== null) continue;
+
+    const effectiveState = effectiveStateFor(row);
+
     views.push({
       key: row.code,
       label: row.name,
@@ -178,7 +194,8 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
         overridesCount: row._count.overrides,
         updatedAt: row.updatedAt.toISOString(),
         allowedLevels: row.allowedLevels,
-        effectiveLevel: effectiveLevelFor(row),
+        isEffectivelyActive: effectiveState.isActive,
+        effectiveLevel: effectiveState.level,
       },
       unmapped: true,
     });

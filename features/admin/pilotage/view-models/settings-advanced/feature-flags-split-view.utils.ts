@@ -40,7 +40,11 @@ export const FAMILY_DESCRIPTIONS: Record<FeatureFamilySlug, string> = {
 // Helpers internes
 // ---------------------------------------------------------------------------
 
-function isActive(flag: AdminFeatureFlagView): boolean {
+function isEffectivelyActive(flag: AdminFeatureFlagView): boolean {
+  return flag.dbState.isEffectivelyActive;
+}
+
+function hasActiveDbStatus(flag: AdminFeatureFlagView): boolean {
   return flag.dbState.status === "ACTIVE";
 }
 
@@ -135,7 +139,7 @@ export function buildFamilyNavItems(
     label: FAMILY_LABELS.overview,
     description: FAMILY_DESCRIPTIONS.overview,
     totalCount: flags.length,
-    activeCount: flags.filter(isActive).length,
+    activeCount: flags.filter(isEffectivelyActive).length,
     warningCount:
       flags.filter(isMissingDb).length + unmappedCount,
     href: overviewPath,
@@ -151,7 +155,7 @@ export function buildFamilyNavItems(
         label: FAMILY_LABELS[slug],
         description: FAMILY_DESCRIPTIONS[slug],
         totalCount: familyFlags.length,
-        activeCount: familyFlags.filter(isActive).length,
+        activeCount: familyFlags.filter(isEffectivelyActive).length,
         warningCount: missingInFamily,
         href: isCurrentlyActive ? overviewPath : `${rootPath}/${slug}`,
       };
@@ -167,7 +171,7 @@ export function buildFamilyNavItems(
       label: FAMILY_LABELS.unmapped,
       description: FAMILY_DESCRIPTIONS.unmapped,
       totalCount: unmappedCount,
-      activeCount: unmappedFlags.filter(isActive).length,
+      activeCount: unmappedFlags.filter(isEffectivelyActive).length,
       warningCount: unmappedCount,
       href: isUnmappedActive ? overviewPath : `${rootPath}/unmapped`,
     });
@@ -186,7 +190,7 @@ export function buildOverviewStats(
     dbCreatedCount: flags.filter((f) => f.dbState.exists).length,
     missingDbCount: catalogFlags.filter(isMissingDb).length,
     unmappedCount: flags.filter(isUnmapped).length,
-    activeCount: flags.filter(isActive).length,
+    activeCount: flags.filter(hasActiveDbStatus).length,
     inactiveCount: flags.filter(
       (f) => f.dbState.status === "INACTIVE"
     ).length,
@@ -213,7 +217,7 @@ export function buildFamilyDetailViewModel(
     label: FAMILY_LABELS[family],
     description: FAMILY_DESCRIPTIONS[family],
     totalCount: familyFlags.length,
-    activeCount: familyFlags.filter(isActive).length,
+    activeCount: familyFlags.filter(isEffectivelyActive).length,
     moduleGroups: buildModuleGroups(familyFlags),
   };
 }
