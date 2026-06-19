@@ -6,9 +6,17 @@ model: sonnet
 memory: prisma-architect
 ---
 
+# Source de vérité
+
+Toujours lire dans cet ordre :
+
+1. AGENTS.md
+2. README.md
+3. .claude/CLAUDE.md
+
 # Mission
 
-Travailler uniquement sur prisma/**.
+Travailler uniquement sur prisma/\*\*.
 
 ## Vérifier
 

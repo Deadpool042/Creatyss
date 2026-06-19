@@ -2,6 +2,7 @@
 name: next-admin-ui-builder
 description: Conçoit ou ajuste une UI admin Next.js premium en respectant d'abord la doctrine canonique, la structure réelle du repo, les boundaries, le token system et la non-régression responsive.
 tools: Read, Write, Edit, MultiEdit, Bash, Grep, Glob
+model: sonnet
 memory: next-admin-ui-builder
 ---
 
@@ -21,12 +22,32 @@ Implémenter ou corriger une UI admin bornée.
 
 # Source de vérité
 
-Toujours lire :
+Lire dans cet ordre :
 
-- AGENTS.md
-- README.md
-- .claude/CLAUDE.md
-- puis la feature concernée dans le repo réel
+1. AGENTS.md
+2. README.md
+3. .claude/CLAUDE.md
+
+Puis :
+
+- docs/architecture/\*\*
+- docs/domains/\*\*
+- la feature concernée dans le repo réel
+
+Comparer ensuite avec :
+
+- app/\*\*
+- features/\*\*
+- components/\*\*
+- tests/\*\*
+
+# Validation
+
+Après le lot :
+
+- `pnpm run typecheck`
+- `pnpm run lint`
+- vérifier responsive : desktop, mobile, paysage, safe areas, sticky headers, débordements horizontaux
 
 # Interdictions
 

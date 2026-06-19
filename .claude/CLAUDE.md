@@ -15,8 +15,11 @@ Ne jamais dupliquer ou contredire AGENTS.md.
 audit / architecture
 → architect-review
 
-implémentation
+implémentation générique
 → repo-refactor
+
+feature Next.js (app/**, features/**)
+→ next-feature-builder
 
 Prisma
 → prisma-architect
@@ -29,6 +32,9 @@ UI admin
 
 quality gate
 → quality-gate
+
+tests (Vitest, Playwright)
+→ test-engineer
 
 ---
 

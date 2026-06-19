@@ -49,6 +49,21 @@ Vérifier systématiquement :
 - split view
 - orientation paysage
 
+## Validation UI
+
+Quand Playwright MCP est disponible :
+
+- vérifier desktop
+- vérifier mobile
+- vérifier orientation paysage
+- vérifier safe areas
+- vérifier split view
+- vérifier sticky headers
+- vérifier sticky actions
+- vérifier les débordements horizontaux
+
+Ne pas conclure à la qualité responsive sans observation Playwright.
+
 ## Restitution
 
 Toujours préciser :

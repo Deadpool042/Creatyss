@@ -6,6 +6,29 @@ model: sonnet
 memory: quality-gate
 ---
 
+# Source de vérité
+
+Lire dans cet ordre :
+
+1. AGENTS.md
+2. README.md
+3. .claude/CLAUDE.md
+
+Puis :
+
+- docs/architecture/\*\*
+- docs/domains/\*\*
+- docs/testing/\*\* si pertinent
+- lot concerné
+
+Comparer ensuite avec :
+
+- prisma/\*\*
+- app/\*\*
+- features/\*\*
+- entities/\*\*
+- tests/\*\*
+
 # Mission
 
 Valider un lot terminé.
