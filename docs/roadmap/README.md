@@ -1,0 +1,44 @@
+# Roadmap Creatyss
+
+Ce document est une proposition de structuration. Toujours distinguer ce qui est Observé, Documenté, Déduit ou Proposition.
+
+---
+
+## État synthétique des horizons
+
+| Horizon | Titre                        | Statut                                                     |
+| ------- | ---------------------------- | ---------------------------------------------------------- |
+| H1      | Boutique vendable            | A faire — prérequis immédiats avant mise en production     |
+| H2      | Commerce fiable              | A faire — consolidation légale et technique post-lancement |
+| H3      | Administration avancée       | A faire — enrichissement back-office et marketing          |
+| H4      | Plateforme et automatisation | A faire — extensions catalogue, canaux et IA               |
+
+Les horizons H1 initial, H2 initial, H3 initial (VPS) et H4 initial (socle clonable) ont été portés par `projet-creatyss.md`. Leur état est documenté dans ce fichier et dans `2026-06-13-audit-catalogue-modules.md`. Les horizons listés ici sont la suite directe, numérotés H1–H4 pour désigner la nouvelle séquence de valeur à livrer.
+
+---
+
+## Note sur la priorisation
+
+Les horizons sont ordonnés par valeur métier : H1 (mise en production) déboque H2 (commerce légal), qui débloque H3 (admin enrichie). H4 regroupe des capacités à plus long terme qui peuvent avancer en parallèle sur certains lots dès que les prérequis techniques sont satisfaits.
+
+Il n'existe pas de règle rigide de séquencement interne à chaque horizon. Des micro-lots non bloquants peuvent avancer en parallèle lorsqu'ils n'ont pas de dépendance sur un lot précédent. Cela est signalé dans chaque fichier de lot concerné.
+
+---
+
+## Navigation
+
+### Fichiers existants (ne pas modifier)
+
+- [projet-creatyss.md](./projet-creatyss.md) — roadmap historique H1–H4 initiaux, cases validées
+- [2026-06-13-audit-catalogue-modules.md](./2026-06-13-audit-catalogue-modules.md) — état de 32/32 modules au 2026-06-17
+
+### Horizons de la nouvelle séquence
+
+- [H1 — Boutique vendable](./h1-boutique-vendable/README.md)
+- [H2 — Commerce fiable](./h2-commerce-fiable/README.md)
+- [H3 — Administration avancée](./h3-administration-avancee/README.md)
+- [H4 — Plateforme et automatisation](./h4-plateforme-automatisation/README.md)
+
+---
+
+Ce document est une proposition de structuration. Distinguer ce qui est Observé, Documenté, Déduit ou Proposition.
