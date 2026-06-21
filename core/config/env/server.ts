@@ -16,15 +16,19 @@ const serverEnvSchema = z.object({
   CART_SESSION_SECRET: nonEmptyStringSchema,
   FAVORITES_SESSION_SECRET: nonEmptyStringSchema,
 
-  STRIPE_SECRET_KEY: nonEmptyStringSchema.refine(
-    (value) => value !== "sk_test_change_me",
-    "Invalid placeholder value for STRIPE_SECRET_KEY"
-  ),
+  STRIPE_SECRET_KEY: nonEmptyStringSchema
+    .refine(
+      (value) => value !== "sk_test_change_me",
+      "Invalid placeholder value for STRIPE_SECRET_KEY"
+    )
+    .optional(),
 
-  STRIPE_WEBHOOK_SECRET: nonEmptyStringSchema.refine(
-    (value) => value !== "whsec_change_me",
-    "Invalid placeholder value for STRIPE_WEBHOOK_SECRET"
-  ),
+  STRIPE_WEBHOOK_SECRET: nonEmptyStringSchema
+    .refine(
+      (value) => value !== "whsec_change_me",
+      "Invalid placeholder value for STRIPE_WEBHOOK_SECRET"
+    )
+    .optional(),
 
   EMAIL_PROVIDER: z.enum(["mailpit", "brevo"]).optional(),
   EMAIL_FROM_ADDRESS: nonEmptyStringSchema,
@@ -60,7 +64,9 @@ if (resolvedEmailProvider === "brevo") {
     parsedServerEnv.data.BREVO_API_KEY === "placeholder-change-me" ||
     parsedServerEnv.data.BREVO_API_KEY === "brevo_api_key_change_me"
   ) {
-    emailValidationIssues.push("BREVO_API_KEY: placeholder value is invalid when EMAIL_PROVIDER=brevo");
+    emailValidationIssues.push(
+      "BREVO_API_KEY: placeholder value is invalid when EMAIL_PROVIDER=brevo"
+    );
   }
 
   if (parsedServerEnv.data.BREVO_FROM_ADDRESS === "no-reply@example.com") {
@@ -81,8 +87,8 @@ export const serverEnv = {
   adminSessionSecret: parsedServerEnv.data.ADMIN_SESSION_SECRET,
   cartSessionSecret: parsedServerEnv.data.CART_SESSION_SECRET,
   favoritesSessionSecret: parsedServerEnv.data.FAVORITES_SESSION_SECRET,
-  stripeSecretKey: parsedServerEnv.data.STRIPE_SECRET_KEY,
-  stripeWebhookSecret: parsedServerEnv.data.STRIPE_WEBHOOK_SECRET,
+  stripeSecretKey: parsedServerEnv.data.STRIPE_SECRET_KEY ?? null,
+  stripeWebhookSecret: parsedServerEnv.data.STRIPE_WEBHOOK_SECRET ?? null,
   emailProvider: resolvedEmailProvider,
   emailFromAddress: parsedServerEnv.data.EMAIL_FROM_ADDRESS,
   emailFromName: parsedServerEnv.data.EMAIL_FROM_NAME,

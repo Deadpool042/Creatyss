@@ -32,6 +32,15 @@ export async function findPaymentByCheckoutSessionId(input: {
   });
 }
 
+export async function findPaymentByProviderPaymentId(input: { providerPaymentId: string }) {
+  return db.payment.findFirst({
+    where: {
+      provider: STRIPE_PROVIDER,
+      providerPaymentId: input.providerPaymentId,
+    },
+  });
+}
+
 export async function markPaymentFailedByCheckoutSessionId(input: {
   stripeCheckoutSessionId: string;
   stripePaymentIntentId?: string | null;
@@ -73,19 +82,30 @@ export async function markPaymentSucceededByCheckoutSessionId(input: {
     return null;
   }
 
-  await db.payment.update({
-    where: {
-      id: payment.id,
-    },
-    data: {
-      status: "CAPTURED",
-      ...(input.stripePaymentIntentId !== undefined
-        ? { providerPaymentId: input.stripePaymentIntentId }
-        : {}),
-      capturedAt: new Date(),
-      updatedAt: new Date(),
-    },
-  });
+  await db.$transaction([
+    db.payment.update({
+      where: {
+        id: payment.id,
+      },
+      data: {
+        status: "CAPTURED",
+        ...(input.stripePaymentIntentId !== undefined
+          ? { providerPaymentId: input.stripePaymentIntentId }
+          : {}),
+        capturedAt: new Date(),
+        updatedAt: new Date(),
+      },
+    }),
+    db.order.update({
+      where: {
+        id: payment.orderId,
+      },
+      data: {
+        status: "CONFIRMED",
+        updatedAt: new Date(),
+      },
+    }),
+  ]);
 
   return payment.orderId;
 }

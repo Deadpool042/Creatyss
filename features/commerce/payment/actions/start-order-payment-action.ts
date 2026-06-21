@@ -97,7 +97,7 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
       line_items: [
         {
           price_data: {
-            currency: "eur",
+            currency: (paymentContext.currencyCode ?? "eur").toLowerCase(),
             unit_amount: moneyStringToCents(paymentContext.totalAmount),
             product_data: {
               name: `Commande ${paymentContext.reference}`,
