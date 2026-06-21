@@ -1,7 +1,9 @@
 import { db } from "@/core/db";
+import { isStripeConfigured } from "@/core/config/env/stripe";
+import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
 
 export type AvailablePaymentMethod = {
-  readonly id: "bank_transfer" | "cash_on_delivery";
+  readonly id: "bank_transfer" | "cash_on_delivery" | "card";
   readonly label: string;
   readonly instructions: string | null;
 };
@@ -38,6 +40,15 @@ export async function getAvailablePaymentMethods(input: {
       id: "cash_on_delivery",
       label: "Paiement à l'atelier",
       instructions: store.cashOnDeliveryInstructions ?? null,
+    });
+  }
+
+  const paymentsFeatureActive = await queryFeatureFlagActive("commerce.payments", { storeId });
+  if (paymentsFeatureActive && isStripeConfigured()) {
+    methods.push({
+      id: "card",
+      label: "Carte bancaire",
+      instructions: null,
     });
   }
 

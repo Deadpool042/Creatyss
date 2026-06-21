@@ -17,10 +17,14 @@ const dateFormatter = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
 
 function getPaymentStatusLabel(status: AdminPaymentStatus): string {
   switch (status) {
-    case "captured": return "Reçu";
-    case "cancelled": return "Annulé";
-    case "unknown": return "Statut inconnu";
-    default: return "En attente";
+    case "captured":
+      return "Reçu";
+    case "cancelled":
+      return "Annulé";
+    case "unknown":
+      return "Statut inconnu";
+    default:
+      return "En attente";
   }
 }
 
@@ -28,19 +32,27 @@ type PaymentBadgeVariant = "outline" | "secondary" | "destructive";
 
 function getPaymentStatusBadgeVariant(status: AdminPaymentStatus): PaymentBadgeVariant {
   switch (status) {
-    case "captured": return "secondary";
-    case "cancelled": return "destructive";
-    default: return "outline";
+    case "captured":
+      return "secondary";
+    case "cancelled":
+      return "destructive";
+    default:
+      return "outline";
   }
 }
 
 function getPaymentMethodLabel(method: AdminPaymentMethodType): string {
   switch (method) {
-    case "bank_transfer": return "Virement bancaire";
-    case "cash_on_delivery": return "Paiement à l'atelier";
-    case "card": return "Carte bancaire";
-    case "wallet": return "Portefeuille électronique";
-    case "other": return "Autre";
+    case "bank_transfer":
+      return "Virement bancaire";
+    case "cash_on_delivery":
+      return "Paiement à l'atelier";
+    case "card":
+      return "Carte bancaire";
+    case "wallet":
+      return "Portefeuille électronique";
+    case "other":
+      return "Autre";
   }
 }
 
@@ -116,15 +128,17 @@ export function AdminPaymentsList({ payments }: AdminPaymentsListProps) {
             {/* Actions inline (pending uniquement) */}
             {isPending ? (
               <div className="flex shrink-0 flex-wrap gap-2 sm:flex-col sm:items-end">
-                <form action={captureFormAction}>
-                  <input type="hidden" name="paymentId" value={payment.id} />
-                  <button
-                    type="submit"
-                    className="inline-flex h-8 items-center rounded-lg border border-surface-border bg-surface-panel px-3 text-xs font-medium text-foreground transition-colors hover:bg-interactive-hover"
-                  >
-                    Marquer reçu
-                  </button>
-                </form>
+                {payment.methodType !== "card" ? (
+                  <form action={captureFormAction}>
+                    <input type="hidden" name="paymentId" value={payment.id} />
+                    <button
+                      type="submit"
+                      className="inline-flex h-8 items-center rounded-lg border border-surface-border bg-surface-panel px-3 text-xs font-medium text-foreground transition-colors hover:bg-interactive-hover"
+                    >
+                      Marquer reçu
+                    </button>
+                  </form>
+                ) : null}
                 <form action={cancelFormAction}>
                   <input type="hidden" name="paymentId" value={payment.id} />
                   <button

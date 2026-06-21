@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 
 import {
-  findPaymentByCheckoutSessionId,
+  findPaymentByProviderPaymentId,
   markPaymentFailedByCheckoutSessionId,
   markPaymentSucceededByCheckoutSessionId,
 } from "@/features/commerce/payment/lib/payment.repository";
@@ -17,6 +17,10 @@ export async function POST(request: Request) {
 
   if (!signature) {
     return NextResponse.json({ error: "Missing Stripe signature." }, { status: 400 });
+  }
+
+  if (!serverEnv.stripeWebhookSecret) {
+    return NextResponse.json({ error: "Stripe webhook not configured." }, { status: 503 });
   }
 
   let event: Stripe.Event;
@@ -58,9 +62,8 @@ export async function POST(request: Request) {
     const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
     if (typeof paymentIntent.id === "string") {
-      const payment = await findPaymentByCheckoutSessionId({
-        stripeCheckoutSessionId: paymentIntent.id,
-        stripePaymentIntentId: paymentIntent.id,
+      const payment = await findPaymentByProviderPaymentId({
+        providerPaymentId: paymentIntent.id,
       });
 
       if (payment?.providerReference) {
