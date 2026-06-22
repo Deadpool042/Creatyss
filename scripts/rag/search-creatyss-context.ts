@@ -21,18 +21,20 @@ interface ParsedArgs {
   query: string;
   corpus: CorpusType;
   format: FormatType;
+  outputPath: string | null;
 }
 
 const USAGE =
-  'Usage : pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code] [--format=list|prompt]';
+  'Usage : pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code] [--format=list|prompt] [--output=<chemin>]';
 const USAGE_EXAMPLE =
-  'Exemple : pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags" --corpus=docs --format=prompt';
+  'Exemple : pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags" --corpus=docs --format=prompt --output=tmp/rag-context.md';
 
 function parseArgs(argv: string[]): ParsedArgs {
   const args = argv.slice(2);
   const queryParts: string[] = [];
   let corpus: CorpusType = "all";
   let format: FormatType = "list";
+  let outputPath: string | null = null;
 
   for (const arg of args) {
     if (!arg.startsWith("--")) {
@@ -62,6 +64,38 @@ function parseArgs(argv: string[]): ParsedArgs {
       continue;
     }
 
+    if (arg === "--output") {
+      console.error("Option --output requiert une valeur : --output=<chemin>");
+      console.error(USAGE);
+      process.exit(1);
+    }
+
+    if (arg.startsWith("--output=")) {
+      const rawOutput = arg.slice("--output=".length);
+
+      if (!rawOutput) {
+        console.error("Chemin de sortie vide : --output=<chemin>");
+        process.exit(1);
+      }
+
+      if (path.isAbsolute(rawOutput)) {
+        console.error(`Chemin absolu refusé : ${rawOutput}`);
+        console.error("Utiliser un chemin relatif depuis la racine du projet.");
+        process.exit(1);
+      }
+
+      const rootDir = process.cwd();
+      const resolved = path.resolve(rootDir, rawOutput);
+      if (!resolved.startsWith(rootDir + path.sep)) {
+        console.error(`Chemin invalide : le fichier de sortie doit rester dans le projet.`);
+        console.error(`Chemin refusé : ${rawOutput}`);
+        process.exit(1);
+      }
+
+      outputPath = resolved;
+      continue;
+    }
+
     console.error(`Option inconnue : ${arg}`);
     console.error(USAGE);
     process.exit(1);
@@ -75,7 +109,7 @@ function parseArgs(argv: string[]): ParsedArgs {
     process.exit(1);
   }
 
-  return { query, corpus, format };
+  return { query, corpus, format, outputPath };
 }
 
 function escapeRegex(str: string): string {
@@ -273,31 +307,42 @@ function search(query: string, corpus: CorpusType): SearchResult[] {
   return results.sort((a, b) => b.score - a.score).slice(0, ragConfig.maxResults);
 }
 
-function formatResultsList(results: SearchResult[], query: string, corpus: CorpusType): void {
+function buildResultsList(results: SearchResult[], query: string, corpus: CorpusType): string {
   const corpusLabel = corpus === "all" ? "tous corpus" : `corpus:${corpus}`;
 
   if (results.length === 0) {
-    console.log(`Aucun résultat pour : "${query}" [${corpusLabel}]`);
-    return;
+    return `Aucun résultat pour : "${query}" [${corpusLabel}]`;
   }
 
-  console.log(
-    `\n── Résultats RAG Creatyss pour : "${query}" [${corpusLabel}] (${results.length} fichiers) ──\n`
-  );
+  const lines: string[] = [
+    `\n── Résultats RAG Creatyss pour : "${query}" [${corpusLabel}] (${results.length} fichiers) ──\n`,
+  ];
 
   for (const [i, result] of results.entries()) {
-    console.log(`${i + 1}. ${result.relativePath}`);
-    console.log(`   Score : ${result.score.toFixed(1)}`);
-    console.log(`   Extrait : ${result.excerpt}`);
-    console.log("");
+    lines.push(`${i + 1}. ${result.relativePath}`);
+    lines.push(`   Score : ${result.score.toFixed(1)}`);
+    lines.push(`   Extrait : ${result.excerpt}`);
+    lines.push("");
   }
+
+  return lines.join("\n");
 }
 
-function formatResultsPrompt(results: SearchResult[], query: string, corpus: CorpusType): void {
+function buildResultsPrompt(results: SearchResult[], query: string, corpus: CorpusType): string {
   const corpusLabel = corpus === "all" ? "all (tous corpus)" : corpus;
 
+  const DOCTRINE = `## Rappel de doctrine
+
+- Respecter AGENTS.md.
+- Respecter docs/architecture/** pour la doctrine générale.
+- Respecter docs/domains/** pour les domaines métier.
+- Respecter Prisma comme source de vérité du modèle réel.
+- Appliquer le plus petit changement fiable.
+- Ne pas ajouter de dépendance inutile.
+- Ne pas modifier Prisma ni les features métier si la demande ne le nécessite pas.`;
+
   if (results.length === 0) {
-    console.log(`# Contexte Creatyss récupéré
+    return `# Contexte Creatyss récupéré
 
 Requête :
 "${query}"
@@ -309,16 +354,7 @@ ${corpusLabel}
 
 Aucun résultat pertinent trouvé.
 
-## Rappel de doctrine
-
-- Respecter AGENTS.md.
-- Respecter docs/architecture/** pour la doctrine générale.
-- Respecter docs/domains/** pour les domaines métier.
-- Respecter Prisma comme source de vérité du modèle réel.
-- Appliquer le plus petit changement fiable.
-- Ne pas ajouter de dépendance inutile.
-- Ne pas modifier Prisma ni les features métier si la demande ne le nécessite pas.`);
-    return;
+${DOCTRINE}`;
   }
 
   const sources = results
@@ -332,7 +368,7 @@ ${result.excerpt}
     )
     .join("\n\n");
 
-  console.log(`# Contexte Creatyss récupéré
+  return `# Contexte Creatyss récupéré
 
 Requête :
 "${query}"
@@ -344,35 +380,36 @@ ${corpusLabel}
 
 ${sources}
 
-## Rappel de doctrine
-
-- Respecter AGENTS.md.
-- Respecter docs/architecture/** pour la doctrine générale.
-- Respecter docs/domains/** pour les domaines métier.
-- Respecter Prisma comme source de vérité du modèle réel.
-- Appliquer le plus petit changement fiable.
-- Ne pas ajouter de dépendance inutile.
-- Ne pas modifier Prisma ni les features métier si la demande ne le nécessite pas.`);
+${DOCTRINE}`;
 }
 
-function formatResults(
+function buildResults(
   results: SearchResult[],
   query: string,
   corpus: CorpusType,
   format: FormatType
-): void {
+): string {
   if (format === "prompt") {
-    formatResultsPrompt(results, query, corpus);
-  } else {
-    formatResultsList(results, query, corpus);
+    return buildResultsPrompt(results, query, corpus);
   }
+  return buildResultsList(results, query, corpus);
 }
 
 // ─── Entrée principale ────────────────────────────────────────────────────────
 // Doit être exécuté depuis la racine du projet :
-//   pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code] [--format=list|prompt]
+//   pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code] [--format=list|prompt] [--output=<chemin>]
 
-const { query, corpus, format } = parseArgs(process.argv);
+const { query, corpus, format, outputPath } = parseArgs(process.argv);
 
 const results = search(query, corpus);
-formatResults(results, query, corpus, format);
+const output = buildResults(results, query, corpus, format);
+
+if (outputPath !== null) {
+  const dir = path.dirname(outputPath);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(outputPath, output, "utf-8");
+  const relativePath = path.relative(process.cwd(), outputPath);
+  console.log(`Fichier écrit : ${relativePath}`);
+} else {
+  console.log(output);
+}

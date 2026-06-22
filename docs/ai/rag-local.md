@@ -22,7 +22,7 @@ docs/ai/
 ### Fonctionnement
 
 1. Le script lit les fichiers indexés depuis le disque à chaque exécution (pas de cache).
-2. Les arguments CLI sont parsés : requête libre + options `--corpus` et `--format`.
+2. Les arguments CLI sont parsés : requête libre + options `--corpus`, `--format` et `--output`.
 3. Les sources sont filtrées selon le corpus demandé.
 4. La requête est découpée en mots-clés (mots de 2 caractères minimum).
 5. Chaque fichier reçoit un score basé sur :
@@ -110,7 +110,7 @@ Les dossiers suivants sont ignorés :
 **Prérequis** : exécuter depuis la racine du projet.
 
 ```bash
-pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code] [--format=list|prompt]
+pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code] [--format=list|prompt] [--output=<chemin>]
 ```
 
 ### Formats de sortie
@@ -121,6 +121,31 @@ pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|
 | `prompt` | Bloc Markdown structuré avec rappel de doctrine | À copier-coller dans Claude, ChatGPT, Codex  |
 
 Le mode `--format=prompt` produit un bloc autonome prêt à être collé en début de conversation IA. Il ne sert pas à automatiser les modifications — il prépare un contexte que l'utilisateur soumet ensuite manuellement.
+
+### Export vers fichier (`--output`)
+
+L'option `--output=<chemin>` écrit la sortie dans un fichier Markdown au lieu de l'afficher dans le terminal. Elle est combinable avec tous les formats et corpus.
+
+```bash
+# Générer un fichier de contexte pour une session IA
+pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags gradation" \
+  --corpus=docs --format=prompt --output=tmp/rag-context.md
+```
+
+Le fichier produit est un contexte figé au moment de l'exécution. Il peut être :
+
+- attaché dans une conversation Claude ou ChatGPT ;
+- ouvert dans un éditeur et copié manuellement ;
+- versionné ponctuellement si besoin.
+
+**Contraintes de sécurité :**
+
+- Le chemin doit être relatif à la racine du projet.
+- Les chemins absolus sont refusés.
+- Les chemins sortant du projet via `..` sont refusés.
+- Le dossier parent est créé automatiquement si nécessaire.
+
+> `tmp/` peut être ignoré par Git en ajoutant `tmp/` à `.gitignore` si les exports ne doivent pas être versionnés.
 
 ### Exemples
 
@@ -133,6 +158,10 @@ pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags gradation" --corp
 
 # Doctrine → bloc IA copiable (pour Claude ou ChatGPT)
 pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags gradation" --corpus=docs --format=prompt
+
+# Doctrine → fichier Markdown exporté
+pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags gradation" \
+  --corpus=docs --format=prompt --output=tmp/rag-context.md
 
 # Modèles Prisma → bloc IA copiable
 pnpm tsx scripts/rag/search-creatyss-context.ts "product image category" --corpus=prisma --format=prompt
@@ -150,7 +179,27 @@ Option inconnue :
 
 ```
 Option inconnue : --badflag
-Usage : pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code] [--format=list|prompt]
+Usage : pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code] [--format=list|prompt] [--output=<chemin>]
+```
+
+`--output` sans valeur :
+
+```
+Option --output requiert une valeur : --output=<chemin>
+```
+
+Chemin absolu refusé :
+
+```
+Chemin absolu refusé : /tmp/rag-context.md
+Utiliser un chemin relatif depuis la racine du projet.
+```
+
+Chemin sortant du projet :
+
+```
+Chemin invalide : le fichier de sortie doit rester dans le projet.
+Chemin refusé : ../rag-context.md
 ```
 
 Corpus invalide :
@@ -232,3 +281,5 @@ Exposer le RAG comme un serveur MCP pour Claude Code, permettant des appels dire
 | Rappel de doctrine fixe                | Pas de génération dynamique — les invariants sont stables et connus d'avance                                     |
 | Bloc ` ```text ``` ` pour les extraits | Évite les ambiguïtés si l'extrait contient du Markdown                                                           |
 | Fenêtre d'extrait par densité (RAG-4)  | Maximise les occurrences de mots-clés dans la fenêtre de 300 chars — tie-break : fenêtre la plus proche du début |
+| `--output` relatif seulement (RAG-5)   | Chemins absolus et `..` refusés — l'export ne peut pas sortir du projet                                          |
+| `build*` → `string` au lieu de `void`  | Séparation construction/effet — le choix console/fichier est centralisé à l'entrée principale                    |
