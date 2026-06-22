@@ -13,7 +13,8 @@ Ce lot est une expérimentation locale de récupération documentaire. Il ne con
 ```
 scripts/rag/
 ├── creatyss-rag.config.ts       # Configuration typée (sources, corpus, exclusions, limites)
-└── search-creatyss-context.ts   # Script de recherche lexicale avec filtrage par corpus
+├── rag-search.ts                # Module importable : searchCreatyssContext, buildCreatyssContextOutput
+└── search-creatyss-context.ts   # Entrée CLI : parsing, validation, écriture console/fichier
 
 docs/ai/
 └── rag-local.md                 # Ce document
@@ -234,6 +235,15 @@ Valeurs autorisées : list, prompt
 
 Ce lot est conçu pour évoluer en niveaux indépendants. Chaque niveau est optionnel et peut être ignoré.
 
+### Niveau 1 — Module importable ✅ (lot RAG-6, 2026-06-22)
+
+Extraction de la logique de recherche dans `rag-search.ts`, exporté sous deux fonctions publiques :
+
+- `searchCreatyssContext({ query, corpus })` — retourne les résultats scorés
+- `buildCreatyssContextOutput({ results, query, corpus, format })` — retourne la sortie formatée
+
+La CLI (`search-creatyss-context.ts`) conserve son comportement inchangé. Cette extraction prépare l'intégration MCP (RAG-7) sans l'implémenter.
+
 ### Niveau 2 — Filtrage par corpus ✅ (lot RAG-2, 2026-06-22)
 
 Ajout d'une option `--corpus=all|docs|prisma|code` pour restreindre le corpus indexé et réduire le bruit sur les requêtes ciblées.
@@ -283,3 +293,4 @@ Exposer le RAG comme un serveur MCP pour Claude Code, permettant des appels dire
 | Fenêtre d'extrait par densité (RAG-4)  | Maximise les occurrences de mots-clés dans la fenêtre de 300 chars — tie-break : fenêtre la plus proche du début |
 | `--output` relatif seulement (RAG-5)   | Chemins absolus et `..` refusés — l'export ne peut pas sortir du projet                                          |
 | `build*` → `string` au lieu de `void`  | Séparation construction/effet — le choix console/fichier est centralisé à l'entrée principale                    |
+| `rag-search.ts` séparé (RAG-6)         | Logique importable sans effet de bord — CLI reste l'usage principal, MCP peut importer sans dupliquer            |
