@@ -170,19 +170,48 @@ function scoreFile(
 function extractExcerpt(content: string, keywords: string[], maxLength: number): string {
   const contentLower = content.toLowerCase();
 
-  let bestPos = -1;
+  // Collect all keyword occurrence positions across the full content
+  const hitPositions: number[] = [];
   for (const keyword of keywords) {
-    const pos = contentLower.indexOf(keyword);
-    if (pos !== -1 && (bestPos === -1 || pos < bestPos)) {
-      bestPos = pos;
+    const re = new RegExp(escapeRegex(keyword), "g");
+    let match: RegExpExecArray | null;
+    while ((match = re.exec(contentLower)) !== null) {
+      hitPositions.push(match.index);
     }
   }
 
-  const start = bestPos === -1 ? 0 : Math.max(0, bestPos - 80);
-  const end = Math.min(content.length, start + maxLength);
-  const excerpt = content.slice(start, end).replace(/\n+/g, " ").trim();
+  if (hitPositions.length === 0) {
+    const end = Math.min(content.length, maxLength);
+    const excerpt = content.slice(0, end).replace(/\n+/g, " ").trim();
+    const suffix = end < content.length ? "…" : "";
+    return excerpt + suffix;
+  }
 
-  const prefix = start > 0 ? "…" : "";
+  // Candidate window starts: anchor ~80 chars before each hit, plus start-of-file
+  const candidateStarts = [
+    ...new Set<number>([0, ...hitPositions.map((pos) => Math.max(0, pos - 80))]),
+  ].sort((a, b) => a - b);
+
+  let bestStart = 0;
+  let bestCount = -1;
+
+  for (const start of candidateStarts) {
+    const windowEnd = start + maxLength;
+    let count = 0;
+    for (const pos of hitPositions) {
+      if (pos >= start && pos < windowEnd) count++;
+    }
+    // Update only on strictly greater count — tie-break: earliest start wins (ascending iteration)
+    if (count > bestCount) {
+      bestCount = count;
+      bestStart = start;
+    }
+  }
+
+  const end = Math.min(content.length, bestStart + maxLength);
+  const excerpt = content.slice(bestStart, end).replace(/\n+/g, " ").trim();
+
+  const prefix = bestStart > 0 ? "…" : "";
   const suffix = end < content.length ? "…" : "";
   return prefix + excerpt + suffix;
 }

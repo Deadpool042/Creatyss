@@ -177,7 +177,7 @@ Valeurs autorisées : list, prompt
 - **Exécution depuis la racine obligatoire** : `process.cwd()` doit pointer vers `/Projects/CREATYSS`.
 - **Pas d'indexation des imports TypeScript** : les relations entre fichiers `.ts` ne sont pas exploitées.
 - **Corpus `code` limité à `features/**`** : `app/`, `components/`, `lib/` ne sont pas indexés pour éviter un bruit excessif.
-- **Premier match uniquement pour l'extrait** : si le passage pertinent est en fin de fichier, l'extrait peut être peu informatif.
+- **Densité lexicale, non sémantique** : la fenêtre choisie maximise les occurrences des mots-clés dans 300 caractères, mais ne comprend pas le sens — un passage dense en mots-clés peut être moins pertinent qu'un passage plus rare mais plus ciblé.
 
 ---
 
@@ -217,17 +217,18 @@ Exposer le RAG comme un serveur MCP pour Claude Code, permettant des appels dire
 
 ## Décisions techniques
 
-| Décision                               | Raison                                                                       |
-| -------------------------------------- | ---------------------------------------------------------------------------- |
-| Pas de LangChain / LlamaIndex          | Zéro dépendance supplémentaire, contrôle total                               |
-| Pas d'embeddings                       | Zéro coût, zéro infrastructure pour ce lot                                   |
-| `node:fs` natif uniquement             | Pas de bibliothèque tierce nécessaire                                        |
-| Score lexical pondéré par zone         | Meilleur signal que TF brut sans complexité                                  |
-| Multiplicateur priorité ×2 / ×1        | Visible dans le classement sans écraser le signal lexical                    |
-| Isolé dans `scripts/rag/`              | Supprimable sans impact sur l'application                                    |
-| Champ `corpus` dans `RagSource`        | La config reste source de vérité unique, pas de liste séparée                |
-| `CORPUS_VALUES` as const               | Validation au runtime sans duplication de type                               |
-| Pas de commander/yargs                 | Parsing minimal sans dépendance, requête suffisamment simple                 |
-| `FORMAT_VALUES` as const               | Même pattern que `CORPUS_VALUES` — cohérence et validation sans duplication  |
-| Rappel de doctrine fixe                | Pas de génération dynamique — les invariants sont stables et connus d'avance |
-| Bloc ` ```text ``` ` pour les extraits | Évite les ambiguïtés si l'extrait contient du Markdown                       |
+| Décision                               | Raison                                                                                                           |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Pas de LangChain / LlamaIndex          | Zéro dépendance supplémentaire, contrôle total                                                                   |
+| Pas d'embeddings                       | Zéro coût, zéro infrastructure pour ce lot                                                                       |
+| `node:fs` natif uniquement             | Pas de bibliothèque tierce nécessaire                                                                            |
+| Score lexical pondéré par zone         | Meilleur signal que TF brut sans complexité                                                                      |
+| Multiplicateur priorité ×2 / ×1        | Visible dans le classement sans écraser le signal lexical                                                        |
+| Isolé dans `scripts/rag/`              | Supprimable sans impact sur l'application                                                                        |
+| Champ `corpus` dans `RagSource`        | La config reste source de vérité unique, pas de liste séparée                                                    |
+| `CORPUS_VALUES` as const               | Validation au runtime sans duplication de type                                                                   |
+| Pas de commander/yargs                 | Parsing minimal sans dépendance, requête suffisamment simple                                                     |
+| `FORMAT_VALUES` as const               | Même pattern que `CORPUS_VALUES` — cohérence et validation sans duplication                                      |
+| Rappel de doctrine fixe                | Pas de génération dynamique — les invariants sont stables et connus d'avance                                     |
+| Bloc ` ```text ``` ` pour les extraits | Évite les ambiguïtés si l'extrait contient du Markdown                                                           |
+| Fenêtre d'extrait par densité (RAG-4)  | Maximise les occurrences de mots-clés dans la fenêtre de 300 chars — tie-break : fenêtre la plus proche du début |
