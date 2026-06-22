@@ -12,8 +12,8 @@ Ce lot est une expérimentation locale de récupération documentaire. Il ne con
 
 ```
 scripts/rag/
-├── creatyss-rag.config.ts       # Configuration typée (sources, exclusions, limites)
-└── search-creatyss-context.ts   # Script de recherche lexicale
+├── creatyss-rag.config.ts       # Configuration typée (sources, corpus, exclusions, limites)
+└── search-creatyss-context.ts   # Script de recherche lexicale avec filtrage par corpus
 
 docs/ai/
 └── rag-local.md                 # Ce document
@@ -22,35 +22,62 @@ docs/ai/
 ### Fonctionnement
 
 1. Le script lit les fichiers indexés depuis le disque à chaque exécution (pas de cache).
-2. La requête est découpée en mots-clés (mots de 2 caractères minimum).
-3. Chaque fichier reçoit un score basé sur :
+2. Les arguments CLI sont parsés : requête libre + option `--corpus`.
+3. Les sources sont filtrées selon le corpus demandé.
+4. La requête est découpée en mots-clés (mots de 2 caractères minimum).
+5. Chaque fichier reçoit un score basé sur :
    - la fréquence des mots-clés dans le contenu (×1)
    - la présence des mots-clés dans le nom de fichier (×5)
    - la présence des mots-clés dans les titres Markdown `#` (×3)
-4. Un multiplicateur de priorité est appliqué (`high` = ×2, `medium` = ×1).
-5. Les N meilleurs résultats sont affichés avec score et extrait.
+6. Un multiplicateur de priorité est appliqué (`high` = ×2, `medium` = ×1).
+7. Les N meilleurs résultats sont affichés avec score et extrait.
+
+---
+
+## Corpus disponibles
+
+Chaque source de la config appartient à un corpus. Le filtrage est appliqué avant la recherche.
+
+| Corpus   | Sources indexées                              | Cas d'usage                                   |
+| -------- | --------------------------------------------- | --------------------------------------------- |
+| `all`    | Toutes les sources (comportement par défaut)  | Recherche transversale, requête inconnue      |
+| `docs`   | `AGENTS.md` + `docs/**`                       | Questions de doctrine, architecture, domaines |
+| `prisma` | `prisma/**/*.prisma` + `prisma/schema.prisma` | Modèles de données, relations, enums          |
+| `code`   | `features/**`                                 | Implémentation, services, queries, composants |
+
+### Quand utiliser quel corpus
+
+- `--corpus=docs` : « Quelle est la doctrine sur les feature flags ? », « Comment est défini le domaine availability ? »
+- `--corpus=prisma` : « Quels modèles sont liés aux produits ? », « Comment est structurée la table Order ? »
+- `--corpus=code` : « Où est implémenté le service de mise à jour homepage ? », « Quelles queries existent pour le catalog ? »
+- `--corpus=all` (défaut) : quand le sujet est transversal ou inconnu
 
 ---
 
 ## Fichiers indexés
 
-### Priorité haute
+### Priorité haute — corpus `docs`
 
-| Source                    | Description                  |
-| ------------------------- | ---------------------------- |
-| `AGENTS.md`               | Doctrine canonique du repo   |
-| `docs/architecture/**`    | Architecture système         |
-| `docs/domains/**`         | Domaines métier              |
-| `docs/roadmap/**`         | Roadmap projet               |
-| `docs/admin/**`           | Documentation administration |
-| `docs/ai/**`              | Documentation IA locale      |
-| `prisma/schema.prisma`    | Schéma Prisma principal      |
-| `prisma/core/**`          | Modèles Prisma core          |
-| `prisma/optional/**`      | Modèles Prisma optionnels    |
-| `prisma/cross-cutting/**` | Modèles Prisma transverses   |
-| `prisma/satellites/**`    | Modèles Prisma satellites    |
+| Source                 | Description                  |
+| ---------------------- | ---------------------------- |
+| `AGENTS.md`            | Doctrine canonique du repo   |
+| `docs/architecture/**` | Architecture système         |
+| `docs/domains/**`      | Domaines métier              |
+| `docs/roadmap/**`      | Roadmap projet               |
+| `docs/admin/**`        | Documentation administration |
+| `docs/ai/**`           | Documentation IA locale      |
 
-### Priorité moyenne
+### Priorité haute — corpus `prisma`
+
+| Source                    | Description                |
+| ------------------------- | -------------------------- |
+| `prisma/schema.prisma`    | Schéma Prisma principal    |
+| `prisma/core/**`          | Modèles Prisma core        |
+| `prisma/optional/**`      | Modèles Prisma optionnels  |
+| `prisma/cross-cutting/**` | Modèles Prisma transverses |
+| `prisma/satellites/**`    | Modèles Prisma satellites  |
+
+### Priorité moyenne — corpus `code`
 
 | Source        | Description                            |
 | ------------- | -------------------------------------- |
@@ -83,41 +110,42 @@ Les dossiers suivants sont ignorés :
 **Prérequis** : exécuter depuis la racine du projet.
 
 ```bash
-pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>"
+pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code]
 ```
 
 ### Exemples
 
 ```bash
-# Trouver les docs sur les feature flags
-pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags"
+# Recherche transversale (défaut)
+pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags gradation"
 
-# Trouver la doctrine sur le domaine availability
-pnpm tsx scripts/rag/search-creatyss-context.ts "availability stock"
+# Doctrine uniquement
+pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags gradation" --corpus=docs
 
-# Trouver les modèles Prisma liés aux commandes
-pnpm tsx scripts/rag/search-creatyss-context.ts "order fulfillment prisma"
+# Modèles Prisma liés aux produits
+pnpm tsx scripts/rag/search-creatyss-context.ts "product image category" --corpus=prisma
 
-# Rechercher la configuration Stripe
-pnpm tsx scripts/rag/search-creatyss-context.ts "stripe webhook payment"
+# Implémentation homepage
+pnpm tsx scripts/rag/search-creatyss-context.ts "homepage editable" --corpus=code
+
+# Disponibilité stock (transversal)
+pnpm tsx scripts/rag/search-creatyss-context.ts "availability stock" --corpus=all
 ```
 
-### Exemple de sortie
+### Validation CLI
+
+Option inconnue :
 
 ```
-── Résultats RAG Creatyss pour : "feature flags" (3 fichiers) ──
+Option inconnue : --foo
+Usage : pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code]
+```
 
-1. docs/admin/settings-advanced-feature-system.md
-   Score : 48.0
-   Extrait : …# Système de feature flags avancé…
+Corpus invalide :
 
-2. docs/architecture/20-structure/22-capacites-optionnelles.md
-   Score : 12.0
-   Extrait : …les capacités optionnelles sont activées via des feature flags…
-
-3. features/admin/settings/feature-flags/index.ts
-   Score : 6.0
-   Extrait : …export { FeatureFlagService }…
+```
+Corpus inconnu : xyz
+Valeurs autorisées : all, docs, prisma, code
 ```
 
 ---
@@ -129,6 +157,8 @@ pnpm tsx scripts/rag/search-creatyss-context.ts "stripe webhook payment"
 - **Pas de découpage en chunks** : les gros fichiers sont scorés mais l'extrait est tronqué à 300 caractères.
 - **Exécution depuis la racine obligatoire** : `process.cwd()` doit pointer vers `/Projects/CREATYSS`.
 - **Pas d'indexation des imports TypeScript** : les relations entre fichiers `.ts` ne sont pas exploitées.
+- **Corpus `code` limité à `features/**`** : `app/`, `components/`, `lib/` ne sont pas indexés pour éviter un bruit excessif.
+- **Premier match uniquement pour l'extrait** : si le passage pertinent est en fin de fichier, l'extrait peut être peu informatif.
 
 ---
 
@@ -136,23 +166,27 @@ pnpm tsx scripts/rag/search-creatyss-context.ts "stripe webhook payment"
 
 Ce lot est conçu pour évoluer en niveaux indépendants. Chaque niveau est optionnel et peut être ignoré.
 
-### Niveau 2 — Embeddings locaux
+### Niveau 2 — Filtrage par corpus ✅ (lot RAG-2, 2026-06-22)
+
+Ajout d'une option `--corpus=all|docs|prisma|code` pour restreindre le corpus indexé et réduire le bruit sur les requêtes ciblées.
+
+### Niveau 3 — Embeddings locaux
 
 Remplacer le score lexical par un vecteur sémantique généré localement (ex. : `@xenova/transformers` avec un modèle SBERT). Aucune API externe, aucun coût. Nécessite un index pré-calculé.
 
-### Niveau 3 — Base vectorielle
+### Niveau 4 — Base vectorielle
 
 Stocker les embeddings dans une base vectorielle locale (ChromaDB, Qdrant en mode local). Permet une recherche ANN (Approximate Nearest Neighbors) plus rapide sur un corpus plus grand.
 
-### Niveau 4 — Mémoire conversationnelle
+### Niveau 5 — Mémoire conversationnelle
 
 Intégrer un système de mémoire persistante par session IA (MemPalace ou équivalent). Permet à l'IA de retrouver le contexte de conversations précédentes sur le projet.
 
-### Niveau 5 — Graphe de connaissances
+### Niveau 6 — Graphe de connaissances
 
 Construire un graphe des relations entre domaines, modèles Prisma et features (Graphiti ou équivalent). Permet des requêtes structurelles : « quels domaines dépendent de `inventory` ? ».
 
-### Niveau 6 — MCP local
+### Niveau 7 — MCP local
 
 Exposer le RAG comme un serveur MCP pour Claude Code, permettant des appels directs depuis les agents sans passer par la CLI.
 
@@ -160,11 +194,14 @@ Exposer le RAG comme un serveur MCP pour Claude Code, permettant des appels dire
 
 ## Décisions techniques
 
-| Décision                        | Raison                                                    |
-| ------------------------------- | --------------------------------------------------------- |
-| Pas de LangChain / LlamaIndex   | Zéro dépendance supplémentaire, contrôle total            |
-| Pas d'embeddings                | Zéro coût, zéro infrastructure pour ce lot                |
-| `node:fs` natif uniquement      | Pas de bibliothèque tierce nécessaire                     |
-| Score lexical pondéré par zone  | Meilleur signal que TF brut sans complexité               |
-| Multiplicateur priorité ×2 / ×1 | Visible dans le classement sans écraser le signal lexical |
-| Isolé dans `scripts/rag/`       | Supprimable sans impact sur l'application                 |
+| Décision                        | Raison                                                        |
+| ------------------------------- | ------------------------------------------------------------- |
+| Pas de LangChain / LlamaIndex   | Zéro dépendance supplémentaire, contrôle total                |
+| Pas d'embeddings                | Zéro coût, zéro infrastructure pour ce lot                    |
+| `node:fs` natif uniquement      | Pas de bibliothèque tierce nécessaire                         |
+| Score lexical pondéré par zone  | Meilleur signal que TF brut sans complexité                   |
+| Multiplicateur priorité ×2 / ×1 | Visible dans le classement sans écraser le signal lexical     |
+| Isolé dans `scripts/rag/`       | Supprimable sans impact sur l'application                     |
+| Champ `corpus` dans `RagSource` | La config reste source de vérité unique, pas de liste séparée |
+| `CORPUS_VALUES` as const        | Validation au runtime sans duplication de type                |
+| Pas de commander/yargs          | Parsing minimal sans dépendance, requête suffisamment simple  |

@@ -1,13 +1,63 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-import { ragConfig } from "./creatyss-rag.config";
+import { CORPUS_VALUES, ragConfig, type CorpusType, type RagSource } from "./creatyss-rag.config";
 
 interface SearchResult {
   filePath: string;
   relativePath: string;
   score: number;
   excerpt: string;
+}
+
+interface ParsedArgs {
+  query: string;
+  corpus: CorpusType;
+}
+
+function parseArgs(argv: string[]): ParsedArgs {
+  const args = argv.slice(2);
+  const queryParts: string[] = [];
+  let corpus: CorpusType = "all";
+
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      queryParts.push(arg);
+      continue;
+    }
+
+    if (!arg.startsWith("--corpus=")) {
+      console.error(`Option inconnue : ${arg}`);
+      console.error(
+        'Usage : pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code]'
+      );
+      process.exit(1);
+    }
+
+    const rawCorpus = arg.slice("--corpus=".length);
+
+    if (!CORPUS_VALUES.includes(rawCorpus as CorpusType)) {
+      console.error(`Corpus inconnu : ${rawCorpus}`);
+      console.error(`Valeurs autorisées : ${CORPUS_VALUES.join(", ")}`);
+      process.exit(1);
+    }
+
+    corpus = rawCorpus as CorpusType;
+  }
+
+  const query = queryParts.join(" ").trim();
+
+  if (!query) {
+    console.error(
+      'Usage : pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code]'
+    );
+    console.error(
+      'Exemple : pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags" --corpus=docs'
+    );
+    process.exit(1);
+  }
+
+  return { query, corpus };
 }
 
 function escapeRegex(str: string): string {
@@ -119,7 +169,12 @@ function extractExcerpt(content: string, keywords: string[], maxLength: number):
   return prefix + excerpt + suffix;
 }
 
-function search(query: string): SearchResult[] {
+function filterSources(sources: readonly RagSource[], corpus: CorpusType): readonly RagSource[] {
+  if (corpus === "all") return sources;
+  return sources.filter((s) => s.corpus === corpus);
+}
+
+function search(query: string, corpus: CorpusType): SearchResult[] {
   const rootDir = process.cwd();
   const keywords = query
     .toLowerCase()
@@ -131,10 +186,11 @@ function search(query: string): SearchResult[] {
     process.exit(1);
   }
 
-  // Première source trouvée détermine la priorité (sources triées par priorité décroissante)
+  const activeSources = filterSources(ragConfig.sources, corpus);
+
   const filesByPriority = new Map<string, "high" | "medium">();
 
-  for (const source of ragConfig.sources) {
+  for (const source of activeSources) {
     const files = collectFiles(
       source.path,
       rootDir,
@@ -170,13 +226,17 @@ function search(query: string): SearchResult[] {
   return results.sort((a, b) => b.score - a.score).slice(0, ragConfig.maxResults);
 }
 
-function formatResults(results: SearchResult[], query: string): void {
+function formatResults(results: SearchResult[], query: string, corpus: CorpusType): void {
+  const corpusLabel = corpus === "all" ? "tous corpus" : `corpus:${corpus}`;
+
   if (results.length === 0) {
-    console.log(`Aucun résultat pour : "${query}"`);
+    console.log(`Aucun résultat pour : "${query}" [${corpusLabel}]`);
     return;
   }
 
-  console.log(`\n── Résultats RAG Creatyss pour : "${query}" (${results.length} fichiers) ──\n`);
+  console.log(
+    `\n── Résultats RAG Creatyss pour : "${query}" [${corpusLabel}] (${results.length} fichiers) ──\n`
+  );
 
   for (const [i, result] of results.entries()) {
     console.log(`${i + 1}. ${result.relativePath}`);
@@ -188,15 +248,9 @@ function formatResults(results: SearchResult[], query: string): void {
 
 // ─── Entrée principale ────────────────────────────────────────────────────────
 // Doit être exécuté depuis la racine du projet :
-//   pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>"
+//   pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code]
 
-const query = process.argv.slice(2).join(" ").trim();
+const { query, corpus } = parseArgs(process.argv);
 
-if (!query) {
-  console.error('Usage : pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>"');
-  console.error('Exemple : pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags"');
-  process.exit(1);
-}
-
-const results = search(query);
-formatResults(results, query);
+const results = search(query, corpus);
+formatResults(results, query, corpus);
