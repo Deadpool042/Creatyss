@@ -22,7 +22,7 @@ docs/ai/
 ### Fonctionnement
 
 1. Le script lit les fichiers indexés depuis le disque à chaque exécution (pas de cache).
-2. Les arguments CLI sont parsés : requête libre + option `--corpus`.
+2. Les arguments CLI sont parsés : requête libre + options `--corpus` et `--format`.
 3. Les sources sont filtrées selon le corpus demandé.
 4. La requête est découpée en mots-clés (mots de 2 caractères minimum).
 5. Chaque fichier reçoit un score basé sur :
@@ -30,7 +30,7 @@ docs/ai/
    - la présence des mots-clés dans le nom de fichier (×5)
    - la présence des mots-clés dans les titres Markdown `#` (×3)
 6. Un multiplicateur de priorité est appliqué (`high` = ×2, `medium` = ×1).
-7. Les N meilleurs résultats sont affichés avec score et extrait.
+7. Les N meilleurs résultats sont affichés selon le format demandé.
 
 ---
 
@@ -110,26 +110,38 @@ Les dossiers suivants sont ignorés :
 **Prérequis** : exécuter depuis la racine du projet.
 
 ```bash
-pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code]
+pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code] [--format=list|prompt]
 ```
+
+### Formats de sortie
+
+| Format   | Description                                     | Cas d'usage                                  |
+| -------- | ----------------------------------------------- | -------------------------------------------- |
+| `list`   | Sortie lisible dans le terminal (défaut)        | Exploration rapide, vérification des sources |
+| `prompt` | Bloc Markdown structuré avec rappel de doctrine | À copier-coller dans Claude, ChatGPT, Codex  |
+
+Le mode `--format=prompt` produit un bloc autonome prêt à être collé en début de conversation IA. Il ne sert pas à automatiser les modifications — il prépare un contexte que l'utilisateur soumet ensuite manuellement.
 
 ### Exemples
 
 ```bash
-# Recherche transversale (défaut)
+# Recherche transversale, affichage terminal (défaut)
 pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags gradation"
 
-# Doctrine uniquement
+# Doctrine uniquement, affichage terminal
 pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags gradation" --corpus=docs
 
-# Modèles Prisma liés aux produits
-pnpm tsx scripts/rag/search-creatyss-context.ts "product image category" --corpus=prisma
+# Doctrine → bloc IA copiable (pour Claude ou ChatGPT)
+pnpm tsx scripts/rag/search-creatyss-context.ts "feature flags gradation" --corpus=docs --format=prompt
 
-# Implémentation homepage
+# Modèles Prisma → bloc IA copiable
+pnpm tsx scripts/rag/search-creatyss-context.ts "product image category" --corpus=prisma --format=prompt
+
+# Implémentation homepage, affichage terminal
 pnpm tsx scripts/rag/search-creatyss-context.ts "homepage editable" --corpus=code
 
-# Disponibilité stock (transversal)
-pnpm tsx scripts/rag/search-creatyss-context.ts "availability stock" --corpus=all
+# Disponibilité stock (transversal) → bloc IA copiable
+pnpm tsx scripts/rag/search-creatyss-context.ts "availability stock" --corpus=all --format=prompt
 ```
 
 ### Validation CLI
@@ -137,8 +149,8 @@ pnpm tsx scripts/rag/search-creatyss-context.ts "availability stock" --corpus=al
 Option inconnue :
 
 ```
-Option inconnue : --foo
-Usage : pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code]
+Option inconnue : --badflag
+Usage : pnpm tsx scripts/rag/search-creatyss-context.ts "<requête>" [--corpus=all|docs|prisma|code] [--format=list|prompt]
 ```
 
 Corpus invalide :
@@ -146,6 +158,13 @@ Corpus invalide :
 ```
 Corpus inconnu : xyz
 Valeurs autorisées : all, docs, prisma, code
+```
+
+Format invalide :
+
+```
+Format inconnu : unknown
+Valeurs autorisées : list, prompt
 ```
 
 ---
@@ -170,7 +189,11 @@ Ce lot est conçu pour évoluer en niveaux indépendants. Chaque niveau est opti
 
 Ajout d'une option `--corpus=all|docs|prisma|code` pour restreindre le corpus indexé et réduire le bruit sur les requêtes ciblées.
 
-### Niveau 3 — Embeddings locaux
+### Niveau 3 — Format prompt copiable ✅ (lot RAG-3, 2026-06-22)
+
+Ajout d'une option `--format=list|prompt` pour produire un bloc Markdown structuré avec rappel de doctrine, prêt à être collé dans Claude, ChatGPT ou Codex.
+
+### Niveau 4 — Embeddings locaux
 
 Remplacer le score lexical par un vecteur sémantique généré localement (ex. : `@xenova/transformers` avec un modèle SBERT). Aucune API externe, aucun coût. Nécessite un index pré-calculé.
 
@@ -194,14 +217,17 @@ Exposer le RAG comme un serveur MCP pour Claude Code, permettant des appels dire
 
 ## Décisions techniques
 
-| Décision                        | Raison                                                        |
-| ------------------------------- | ------------------------------------------------------------- |
-| Pas de LangChain / LlamaIndex   | Zéro dépendance supplémentaire, contrôle total                |
-| Pas d'embeddings                | Zéro coût, zéro infrastructure pour ce lot                    |
-| `node:fs` natif uniquement      | Pas de bibliothèque tierce nécessaire                         |
-| Score lexical pondéré par zone  | Meilleur signal que TF brut sans complexité                   |
-| Multiplicateur priorité ×2 / ×1 | Visible dans le classement sans écraser le signal lexical     |
-| Isolé dans `scripts/rag/`       | Supprimable sans impact sur l'application                     |
-| Champ `corpus` dans `RagSource` | La config reste source de vérité unique, pas de liste séparée |
-| `CORPUS_VALUES` as const        | Validation au runtime sans duplication de type                |
-| Pas de commander/yargs          | Parsing minimal sans dépendance, requête suffisamment simple  |
+| Décision                               | Raison                                                                       |
+| -------------------------------------- | ---------------------------------------------------------------------------- |
+| Pas de LangChain / LlamaIndex          | Zéro dépendance supplémentaire, contrôle total                               |
+| Pas d'embeddings                       | Zéro coût, zéro infrastructure pour ce lot                                   |
+| `node:fs` natif uniquement             | Pas de bibliothèque tierce nécessaire                                        |
+| Score lexical pondéré par zone         | Meilleur signal que TF brut sans complexité                                  |
+| Multiplicateur priorité ×2 / ×1        | Visible dans le classement sans écraser le signal lexical                    |
+| Isolé dans `scripts/rag/`              | Supprimable sans impact sur l'application                                    |
+| Champ `corpus` dans `RagSource`        | La config reste source de vérité unique, pas de liste séparée                |
+| `CORPUS_VALUES` as const               | Validation au runtime sans duplication de type                               |
+| Pas de commander/yargs                 | Parsing minimal sans dépendance, requête suffisamment simple                 |
+| `FORMAT_VALUES` as const               | Même pattern que `CORPUS_VALUES` — cohérence et validation sans duplication  |
+| Rappel de doctrine fixe                | Pas de génération dynamique — les invariants sont stables et connus d'avance |
+| Bloc ` ```text ``` ` pour les extraits | Évite les ambiguïtés si l'extrait contient du Markdown                       |

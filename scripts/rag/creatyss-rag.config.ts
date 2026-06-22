@@ -1,6 +1,9 @@
 export const CORPUS_VALUES = ["all", "docs", "prisma", "code"] as const;
 export type CorpusType = (typeof CORPUS_VALUES)[number];
 
+export const FORMAT_VALUES = ["list", "prompt"] as const;
+export type FormatType = (typeof FORMAT_VALUES)[number];
+
 export interface RagSource {
   readonly path: string;
   readonly priority: "high" | "medium";
