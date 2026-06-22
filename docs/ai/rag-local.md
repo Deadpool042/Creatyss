@@ -14,7 +14,8 @@ Ce lot est une expérimentation locale de récupération documentaire. Il ne con
 scripts/rag/
 ├── creatyss-rag.config.ts       # Configuration typée (sources, corpus, exclusions, limites)
 ├── rag-search.ts                # Module importable : searchCreatyssContext, buildCreatyssContextOutput
-└── search-creatyss-context.ts   # Entrée CLI : parsing, validation, écriture console/fichier
+├── search-creatyss-context.ts   # Entrée CLI : parsing, validation, écriture console/fichier
+└── mcp-server.ts                # Serveur MCP stdio : expose l'outil search_context
 
 docs/ai/
 └── rag-local.md                 # Ce document
@@ -219,6 +220,59 @@ Valeurs autorisées : list, prompt
 
 ---
 
+## Serveur MCP local
+
+Le fichier `scripts/rag/mcp-server.ts` expose le RAG Creatyss comme un serveur MCP stdio.
+
+### Outil exposé : `search_context`
+
+```json
+{
+  "name": "search_context",
+  "description": "Recherche du contexte documentaire Creatyss (doctrine, architecture, Prisma, code).",
+  "inputSchema": {
+    "query": "string (obligatoire, non vide)",
+    "corpus": "\"all\" | \"docs\" | \"prisma\" | \"code\" (optionnel, défaut : \"all\")",
+    "format": "\"list\" | \"prompt\" (optionnel, défaut : \"prompt\")"
+  }
+}
+```
+
+La sortie est le texte produit par `buildCreatyssContextOutput` — identique à la sortie CLI `--format=prompt` par défaut.
+
+### Test local (sans configuration Claude Code)
+
+```bash
+# Démarrer le serveur et envoyer une requête JSON-RPC manuellement
+pnpm tsx scripts/rag/mcp-server.ts
+```
+
+Le serveur attend des messages JSON-RPC sur stdin et répond sur stdout. Il est conçu pour être lancé par Claude Code en tant que processus enfant — pas pour être utilisé directement dans un terminal interactif.
+
+Pour vérifier que le fichier compile sans erreur :
+
+```bash
+pnpm run typecheck
+```
+
+### Statut d'activation
+
+**Le serveur n'est pas actif tant qu'il n'est pas déclaré dans la configuration Claude Code.**
+
+La configuration MCP locale (`.claude/settings.local.json` ou `.mcp.json`) sera réalisée dans le lot suivant **RAG-8**. Ce fichier ne doit pas être modifié dans le lot RAG-7.
+
+### Dépendance
+
+Le serveur requiert `@modelcontextprotocol/sdk` en devDependency :
+
+```bash
+pnpm add -D @modelcontextprotocol/sdk
+```
+
+Cette dépendance est importée uniquement depuis `scripts/rag/` — aucun import depuis l'application Next.js.
+
+---
+
 ## Limites actuelles
 
 - **Recherche lexicale uniquement** : pas de compréhension sémantique, pas de synonymes.
@@ -268,7 +322,7 @@ Intégrer un système de mémoire persistante par session IA (MemPalace ou équi
 
 Construire un graphe des relations entre domaines, modèles Prisma et features (Graphiti ou équivalent). Permet des requêtes structurelles : « quels domaines dépendent de `inventory` ? ».
 
-### Niveau 7 — MCP local
+### Niveau 7 — MCP local ✅ (lot RAG-7, 2026-06-22)
 
 Exposer le RAG comme un serveur MCP pour Claude Code, permettant des appels directs depuis les agents sans passer par la CLI.
 
@@ -276,21 +330,24 @@ Exposer le RAG comme un serveur MCP pour Claude Code, permettant des appels dire
 
 ## Décisions techniques
 
-| Décision                               | Raison                                                                                                           |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Pas de LangChain / LlamaIndex          | Zéro dépendance supplémentaire, contrôle total                                                                   |
-| Pas d'embeddings                       | Zéro coût, zéro infrastructure pour ce lot                                                                       |
-| `node:fs` natif uniquement             | Pas de bibliothèque tierce nécessaire                                                                            |
-| Score lexical pondéré par zone         | Meilleur signal que TF brut sans complexité                                                                      |
-| Multiplicateur priorité ×2 / ×1        | Visible dans le classement sans écraser le signal lexical                                                        |
-| Isolé dans `scripts/rag/`              | Supprimable sans impact sur l'application                                                                        |
-| Champ `corpus` dans `RagSource`        | La config reste source de vérité unique, pas de liste séparée                                                    |
-| `CORPUS_VALUES` as const               | Validation au runtime sans duplication de type                                                                   |
-| Pas de commander/yargs                 | Parsing minimal sans dépendance, requête suffisamment simple                                                     |
-| `FORMAT_VALUES` as const               | Même pattern que `CORPUS_VALUES` — cohérence et validation sans duplication                                      |
-| Rappel de doctrine fixe                | Pas de génération dynamique — les invariants sont stables et connus d'avance                                     |
-| Bloc ` ```text ``` ` pour les extraits | Évite les ambiguïtés si l'extrait contient du Markdown                                                           |
-| Fenêtre d'extrait par densité (RAG-4)  | Maximise les occurrences de mots-clés dans la fenêtre de 300 chars — tie-break : fenêtre la plus proche du début |
-| `--output` relatif seulement (RAG-5)   | Chemins absolus et `..` refusés — l'export ne peut pas sortir du projet                                          |
-| `build*` → `string` au lieu de `void`  | Séparation construction/effet — le choix console/fichier est centralisé à l'entrée principale                    |
-| `rag-search.ts` séparé (RAG-6)         | Logique importable sans effet de bord — CLI reste l'usage principal, MCP peut importer sans dupliquer            |
+| Décision                                    | Raison                                                                                                           |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Pas de LangChain / LlamaIndex               | Zéro dépendance supplémentaire, contrôle total                                                                   |
+| Pas d'embeddings                            | Zéro coût, zéro infrastructure pour ce lot                                                                       |
+| `node:fs` natif uniquement                  | Pas de bibliothèque tierce nécessaire                                                                            |
+| Score lexical pondéré par zone              | Meilleur signal que TF brut sans complexité                                                                      |
+| Multiplicateur priorité ×2 / ×1             | Visible dans le classement sans écraser le signal lexical                                                        |
+| Isolé dans `scripts/rag/`                   | Supprimable sans impact sur l'application                                                                        |
+| Champ `corpus` dans `RagSource`             | La config reste source de vérité unique, pas de liste séparée                                                    |
+| `CORPUS_VALUES` as const                    | Validation au runtime sans duplication de type                                                                   |
+| Pas de commander/yargs                      | Parsing minimal sans dépendance, requête suffisamment simple                                                     |
+| `FORMAT_VALUES` as const                    | Même pattern que `CORPUS_VALUES` — cohérence et validation sans duplication                                      |
+| Rappel de doctrine fixe                     | Pas de génération dynamique — les invariants sont stables et connus d'avance                                     |
+| Bloc ` ```text ``` ` pour les extraits      | Évite les ambiguïtés si l'extrait contient du Markdown                                                           |
+| Fenêtre d'extrait par densité (RAG-4)       | Maximise les occurrences de mots-clés dans la fenêtre de 300 chars — tie-break : fenêtre la plus proche du début |
+| `--output` relatif seulement (RAG-5)        | Chemins absolus et `..` refusés — l'export ne peut pas sortir du projet                                          |
+| `build*` → `string` au lieu de `void`       | Séparation construction/effet — le choix console/fichier est centralisé à l'entrée principale                    |
+| `rag-search.ts` séparé (RAG-6)              | Logique importable sans effet de bord — CLI reste l'usage principal, MCP peut importer sans dupliquer            |
+| `@modelcontextprotocol/sdk` devDep (RAG-7)  | Évite une implémentation JSON-RPC stdio fragile — usage local scripts uniquement, aucun import depuis Next.js    |
+| `registerTool` avec `z.object` (RAG-7)      | API explicite avec `description` séparée du schema — lisible dans l'UI d'appel d'outil de Claude Code            |
+| `format` défaut `"prompt"` côté MCP (RAG-7) | Le contexte MCP sert à alimenter une IA — le format prompt est plus pertinent que `list` dans ce cas d'usage     |
