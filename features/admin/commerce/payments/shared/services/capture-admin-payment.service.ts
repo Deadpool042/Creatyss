@@ -8,7 +8,7 @@ export async function captureAdminPayment(
 ): Promise<void> {
   const payment = await db.payment.findUnique({
     where: { id: input.paymentId },
-    select: { id: true, storeId: true, status: true, amountAuthorized: true },
+    select: { id: true, storeId: true, status: true, amountAuthorized: true, orderId: true },
   });
 
   if (payment === null) {
@@ -26,12 +26,21 @@ export async function captureAdminPayment(
     );
   }
 
-  await db.payment.update({
-    where: { id: payment.id },
-    data: {
-      status: "CAPTURED",
-      amountCaptured: payment.amountAuthorized,
-      capturedAt: new Date(),
-    },
-  });
+  await db.$transaction([
+    db.payment.update({
+      where: { id: payment.id },
+      data: {
+        status: "CAPTURED",
+        amountCaptured: payment.amountAuthorized,
+        capturedAt: new Date(),
+      },
+    }),
+    db.order.update({
+      where: { id: payment.orderId },
+      data: {
+        status: "CONFIRMED",
+        updatedAt: new Date(),
+      },
+    }),
+  ]);
 }

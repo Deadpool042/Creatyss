@@ -9,6 +9,7 @@ import {
 } from "@/features/commerce/payment/lib/payment.repository";
 import { serverEnv } from "@/core/config/env";
 import { stripe } from "@/core/payments/stripe/server";
+import { sendOrderTransactionalEmail } from "@/features/email";
 
 export async function POST(request: Request) {
   const body = await request.text();
@@ -38,11 +39,19 @@ export async function POST(request: Request) {
     const session = event.data.object as Stripe.Checkout.Session;
 
     if (typeof session.id === "string") {
-      await markPaymentSucceededByCheckoutSessionId({
+      const orderId = await markPaymentSucceededByCheckoutSessionId({
         stripeCheckoutSessionId: session.id,
         stripePaymentIntentId:
           typeof session.payment_intent === "string" ? session.payment_intent : null,
       });
+
+      if (orderId !== null) {
+        try {
+          await sendOrderTransactionalEmail({ orderId, eventType: "payment_succeeded" });
+        } catch (error) {
+          console.error("[webhook-email]", error);
+        }
+      }
     }
   }
 

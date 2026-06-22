@@ -60,6 +60,8 @@ services:
       BREVO_API_KEY: ${BREVO_API_KEY}
       BREVO_FROM_ADDRESS: ${BREVO_FROM_ADDRESS}
       BREVO_FROM_NAME: ${BREVO_FROM_NAME}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       UPLOADS_DIR: ${UPLOADS_DIR}
     volumes:
       - uploads_data:/app/public/uploads
