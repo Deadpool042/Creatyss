@@ -1,5 +1,6 @@
 import { db } from "@/core/db";
 import type { AdminPaymentActionInput } from "@/features/admin/commerce/payments/shared/schemas/admin-payment-action.schema";
+import { sendOrderTransactionalEmail } from "@/features/email/order/send-order-transactional-email";
 import { AdminPaymentServiceError } from "./admin-payment-service.errors";
 
 export async function captureAdminPayment(
@@ -43,4 +44,10 @@ export async function captureAdminPayment(
       },
     }),
   ]);
+
+  try {
+    await sendOrderTransactionalEmail({ orderId: payment.orderId, eventType: "payment_succeeded" });
+  } catch {
+    console.error("[captureAdminPayment] email payment_succeeded non envoyé (non fatal).");
+  }
 }
