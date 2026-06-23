@@ -28,10 +28,14 @@ export async function shipOrderAction(formData: FormData): Promise<void> {
   try {
     await shipAdminOrder(parsed.data);
 
-    await sendOrderTransactionalEmail({
-      orderId: parsed.data.orderId,
-      eventType: "order_shipped",
-    });
+    try {
+      await sendOrderTransactionalEmail({
+        orderId: parsed.data.orderId,
+        eventType: "order_shipped",
+      });
+    } catch {
+      // non-fatal: email failure must not block a successful shipment
+    }
   } catch (error) {
     if (error instanceof AdminOrderServiceError && error.code === "missing_order") {
       redirect(`${ADMIN_ORDERS_LIST_PATH}?error=missing_order`);
