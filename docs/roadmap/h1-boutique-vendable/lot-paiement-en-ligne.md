@@ -2,7 +2,7 @@
 
 ## Statut
 
-A faire
+Implémenté — recette production non exécutée (VPS et domaine HTTPS requis)
 
 ## Objectif
 
@@ -10,15 +10,16 @@ Intégrer Stripe pour permettre aux clientes de payer par carte bancaire lors du
 
 ## Périmètre
 
-Proposition — non implémenté à ce jour :
+Implémenté (2026-06-22) :
 
-- `features/commerce/payments/` — intégration Stripe Payment Intents
-- `prisma/optional/commerce/payments.prisma` — modèles `Payment` et `PaymentAttempt` déjà posés (observés dans le schéma)
-- Gating `commerce.payments` déjà actif à L3 (observé dans `2026-06-13-audit-catalogue-modules.md`)
-- Webhook Stripe entrant (signature HMAC) pour confirmer les paiements
-- Page checkout storefront — ajout du composant Stripe.js
-- Admin commandes — affichage du statut de paiement réel
-- Configuration `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` dans les variables d'environnement
+- `app/api/stripe/webhook/route.ts` — webhook Stripe, signature vérifiée, idempotent
+- `features/commerce/payment/lib/payment.repository.ts` — `markPaymentSucceededByCheckoutSessionId` (idempotent), `markPaymentFailedByCheckoutSessionId`, `saveStripeCheckoutSessionForOrder`
+- Événements gérés : `checkout.session.completed`, `checkout.session.expired`, `payment_intent.payment_failed`
+- Email `payment_succeeded` déclenché depuis le webhook (non fatal)
+- Configuration `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` documentée dans `docs/exploitation/01-variables-d-environnement.md`
+- Runbook de recette : `docs/exploitation/06-recette-commerce-complete.md`
+
+Non recetté en production — bloqué par l'absence de VPS et de domaine HTTPS public.
 
 ## Hors périmètre
 

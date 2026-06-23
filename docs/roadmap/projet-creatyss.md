@@ -135,6 +135,8 @@ Une case n'est cochée qu'au stade « recetté » minimum.
 
 Limites du smoke : paiement limité à `Virement bancaire` (pas de paiement en ligne, conforme au hors périmètre H2) ; l'email transactionnel est non fatal — le smoke vérifie l'enregistrement de l'événement `order_created` en DB (destinataire, statut), pas la délivrance réelle. La contrainte de disponibilité/stock est couverte séparément par `tests/e2e/public/commerce-availability.spec.ts` (refus `insufficient_stock`, panier inchangé), vert localement le 2026-06-12. `cart.spec.ts` et `checkout.spec.ts` sont alignés sur les fixtures auto-provisionnées et les contrats UI actuels, verts localement le 2026-06-12.
 
+**Mise à jour 2026-06-22 (Stripe Checkout) :** le paiement en ligne Stripe a été intégré après clôture du périmètre H2. Implémenté : webhook `app/api/stripe/webhook/route.ts` (signature vérifiée, idempotent), événements `checkout.session.completed` / `checkout.session.expired` / `payment_intent.payment_failed` gérés, email `payment_succeeded` déclenché depuis le webhook. Recette production non exécutée — bloquée par l'absence de VPS et de domaine HTTPS public. Référence : `docs/roadmap/h1-boutique-vendable/lot-paiement-en-ligne.md`.
+
 **Validation :**
 
 - [x] Panier fonctionnel — implémenté, couvert par le smoke E2E minimal (2026-06-12)
