@@ -6,6 +6,7 @@ vi.mock("@/core/db", () => ({
     payment: {
       findFirst: vi.fn(),
       update: vi.fn(),
+      updateMany: vi.fn(),
     },
     order: {
       update: vi.fn(),
@@ -15,10 +16,17 @@ vi.mock("@/core/db", () => ({
 }));
 
 import { db } from "@/core/db";
-import { markPaymentSucceededByCheckoutSessionId } from "@/features/commerce/payment/lib/payment.repository";
+import {
+  markPaymentFailedByCheckoutSessionId,
+  markPaymentSucceededByCheckoutSessionId,
+} from "@/features/commerce/payment/lib/payment.repository";
 
 const mockDb = db as {
-  payment: { findFirst: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
+  payment: {
+    findFirst: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
+    updateMany: ReturnType<typeof vi.fn>;
+  };
   order: { update: ReturnType<typeof vi.fn> };
   $transaction: ReturnType<typeof vi.fn>;
 };
@@ -39,8 +47,23 @@ describe("markPaymentSucceededByCheckoutSessionId", () => {
     expect(mockDb.$transaction).not.toHaveBeenCalled();
   });
 
+  it("retourne null si le paiement est déjà CAPTURED (idempotence — double email bloqué)", async () => {
+    mockDb.payment.findFirst.mockResolvedValue({
+      id: "pay_1",
+      orderId: "order_1",
+      status: "CAPTURED",
+    });
+
+    const result = await markPaymentSucceededByCheckoutSessionId({
+      stripeCheckoutSessionId: "cs_test_already_captured",
+    });
+
+    expect(result).toBeNull();
+    expect(mockDb.$transaction).not.toHaveBeenCalled();
+  });
+
   it("exécute payment CAPTURED et order CONFIRMED dans la même transaction", async () => {
-    const fakePayment = { id: "pay_1", orderId: "order_1" };
+    const fakePayment = { id: "pay_1", orderId: "order_1", status: "PENDING" };
     mockDb.payment.findFirst.mockResolvedValue(fakePayment);
     mockDb.$transaction.mockResolvedValue([undefined, undefined]);
 
@@ -58,7 +81,7 @@ describe("markPaymentSucceededByCheckoutSessionId", () => {
   });
 
   it("met à jour payment.status à CAPTURED", async () => {
-    const fakePayment = { id: "pay_2", orderId: "order_2" };
+    const fakePayment = { id: "pay_2", orderId: "order_2", status: "PENDING" };
     mockDb.payment.findFirst.mockResolvedValue(fakePayment);
     mockDb.$transaction.mockResolvedValue([undefined, undefined]);
 
@@ -76,7 +99,7 @@ describe("markPaymentSucceededByCheckoutSessionId", () => {
   });
 
   it("met à jour order.status à CONFIRMED", async () => {
-    const fakePayment = { id: "pay_3", orderId: "order_3" };
+    const fakePayment = { id: "pay_3", orderId: "order_3", status: "PENDING" };
     mockDb.payment.findFirst.mockResolvedValue(fakePayment);
     mockDb.$transaction.mockResolvedValue([undefined, undefined]);
 
@@ -89,6 +112,43 @@ describe("markPaymentSucceededByCheckoutSessionId", () => {
       expect.objectContaining({
         where: { id: "order_3" },
         data: expect.objectContaining({ status: "CONFIRMED" }),
+      })
+    );
+  });
+});
+
+describe("markPaymentFailedByCheckoutSessionId", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("n'écrase pas un paiement CAPTURED ou CANCELLED (guard notIn)", async () => {
+    mockDb.payment.updateMany.mockResolvedValue({ count: 0 });
+
+    await markPaymentFailedByCheckoutSessionId({
+      stripeCheckoutSessionId: "cs_test_abc",
+    });
+
+    expect(mockDb.payment.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          status: { notIn: ["CAPTURED", "CANCELLED"] },
+        }),
+      })
+    );
+  });
+
+  it("met à jour le statut à FAILED pour un paiement PENDING", async () => {
+    mockDb.payment.updateMany.mockResolvedValue({ count: 1 });
+
+    await markPaymentFailedByCheckoutSessionId({
+      stripeCheckoutSessionId: "cs_test_pending",
+      stripePaymentIntentId: "pi_test_pending",
+    });
+
+    expect(mockDb.payment.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ status: "FAILED" }),
       })
     );
   });

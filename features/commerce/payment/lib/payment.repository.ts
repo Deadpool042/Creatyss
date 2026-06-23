@@ -49,6 +49,7 @@ export async function markPaymentFailedByCheckoutSessionId(input: {
     where: {
       provider: STRIPE_PROVIDER,
       providerReference: input.stripeCheckoutSessionId,
+      status: { notIn: ["CAPTURED", "CANCELLED"] },
     },
     data: {
       status: "FAILED",
@@ -75,10 +76,15 @@ export async function markPaymentSucceededByCheckoutSessionId(input: {
     select: {
       id: true,
       orderId: true,
+      status: true,
     },
   });
 
   if (payment === null) {
+    return null;
+  }
+
+  if (payment.status === "CAPTURED") {
     return null;
   }
 
