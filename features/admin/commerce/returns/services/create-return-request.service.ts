@@ -11,9 +11,16 @@ export class CreateReturnRequestError extends Error {
   }
 }
 
+type ReturnLineInput = {
+  orderLineId: string;
+  quantity: number;
+};
+
 type CreateReturnRequestInput = {
   orderId: string;
   storeId: string;
+  /** Lignes à retourner. Si absent → toutes les lignes (V1). */
+  lines?: ReadonlyArray<ReturnLineInput>;
 };
 
 const ACTIVE_RETURN_STATUSES = [
@@ -29,9 +36,9 @@ function generateReturnNumber(year: number): string {
 }
 
 /**
- * Crée une demande de retour « commande entière » (toutes les lignes) en statut
- * REQUESTED. Une seule demande active par commande. Snapshot produit figé.
- * Ne touche ni stock, ni paiement, ni statut commande (cf. cadrage V1).
+ * Crée une demande de retour en statut REQUESTED. En mode partiel, seules les
+ * lignes fournies sont incluses. Une seule demande active par commande.
+ * Ne touche ni stock, ni paiement, ni statut commande.
  */
 export async function createReturnRequest(input: CreateReturnRequestInput) {
   return withTransaction(async (tx) => {
@@ -63,6 +70,40 @@ export async function createReturnRequest(input: CreateReturnRequestInput) {
       throw new CreateReturnRequestError("Une demande de retour est déjà en cours.");
     }
 
+    const lineMap = new Map(order.lines.map((l) => [l.id, l]));
+
+    let itemsToCreate: ReadonlyArray<
+      ReturnLineInput & { productName: string; variantName: string | null; sku: string | null }
+    >;
+
+    if (input.lines !== undefined && input.lines.length > 0) {
+      itemsToCreate = input.lines.map((item) => {
+        const line = lineMap.get(item.orderLineId);
+        if (line === undefined) {
+          throw new CreateReturnRequestError(`Ligne introuvable : ${item.orderLineId}.`);
+        }
+        if (item.quantity <= 0 || item.quantity > line.quantity) {
+          throw new CreateReturnRequestError(
+            `Quantité invalide pour la ligne ${item.orderLineId} (max ${line.quantity}).`
+          );
+        }
+        return {
+          ...item,
+          productName: line.productName,
+          variantName: line.variantName,
+          sku: line.sku,
+        };
+      });
+    } else {
+      itemsToCreate = order.lines.map((l) => ({
+        orderLineId: l.id,
+        quantity: l.quantity,
+        productName: l.productName,
+        variantName: l.variantName,
+        sku: l.sku,
+      }));
+    }
+
     return tx.returnRequest.create({
       data: {
         storeId: input.storeId,
@@ -72,12 +113,12 @@ export async function createReturnRequest(input: CreateReturnRequestInput) {
         status: "REQUESTED",
         requestedAt: new Date(),
         items: {
-          create: order.lines.map((line) => ({
-            orderLine: { connect: { id: line.id } },
-            quantity: line.quantity,
-            productName: line.productName,
-            variantName: line.variantName,
-            sku: line.sku,
+          create: itemsToCreate.map((item) => ({
+            orderLine: { connect: { id: item.orderLineId } },
+            quantity: item.quantity,
+            productName: item.productName,
+            variantName: item.variantName,
+            sku: item.sku,
           })),
         },
       },

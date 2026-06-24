@@ -12,7 +12,12 @@ import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-st
 
 type ActionResult = { success: true } | { success: false; error: string };
 
-export async function createReturnAction(orderId: string): Promise<ActionResult> {
+type LineInput = { orderLineId: string; quantity: number };
+
+export async function createReturnAction(
+  orderId: string,
+  lines?: ReadonlyArray<LineInput>
+): Promise<ActionResult> {
   await requireAuthenticatedAdmin();
 
   if (typeof orderId !== "string" || orderId.trim().length === 0) {
@@ -29,7 +34,11 @@ export async function createReturnAction(orderId: string): Promise<ActionResult>
   }
 
   try {
-    await createReturnRequest({ orderId: orderId.trim(), storeId });
+    await createReturnRequest({
+      orderId: orderId.trim(),
+      storeId,
+      ...(lines !== undefined ? { lines } : {}),
+    });
     revalidatePath(`/admin/commerce/orders/${orderId.trim()}`);
     return { success: true };
   } catch (error) {

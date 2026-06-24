@@ -1,5 +1,12 @@
 import type { ReturnRequestStatus } from "@/prisma-generated/client";
 
+export type OrderLineForReturn = {
+  id: string;
+  productName: string;
+  variantName: string | null;
+  quantity: number;
+};
+
 export type AdminReturnItem = {
   id: string;
   productName: string;

@@ -169,7 +169,16 @@ export default async function OrderDetailSlotPage({
 
       {returnsFeatureActive ? (
         <div className={buildAdminOrdersDetailSectionClassName()}>
-          <OrderDetailReturnCard request={returnRequest} orderId={id} />
+          <OrderDetailReturnCard
+            request={returnRequest}
+            orderId={id}
+            orderLines={order.lines.map((l) => ({
+              id: l.id,
+              productName: l.productName,
+              variantName: l.variantName ?? null,
+              quantity: l.quantity,
+            }))}
+          />
         </div>
       ) : null}
 
