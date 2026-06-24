@@ -59,7 +59,7 @@ Par défaut :
 - utiliser `pnpm dev` pour lancer l’application en local ;
 - utiliser PostgreSQL local sur `localhost:5434` comme base de données de développement ;
 - utiliser les scripts `pnpm run db:*` pour les opérations Prisma et le seed local ;
-- utiliser les scripts `pnpm run ...` pour les vérifications courantes (typecheck, lint, test) ;
+- utiliser les scripts `pnpm run ...` pour les vérifications courantes ;
 - réserver Docker Compose aux validations prod-like locales, aux vérifications d’intégration et à la préparation au déploiement ;
 - ne pas remplacer le flux local natif par Docker sauf demande explicite.
 
@@ -99,6 +99,12 @@ Ensuite seulement, lire la documentation ciblée par la demande :
 - document de lot explicitement visé
 - ancienne documentation seulement si la demande la vise explicitement
 
+Optimisation de contexte :
+
+- ne pas relire toute la documentation canonique si le RAG Creatyss, la mémoire projet ou un agent spécialisé a déjà identifié les sources utiles ;
+- lire directement les fichiers exacts avant toute modification ;
+- utiliser la documentation large pour cadrer, pas pour remplacer l’observation du code réel.
+
 ---
 
 ## Règle de factualité
@@ -110,13 +116,13 @@ Toujours distinguer :
 - Déduit
 - Inconnu
 
-La documentation permet d'affirmer :
+La documentation permet d’affirmer :
 
 - documenté
 - décrit
 - spécifié
 
-Elle ne permet pas d'affirmer :
+Elle ne permet pas d’affirmer :
 
 - implémenté
 - actif
@@ -134,11 +140,11 @@ Les preuves recevables sont :
 - test observé
 - commit observé
 
-La présence d'un dossier seul ne constitue pas une preuve d'implémentation.
+La présence d’un dossier seul ne constitue pas une preuve d’implémentation.
 
-Si une information n'est pas démontrable :
+Si une information n’est pas démontrable :
 
-"Inconnu"
+`Inconnu`
 
 Ne jamais présenter une hypothèse, une extrapolation ou une intention future comme un fait.
 
@@ -148,15 +154,15 @@ Ne jamais présenter une hypothèse, une extrapolation ou une intention future c
 
 La doctrine du projet est portée par :
 
-- AGENTS.md
-- docs/architecture/
-- docs/domains/
+- `AGENTS.md`
+- `docs/architecture/`
+- `docs/domains/`
 
 Ordre de priorité :
 
-1. AGENTS.md
-2. docs/architecture/
-3. docs/domains/
+1. `AGENTS.md`
+2. `docs/architecture/`
+3. `docs/domains/`
 4. documentation locale concernée
 
 ---
@@ -201,7 +207,7 @@ Points doctrinaux stabilisés :
 - `inventory` porte la vérité de stock ;
 - `fulfillment` porte l’exécution logistique ;
 - `shipping` porte l’expédition et le suivi de livraison ;
-- `auth`, `users`, `roles`, `permissions` relèvent d’un coeur structurel ;
+- `auth`, `users`, `roles`, `permissions` relèvent d’un cœur structurel ;
 - `customers` porte le client métier ;
 - un domaine `events` éventuel dans `cross-cutting/` désigne un domaine métier transverse explicite ;
 - les `domain-events` internes désignent les événements applicatifs liés à l’exécution du système ;
@@ -286,17 +292,12 @@ Si un domaine n’a pas encore de matérialisation DB réelle, sa place est dans
 
 Quand une demande touche la classification d’un domaine ou d’un fichier Prisma, utiliser uniquement des metadata documentaires minimales :
 
-- `Feature`
-- `Category`
-- `Level`
-- `DependsOn`
-
-Format attendu :
-
-`/// Feature: <domain>.<feature>`
-`/// Category: core | optional | cross-cutting | satellites`
-`/// Level: core | L1 | L2 | L3 | L4`
-`/// DependsOn: <feature>, <feature>`
+```prisma
+/// Feature: <domain>.<feature>
+/// Category: core | optional | cross-cutting | satellites
+/// Level: core | L1 | L2 | L3 | L4
+/// DependsOn: <feature>, <feature>
+```
 
 Ces metadata servent à clarifier la structure du repo.
 Elles ne constituent pas, à ce stade, un moteur runtime d’activation des fonctionnalités.
@@ -389,6 +390,90 @@ Ne jamais réintroduire `db/repositories` ou une architecture legacy sans valida
 
 ---
 
+## Usage du RAG, des skills et des sous-agents
+
+Objectif : préserver le contexte principal, éviter les lectures redondantes et utiliser l’outil adapté au bon moment.
+
+### RAG Creatyss
+
+Utiliser le MCP `creatyss-rag` en priorité pour toute recherche documentaire ou doctrinale large.
+
+Cas recommandés :
+
+- retrouver une doctrine ;
+- identifier les fichiers pertinents avant audit ;
+- vérifier un domaine dans `docs/domains/**` ;
+- préparer un lot multi-fichiers ;
+- éviter de relire inutilement toute l’architecture.
+
+Le RAG sert à orienter la lecture.
+Il ne remplace pas la vérification directe des fichiers concernés avant modification.
+
+Règle :
+
+1. RAG d’abord pour cadrer ;
+2. fichiers exacts ensuite pour prouver ;
+3. modification uniquement après observation directe.
+
+### Lecture directe
+
+Lire directement les fichiers quand :
+
+- le chemin est déjà connu ;
+- la demande touche un fichier précis ;
+- le lot modifie du code ;
+- une preuve d’implémentation est nécessaire ;
+- un agent ou le RAG a déjà identifié les fichiers exacts.
+
+Ne pas relire toute la documentation canonique si le RAG ou la mémoire projet a déjà identifié les sources utiles.
+
+### Skills globales
+
+Utiliser les skills globales uniquement quand elles apportent une valeur spécifique :
+
+- `context7-mcp` : documentation actuelle de librairies, frameworks ou API.
+- `debug-error` : erreur, stack trace, build failure, TypeScript, Next.js, runtime.
+- `webapp-testing` : vérification UI locale avec Playwright.
+- `frontend-design` : création ou refonte visuelle importante.
+- `skill-creator` : création ou optimisation de skill.
+- `find-skills` : recherche de nouvelles skills.
+
+Ne pas utiliser une skill si une lecture locale du repo suffit.
+
+### Sous-agents
+
+Utiliser un sous-agent spécialisé pour préserver le contexte principal lorsque la tâche implique plusieurs fichiers, un audit, des tests ou une validation.
+
+Agents recommandés :
+
+- `next-feature-builder` : nouveau lot fonctionnel, onglet, écran, feature admin.
+- `architect-reviewer` : audit de diff, cohérence architecture, doctrine, risques.
+- `test-engineer` : tests unitaires, E2E, stratégie de validation.
+- `commit` : analyse du diff et commit final.
+
+Workflow conseillé :
+
+1. RAG si le périmètre documentaire est large.
+2. Sous-agent si le travail est spécialisé.
+3. Thread principal pour arbitrage et décision.
+4. Validations locales.
+5. Agent `commit` pour clôture si le diff est validé.
+
+### Éviter les redondances
+
+Ne pas cumuler inutilement :
+
+- RAG complet + lecture exhaustive de `docs/architecture/**` + agent audit, sauf lot structurel majeur ;
+- skill externe + lecture locale si le sujet est purement interne au repo ;
+- audit généraliste dans le thread principal si un sous-agent spécialisé existe ;
+- relecture complète des mêmes fichiers après un rapport d’agent, sauf doute ou incohérence.
+
+Principe :
+
+Utiliser l’outil le plus ciblé qui permet de produire une preuve fiable.
+
+---
+
 ## Méthode de travail
 
 Avant de modifier :
@@ -412,8 +497,8 @@ Après le lot :
   - `pnpm run typecheck`
   - `pnpm run lint`
   - `pnpm run test` ou tests ciblés si pertinent
-  - e2e ciblés si le lot touche l’UI ou un parcours critique
-- utiliser Docker Compose uniquement si le lot nécessite une validation prod-like ou une vérification d’intégration conteneurisée
+  - E2E ciblés si le lot touche l’UI ou un parcours critique
+- utiliser Docker Compose uniquement si le lot nécessite une validation prod-like ou une vérification d’intégration conteneurisée ;
 - rendre un compte-rendu précis :
   - fichiers modifiés ;
   - ce qui a changé ;
@@ -447,8 +532,8 @@ En cas de doute :
 
 ## Relation avec les autres couches d’instructions
 
-AGENTS.md est la doctrine canonique du repo.
+`AGENTS.md` est la doctrine canonique du repo.
 
-Les autres couches complètent AGENTS.md mais ne le remplacent pas.
+Les autres couches complètent `AGENTS.md` mais ne le remplacent pas.
 
-En cas de conflit, réaligner les autres couches sur AGENTS.md.
+En cas de conflit, réaligner les autres couches sur `AGENTS.md`.
