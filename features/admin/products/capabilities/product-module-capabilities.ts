@@ -8,6 +8,7 @@ export type AdminProductModuleCapabilities = {
   preview: boolean;
   media: boolean;
   categories: boolean;
+  characteristics: boolean;
   seo: boolean;
   variants: boolean;
   pricing: boolean;
@@ -29,6 +30,7 @@ const DEFAULT_ADMIN_PRODUCT_MODULE_CAPABILITIES = {
   preview: true,
   media: true,
   categories: true,
+  characteristics: true,
   seo: true,
   variants: true,
   pricing: true,
@@ -37,10 +39,7 @@ const DEFAULT_ADMIN_PRODUCT_MODULE_CAPABILITIES = {
   related: true,
 } satisfies AdminProductModuleCapabilities;
 
-function hasAllCapabilities(
-  source: ReadonlySet<string>,
-  values: readonly string[],
-): boolean {
+function hasAllCapabilities(source: ReadonlySet<string>, values: readonly string[]): boolean {
   for (const value of values) {
     if (!source.has(value)) {
       return false;
@@ -69,7 +68,7 @@ export function resolveAdminProductModuleCapabilities(
       : input.navigationContext.isInternalUser ||
         hasAllCapabilities(
           input.navigationContext.capabilities,
-          adminProductModuleCapabilityRequirements.seo ?? [],
+          adminProductModuleCapabilityRequirements.seo ?? []
         );
 
   return {

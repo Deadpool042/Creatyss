@@ -4,6 +4,7 @@ export {
   buildAdminProductAvailabilityPath,
   ADMIN_PRODUCTS_CREATE_PATH,
   buildAdminProductCategoriesPath,
+  buildAdminProductCharacteristicsPath,
   ADMIN_PRODUCTS_LIST_PATH,
   ADMIN_PRODUCTS_TRASH_PATH,
   buildAdminProductEditPath,

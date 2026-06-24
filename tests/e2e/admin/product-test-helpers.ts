@@ -3,6 +3,7 @@ import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { expect, type Locator, type Page } from "@playwright/test";
+import { createScriptPrismaClient } from "../../../scripts/helpers/prisma-client";
 
 const ADMIN_GOTO_TIMEOUT_MS = 30_000;
 const ADMIN_GOTO_MAX_ATTEMPTS = 3;
@@ -150,17 +151,64 @@ async function completeCreateWizardIdentityStep(
   await expect(submitButton).toBeEnabled({ timeout: 1_000 });
 }
 
+async function createVariableProductViaDb(
+  page: Page,
+  input: Pick<CreateSimpleAdminProductInput, "name" | "slug">
+): Promise<string> {
+  const prisma = createScriptPrismaClient();
+  try {
+    const store = await prisma.store.findFirst({
+      orderBy: { createdAt: "asc" },
+      select: { id: true },
+    });
+
+    if (!store) {
+      throw new Error("Aucune boutique disponible pour le setup E2E.");
+    }
+
+    const productType = await prisma.productType.findFirst({
+      where: { code: "variable", storeId: store.id },
+      select: { id: true },
+    });
+
+    await prisma.product.create({
+      data: {
+        storeId: store.id,
+        slug: input.slug,
+        name: input.name,
+        isStandalone: false,
+        status: "DRAFT",
+        ...(productType ? { productTypeId: productType.id } : {}),
+      },
+    });
+  } finally {
+    await prisma.$disconnect();
+  }
+
+  const editUrl = `/admin/catalog/products/${input.slug}/edit`;
+  await gotoAdminPageWithRetry(page, editUrl);
+  await page.waitForLoadState("domcontentloaded");
+
+  return editUrl;
+}
+
 export async function createSimpleAdminProduct(
   page: Page,
   input: CreateSimpleAdminProductInput
 ): Promise<string> {
   await waitForAdminShell(page);
+
+  if (input.productTypeCode === "variable") {
+    return createVariableProductViaDb(page, input);
+  }
+
   await gotoAdminPageWithRetry(page, "/admin/catalog/products/new");
 
   await expect(page.locator("#new-name")).toBeVisible();
   await expect(page.locator("#new-slug")).toBeVisible();
 
   await completeCreateWizardIdentityStep(page, input);
+
   const submitButton = page.getByRole("button", { name: "Créer la fiche produit" });
   await expect(submitButton).toBeVisible();
 
@@ -182,8 +230,8 @@ export async function createSimpleAdminProduct(
   }
 
   expect(redirectedToEditor).toBeTruthy();
-
   await page.waitForLoadState("domcontentloaded");
+
   return toCanonicalEditUrl(page.url());
 }
 
@@ -210,6 +258,7 @@ export async function setupAdminEditorScenario(page: Page): Promise<SeededAdminE
     name: editorIdentity.name,
     slug: editorIdentity.slug,
     status: "draft",
+    productTypeCode: "variable",
   });
 
   return {

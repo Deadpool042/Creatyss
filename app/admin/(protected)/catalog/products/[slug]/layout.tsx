@@ -13,6 +13,7 @@ import { getAdminNavigationContext } from "@/features/admin/navigation/server";
 import {
   buildAdminProductAvailabilityPath,
   buildAdminProductCategoriesPath,
+  buildAdminProductCharacteristicsPath,
   buildAdminProductEditPath,
   buildAdminProductInventoryPath,
   buildAdminProductMediaPath,
@@ -103,6 +104,14 @@ function buildProductRouteNavItems(input: {
       key: "categories",
       label: "Categories",
       href: buildAdminProductCategoriesPath(input.slug),
+    });
+  }
+
+  if (input.capabilities.characteristics) {
+    items.push({
+      key: "characteristics",
+      label: "Caracteristiques",
+      href: buildAdminProductCharacteristicsPath(input.slug),
     });
   }
 

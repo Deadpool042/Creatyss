@@ -19,10 +19,13 @@ import { buildAdminProductEditPath } from "@/features/admin/products/navigation"
 function mapFormDataToValues(formData: FormData): {
   name: string;
   slug: string;
+  productTypeCode: string | undefined;
 } {
+  const productTypeCode = formData.get("productTypeCode");
   return {
     name: String(formData.get("name") ?? ""),
     slug: String(formData.get("slug") ?? ""),
+    productTypeCode: productTypeCode !== null ? String(productTypeCode) : undefined,
   };
 }
 

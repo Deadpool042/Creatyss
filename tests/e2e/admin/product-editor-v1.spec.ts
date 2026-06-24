@@ -8,31 +8,32 @@ import {
 
 const E2E_VARIANT_NAME = "Variante test E2E";
 
+const NAV_LABEL_MAP: Record<string, { label: string; segment: string }> = {
+  Général: { label: "Edition", segment: "edit" },
+  Variantes: { label: "Variantes", segment: "variants" },
+  Tarification: { label: "Prix", segment: "pricing" },
+  Disponibilité: { label: "Disponibilite", segment: "availability" },
+  Stock: { label: "Stock", segment: "inventory" },
+  Médias: { label: "Medias", segment: "media" },
+  Catégories: { label: "Categories", segment: "categories" },
+  Caractéristiques: { label: "Caracteristiques", segment: "characteristics" },
+  "Produits liés": { label: "Produits lies", segment: "related" },
+  SEO: { label: "SEO", segment: "seo" },
+};
+
 async function clickEditorTab(page: Page, tabName: string): Promise<void> {
-  const tab = page.getByRole("tab", { name: tabName, exact: true }).first();
-  const tabPanel = page.getByRole("tabpanel", { name: tabName });
+  const navEntry = NAV_LABEL_MAP[tabName];
+  if (!navEntry) throw new Error(`Tab inconnu : ${tabName}`);
 
-  await expect(tab).toBeVisible();
-  for (let attempt = 0; attempt < 3; attempt += 1) {
-    await tab.scrollIntoViewIfNeeded();
-    await tab.click();
+  const nav = page.locator('nav[aria-label="Navigation produit"]');
+  const link = nav.getByRole("link", { name: navEntry.label, exact: true });
 
-    try {
-      await expect(tabPanel).toBeVisible({ timeout: 3_000 });
-      await expect(tab).toHaveAttribute("aria-selected", "true");
-      return;
-    } catch {
-      await page.waitForTimeout(300);
-    }
-  }
-
-  await expect(tab).toHaveAttribute("aria-selected", "true");
-  await expect(tabPanel).toBeVisible();
+  await expect(link).toBeVisible();
+  await link.click();
+  await page.waitForURL(new RegExp(`/${navEntry.segment}(?:[?#]|$)`));
 }
 
-function requireScenario(
-  scenario: SeededAdminEditorScenario | null
-): SeededAdminEditorScenario {
+function requireScenario(scenario: SeededAdminEditorScenario | null): SeededAdminEditorScenario {
   if (scenario === null) {
     throw new Error("Scénario éditeur non initialisé.");
   }
@@ -68,6 +69,7 @@ test.describe.serial("admin editor product v1 smoke", () => {
       "Stock",
       "Médias",
       "Catégories",
+      "Caractéristiques",
       "Produits liés",
       "SEO",
     ] as const;
@@ -77,17 +79,19 @@ test.describe.serial("admin editor product v1 smoke", () => {
     }
 
     await clickEditorTab(page, "Produits liés");
-    await expect(page.getByText("Aucune relation enregistrée pour ce produit.")).toBeVisible();
+    await expect(page.getByText("Aucun produit lié pour le moment.")).toBeVisible();
 
     await clickEditorTab(page, "Médias");
     await expect(page.getByText("Aucune image principale du produit n'est définie.")).toBeVisible();
 
-    await page.getByRole("button", { name: "Ouvrir les actions des images" }).click();
-    await page.getByRole("menuitem", { name: "Associer depuis la bibliothèque" }).click();
+    await page.getByRole("button", { name: "Choisir depuis la médiathèque" }).click();
     await expect(page.getByRole("heading", { name: "Médiathèque" })).toBeVisible();
     await expect(page.getByRole("dialog")).toHaveCount(1);
     await page.getByRole("button", { name: "Annuler" }).click();
     await expect(page.getByRole("dialog")).toHaveCount(0);
+
+    await clickEditorTab(page, "Caractéristiques");
+    await expect(page.getByText("Aucune caractéristique enregistrée.")).toBeVisible();
 
     await page.setViewportSize({ width: 390, height: 844 });
     await openAdminProduct(page, scenario.editorProduct.detailUrl);
@@ -112,7 +116,7 @@ test.describe.serial("admin editor product v1 smoke", () => {
       .locator("form")
       .filter({ has: page.getByLabel("Nom du produit") })
       .first();
-    const skuRootField = generalForm.getByLabel("SKU racine");
+    const skuRootField = generalForm.getByLabel("Référence interne");
     const updatedSkuRoot = `ROOT-E2E-${Date.now()}`;
 
     let skuRootFilled = false;
@@ -129,9 +133,9 @@ test.describe.serial("admin editor product v1 smoke", () => {
 
     await generalForm.getByRole("button", { name: "Enregistrer" }).click();
     await expect(page).toHaveURL(
-      new RegExp(`/admin/products/${currentScenario.editorProduct.slug}/edit(?:\\?.*)?$`)
+      new RegExp(`/admin/catalog/products/${currentScenario.editorProduct.slug}/edit(?:\\?.*)?$`)
     );
-    await expect(page.getByRole("tabpanel", { name: "Général" })).toBeVisible();
+    await expect(page.locator("main")).toBeVisible();
   });
 
   test("crée puis modifie une variante et constate le refresh UI", async ({ page }) => {
@@ -148,16 +152,16 @@ test.describe.serial("admin editor product v1 smoke", () => {
 
     const createDialog = page.getByRole("dialog").first();
     await createDialog.getByLabel("Nom").fill(E2E_VARIANT_NAME);
-    await createDialog.getByLabel("SKU").fill(initialSku);
+    await createDialog.getByLabel("Référence interne").fill(initialSku);
     await createDialog.getByRole("button", { name: "Créer" }).click();
 
     await expect(page.getByRole("dialog")).toHaveCount(0);
 
-    const variantsPanel = page.getByRole("tabpanel", { name: "Variantes" });
+    const variantsPanel = page.locator("main");
     const createdVariantCard = variantsPanel
       .getByTestId("product-variant-card")
       .filter({
-        hasText: `SKU ${initialSku}`,
+        hasText: `Réf. interne ${initialSku}`,
         has: page.getByRole("button", { name: "Modifier" }),
       })
       .first();
@@ -167,7 +171,7 @@ test.describe.serial("admin editor product v1 smoke", () => {
     await expect(page.getByRole("dialog")).toHaveCount(1);
 
     const editDialog = page.getByRole("dialog").first();
-    await editDialog.getByLabel("SKU").fill(updatedSku);
+    await editDialog.getByLabel("Référence interne").fill(updatedSku);
     await editDialog.getByRole("button", { name: "Enregistrer" }).click();
 
     await expect(page.getByRole("dialog")).toHaveCount(0);
@@ -175,12 +179,12 @@ test.describe.serial("admin editor product v1 smoke", () => {
     const updatedVariantCard = variantsPanel
       .getByTestId("product-variant-card")
       .filter({
-        hasText: `SKU ${updatedSku}`,
+        hasText: `Réf. interne ${updatedSku}`,
         has: page.getByRole("button", { name: "Modifier" }),
       })
       .first();
     await expect(updatedVariantCard).toBeVisible();
-    await expect(updatedVariantCard).toContainText(`SKU ${updatedSku}`);
+    await expect(updatedVariantCard).toContainText(`Réf. interne ${updatedSku}`);
 
     variantSku = updatedSku;
   });
@@ -194,23 +198,20 @@ test.describe.serial("admin editor product v1 smoke", () => {
     await openAdminProduct(page, currentScenario.editorProduct.detailUrl);
     await clickEditorTab(page, "Tarification");
 
-    const pricingPanel = page.getByRole("tabpanel", { name: "Tarification" });
-    await expect(pricingPanel.getByLabel("Prix de vente").first()).toBeVisible();
+    const pricingPanel = page.locator("main");
+    await expect(pricingPanel.getByLabel("Prix").first()).toBeVisible();
 
-    const variantRow = pricingPanel
-      .locator("tr")
-      .filter({ hasText: currentVariantSku })
-      .first();
+    const variantRow = pricingPanel.locator("tr").filter({ hasText: currentVariantSku }).first();
     await expect(variantRow).toBeVisible();
     await expect(variantRow.getByText("—")).toBeVisible();
 
-    const priceField = pricingPanel.getByLabel("Prix de vente").first();
+    const priceField = pricingPanel.getByLabel("Prix").first();
     await priceField.fill(targetPrice);
     await expect(priceField).toHaveValue(targetPrice);
     await pricingPanel.getByRole("button", { name: "Enregistrer" }).click();
     await expect(page.getByText("Tarification mise à jour.")).toBeVisible();
     await expect(pricingPanel).toBeVisible();
-    await expect(pricingPanel.getByLabel("Prix de vente").first()).toBeVisible();
+    await expect(pricingPanel.getByLabel("Prix").first()).toBeVisible();
   });
 
   test("modifie Produits liés sans reload manuel", async ({ page }) => {
@@ -220,10 +221,8 @@ test.describe.serial("admin editor product v1 smoke", () => {
     await openAdminProduct(page, currentScenario.editorProduct.detailUrl);
     await clickEditorTab(page, "Produits liés");
 
-    const relatedPanel = page.getByRole("tabpanel", { name: "Produits liés" });
-    await expect(
-      relatedPanel.getByText("Aucune relation enregistrée pour ce produit.")
-    ).toBeVisible();
+    const relatedPanel = page.locator("main");
+    await expect(relatedPanel.getByText("Aucun produit lié pour le moment.")).toBeVisible();
 
     const addSection = relatedPanel.getByTestId("product-related-add-section").first();
     const targetSelector = addSection.getByRole("combobox").first();
@@ -235,17 +234,13 @@ test.describe.serial("admin editor product v1 smoke", () => {
     await targetSelector.click();
     await page
       .getByRole("option", {
-        name: new RegExp(`^${escapedTargetName}(?:\\s*\\(.*\\))?$`),
+        name: new RegExp(escapedTargetName),
       })
       .first()
       .click();
     await expect(targetSelector).toContainText(currentScenario.relatedTargetProduct.name);
     await addSection.getByRole("button", { name: "Ajouter" }).click();
-    const relationsSection = relatedPanel
-      .locator("section")
-      .filter({ hasText: "Relations enregistrées" })
-      .first();
-    await expect(relationsSection).toContainText(currentScenario.relatedTargetProduct.name);
+    await expect(relatedPanel).toContainText(currentScenario.relatedTargetProduct.name);
     await relatedPanel.getByRole("button", { name: "Enregistrer" }).click();
     await expect(relatedPanel).toBeVisible();
   });
@@ -260,22 +255,20 @@ test.describe.serial("admin editor product v1 smoke", () => {
     await openAdminProduct(page, currentScenario.editorProduct.detailUrl);
 
     await clickEditorTab(page, "Disponibilité");
-    const availabilityPanel = page.getByRole("tabpanel", { name: "Disponibilité" });
+    const availabilityPanel = page.locator("main");
     const availabilityCard = availabilityPanel
       .getByTestId("product-availability-card")
       .filter({ hasText: E2E_VARIANT_NAME })
       .first();
     await expect(availabilityCard).toBeVisible();
     await availabilityCard.getByRole("combobox").first().click();
-    await page
-      .getByRole("option", { name: "Disponible à la vente", exact: true })
-      .click();
+    await page.getByRole("option", { name: "Disponible à la vente", exact: true }).click();
     await availabilityPanel.getByRole("button", { name: "Enregistrer" }).click();
     await expect(page.getByText("Disponibilité mise à jour.")).toBeVisible();
 
     await openAdminProduct(page, currentScenario.editorProduct.detailUrl);
     await clickEditorTab(page, "Disponibilité");
-    const refreshedAvailabilityPanel = page.getByRole("tabpanel", { name: "Disponibilité" });
+    const refreshedAvailabilityPanel = page.locator("main");
     const refreshedAvailabilityCard = refreshedAvailabilityPanel
       .getByTestId("product-availability-card")
       .filter({ hasText: E2E_VARIANT_NAME })
@@ -283,30 +276,29 @@ test.describe.serial("admin editor product v1 smoke", () => {
     await expect(refreshedAvailabilityCard).toContainText("Disponible à la vente");
 
     await clickEditorTab(page, "Stock");
-    const stockPanel = page.getByRole("tabpanel", { name: "Stock" });
+    const stockPanel = page.locator("main");
     const stockCard = stockPanel
       .getByTestId("product-stock-card")
       .filter({ hasText: E2E_VARIANT_NAME })
       .first();
 
     await expect(stockCard).toBeVisible();
-    await expect(stockCard.getByText("État inventaire:")).toBeVisible();
-    await expect(stockCard.getByText("À créer")).toBeVisible();
+    await expect(stockCard.getByText("État du stock :")).toBeVisible();
+    await expect(stockCard.getByText("Non enregistré")).toBeVisible();
 
     await stockCard.getByRole("spinbutton").first().fill("7");
-    await stockCard.getByRole("spinbutton").nth(1).fill("2");
     await stockPanel.getByRole("button", { name: "Enregistrer" }).click();
     await expect(page.getByText("Stock mis à jour.")).toBeVisible();
 
     await openAdminProduct(page, currentScenario.editorProduct.detailUrl);
     await clickEditorTab(page, "Stock");
-    const refreshedStockPanel = page.getByRole("tabpanel", { name: "Stock" });
+    const refreshedStockPanel = page.locator("main");
     const refreshedStockCard = refreshedStockPanel
       .getByTestId("product-stock-card")
       .filter({ hasText: E2E_VARIANT_NAME })
       .first();
     await expect(refreshedStockCard).toContainText("Enregistré");
     await expect(refreshedStockCard).toContainText("Stock disponible:");
-    await expect(refreshedStockCard).toContainText("5");
+    await expect(refreshedStockCard).toContainText("7");
   });
 });

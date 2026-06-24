@@ -42,6 +42,10 @@ export function buildAdminProductCategoriesPath(slug: string): string {
   return `${buildAdminProductPath(slug)}/categories`;
 }
 
+export function buildAdminProductCharacteristicsPath(slug: string): string {
+  return `${buildAdminProductPath(slug)}/characteristics`;
+}
+
 export function buildAdminProductRelatedPath(slug: string): string {
   return `${buildAdminProductPath(slug)}/related`;
 }
