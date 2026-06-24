@@ -9,15 +9,24 @@ export class CreateFulfillmentError extends Error {
   }
 }
 
+type FulfillmentLineInput = {
+  orderLineId: string;
+  quantity: number;
+};
+
 type CreateFulfillmentInput = {
   orderId: string;
   storeId: string;
+  /** Lignes à préparer avec leurs quantités. Si absent → tout ou rien (V1). */
+  lines?: ReadonlyArray<FulfillmentLineInput>;
+  /** Expédition à lier (optionnel). */
+  shipmentId?: string;
 };
 
 /**
- * Crée une préparation (fulfillment) « tout ou rien » pour une commande : un
- * `FulfillmentItem` par ligne (quantité commandée). Une seule préparation active
- * par commande. Ne touche ni au stock ni au statut commande (cf. cadrage V1).
+ * Crée une préparation pour une commande. En mode partiel, seules les lignes
+ * fournies sont incluses avec les quantités spécifiées (≤ quantité commandée).
+ * Une seule préparation active par commande. Ne touche pas au stock (cf. advance).
  */
 export async function createFulfillment(input: CreateFulfillmentInput) {
   return withTransaction(async (tx) => {
@@ -46,15 +55,37 @@ export async function createFulfillment(input: CreateFulfillmentInput) {
       throw new CreateFulfillmentError("Une préparation existe déjà pour cette commande.");
     }
 
+    const lineMap = new Map(order.lines.map((l) => [l.id, l.quantity]));
+
+    let itemsToCreate: ReadonlyArray<FulfillmentLineInput>;
+
+    if (input.lines !== undefined && input.lines.length > 0) {
+      for (const item of input.lines) {
+        const maxQty = lineMap.get(item.orderLineId);
+        if (maxQty === undefined) {
+          throw new CreateFulfillmentError(`Ligne introuvable : ${item.orderLineId}.`);
+        }
+        if (item.quantity <= 0 || item.quantity > maxQty) {
+          throw new CreateFulfillmentError(
+            `Quantité invalide pour la ligne ${item.orderLineId} (max ${maxQty}).`
+          );
+        }
+      }
+      itemsToCreate = input.lines;
+    } else {
+      itemsToCreate = order.lines.map((l) => ({ orderLineId: l.id, quantity: l.quantity }));
+    }
+
     return tx.fulfillment.create({
       data: {
         storeId: input.storeId,
         orderId: input.orderId,
         status: "PENDING",
+        ...(input.shipmentId ? { shipmentId: input.shipmentId } : {}),
         items: {
-          create: order.lines.map((line) => ({
-            orderLine: { connect: { id: line.id } },
-            quantity: line.quantity,
+          create: itemsToCreate.map((item) => ({
+            orderLine: { connect: { id: item.orderLineId } },
+            quantity: item.quantity,
             status: "PENDING",
           })),
         },

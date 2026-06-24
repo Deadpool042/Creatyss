@@ -2,7 +2,7 @@
 
 ## Statut
 
-A faire (V1 partielle observée)
+Terminé — implémenté 2026-06-24. Lignes partielles, décrément inventaire transactionnel, lien Shipment optionnel. Typecheck et lint verts.
 
 ## Objectif
 

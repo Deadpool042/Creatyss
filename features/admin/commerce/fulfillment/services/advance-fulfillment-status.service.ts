@@ -1,7 +1,44 @@
 import "server-only";
 
-import type { FulfillmentStatus } from "@/prisma-generated/client";
+import type { FulfillmentStatus, Prisma } from "@/prisma-generated/client";
 import { withTransaction } from "@/core/db/transactions/with-transaction";
+
+async function decrementInventoryForFulfillment(
+  tx: Prisma.TransactionClient,
+  fulfillmentId: string,
+  storeId: string
+): Promise<void> {
+  const items = await tx.fulfillmentItem.findMany({
+    where: { fulfillmentId },
+    select: { quantity: true, orderLine: { select: { variantId: true } } },
+  });
+
+  for (const item of items) {
+    const variantId = item.orderLine.variantId;
+    if (variantId === null) continue;
+
+    const inventoryItem = await tx.inventoryItem.findUnique({
+      where: { storeId_variantId: { storeId, variantId } },
+      select: { id: true },
+    });
+    if (inventoryItem === null) continue;
+
+    await tx.inventoryItem.update({
+      where: { id: inventoryItem.id },
+      data: { onHandQuantity: { decrement: item.quantity } },
+    });
+
+    await tx.inventoryMovement.create({
+      data: {
+        inventoryItemId: inventoryItem.id,
+        type: "CONSUMPTION",
+        quantityDelta: -item.quantity,
+        referenceType: "fulfillment",
+        referenceId: fulfillmentId,
+      },
+    });
+  }
+}
 
 export class AdvanceFulfillmentError extends Error {
   constructor(message: string) {
@@ -55,6 +92,10 @@ export async function advanceFulfillmentStatus(input: AdvanceInput) {
           ...(isFulfilled ? { fulfilledAt: now } : { cancelledAt: now }),
         },
       });
+    }
+
+    if (isFulfilled) {
+      await decrementInventoryForFulfillment(tx, fulfillment.id, input.storeId);
     }
 
     return tx.fulfillment.update({
