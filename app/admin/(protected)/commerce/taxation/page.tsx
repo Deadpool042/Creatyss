@@ -5,6 +5,7 @@ import { isTaxationFeatureActive } from "@/features/admin/commerce/taxation/quer
 import { listAdminTaxRules } from "@/features/admin/commerce/taxation/queries/list-admin-tax-rules.query";
 import { AdminTaxRulesList } from "@/features/admin/commerce/taxation/components/admin-tax-rules-list";
 import { AdminTaxRuleCreateForm } from "@/features/admin/commerce/taxation/components/admin-tax-rule-create-form";
+import { AdminTaxRulesImport } from "@/features/admin/commerce/taxation/components/admin-tax-rules-import";
 
 export const dynamic = "force-dynamic";
 
@@ -63,10 +64,15 @@ export default async function AdminCommerceTaxationPage({
             Nouvelle règle
           </h2>
           <p className="mb-4 text-xs text-muted-foreground">
-            Taux standard par territoire (scope boutique, prix TTC). Les taux
-            réduits par catégorie viendront ultérieurement.
+            Taux standard par territoire (scope boutique, prix TTC). Les taux réduits par catégorie
+            viendront ultérieurement.
           </p>
           <AdminTaxRuleCreateForm />
+        </section>
+
+        <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
+          <h2 className="mb-1 text-lg font-semibold tracking-tight text-foreground">Import CSV</h2>
+          <AdminTaxRulesImport />
         </section>
 
         <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
@@ -74,9 +80,8 @@ export default async function AdminCommerceTaxationPage({
             Règles de TVA
           </h2>
           <p className="mb-4 text-xs text-muted-foreground">
-            Taux appliqués par territoire de livraison. Guyane et Mayotte sont
-            exonérées (traitées automatiquement). Les taux doivent être validés
-            par votre expert-comptable.
+            Taux appliqués par territoire de livraison. Guyane et Mayotte sont exonérées (traitées
+            automatiquement). Les taux doivent être validés par votre expert-comptable.
           </p>
           <AdminTaxRulesList rules={rules} />
         </section>
