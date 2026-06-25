@@ -30,7 +30,7 @@ export const csvTaxRuleRowSchema = z.object({
     .length(2, "Le code pays doit faire exactement 2 caractères.")
     .toUpperCase(),
   regionCode: z.preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? null : v),
+    (v) => (v == null || (typeof v === "string" && v.trim() === "") ? null : v),
     z.enum(DOM_REGION_CODES).nullable()
   ),
   ratePercent: z.coerce

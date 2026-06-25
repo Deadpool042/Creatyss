@@ -43,7 +43,6 @@ export {
 type CreatedOrderRow = { id: string; reference: string };
 type PostgreSqlErrorLike = Error & { code: string; constraint?: string };
 
-
 function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
   if (!(error instanceof Error)) return false;
   return typeof (error as PostgreSqlErrorLike).code === "string";
@@ -51,10 +50,14 @@ function isPostgreSqlErrorLike(error: unknown): error is PostgreSqlErrorLike {
 
 function mapPaymentMethod(methodType: string | null): PaymentMethod {
   switch (methodType) {
-    case "CARD": return "card";
-    case "BANK_TRANSFER": return "bank_transfer";
-    case "CASH_ON_DELIVERY": return "cash_on_delivery";
-    default: return "other";
+    case "CARD":
+      return "card";
+    case "BANK_TRANSFER":
+      return "bank_transfer";
+    case "CASH_ON_DELIVERY":
+      return "cash_on_delivery";
+    default:
+      return "other";
   }
 }
 
@@ -216,17 +219,16 @@ export async function createOrderFromGuestCartToken(
     }
 
     if (!checkout.shippingSelection) {
-      throw new OrderRepositoryError(
-        "missing_shipping_selection",
-        "No shipping method selected."
-      );
+      throw new OrderRepositoryError("missing_shipping_selection", "No shipping method selected.");
     }
 
     const shippingMethodId = checkout.shippingSelection.shippingMethodId;
     const shippingMethod = shippingMethodId
       ? await tx.shippingMethod.findUnique({ where: { id: shippingMethodId } })
       : await tx.shippingMethod.findUnique({
-          where: { storeId_code: { storeId: cart.storeId, code: checkout.shippingSelection.methodCode } },
+          where: {
+            storeId_code: { storeId: cart.storeId, code: checkout.shippingSelection.methodCode },
+          },
         });
 
     if (!shippingMethod) {
@@ -277,8 +279,7 @@ export async function createOrderFromGuestCartToken(
     }
 
     const subtotalCents = cart.lines.reduce(
-      (sum, line) =>
-        sum + Math.round(Number(line.unitPriceAmount) * line.quantity * 100),
+      (sum, line) => sum + Math.round(Number(line.unitPriceAmount) * line.quantity * 100),
       0
     );
 
@@ -303,11 +304,9 @@ export async function createOrderFromGuestCartToken(
     }
 
     const shippingCents = Math.round(Number(shippingMethod.amount) * 100);
-    const discountAutomationEnabled = await meetsFeatureLevel(
-      "commerce.discounts",
-      "automation",
-      { storeId: cart.storeId }
-    );
+    const discountAutomationEnabled = await meetsFeatureLevel("commerce.discounts", "automation", {
+      storeId: cart.storeId,
+    });
     const appliedDiscount = await resolveApplicableOrderDiscount({
       executor: tx,
       storeId: cart.storeId,
@@ -329,7 +328,11 @@ export async function createOrderFromGuestCartToken(
     const discountCents = appliedDiscount?.amountCents ?? 0;
     const totalCents = subtotalCents + shippingCents - discountCents;
 
-    if (typeof discountCode === "string" && discountCode.trim().length > 0 && appliedDiscount === null) {
+    if (
+      typeof discountCode === "string" &&
+      discountCode.trim().length > 0 &&
+      appliedDiscount === null
+    ) {
       throw new OrderRepositoryError(
         "invalid_discount_code",
         "Discount code is invalid or no longer applicable."
@@ -346,7 +349,11 @@ export async function createOrderFromGuestCartToken(
         const lineGross = Math.round(Number(line.unitPriceAmount) * line.quantity * 100) / 100;
 
         if (!taxationActive) {
-          return { lineTaxAmount: 0, taxRatePercent: null as number | null, taxTerritory: null as string | null };
+          return {
+            lineTaxAmount: 0,
+            taxRatePercent: null as number | null,
+            taxTerritory: null as string | null,
+          };
         }
 
         if (shippingAddress?.postalCode == null) {
@@ -362,6 +369,7 @@ export async function createOrderFromGuestCartToken(
             postalCode: shippingAddress.postalCode,
             productId: line.productId,
             variantId: line.variantId,
+            categoryIds: line.product.productCategories.map((c) => c.categoryId),
           });
           const breakdown = computeLineTaxFromGross(lineGross, resolved.ratePercent);
           return {
@@ -378,10 +386,7 @@ export async function createOrderFromGuestCartToken(
       })
     );
 
-    const taxCents = lineTaxes.reduce(
-      (sum, line) => sum + Math.round(line.lineTaxAmount * 100),
-      0
-    );
+    const taxCents = lineTaxes.reduce((sum, line) => sum + Math.round(line.lineTaxAmount * 100), 0);
 
     const storeSettings = await tx.store.findUnique({
       where: { id: cart.storeId },
@@ -558,7 +563,9 @@ export async function createOrderFromGuestCartToken(
   });
 }
 
-export async function findPublicOrderByReference(reference: string): Promise<PublicOrderConfirmation | null> {
+export async function findPublicOrderByReference(
+  reference: string
+): Promise<PublicOrderConfirmation | null> {
   if (!isValidOrderReference(reference)) return null;
 
   const order = await db.order.findFirst({
@@ -587,7 +594,12 @@ export async function findPublicOrderByReference(reference: string): Promise<Pub
   if (!order) return null;
 
   const shippingAddress = order.addresses.find((address) => address.type === "SHIPPING");
-  if (!shippingAddress || !order.customerEmail || !order.customerFirstName || !order.customerLastName) {
+  if (
+    !shippingAddress ||
+    !order.customerEmail ||
+    !order.customerFirstName ||
+    !order.customerLastName
+  ) {
     return null;
   }
 

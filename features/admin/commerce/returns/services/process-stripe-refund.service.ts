@@ -61,9 +61,14 @@ export async function processStripeRefund(input: ProcessStripeRefundInput): Prom
     refundAmountDecimal += share * Number(item.orderLine.lineTotalAmount);
   }
 
+  if (refundAmountDecimal <= 0) {
+    throw new ProcessStripeRefundError(
+      "Aucun montant calculable : les articles retournés n'ont pas de ligne de commande associée."
+    );
+  }
+
   const remaining = Number(payment.amountCaptured ?? 0) - Number(payment.amountRefunded);
-  const refundAmount =
-    refundAmountDecimal > 0 ? Math.min(refundAmountDecimal, remaining) : remaining;
+  const refundAmount = Math.min(refundAmountDecimal, remaining);
   const refundCents = Math.round(refundAmount * 100);
 
   if (refundCents <= 0) {

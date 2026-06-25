@@ -60,19 +60,28 @@ export async function advanceReturnStatus(input: AdvanceInput) {
     );
   }
 
-  // Stripe-first : appel externe avant toute écriture DB.
+  // Stripe-first : appel externe avant toute écriture DB, uniquement pour les paiements Stripe.
+  // Les remboursements par virement sont traités manuellement hors système.
   if (input.nextStatus === "REFUNDED") {
-    try {
-      await processStripeRefund({
-        orderId: request.orderId,
-        storeId: input.storeId,
-        returnRequestId: request.id,
-      });
-    } catch (err) {
-      if (err instanceof ProcessStripeRefundError) {
-        throw new AdvanceReturnError(err.message);
+    const payment = await db.payment.findFirst({
+      where: { orderId: request.orderId, storeId: input.storeId },
+      select: { provider: true },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (payment?.provider === "stripe") {
+      try {
+        await processStripeRefund({
+          orderId: request.orderId,
+          storeId: input.storeId,
+          returnRequestId: request.id,
+        });
+      } catch (err) {
+        if (err instanceof ProcessStripeRefundError) {
+          throw new AdvanceReturnError(err.message);
+        }
+        throw err;
       }
-      throw err;
     }
   }
 

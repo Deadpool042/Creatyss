@@ -55,12 +55,6 @@ export async function importTaxRulesAction(
     }
 
     const row = parsed.data;
-    const regionCode = row.regionCode ?? null;
-    const status =
-      row.status === "ACTIVE" || row.status === "INACTIVE" || row.status === "DRAFT"
-        ? row.status
-        : "DRAFT";
-
     const startsAt = row.startsAt ? new Date(row.startsAt) : null;
     const endsAt = row.endsAt ? new Date(row.endsAt) : null;
 
@@ -83,25 +77,25 @@ export async function importTaxRulesAction(
         update: {
           name: row.name,
           countryCode: row.countryCode,
-          regionCode,
+          regionCode: row.regionCode,
           ratePercent: row.ratePercent,
           isIncludedInPrice: true,
           startsAt,
           endsAt,
-          status,
+          status: row.status,
         },
         create: {
           storeId,
           code: row.code.toUpperCase(),
           name: row.name,
           countryCode: row.countryCode,
-          regionCode,
+          regionCode: row.regionCode,
           ratePercent: row.ratePercent,
           isIncludedInPrice: true,
           scopeType: "STORE",
           startsAt,
           endsAt,
-          status,
+          status: row.status,
         },
       });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef } from "react";
+import { useActionState } from "react";
 import {
   importTaxRulesAction,
   type ImportTaxRulesResult,
@@ -10,7 +10,6 @@ const initialState: ImportTaxRulesResult | null = null;
 
 export function AdminTaxRulesImport() {
   const [result, action, isPending] = useActionState(importTaxRulesAction, initialState);
-  const formRef = useRef<HTMLFormElement>(null);
 
   const hasSuccess = result && (result.created > 0 || result.updated > 0);
   const hasErrors = result && result.errors.length > 0;
@@ -26,7 +25,7 @@ export function AdminTaxRulesImport() {
         mises à jour.
       </p>
 
-      <form ref={formRef} action={action} className="flex flex-col gap-3 sm:flex-row sm:items-end">
+      <form action={action} className="flex flex-col gap-3 sm:flex-row sm:items-end">
         <div className="flex-1">
           <label htmlFor="csvFile" className="mb-1 block text-xs font-medium text-foreground">
             Fichier CSV
