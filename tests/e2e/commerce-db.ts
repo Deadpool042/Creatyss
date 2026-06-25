@@ -1052,6 +1052,7 @@ export async function ensureConfirmedOrderForE2E(): Promise<ConfirmedOrderForE2E
         orderId: newOrder.id,
         storeId: store.id,
         provider: "bank_transfer",
+        methodType: "BANK_TRANSFER",
         status: "CAPTURED",
         amountAuthorized: 42,
         amountCaptured: 42,
