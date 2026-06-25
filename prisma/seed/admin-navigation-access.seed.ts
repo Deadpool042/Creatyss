@@ -41,6 +41,7 @@ const permissionCodes = [
   adminNavigationCapabilities.settings.ordersRead,
   adminNavigationCapabilities.settings.ordersWrite,
   adminNavigationCapabilities.settings.catalogRead,
+  adminNavigationCapabilities.settings.customersRead,
   adminNavigationCapabilities.settings.mediaRead,
   adminNavigationCapabilities.settings.seoRead,
   adminNavigationCapabilities.settings.seoWrite,
