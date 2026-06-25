@@ -1,16 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { contentPagesCopyConfig } from "@/features/storefront/content/config/content-pages-copy.config";
+import { getLocalizedAProposCopy } from "@/features/storefront/content/queries/get-localized-a-propos-copy.query";
 
-const copy = contentPagesCopyConfig.aPropos;
+export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: copy.metadata.title,
-  description: copy.metadata.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getLocalizedAProposCopy();
 
-export default function AProposPage() {
+  return {
+    title: copy.metadata.title,
+    description: copy.metadata.description,
+  };
+}
+
+export default async function AProposPage() {
+  const copy = await getLocalizedAProposCopy();
+
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-12 md:px-6 md:py-20 xl:px-0">
       {/* Header éditorial */}

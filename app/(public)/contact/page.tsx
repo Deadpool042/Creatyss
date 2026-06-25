@@ -1,14 +1,22 @@
 import type { Metadata } from "next";
 import { MailIcon, MapPinIcon } from "lucide-react";
 import { getStorefrontStoreContact } from "@/features/storefront/store/queries/get-storefront-store-contact.query";
-import { contentPagesCopyConfig } from "@/features/storefront/content/config/content-pages-copy.config";
+import { getLocalizedContactCopy } from "@/features/storefront/content/queries/get-localized-contact-copy.query";
 
-export const metadata: Metadata = {
-  title: contentPagesCopyConfig.contact.metadata.title,
-  description: contentPagesCopyConfig.contact.metadata.description,
-};
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getLocalizedContactCopy();
+
+  return {
+    title: copy.metadata.title,
+    description: copy.metadata.description,
+  };
+}
 
 export default async function ContactPage() {
+  const copy = await getLocalizedContactCopy();
+
   let storeContact: Awaited<ReturnType<typeof getStorefrontStoreContact>>;
   try {
     storeContact = await getStorefrontStoreContact();
@@ -29,7 +37,7 @@ export default async function ContactPage() {
     storeContact.addressLine1,
     storeContact.addressPostalCode && storeContact.addressCity
       ? `${storeContact.addressPostalCode} ${storeContact.addressCity}`
-      : storeContact.addressCity ?? storeContact.addressPostalCode,
+      : (storeContact.addressCity ?? storeContact.addressPostalCode),
     storeContact.addressCountry,
   ].filter(Boolean);
 
@@ -46,7 +54,8 @@ export default async function ContactPage() {
           Contact
         </h1>
         <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Questions sur une commande, projet sur-mesure, renseignements — nous lisons chaque message.
+          Questions sur une commande, projet sur-mesure, renseignements — nous lisons chaque
+          message.
         </p>
       </header>
 
@@ -57,14 +66,13 @@ export default async function ContactPage() {
             Envoyer un message
           </h2>
 
-          <form
-            className="space-y-5"
-            action={contentPagesCopyConfig.contact.mailtoPlaceholder}
-            method="dialog"
-          >
+          <form className="space-y-5" action={copy.mailtoPlaceholder} method="dialog">
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
-                <label htmlFor="firstName" className="mb-1.5 block text-[13px] font-medium text-foreground">
+                <label
+                  htmlFor="firstName"
+                  className="mb-1.5 block text-[13px] font-medium text-foreground"
+                >
                   Prénom
                 </label>
                 <input
@@ -77,7 +85,10 @@ export default async function ContactPage() {
                 />
               </div>
               <div>
-                <label htmlFor="lastName" className="mb-1.5 block text-[13px] font-medium text-foreground">
+                <label
+                  htmlFor="lastName"
+                  className="mb-1.5 block text-[13px] font-medium text-foreground"
+                >
                   Nom
                 </label>
                 <input
@@ -91,7 +102,10 @@ export default async function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor="email" className="mb-1.5 block text-[13px] font-medium text-foreground">
+              <label
+                htmlFor="email"
+                className="mb-1.5 block text-[13px] font-medium text-foreground"
+              >
                 Email <span className="text-feedback-error-foreground">*</span>
               </label>
               <input
@@ -105,7 +119,10 @@ export default async function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor="subject" className="mb-1.5 block text-[13px] font-medium text-foreground">
+              <label
+                htmlFor="subject"
+                className="mb-1.5 block text-[13px] font-medium text-foreground"
+              >
                 Sujet
               </label>
               <select
@@ -123,7 +140,10 @@ export default async function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor="message" className="mb-1.5 block text-[13px] font-medium text-foreground">
+              <label
+                htmlFor="message"
+                className="mb-1.5 block text-[13px] font-medium text-foreground"
+              >
                 Message <span className="text-feedback-error-foreground">*</span>
               </label>
               <textarea
@@ -138,7 +158,8 @@ export default async function ContactPage() {
 
             {storeContact.supportEmail !== null ? (
               <p className="text-[11px] text-muted-foreground/60">
-                Formulaire de contact en cours d&apos;activation. En attendant, écrivez-nous directement à{" "}
+                Formulaire de contact en cours d&apos;activation. En attendant, écrivez-nous
+                directement à{" "}
                 <a
                   href={`mailto:${storeContact.supportEmail}`}
                   className="underline underline-offset-2 hover:text-foreground"
@@ -190,9 +211,7 @@ export default async function ContactPage() {
 
           <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-5">
             <p className="text-[13px] font-medium text-foreground">Délai de réponse</p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Sous 2–3 jours ouvrés.
-            </p>
+            <p className="mt-1 text-xs text-muted-foreground">Sous 2–3 jours ouvrés.</p>
           </div>
         </div>
       </div>

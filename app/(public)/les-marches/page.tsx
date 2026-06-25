@@ -2,16 +2,22 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPinIcon } from "lucide-react";
 
-import { contentPagesCopyConfig } from "@/features/storefront/content/config/content-pages-copy.config";
+import { getLocalizedLesMarchesCopy } from "@/features/storefront/content/queries/get-localized-les-marches-copy.query";
 
-const copy = contentPagesCopyConfig.lesMarches;
+export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: copy.metadata.title,
-  description: copy.metadata.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const copy = await getLocalizedLesMarchesCopy();
 
-export default function LesMarchesPage() {
+  return {
+    title: copy.metadata.title,
+    description: copy.metadata.description,
+  };
+}
+
+export default async function LesMarchesPage() {
+  const copy = await getLocalizedLesMarchesCopy();
+
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-12 md:px-6 md:py-20 xl:px-0">
       {/* Header */}
