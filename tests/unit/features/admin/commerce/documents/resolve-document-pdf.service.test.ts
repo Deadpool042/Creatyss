@@ -13,12 +13,18 @@ vi.mock("@/features/admin/commerce/documents/services/render-document-pdf", () =
   renderDocumentPdf: vi.fn(),
 }));
 
+vi.mock("@/features/admin/commerce/documents/services/persist-facturx-pdf.service", () => ({
+  getOrCreateFacturXPdfFile: vi.fn(),
+}));
+
 import { getInvoiceSnapshotForDocument } from "@/features/admin/commerce/documents/queries/get-invoice-snapshot-for-document.query";
+import { getOrCreateFacturXPdfFile } from "@/features/admin/commerce/documents/services/persist-facturx-pdf.service";
 import { renderDocumentPdf } from "@/features/admin/commerce/documents/services/render-document-pdf";
 import { resolveDocumentPdfBytes } from "@/features/admin/commerce/documents/services/resolve-document-pdf.service";
 
 const mockGetInvoiceSnapshot = getInvoiceSnapshotForDocument as ReturnType<typeof vi.fn>;
 const mockRenderDocumentPdf = renderDocumentPdf as ReturnType<typeof vi.fn>;
+const mockGetOrCreateFacturXPdfFile = getOrCreateFacturXPdfFile as ReturnType<typeof vi.fn>;
 
 const STORE_ID = "store_1";
 const DOCUMENT_ID = "doc_1";
@@ -87,14 +93,16 @@ function invoiceViewModel(): DocumentPdfViewModel {
 beforeEach(() => {
   mockGetInvoiceSnapshot.mockReset();
   mockRenderDocumentPdf.mockReset();
+  mockGetOrCreateFacturXPdfFile.mockReset();
 });
 
 describe("resolveDocumentPdfBytes", () => {
-  it("produit un PDF Factur-X (PDF/A-3 + XML attaché) pour une facture avec snapshot", async () => {
+  it("délègue au cache Factur-X pour une facture avec snapshot", async () => {
     mockGetInvoiceSnapshot.mockResolvedValue({
       snapshot: SNAPSHOT,
       documentNumber: "FA-2026-0001",
     });
+    mockGetOrCreateFacturXPdfFile.mockResolvedValue(new Uint8Array([7, 8, 9]));
 
     const bytes = await resolveDocumentPdfBytes({
       storeId: STORE_ID,
@@ -103,8 +111,13 @@ describe("resolveDocumentPdfBytes", () => {
     });
 
     expect(mockRenderDocumentPdf).not.toHaveBeenCalled();
-    const text = Buffer.from(bytes).toString("latin1");
-    expect(text).toContain("<fx:DocumentFileName>factur-x.xml</fx:DocumentFileName>");
+    expect(mockGetOrCreateFacturXPdfFile).toHaveBeenCalledWith({
+      documentId: DOCUMENT_ID,
+      storeId: STORE_ID,
+      documentNumber: "FA-2026-0001",
+      snapshot: SNAPSHOT,
+    });
+    expect(bytes).toEqual(new Uint8Array([7, 8, 9]));
   });
 
   it("retombe sur le rendu générique pour une facture sans snapshot", async () => {

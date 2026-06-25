@@ -44,6 +44,7 @@ services:
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       UPLOADS_DIR: ${UPLOADS_DIR}
+      DOCUMENTS_DIR: ${DOCUMENTS_DIR}
       WC_BASE_URL: ${WC_BASE_URL}
       WC_CONSUMER_KEY: ${WC_CONSUMER_KEY}
       WC_CONSUMER_SECRET: ${WC_CONSUMER_SECRET}
@@ -56,6 +57,7 @@ services:
       - .:/app
       - app_node_modules:/app/node_modules
       - uploads_data:/app/public/uploads
+      - documents_data:/app/storage/documents
     command: pnpm run dev
     mem_limit: 2g
     restart: unless-stopped
@@ -94,6 +96,7 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL}
       UPLOADS_DIR: ${UPLOADS_DIR}
+      DOCUMENTS_DIR: ${DOCUMENTS_DIR}
       EMAIL_PROVIDER: ${EMAIL_PROVIDER}
       EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS}
       EMAIL_FROM_NAME: ${EMAIL_FROM_NAME}
@@ -109,6 +112,7 @@ services:
       - .:/app
       - app_node_modules:/app/node_modules
       - uploads_data:/app/public/uploads
+      - documents_data:/app/storage/documents
     command: pnpm run seed:dev
     mem_limit: 512m
     restart: "no"
@@ -117,3 +121,4 @@ volumes:
   app_node_modules:
   postgres_data:
   uploads_data:
+  documents_data:

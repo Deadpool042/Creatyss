@@ -45,6 +45,7 @@ output/
 # uploads / local storage
 uploads/
 public/uploads/
+storage/documents/
 
 # docker
 postgres_data/
