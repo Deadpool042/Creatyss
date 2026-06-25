@@ -11,6 +11,7 @@ import {
   Sliders,
   Store,
   Truck,
+  UserCog,
   Users,
 } from "lucide-react";
 
@@ -83,6 +84,12 @@ const SETTINGS_CARDS: ReadonlyArray<SettingsCard> = [
     icon: Search,
   },
   {
+    href: "/admin/settings/customers",
+    title: "Clients",
+    description: "Politiques de compte client et durée de rétention des données.",
+    icon: UserCog,
+  },
+  {
     href: "/admin/settings/team",
     title: "Équipe",
     description: "Membres, rôles et permissions d'accès à l'administration.",
@@ -120,9 +127,7 @@ export default function AdminSettingsPage() {
           <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
             Administration
           </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-            Réglages
-          </h1>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">Réglages</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Configurez votre boutique, les intégrations et les accès.
           </p>
@@ -141,9 +146,7 @@ export default function AdminSettingsPage() {
               </div>
               <div className="min-w-0">
                 <p className="text-[13px] font-medium text-foreground">{card.title}</p>
-                <p className="mt-0.5 text-xs leading-5 text-muted-foreground">
-                  {card.description}
-                </p>
+                <p className="mt-0.5 text-xs leading-5 text-muted-foreground">{card.description}</p>
               </div>
             </Link>
           ))}
