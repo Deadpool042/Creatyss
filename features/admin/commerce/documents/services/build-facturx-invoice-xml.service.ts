@@ -26,6 +26,12 @@ function formatDateCompact(isoDate: string): string {
   return isoDate.slice(0, 10).replaceAll("-", "");
 }
 
+function resolveVatCategoryCode(ratePercent: number | null): "S" | "Z" | "E" {
+  if (ratePercent === null) return "E";
+  if (ratePercent === 0) return "Z";
+  return "S";
+}
+
 function buildPostalTradeAddress(address: {
   line1: string | null;
   postalCode: string | null;
@@ -99,7 +105,7 @@ function buildInvoiceLineItem(line: InvoiceSnapshot["lines"][number], lineId: nu
     tax.push(
       `<ram:CalculatedAmount>${formatAmount(line.taxAmount)}</ram:CalculatedAmount>`,
       "<ram:TypeCode>VAT</ram:TypeCode>",
-      "<ram:CategoryCode>S</ram:CategoryCode>",
+      `<ram:CategoryCode>${resolveVatCategoryCode(line.taxRatePercent)}</ram:CategoryCode>`,
       `<ram:RateApplicablePercent>${formatAmount(line.taxRatePercent)}</ram:RateApplicablePercent>`
     );
   }
@@ -161,7 +167,7 @@ function buildHeaderTradeTax(group: TaxRateGroup): string {
     `<ram:CalculatedAmount>${formatAmount(group.calculatedAmount)}</ram:CalculatedAmount>`,
     "<ram:TypeCode>VAT</ram:TypeCode>",
     `<ram:BasisAmount>${formatAmount(group.basisAmount)}</ram:BasisAmount>`,
-    `<ram:CategoryCode>${isExempt ? "E" : "S"}</ram:CategoryCode>`,
+    `<ram:CategoryCode>${resolveVatCategoryCode(group.ratePercent)}</ram:CategoryCode>`,
     isExempt
       ? ""
       : `<ram:RateApplicablePercent>${formatAmount(group.ratePercent ?? 0)}</ram:RateApplicablePercent>`,

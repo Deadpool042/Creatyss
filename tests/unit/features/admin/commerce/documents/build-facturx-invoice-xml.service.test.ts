@@ -264,6 +264,21 @@ describe("buildFacturXInvoiceXml", () => {
       );
       expect(lineItemXml).not.toContain("<ram:ApplicableTradeTax>");
     });
+
+    it("classe une ligne au taux 0% en catégorie Z (taux zéro) plutôt que S", () => {
+      const snapshot: InvoiceSnapshot = {
+        ...SNAPSHOT,
+        lines: [{ ...SNAPSHOT.lines[0], taxAmount: 0, taxRatePercent: 0 }],
+      };
+      const xml = buildFacturXInvoiceXml({ snapshot, documentNumber: "FA-2026-0001" });
+
+      const lineItemXml = xml.slice(
+        xml.indexOf("<ram:IncludedSupplyChainTradeLineItem>"),
+        xml.indexOf("</ram:IncludedSupplyChainTradeLineItem>")
+      );
+      expect(lineItemXml).toContain("<ram:CategoryCode>Z</ram:CategoryCode>");
+      expect(lineItemXml).toContain("<ram:RateApplicablePercent>0.00</ram:RateApplicablePercent>");
+    });
   });
 
   describe("ventilation TVA agrégée au niveau document (profil BASIC)", () => {
@@ -341,6 +356,21 @@ describe("buildFacturXInvoiceXml", () => {
       expect(headerXml).toContain("<ram:BasisAmount>30.00</ram:BasisAmount>");
       expect(headerXml).toContain("<ram:CalculatedAmount>0.00</ram:CalculatedAmount>");
       expect(headerXml).not.toContain("<ram:RateApplicablePercent>");
+    });
+
+    it("regroupe les lignes au taux 0% dans une catégorie Z avec un taux à 0.00", () => {
+      const snapshot: InvoiceSnapshot = {
+        ...SNAPSHOT,
+        lines: [{ ...SNAPSHOT.lines[0], netAmount: 30, taxAmount: 0, taxRatePercent: 0 }],
+      };
+      const xml = buildFacturXInvoiceXml({ snapshot, documentNumber: "FA-2026-0001" });
+
+      const headerXml = xml.slice(
+        xml.indexOf("<ram:ApplicableHeaderTradeSettlement>"),
+        xml.indexOf("</ram:ApplicableHeaderTradeSettlement>")
+      );
+      expect(headerXml).toContain("<ram:CategoryCode>Z</ram:CategoryCode>");
+      expect(headerXml).toContain("<ram:RateApplicablePercent>0.00</ram:RateApplicablePercent>");
     });
   });
 });
