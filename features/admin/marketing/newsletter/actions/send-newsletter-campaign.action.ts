@@ -36,11 +36,12 @@ Pour vous désabonner : ${unsubscribeUrl}`;
  * Envoie une `NewsletterCampaign` à tous les abonnés SUBSCRIBED du store.
  *
  * Invariants :
- * - La campagne doit être en statut DRAFT et appartenir au store courant.
+ * - La campagne doit être en statut DRAFT ou SENDING (reprise après crash) et appartenir au store courant.
  * - Seuls les abonnés avec status=SUBSCRIBED reçoivent l'email.
  * - Le lien de désinscription (RGPD/LPM) est injecté dans chaque email.
  * - Idempotence : les recipients dont sentAt est non nul sont ignorés.
  * - Résultat : SENT si au moins un succès, FAILED si tous échouent.
+ * - Race condition : updateMany atomique sur status=DRAFT garantit qu'un seul appel prend le verrou.
  */
 export async function sendNewsletterCampaignAction(
   campaignId: string
@@ -73,45 +74,47 @@ export async function sendNewsletterCampaignAction(
     return { ok: false, error: "Campagne introuvable." };
   }
 
-  if (campaign.status !== "DRAFT") {
+  // Permet la reprise d'une campagne coincée en SENDING (crash/timeout).
+  if (campaign.status !== "DRAFT" && campaign.status !== "SENDING") {
     return { ok: false, error: "La campagne n'est plus en statut brouillon." };
   }
 
-  // Passe en SENDING immédiatement pour éviter les doubles envois.
-  await db.newsletterCampaign.update({
-    where: { id: campaignId },
-    data: {
-      status: "SENDING",
-      sendingStartedAt: new Date(),
-    },
-  });
+  if (campaign.status === "DRAFT") {
+    // Compare-and-swap atomique : seul le premier appel concurrent gagne le verrou.
+    const { count } = await db.newsletterCampaign.updateMany({
+      where: { id: campaignId, status: "DRAFT" },
+      data: { status: "SENDING", sendingStartedAt: new Date() },
+    });
+
+    if (count === 0) {
+      return { ok: false, error: "La campagne est déjà en cours d'envoi." };
+    }
+  }
 
   // Récupère tous les abonnés SUBSCRIBED du store.
   const subscribers = await db.newsletterSubscriber.findMany({
-    where: {
-      storeId,
-      status: "SUBSCRIBED",
-    },
+    where: { storeId, status: "SUBSCRIBED" },
     select: { id: true, email: true },
   });
 
-  // Crée (ou ignore si déjà existant) un recipient pour chaque abonné.
-  for (const subscriber of subscribers) {
-    await db.newsletterCampaignRecipient.upsert({
-      where: {
-        newsletterCampaignId_newsletterSubscriberId: {
-          newsletterCampaignId: campaignId,
-          newsletterSubscriberId: subscriber.id,
-        },
-      },
-      create: {
-        newsletterCampaignId: campaignId,
-        newsletterSubscriberId: subscriber.id,
-        email: subscriber.email,
-      },
-      update: {},
+  if (subscribers.length === 0) {
+    await db.newsletterCampaign.update({
+      where: { id: campaignId },
+      data: { status: "SENT", sentAt: new Date() },
     });
+    revalidatePath(ADMIN_NEWSLETTER_CAMPAIGNS_PATH);
+    return { ok: true, sentCount: 0, failedCount: 0 };
   }
+
+  // Crée les recipients en une seule requête (skipDuplicates pour idempotence).
+  await db.newsletterCampaignRecipient.createMany({
+    data: subscribers.map((s) => ({
+      newsletterCampaignId: campaignId,
+      newsletterSubscriberId: s.id,
+      email: s.email,
+    })),
+    skipDuplicates: true,
+  });
 
   // Récupère les recipients qui n'ont pas encore été envoyés (idempotence).
   const pendingRecipients = await db.newsletterCampaignRecipient.findMany({
