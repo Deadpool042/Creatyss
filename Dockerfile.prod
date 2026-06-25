@@ -7,7 +7,8 @@
 # - pas de migrations Prisma : le projet utilise `prisma db push` (cf. scripts
 #   package.json) ; la synchronisation du schéma est un job compose séparé,
 #   jamais exécutée au démarrage du conteneur app.
-# - les uploads vivent dans public/uploads, persistés par un volume compose.
+# - les uploads vivent dans public/uploads, les documents Factur-X dans
+#   storage/documents ; les deux sont persistés par un volume compose.
 #
 # Build : docker build -f Dockerfile.prod -t creatyss:prod .
 
@@ -50,8 +51,8 @@ COPY --from=build --chown=app:app /app/tsconfig.json ./tsconfig.json
 COPY --from=build --chown=app:app /app/prisma ./prisma
 COPY --from=build --chown=app:app /app/src/generated ./src/generated
 
-# Répertoire d'uploads inscriptible (monté en volume en production).
-RUN mkdir -p public/uploads && chown -R app:app public/uploads
+# Répertoires inscriptibles montés en volume en production.
+RUN mkdir -p public/uploads storage/documents && chown -R app:app public/uploads storage/documents
 
 USER app
 
