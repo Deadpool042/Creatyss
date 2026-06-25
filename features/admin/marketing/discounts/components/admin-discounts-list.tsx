@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useOptimistic, useTransition } from "react";
 
@@ -14,6 +15,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { toggleDiscountStatusAction } from "@/features/admin/marketing/discounts/actions/toggle-discount-status.action";
+import { getAdminDiscountDetailPath } from "@/features/admin/marketing/discounts/shared/admin-discounts-routes";
 import type { AdminDiscountSummary } from "@/features/admin/marketing/discounts/types/admin-discount.types";
 import { cn } from "@/lib/utils";
 
@@ -166,7 +168,12 @@ function DiscountMobileCard({ discount }: { discount: AdminDiscountSummary }) {
       </div>
 
       <div className="mt-4">
-        <DiscountToggleButton discount={discount} />
+        <div className="flex flex-wrap gap-2">
+          <Button asChild type="button" variant="secondary" size="sm">
+            <Link href={getAdminDiscountDetailPath(discount.id)}>Voir le detail</Link>
+          </Button>
+          <DiscountToggleButton discount={discount} />
+        </div>
       </div>
     </article>
   );
@@ -250,7 +257,10 @@ export function AdminDiscountsList({ discounts }: AdminDiscountsListProps) {
                 </AdminTableCell>
                 <AdminTableCell className="text-foreground">{getUsageLabel(discount)}</AdminTableCell>
                 <AdminTableCell className="text-right">
-                  <div className={cn("flex justify-end")}>
+                  <div className={cn("flex justify-end gap-2")}>
+                    <Button asChild type="button" variant="secondary" size="sm">
+                      <Link href={getAdminDiscountDetailPath(discount.id)}>Detail</Link>
+                    </Button>
                     <DiscountToggleButton discount={discount} />
                   </div>
                 </AdminTableCell>
