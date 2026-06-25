@@ -126,6 +126,53 @@ function buildInvoiceLineItems(lines: InvoiceSnapshot["lines"]): string {
   return lines.map((line, index) => buildInvoiceLineItem(line, index + 1)).join("");
 }
 
+type TaxRateGroup = {
+  ratePercent: number | null;
+  basisAmount: number;
+  calculatedAmount: number;
+};
+
+function groupLinesByTaxRate(lines: InvoiceSnapshot["lines"]): TaxRateGroup[] {
+  const groups = new Map<number | null, TaxRateGroup>();
+
+  for (const line of lines) {
+    const key = line.taxRatePercent;
+    const existing = groups.get(key);
+    if (existing === undefined) {
+      groups.set(key, {
+        ratePercent: key,
+        basisAmount: line.netAmount,
+        calculatedAmount: line.taxAmount,
+      });
+    } else {
+      existing.basisAmount += line.netAmount;
+      existing.calculatedAmount += line.taxAmount;
+    }
+  }
+
+  return [...groups.values()];
+}
+
+function buildHeaderTradeTax(group: TaxRateGroup): string {
+  const isExempt = group.ratePercent === null;
+
+  return [
+    "<ram:ApplicableTradeTax>",
+    `<ram:CalculatedAmount>${formatAmount(group.calculatedAmount)}</ram:CalculatedAmount>`,
+    "<ram:TypeCode>VAT</ram:TypeCode>",
+    `<ram:BasisAmount>${formatAmount(group.basisAmount)}</ram:BasisAmount>`,
+    `<ram:CategoryCode>${isExempt ? "E" : "S"}</ram:CategoryCode>`,
+    isExempt
+      ? ""
+      : `<ram:RateApplicablePercent>${formatAmount(group.ratePercent ?? 0)}</ram:RateApplicablePercent>`,
+    "</ram:ApplicableTradeTax>",
+  ].join("");
+}
+
+function buildHeaderTradeTaxes(lines: InvoiceSnapshot["lines"]): string {
+  return groupLinesByTaxRate(lines).map(buildHeaderTradeTax).join("");
+}
+
 /**
  * Génère le XML Factur-X (CII, profil BASIC) à partir du snapshot légal figé
  * d'une facture : en-tête (vendeur, acheteur, totaux) + détail des lignes
@@ -155,6 +202,7 @@ export function buildFacturXInvoiceXml(input: BuildFacturXInvoiceXmlInput): stri
     "<ram:ApplicableHeaderTradeDelivery/>",
     "<ram:ApplicableHeaderTradeSettlement>",
     `<ram:InvoiceCurrencyCode>${escapeXml(snapshot.currencyCode)}</ram:InvoiceCurrencyCode>`,
+    buildHeaderTradeTaxes(snapshot.lines),
     "<ram:SpecifiedTradeSettlementHeaderMonetarySummation>",
     `<ram:TaxBasisTotalAmount>${formatAmount(snapshot.totals.netAmount)}</ram:TaxBasisTotalAmount>`,
     `<ram:TaxTotalAmount currencyID="${escapeXml(snapshot.currencyCode)}">${formatAmount(snapshot.totals.taxAmount)}</ram:TaxTotalAmount>`,

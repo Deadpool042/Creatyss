@@ -43,6 +43,35 @@ const SNAPSHOT: InvoiceSnapshot = {
   totals: { netAmount: 100, taxAmount: 20, grossAmount: 120 },
 };
 
+const TWO_LINES_SNAPSHOT_AT_DIFFERENT_RATES: InvoiceSnapshot = {
+  ...SNAPSHOT,
+  lines: [
+    {
+      productName: "Sac en cuir",
+      variantName: null,
+      sku: "SAC-001",
+      quantity: 1,
+      grossAmount: 240,
+      netAmount: 200,
+      taxAmount: 40,
+      taxRatePercent: 20,
+      taxTerritory: "FR",
+    },
+    {
+      productName: "Livre d'entretien cuir",
+      variantName: null,
+      sku: "LIV-003",
+      quantity: 1,
+      grossAmount: 52.75,
+      netAmount: 50,
+      taxAmount: 2.75,
+      taxRatePercent: 5.5,
+      taxTerritory: "FR",
+    },
+  ],
+  totals: { netAmount: 250, taxAmount: 42.75, grossAmount: 292.75 },
+};
+
 describe("buildFacturXInvoiceXml", () => {
   it("produit un XML CII profil BASIC bien formé avec l'en-tête attendu", () => {
     const xml = buildFacturXInvoiceXml({ snapshot: SNAPSHOT, documentNumber: "FA-2026-0001" });
@@ -221,14 +250,97 @@ describe("buildFacturXInvoiceXml", () => {
       expect(xml).not.toContain("<édition limitée>");
     });
 
-    it("omet le bloc ApplicableTradeTax quand le taux de TVA est absent", () => {
+    it("omet le bloc ApplicableTradeTax au niveau ligne quand le taux de TVA est absent", () => {
       const snapshot: InvoiceSnapshot = {
         ...SNAPSHOT,
         lines: [{ ...SNAPSHOT.lines[0], taxRatePercent: null }],
       };
       const xml = buildFacturXInvoiceXml({ snapshot, documentNumber: "FA-2026-0001" });
 
-      expect(xml).not.toContain("<ram:ApplicableTradeTax>");
+      expect(xml).toContain("<ram:IncludedSupplyChainTradeLineItem>");
+      const lineItemXml = xml.slice(
+        xml.indexOf("<ram:IncludedSupplyChainTradeLineItem>"),
+        xml.indexOf("</ram:IncludedSupplyChainTradeLineItem>")
+      );
+      expect(lineItemXml).not.toContain("<ram:ApplicableTradeTax>");
+    });
+  });
+
+  describe("ventilation TVA agrégée au niveau document (profil BASIC)", () => {
+    it("agrège plusieurs lignes au même taux dans un seul ApplicableTradeTax", () => {
+      const snapshot: InvoiceSnapshot = {
+        ...SNAPSHOT,
+        lines: [
+          { ...SNAPSHOT.lines[0], netAmount: 100, taxAmount: 20, taxRatePercent: 20 },
+          { ...SNAPSHOT.lines[0], netAmount: 50, taxAmount: 10, taxRatePercent: 20 },
+        ],
+      };
+      const xml = buildFacturXInvoiceXml({ snapshot, documentNumber: "FA-2026-0001" });
+
+      const headerXml = xml.slice(
+        xml.indexOf("<ram:ApplicableHeaderTradeSettlement>"),
+        xml.indexOf("</ram:ApplicableHeaderTradeSettlement>")
+      );
+      expect(headerXml.match(/<ram:ApplicableTradeTax>/g)).toHaveLength(1);
+      expect(headerXml).toContain("<ram:BasisAmount>150.00</ram:BasisAmount>");
+      expect(headerXml).toContain("<ram:CalculatedAmount>30.00</ram:CalculatedAmount>");
+      expect(headerXml).toContain("<ram:RateApplicablePercent>20.00</ram:RateApplicablePercent>");
+    });
+
+    it("sépare deux taux de TVA différents en deux blocs distincts", () => {
+      const xml = buildFacturXInvoiceXml({
+        snapshot: TWO_LINES_SNAPSHOT_AT_DIFFERENT_RATES,
+        documentNumber: "FA-2026-0001",
+      });
+
+      const headerXml = xml.slice(
+        xml.indexOf("<ram:ApplicableHeaderTradeSettlement>"),
+        xml.indexOf("</ram:ApplicableHeaderTradeSettlement>")
+      );
+      expect(headerXml.match(/<ram:ApplicableTradeTax>/g)).toHaveLength(2);
+      expect(headerXml).toContain("<ram:RateApplicablePercent>20.00</ram:RateApplicablePercent>");
+      expect(headerXml).toContain("<ram:RateApplicablePercent>5.50</ram:RateApplicablePercent>");
+    });
+
+    it("reporte la base taxable HT (BasisAmount) par taux", () => {
+      const xml = buildFacturXInvoiceXml({
+        snapshot: TWO_LINES_SNAPSHOT_AT_DIFFERENT_RATES,
+        documentNumber: "FA-2026-0001",
+      });
+
+      expect(xml).toContain("<ram:BasisAmount>200.00</ram:BasisAmount>");
+      expect(xml).toContain("<ram:BasisAmount>50.00</ram:BasisAmount>");
+    });
+
+    it("reporte le montant de TVA (CalculatedAmount) par taux", () => {
+      const xml = buildFacturXInvoiceXml({
+        snapshot: TWO_LINES_SNAPSHOT_AT_DIFFERENT_RATES,
+        documentNumber: "FA-2026-0001",
+      });
+
+      const headerXml = xml.slice(
+        xml.indexOf("<ram:ApplicableHeaderTradeSettlement>"),
+        xml.indexOf("</ram:ApplicableHeaderTradeSettlement>")
+      );
+      expect(headerXml).toContain("<ram:CalculatedAmount>40.00</ram:CalculatedAmount>");
+      expect(headerXml).toContain("<ram:CalculatedAmount>2.75</ram:CalculatedAmount>");
+    });
+
+    it("regroupe les lignes exonérées (taux null) dans une catégorie E sans taux", () => {
+      const snapshot: InvoiceSnapshot = {
+        ...SNAPSHOT,
+        lines: [{ ...SNAPSHOT.lines[0], netAmount: 30, taxAmount: 0, taxRatePercent: null }],
+      };
+      const xml = buildFacturXInvoiceXml({ snapshot, documentNumber: "FA-2026-0001" });
+
+      const headerXml = xml.slice(
+        xml.indexOf("<ram:ApplicableHeaderTradeSettlement>"),
+        xml.indexOf("</ram:ApplicableHeaderTradeSettlement>")
+      );
+      expect(headerXml).toContain("<ram:CategoryCode>E</ram:CategoryCode>");
+      expect(headerXml).toContain("<ram:BasisAmount>30.00</ram:BasisAmount>");
+      expect(headerXml).toContain("<ram:CalculatedAmount>0.00</ram:CalculatedAmount>");
+      expect(headerXml).not.toContain("<ram:RateApplicablePercent>");
     });
   });
 });
