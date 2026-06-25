@@ -233,9 +233,78 @@ export default async function AdminCustomerDetailPage({ params }: AdminCustomerD
               </div>
             )}
           </CustomerSection>
+
+          <CustomerSection
+            eyebrow="RGPD"
+            title="Consentements et données"
+            description="Consentements enregistrés par purpose. L'export contient l'ensemble des données personnelles portables."
+            className="border-t border-surface-border-subtle"
+          >
+            <div className="space-y-6">
+              {customer.consentRecords.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  Aucun enregistrement de consentement pour ce client.
+                </p>
+              ) : (
+                <div className="divide-y divide-surface-border-subtle">
+                  {customer.consentRecords.map((record) => (
+                    <div key={record.id} className="flex items-center justify-between gap-4 py-3">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">{record.purpose.name}</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          {record.purpose.code}
+                        </p>
+                      </div>
+                      <ConsentStatusBadge status={record.status} />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="pt-2">
+                <a
+                  href={`/api/admin/customers/${customer.id}/export`}
+                  download={`client-${customer.id}-rgpd.json`}
+                  className="inline-flex items-center gap-2 rounded-lg border border-surface-border/60 bg-surface-panel px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface-panel-soft"
+                >
+                  Exporter les données RGPD
+                </a>
+              </div>
+            </div>
+          </CustomerSection>
         </section>
       </div>
     </AdminPageShell>
+  );
+}
+
+type ConsentStatusBadgeProps = Readonly<{
+  status: "GRANTED" | "DENIED" | "REVOKED" | "EXPIRED";
+}>;
+
+function ConsentStatusBadge({ status }: ConsentStatusBadgeProps) {
+  const badge: { label: string; className: string } = (() => {
+    switch (status) {
+      case "GRANTED":
+        return { label: "Accordé", className: "border-green-200 text-green-700" };
+      case "DENIED":
+        return { label: "Refusé", className: "border-red-200 text-red-700" };
+      case "REVOKED":
+        return { label: "Révoqué", className: "border-red-200 text-red-700" };
+      case "EXPIRED":
+        return { label: "Expiré", className: "border-surface-border text-muted-foreground" };
+    }
+  })();
+
+  return (
+    <span
+      className={cn(
+        "shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-medium",
+        badge.className
+      )}
+    >
+      {badge.label}
+    </span>
   );
 }
 

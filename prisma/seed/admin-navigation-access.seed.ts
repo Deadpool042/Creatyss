@@ -8,6 +8,7 @@ import {
 const permissionCodes = [
   adminNavigationCapabilities.commerce.ordersRead,
   adminNavigationCapabilities.commerce.customersRead,
+  adminNavigationCapabilities.commerce.customersWrite,
   adminNavigationCapabilities.commerce.paymentsRead,
   adminNavigationCapabilities.commerce.paymentsCapture,
   adminNavigationCapabilities.commerce.paymentsCancel,

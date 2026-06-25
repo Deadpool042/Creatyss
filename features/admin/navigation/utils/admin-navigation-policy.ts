@@ -2,6 +2,7 @@ export const adminNavigationCapabilities = {
   commerce: {
     ordersRead: "admin.commerce.orders.read",
     customersRead: "admin.commerce.customers.read",
+    customersWrite: "admin.commerce.customers.write",
     paymentsRead: "admin.commerce.payments.read",
     paymentsCapture: "admin.commerce.payments.capture",
     paymentsCancel: "admin.commerce.payments.cancel",

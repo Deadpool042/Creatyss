@@ -2,7 +2,7 @@
 
 ## Statut
 
-A faire
+Livré — 2026-06-25
 
 ## Objectif
 
