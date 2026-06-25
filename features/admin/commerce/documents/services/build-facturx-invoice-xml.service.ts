@@ -5,9 +5,9 @@ type BuildFacturXInvoiceXmlInput = {
   documentNumber: string;
 };
 
-const FACTURX_MINIMUM_GUIDELINE_ID =
-  "urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:minimum";
+const FACTURX_BASIC_GUIDELINE_ID = "urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:basic";
 const INVOICE_TYPE_CODE = "380";
+const UNIT_CODE_PIECE = "C62";
 
 function escapeXml(value: string): string {
   return value
@@ -91,11 +91,46 @@ function buildBuyerTradeParty(buyer: InvoiceSnapshot["buyer"]): string {
   return `<ram:BuyerTradeParty>${parts.join("")}</ram:BuyerTradeParty>`;
 }
 
+function buildInvoiceLineItem(line: InvoiceSnapshot["lines"][number], lineId: number): string {
+  const unitNetPrice = line.quantity !== 0 ? line.netAmount / line.quantity : 0;
+
+  const tax: string[] = [];
+  if (line.taxRatePercent !== null) {
+    tax.push(
+      `<ram:CalculatedAmount>${formatAmount(line.taxAmount)}</ram:CalculatedAmount>`,
+      "<ram:TypeCode>VAT</ram:TypeCode>",
+      "<ram:CategoryCode>S</ram:CategoryCode>",
+      `<ram:RateApplicablePercent>${formatAmount(line.taxRatePercent)}</ram:RateApplicablePercent>`
+    );
+  }
+
+  return [
+    "<ram:IncludedSupplyChainTradeLineItem>",
+    `<ram:AssociatedDocumentLineDocument><ram:LineID>${lineId}</ram:LineID></ram:AssociatedDocumentLineDocument>`,
+    `<ram:SpecifiedTradeProduct><ram:Name>${escapeXml(line.productName)}</ram:Name></ram:SpecifiedTradeProduct>`,
+    "<ram:SpecifiedLineTradeAgreement>",
+    `<ram:NetPriceProductTradePrice><ram:ChargeAmount>${formatAmount(unitNetPrice)}</ram:ChargeAmount></ram:NetPriceProductTradePrice>`,
+    "</ram:SpecifiedLineTradeAgreement>",
+    "<ram:SpecifiedLineTradeDelivery>",
+    `<ram:BilledQuantity unitCode="${UNIT_CODE_PIECE}">${line.quantity}</ram:BilledQuantity>`,
+    "</ram:SpecifiedLineTradeDelivery>",
+    "<ram:SpecifiedLineTradeSettlement>",
+    tax.length > 0 ? `<ram:ApplicableTradeTax>${tax.join("")}</ram:ApplicableTradeTax>` : "",
+    `<ram:SpecifiedTradeSettlementLineMonetarySummation><ram:LineTotalAmount>${formatAmount(line.netAmount)}</ram:LineTotalAmount></ram:SpecifiedTradeSettlementLineMonetarySummation>`,
+    "</ram:SpecifiedLineTradeSettlement>",
+    "</ram:IncludedSupplyChainTradeLineItem>",
+  ].join("");
+}
+
+function buildInvoiceLineItems(lines: InvoiceSnapshot["lines"]): string {
+  return lines.map((line, index) => buildInvoiceLineItem(line, index + 1)).join("");
+}
+
 /**
- * Génère le XML Factur-X (CII, profil MINIMUM) à partir du snapshot légal
- * figé d'une facture. Profil MINIMUM = en-tête seul, sans détail des lignes
- * (cf. spec Factur-X 1.0 §profils) — la version BASIC avec lignes est un
- * incrément ultérieur du lot.
+ * Génère le XML Factur-X (CII, profil BASIC) à partir du snapshot légal figé
+ * d'une facture : en-tête (vendeur, acheteur, totaux) + détail des lignes
+ * (cf. spec Factur-X 1.0 §profils). L'embarquage PDF/A-3 + XMP et le
+ * stockage persistant sont des incréments ultérieurs du lot.
  */
 export function buildFacturXInvoiceXml(input: BuildFacturXInvoiceXmlInput): string {
   const { snapshot, documentNumber } = input;
@@ -104,7 +139,7 @@ export function buildFacturXInvoiceXml(input: BuildFacturXInvoiceXmlInput): stri
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<rsm:CrossIndustryInvoice xmlns:rsm="urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100" xmlns:ram="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100" xmlns:udt="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100">',
     "<rsm:ExchangedDocumentContext>",
-    `<ram:GuidelineSpecifiedDocumentContextParameter><ram:ID>${FACTURX_MINIMUM_GUIDELINE_ID}</ram:ID></ram:GuidelineSpecifiedDocumentContextParameter>`,
+    `<ram:GuidelineSpecifiedDocumentContextParameter><ram:ID>${FACTURX_BASIC_GUIDELINE_ID}</ram:ID></ram:GuidelineSpecifiedDocumentContextParameter>`,
     "</rsm:ExchangedDocumentContext>",
     "<rsm:ExchangedDocument>",
     `<ram:ID>${escapeXml(documentNumber)}</ram:ID>`,
@@ -112,6 +147,7 @@ export function buildFacturXInvoiceXml(input: BuildFacturXInvoiceXmlInput): stri
     `<ram:IssueDateTime><udt:DateTimeString format="102">${formatDateCompact(snapshot.issuedAt)}</udt:DateTimeString></ram:IssueDateTime>`,
     "</rsm:ExchangedDocument>",
     "<rsm:SupplyChainTradeTransaction>",
+    buildInvoiceLineItems(snapshot.lines),
     "<ram:ApplicableHeaderTradeAgreement>",
     buildSellerTradeParty(snapshot.seller),
     buildBuyerTradeParty(snapshot.buyer),

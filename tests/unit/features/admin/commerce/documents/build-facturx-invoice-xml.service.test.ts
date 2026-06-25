@@ -44,11 +44,11 @@ const SNAPSHOT: InvoiceSnapshot = {
 };
 
 describe("buildFacturXInvoiceXml", () => {
-  it("produit un XML CII profil MINIMUM bien formé avec l'en-tête attendu", () => {
+  it("produit un XML CII profil BASIC bien formé avec l'en-tête attendu", () => {
     const xml = buildFacturXInvoiceXml({ snapshot: SNAPSHOT, documentNumber: "FA-2026-0001" });
 
     expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
-    expect(xml).toContain("urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:minimum");
+    expect(xml).toContain("urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:basic");
     expect(xml).toContain("<ram:ID>FA-2026-0001</ram:ID>");
     expect(xml).toContain("<ram:TypeCode>380</ram:TypeCode>");
     expect(xml).toContain('<udt:DateTimeString format="102">20260625</udt:DateTimeString>');
@@ -128,5 +128,107 @@ describe("buildFacturXInvoiceXml", () => {
 
     expect(xml).toContain("<ram:SellerTradeParty></ram:SellerTradeParty>");
     expect(xml).toContain("<ram:BuyerTradeParty></ram:BuyerTradeParty>");
+  });
+
+  describe("lignes de facture (profil BASIC)", () => {
+    const TWO_LINES_SNAPSHOT: InvoiceSnapshot = {
+      ...SNAPSHOT,
+      lines: [
+        {
+          productName: "Sac en cuir",
+          variantName: null,
+          sku: "SAC-001",
+          quantity: 2,
+          grossAmount: 240,
+          netAmount: 200,
+          taxAmount: 40,
+          taxRatePercent: 20,
+          taxTerritory: "FR",
+        },
+        {
+          productName: "Ceinture <édition limitée> & cuir",
+          variantName: null,
+          sku: "CEI-002",
+          quantity: 1,
+          grossAmount: 60,
+          netAmount: 50,
+          taxAmount: 10,
+          taxRatePercent: 20,
+          taxTerritory: "FR",
+        },
+      ],
+    };
+
+    it("inclut une ligne par article du snapshot", () => {
+      const xml = buildFacturXInvoiceXml({
+        snapshot: TWO_LINES_SNAPSHOT,
+        documentNumber: "FA-2026-0001",
+      });
+
+      expect(xml.match(/<ram:IncludedSupplyChainTradeLineItem>/g)).toHaveLength(2);
+      expect(xml).toContain("<ram:LineID>1</ram:LineID>");
+      expect(xml).toContain("<ram:LineID>2</ram:LineID>");
+    });
+
+    it("reporte la quantité de chaque ligne", () => {
+      const xml = buildFacturXInvoiceXml({
+        snapshot: TWO_LINES_SNAPSHOT,
+        documentNumber: "FA-2026-0001",
+      });
+
+      expect(xml).toContain('<ram:BilledQuantity unitCode="C62">2</ram:BilledQuantity>');
+      expect(xml).toContain('<ram:BilledQuantity unitCode="C62">1</ram:BilledQuantity>');
+    });
+
+    it("calcule le prix unitaire net (netAmount / quantity)", () => {
+      const xml = buildFacturXInvoiceXml({
+        snapshot: TWO_LINES_SNAPSHOT,
+        documentNumber: "FA-2026-0001",
+      });
+
+      expect(xml).toContain("<ram:ChargeAmount>100.00</ram:ChargeAmount>");
+      expect(xml).toContain("<ram:ChargeAmount>50.00</ram:ChargeAmount>");
+    });
+
+    it("reporte le total net de chaque ligne", () => {
+      const xml = buildFacturXInvoiceXml({
+        snapshot: TWO_LINES_SNAPSHOT,
+        documentNumber: "FA-2026-0001",
+      });
+
+      expect(xml).toContain("<ram:LineTotalAmount>200.00</ram:LineTotalAmount>");
+      expect(xml).toContain("<ram:LineTotalAmount>50.00</ram:LineTotalAmount>");
+    });
+
+    it("reporte le taux et le montant de TVA de chaque ligne", () => {
+      const xml = buildFacturXInvoiceXml({
+        snapshot: TWO_LINES_SNAPSHOT,
+        documentNumber: "FA-2026-0001",
+      });
+
+      expect(xml).toContain("<ram:RateApplicablePercent>20.00</ram:RateApplicablePercent>");
+      expect(xml).toContain("<ram:CalculatedAmount>40.00</ram:CalculatedAmount>");
+      expect(xml).toContain("<ram:CalculatedAmount>10.00</ram:CalculatedAmount>");
+    });
+
+    it("échappe les caractères XML spéciaux dans le libellé d'une ligne", () => {
+      const xml = buildFacturXInvoiceXml({
+        snapshot: TWO_LINES_SNAPSHOT,
+        documentNumber: "FA-2026-0001",
+      });
+
+      expect(xml).toContain("<ram:Name>Ceinture &lt;édition limitée&gt; &amp; cuir</ram:Name>");
+      expect(xml).not.toContain("<édition limitée>");
+    });
+
+    it("omet le bloc ApplicableTradeTax quand le taux de TVA est absent", () => {
+      const snapshot: InvoiceSnapshot = {
+        ...SNAPSHOT,
+        lines: [{ ...SNAPSHOT.lines[0], taxRatePercent: null }],
+      };
+      const xml = buildFacturXInvoiceXml({ snapshot, documentNumber: "FA-2026-0001" });
+
+      expect(xml).not.toContain("<ram:ApplicableTradeTax>");
+    });
   });
 });
