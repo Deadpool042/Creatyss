@@ -1,0 +1,18 @@
+sRGB2014.icc
+
+Source : International Color Consortium (registry.color.org)
+URL    : https://registry.color.org/rgb-registry/profiles/sRGB2014.icc
+SHA256 : 384b832de3412066743b52a75ee906b6fb9fb8d9e09e936fc2c43223815c6e0a
+Taille : 3024 octets
+
+Licence (notice publiée par l'ICC sur la page de téléchargement du profil) :
+« Permission to use, copy and distribute this file for any purpose is
+hereby granted without fee, provided that the file is not changed
+including the ICC copyright notice tag, and that the name of ICC shall
+not be used in advertising or publicity pertaining to distribution of
+the software/file without specific, written prior permission. ICC makes
+no representations about the suitability of this software/file for any
+purpose. It is provided "as is" without express or implied warranty. »
+
+Utilisé tel quel comme OutputIntent ICC pour la conformité PDF/A-3
+(Factur-X). Non modifié.

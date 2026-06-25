@@ -63,8 +63,10 @@ services:
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       UPLOADS_DIR: ${UPLOADS_DIR}
+      DOCUMENTS_DIR: ${DOCUMENTS_DIR}
     volumes:
       - uploads_data:/app/public/uploads
+      - documents_data:/app/storage/documents
     # Pas de port publié : seul Caddy expose l'app.
     mem_limit: 1g
     restart: unless-stopped
@@ -104,5 +106,6 @@ services:
 volumes:
   postgres_data:
   uploads_data:
+  documents_data:
   caddy_data:
   caddy_config:
