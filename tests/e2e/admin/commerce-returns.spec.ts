@@ -1,6 +1,11 @@
 import { expect, test } from "@playwright/test";
 import { loginAsSeedAdmin } from "./admin-auth";
-import { activateFeatureFlag, ensureConfirmedOrderForE2E, readReturnState } from "../commerce-db";
+import {
+  activateFeatureFlag,
+  ensureConfirmedOrderForE2E,
+  readReturnState,
+  resetReturnRequestForE2E,
+} from "../commerce-db";
 
 test.beforeAll(async () => {
   await activateFeatureFlag("commerce.returns");
@@ -8,6 +13,7 @@ test.beforeAll(async () => {
 
 test("admin can open, approve and receive a return on a confirmed order", async ({ page }) => {
   const { orderId } = await ensureConfirmedOrderForE2E();
+  await resetReturnRequestForE2E(orderId);
 
   await loginAsSeedAdmin(page);
 
@@ -16,7 +22,11 @@ test("admin can open, approve and receive a return on a confirmed order", async 
 
   // Vérifier que la section "Demande de retour" est visible
   const returnSection = page.getByText("Demande de retour").first();
-  if (!(await returnSection.isVisible({ timeout: 10_000 }).catch(() => false))) {
+  const returnSectionVisible = await returnSection
+    .waitFor({ state: "visible", timeout: 10_000 })
+    .then(() => true)
+    .catch(() => false);
+  if (!returnSectionVisible) {
     test.skip(true, "return section not visible — feature flag may be inactive or UI not rendered");
     return;
   }

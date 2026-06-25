@@ -1292,6 +1292,16 @@ export async function readFulfillmentState(orderId: string): Promise<Fulfillment
   };
 }
 
+/**
+ * Supprime tout ReturnRequest existant sur une commande E2E (et ses
+ * ReturnItem/ReturnDecision via cascade), pour rendre un spec rejouable
+ * plusieurs fois sur la même base. Strictement scopé à l'orderId fourni —
+ * ne touche jamais d'autres commandes ou retours réels.
+ */
+export async function resetReturnRequestForE2E(orderId: string): Promise<void> {
+  await prisma.returnRequest.deleteMany({ where: { orderId } });
+}
+
 type ReturnState = {
   status: string;
   inventoryOnHand: number;
