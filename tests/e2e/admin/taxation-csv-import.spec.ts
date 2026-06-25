@@ -57,6 +57,5 @@ test("CSV mal formé — affiche une erreur d'import", async ({ page }) => {
 
   await page.getByRole("button", { name: "Importer" }).click();
 
-  const errorMsg = page.getByText(/invalide|erreur/i).first();
-  await expect(errorMsg).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText(/\d+ erreur/i).first()).toBeVisible({ timeout: 15_000 });
 });
