@@ -206,6 +206,62 @@ Toujours préciser :
 - validations non exécutées ;
 - risques éventuels.
 
+
+## Git Workflow
+
+Pour tout lot non trivial :
+
+### Branche
+
+Ne pas travailler directement sur `main`.
+
+Créer une branche dédiée :
+
+- feature/<scope>-<topic>
+- fix/<scope>-<topic>
+- refactor/<scope>-<topic>
+- docs/<topic>
+- test/<topic>
+
+### Auto-review
+
+Avant commit :
+
+- vérifier les violations AGENTS.md ;
+- vérifier les duplications introduites ;
+- vérifier les abstractions prématurées ;
+- supprimer le code mort observé ;
+- supprimer les imports inutilisés observés.
+
+### Commit
+
+Utiliser les Conventional Commits :
+
+- feat(scope): ...
+- fix(scope): ...
+- refactor(scope): ...
+- docs(scope): ...
+- test(scope): ...
+
+### Livraison
+
+Pour tout lot non trivial, fournir :
+
+- résumé ;
+- fichiers modifiés ;
+- impact architecture ;
+- validations exécutées ;
+- validations non exécutées ;
+- risques éventuels.
+
+### Reviewnon 
+
+Avant de considérer le lot terminé :
+
+- relire le changement comme un reviewer indépendant ;
+- challenger la complexité ajoutée ;
+- vérifier la cohérence avec AGENTS.md et la documentation applicable.
+
 ---
 
 ## Principe final

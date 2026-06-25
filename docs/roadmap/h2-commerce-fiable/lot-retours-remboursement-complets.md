@@ -2,7 +2,7 @@
 
 ## Statut
 
-A faire (V1 partielle observée)
+Terminé (admin) — implémenté 2026-06-24. Sélection lignes/quantités, restock transactionnel RECEIVED (skip DAMAGED), remboursement Stripe-first REFUNDED, PaymentRefund enregistré. Typecheck et lint verts. Formulaire storefront client différé (périmètre séparé).
 
 ## Objectif
 

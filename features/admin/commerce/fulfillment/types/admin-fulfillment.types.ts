@@ -1,5 +1,11 @@
 import type { FulfillmentStatus } from "@/prisma-generated/client";
 
+export type OrderLineForFulfillment = {
+  id: string;
+  productName: string;
+  quantity: number;
+};
+
 export type AdminFulfillmentItem = {
   id: string;
   orderLineId: string;

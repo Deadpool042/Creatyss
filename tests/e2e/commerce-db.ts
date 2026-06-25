@@ -590,12 +590,7 @@ export async function resetSimpleProductCatalogState(): Promise<void> {
 
 const BOUTIQUE_FIXTURE_PRODUCT_COUNT = 13;
 
-const BOUTIQUE_FIXTURE_CATEGORY_CODES = [
-  "mini-sacs",
-  "cabas",
-  "pochettes",
-  "trousses",
-] as const;
+const BOUTIQUE_FIXTURE_CATEGORY_CODES = ["mini-sacs", "cabas", "pochettes", "trousses"] as const;
 
 export type BoutiquePageFixture = Readonly<{
   countsByUrl: Readonly<Record<string, number>>;
@@ -608,9 +603,7 @@ export type BoutiquePageFixture = Readonly<{
  * local, tout en réutilisant la taxonomie canonique Creatyss.
  */
 export async function ensureBoutiquePageFixture(): Promise<BoutiquePageFixture> {
-  const { seedCreatyssCategories } = await import(
-    "../../scripts/helpers/category-seed"
-  );
+  const { seedCreatyssCategories } = await import("../../scripts/helpers/category-seed");
 
   await seedCreatyssCategories(prisma);
 
@@ -645,9 +638,7 @@ export async function ensureBoutiquePageFixture(): Promise<BoutiquePageFixture> 
     const slug = `e2e-boutique-product-${sequence}`;
     const sku = `E2E-BOUTIQUE-${sequence}`;
     const categoryCode =
-      BOUTIQUE_FIXTURE_CATEGORY_CODES[
-        (index - 1) % BOUTIQUE_FIXTURE_CATEGORY_CODES.length
-      ];
+      BOUTIQUE_FIXTURE_CATEGORY_CODES[(index - 1) % BOUTIQUE_FIXTURE_CATEGORY_CODES.length];
 
     if (categoryCode === undefined) {
       throw new Error(`Unable to resolve category for boutique fixture ${sequence}`);
@@ -809,10 +800,7 @@ export async function ensureBoutiquePageFixture(): Promise<BoutiquePageFixture> 
               productCategories: {
                 some: {
                   category: {
-                    OR: [
-                      { slug: categorySlug },
-                      { parent: { slug: categorySlug } },
-                    ],
+                    OR: [{ slug: categorySlug }, { parent: { slug: categorySlug } }],
                   },
                 },
               },
@@ -824,5 +812,361 @@ export async function ensureBoutiquePageFixture(): Promise<BoutiquePageFixture> 
 
   return {
     countsByUrl,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// H2 commerce helpers
+// ---------------------------------------------------------------------------
+
+type ActivateFeatureFlagOptions = {
+  /** Niveaux autorisés pour les features graduées (ex. ["rules", "automation"]). */
+  allowedLevels?: string[];
+  /** Niveau par défaut pour les features graduées (doit appartenir à allowedLevels). */
+  defaultLevel?: string;
+};
+
+/**
+ * Active (ou réactive) un FeatureFlag par son code pour le premier store.
+ * Idempotent (upsert). Pour les features graduées, passer allowedLevels et
+ * defaultLevel.
+ */
+export async function activateFeatureFlag(
+  code: string,
+  options: ActivateFeatureFlagOptions = {}
+): Promise<void> {
+  const store = await readDefaultStore();
+
+  const data = {
+    name: code,
+    status: "ACTIVE" as const,
+    isEnabledByDefault: true,
+    ...(options.allowedLevels !== undefined ? { allowedLevels: options.allowedLevels } : {}),
+    ...(options.defaultLevel !== undefined ? { defaultLevel: options.defaultLevel } : {}),
+    archivedAt: null,
+  };
+
+  await prisma.featureFlag.upsert({
+    where: {
+      storeId_code: {
+        storeId: store.id,
+        code,
+      },
+    },
+    update: data,
+    create: {
+      storeId: store.id,
+      code,
+      ...data,
+    },
+  });
+}
+
+const FULFILLMENT_PRODUCT_SLUG = "e2e-fulfillment-product";
+const FULFILLMENT_PRODUCT_NAME = "Produit Fulfillment E2E";
+const FULFILLMENT_VARIANT_SKU = "E2E-FULFIL-001";
+const FULFILLMENT_VARIANT_NAME = "Version fulfillment E2E";
+
+type ConfirmedOrderForE2E = {
+  orderId: string;
+  orderLineId: string;
+  variantId: string;
+  storeId: string;
+};
+
+/**
+ * Crée (ou retrouve) en DB une commande CONFIRMED avec une ligne, un paiement
+ * CAPTURED, et un InventoryItem avec onHandQuantity = 10. Idempotent (upsert
+ * par slug / SKU).
+ *
+ * Retourne les IDs nécessaires pour les specs E2E admin (fulfillment, returns).
+ */
+export async function ensureConfirmedOrderForE2E(): Promise<ConfirmedOrderForE2E> {
+  const store = await readDefaultStore();
+  const now = new Date();
+
+  // Produit + variante
+  const product = await prisma.product.upsert({
+    where: {
+      storeId_slug: {
+        storeId: store.id,
+        slug: FULFILLMENT_PRODUCT_SLUG,
+      },
+    },
+    update: {
+      name: FULFILLMENT_PRODUCT_NAME,
+      status: "ACTIVE",
+      isStandalone: true,
+      catalogPriceCents: 3500,
+      catalogPriceCurrencyCode: "EUR",
+      publishedAt: now,
+      archivedAt: null,
+    },
+    create: {
+      storeId: store.id,
+      slug: FULFILLMENT_PRODUCT_SLUG,
+      name: FULFILLMENT_PRODUCT_NAME,
+      status: "ACTIVE",
+      isStandalone: true,
+      catalogPriceCents: 3500,
+      catalogPriceCurrencyCode: "EUR",
+      publishedAt: now,
+    },
+    select: { id: true },
+  });
+
+  const variant = await prisma.productVariant.upsert({
+    where: {
+      productId_sku: {
+        productId: product.id,
+        sku: FULFILLMENT_VARIANT_SKU,
+      },
+    },
+    update: {
+      name: FULFILLMENT_VARIANT_NAME,
+      status: "ACTIVE",
+      isDefault: true,
+      sortOrder: 0,
+      archivedAt: null,
+      publishedAt: now,
+    },
+    create: {
+      productId: product.id,
+      sku: FULFILLMENT_VARIANT_SKU,
+      name: FULFILLMENT_VARIANT_NAME,
+      status: "ACTIVE",
+      isDefault: true,
+      sortOrder: 0,
+      publishedAt: now,
+    },
+    select: { id: true },
+  });
+
+  await prisma.inventoryItem.upsert({
+    where: {
+      storeId_variantId: {
+        storeId: store.id,
+        variantId: variant.id,
+      },
+    },
+    update: {
+      sku: FULFILLMENT_VARIANT_SKU,
+      status: "ACTIVE",
+      onHandQuantity: 10,
+      reservedQuantity: 0,
+      archivedAt: null,
+    },
+    create: {
+      storeId: store.id,
+      variantId: variant.id,
+      sku: FULFILLMENT_VARIANT_SKU,
+      status: "ACTIVE",
+      onHandQuantity: 10,
+      reservedQuantity: 0,
+    },
+  });
+
+  // Commande CONFIRMED idempotente : on cherche si elle existe déjà.
+  const existingOrder = await prisma.order.findFirst({
+    where: {
+      storeId: store.id,
+      status: "CONFIRMED",
+      lines: {
+        some: {
+          variantId: variant.id,
+        },
+      },
+    },
+    select: {
+      id: true,
+      lines: { select: { id: true }, take: 1 },
+    },
+  });
+
+  if (existingOrder !== null) {
+    const existingLineId = existingOrder.lines[0]?.id;
+
+    if (existingLineId === undefined) {
+      throw new Error("E2E: confirmed order found but has no lines.");
+    }
+
+    return {
+      orderId: existingOrder.id,
+      orderLineId: existingLineId,
+      variantId: variant.id,
+      storeId: store.id,
+    };
+  }
+
+  // Création d'une nouvelle commande CONFIRMED en transaction
+  const runId = Date.now().toString(36);
+  const orderNumber = `E2E-${runId.toUpperCase().padStart(10, "0")}`;
+
+  const order = await prisma.$transaction(async (tx) => {
+    const newOrder = await tx.order.create({
+      data: {
+        storeId: store.id,
+        orderNumber,
+        status: "CONFIRMED",
+        currencyCode: "EUR",
+        subtotalAmount: 35,
+        shippingAmount: 7,
+        discountAmount: 0,
+        taxAmount: 0,
+        totalAmount: 42,
+        customerEmail: "e2e-fulfillment@creatyss.test",
+        customerFirstName: "Test",
+        customerLastName: "E2E",
+        placedAt: now,
+        statusHistory: {
+          create: {
+            status: "CONFIRMED",
+            reasonCode: "e2e_setup",
+            notes: "Created by E2E helper ensureConfirmedOrderForE2E.",
+          },
+        },
+      },
+      select: { id: true },
+    });
+
+    const line = await tx.orderLine.create({
+      data: {
+        orderId: newOrder.id,
+        productId: product.id,
+        variantId: variant.id,
+        quantity: 1,
+        unitPriceAmount: 35,
+        lineSubtotalAmount: 35,
+        lineDiscountAmount: 0,
+        lineTaxAmount: 0,
+        lineTotalAmount: 35,
+        productName: FULFILLMENT_PRODUCT_NAME,
+        variantName: FULFILLMENT_VARIANT_NAME,
+        sku: FULFILLMENT_VARIANT_SKU,
+      },
+      select: { id: true },
+    });
+
+    await tx.payment.create({
+      data: {
+        orderId: newOrder.id,
+        storeId: store.id,
+        provider: "bank_transfer",
+        status: "CAPTURED",
+        amountAuthorized: 42,
+        amountCaptured: 42,
+        currencyCode: "EUR",
+        capturedAt: now,
+      },
+    });
+
+    return { orderId: newOrder.id, orderLineId: line.id };
+  });
+
+  return {
+    orderId: order.orderId,
+    orderLineId: order.orderLineId,
+    variantId: variant.id,
+    storeId: store.id,
+  };
+}
+
+type FulfillmentState = {
+  status: string;
+  inventoryOnHand: number;
+};
+
+/**
+ * Lit l'état du premier Fulfillment d'une commande et le stock courant de
+ * l'InventoryItem associé à la première ligne.
+ */
+export async function readFulfillmentState(orderId: string): Promise<FulfillmentState | null> {
+  const fulfillment = await prisma.fulfillment.findFirst({
+    where: { orderId },
+    orderBy: { createdAt: "asc" },
+    select: {
+      status: true,
+      items: {
+        select: {
+          orderLine: {
+            select: {
+              variantId: true,
+            },
+          },
+        },
+        take: 1,
+      },
+    },
+  });
+
+  if (fulfillment === null) {
+    return null;
+  }
+
+  const variantId = fulfillment.items[0]?.orderLine?.variantId ?? null;
+
+  let inventoryOnHand = 0;
+
+  if (variantId !== null) {
+    const inventory = await prisma.inventoryItem.findFirst({
+      where: { variantId },
+      select: { onHandQuantity: true },
+    });
+    inventoryOnHand = inventory?.onHandQuantity ?? 0;
+  }
+
+  return {
+    status: fulfillment.status,
+    inventoryOnHand,
+  };
+}
+
+type ReturnState = {
+  status: string;
+  inventoryOnHand: number;
+};
+
+/**
+ * Lit l'état du premier ReturnRequest d'une commande et le stock courant de
+ * l'InventoryItem associé à la première ligne de retour.
+ */
+export async function readReturnState(orderId: string): Promise<ReturnState | null> {
+  const returnRequest = await prisma.returnRequest.findFirst({
+    where: { orderId },
+    orderBy: { createdAt: "asc" },
+    select: {
+      status: true,
+      items: {
+        select: {
+          orderLine: {
+            select: {
+              variantId: true,
+            },
+          },
+        },
+        take: 1,
+      },
+    },
+  });
+
+  if (returnRequest === null) {
+    return null;
+  }
+
+  const variantId = returnRequest.items[0]?.orderLine?.variantId ?? null;
+
+  let inventoryOnHand = 0;
+
+  if (variantId !== null) {
+    const inventory = await prisma.inventoryItem.findFirst({
+      where: { variantId },
+      select: { onHandQuantity: true },
+    });
+    inventoryOnHand = inventory?.onHandQuantity ?? 0;
+  }
+
+  return {
+    status: returnRequest.status,
+    inventoryOnHand,
   };
 }

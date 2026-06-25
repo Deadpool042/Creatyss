@@ -2,7 +2,7 @@
 
 ## Statut
 
-A faire
+En attente — implémentation technique observée et validée (tests verts, typecheck propre). Bloqué sur la confirmation des taux par expert-comptable avant activation production.
 
 ## Objectif
 

@@ -2,7 +2,7 @@
 
 ## Statut
 
-A faire
+Terminé — implémenté 2026-06-24. 4 specs créés (discounts, taxation, fulfillment, returns), helpers DB ajoutés (activateFeatureFlag, ensureConfirmedOrderForE2E, readFulfillmentState, readReturnState). Taxation display skip documenté (UI checkout non implémentée). Typecheck et lint verts.
 
 ## Objectif
 

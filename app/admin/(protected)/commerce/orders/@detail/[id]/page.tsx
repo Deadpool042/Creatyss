@@ -50,19 +50,14 @@ export default async function OrderDetailSlotPage({
   const { id } = await params;
   const resolvedSearchParams = await searchParams;
 
-  const [
-    order,
-    documentsFeatureActive,
-    fulfillmentFeatureActive,
-    returnsFeatureActive,
-    storeId,
-  ] = await Promise.all([
-    findAdminOrderById(id),
-    isDocumentsFeatureActive(),
-    isFulfillmentFeatureActive(),
-    isReturnsFeatureActive(),
-    getCurrentStoreId(),
-  ]);
+  const [order, documentsFeatureActive, fulfillmentFeatureActive, returnsFeatureActive, storeId] =
+    await Promise.all([
+      findAdminOrderById(id),
+      isDocumentsFeatureActive(),
+      isFulfillmentFeatureActive(),
+      isReturnsFeatureActive(),
+      getCurrentStoreId(),
+    ]);
 
   if (order === null) {
     notFound();
@@ -160,13 +155,30 @@ export default async function OrderDetailSlotPage({
 
       {fulfillmentFeatureActive ? (
         <div className={buildAdminOrdersDetailSectionClassName()}>
-          <OrderDetailFulfillmentCard fulfillment={fulfillment} orderId={id} />
+          <OrderDetailFulfillmentCard
+            fulfillment={fulfillment}
+            orderId={id}
+            orderLines={order.lines.map((l) => ({
+              id: l.id,
+              productName: l.productName,
+              quantity: l.quantity,
+            }))}
+          />
         </div>
       ) : null}
 
       {returnsFeatureActive ? (
         <div className={buildAdminOrdersDetailSectionClassName()}>
-          <OrderDetailReturnCard request={returnRequest} orderId={id} />
+          <OrderDetailReturnCard
+            request={returnRequest}
+            orderId={id}
+            orderLines={order.lines.map((l) => ({
+              id: l.id,
+              productName: l.productName,
+              variantName: l.variantName ?? null,
+              quantity: l.quantity,
+            }))}
+          />
         </div>
       ) : null}
 

@@ -10,6 +10,7 @@ import type { FulfillmentStatus } from "@/prisma-generated/client";
 import {
   getFulfillmentStatusLabel,
   type AdminFulfillmentSummary,
+  type OrderLineForFulfillment,
 } from "@/features/admin/commerce/fulfillment/types/admin-fulfillment.types";
 import { createFulfillmentAction } from "@/features/admin/commerce/fulfillment/actions/create-fulfillment-action";
 import { advanceFulfillmentAction } from "@/features/admin/commerce/fulfillment/actions/advance-fulfillment-action";
@@ -17,18 +18,25 @@ import { advanceFulfillmentAction } from "@/features/admin/commerce/fulfillment/
 type Props = Readonly<{
   fulfillment: AdminFulfillmentSummary | null;
   orderId: string;
+  orderLines: ReadonlyArray<OrderLineForFulfillment>;
 }>;
 
 const buttonClass =
   "w-fit rounded-lg border border-surface-border bg-surface-panel px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-interactive-hover disabled:cursor-not-allowed disabled:opacity-50";
 
-export function OrderDetailFulfillmentCard({ fulfillment, orderId }: Props) {
+export function OrderDetailFulfillmentCard({ fulfillment, orderId, orderLines }: Props) {
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
     null
   );
+  const [quantities, setQuantities] = useState<Record<string, number>>(() =>
+    Object.fromEntries(orderLines.map((l) => [l.id, l.quantity]))
+  );
 
-  function run(action: () => Promise<{ success: boolean; error?: string }>, okMessage: string): void {
+  function run(
+    action: () => Promise<{ success: boolean; error?: string }>,
+    okMessage: string
+  ): void {
     setFeedback(null);
     startTransition(async () => {
       const result = await action();
@@ -45,6 +53,19 @@ export function OrderDetailFulfillmentCard({ fulfillment, orderId }: Props) {
     run(() => advanceFulfillmentAction(fulfillment.id, orderId, next), okMessage);
   }
 
+  function handleCreate(): void {
+    const lines = orderLines
+      .map((l) => ({ orderLineId: l.id, quantity: quantities[l.id] ?? l.quantity }))
+      .filter((l) => l.quantity > 0);
+
+    const isFullOrder = orderLines.every((l) => (quantities[l.id] ?? l.quantity) === l.quantity);
+
+    run(
+      () => createFulfillmentAction(orderId, isFullOrder ? undefined : lines),
+      "Préparation créée."
+    );
+  }
+
   const status = fulfillment?.status ?? null;
 
   return (
@@ -56,9 +77,34 @@ export function OrderDetailFulfillmentCard({ fulfillment, orderId }: Props) {
       />
 
       {fulfillment === null ? (
-        <p className="card-copy leading-snug text-foreground">
-          Aucune préparation pour cette commande.
-        </p>
+        <div className="grid gap-3">
+          <p className="card-copy leading-snug text-foreground">
+            Sélectionnez les quantités à préparer :
+          </p>
+          <ol className="grid gap-2">
+            {orderLines.map((line) => (
+              <li key={line.id} className="flex items-center gap-3">
+                <input
+                  type="number"
+                  min={0}
+                  max={line.quantity}
+                  value={quantities[line.id] ?? line.quantity}
+                  onChange={(e) =>
+                    setQuantities((prev) => ({
+                      ...prev,
+                      [line.id]: Math.min(line.quantity, Math.max(0, Number(e.target.value))),
+                    }))
+                  }
+                  className="w-16 rounded border border-surface-border bg-surface-panel px-2 py-1 text-sm text-foreground"
+                  disabled={isPending}
+                />
+                <span className="card-meta text-text-muted-strong">
+                  / {line.quantity} × {line.productName}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
       ) : (
         <div className="grid gap-2">
           <p className="card-meta leading-snug text-text-muted-strong">
@@ -80,8 +126,8 @@ export function OrderDetailFulfillmentCard({ fulfillment, orderId }: Props) {
           <button
             type="button"
             className={buttonClass}
-            disabled={isPending}
-            onClick={() => run(() => createFulfillmentAction(orderId), "Préparation créée.")}
+            disabled={isPending || orderLines.every((l) => (quantities[l.id] ?? l.quantity) === 0)}
+            onClick={handleCreate}
           >
             {isPending ? "Création…" : "Créer la préparation"}
           </button>

@@ -245,6 +245,32 @@ test.describe.serial("admin editor product v1 smoke", () => {
     await expect(relatedPanel).toBeVisible();
   });
 
+  test("ajoute et persiste une caractéristique produit", async ({ page }) => {
+    const currentScenario = requireScenario(scenario);
+
+    await loginAsSeedAdmin(page);
+    await openAdminProduct(page, currentScenario.editorProduct.detailUrl);
+    await clickEditorTab(page, "Caractéristiques");
+
+    const panel = page.locator("main");
+    await expect(panel.getByText("Aucune caractéristique enregistrée.")).toBeVisible();
+
+    const labelInput = panel.getByPlaceholder("Ex. : Matière");
+    const valueInput = panel.getByPlaceholder("Ex. : Cuir pleine fleur");
+    await labelInput.fill("Matière");
+    await valueInput.fill("Cuir pleine fleur");
+    await panel.getByRole("button", { name: "Ajouter" }).click();
+
+    await expect(panel.getByDisplayValue("Matière")).toBeVisible();
+    await panel.getByRole("button", { name: "Enregistrer" }).click();
+    await expect(page.getByText("Caractéristiques mises à jour.")).toBeVisible();
+
+    await openAdminProduct(page, currentScenario.editorProduct.detailUrl);
+    await clickEditorTab(page, "Caractéristiques");
+    await expect(page.locator("main").getByDisplayValue("Matière")).toBeVisible();
+    await expect(page.locator("main").getByDisplayValue("Cuir pleine fleur")).toBeVisible();
+  });
+
   test("modifie Disponibilité + Stock pour une variante sans records initiaux", async ({
     page,
   }) => {
