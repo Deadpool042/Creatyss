@@ -16,7 +16,14 @@ describe("buildFacturXPdfSkeleton", () => {
 
     expect(text).toContain("<pdfaid:part>3</pdfaid:part>");
     expect(text).toContain("<pdfaid:conformance>B</pdfaid:conformance>");
-    expect(text).toContain("urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#");
+  });
+
+  it("renseigne un /ID de trailer", async () => {
+    const bytes = await buildFacturXPdfSkeleton();
+    const reloaded = await PDFDocument.load(bytes, { updateMetadata: false });
+
+    const id = reloaded.context.trailerInfo.ID;
+    expect(id).toBeDefined();
   });
 
   it("ajoute un OutputIntent PDF/A référençant un profil ICC", async () => {

@@ -1,9 +1,10 @@
 import "server-only";
 
 import fontkit from "@pdf-lib/fontkit";
+import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { PDFDocument, PDFName, PDFString } from "pdf-lib";
+import { PDFDocument, PDFHexString, PDFName, PDFString } from "pdf-lib";
 
 const ASSETS_DIR = join(process.cwd(), "features/admin/commerce/documents/assets");
 const FONT_REGULAR_PATH = join(ASSETS_DIR, "fonts/NotoSans-Regular.ttf");
@@ -12,18 +13,21 @@ const ICC_PROFILE_PATH = join(ASSETS_DIR, "icc/sRGB2014.icc");
 
 const A4: [number, number] = [595.28, 841.89];
 
+/**
+ * N'inclut que `pdfaid` (schéma prédéfini PDF/A, accepté sans déclaration
+ * supplémentaire). Le schéma d'extension Factur-X (`fx:`) nécessite un bloc
+ * PDF/A Extension Schema conforme à ISO 19005-3 §6.6.2.3.2 — non ajouté ici
+ * (validé manquant par veraPDF, clause 6.6.2.3.1) ; il sera construit avec
+ * l'attachement du XML métier dans le lot suivant.
+ */
 function buildXmpMetadataXml(): string {
   return [
     '<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>',
     '<x:xmpmeta xmlns:x="adobe:ns:meta/">',
     '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">',
-    '<rdf:Description rdf:about="" xmlns:pdfaid="http://www.aiim.org/pdfa/ns/id/" xmlns:fx="urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#">',
+    '<rdf:Description rdf:about="" xmlns:pdfaid="http://www.aiim.org/pdfa/ns/id/">',
     "<pdfaid:part>3</pdfaid:part>",
     "<pdfaid:conformance>B</pdfaid:conformance>",
-    "<fx:DocumentType>INVOICE</fx:DocumentType>",
-    "<fx:DocumentFileName>factur-x.xml</fx:DocumentFileName>",
-    "<fx:Version>1.0</fx:Version>",
-    "<fx:ConformanceLevel>BASIC</fx:ConformanceLevel>",
     "</rdf:Description>",
     "</rdf:RDF>",
     "</x:xmpmeta>",
@@ -54,11 +58,7 @@ function attachOutputIntent(pdf: PDFDocument): void {
   pdf.catalog.set(PDFName.of("OutputIntents"), pdf.context.obj([outputIntentRef]));
 }
 
-/**
- * Construit le packet XMP (pdfaid + extension schema Factur-X) et l'attache
- * au catalogue. `fx:DocumentFileName` annonce le nom du XML métier que le
- * lot suivant attachera réellement — il n'est pas encore présent ici.
- */
+/** Construit le packet XMP (pdfaid uniquement) et l'attache au catalogue. */
 function attachXmpMetadata(pdf: PDFDocument): void {
   const xmpBytes = Buffer.from(buildXmpMetadataXml(), "utf-8");
   const metadataRef = pdf.context.register(
@@ -67,11 +67,18 @@ function attachXmpMetadata(pdf: PDFDocument): void {
   pdf.catalog.set(PDFName.of("Metadata"), metadataRef);
 }
 
+/** Requis par ISO 19005-3 §6.1.3 : le trailer doit porter un /ID de fichier. */
+function attachFileId(pdf: PDFDocument): void {
+  const id = PDFHexString.of(randomBytes(16).toString("hex"));
+  pdf.context.trailerInfo.ID = pdf.context.obj([id, id]);
+}
+
 /**
  * Génère le squelette structurel d'un PDF/A-3 : police réellement embarquée
- * (Noto Sans, via fontkit), OutputIntent ICC, métadonnées XMP déclarant la
- * conformité PDF/A-3 et l'extension Factur-X. Ne contient ni le contenu
- * métier de la facture ni le XML EN 16931 attaché — incréments ultérieurs.
+ * (Noto Sans, via fontkit), OutputIntent ICC, métadonnées XMP pdfaid et /ID
+ * de trailer. Ne contient ni le contenu métier de la facture, ni le XML
+ * EN 16931 attaché, ni le schéma d'extension Factur-X — incréments
+ * ultérieurs (validé par veraPDF --flavour 3b, conformité structurelle).
  */
 export async function buildFacturXPdfSkeleton(): Promise<Uint8Array> {
   const pdf = await PDFDocument.create();
@@ -91,6 +98,7 @@ export async function buildFacturXPdfSkeleton(): Promise<Uint8Array> {
 
   attachOutputIntent(pdf);
   attachXmpMetadata(pdf);
+  attachFileId(pdf);
 
   return pdf.save();
 }
