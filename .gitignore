@@ -63,3 +63,7 @@ docker/traefik/certs/*.pem
 
 # Claude local worktrees
 .claude/worktrees/
+
+# MemPalace local files
+entities.json
+mempalace.yaml
