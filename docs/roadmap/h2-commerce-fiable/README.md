@@ -6,22 +6,21 @@ Consolider le commerce pour qu'il soit légalement conforme et techniquement fia
 
 ---
 
-## État au 2026-06-19
+## État au 2026-06-25
 
 ### Observé comme terminé
 
-- `commerce.taxation` L3 : moteur TVA par territoire (métropole + DOM), câblage checkout, seed taux, UI admin lecture — observé dans `2026-06-13-audit-catalogue-modules.md`
-- `commerce.documents` L3 : confirmation de commande, bon de préparation, facture (`INVOICE`), avoir (`CREDIT_NOTE`), génération PDF à la volée — observé dans `2026-06-14-etat-des-lieux-session.md`
-- `commerce.fulfillment` L3 V1 : préparation "tout ou rien", transitions PENDING→READY→FULFILLED/CANCELLED, gated — observé
-- `commerce.returns` L3 V1 : workflow REQUESTED→…→CLOSED, référence RET-…, gated — observé
+- `commerce.taxation` L3 : moteur TVA par territoire (métropole + DOM), câblage checkout, seed taux, UI admin lecture — implémentation technique validée, bloqué uniquement sur la confirmation expert-comptable (non technique)
+- `commerce.documents` L3 : confirmation de commande, bon de préparation, facture (`INVOICE`), avoir (`CREDIT_NOTE`) ; Factur-X (XML CII BASIC + PDF/A-3) et stockage persistant (`storageKey`, volume `documents_data`) livrés pour `INVOICE` — `lot-factures-legales-facturx`
+- `commerce.fulfillment` L3 V1+ : lignes partielles, décrément inventaire transactionnel, lien `Shipment` optionnel — `lot-fulfillment-partiel`, implémenté 2026-06-24
+- `commerce.returns` L3 V1+ (admin) : sélection lignes/quantités, restock transactionnel, remboursement Stripe réel (Stripe-first) — `lot-retours-remboursement-complets`, implémenté 2026-06-24
+- Tests E2E discounts, taxation, fulfillment, returns : 4 specs livrés avec helpers DB dédiés — `lot-tests-e2e-commerce`, implémenté 2026-06-24
 
-### Observé comme non terminé (modules partiels)
+### Reste non terminé (bloqueurs non techniques ou hors périmètre)
 
-- `commerce.taxation` : taux non validés par expert-comptable, OSS UE absent — observé
-- `commerce.documents` : Factur-X / e-reporting PPF absents, stockage persistant des fichiers absent (`storageKey` non alimenté) — observé
-- `commerce.fulfillment` : partiel par quantité absent, lien Shipment absent, impact inventaire absent — observé
-- `commerce.returns` : `REFUNDED` déclaratif (pas de remboursement Stripe réel), sélection lignes absente, restock absent, demande client storefront absente — observé
-- Tests E2E discounts, taxation, fulfillment, returns : non observés comme existants
+- `commerce.taxation` : validation des taux par expert-comptable (externe, non technique), OSS UE absent (hors périmètre)
+- `commerce.documents` : validation Factur-X par un outil de conformité officiel (action humaine restante) ; e-reporting PPF absent (hors périmètre documenté) ; `storageKey` reste `null` pour `DELIVERY_NOTE`/`ORDER_CONFIRMATION` (non requis par ce lot)
+- `commerce.returns` : formulaire de demande de retour côté storefront client différé (périmètre séparé, non requis pour la conformité commerce)
 
 ---
 
@@ -35,13 +34,13 @@ Consolider le commerce pour qu'il soit légalement conforme et techniquement fia
 
 ## Lots
 
-| Fichier                                                                          | Description                                                                    | Statut  |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------- |
-| [lot-tva-validation-prod.md](./lot-tva-validation-prod.md)                       | Valider les taux TVA et la conformité légale avant activation en production    | A faire |
-| [lot-factures-legales-facturx.md](./lot-factures-legales-facturx.md)             | Générer des factures conformes Factur-X et stocker les fichiers                | A faire |
-| [lot-retours-remboursement-complets.md](./lot-retours-remboursement-complets.md) | Compléter les retours — sélection lignes, remboursement Stripe réel, restock   | A faire |
-| [lot-fulfillment-partiel.md](./lot-fulfillment-partiel.md)                       | Gérer la préparation par quantité, lier les expéditions, impacter l'inventaire | A faire |
-| [lot-tests-e2e-commerce.md](./lot-tests-e2e-commerce.md)                         | Couvrir automatiquement les flux discounts, taxation, fulfillment, returns     | A faire |
+| Fichier                                                                          | Description                                                                    | Statut                                           |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------ |
+| [lot-tva-validation-prod.md](./lot-tva-validation-prod.md)                       | Valider les taux TVA et la conformité légale avant activation en production    | En attente — validation externe expert-comptable |
+| [lot-factures-legales-facturx.md](./lot-factures-legales-facturx.md)             | Générer des factures conformes Factur-X et stocker les fichiers                | Implémenté (code) — TVA externe en attente       |
+| [lot-retours-remboursement-complets.md](./lot-retours-remboursement-complets.md) | Compléter les retours — sélection lignes, remboursement Stripe réel, restock   | Terminé (admin) — 2026-06-24                     |
+| [lot-fulfillment-partiel.md](./lot-fulfillment-partiel.md)                       | Gérer la préparation par quantité, lier les expéditions, impacter l'inventaire | Terminé — 2026-06-24                             |
+| [lot-tests-e2e-commerce.md](./lot-tests-e2e-commerce.md)                         | Couvrir automatiquement les flux discounts, taxation, fulfillment, returns     | Terminé — 2026-06-24                             |
 
 `lot-tva-validation-prod` est un prérequis de `lot-factures-legales-facturx`. `lot-retours-remboursement-complets` dépend du paiement Stripe (H1). `lot-fulfillment-partiel` peut avancer en parallèle sans dépendance bloquante. `lot-tests-e2e-commerce` attend que les modules fonctionnels soient complets.
 
@@ -49,10 +48,9 @@ Consolider le commerce pour qu'il soit légalement conforme et techniquement fia
 
 ## Risques
 
-- TVA : obligation légale — ne pas activer sans validation expert-comptable
-- Factur-X : norme technique complexe — vérifier la compatibilité de `pdf-lib` déjà en place ou migrer vers une lib dédiée
-- Remboursements Stripe : le `REFUNDED` déclaratif actuel doit être remplacé sans casser les retours existants
-- Fulfillment partiel : le décrément d'inventaire doit être transactionnel pour éviter les incohérences de stock
+- TVA : obligation légale — ne pas activer en production sans validation expert-comptable
+- Factur-X : XML CII BASIC et PDF/A-3 générés en code mais jamais passés dans un outil de conformité Factur-X officiel — risque de non-conformité non détecté avant un contrôle externe
+- Si un délai légal impose l'e-reporting PPF avant la mise en production prévue, ce lot devient bloquant (actuellement hors périmètre)
 
 ---
 

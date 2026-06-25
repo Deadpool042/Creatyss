@@ -2,7 +2,15 @@
 
 ## Statut
 
-A faire
+Implémenté (code) — TVA externe en attente
+
+Le code est livré : génération XML CII (profil BASIC), PDF/A-3 avec XML
+embarqué, `storageKey` alimenté et stockage persistant via le volume Docker
+`documents_data` (`storage/documents`, monté dans `docker-compose.prod.yml`).
+Reste : validation du XML par un outil de conformité Factur-X officiel
+(action humaine), et la dépendance `lot-tva-validation-prod` qui n'est pas
+encore levée — les montants TVA inscrits dans les factures ne sont garantis
+conformes en production qu'une fois cette validation externe obtenue.
 
 ## Objectif
 
@@ -10,13 +18,17 @@ Générer des factures conformes à la norme Factur-X (PDF/A-3 embarquant un XML
 
 ## Périmètre
 
-Proposition — non implémenté à ce jour :
+Implémenté (observé dans le code) :
 
-- `features/admin/commerce/documents/` — service de génération Factur-X (PDF/A-3 + XML EN 16931)
-- `storageKey` dans le modèle `Document` (champ déjà posé en Prisma, non alimenté — observé dans `2026-06-14-etat-des-lieux-session.md`)
-- Choix et intégration d'une librairie Factur-X compatible Node.js/TypeScript
-- Stockage persistant des fichiers générés (volume Docker ou stockage objet)
-- Route admin de téléchargement depuis le `storageKey` plutôt que régénération à la volée
+- `features/admin/commerce/documents/services/build-facturx-invoice-xml.service.ts` — XML CII profil BASIC
+- `features/admin/commerce/documents/services/build-facturx-pdf-with-xml.service.ts` — PDF/A-3 (XMP `pdfaid:part=3`) avec XML attaché via `pdf-lib`
+- `features/admin/commerce/documents/services/persist-facturx-pdf.service.ts` — `storageKey` alimenté pour `INVOICE`, cache disque sous `storage/documents` (`DOCUMENTS_DIR`)
+- Stockage persistant via le volume Docker nommé `documents_data` (`docker-compose.prod.yml`)
+- Téléchargement admin : `resolve-document-pdf.service.ts` sert le fichier mis en cache, régénère si absent (pas de route de téléchargement distincte dédiée au `storageKey`)
+
+Hors périmètre de ce lot (non couvert, à statuer séparément si besoin) :
+
+- `storageKey` reste `null` pour `DELIVERY_NOTE` et `ORDER_CONFIRMATION` (régénération à la volée uniquement, ces types ne sont pas des factures légales Factur-X)
 
 ## Hors périmètre
 
@@ -54,10 +66,12 @@ Proposition — non implémenté à ce jour :
 
 ## Critères de fin
 
-- Une facture émise produit un fichier PDF/A-3 avec XML EN 16931 embarqué, validé comme conforme Factur-X
-- Le fichier est stocké de façon persistante et téléchargeable depuis l'admin via son `storageKey`
-- Le stockage est inclus dans la procédure de sauvegarde documentée dans `docs/exploitation/`
-- `typecheck` et `lint` passent sans erreur
+- [x] Une facture émise produit un fichier PDF/A-3 avec XML EN 16931 (CII BASIC) embarqué — **non encore validé par un outil de conformité Factur-X officiel** (action humaine restante)
+- [x] Le fichier est stocké de façon persistante (`documents_data`) et résolu depuis l'admin via son `storageKey`
+- [x] Le stockage est inclus dans la procédure de sauvegarde documentée dans `docs/exploitation/03-medias-persistants.md`
+- [x] `typecheck` et `lint` passent sans erreur
+- [ ] Validation Factur-X officielle effectuée
+- [ ] `lot-tva-validation-prod` levé (montants TVA confirmés conformes par l'expert-comptable)
 
 ## Agent recommandé
 
