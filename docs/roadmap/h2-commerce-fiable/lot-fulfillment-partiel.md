@@ -10,12 +10,18 @@ Terminé — implémenté 2026-06-24. Lignes partielles, décrément inventaire 
 
 ## Périmètre
 
-Proposition — ce qui manque à partir de la V1 observée :
+Livré au 2026-06-24 :
 
 - `features/admin/commerce/fulfillment/` — logique de préparation partielle par ligne et quantité
-- Lien vers `Shipment` : création ou association d'une expédition depuis la préparation
-- Impact inventaire : décrément transactionnel sur `InventoryItem` lors de la validation de la préparation
+- Décrément inventaire transactionnel sur `InventoryItem` lors de la validation de la préparation
+- Lien `Shipment` optionnel depuis la préparation
 - `features/admin/commerce/shipping/` — lien cohérent depuis la vue expéditions vers la préparation associée
+
+Reste hors de la preuve livrée dans ce lot :
+
+- intégrations transporteurs
+- automatisation d'étiquettes ou de tracking
+- multi-entrepôts
 
 ## Hors périmètre
 
@@ -47,16 +53,16 @@ Proposition — ce qui manque à partir de la V1 observée :
 
 - `pnpm run typecheck`
 - `pnpm run lint`
-- `pnpm run test` — tests unitaires sur la logique de décrément transactionnel
+- Tests unitaires sur la logique de décrément transactionnel
 - Test manuel : commande multi-lignes → préparation partielle → stock mis à jour → expédition liée
 
 ## Critères de fin
 
-- Une préparation peut être créée pour un sous-ensemble des lignes de commande (quantité partielle)
+- Une préparation peut être créée pour un sous-ensemble des lignes de commande
 - La validation d'une préparation décrémente l'inventaire de façon transactionnelle
 - Une préparation peut être liée à une expédition `Shipment`
 - `typecheck` et `lint` passent sans erreur
-- Le workflow existant V1 (tout ou rien) reste fonctionnel sans régression
+- Le workflow V1 reste fonctionnel sans régression
 
 ## Agent recommandé
 

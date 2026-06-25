@@ -72,7 +72,7 @@ When reasoning, follow this order:
 
 1. `AGENTS.md`
 2. `README.md`
-3. `.Codex/AGENTS.md`
+3. `.claude/CLAUDE.md`
 4. `docs/architecture/**`
 5. `docs/domains/**`
 6. `docs/testing/**` when relevant

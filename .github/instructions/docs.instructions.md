@@ -11,5 +11,6 @@ applyTo: "README.md,AGENTS.md,docs/**/*.md,.claude/**/*.md,.codex/**/*.md"
   - `docs/architecture/00-introduction/**`
   - `docs/architecture/10-fondations/**`
   - `docs/architecture/20-structure/**`
-- Keep `AGENTS.md`, `.claude/CLAUDE.md`, and architecture/domain docs consistent.
+- Keep `AGENTS.md`, `.claude/CLAUDE.md`, `.github/**`, `.codex/**`, and architecture/domain docs consistent.
+- Treat `.claude/CLAUDE.md` as the versioned operational baseline for assistant-specific behavior.
 - Distinguish clearly between current state, target state, and out of scope.

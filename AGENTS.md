@@ -14,6 +14,12 @@ Tous les autres fichiers d’instructions du projet doivent s’y aligner, notam
 
 Ces fichiers peuvent compléter `AGENTS.md` pour leur outil ou leur périmètre, mais ne doivent ni le contredire ni le remplacer.
 
+Par convention projet :
+
+- `.claude/CLAUDE.md` est la base opératoire versionnée pour les assistants ;
+- les configurations `.github/**`, `.codex/**`, `.agents/**` doivent s’y aligner ;
+- si un comportement assistant doit être centralisé, il doit l’être d’abord dans `.claude/CLAUDE.md`, puis répercuté dans les autres surfaces.
+
 ---
 
 ## Identité du projet
@@ -60,6 +66,7 @@ Par défaut :
 - utiliser PostgreSQL local sur `localhost:5434` comme base de données de développement ;
 - utiliser les scripts `pnpm run db:*` pour les opérations Prisma et le seed local ;
 - utiliser les scripts `pnpm run ...` pour les vérifications courantes ;
+- privilégier les cibles `make` existantes pour les commandes utilitaires, conteneurisées ou récurrentes quand elles encapsulent déjà correctement le workflow projet ;
 - réserver Docker Compose aux validations prod-like locales, aux vérifications d’intégration et à la préparation au déploiement ;
 - ne pas remplacer le flux local natif par Docker sauf demande explicite.
 
@@ -414,6 +421,26 @@ Règle :
 1. RAG d’abord pour cadrer ;
 2. fichiers exacts ensuite pour prouver ;
 3. modification uniquement après observation directe.
+
+### MemPalace
+
+Utiliser `mempalace` pour tout besoin de continuité inter-session ou de rappel de décisions antérieures.
+
+Cas recommandés :
+
+- retrouver un lot précédent ;
+- récupérer un arbitrage ou une décision déjà prise ;
+- recoller un contexte de travail entre plusieurs sessions ;
+- éviter de redécouvrir un historique non porté par la doc canonique.
+
+MemPalace sert à orienter et à rappeler le contexte.
+Il ne remplace ni le repo ni la vérification directe des fichiers.
+
+Règle :
+
+1. MemPalace pour l'historique et la continuité ;
+2. `creatyss-rag` pour localiser doctrine, code et documentation ;
+3. lecture directe du repo pour la preuve finale.
 
 ### Lecture directe
 

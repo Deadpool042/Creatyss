@@ -10,13 +10,13 @@ Couvrir automatiquement les flux discounts, taxation, fulfillment et returns par
 
 ## Périmètre
 
-Proposition — non observé comme existant à ce jour :
+Implémenté au 2026-06-24 :
 
 - `tests/e2e/` — nouveaux fichiers de specs par module :
   - `commerce-discounts.spec.ts` : application d'un code promo, remise automatique, FREE_SHIPPING
   - `commerce-taxation.spec.ts` : vérification des montants TVA sur une commande avec adresse DOM et métropole
   - `commerce-fulfillment.spec.ts` : création d'une préparation depuis l'admin, transitions d'état
-  - `commerce-returns.spec.ts` : demande de retour storefront, approbation admin, vérification statut
+  - `commerce-returns.spec.ts` : création de retour et transitions de statut côté admin, vérification du remboursement/restock selon le périmètre livré
 - Fixtures de données de test pour chaque flux (produits, commandes, taux TVA actifs)
 - Configuration Playwright pour les modules gated (`commerce.taxation`, `commerce.fulfillment`, `commerce.returns` doivent être actifs dans l'environnement de test)
 

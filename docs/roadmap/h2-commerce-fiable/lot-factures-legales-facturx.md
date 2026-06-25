@@ -39,9 +39,8 @@ Hors périmètre de ce lot (non couvert, à statuer séparément si besoin) :
 
 ## Dépendances
 
-- `lot-tva-validation-prod` terminé (les montants TVA doivent être validés avant d'être inscrits dans une facture légale)
-- Décision sur le mode de stockage des fichiers (volume Docker local vs stockage objet S3-compatible)
-- Décision sur la librairie Factur-X : `pdf-lib` seule ne produit pas de PDF/A-3 conforme — un choix de librairie dédié est nécessaire (`architect-review`)
+- `lot-tva-validation-prod` en attente — les montants TVA doivent être validés avant d'être considérés conformes en production
+- Validation externe du fichier généré par un outil de conformité Factur-X officiel
 
 ## Invariants
 
@@ -52,7 +51,7 @@ Hors périmètre de ce lot (non couvert, à statuer séparément si besoin) :
 ## Risques
 
 - Factur-X est une norme technique non triviale — la conformité du XML EN 16931 doit être vérifiée par un outil de validation officiel (Factur-X Validator ou équivalent)
-- `pdf-lib` ne produit pas de PDF/A-3 nativement — migration ou wrapper requis
+- La preuve de conformité PDF/A-3/Factur-X reste incomplète tant qu'aucun validateur externe n'a confirmé le fichier généré
 - Le stockage persistant des fichiers en production (volume Docker) doit être inclus dans la procédure de sauvegarde et de redéploiement
 - Si un délai légal oblige à l'e-reporting PPF avant la date de lancement prévue, ce lot devient bloquant
 
@@ -75,4 +74,4 @@ Hors périmètre de ce lot (non couvert, à statuer séparément si besoin) :
 
 ## Agent recommandé
 
-`architect-review` pour le choix de la librairie Factur-X et la décision de stockage, puis `next-feature-builder` pour l'implémentation.
+`architect-review` pour la revue de conformité résiduelle et la stratégie de validation externe.

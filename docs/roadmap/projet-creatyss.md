@@ -229,7 +229,7 @@ maturité L0-L3, roadmap et checklist d'ouverture) :
 - Programme fidélité
 - Expédition avancée (transporteurs, suivi)
 - Taxation plus riche
-- Extensions de paiement supplémentaires (paiement en ligne inclus)
+- Extensions de paiement supplémentaires (Apple Pay, Google Pay, BNPL, multi-devises)
 - Recommandations produits
 - Enrichissements marketing (codes promo, bundles)
 - Import en masse générique (CSV ou autre)

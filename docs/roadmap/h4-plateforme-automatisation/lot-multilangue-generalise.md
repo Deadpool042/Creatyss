@@ -2,22 +2,31 @@
 
 ## Statut
 
-A faire
+En cours — pilotes `product-page` et `boutique-page` observés, généralisation métier restante
 
 ## Objectif
 
-Étendre la convention `LocalizedValue` aux produits et au blog, en suivant le pattern établi sur la homepage (pilote observé). Le routing localisé est observé comme complet (`platform.localization` L3, lot 5 `localized-routing` fait en 2026-06-16).
+Poursuivre la généralisation de la convention `LocalizedValue` au-delà des pilotes déjà observés (`homepage`, `product-page-copy`, `boutique-page-copy`), en l'étendant aux prochains contenus métier pertinents. Le routing localisé est observé comme complet (`platform.localization` L3, lot 5 `localized-routing` fait en 2026-06-16).
 
 ## Périmètre
 
-Proposition — non observé comme implémenté à ce jour pour les produits et le blog :
+État observé au 2026-06-25 :
 
-- `entities/languages/resolve-locale-content.ts` — convention existante (observée) à réutiliser sans modification
-- `features/products/` — migration des champs texte produit (`name`, `description`, `shortDescription`) vers `LocalizedValue` avec fallback
-- `features/admin/products/` — formulaires d'édition étendus avec onglet de traduction par locale gérée
-- `features/admin/blog/` — migration des champs article (`title`, `excerpt`, `content`) vers `LocalizedValue` avec fallback
-- Storefront produit et blog : lecture de la locale active via le mécanisme existant (`x-next-locale`)
-- Admin localization existant : vérifier si les interfaces de traduction de la homepage sont réutilisables
+- `entities/languages/resolve-locale-content.ts` — convention existante observée et déjà réutilisée
+- Pilotes déjà livrés :
+  - `homepage`
+  - `features/storefront/catalog/product-page/**` + admin translations associées
+  - `features/storefront/catalog/boutique-page/**` + admin translations associées
+- Cibles restantes non observées :
+  - contenus métier produit au sens large (`name`, `description`, `shortDescription`)
+  - blog (`title`, `excerpt`, `content`)
+  - pages de contenu supplémentaires, déjà identifiées comme prochain candidat (`content-pages-copy.config.ts`)
+
+Poursuite proposée :
+
+- réutiliser le pattern existant sans le redessiner
+- choisir un prochain pilote explicite parmi `content-pages-copy` ou le blog
+- ne lancer la migration des vrais champs métier produit qu'avec un cadrage de migration dédié
 
 ## Hors périmètre
 
@@ -30,7 +39,7 @@ Proposition — non observé comme implémenté à ce jour pour les produits et 
 
 - `platform.localization` L3 complet et routing localisé observés comme prérequis (déjà satisfaits)
 - Convention `LocalizedValue` et `resolve-locale-content.ts` observées (base existante à ne pas modifier)
-- Décision produit : quels champs produit et blog sont traduits en priorité
+- Décision produit : prochaine cible prioritaire entre `content-pages`, blog, ou vrais champs produit
 
 ## Invariants
 
@@ -40,9 +49,9 @@ Proposition — non observé comme implémenté à ce jour pour les produits et 
 
 ## Risques
 
-- Migration de données : les produits et articles existants ont des champs `string` — la migration vers `LocalizedValue` (JSONB ou relation) doit être faite avec une migration Prisma ou un script de backfill sans perte de données
-- Impact SEO : si les URLs localisées pour les fiches produit ne sont pas gérées via les hreflang existants, le SEO peut être dégradé
-- Formulaires admin : l'édition multilingue complexifie l'UX des formulaires — le pattern de la homepage doit être réutilisé plutôt que réinventé
+- Migration de données : les vrais champs produit et blog restent en `string` — leur passage à `LocalizedValue` demandera un backfill sans perte
+- Impact SEO : la généralisation à des contenus indexés doit rester cohérente avec le routing localisé et les `hreflang` déjà observés
+- Formulaires admin : l'édition multilingue complexifie l'UX — le pattern existant doit être prolongé, pas réinventé
 
 ## Vérifications
 
@@ -53,10 +62,10 @@ Proposition — non observé comme implémenté à ce jour pour les produits et 
 
 ## Critères de fin
 
-- Les champs texte des produits et des articles de blog sont traduisibles par locale
-- Le storefront affiche la traduction correcte selon la locale active, avec fallback sur la locale par défaut
-- Les formulaires admin permettent la saisie des traductions
-- Les données existantes sont préservées après migration (aucune perte de contenu)
+- Une nouvelle cible de contenu au-delà des pilotes actuels est branchée sur `LocalizedValue`
+- Le storefront ou la surface concernée affiche la traduction correcte selon la locale active, avec fallback
+- Les formulaires admin permettent la saisie des traductions pour cette cible
+- Les données existantes sont préservées après migration si des champs métier sont touchés
 - `typecheck` et `lint` passent sans erreur
 
 ## Agent recommandé

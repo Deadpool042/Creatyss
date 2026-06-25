@@ -2,11 +2,11 @@
 
 ## Objectif métier
 
-Étendre la boutique vers des capacités de plateforme : webhooks sortants pour les intégrations tierces, synchronisation catalogue vers Google/Meta, recherche storefront, multilangue généralisé et IA branchée sur un provider réel. Ces capacités sont toutes modélisées en Prisma et observées à L3 en lecture seule — leur activation complète constitue cet horizon.
+Étendre la boutique vers des capacités de plateforme : webhooks sortants pour les intégrations tierces, synchronisation catalogue vers Google/Meta, recherche storefront, multilangue généralisé et IA branchée sur un provider réel. Une base Prisma et admin de lecture existe déjà pour plusieurs de ces modules, tandis que `platform.localization` et certaines surfaces IA sont plus avancées ; leur activation métier complète constitue cet horizon.
 
 ---
 
-## État au 2026-06-19
+## État au 2026-06-25
 
 ### Observé comme terminé (base)
 
@@ -23,7 +23,7 @@
 - `platform.integrations` : aucun adaptateur provider concret — observé
 - `satellite.channels` : aucune synchronisation vers Google/Meta — observé
 - `satellite.search` : aucun moteur de recherche storefront — observé
-- `LocalizedValue` généralisé aux produits et blog : non observé (pilote homepage fait, produits/blog non)
+- `platform.localization` : généralisation `LocalizedValue` partielle déjà observée au-delà de la homepage (`product-page-copy`, `boutique-page-copy`), mais pas de généralisation métier complète aux contenus produit/blog
 - `ai.core` : aucun provider SDK réel branché — observé
 
 ---
@@ -46,10 +46,10 @@
 | [lot-integrations-providers.md](./lot-integrations-providers.md) | Brancher un premier adaptateur concret sur le modèle Integration      | A faire |
 | [lot-channels-google-meta.md](./lot-channels-google-meta.md)     | Synchroniser le catalogue vers Google Merchant Center ou Meta Catalog | A faire |
 | [lot-search-storefront.md](./lot-search-storefront.md)           | Recherche full-text dans le storefront                                | A faire |
-| [lot-multilangue-generalise.md](./lot-multilangue-generalise.md) | Étendre LocalizedValue aux produits et au blog                        | A faire |
+| [lot-multilangue-generalise.md](./lot-multilangue-generalise.md) | Étendre la généralisation `LocalizedValue` au-delà des pilotes déjà faits | En cours — pilotes partiels observés |
 | [lot-ai-sdk-provider.md](./lot-ai-sdk-provider.md)               | Brancher un SDK AI réel sur le modèle AiProvider                      | A faire |
 
-Tous ces lots sont relativement indépendants entre eux et peuvent être priorisés selon la valeur métier perçue. `lot-multilangue-generalise` peut démarrer dès que la décision produit est prise, sans dépendance H2/H3. `lot-webhooks-sortants` bénéficie d'un catalogue stable (H2 recommandé).
+Tous ces lots sont relativement indépendants entre eux et peuvent être priorisés selon la valeur métier perçue. `lot-multilangue-generalise` dispose déjà de pilotes observés et peut se poursuivre dès que la prochaine cible de contenu est tranchée. `lot-webhooks-sortants` bénéficie d'un catalogue stable (H2 recommandé).
 
 ---
 
@@ -58,7 +58,7 @@ Tous ces lots sont relativement indépendants entre eux et peuvent être prioris
 - APIs tierces (Google, Meta, Stripe Webhooks) sujettes à des changements de version et de politique
 - Synchronisation asynchrone catalogue → canaux : la cohérence entre le catalogue Prisma et l'état du canal externe est non triviale
 - Algolia pour la recherche : dépendance externe avec coût récurrent — PostgreSQL FTS est une alternative viable pour le volume d'une boutique artisanale
-- RGPD pour l'analytics tracking si couplé à l'IA
+- RGPD si certaines futures activations H4 croisent données comportementales, recherche ou IA avec des identifiants exploitables
 
 ---
 
