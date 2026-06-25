@@ -40,6 +40,7 @@ export const adminNavigationCapabilities = {
     ordersRead: "admin.settings.orders.read",
     ordersWrite: "admin.settings.orders.write",
     catalogRead: "admin.settings.catalog.read",
+    customersRead: "admin.settings.customers.read",
     mediaRead: "admin.settings.media.read",
     seoRead: "admin.settings.seo.read",
     seoWrite: "admin.settings.seo.write",
