@@ -1,7 +1,7 @@
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { getDocumentPdfData } from "@/features/admin/commerce/documents/queries/get-document-pdf-data.query";
-import { renderDocumentPdf } from "@/features/admin/commerce/documents/services/render-document-pdf";
+import { resolveDocumentPdfBytes } from "@/features/admin/commerce/documents/services/resolve-document-pdf.service";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +22,7 @@ export async function GET(
     return new Response("Document introuvable.", { status: 404 });
   }
 
-  const pdfBytes = await renderDocumentPdf(viewModel);
+  const pdfBytes = await resolveDocumentPdfBytes({ storeId, documentId, viewModel });
   const filename = `${viewModel.documentNumber ?? viewModel.docType}.pdf`;
 
   return new Response(Buffer.from(pdfBytes), {

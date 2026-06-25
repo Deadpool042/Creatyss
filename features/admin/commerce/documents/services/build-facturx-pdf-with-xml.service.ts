@@ -73,8 +73,8 @@ function buildFullXmpMetadataXml(): string {
 /**
  * Attache le XML Factur-X au squelette PDF/A-3 (déjà validé veraPDF
  * isolément) et remplace le XMP minimal par le packet complet (pdfaid + fx
- * + bloc PDF/A Extension Schema). N'est pas encore branché au pipeline
- * d'émission de facture — service de test isolé pour validation veraPDF.
+ * + bloc PDF/A Extension Schema). Utilisé par `resolveDocumentPdfBytes`
+ * pour le téléchargement des factures émises.
  */
 export async function buildFacturXPdfWithXml(xmlContent: string): Promise<Uint8Array> {
   const skeletonBytes = await buildFacturXPdfSkeleton();
