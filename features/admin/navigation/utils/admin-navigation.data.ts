@@ -445,6 +445,51 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     },
   },
   {
+    key: "orders-settings",
+    label: "Commandes",
+    href: "/admin/settings/orders",
+    iconKey: "shoppingCart",
+    group: "settings",
+    order: 32,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.ordersRead],
+    },
+  },
+  {
+    key: "customers-settings",
+    label: "Clients",
+    href: "/admin/settings/customers",
+    iconKey: "users",
+    group: "settings",
+    order: 34,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.customersRead],
+    },
+  },
+  {
+    key: "media-settings",
+    label: "Médias",
+    href: "/admin/settings/media",
+    iconKey: "imageIcon",
+    group: "settings",
+    order: 36,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.mediaRead],
+    },
+  },
+  {
     key: "advanced-settings",
     label: "Avancé",
     href: "/admin/settings/advanced/overview",

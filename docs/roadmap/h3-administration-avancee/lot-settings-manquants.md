@@ -2,7 +2,7 @@
 
 ## Statut
 
-A faire
+Terminé
 
 ## Objectif
 
