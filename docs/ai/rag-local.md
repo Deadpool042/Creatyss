@@ -257,9 +257,15 @@ pnpm run typecheck
 
 ### Statut d'activation
 
-**Le serveur n'est pas actif tant qu'il n'est pas déclaré dans la configuration Claude Code.**
+Le serveur est activable via la configuration MCP locale du repo.
 
-La configuration MCP locale (`.claude/settings.local.json` ou `.mcp.json`) sera réalisée dans le lot suivant **RAG-8**. Ce fichier ne doit pas être modifié dans le lot RAG-7.
+État observé dans ce dépôt :
+
+- `.mcp.json` déclare `creatyss-rag` ;
+- `.claude/settings.local.json` active `creatyss-rag` ;
+- `.codex/config.toml` déclare également `creatyss-rag`.
+
+Cette documentation ne doit plus être lue comme un lot futur `RAG-8`, mais comme une description du serveur déjà branché localement.
 
 ### Dépendance
 

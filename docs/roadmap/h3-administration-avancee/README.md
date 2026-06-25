@@ -6,7 +6,7 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 
 ---
 
-## État au 2026-06-19
+## État au 2026-06-25
 
 ### Observé comme terminé (base H3)
 
@@ -17,18 +17,17 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 
 ### Observé comme non terminé
 
-- `commerce.customers` : historique commandes admin minimal présent mais aucun back-office dédié CRM observé
-- `commerce.discounts` : back-office `DiscountCode` dédié absent, édition avancée de priorité absente — observé dans `2026-06-13-audit-catalogue-modules.md`
+- `commerce.customers` : base admin dédiée observée (liste, détail, commandes, consentements, export RGPD), mais CRM avancé non observé (`CrmContact`, `CrmTag`, segmentation)
 - `engagement.newsletter` : `NewsletterCampaign`/`NewsletterCampaignRecipient` non alimentés, pas d'envoi réel — observé
 - `engagement.automations` : worker/scheduler général absent, uniquement boucle NEWSLETTER_SUBSCRIBED borné — observé
 - `engagement.analytics` : bloc "Aujourd'hui vs hier" mock, tracking absent — observé
-- Settings admin : sections manquantes (orders, catalog, customers, media) — à vérifier
+- Settings admin : `orders`, `catalog` et `media` observés ; `customers` reste un `AdminComingSoon` assumé, renvoyant vers le lot clients
 
 ---
 
 ## Dépendances
 
-- H2 terminé : commandes fiables (requis pour l'historique clients réel et les déclencheurs `order_created` des automations)
+- H2 suffisamment stabilisé côté commandes et checkout pour supporter l'historique client et les futurs déclencheurs `order_created`
 - Provider email transactionnel configuré en production (requis pour les campagnes newsletter)
 
 ---
@@ -37,14 +36,14 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 
 | Fichier                                                                    | Description                                                                    | Statut  |
 | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------- |
-| [lot-clients-historique-crm.md](./lot-clients-historique-crm.md)           | Admin clients complet — historique commandes, gestion RGPD/consentement        | A faire |
-| [lot-discounts-backoffice-avance.md](./lot-discounts-backoffice-avance.md) | Back-office DiscountCode dédié, édition de priorité, visualisation redemptions | A faire |
+| [lot-clients-historique-crm.md](./lot-clients-historique-crm.md)           | Base clients admin — historique commandes, consentements et export RGPD        | Livré — 2026-06-25 |
+| [lot-discounts-backoffice-avance.md](./lot-discounts-backoffice-avance.md) | Back-office DiscountCode dédié, édition de priorité, visualisation redemptions | Livré — 2026-06-25 |
 | [lot-newsletter-campagnes.md](./lot-newsletter-campagnes.md)               | Créer et envoyer des campagnes newsletter réelles                              | A faire |
 | [lot-automations-worker-general.md](./lot-automations-worker-general.md)   | Worker/scheduler général pour exécuter les jobs automatiquement                | A faire |
 | [lot-analytics-tracking-reel.md](./lot-analytics-tracking-reel.md)         | Brancher le bloc "Aujourd'hui vs hier" sur un pipeline tracking minimal        | A faire |
-| [lot-settings-manquants.md](./lot-settings-manquants.md)                   | Créer les sections settings manquantes (orders, catalog, customers, media)     | A faire |
+| [lot-settings-manquants.md](./lot-settings-manquants.md)                   | Ouvrir les sections settings orders, catalog, customers et media               | Terminé — customers reste volontairement en stub |
 
-`lot-settings-manquants` est un micro-lot parallélisable sans dépendance. `lot-clients-historique-crm` et `lot-discounts-backoffice-avance` peuvent avancer dès H2 terminé. `lot-newsletter-campagnes` nécessite un provider email. `lot-automations-worker-general` nécessite H2 pour les déclencheurs `order_created`. `lot-analytics-tracking-reel` nécessite une décision produit préalable.
+`lot-newsletter-campagnes` nécessite un provider email. `lot-automations-worker-general` nécessite un socle H2 suffisamment stabilisé pour les déclencheurs `order_created`. `lot-analytics-tracking-reel` nécessite une décision produit préalable.
 
 ---
 

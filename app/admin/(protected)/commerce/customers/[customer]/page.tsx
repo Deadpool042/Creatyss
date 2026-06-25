@@ -10,6 +10,8 @@ import {
   getCustomerEmailOptInLabel,
   getCustomerFullName,
 } from "@/entities/customer";
+import { getOrderStatusLabel } from "@/entities/order/order-status-presentation";
+import { toAppOrderStatus } from "@/entities/order/order-status";
 import { CustomerDetailForm } from "@/features/admin/customers/components";
 import { getAdminCustomerDetail } from "@/features/admin/customers/queries";
 import {
@@ -151,7 +153,7 @@ export default async function AdminCustomerDetailPage({ params }: AdminCustomerD
           <CustomerSection
             eyebrow="Referentiel"
             title="Adresses"
-            description={`${customer._count.addresses} adresse${customer._count.addresses > 1 ? "s" : ""} active${customer._count.addresses > 1 ? "s" : ""}.`}
+            description={`${customer.addresses.length} adresse${customer.addresses.length > 1 ? "s" : ""} active${customer.addresses.length > 1 ? "s" : ""}.`}
             className="border-t border-surface-border-subtle"
           >
             {customer.addresses.length === 0 ? (
@@ -224,7 +226,9 @@ export default async function AdminCustomerDetailPage({ params }: AdminCustomerD
                       </p>
                     </div>
 
-                    <p className="text-sm text-muted-foreground">{order.status}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {getOrderStatusLabel(toAppOrderStatus(order.status))}
+                    </p>
                     <p className="text-sm font-semibold text-foreground">
                       {formatMoney(order.totalAmount.toString(), order.currencyCode)}
                     </p>

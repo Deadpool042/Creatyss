@@ -19,6 +19,10 @@ En cas de conflit :
 3. docs/domains/**
 4. documentation locale
 
+`.claude/CLAUDE.md` est la base opératoire versionnée pour les assistants sur Creatyss.
+
+Les couches `.github/**`, `.codex/**` et `.agents/**` doivent la compléter ou la décliner, jamais définir une doctrine concurrente.
+
 ---
 
 ## Utilisation du RAG
@@ -44,6 +48,40 @@ Toute affirmation finale doit être basée sur :
 - code observé ;
 - Prisma observé ;
 - tests observés.
+
+---
+
+## Utilisation de MemPalace
+
+Utiliser MemPalace lorsque :
+
+- la demande implique historique, décisions passées, lots précédents ou contexte inter-session ;
+- il faut retrouver un choix antérieur avant de relire le repo ;
+- il faut compléter le cadrage avec de la mémoire projet non portée par la documentation canonique.
+
+Ne pas utiliser MemPalace comme preuve d'implémentation.
+
+MemPalace sert à :
+
+- rappeler le contexte inter-session ;
+- retrouver des décisions ou lots antérieurs ;
+- orienter les lectures utiles avant vérification.
+
+Pour Creatyss, les deux outils coexistent avec des rôles distincts :
+
+- MemPalace → historique, continuité, décisions passées ;
+- creatyss-rag → cadrage repo, localisation rapide de fichiers et documentation ;
+- lecture directe du repo → preuve finale.
+
+---
+
+## Priorité outillage
+
+Pour Creatyss :
+
+- `pnpm dev` reste la commande canonique de développement local natif ;
+- quand un `Makefile` fournit déjà une cible claire pour un workflow utilitaire, conteneurisé ou répétitif, préférer `make <target>` plutôt que réécrire la commande brute ;
+- Docker Compose ne devient pas la source de vérité du développement local pour autant ; il reste réservé au prod-like local, à l’intégration et aux vérifications conteneurisées.
 
 ---
 
@@ -273,4 +311,3 @@ En cas de doute :
 - revenir à AGENTS.md ;
 - privilégier les faits observés ;
 - signaler les incohérences plutôt que les interpréter.
-

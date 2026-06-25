@@ -6,7 +6,7 @@ Implémenter une feature ou un sous-lot borné sans sortir du périmètre demand
 
 # Règles prioritaires
 
-- Lire d'abord : AGENTS.md, README.md, .Codex/AGENTS.md
+- Lire d'abord : AGENTS.md, README.md, .claude/CLAUDE.md
 - Auditer le repo réel avant d’éditer
 - Respecter la structure réellement observée
 - Ne pas imposer un template unique de feature

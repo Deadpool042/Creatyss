@@ -2,23 +2,21 @@
 
 ## Statut
 
-A faire
+Terminé — customers reste volontairement en stub
 
 ## Objectif
 
-Créer les sections settings admin manquantes (orders, catalog, customers, media) en utilisant le pattern `AdminComingSoon` existant ou en implémentant directement les formulaires de configuration si le contenu est défini.
+Ouvrir les sections settings admin manquantes (orders, catalog, customers, media) en réutilisant le pattern `AdminComingSoon` là où aucun contenu métier robuste n'était encore cadré.
 
 ## Périmètre
 
-Proposition — à vérifier dans le code avant implémentation :
+Implémenté :
 
-- `app/admin/(protected)/settings/` — nouvelles sections :
-  - `settings/orders/` : configuration des préfixes de référence, statuts par défaut, délais
-  - `settings/catalog/` : options catalogue (produits par page, tri par défaut, affichage)
-  - `settings/customers/` : politiques de compte client, durée de rétention des données
-  - `settings/media/` : limites d'upload, formats acceptés, qualité de compression
-- Pattern `AdminComingSoon` existant (observé dans `features/admin/pilotage/`) à réutiliser pour les sections sans contenu défini
-- Liens depuis `settings/advanced` ou le menu de navigation admin
+- `app/admin/(protected)/settings/orders/` : formulaire réel pour la numérotation et les paramètres de traitement
+- `app/admin/(protected)/settings/catalog/` : section réelle autour du flag `catalog.products.related`
+- `app/admin/(protected)/settings/media/` : surface réelle d'information et de configuration lecture seule
+- `app/admin/(protected)/settings/customers/` : section ouverte avec `AdminComingSoon`, reliée au lot clients et à la liste `/admin/commerce/customers`
+- Liens de navigation admin présents pour ces quatre sections
 
 ## Hors périmètre
 
@@ -30,18 +28,18 @@ Proposition — à vérifier dans le code avant implémentation :
 
 ## Dépendances
 
-- Aucune dépendance bloquante — ce lot est parallélisable dès maintenant
-- Pour les sections avec formulaires réels : décision sur les champs configurables et leur impact applicatif
+- Aucune dépendance bloquante restante
+- Les champs réellement configurables ont été bornés localement, sans élargissement de périmètre
 
 ## Invariants
 
 - Les settings existants (general, store, advanced, localization, notifications, etc.) ne doivent pas être modifiés
 - Le pattern `AdminComingSoon` doit être réutilisé tel quel pour les sections sans contenu défini, sans créer un nouveau pattern
-- Les nouveaux settings stockés en DB doivent utiliser le modèle `Store` existant ou un modèle dédié selon l'architecture — à vérifier avant implémentation
+- Le lot reste borné à l'ouverture des surfaces admin observables ; aucune extension transverse de modèle ou de persistance ne doit être déduite de cette fiche
 
 ## Risques
 
-- Scope créep : les settings "catalog" et "orders" peuvent déclencher des discussions sur des configurations complexes — rester sur un périmètre minimal et documenté
+- Scope creep : les settings "catalog" et "orders" pouvaient déclencher des discussions sur des configurations complexes — le lot est resté borné
 - Si les settings impactent le comportement applicatif (ex. préfixe de référence de commande), il faut vérifier la cohérence avec les données existantes en production
 
 ## Vérifications

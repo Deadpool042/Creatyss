@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 import { Mail } from "lucide-react";
+import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
+import { Button } from "@/components/ui/button";
 import { isNewsletterFeatureActive } from "@/features/admin/marketing/queries/is-newsletter-feature-active.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { listAdminNewsletterSubscribers } from "@/features/admin/marketing/newsletter/queries/list-admin-newsletter-subscribers.query";
@@ -17,7 +19,10 @@ import type {
   AdminNewsletterSubscriberSourceFilter,
   AdminNewsletterSubscriberStatusFilter,
 } from "@/features/admin/marketing/newsletter/types/admin-newsletter-subscriber.types";
-import type { AdminNewsletterSearchParams } from "@/features/admin/marketing/newsletter/shared/admin-newsletter-routes";
+import {
+  ADMIN_NEWSLETTER_CAMPAIGNS_PATH,
+  type AdminNewsletterSearchParams,
+} from "@/features/admin/marketing/newsletter/shared/admin-newsletter-routes";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +37,9 @@ type AdminMarketingNewsletterPageProps = Readonly<{
   }>;
 }>;
 
-function parseStatusFilter(value: string | undefined): AdminNewsletterSubscriberStatusFilter | undefined {
+function parseStatusFilter(
+  value: string | undefined
+): AdminNewsletterSubscriberStatusFilter | undefined {
   switch (value) {
     case "SUBSCRIBED":
     case "UNSUBSCRIBED":
@@ -44,7 +51,9 @@ function parseStatusFilter(value: string | undefined): AdminNewsletterSubscriber
   }
 }
 
-function parseSourceFilter(value: string | undefined): AdminNewsletterSubscriberSourceFilter | undefined {
+function parseSourceFilter(
+  value: string | undefined
+): AdminNewsletterSubscriberSourceFilter | undefined {
   switch (value) {
     case "admin":
     case "storefront":
@@ -66,7 +75,9 @@ function parseCustomerLinkFilter(
   }
 }
 
-function parseRecencyFilter(value: string | undefined): AdminNewsletterSubscriberRecencyFilter | undefined {
+function parseRecencyFilter(
+  value: string | undefined
+): AdminNewsletterSubscriberRecencyFilter | undefined {
   switch (value) {
     case "recent":
       return value;
@@ -147,6 +158,11 @@ export default async function AdminMarketingNewsletterPage({
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
+      topbarAction={
+        <Button asChild variant="outline" size="sm">
+          <Link href={ADMIN_NEWSLETTER_CAMPAIGNS_PATH}>Campagnes</Link>
+        </Button>
+      }
     >
       <div className="grid gap-6">
         {resolvedSearchParams.newsletter_created ? (
@@ -165,9 +181,8 @@ export default async function AdminMarketingNewsletterPage({
             Nouvel abonné
           </h2>
           <p className="mb-4 text-xs text-muted-foreground">
-            Ajout manuel à la liste de diffusion. Aucune campagne n&apos;est
-            créée ni envoyée pour l&apos;instant (niveau « basic » —
-            référentiel des abonnés uniquement).
+            Ajout manuel à la liste de diffusion. Aucune campagne n&apos;est créée ni envoyée pour
+            l&apos;instant (niveau « basic » — référentiel des abonnés uniquement).
           </p>
           <AdminNewsletterSubscriberCreateForm />
         </section>
@@ -178,8 +193,8 @@ export default async function AdminMarketingNewsletterPage({
           <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
             <h2 className="text-lg font-semibold tracking-tight text-foreground">Segmentation</h2>
             <p className="mt-1 text-xs text-muted-foreground">
-              Niveau `segmentation` non actif : le référentiel reste consultable au niveau
-              `basic`, sans filtres opératoires avancés.
+              Niveau `segmentation` non actif : le référentiel reste consultable au niveau `basic`,
+              sans filtres opératoires avancés.
             </p>
           </section>
         )}
@@ -187,9 +202,7 @@ export default async function AdminMarketingNewsletterPage({
         <AdminNewsletterAutomationPanel snapshot={automationSnapshot} />
 
         <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold tracking-tight text-foreground">
-            Abonnés
-          </h2>
+          <h2 className="mb-4 text-lg font-semibold tracking-tight text-foreground">Abonnés</h2>
           <AdminNewsletterSubscribersList subscribers={subscriberResult.items} />
         </section>
       </div>

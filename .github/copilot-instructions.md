@@ -5,11 +5,14 @@
 These instructions are intentionally short.
 They complement `AGENTS.md` for GitHub Copilot usage and must not replace or contradict the repository doctrine.
 
+`.claude/CLAUDE.md` is the operational assistant baseline for this repository.
+GitHub Copilot instructions must stay aligned with it.
+
 ## Project context
 
 Creatyss is a custom e-commerce foundation built to be:
 
-- local-first with Docker Compose
+- local-first with native local development first
 - maintainable
 - strictly typed
 - simple, modular, and production-ready
@@ -56,8 +59,8 @@ Always align with, in this order:
 - Next.js App Router
 - TypeScript strict
 - PostgreSQL
-- Docker Compose
-- Makefile
+- Docker Compose for prod-like local verification only
+- Makefile for project utility and containerized workflows when a target already exists
 
 ## Working rule
 
@@ -67,3 +70,5 @@ When documentation, code, and request appear to diverge:
 - identify the most relevant project source for the current task;
 - stay aligned with repository doctrine;
 - make assumptions explicit when needed.
+
+When an existing `Makefile` target correctly encapsulates the requested workflow, prefer it over rewriting the raw command.

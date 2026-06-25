@@ -15,3 +15,13 @@ args = [
 ]
 command = "npx"
 enabled = false
+
+[mcp_servers.creatyss-rag]
+command = "pnpm"
+args = [
+    "tsx",
+    "scripts/rag/mcp-server.ts",
+]
+
+[mcp_servers.mempalace]
+command = "mempalace-mcp"

@@ -10,13 +10,19 @@ Doter le back-office d'une vue clients complète : historique de commandes, info
 
 ## Périmètre
 
-Proposition — non observé comme implémenté à ce jour :
+Livré au 2026-06-25 :
 
-- `features/admin/customers/` — vue détail client avec historique de commandes, informations de contact, statut abonnement newsletter
+- `features/admin/customers/` et `app/admin/(protected)/commerce/customers/**` — liste clients et vue détail dédiée avec historique de commandes, informations de contact, adresses, statut et cycle de vie
 - `prisma/core/commerce/customers.prisma` — modèle `Customer` déjà posé (observé)
-- `prisma/optional/platform/consent.prisma` — modèles `ConsentPurpose` et `ConsentRecord` déjà posés (observé dans le schéma), à brancher sur la vue client
-- Affichage du consentement actif par purpose pour chaque client
-- Actions RGPD minimales : export des données client, suppression ou anonymisation sur demande
+- `prisma/optional/platform/consent.prisma` — modèles `ConsentPurpose` et `ConsentRecord` lus dans la vue client
+- Affichage du consentement par purpose pour chaque client
+- Action RGPD minimale : export des données client
+
+Reste hors de ce lot :
+
+- anonymisation ou suppression RGPD côté admin
+- segmentation CRM avancée
+- statut abonnement newsletter réellement éditable depuis la fiche
 
 ## Hors périmètre
 
@@ -27,7 +33,7 @@ Proposition — non observé comme implémenté à ce jour :
 
 ## Dépendances
 
-- H2 terminé (commandes fiables — l'historique commandes nécessite des commandes cohérentes)
+- H2 suffisamment stabilisé côté commandes (l'historique commandes nécessite des données de commandes cohérentes)
 - Référence de cadrage existante : `docs/lots/2026-06-16-commerce-customers-admin-v1-reference.md`
 
 ## Invariants
@@ -40,19 +46,19 @@ Proposition — non observé comme implémenté à ce jour :
 
 - RGPD : la gestion du consentement et le droit à l'effacement ont des implications légales — à valider avec un juriste si la boutique traite des données de résidentes européennes (très probable)
 - Anonymisation vs suppression : la suppression physique d'un client casse les relations de commandes — l'anonymisation est préférable mais la décision doit être explicite
-- `ConsentRecord` : les modèles sont posés en Prisma mais leur alimentation (quand et comment le consentement est enregistré) n'est pas observée comme implémentée
+- `ConsentRecord` : les modèles sont lus dans l'admin, mais leur stratégie d'alimentation reste à auditer séparément
 
 ## Vérifications
 
 - `pnpm run typecheck`
 - `pnpm run lint`
-- Test manuel : vue détail client avec historique, consentement affiché, export données
+- Test manuel : liste clients, vue détail client avec historique, consentement affiché, export données
 
 ## Critères de fin
 
 - L'admin peut accéder à la fiche d'un client avec son historique de commandes complet
-- Le consentement actif par purpose est affiché sur la fiche client
-- Une action d'export ou d'anonymisation RGPD est disponible
+- Le consentement par purpose est affiché sur la fiche client
+- Une action d'export RGPD est disponible
 - `typecheck` et `lint` passent sans erreur
 
 ## Agent recommandé

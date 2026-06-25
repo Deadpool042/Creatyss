@@ -26,7 +26,7 @@ Consolider le commerce pour qu'il soit légalement conforme et techniquement fia
 
 ## Dépendances
 
-- H1 terminé : paiement Stripe opérationnel (requis pour le remboursement réel dans `lot-retours-remboursement-complets`)
+- Paiement Stripe opérationnel (requis pour le remboursement réel dans `lot-retours-remboursement-complets`)
 - Validation externe par expert-comptable pour la TVA (prérequis non technique)
 - Provider email transactionnel configuré en production
 

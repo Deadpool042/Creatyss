@@ -2,21 +2,30 @@
 
 ## Statut
 
-A faire
+Livré — 2026-06-25
 
 ## Objectif
 
-Ouvrir un back-office dédié à la gestion des `DiscountCode` secondaires, permettre l'édition de la priorité des remises automatiques, et visualiser les `DiscountRedemption` par code. Le module `commerce.discounts` est observé à L3 complet mais ces surfaces admin avancées sont absentes.
+Ouvrir un back-office dédié à la gestion des `DiscountCode` secondaires, permettre l'édition de la priorité des remises automatiques, et visualiser les `DiscountRedemption` par code.
 
 ## Périmètre
 
-Proposition — non observé comme implémenté à ce jour :
+Livré au 2026-06-25 :
 
-- `features/admin/marketing/discounts/` — extension de la vue admin existante :
-  - Section dédiée `DiscountCode` : liste, création en masse, désactivation, statistiques de rédemption
-  - Vue `DiscountRedemption` par code : qui a utilisé quoi et quand
-  - Édition de la priorité des remises automatiques (`priority`) directement dans la liste
-- Interface de création de lots de codes (génération en série)
+- `app/admin/(protected)/marketing/discounts/[discount]/page.tsx` — page détail admin dédiée par remise
+- `features/admin/marketing/discounts/queries/get-admin-discount-detail.query.ts` — lecture détaillée de la remise, de ses codes et de sa priorité
+- `features/admin/marketing/discounts/queries/list-discount-redemptions.query.ts` — lecture des rédemptions par remise
+- `features/admin/marketing/discounts/components/admin-discount-codes-list.tsx` — liste des `DiscountCode` liés à la remise
+- `features/admin/marketing/discounts/components/admin-discount-code-create-form.tsx` et `actions/create-discount-code.action.ts` — création de codes secondaires avec validation serveur
+- `features/admin/marketing/discounts/components/admin-discount-priority-form.tsx` et `actions/update-discount-priority.action.ts` — édition de la priorité admin avec garde-fous serveur
+- `features/admin/marketing/discounts/components/admin-discount-redemptions-table.tsx` — visualisation des `DiscountRedemption`
+- `features/admin/marketing/discounts/actions/toggle-discount-code-status.action.ts` — activation/désactivation de code avec contrôle boutique courante et niveau de feature
+- `features/admin/marketing/discounts/components/admin-discounts-list.tsx` — navigation liste → détail
+
+Reste en dehors de la preuve livrée dans ce lot :
+
+- test e2e admin dédié à cette nouvelle page détail
+- feedback UX avancé globalisé côté back-office (bannière ou toasts centralisés)
 
 ## Hors périmètre
 
@@ -26,8 +35,8 @@ Proposition — non observé comme implémenté à ce jour :
 
 ## Dépendances
 
-- `commerce.discounts` L3 déjà actif avec `DiscountCode` et `DiscountRedemption` posés en Prisma (observé dans `2026-06-13-audit-catalogue-modules.md`)
-- H2 terminé ou en cours — les rédemptions sont liées à des commandes
+- `commerce.discounts` L3 déjà actif avec `DiscountCode` et `DiscountRedemption` posés en Prisma
+- Socle commandes suffisamment cohérent pour exposer les rédemptions liées aux commandes
 
 ## Invariants
 
@@ -44,14 +53,16 @@ Proposition — non observé comme implémenté à ce jour :
 
 - `pnpm run typecheck`
 - `pnpm run lint`
-- Test manuel : création d'un `DiscountCode`, visualisation des rédemptions, édition de priorité
+- `pnpm run test:unit`
+- `pnpm exec playwright test tests/e2e/public/commerce-discounts.spec.ts`
 
 ## Critères de fin
 
+- L'admin peut accéder à une page détail de remise depuis la liste
 - L'admin peut créer, lister et désactiver des `DiscountCode` secondaires
-- Les `DiscountRedemption` sont visibles par code avec les informations de commande associées
-- La priorité des remises automatiques est éditable depuis la liste
-- `typecheck` et `lint` passent sans erreur
+- Les `DiscountRedemption` sont visibles dans le détail admin de la remise
+- La priorité des remises automatiques est éditable côté admin avec validation serveur
+- `typecheck`, `lint` et les tests ciblés passent sans erreur
 
 ## Agent recommandé
 

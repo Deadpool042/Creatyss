@@ -28,7 +28,7 @@ Proposition — non observé comme implémenté à ce jour :
 
 ## Dépendances
 
-- H2 terminé : commandes fiables pour les déclencheurs `order_created` et `order_shipped`
+- H2 suffisamment stabilisé côté commandes pour les déclencheurs `order_created` et `order_shipped`
 - `engagement.automations` L3 borné existant comme base (ne pas réécrire le CRUD admin des définitions)
 - Décision d'architecture sur le mode d'exécution du worker : cron Next.js (`route.ts` appelée par un cron VPS), Edge Function, ou processus séparé — à trancher en `architect-review`
 

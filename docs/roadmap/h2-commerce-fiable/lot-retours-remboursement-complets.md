@@ -10,13 +10,16 @@ Compléter le module retours pour couvrir la sélection de lignes, le remboursem
 
 ## Périmètre
 
-Proposition — ce qui manque à partir de la V1 observée :
+Livré au 2026-06-24 :
 
-- `features/admin/commerce/returns/` — sélection de lignes et quantités dans la demande de retour
-- Lien remboursement réel : appel Stripe Refunds API, mise à jour du `Payment`/`PaymentAttempt` correspondant
-- Restock inventaire : décrément inverse transactionnel sur `InventoryItem` à la validation du retour
-- Storefront : formulaire de demande de retour côté client (référence commande + email)
-- `features/commerce/` — intégration de la demande storefront dans le workflow retours admin
+- `features/admin/commerce/returns/` — sélection de lignes et quantités dans la demande de retour admin
+- Remboursement Stripe réel : appel Stripe Refunds API, mise à jour du `Payment`/`PaymentAttempt` correspondant, enregistrement `PaymentRefund`
+- Restock inventaire transactionnel à la réception des articles en état `RECEIVED`, avec skip des lignes `DAMAGED`
+
+Reste hors de ce lot :
+
+- formulaire storefront de demande de retour côté client
+- intégration de cette demande storefront dans le workflow retours admin
 
 ## Hors périmètre
 
@@ -27,7 +30,7 @@ Proposition — ce qui manque à partir de la V1 observée :
 
 ## Dépendances
 
-- `lot-paiement-en-ligne` terminé (H1) — le remboursement Stripe nécessite un `PaymentIntent` existant
+- Paiement Stripe opérationnel — le remboursement Stripe nécessite un `PaymentIntent` existant
 - `commerce.returns` V1 observée comme base de départ (ne pas réécrire le workflow existant)
 - `commerce.payments` actif avec les clés Stripe configurées
 
@@ -48,15 +51,14 @@ Proposition — ce qui manque à partir de la V1 observée :
 
 - `pnpm run typecheck`
 - `pnpm run lint`
-- `pnpm run test` — tests unitaires sur la logique de restock et sur la résolution du remboursement
-- Test manuel : demande de retour storefront → approbation admin → remboursement Stripe → stock mis à jour
+- Tests unitaires sur la logique de restock et sur la résolution du remboursement
+- Test manuel : retour admin → approbation → remboursement Stripe → stock mis à jour
 
 ## Critères de fin
 
-- Une cliente peut initier une demande de retour depuis le storefront
 - L'admin peut sélectionner les lignes concernées dans la demande de retour
 - La validation du retour déclenche un remboursement réel via Stripe
-- L'inventaire est decrementé en sens inverse à la validation du retour
+- L'inventaire est réajusté transactionnellement selon l'état retourné
 - `typecheck` et `lint` passent sans erreur
 - Les retours existants en DB ne sont pas impactés par la migration
 
