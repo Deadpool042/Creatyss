@@ -65,6 +65,15 @@ const ADMIN_CUSTOMER_DETAIL_SELECT = {
   },
 } satisfies Prisma.CustomerSelect;
 
+export type AdminCustomerConsentRecord = {
+  id: string;
+  status: "GRANTED" | "DENIED" | "REVOKED" | "EXPIRED";
+  grantedAt: Date | null;
+  revokedAt: Date | null;
+  deniedAt: Date | null;
+  purpose: { code: string; name: string };
+};
+
 export async function getAdminCustomerDetail(customerId: string) {
   const storeId = await getCurrentStoreId();
 
@@ -72,13 +81,41 @@ export async function getAdminCustomerDetail(customerId: string) {
     return null;
   }
 
-  return db.customer.findFirst({
-    where: {
-      id: customerId,
-      storeId,
-      archivedAt: null,
-      isGuest: false,
-    },
-    select: ADMIN_CUSTOMER_DETAIL_SELECT,
-  });
+  const [customer, consentRecords] = await Promise.all([
+    db.customer.findFirst({
+      where: {
+        id: customerId,
+        storeId,
+        archivedAt: null,
+        isGuest: false,
+      },
+      select: ADMIN_CUSTOMER_DETAIL_SELECT,
+    }),
+    db.consentRecord.findMany({
+      where: {
+        subjectType: "CUSTOMER",
+        subjectId: customerId,
+      },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        status: true,
+        grantedAt: true,
+        revokedAt: true,
+        deniedAt: true,
+        purpose: {
+          select: {
+            code: true,
+            name: true,
+          },
+        },
+      },
+    }),
+  ]);
+
+  if (customer === null) {
+    return null;
+  }
+
+  return { ...customer, consentRecords: consentRecords as AdminCustomerConsentRecord[] };
 }
