@@ -41,6 +41,8 @@ const serverEnvSchema = z.object({
 
   UPLOADS_DIR: nonEmptyStringSchema.default("public/uploads"),
   MEDIA_IMAGE_PLACEHOLDER: nonEmptyStringSchema.default("creatyss.webp"),
+
+  CRON_SECRET: nonEmptyStringSchema.optional(),
 });
 
 const parsedServerEnv = serverEnvSchema.safeParse(process.env);
@@ -99,4 +101,5 @@ export const serverEnv = {
   brevoFromName: parsedServerEnv.data.BREVO_FROM_NAME,
   uploadsDir: parsedServerEnv.data.UPLOADS_DIR,
   mediaImagePlaceholder: parsedServerEnv.data.MEDIA_IMAGE_PLACEHOLDER,
+  cronSecret: parsedServerEnv.data.CRON_SECRET ?? null,
 } as const;
