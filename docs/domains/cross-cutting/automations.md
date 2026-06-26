@@ -645,7 +645,7 @@ Cf.
 `docs/lots/2026-06-15-engagement-automations-run-jobs-script-cadrage.md`.
 
 - un script `scripts/run-automation-jobs.ts` (commande `pnpm run
-  automations:run-jobs`) sélectionne les jobs `PENDING` dus
+automations:run-jobs`) sélectionne les jobs `PENDING` dus
   (`AUTOMATION_NEWSLETTER_SUBSCRIBED`, `archivedAt: null`,
   `scheduledAt <= now`), limités à un lot borné, et appelle pour chacun
   l'exécuteur unitaire `executeAutomationJob` ;
@@ -717,12 +717,19 @@ Le domaine `automations` s'arrête :
 - avant les notifications transactionnelles ;
 - avant l'orchestration générique multi-domaines ;
 - avant les intégrations providers complètes ;
-- avant le moteur d'exécution technique lui-même.
+- avant le moteur d'exécution technique lui-même ;
+- avant l'orchestration externe (n8n).
 
 Le domaine `automations` porte les activations marketing internes reconnues par
 le système.
 Il ne doit pas devenir un moteur générique de processus ni un doublon des
 outils externes.
+
+n8n est l'orchestrateur **externe** auto-hébergé sur le VPS personnel. Il
+orchestre des flux autour de Creatyss (notifications, rapports, synchronisations
+tierces) sans implémenter de logique métier. Ces deux périmètres sont distincts
+et complémentaires — cf.
+`../../architecture/40-exploitation/43-infrastructure-observabilite-automatisation.md`.
 
 ---
 
@@ -809,3 +816,4 @@ Cf. `docs/lots/2026-06-14-engagement-automations-crud-cadrage.md`.
 - `../core/commerce/orders.md`
 - `../core/commerce/customers.md`
 - `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/40-exploitation/43-infrastructure-observabilite-automatisation.md`
