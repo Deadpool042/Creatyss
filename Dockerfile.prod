@@ -26,6 +26,7 @@ RUN pnpm install --frozen-lockfile
 FROM deps AS build
 COPY . .
 ENV DATABASE_URL=postgresql://placeholder:placeholder@localhost:5432/placeholder
+ENV SKIP_ENV_VALIDATION=1
 RUN pnpm exec prisma generate
 ENV NODE_ENV=production
 RUN pnpm run build

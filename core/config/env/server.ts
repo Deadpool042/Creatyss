@@ -47,7 +47,7 @@ const serverEnvSchema = z.object({
 
 const parsedServerEnv = serverEnvSchema.safeParse(process.env);
 
-if (!parsedServerEnv.success) {
+if (!parsedServerEnv.success && !process.env.SKIP_ENV_VALIDATION) {
   const issues = parsedServerEnv.error.issues
     .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
     .join("\n");
@@ -55,51 +55,81 @@ if (!parsedServerEnv.success) {
   throw new Error(`Invalid server environment variables:\n${issues}`);
 }
 
-const resolvedEmailProvider =
-  parsedServerEnv.data.EMAIL_PROVIDER ??
-  (parsedServerEnv.data.NODE_ENV === "production" ? "brevo" : "mailpit");
+const data = parsedServerEnv.data ?? null;
 
-const emailValidationIssues: string[] = [];
+if (data) {
+  const resolvedEmailProviderCheck =
+    data.EMAIL_PROVIDER ?? (data.NODE_ENV === "production" ? "brevo" : "mailpit");
+  const emailValidationIssues: string[] = [];
 
-if (resolvedEmailProvider === "brevo") {
-  if (
-    parsedServerEnv.data.BREVO_API_KEY === "placeholder-change-me" ||
-    parsedServerEnv.data.BREVO_API_KEY === "brevo_api_key_change_me"
-  ) {
-    emailValidationIssues.push(
-      "BREVO_API_KEY: placeholder value is invalid when EMAIL_PROVIDER=brevo"
-    );
+  if (resolvedEmailProviderCheck === "brevo") {
+    if (
+      data.BREVO_API_KEY === "placeholder-change-me" ||
+      data.BREVO_API_KEY === "brevo_api_key_change_me"
+    ) {
+      emailValidationIssues.push(
+        "BREVO_API_KEY: placeholder value is invalid when EMAIL_PROVIDER=brevo"
+      );
+    }
+    if (data.BREVO_FROM_ADDRESS === "no-reply@example.com") {
+      emailValidationIssues.push(
+        "BREVO_FROM_ADDRESS: placeholder value is invalid when EMAIL_PROVIDER=brevo"
+      );
+    }
   }
 
-  if (parsedServerEnv.data.BREVO_FROM_ADDRESS === "no-reply@example.com") {
-    emailValidationIssues.push(
-      "BREVO_FROM_ADDRESS: placeholder value is invalid when EMAIL_PROVIDER=brevo"
-    );
+  if (emailValidationIssues.length > 0) {
+    throw new Error(`Invalid server environment variables:\n${emailValidationIssues.join("\n")}`);
   }
 }
 
-if (emailValidationIssues.length > 0) {
-  throw new Error(`Invalid server environment variables:\n${emailValidationIssues.join("\n")}`);
-}
+const resolvedEmailProvider: "brevo" | "mailpit" =
+  data?.EMAIL_PROVIDER ?? (data?.NODE_ENV === "production" ? "brevo" : "mailpit");
 
-export const serverEnv = {
-  nodeEnv: parsedServerEnv.data.NODE_ENV,
-  appUrl: parsedServerEnv.data.APP_URL,
-  databaseUrl: parsedServerEnv.data.DATABASE_URL,
-  adminSessionSecret: parsedServerEnv.data.ADMIN_SESSION_SECRET,
-  cartSessionSecret: parsedServerEnv.data.CART_SESSION_SECRET,
-  favoritesSessionSecret: parsedServerEnv.data.FAVORITES_SESSION_SECRET,
-  stripeSecretKey: parsedServerEnv.data.STRIPE_SECRET_KEY ?? null,
-  stripeWebhookSecret: parsedServerEnv.data.STRIPE_WEBHOOK_SECRET ?? null,
-  emailProvider: resolvedEmailProvider,
-  emailFromAddress: parsedServerEnv.data.EMAIL_FROM_ADDRESS,
-  emailFromName: parsedServerEnv.data.EMAIL_FROM_NAME,
-  mailpitSmtpHost: parsedServerEnv.data.MAILPIT_SMTP_HOST,
-  mailpitSmtpPort: parsedServerEnv.data.MAILPIT_SMTP_PORT,
-  brevoApiKey: parsedServerEnv.data.BREVO_API_KEY,
-  brevoFromAddress: parsedServerEnv.data.BREVO_FROM_ADDRESS,
-  brevoFromName: parsedServerEnv.data.BREVO_FROM_NAME,
-  uploadsDir: parsedServerEnv.data.UPLOADS_DIR,
-  mediaImagePlaceholder: parsedServerEnv.data.MEDIA_IMAGE_PLACEHOLDER,
-  cronSecret: parsedServerEnv.data.CRON_SECRET ?? null,
-} as const;
+const validatedEnv = data
+  ? ({
+      nodeEnv: data.NODE_ENV,
+      appUrl: data.APP_URL,
+      databaseUrl: data.DATABASE_URL,
+      adminSessionSecret: data.ADMIN_SESSION_SECRET,
+      cartSessionSecret: data.CART_SESSION_SECRET,
+      favoritesSessionSecret: data.FAVORITES_SESSION_SECRET,
+      stripeSecretKey: data.STRIPE_SECRET_KEY ?? null,
+      stripeWebhookSecret: data.STRIPE_WEBHOOK_SECRET ?? null,
+      emailProvider: resolvedEmailProvider,
+      emailFromAddress: data.EMAIL_FROM_ADDRESS,
+      emailFromName: data.EMAIL_FROM_NAME,
+      mailpitSmtpHost: data.MAILPIT_SMTP_HOST,
+      mailpitSmtpPort: data.MAILPIT_SMTP_PORT,
+      brevoApiKey: data.BREVO_API_KEY,
+      brevoFromAddress: data.BREVO_FROM_ADDRESS,
+      brevoFromName: data.BREVO_FROM_NAME,
+      uploadsDir: data.UPLOADS_DIR,
+      mediaImagePlaceholder: data.MEDIA_IMAGE_PLACEHOLDER,
+      cronSecret: data.CRON_SECRET ?? null,
+    } as const)
+  : null;
+
+type ServerEnv = NonNullable<typeof validatedEnv>;
+
+// En mode build (SKIP_ENV_VALIDATION=1), le parse peut échouer — les vraies vars
+// sont injectées au runtime. Le proxy retourne des stubs vides pour permettre
+// l'évaluation des modules par Next.js sans exposer de vraies valeurs.
+export const serverEnv: ServerEnv =
+  validatedEnv ??
+  new Proxy({} as ServerEnv, {
+    get(_, key) {
+      if (process.env.SKIP_ENV_VALIDATION) {
+        const nullableKeys: (keyof ServerEnv)[] = [
+          "stripeSecretKey",
+          "stripeWebhookSecret",
+          "cronSecret",
+        ];
+        if (nullableKeys.includes(key as keyof ServerEnv)) return null;
+        return "" as never;
+      }
+      throw new Error(
+        `[serverEnv] Accès à "${String(key)}" sans variables d'environnement valides.`
+      );
+    },
+  });

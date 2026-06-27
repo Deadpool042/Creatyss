@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+export const dynamic = "force-dynamic";
+
 import { serverEnv } from "@/core/config/env";
 import {
   getPublishedProductsForSitemap,
