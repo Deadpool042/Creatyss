@@ -53,6 +53,7 @@ COPY --from=build --chown=app:app /app/tsconfig.json ./tsconfig.json
 # imports runtime hors bundle.
 COPY --from=build --chown=app:app /app/prisma ./prisma
 COPY --from=build --chown=app:app /app/src/generated ./src/generated
+COPY --from=build --chown=app:app /app/scripts ./scripts
 
 # Répertoires inscriptibles montés en volume en production.
 RUN mkdir -p public/uploads storage/documents && chown -R app:app public/uploads storage/documents
