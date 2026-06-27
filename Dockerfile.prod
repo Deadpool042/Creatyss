@@ -46,6 +46,7 @@ COPY --from=build --chown=app:app /app/package.json ./package.json
 COPY --from=build --chown=app:app /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=build --chown=app:app /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=build --chown=app:app /app/next.config.ts ./next.config.ts
+COPY --from=build --chown=app:app /app/prisma.config.ts ./prisma.config.ts
 COPY --from=build --chown=app:app /app/core/config ./core/config
 COPY --from=build --chown=app:app /app/tsconfig.json ./tsconfig.json
 # Schéma + client généré : requis par les jobs db (push/seed) et par les
