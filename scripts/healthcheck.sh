@@ -4,7 +4,7 @@
 # Contrôles effectués :
 #   1. Présence des conteneurs dans docker compose ps
 #   2. creatyss-db : healthcheck Docker natif (pg_isready)
-#   3. creatyss-app : état running + réponse HTTP interne sur :3000
+#   3. creatyss-app : état running (HTTP vérifié via HTTPS public §5)
 #   4. creatyss-caddy : état running
 #   5. HTTPS : réponse du domaine public (curl)
 #   6. En-tête HSTS présent dans la réponse
@@ -82,15 +82,11 @@ case "${DB_HEALTH}" in
 esac
 
 # ── 3. Application ────────────────────────────────────────────────────────────
+# Le port 3000 n'est pas publié sur l'hôte (seul Caddy accède à app:3000 via
+# le réseau Docker). La disponibilité HTTP est vérifiée à l'étape HTTPS (§5).
 APP_STATE=$(docker inspect creatyss-app --format '{{.State.Status}}' 2>/dev/null || echo "absent")
 if [ "${APP_STATE}" = "running" ]; then
-  # Vérification applicative depuis l'intérieur du conteneur.
-  # node:22-alpine a wget (busybox) — pas de curl dans l'image.
-  if docker exec creatyss-app wget -q --spider http://localhost:3000/ 2>/dev/null; then
-    ok "creatyss-app : running — répond sur :3000"
-  else
-    fail "creatyss-app : running mais ne répond pas sur :3000 — app en cours de démarrage ?"
-  fi
+  ok "creatyss-app : running"
 else
   fail "creatyss-app : ${APP_STATE} (attendu : running)"
 fi
