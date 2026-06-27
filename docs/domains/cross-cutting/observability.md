@@ -277,18 +277,21 @@ Il ne le gouverne pas.
 
 À cadrer :
 
-- stratégie de logging ;
-- niveau de verbosité ;
+- stratégie de logging et niveau de verbosité ;
 - corrélation avec domain-events ;
-- stratégie de retention ;
-- outils utilisés ;
-- alerting.
+- stratégie de rétention.
+
+### Points tranchés
+
+**Outils d'observabilité infra** — Grafana + Prometheus + Loki + Uptime Kuma, hébergés sur VPS personnel mutualisé, indépendants du VPS Creatyss.
+Cf. `../../architecture/40-exploitation/43-infrastructure-observabilite-automatisation.md`.
 
 ---
 
 ## Documents liés
 
 - `../../architecture/40-exploitation/42-observabilite-et-audit.md`
+- `../../architecture/40-exploitation/43-infrastructure-observabilite-automatisation.md`
 - `domain-events.md`
 - `../../domains/cross-cutting/audit.md`
 - `../../domains/cross-cutting/jobs.md`

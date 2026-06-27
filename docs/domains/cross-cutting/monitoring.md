@@ -328,16 +328,18 @@ Il ne doit pas absorber toute la compréhension technique ni toute la gouvernanc
 
 À confirmer explicitement dans le projet :
 
-- la frontière exacte entre `monitoring` et `observability` ;
 - les signaux réellement critiques à superviser ;
-- la stratégie d’alerting ;
 - les seuils et leur gouvernance ;
-- la place des dashboards ;
 - la supervision des jobs, intégrations et webhooks ;
 - la stratégie anti-bruit ;
 - la gestion des incidents récurrents.
 
-Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
+### Points tranchés
+
+**Frontière monitoring / observability** — `observability` fournit la matière brute (logs, métriques, traces) ; `monitoring` en dérive une surveillance active (alertes, états de santé, dashboards). Cf. section "Observabilité et audit" de ce document.
+
+**Stratégie d’alerting et dashboards** — Uptime Kuma pour la surveillance de disponibilité et l’alerting ; Grafana pour les dashboards et corrélations. Hébergés sur VPS personnel mutualisé.
+Cf. `../../architecture/40-exploitation/43-infrastructure-observabilite-automatisation.md`.
 
 ---
 
@@ -345,6 +347,7 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 - `../../architecture/40-exploitation/41-modele-d-exploitation.md`
 - `../../architecture/40-exploitation/42-observabilite-et-audit.md`
+- `../../architecture/40-exploitation/43-infrastructure-observabilite-automatisation.md`
 - `observability.md`
 - `audit.md`
 - `jobs.md`

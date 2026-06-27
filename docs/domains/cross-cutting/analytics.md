@@ -399,9 +399,29 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Décision — Analytics web externe (2026-06-26)
+
+Cf. `../../architecture/40-exploitation/43-infrastructure-observabilite-automatisation.md`.
+
+**Plausible Community Edition** (self-hosted, VPS personnel) est retenu pour l'analytics web de trafic.
+
+Périmètre :
+
+- trafic, pages vues, sources, données SEO ;
+- trois événements métier exposés : `CheckoutStarted`, `OrderCompleted`, `ContactSubmitted`.
+
+Frontière avec ce domaine :
+
+- les vues cockpit admin (`engagement.analytics`) restent des lectures SQL internes depuis les domaines métier (`orders`, `customers`) ;
+- Plausible ne fournit pas de données injectées dans les domaines métier ;
+- l'application fonctionne intégralement sans Plausible.
+
+---
+
 ## Documents liés
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`
+- `../../architecture/40-exploitation/43-infrastructure-observabilite-automatisation.md`
 - `../../architecture/10-fondations/12-frontieres-et-responsabilites.md`
 - `tracking.md`
 - `attribution.md`
@@ -432,8 +452,8 @@ Cf. `docs/lots/2026-06-13-engagement-analytics-cadrage.md` (périmètre réduit 
 commerce uniquement).
 
 - `engagement.analytics` (`FeatureFlag`) seedé (`allowedLevels:
-  ["read","insights","recommendations"]`, `defaultLevel: "read"`, `status:
-  "DRAFT"`, `isEnabledByDefault: false`) — module togglable dans
+["read","insights","recommendations"]`, `defaultLevel: "read"`, `status:
+"DRAFT"`, `isEnabledByDefault: false`) — module togglable dans
   `/admin/settings/advanced`, **inactif par défaut**
   (`prisma/seed/analytics-feature-flag.seed.ts`).
 - `getMonthlyCommerceAnalytics()`
