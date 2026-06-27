@@ -18,6 +18,7 @@ import {
   type CheckoutPaymentMethod,
 } from "@/features/commerce/checkout/types/checkout-payment-method.types";
 import { resolveApplicableOrderDiscount } from "@/features/commerce/discounts/lib/resolve-order-discount";
+import { queueOrderPlacedAutomationJobs } from "@/features/automations/services/queue-order-placed-automation-jobs.service";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import {
   OrderRepositoryError,
@@ -558,6 +559,20 @@ export async function createOrderFromGuestCartToken(
         data: { status: "COMPLETED", completedAt: new Date() },
       }),
     ]);
+
+    // Automation failure must not rollback the order — catch and log only.
+    try {
+      await queueOrderPlacedAutomationJobs(tx, {
+        storeId: cart.storeId,
+        orderId: createdOrder.id,
+        occurredAt: new Date(),
+      });
+    } catch (automationError) {
+      console.error(
+        "[order] queueOrderPlacedAutomationJobs failed — order unaffected",
+        automationError
+      );
+    }
 
     return createdOrder;
   });
