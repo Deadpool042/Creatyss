@@ -19,7 +19,7 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 
 - `commerce.customers` : base admin dédiée observée (liste, détail, commandes, consentements, export RGPD), mais CRM avancé non observé (`CrmContact`, `CrmTag`, segmentation)
 - `engagement.newsletter` : `NewsletterCampaign`/`NewsletterCampaignRecipient` non alimentés, pas d'envoi réel — observé
-- `engagement.automations` : worker/scheduler général absent, uniquement boucle NEWSLETTER_SUBSCRIBED borné — observé
+- `engagement.automations` : route cron `POST /api/cron/run-automation-jobs` + `runAutomationJobsBatch` observés — scope actuel limité à `NEWSLETTER_SUBSCRIBED` ; `ORDER_PLACED` et autres types non couverts ; activation production (CRON_SECRET + cron externe) non configurée
 - `engagement.analytics` : bloc "Aujourd'hui vs hier" mock, tracking absent — observé
 - Settings admin : `orders`, `catalog` et `media` observés ; `customers` reste un `AdminComingSoon` assumé, renvoyant vers le lot clients
 
@@ -39,7 +39,7 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 | [lot-clients-historique-crm.md](./lot-clients-historique-crm.md)           | Base clients admin — historique commandes, consentements et export RGPD        | Livré — 2026-06-25 |
 | [lot-discounts-backoffice-avance.md](./lot-discounts-backoffice-avance.md) | Back-office DiscountCode dédié, édition de priorité, visualisation redemptions | Livré — 2026-06-25 |
 | [lot-newsletter-campagnes.md](./lot-newsletter-campagnes.md)               | Créer et envoyer des campagnes newsletter réelles                              | A faire |
-| [lot-automations-worker-general.md](./lot-automations-worker-general.md)   | Worker/scheduler général pour exécuter les jobs automatiquement                | A faire |
+| [lot-automations-worker-general.md](./lot-automations-worker-general.md)   | Worker/scheduler général pour exécuter les jobs automatiquement                | En cours — route cron + batch implémentés (scope NEWSLETTER_SUBSCRIBED), extension aux autres types et activation prod restantes |
 | [lot-analytics-tracking-reel.md](./lot-analytics-tracking-reel.md)         | Brancher le bloc "Aujourd'hui vs hier" sur un pipeline tracking minimal        | A faire |
 | [lot-settings-manquants.md](./lot-settings-manquants.md)                   | Ouvrir les sections settings orders, catalog, customers et media               | Terminé — customers reste volontairement en stub |
 

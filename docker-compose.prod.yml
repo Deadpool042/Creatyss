@@ -65,6 +65,7 @@ services:
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       UPLOADS_DIR: ${UPLOADS_DIR}
       DOCUMENTS_DIR: ${DOCUMENTS_DIR}
+      CRON_SECRET: ${CRON_SECRET}
     volumes:
       - uploads_data:/app/public/uploads
       - documents_data:/app/storage/documents

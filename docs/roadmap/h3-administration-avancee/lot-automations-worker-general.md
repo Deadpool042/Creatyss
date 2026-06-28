@@ -2,15 +2,27 @@
 
 ## Statut
 
-A faire
+En cours
+
+## Observé comme implémenté
+
+- Route `POST /api/cron/run-automation-jobs` — protégée par `CRON_SECRET` (Bearer token)
+- Service `runAutomationJobsBatch(batchSize)` — recovery RUNNING bloqués → FAILED, auto-retry FAILED retryables, exécution des PENDING échus
+- Architecture décidée : route Next.js appelée par un cron externe (cron VPS ou scheduler), pas de processus long
+
+## Restant
+
+- Extension de `SUPPORTED_JOB_TYPE_CODES` à `ORDER_PLACED` et autres types (scope actuel : `NEWSLETTER_SUBSCRIBED` uniquement)
+- Activation production : `CRON_SECRET` dans `.env` + cron externe configuré sur le VPS
+- Monitoring : état du worker visible dans l'observabilité admin existante
 
 ## Objectif
 
-Implémenter un worker ou scheduler général qui exécute automatiquement les jobs planifiés, sans intervention manuelle de l'admin. L'état observé est une boucle bornée `NEWSLETTER_SUBSCRIBED → EMAIL_MESSAGE` exécutable manuellement — aucun worker générique n'existe.
+Étendre le worker à tous les types de jobs et l'activer en production via un cron VPS appelant la route existante.
 
 ## Périmètre
 
-Proposition — non observé comme implémenté à ce jour :
+Implémentation partielle observée — reste à faire :
 
 - `prisma/cross-cutting/jobs.prisma` — modèle `Job` existant (observé) comme source des jobs à traiter
 - Worker/scheduler : processus ou route de traitement périodique qui consomme les jobs `PENDING` dont `scheduledAt` est échu

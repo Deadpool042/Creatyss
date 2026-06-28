@@ -171,11 +171,13 @@ Limites du smoke : paiement limité à `Virement bancaire` (pas de paiement en l
 
 **État 2026-06-12 :** `pnpm run build` passe en local. `Dockerfile.prod` écrit (multi-stage, non-root), build d'image non validé faute de Docker disponible. Documentation d'exploitation initiée dans `docs/exploitation/` (env, sauvegardes, médias, mise à jour/rollback). Point d'attention tracé : pas de migrations Prisma, `db:push` embarque `--accept-data-loss` — sauvegarde obligatoire avant tout push en production.
 
-- [ ] Build production validé — `next build` local OK ; build image Docker restant à valider
+**Mise à jour 2026-06-28 (staging opérationnel) :** VPS OVH installé, Docker + Docker Compose opérationnels, build Docker prod validé sur VPS. PostgreSQL Docker healthy, `db:push` exécuté, store/admin bootstrapés. Caddy actif, certificat Let's Encrypt obtenu, HTTPS validé (HTTP/2 200 + HSTS). Scripts d'exploitation validés (`scripts/deploy.sh`, `scripts/backup.sh`, `scripts/prune-backups.sh`, `scripts/healthcheck.sh`) — `healthcheck.sh` retourne OK. Sauvegardes manuelles validées, cron sauvegarde/rotation configuré. UFW, Fail2Ban, unattended-upgrades et swap configurés. Restauration DB isolée validée le 2026-06-28 : dump `creatyss-20260627-150330.dump` restauré dans une base temporaire `creatyss_restore_test` (173 tables présentes), base principale non touchée, base temporaire supprimée après vérification.
+
+- [x] Build production validé — `next build` local OK ; build image Docker validé sur VPS (2026-06-28)
 - [x] Variables d'environnement documentées — `docs/exploitation/01-variables-d-environnement.md` (2026-06-12)
-- [x] Sauvegarde DB documentée — `docs/exploitation/02-sauvegarde-restauration-db.md` ; test réel sauvegarde → restauration encore à exécuter (2026-06-12)
+- [x] Sauvegarde DB documentée et testée — `docs/exploitation/02-sauvegarde-restauration-db.md` ; sauvegardes manuelles validées sur staging (2026-06-28) ; restauration DB isolée validée (173 tables, base temporaire, base principale non touchée) (2026-06-28)
 - [x] Médias persistants documentés — `docs/exploitation/03-medias-persistants.md` (2026-06-12)
-- [ ] Déploiement VPS répétable
+- [x] Déploiement VPS répétable — staging `https://staging.creatyss.lpwebstudio.fr` opérationnel (2026-06-28)
 - [x] Procédure rollback minimale documentée — `docs/exploitation/04-mise-a-jour-et-rollback.md` ; limites de `db push` explicitées (2026-06-12)
 
 ---

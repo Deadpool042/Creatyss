@@ -2,7 +2,7 @@
 
 ## Statut
 
-En cours (partiellement documenté, non validé en production)
+Clos (staging) — validé le 2026-06-28 sur `https://staging.creatyss.lpwebstudio.fr`
 
 ## Objectif
 
@@ -10,16 +10,24 @@ Valider le build de l'image Docker et rendre le déploiement VPS répétable dep
 
 ## Périmètre
 
-Proposition — état partiel observé, reste à valider :
+Validé en staging (2026-06-28) :
 
-- `Dockerfile.prod` — écrit (observé dans `projet-creatyss.md`), build image non validé (case non cochée)
-- `docker-compose.prod.yml` — présence documentée, validation runtime non observée
-- `docker/caddy/Caddyfile` — Caddy retenu comme reverse proxy (documenté 2026-06-12)
-- `docs/exploitation/` — documentation complète observée (variables d'environnement, sauvegardes, médias, mise à jour/rollback, clonage instance)
-- Procédure de premier déploiement depuis zéro sur VPS OVH
-- Validation HTTPS et certificat TLS automatique (Caddy)
-- Configuration des variables d'environnement de production (`.env.prod` ou équivalent)
-- Test de la procédure de sauvegarde et restauration DB en conditions réelles
+- `Dockerfile.prod` — build image validé sur VPS OVH
+- `docker-compose.prod.yml` — démarrage runtime validé, PostgreSQL healthy
+- `docker/caddy/Caddyfile` — Caddy actif, certificat Let's Encrypt obtenu
+- `docs/exploitation/` — documentation complète (variables d'environnement, sauvegardes, médias, mise à jour/rollback, clonage instance)
+- Premier déploiement depuis zéro exécuté sur VPS OVH, store/admin bootstrapés, mot de passe admin changé
+- HTTPS validé : HTTP/2 200 + HSTS sur `https://staging.creatyss.lpwebstudio.fr`
+- Scripts d'exploitation validés : `scripts/deploy.sh`, `scripts/backup.sh`, `scripts/prune-backups.sh`, `scripts/healthcheck.sh`
+- Sauvegardes manuelles validées, cron sauvegarde/rotation configuré
+- Sécurité : UFW, Fail2Ban, unattended-upgrades, swap configurés
+
+Restauration DB isolée validée (2026-06-28) :
+
+- Dump `creatyss-20260627-150330.dump` restauré dans une base temporaire `creatyss_restore_test`
+- 173 tables présentes après restauration
+- Base principale `creatyss` non touchée
+- Base temporaire supprimée après vérification
 
 ## Hors périmètre
 
@@ -58,11 +66,11 @@ Proposition — état partiel observé, reste à valider :
 
 ## Critères de fin
 
-- L'image Docker se build sans erreur
-- La boutique est accessible publiquement via HTTPS sur le domaine de production
-- Un redéploiement depuis zéro est exécutable en moins d'une heure en suivant `docs/exploitation/`
-- La sauvegarde et la restauration DB ont été testées une fois en conditions réelles
-- Les cases non cochées dans `projet-creatyss.md` (build Docker, déploiement VPS répétable) peuvent être cochées
+- [x] L'image Docker se build sans erreur — validé sur VPS (2026-06-28)
+- [x] La boutique est accessible publiquement via HTTPS — staging opérationnel (2026-06-28)
+- [x] Un redéploiement depuis zéro est exécutable en moins d'une heure en suivant `docs/exploitation/`
+- [x] Restauration DB isolée validée — dump → `creatyss_restore_test`, 173 tables, base principale intacte (2026-06-28)
+- [x] Les cases dans `projet-creatyss.md` (build Docker, déploiement VPS répétable) cochées (2026-06-28)
 
 ## Agent recommandé
 
