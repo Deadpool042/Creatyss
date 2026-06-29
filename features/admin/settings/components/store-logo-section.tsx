@@ -52,22 +52,23 @@ export function StoreLogoSection({ logoUrl, storeName }: Props) {
       description="Affiché dans le header, le footer et la page de connexion."
       className="py-6"
     >
-      <div className="flex items-start gap-5">
-        <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-surface-border bg-surface-subtle">
+      <div className="flex flex-col gap-4">
+        <div className="flex h-24 w-64 max-w-full items-center justify-center overflow-hidden rounded-xl border border-surface-border bg-surface-subtle">
           {logoUrl !== null ? (
             <Image
               src={logoUrl}
               alt={storeName}
-              width={80}
-              height={80}
-              className="h-full w-full object-contain p-2"
+              width={256}
+              height={96}
+              unoptimized
+              className="h-full w-full object-contain p-3"
             />
           ) : (
-            <span className="text-xs text-muted-foreground">Aucun</span>
+            <span className="text-xs text-muted-foreground">Aucun logo configuré</span>
           )}
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 self-start">
           <form action={uploadAction}>
             <label className="flex cursor-pointer flex-col gap-1.5">
               <input
