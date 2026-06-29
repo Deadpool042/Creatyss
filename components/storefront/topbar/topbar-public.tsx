@@ -148,6 +148,7 @@ function PublicLogo({
           aria-hidden="true"
           width={36}
           height={36}
+          unoptimized
           className={[
             "w-auto shrink-0 object-contain",
             prominent ? "h-8 opacity-100" : "h-7 opacity-90",
