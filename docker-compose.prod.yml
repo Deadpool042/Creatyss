@@ -88,6 +88,7 @@ services:
       - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
+      - uploads_data:/srv/uploads:ro
     mem_limit: 128m
     restart: unless-stopped
 
