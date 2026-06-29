@@ -96,6 +96,7 @@ if [ "${APP_UP}" -eq 1 ]; then
     # Conteneur alpine éphémère : monte le volume en lecture seule, écrit
     # l'archive dans BACKUP_DIR monté en écriture sur /backup.
     docker run --rm \
+      --user "$(id -u):$(id -g)" \
       -v "${UPLOADS_VOLUME}:/data:ro" \
       -v "${BACKUP_DIR}:/backup" \
       alpine:3 \
@@ -110,6 +111,7 @@ if [ "${APP_UP}" -eq 1 ]; then
   if [ -n "${DOCUMENTS_VOLUME}" ]; then
     printf "  Documents Factur-X (volume : %s)…\n" "${DOCUMENTS_VOLUME}"
     docker run --rm \
+      --user "$(id -u):$(id -g)" \
       -v "${DOCUMENTS_VOLUME}:/data:ro" \
       -v "${BACKUP_DIR}:/backup" \
       alpine:3 \
