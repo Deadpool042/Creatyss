@@ -393,6 +393,7 @@ export type MediaAssetWhereInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventListRelationFilter
   publicEventsAsCoverImage?: Prisma.PublicEventListRelationFilter
   bundlesAsPrimaryImage?: Prisma.BundleListRelationFilter
+  storesAsLogo?: Prisma.StoreListRelationFilter
 }
 
 export type MediaAssetOrderByWithRelationInput = {
@@ -444,6 +445,7 @@ export type MediaAssetOrderByWithRelationInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventOrderByRelationAggregateInput
   publicEventsAsCoverImage?: Prisma.PublicEventOrderByRelationAggregateInput
   bundlesAsPrimaryImage?: Prisma.BundleOrderByRelationAggregateInput
+  storesAsLogo?: Prisma.StoreOrderByRelationAggregateInput
 }
 
 export type MediaAssetWhereUniqueInput = Prisma.AtLeast<{
@@ -500,6 +502,7 @@ export type MediaAssetWhereUniqueInput = Prisma.AtLeast<{
   publicEventsAsPrimaryImage?: Prisma.PublicEventListRelationFilter
   publicEventsAsCoverImage?: Prisma.PublicEventListRelationFilter
   bundlesAsPrimaryImage?: Prisma.BundleListRelationFilter
+  storesAsLogo?: Prisma.StoreListRelationFilter
 }, "id" | "storeId_storageKey" | "storeId_slug">
 
 export type MediaAssetOrderByWithAggregationInput = {
@@ -610,6 +613,7 @@ export type MediaAssetCreateInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateInput = {
@@ -660,6 +664,7 @@ export type MediaAssetUncheckedCreateInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUpdateInput = {
@@ -710,6 +715,7 @@ export type MediaAssetUpdateInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateInput = {
@@ -760,6 +766,7 @@ export type MediaAssetUncheckedUpdateInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateManyInput = {
@@ -1119,6 +1126,12 @@ export type MediaAssetUpdateOneWithoutPageBlocksAsSecondaryImageNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutPageBlocksAsSecondaryImageInput, Prisma.MediaAssetUpdateWithoutPageBlocksAsSecondaryImageInput>, Prisma.MediaAssetUncheckedUpdateWithoutPageBlocksAsSecondaryImageInput>
 }
 
+export type MediaAssetCreateNestedOneWithoutStoresAsLogoInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutStoresAsLogoInput, Prisma.MediaAssetUncheckedCreateWithoutStoresAsLogoInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutStoresAsLogoInput
+  connect?: Prisma.MediaAssetWhereUniqueInput
+}
+
 export type MediaAssetCreateNestedManyWithoutStoreInput = {
   create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutStoreInput, Prisma.MediaAssetUncheckedCreateWithoutStoreInput> | Prisma.MediaAssetCreateWithoutStoreInput[] | Prisma.MediaAssetUncheckedCreateWithoutStoreInput[]
   connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutStoreInput | Prisma.MediaAssetCreateOrConnectWithoutStoreInput[]
@@ -1131,6 +1144,16 @@ export type MediaAssetUncheckedCreateNestedManyWithoutStoreInput = {
   connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutStoreInput | Prisma.MediaAssetCreateOrConnectWithoutStoreInput[]
   createMany?: Prisma.MediaAssetCreateManyStoreInputEnvelope
   connect?: Prisma.MediaAssetWhereUniqueInput | Prisma.MediaAssetWhereUniqueInput[]
+}
+
+export type MediaAssetUpdateOneWithoutStoresAsLogoNestedInput = {
+  create?: Prisma.XOR<Prisma.MediaAssetCreateWithoutStoresAsLogoInput, Prisma.MediaAssetUncheckedCreateWithoutStoresAsLogoInput>
+  connectOrCreate?: Prisma.MediaAssetCreateOrConnectWithoutStoresAsLogoInput
+  upsert?: Prisma.MediaAssetUpsertWithoutStoresAsLogoInput
+  disconnect?: Prisma.MediaAssetWhereInput | boolean
+  delete?: Prisma.MediaAssetWhereInput | boolean
+  connect?: Prisma.MediaAssetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MediaAssetUpdateToOneWithWhereWithoutStoresAsLogoInput, Prisma.MediaAssetUpdateWithoutStoresAsLogoInput>, Prisma.MediaAssetUncheckedUpdateWithoutStoresAsLogoInput>
 }
 
 export type MediaAssetUpdateManyWithoutStoreNestedInput = {
@@ -1434,6 +1457,7 @@ export type MediaAssetCreateWithoutCategoriesAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutCategoriesAsPrimaryImageInput = {
@@ -1483,6 +1507,7 @@ export type MediaAssetUncheckedCreateWithoutCategoriesAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutCategoriesAsPrimaryImageInput = {
@@ -1537,6 +1562,7 @@ export type MediaAssetCreateWithoutCategoriesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutCategoriesAsCoverImageInput = {
@@ -1586,6 +1612,7 @@ export type MediaAssetUncheckedCreateWithoutCategoriesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutCategoriesAsCoverImageInput = {
@@ -1651,6 +1678,7 @@ export type MediaAssetUpdateWithoutCategoriesAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutCategoriesAsPrimaryImageInput = {
@@ -1700,6 +1728,7 @@ export type MediaAssetUncheckedUpdateWithoutCategoriesAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUpsertWithoutCategoriesAsCoverImageInput = {
@@ -1760,6 +1789,7 @@ export type MediaAssetUpdateWithoutCategoriesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutCategoriesAsCoverImageInput = {
@@ -1809,6 +1839,7 @@ export type MediaAssetUncheckedUpdateWithoutCategoriesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutProductsAsPrimaryImageInput = {
@@ -1858,6 +1889,7 @@ export type MediaAssetCreateWithoutProductsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutProductsAsPrimaryImageInput = {
@@ -1907,6 +1939,7 @@ export type MediaAssetUncheckedCreateWithoutProductsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutProductsAsPrimaryImageInput = {
@@ -1972,6 +2005,7 @@ export type MediaAssetUpdateWithoutProductsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutProductsAsPrimaryImageInput = {
@@ -2021,6 +2055,7 @@ export type MediaAssetUncheckedUpdateWithoutProductsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutProductVariantsAsPrimaryImageInput = {
@@ -2070,6 +2105,7 @@ export type MediaAssetCreateWithoutProductVariantsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutProductVariantsAsPrimaryImageInput = {
@@ -2119,6 +2155,7 @@ export type MediaAssetUncheckedCreateWithoutProductVariantsAsPrimaryImageInput =
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutProductVariantsAsPrimaryImageInput = {
@@ -2184,6 +2221,7 @@ export type MediaAssetUpdateWithoutProductVariantsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutProductVariantsAsPrimaryImageInput = {
@@ -2233,6 +2271,7 @@ export type MediaAssetUncheckedUpdateWithoutProductVariantsAsPrimaryImageInput =
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutPagesAsPrimaryImageInput = {
@@ -2282,6 +2321,7 @@ export type MediaAssetCreateWithoutPagesAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutPagesAsPrimaryImageInput = {
@@ -2331,6 +2371,7 @@ export type MediaAssetUncheckedCreateWithoutPagesAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutPagesAsPrimaryImageInput = {
@@ -2385,6 +2426,7 @@ export type MediaAssetCreateWithoutPagesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutPagesAsCoverImageInput = {
@@ -2434,6 +2476,7 @@ export type MediaAssetUncheckedCreateWithoutPagesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutPagesAsCoverImageInput = {
@@ -2499,6 +2542,7 @@ export type MediaAssetUpdateWithoutPagesAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutPagesAsPrimaryImageInput = {
@@ -2548,6 +2592,7 @@ export type MediaAssetUncheckedUpdateWithoutPagesAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUpsertWithoutPagesAsCoverImageInput = {
@@ -2608,6 +2653,7 @@ export type MediaAssetUpdateWithoutPagesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutPagesAsCoverImageInput = {
@@ -2657,6 +2703,7 @@ export type MediaAssetUncheckedUpdateWithoutPagesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutPageSectionsAsPrimaryImageInput = {
@@ -2706,6 +2753,7 @@ export type MediaAssetCreateWithoutPageSectionsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutPageSectionsAsPrimaryImageInput = {
@@ -2755,6 +2803,7 @@ export type MediaAssetUncheckedCreateWithoutPageSectionsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutPageSectionsAsPrimaryImageInput = {
@@ -2809,6 +2858,7 @@ export type MediaAssetCreateWithoutPageSectionsAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutPageSectionsAsCoverImageInput = {
@@ -2858,6 +2908,7 @@ export type MediaAssetUncheckedCreateWithoutPageSectionsAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutPageSectionsAsCoverImageInput = {
@@ -2923,6 +2974,7 @@ export type MediaAssetUpdateWithoutPageSectionsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutPageSectionsAsPrimaryImageInput = {
@@ -2972,6 +3024,7 @@ export type MediaAssetUncheckedUpdateWithoutPageSectionsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUpsertWithoutPageSectionsAsCoverImageInput = {
@@ -3032,6 +3085,7 @@ export type MediaAssetUpdateWithoutPageSectionsAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutPageSectionsAsCoverImageInput = {
@@ -3081,6 +3135,7 @@ export type MediaAssetUncheckedUpdateWithoutPageSectionsAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutPageBlocksAsPrimaryImageInput = {
@@ -3130,6 +3185,7 @@ export type MediaAssetCreateWithoutPageBlocksAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutPageBlocksAsPrimaryImageInput = {
@@ -3179,6 +3235,7 @@ export type MediaAssetUncheckedCreateWithoutPageBlocksAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutPageBlocksAsPrimaryImageInput = {
@@ -3233,6 +3290,7 @@ export type MediaAssetCreateWithoutPageBlocksAsSecondaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutPageBlocksAsSecondaryImageInput = {
@@ -3282,6 +3340,7 @@ export type MediaAssetUncheckedCreateWithoutPageBlocksAsSecondaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutPageBlocksAsSecondaryImageInput = {
@@ -3347,6 +3406,7 @@ export type MediaAssetUpdateWithoutPageBlocksAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutPageBlocksAsPrimaryImageInput = {
@@ -3396,6 +3456,7 @@ export type MediaAssetUncheckedUpdateWithoutPageBlocksAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUpsertWithoutPageBlocksAsSecondaryImageInput = {
@@ -3456,6 +3517,7 @@ export type MediaAssetUpdateWithoutPageBlocksAsSecondaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutPageBlocksAsSecondaryImageInput = {
@@ -3505,6 +3567,112 @@ export type MediaAssetUncheckedUpdateWithoutPageBlocksAsSecondaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
+}
+
+export type MediaAssetCreateWithoutStoresAsLogoInput = {
+  id?: string
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store?: Prisma.StoreCreateNestedOneWithoutMediaAssetsInput
+  variants?: Prisma.MediaVariantCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetUncheckedCreateWithoutStoresAsLogoInput = {
+  id?: string
+  storeId?: string | null
+  kind?: $Enums.MediaAssetKind
+  status?: $Enums.MediaAssetStatus
+  slug?: string | null
+  title?: string | null
+  altText?: string | null
+  caption?: string | null
+  description?: string | null
+  originalFilename: string
+  mimeType: string
+  extension?: string | null
+  storageKey: string
+  publicUrl?: string | null
+  widthPx?: number | null
+  heightPx?: number | null
+  sizeBytes?: number | null
+  checksumSha256?: string | null
+  isPublic?: boolean
+  publishedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variants?: Prisma.MediaVariantUncheckedCreateNestedManyWithoutAssetInput
+  references?: Prisma.MediaReferenceUncheckedCreateNestedManyWithoutAssetInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedCreateNestedManyWithoutMediaAssetInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedCreateNestedManyWithoutPrimaryImageInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pagesAsCoverImage?: Prisma.PageUncheckedCreateNestedManyWithoutCoverImageInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedCreateNestedManyWithoutCoverImageInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutPrimaryImageInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedCreateNestedManyWithoutSecondaryImageInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutCoverImageInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutPrimaryImageInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedCreateNestedManyWithoutCoverImageInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutPrimaryImageInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedCreateNestedManyWithoutSecondaryImageInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutOpenGraphImageInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+}
+
+export type MediaAssetCreateOrConnectWithoutStoresAsLogoInput = {
+  where: Prisma.MediaAssetWhereUniqueInput
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutStoresAsLogoInput, Prisma.MediaAssetUncheckedCreateWithoutStoresAsLogoInput>
 }
 
 export type MediaAssetCreateWithoutStoreInput = {
@@ -3554,6 +3722,7 @@ export type MediaAssetCreateWithoutStoreInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutStoreInput = {
@@ -3603,6 +3772,7 @@ export type MediaAssetUncheckedCreateWithoutStoreInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutStoreInput = {
@@ -3613,6 +3783,117 @@ export type MediaAssetCreateOrConnectWithoutStoreInput = {
 export type MediaAssetCreateManyStoreInputEnvelope = {
   data: Prisma.MediaAssetCreateManyStoreInput | Prisma.MediaAssetCreateManyStoreInput[]
   skipDuplicates?: boolean
+}
+
+export type MediaAssetUpsertWithoutStoresAsLogoInput = {
+  update: Prisma.XOR<Prisma.MediaAssetUpdateWithoutStoresAsLogoInput, Prisma.MediaAssetUncheckedUpdateWithoutStoresAsLogoInput>
+  create: Prisma.XOR<Prisma.MediaAssetCreateWithoutStoresAsLogoInput, Prisma.MediaAssetUncheckedCreateWithoutStoresAsLogoInput>
+  where?: Prisma.MediaAssetWhereInput
+}
+
+export type MediaAssetUpdateToOneWithWhereWithoutStoresAsLogoInput = {
+  where?: Prisma.MediaAssetWhereInput
+  data: Prisma.XOR<Prisma.MediaAssetUpdateWithoutStoresAsLogoInput, Prisma.MediaAssetUncheckedUpdateWithoutStoresAsLogoInput>
+}
+
+export type MediaAssetUpdateWithoutStoresAsLogoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneWithoutMediaAssetsNestedInput
+  variants?: Prisma.MediaVariantUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+}
+
+export type MediaAssetUncheckedUpdateWithoutStoresAsLogoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumMediaAssetKindFieldUpdateOperationsInput | $Enums.MediaAssetKind
+  status?: Prisma.EnumMediaAssetStatusFieldUpdateOperationsInput | $Enums.MediaAssetStatus
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  extension?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  publicUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  widthPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  heightPx?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  checksumSha256?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variants?: Prisma.MediaVariantUncheckedUpdateManyWithoutAssetNestedInput
+  references?: Prisma.MediaReferenceUncheckedUpdateManyWithoutAssetNestedInput
+  socialPublicationAssets?: Prisma.SocialPublicationAssetUncheckedUpdateManyWithoutMediaAssetNestedInput
+  categoriesAsPrimaryImage?: Prisma.CategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  categoriesAsCoverImage?: Prisma.CategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  productsAsPrimaryImage?: Prisma.ProductUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  productVariantsAsPrimaryImage?: Prisma.ProductVariantUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsPrimaryImage?: Prisma.PageUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pagesAsCoverImage?: Prisma.PageUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageSectionsAsPrimaryImage?: Prisma.PageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageSectionsAsCoverImage?: Prisma.PageSectionUncheckedUpdateManyWithoutCoverImageNestedInput
+  pageBlocksAsPrimaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  pageBlocksAsSecondaryImage?: Prisma.PageBlockUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  blogCategoriesAsPrimaryImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogCategoriesAsCoverImage?: Prisma.BlogCategoryUncheckedUpdateManyWithoutCoverImageNestedInput
+  blogPostsAsPrimaryImage?: Prisma.BlogPostUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  blogPostsAsCoverImage?: Prisma.BlogPostUncheckedUpdateManyWithoutCoverImageNestedInput
+  homepageSectionsAsPrimaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  homepageSectionsAsSecondaryImage?: Prisma.HomepageSectionUncheckedUpdateManyWithoutSecondaryImageNestedInput
+  seoOpenGraphFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutOpenGraphImageNestedInput
+  seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
+  publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
+  bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
 }
 
 export type MediaAssetUpsertWithWhereUniqueWithoutStoreInput = {
@@ -3707,6 +3988,7 @@ export type MediaAssetCreateWithoutSeoOpenGraphForInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutSeoOpenGraphForInput = {
@@ -3756,6 +4038,7 @@ export type MediaAssetUncheckedCreateWithoutSeoOpenGraphForInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutSeoOpenGraphForInput = {
@@ -3810,6 +4093,7 @@ export type MediaAssetCreateWithoutSeoTwitterForInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutSeoTwitterForInput = {
@@ -3859,6 +4143,7 @@ export type MediaAssetUncheckedCreateWithoutSeoTwitterForInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutSeoTwitterForInput = {
@@ -3924,6 +4209,7 @@ export type MediaAssetUpdateWithoutSeoOpenGraphForInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutSeoOpenGraphForInput = {
@@ -3973,6 +4259,7 @@ export type MediaAssetUncheckedUpdateWithoutSeoOpenGraphForInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUpsertWithoutSeoTwitterForInput = {
@@ -4033,6 +4320,7 @@ export type MediaAssetUpdateWithoutSeoTwitterForInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutSeoTwitterForInput = {
@@ -4082,6 +4370,7 @@ export type MediaAssetUncheckedUpdateWithoutSeoTwitterForInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutBundlesAsPrimaryImageInput = {
@@ -4131,6 +4420,7 @@ export type MediaAssetCreateWithoutBundlesAsPrimaryImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutBundlesAsPrimaryImageInput = {
@@ -4180,6 +4470,7 @@ export type MediaAssetUncheckedCreateWithoutBundlesAsPrimaryImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutBundlesAsPrimaryImageInput = {
@@ -4245,6 +4536,7 @@ export type MediaAssetUpdateWithoutBundlesAsPrimaryImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutBundlesAsPrimaryImageInput = {
@@ -4294,6 +4586,7 @@ export type MediaAssetUncheckedUpdateWithoutBundlesAsPrimaryImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput = {
@@ -4343,6 +4636,7 @@ export type MediaAssetCreateWithoutBlogCategoriesAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput = {
@@ -4392,6 +4686,7 @@ export type MediaAssetUncheckedCreateWithoutBlogCategoriesAsPrimaryImageInput = 
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutBlogCategoriesAsPrimaryImageInput = {
@@ -4446,6 +4741,7 @@ export type MediaAssetCreateWithoutBlogCategoriesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput = {
@@ -4495,6 +4791,7 @@ export type MediaAssetUncheckedCreateWithoutBlogCategoriesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutBlogCategoriesAsCoverImageInput = {
@@ -4560,6 +4857,7 @@ export type MediaAssetUpdateWithoutBlogCategoriesAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutBlogCategoriesAsPrimaryImageInput = {
@@ -4609,6 +4907,7 @@ export type MediaAssetUncheckedUpdateWithoutBlogCategoriesAsPrimaryImageInput = 
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUpsertWithoutBlogCategoriesAsCoverImageInput = {
@@ -4669,6 +4968,7 @@ export type MediaAssetUpdateWithoutBlogCategoriesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutBlogCategoriesAsCoverImageInput = {
@@ -4718,6 +5018,7 @@ export type MediaAssetUncheckedUpdateWithoutBlogCategoriesAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput = {
@@ -4767,6 +5068,7 @@ export type MediaAssetCreateWithoutBlogPostsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput = {
@@ -4816,6 +5118,7 @@ export type MediaAssetUncheckedCreateWithoutBlogPostsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutBlogPostsAsPrimaryImageInput = {
@@ -4870,6 +5173,7 @@ export type MediaAssetCreateWithoutBlogPostsAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput = {
@@ -4919,6 +5223,7 @@ export type MediaAssetUncheckedCreateWithoutBlogPostsAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutBlogPostsAsCoverImageInput = {
@@ -4984,6 +5289,7 @@ export type MediaAssetUpdateWithoutBlogPostsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutBlogPostsAsPrimaryImageInput = {
@@ -5033,6 +5339,7 @@ export type MediaAssetUncheckedUpdateWithoutBlogPostsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUpsertWithoutBlogPostsAsCoverImageInput = {
@@ -5093,6 +5400,7 @@ export type MediaAssetUpdateWithoutBlogPostsAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutBlogPostsAsCoverImageInput = {
@@ -5142,6 +5450,7 @@ export type MediaAssetUncheckedUpdateWithoutBlogPostsAsCoverImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutPublicEventsAsPrimaryImageInput = {
@@ -5191,6 +5500,7 @@ export type MediaAssetCreateWithoutPublicEventsAsPrimaryImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutPublicEventsAsPrimaryImageInput = {
@@ -5240,6 +5550,7 @@ export type MediaAssetUncheckedCreateWithoutPublicEventsAsPrimaryImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutPublicEventsAsPrimaryImageInput = {
@@ -5294,6 +5605,7 @@ export type MediaAssetCreateWithoutPublicEventsAsCoverImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataCreateNestedManyWithoutTwitterImageInput
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutPublicEventsAsCoverImageInput = {
@@ -5343,6 +5655,7 @@ export type MediaAssetUncheckedCreateWithoutPublicEventsAsCoverImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutTwitterImageInput
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutPublicEventsAsCoverImageInput = {
@@ -5408,6 +5721,7 @@ export type MediaAssetUpdateWithoutPublicEventsAsPrimaryImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutPublicEventsAsPrimaryImageInput = {
@@ -5457,6 +5771,7 @@ export type MediaAssetUncheckedUpdateWithoutPublicEventsAsPrimaryImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUpsertWithoutPublicEventsAsCoverImageInput = {
@@ -5517,6 +5832,7 @@ export type MediaAssetUpdateWithoutPublicEventsAsCoverImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataUpdateManyWithoutTwitterImageNestedInput
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutPublicEventsAsCoverImageInput = {
@@ -5566,6 +5882,7 @@ export type MediaAssetUncheckedUpdateWithoutPublicEventsAsCoverImageInput = {
   seoTwitterFor?: Prisma.SeoMetadataUncheckedUpdateManyWithoutTwitterImageNestedInput
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutSocialPublicationAssetsInput = {
@@ -5615,6 +5932,7 @@ export type MediaAssetCreateWithoutSocialPublicationAssetsInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutSocialPublicationAssetsInput = {
@@ -5664,6 +5982,7 @@ export type MediaAssetUncheckedCreateWithoutSocialPublicationAssetsInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutSocialPublicationAssetsInput = {
@@ -5729,6 +6048,7 @@ export type MediaAssetUpdateWithoutSocialPublicationAssetsInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutSocialPublicationAssetsInput = {
@@ -5778,6 +6098,7 @@ export type MediaAssetUncheckedUpdateWithoutSocialPublicationAssetsInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput = {
@@ -5827,6 +6148,7 @@ export type MediaAssetCreateWithoutHomepageSectionsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput = {
@@ -5876,6 +6198,7 @@ export type MediaAssetUncheckedCreateWithoutHomepageSectionsAsPrimaryImageInput 
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutHomepageSectionsAsPrimaryImageInput = {
@@ -5930,6 +6253,7 @@ export type MediaAssetCreateWithoutHomepageSectionsAsSecondaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInput = {
@@ -5979,6 +6303,7 @@ export type MediaAssetUncheckedCreateWithoutHomepageSectionsAsSecondaryImageInpu
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutHomepageSectionsAsSecondaryImageInput = {
@@ -6044,6 +6369,7 @@ export type MediaAssetUpdateWithoutHomepageSectionsAsPrimaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutHomepageSectionsAsPrimaryImageInput = {
@@ -6093,6 +6419,7 @@ export type MediaAssetUncheckedUpdateWithoutHomepageSectionsAsPrimaryImageInput 
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUpsertWithoutHomepageSectionsAsSecondaryImageInput = {
@@ -6153,6 +6480,7 @@ export type MediaAssetUpdateWithoutHomepageSectionsAsSecondaryImageInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutHomepageSectionsAsSecondaryImageInput = {
@@ -6202,6 +6530,7 @@ export type MediaAssetUncheckedUpdateWithoutHomepageSectionsAsSecondaryImageInpu
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutVariantsInput = {
@@ -6251,6 +6580,7 @@ export type MediaAssetCreateWithoutVariantsInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutVariantsInput = {
@@ -6300,6 +6630,7 @@ export type MediaAssetUncheckedCreateWithoutVariantsInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutVariantsInput = {
@@ -6365,6 +6696,7 @@ export type MediaAssetUpdateWithoutVariantsInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutVariantsInput = {
@@ -6414,6 +6746,7 @@ export type MediaAssetUncheckedUpdateWithoutVariantsInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateWithoutReferencesInput = {
@@ -6463,6 +6796,7 @@ export type MediaAssetCreateWithoutReferencesInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetUncheckedCreateWithoutReferencesInput = {
@@ -6512,6 +6846,7 @@ export type MediaAssetUncheckedCreateWithoutReferencesInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutPrimaryImageInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedCreateNestedManyWithoutCoverImageInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedCreateNestedManyWithoutPrimaryImageInput
+  storesAsLogo?: Prisma.StoreUncheckedCreateNestedManyWithoutLogoImageInput
 }
 
 export type MediaAssetCreateOrConnectWithoutReferencesInput = {
@@ -6577,6 +6912,7 @@ export type MediaAssetUpdateWithoutReferencesInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutReferencesInput = {
@@ -6626,6 +6962,7 @@ export type MediaAssetUncheckedUpdateWithoutReferencesInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetCreateManyStoreInput = {
@@ -6700,6 +7037,7 @@ export type MediaAssetUpdateWithoutStoreInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateWithoutStoreInput = {
@@ -6749,6 +7087,7 @@ export type MediaAssetUncheckedUpdateWithoutStoreInput = {
   publicEventsAsPrimaryImage?: Prisma.PublicEventUncheckedUpdateManyWithoutPrimaryImageNestedInput
   publicEventsAsCoverImage?: Prisma.PublicEventUncheckedUpdateManyWithoutCoverImageNestedInput
   bundlesAsPrimaryImage?: Prisma.BundleUncheckedUpdateManyWithoutPrimaryImageNestedInput
+  storesAsLogo?: Prisma.StoreUncheckedUpdateManyWithoutLogoImageNestedInput
 }
 
 export type MediaAssetUncheckedUpdateManyWithoutStoreInput = {
@@ -6806,6 +7145,7 @@ export type MediaAssetCountOutputType = {
   publicEventsAsPrimaryImage: number
   publicEventsAsCoverImage: number
   bundlesAsPrimaryImage: number
+  storesAsLogo: number
 }
 
 export type MediaAssetCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6833,6 +7173,7 @@ export type MediaAssetCountOutputTypeSelect<ExtArgs extends runtime.Types.Extens
   publicEventsAsPrimaryImage?: boolean | MediaAssetCountOutputTypeCountPublicEventsAsPrimaryImageArgs
   publicEventsAsCoverImage?: boolean | MediaAssetCountOutputTypeCountPublicEventsAsCoverImageArgs
   bundlesAsPrimaryImage?: boolean | MediaAssetCountOutputTypeCountBundlesAsPrimaryImageArgs
+  storesAsLogo?: boolean | MediaAssetCountOutputTypeCountStoresAsLogoArgs
 }
 
 /**
@@ -7013,6 +7354,13 @@ export type MediaAssetCountOutputTypeCountBundlesAsPrimaryImageArgs<ExtArgs exte
   where?: Prisma.BundleWhereInput
 }
 
+/**
+ * MediaAssetCountOutputType without action
+ */
+export type MediaAssetCountOutputTypeCountStoresAsLogoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StoreWhereInput
+}
+
 
 export type MediaAssetSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -7063,6 +7411,7 @@ export type MediaAssetSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   publicEventsAsPrimaryImage?: boolean | Prisma.MediaAsset$publicEventsAsPrimaryImageArgs<ExtArgs>
   publicEventsAsCoverImage?: boolean | Prisma.MediaAsset$publicEventsAsCoverImageArgs<ExtArgs>
   bundlesAsPrimaryImage?: boolean | Prisma.MediaAsset$bundlesAsPrimaryImageArgs<ExtArgs>
+  storesAsLogo?: boolean | Prisma.MediaAsset$storesAsLogoArgs<ExtArgs>
   _count?: boolean | Prisma.MediaAssetCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mediaAsset"]>
 
@@ -7173,6 +7522,7 @@ export type MediaAssetInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   publicEventsAsPrimaryImage?: boolean | Prisma.MediaAsset$publicEventsAsPrimaryImageArgs<ExtArgs>
   publicEventsAsCoverImage?: boolean | Prisma.MediaAsset$publicEventsAsCoverImageArgs<ExtArgs>
   bundlesAsPrimaryImage?: boolean | Prisma.MediaAsset$bundlesAsPrimaryImageArgs<ExtArgs>
+  storesAsLogo?: boolean | Prisma.MediaAsset$storesAsLogoArgs<ExtArgs>
   _count?: boolean | Prisma.MediaAssetCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MediaAssetIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -7210,6 +7560,7 @@ export type $MediaAssetPayload<ExtArgs extends runtime.Types.Extensions.Internal
     publicEventsAsPrimaryImage: Prisma.$PublicEventPayload<ExtArgs>[]
     publicEventsAsCoverImage: Prisma.$PublicEventPayload<ExtArgs>[]
     bundlesAsPrimaryImage: Prisma.$BundlePayload<ExtArgs>[]
+    storesAsLogo: Prisma.$StorePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -7654,6 +8005,7 @@ export interface Prisma__MediaAssetClient<T, Null = never, ExtArgs extends runti
   publicEventsAsPrimaryImage<T extends Prisma.MediaAsset$publicEventsAsPrimaryImageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaAsset$publicEventsAsPrimaryImageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   publicEventsAsCoverImage<T extends Prisma.MediaAsset$publicEventsAsCoverImageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaAsset$publicEventsAsCoverImageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bundlesAsPrimaryImage<T extends Prisma.MediaAsset$bundlesAsPrimaryImageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaAsset$bundlesAsPrimaryImageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BundlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  storesAsLogo<T extends Prisma.MediaAsset$storesAsLogoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MediaAsset$storesAsLogoArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8699,6 +9051,30 @@ export type MediaAsset$bundlesAsPrimaryImageArgs<ExtArgs extends runtime.Types.E
   take?: number
   skip?: number
   distinct?: Prisma.BundleScalarFieldEnum | Prisma.BundleScalarFieldEnum[]
+}
+
+/**
+ * MediaAsset.storesAsLogo
+ */
+export type MediaAsset$storesAsLogoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Store
+   */
+  select?: Prisma.StoreSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Store
+   */
+  omit?: Prisma.StoreOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StoreInclude<ExtArgs> | null
+  where?: Prisma.StoreWhereInput
+  orderBy?: Prisma.StoreOrderByWithRelationInput | Prisma.StoreOrderByWithRelationInput[]
+  cursor?: Prisma.StoreWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StoreScalarFieldEnum | Prisma.StoreScalarFieldEnum[]
 }
 
 /**

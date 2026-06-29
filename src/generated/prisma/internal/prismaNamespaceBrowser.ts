@@ -1059,6 +1059,7 @@ export const StoreScalarFieldEnum = {
   cashOnDeliveryEnabled: 'cashOnDeliveryEnabled',
   bankTransferInstructions: 'bankTransferInstructions',
   cashOnDeliveryInstructions: 'cashOnDeliveryInstructions',
+  logoImageId: 'logoImageId',
   defaultLocaleCode: 'defaultLocaleCode',
   defaultCurrency: 'defaultCurrency',
   timezone: 'timezone',

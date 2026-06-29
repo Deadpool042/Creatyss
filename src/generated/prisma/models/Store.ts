@@ -50,6 +50,7 @@ export type StoreMinAggregateOutputType = {
   cashOnDeliveryEnabled: boolean | null
   bankTransferInstructions: string | null
   cashOnDeliveryInstructions: string | null
+  logoImageId: string | null
   defaultLocaleCode: string | null
   defaultCurrency: $Enums.CurrencyCode | null
   timezone: string | null
@@ -86,6 +87,7 @@ export type StoreMaxAggregateOutputType = {
   cashOnDeliveryEnabled: boolean | null
   bankTransferInstructions: string | null
   cashOnDeliveryInstructions: string | null
+  logoImageId: string | null
   defaultLocaleCode: string | null
   defaultCurrency: $Enums.CurrencyCode | null
   timezone: string | null
@@ -122,6 +124,7 @@ export type StoreCountAggregateOutputType = {
   cashOnDeliveryEnabled: number
   bankTransferInstructions: number
   cashOnDeliveryInstructions: number
+  logoImageId: number
   defaultLocaleCode: number
   defaultCurrency: number
   timezone: number
@@ -160,6 +163,7 @@ export type StoreMinAggregateInputType = {
   cashOnDeliveryEnabled?: true
   bankTransferInstructions?: true
   cashOnDeliveryInstructions?: true
+  logoImageId?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -196,6 +200,7 @@ export type StoreMaxAggregateInputType = {
   cashOnDeliveryEnabled?: true
   bankTransferInstructions?: true
   cashOnDeliveryInstructions?: true
+  logoImageId?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -232,6 +237,7 @@ export type StoreCountAggregateInputType = {
   cashOnDeliveryEnabled?: true
   bankTransferInstructions?: true
   cashOnDeliveryInstructions?: true
+  logoImageId?: true
   defaultLocaleCode?: true
   defaultCurrency?: true
   timezone?: true
@@ -341,6 +347,7 @@ export type StoreGroupByOutputType = {
   cashOnDeliveryEnabled: boolean
   bankTransferInstructions: string | null
   cashOnDeliveryInstructions: string | null
+  logoImageId: string | null
   defaultLocaleCode: string
   defaultCurrency: $Enums.CurrencyCode
   timezone: string
@@ -398,6 +405,7 @@ export type StoreWhereInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFilter<"Store"> | boolean
   bankTransferInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
   cashOnDeliveryInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
+  logoImageId?: Prisma.StringNullableFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringFilter<"Store"> | string
@@ -406,6 +414,7 @@ export type StoreWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Store"> | Date | string
   activatedAt?: Prisma.DateTimeNullableFilter<"Store"> | Date | string | null
   archivedAt?: Prisma.DateTimeNullableFilter<"Store"> | Date | string | null
+  logoImage?: Prisma.XOR<Prisma.MediaAssetNullableScalarRelationFilter, Prisma.MediaAssetWhereInput> | null
   domains?: Prisma.StoreDomainListRelationFilter
   users?: Prisma.UserListRelationFilter
   customers?: Prisma.CustomerListRelationFilter
@@ -512,6 +521,7 @@ export type StoreOrderByWithRelationInput = {
   cashOnDeliveryEnabled?: Prisma.SortOrder
   bankTransferInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
   cashOnDeliveryInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
+  logoImageId?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -520,6 +530,7 @@ export type StoreOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  logoImage?: Prisma.MediaAssetOrderByWithRelationInput
   domains?: Prisma.StoreDomainOrderByRelationAggregateInput
   users?: Prisma.UserOrderByRelationAggregateInput
   customers?: Prisma.CustomerOrderByRelationAggregateInput
@@ -629,6 +640,7 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   cashOnDeliveryEnabled?: Prisma.BoolFilter<"Store"> | boolean
   bankTransferInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
   cashOnDeliveryInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
+  logoImageId?: Prisma.StringNullableFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringFilter<"Store"> | string
@@ -637,6 +649,7 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Store"> | Date | string
   activatedAt?: Prisma.DateTimeNullableFilter<"Store"> | Date | string | null
   archivedAt?: Prisma.DateTimeNullableFilter<"Store"> | Date | string | null
+  logoImage?: Prisma.XOR<Prisma.MediaAssetNullableScalarRelationFilter, Prisma.MediaAssetWhereInput> | null
   domains?: Prisma.StoreDomainListRelationFilter
   users?: Prisma.UserListRelationFilter
   customers?: Prisma.CustomerListRelationFilter
@@ -743,6 +756,7 @@ export type StoreOrderByWithAggregationInput = {
   cashOnDeliveryEnabled?: Prisma.SortOrder
   bankTransferInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
   cashOnDeliveryInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
+  logoImageId?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -785,6 +799,7 @@ export type StoreScalarWhereWithAggregatesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolWithAggregatesFilter<"Store"> | boolean
   bankTransferInstructions?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   cashOnDeliveryInstructions?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
+  logoImageId?: Prisma.StringNullableWithAggregatesFilter<"Store"> | string | null
   defaultLocaleCode?: Prisma.StringWithAggregatesFilter<"Store"> | string
   defaultCurrency?: Prisma.EnumCurrencyCodeWithAggregatesFilter<"Store"> | $Enums.CurrencyCode
   timezone?: Prisma.StringWithAggregatesFilter<"Store"> | string
@@ -829,6 +844,7 @@ export type StoreCreateInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -935,6 +951,7 @@ export type StoreUncheckedCreateInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -1057,6 +1074,7 @@ export type StoreUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -1163,6 +1181,7 @@ export type StoreUncheckedUpdateInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1277,6 +1296,7 @@ export type StoreCreateManyInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -1349,6 +1369,7 @@ export type StoreUncheckedUpdateManyInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1395,6 +1416,7 @@ export type StoreCountOrderByAggregateInput = {
   cashOnDeliveryEnabled?: Prisma.SortOrder
   bankTransferInstructions?: Prisma.SortOrder
   cashOnDeliveryInstructions?: Prisma.SortOrder
+  logoImageId?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -1431,6 +1453,7 @@ export type StoreMaxOrderByAggregateInput = {
   cashOnDeliveryEnabled?: Prisma.SortOrder
   bankTransferInstructions?: Prisma.SortOrder
   cashOnDeliveryInstructions?: Prisma.SortOrder
+  logoImageId?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -1467,6 +1490,7 @@ export type StoreMinOrderByAggregateInput = {
   cashOnDeliveryEnabled?: Prisma.SortOrder
   bankTransferInstructions?: Prisma.SortOrder
   cashOnDeliveryInstructions?: Prisma.SortOrder
+  logoImageId?: Prisma.SortOrder
   defaultLocaleCode?: Prisma.SortOrder
   defaultCurrency?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
@@ -1475,6 +1499,16 @@ export type StoreMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
+}
+
+export type StoreListRelationFilter = {
+  every?: Prisma.StoreWhereInput
+  some?: Prisma.StoreWhereInput
+  none?: Prisma.StoreWhereInput
+}
+
+export type StoreOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StoreCreateNestedOneWithoutAvailabilityRecordsInput = {
@@ -2623,6 +2657,20 @@ export type StoreCreateNestedOneWithoutMediaAssetsInput = {
   connect?: Prisma.StoreWhereUniqueInput
 }
 
+export type StoreCreateNestedManyWithoutLogoImageInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutLogoImageInput, Prisma.StoreUncheckedCreateWithoutLogoImageInput> | Prisma.StoreCreateWithoutLogoImageInput[] | Prisma.StoreUncheckedCreateWithoutLogoImageInput[]
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutLogoImageInput | Prisma.StoreCreateOrConnectWithoutLogoImageInput[]
+  createMany?: Prisma.StoreCreateManyLogoImageInputEnvelope
+  connect?: Prisma.StoreWhereUniqueInput | Prisma.StoreWhereUniqueInput[]
+}
+
+export type StoreUncheckedCreateNestedManyWithoutLogoImageInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutLogoImageInput, Prisma.StoreUncheckedCreateWithoutLogoImageInput> | Prisma.StoreCreateWithoutLogoImageInput[] | Prisma.StoreUncheckedCreateWithoutLogoImageInput[]
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutLogoImageInput | Prisma.StoreCreateOrConnectWithoutLogoImageInput[]
+  createMany?: Prisma.StoreCreateManyLogoImageInputEnvelope
+  connect?: Prisma.StoreWhereUniqueInput | Prisma.StoreWhereUniqueInput[]
+}
+
 export type StoreUpdateOneWithoutMediaAssetsNestedInput = {
   create?: Prisma.XOR<Prisma.StoreCreateWithoutMediaAssetsInput, Prisma.StoreUncheckedCreateWithoutMediaAssetsInput>
   connectOrCreate?: Prisma.StoreCreateOrConnectWithoutMediaAssetsInput
@@ -2631,6 +2679,34 @@ export type StoreUpdateOneWithoutMediaAssetsNestedInput = {
   delete?: Prisma.StoreWhereInput | boolean
   connect?: Prisma.StoreWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutMediaAssetsInput, Prisma.StoreUpdateWithoutMediaAssetsInput>, Prisma.StoreUncheckedUpdateWithoutMediaAssetsInput>
+}
+
+export type StoreUpdateManyWithoutLogoImageNestedInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutLogoImageInput, Prisma.StoreUncheckedCreateWithoutLogoImageInput> | Prisma.StoreCreateWithoutLogoImageInput[] | Prisma.StoreUncheckedCreateWithoutLogoImageInput[]
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutLogoImageInput | Prisma.StoreCreateOrConnectWithoutLogoImageInput[]
+  upsert?: Prisma.StoreUpsertWithWhereUniqueWithoutLogoImageInput | Prisma.StoreUpsertWithWhereUniqueWithoutLogoImageInput[]
+  createMany?: Prisma.StoreCreateManyLogoImageInputEnvelope
+  set?: Prisma.StoreWhereUniqueInput | Prisma.StoreWhereUniqueInput[]
+  disconnect?: Prisma.StoreWhereUniqueInput | Prisma.StoreWhereUniqueInput[]
+  delete?: Prisma.StoreWhereUniqueInput | Prisma.StoreWhereUniqueInput[]
+  connect?: Prisma.StoreWhereUniqueInput | Prisma.StoreWhereUniqueInput[]
+  update?: Prisma.StoreUpdateWithWhereUniqueWithoutLogoImageInput | Prisma.StoreUpdateWithWhereUniqueWithoutLogoImageInput[]
+  updateMany?: Prisma.StoreUpdateManyWithWhereWithoutLogoImageInput | Prisma.StoreUpdateManyWithWhereWithoutLogoImageInput[]
+  deleteMany?: Prisma.StoreScalarWhereInput | Prisma.StoreScalarWhereInput[]
+}
+
+export type StoreUncheckedUpdateManyWithoutLogoImageNestedInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutLogoImageInput, Prisma.StoreUncheckedCreateWithoutLogoImageInput> | Prisma.StoreCreateWithoutLogoImageInput[] | Prisma.StoreUncheckedCreateWithoutLogoImageInput[]
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutLogoImageInput | Prisma.StoreCreateOrConnectWithoutLogoImageInput[]
+  upsert?: Prisma.StoreUpsertWithWhereUniqueWithoutLogoImageInput | Prisma.StoreUpsertWithWhereUniqueWithoutLogoImageInput[]
+  createMany?: Prisma.StoreCreateManyLogoImageInputEnvelope
+  set?: Prisma.StoreWhereUniqueInput | Prisma.StoreWhereUniqueInput[]
+  disconnect?: Prisma.StoreWhereUniqueInput | Prisma.StoreWhereUniqueInput[]
+  delete?: Prisma.StoreWhereUniqueInput | Prisma.StoreWhereUniqueInput[]
+  connect?: Prisma.StoreWhereUniqueInput | Prisma.StoreWhereUniqueInput[]
+  update?: Prisma.StoreUpdateWithWhereUniqueWithoutLogoImageInput | Prisma.StoreUpdateWithWhereUniqueWithoutLogoImageInput[]
+  updateMany?: Prisma.StoreUpdateManyWithWhereWithoutLogoImageInput | Prisma.StoreUpdateManyWithWhereWithoutLogoImageInput[]
+  deleteMany?: Prisma.StoreScalarWhereInput | Prisma.StoreScalarWhereInput[]
 }
 
 export type StoreCreateNestedOneWithoutSearchDocumentsInput = {
@@ -2681,6 +2757,7 @@ export type StoreCreateWithoutAvailabilityRecordsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -2786,6 +2863,7 @@ export type StoreUncheckedCreateWithoutAvailabilityRecordsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -2923,6 +3001,7 @@ export type StoreUpdateWithoutAvailabilityRecordsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -3028,6 +3107,7 @@ export type StoreUncheckedUpdateWithoutAvailabilityRecordsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3149,6 +3229,7 @@ export type StoreCreateWithoutCategoriesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -3254,6 +3335,7 @@ export type StoreUncheckedCreateWithoutCategoriesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3391,6 +3473,7 @@ export type StoreUpdateWithoutCategoriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -3496,6 +3579,7 @@ export type StoreUncheckedUpdateWithoutCategoriesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -3617,6 +3701,7 @@ export type StoreCreateWithoutPriceListsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -3722,6 +3807,7 @@ export type StoreUncheckedCreateWithoutPriceListsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -3859,6 +3945,7 @@ export type StoreUpdateWithoutPriceListsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -3964,6 +4051,7 @@ export type StoreUncheckedUpdateWithoutPriceListsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4085,6 +4173,7 @@ export type StoreCreateWithoutProductTypesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -4190,6 +4279,7 @@ export type StoreUncheckedCreateWithoutProductTypesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4327,6 +4417,7 @@ export type StoreUpdateWithoutProductTypesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -4432,6 +4523,7 @@ export type StoreUncheckedUpdateWithoutProductTypesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4553,6 +4645,7 @@ export type StoreCreateWithoutProductsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -4658,6 +4751,7 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -4795,6 +4889,7 @@ export type StoreUpdateWithoutProductsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -4900,6 +4995,7 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5021,6 +5117,7 @@ export type StoreCreateWithoutCartsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -5126,6 +5223,7 @@ export type StoreUncheckedCreateWithoutCartsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5263,6 +5361,7 @@ export type StoreUpdateWithoutCartsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -5368,6 +5467,7 @@ export type StoreUncheckedUpdateWithoutCartsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5489,6 +5589,7 @@ export type StoreCreateWithoutCheckoutsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -5594,6 +5695,7 @@ export type StoreUncheckedCreateWithoutCheckoutsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -5731,6 +5833,7 @@ export type StoreUpdateWithoutCheckoutsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -5836,6 +5939,7 @@ export type StoreUncheckedUpdateWithoutCheckoutsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -5957,6 +6061,7 @@ export type StoreCreateWithoutCustomersInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
@@ -6062,6 +6167,7 @@ export type StoreUncheckedCreateWithoutCustomersInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6199,6 +6305,7 @@ export type StoreUpdateWithoutCustomersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
@@ -6304,6 +6411,7 @@ export type StoreUncheckedUpdateWithoutCustomersInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6425,6 +6533,7 @@ export type StoreCreateWithoutOrdersInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -6530,6 +6639,7 @@ export type StoreUncheckedCreateWithoutOrdersInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -6667,6 +6777,7 @@ export type StoreUpdateWithoutOrdersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -6772,6 +6883,7 @@ export type StoreUncheckedUpdateWithoutOrdersInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -6893,6 +7005,7 @@ export type StoreCreateWithoutPagesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -6998,6 +7111,7 @@ export type StoreUncheckedCreateWithoutPagesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7135,6 +7249,7 @@ export type StoreUpdateWithoutPagesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -7240,6 +7355,7 @@ export type StoreUncheckedUpdateWithoutPagesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7361,6 +7477,7 @@ export type StoreCreateWithoutApiClientsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -7466,6 +7583,7 @@ export type StoreUncheckedCreateWithoutApiClientsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -7603,6 +7721,7 @@ export type StoreUpdateWithoutApiClientsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -7708,6 +7827,7 @@ export type StoreUncheckedUpdateWithoutApiClientsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -7829,6 +7949,7 @@ export type StoreCreateWithoutUsersInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
   productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
@@ -7934,6 +8055,7 @@ export type StoreUncheckedCreateWithoutUsersInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8071,6 +8193,7 @@ export type StoreUpdateWithoutUsersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
   productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
@@ -8176,6 +8299,7 @@ export type StoreUncheckedUpdateWithoutUsersInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8297,6 +8421,7 @@ export type StoreCreateWithoutDomainsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
   productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
@@ -8402,6 +8527,7 @@ export type StoreUncheckedCreateWithoutDomainsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -8539,6 +8665,7 @@ export type StoreUpdateWithoutDomainsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
   productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
@@ -8644,6 +8771,7 @@ export type StoreUncheckedUpdateWithoutDomainsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -8765,6 +8893,7 @@ export type StoreCreateWithoutAuditLogsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -8870,6 +8999,7 @@ export type StoreUncheckedCreateWithoutAuditLogsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9007,6 +9137,7 @@ export type StoreUpdateWithoutAuditLogsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -9112,6 +9243,7 @@ export type StoreUncheckedUpdateWithoutAuditLogsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9233,6 +9365,7 @@ export type StoreCreateWithoutDomainEventsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -9338,6 +9471,7 @@ export type StoreUncheckedCreateWithoutDomainEventsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9475,6 +9609,7 @@ export type StoreUpdateWithoutDomainEventsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -9580,6 +9715,7 @@ export type StoreUncheckedUpdateWithoutDomainEventsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -9701,6 +9837,7 @@ export type StoreCreateWithoutFeatureFlagsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -9806,6 +9943,7 @@ export type StoreUncheckedCreateWithoutFeatureFlagsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -9943,6 +10081,7 @@ export type StoreUpdateWithoutFeatureFlagsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -10048,6 +10187,7 @@ export type StoreUncheckedUpdateWithoutFeatureFlagsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10169,6 +10309,7 @@ export type StoreCreateWithoutJobsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -10274,6 +10415,7 @@ export type StoreUncheckedCreateWithoutJobsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10411,6 +10553,7 @@ export type StoreUpdateWithoutJobsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -10516,6 +10659,7 @@ export type StoreUncheckedUpdateWithoutJobsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -10637,6 +10781,7 @@ export type StoreCreateWithoutMonitoringChecksInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -10742,6 +10887,7 @@ export type StoreUncheckedCreateWithoutMonitoringChecksInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -10879,6 +11025,7 @@ export type StoreUpdateWithoutMonitoringChecksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -10984,6 +11131,7 @@ export type StoreUncheckedUpdateWithoutMonitoringChecksInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11105,6 +11253,7 @@ export type StoreCreateWithoutObservabilitySignalsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -11210,6 +11359,7 @@ export type StoreUncheckedCreateWithoutObservabilitySignalsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11347,6 +11497,7 @@ export type StoreUpdateWithoutObservabilitySignalsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -11452,6 +11603,7 @@ export type StoreUncheckedUpdateWithoutObservabilitySignalsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -11573,6 +11725,7 @@ export type StoreCreateWithoutSeoMetadataInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -11678,6 +11831,7 @@ export type StoreUncheckedCreateWithoutSeoMetadataInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -11815,6 +11969,7 @@ export type StoreUpdateWithoutSeoMetadataInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -11920,6 +12075,7 @@ export type StoreUncheckedUpdateWithoutSeoMetadataInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12041,6 +12197,7 @@ export type StoreCreateWithoutAiProvidersInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -12146,6 +12303,7 @@ export type StoreUncheckedCreateWithoutAiProvidersInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12283,6 +12441,7 @@ export type StoreUpdateWithoutAiProvidersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -12388,6 +12547,7 @@ export type StoreUncheckedUpdateWithoutAiProvidersInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12509,6 +12669,7 @@ export type StoreCreateWithoutAiTasksInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -12614,6 +12775,7 @@ export type StoreUncheckedCreateWithoutAiTasksInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -12751,6 +12913,7 @@ export type StoreUpdateWithoutAiTasksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -12856,6 +13019,7 @@ export type StoreUncheckedUpdateWithoutAiTasksInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -12977,6 +13141,7 @@ export type StoreCreateWithoutBundlesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -13082,6 +13247,7 @@ export type StoreUncheckedCreateWithoutBundlesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13219,6 +13385,7 @@ export type StoreUpdateWithoutBundlesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -13324,6 +13491,7 @@ export type StoreUncheckedUpdateWithoutBundlesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13445,6 +13613,7 @@ export type StoreCreateWithoutDiscountsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -13550,6 +13719,7 @@ export type StoreUncheckedCreateWithoutDiscountsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -13687,6 +13857,7 @@ export type StoreUpdateWithoutDiscountsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -13792,6 +13963,7 @@ export type StoreUncheckedUpdateWithoutDiscountsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -13913,6 +14085,7 @@ export type StoreCreateWithoutDocumentsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -14018,6 +14191,7 @@ export type StoreUncheckedCreateWithoutDocumentsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14155,6 +14329,7 @@ export type StoreUpdateWithoutDocumentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -14260,6 +14435,7 @@ export type StoreUncheckedUpdateWithoutDocumentsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14381,6 +14557,7 @@ export type StoreCreateWithoutDocumentCountersInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -14486,6 +14663,7 @@ export type StoreUncheckedCreateWithoutDocumentCountersInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -14623,6 +14801,7 @@ export type StoreUpdateWithoutDocumentCountersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -14728,6 +14907,7 @@ export type StoreUncheckedUpdateWithoutDocumentCountersInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -14849,6 +15029,7 @@ export type StoreCreateWithoutFulfillmentsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -14954,6 +15135,7 @@ export type StoreUncheckedCreateWithoutFulfillmentsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15091,6 +15273,7 @@ export type StoreUpdateWithoutFulfillmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -15196,6 +15379,7 @@ export type StoreUncheckedUpdateWithoutFulfillmentsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15317,6 +15501,7 @@ export type StoreCreateWithoutGiftCardsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -15422,6 +15607,7 @@ export type StoreUncheckedCreateWithoutGiftCardsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -15559,6 +15745,7 @@ export type StoreUpdateWithoutGiftCardsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -15664,6 +15851,7 @@ export type StoreUncheckedUpdateWithoutGiftCardsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -15785,6 +15973,7 @@ export type StoreCreateWithoutGiftRequestsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -15890,6 +16079,7 @@ export type StoreUncheckedCreateWithoutGiftRequestsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16027,6 +16217,7 @@ export type StoreUpdateWithoutGiftRequestsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -16132,6 +16323,7 @@ export type StoreUncheckedUpdateWithoutGiftRequestsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16253,6 +16445,7 @@ export type StoreCreateWithoutInventoryItemsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -16358,6 +16551,7 @@ export type StoreUncheckedCreateWithoutInventoryItemsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16495,6 +16689,7 @@ export type StoreUpdateWithoutInventoryItemsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -16600,6 +16795,7 @@ export type StoreUncheckedUpdateWithoutInventoryItemsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -16721,6 +16917,7 @@ export type StoreCreateWithoutLoyaltyAccountsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -16826,6 +17023,7 @@ export type StoreUncheckedCreateWithoutLoyaltyAccountsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -16963,6 +17161,7 @@ export type StoreUpdateWithoutLoyaltyAccountsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -17068,6 +17267,7 @@ export type StoreUncheckedUpdateWithoutLoyaltyAccountsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17189,6 +17389,7 @@ export type StoreCreateWithoutPaymentsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -17294,6 +17495,7 @@ export type StoreUncheckedCreateWithoutPaymentsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17431,6 +17633,7 @@ export type StoreUpdateWithoutPaymentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -17536,6 +17739,7 @@ export type StoreUncheckedUpdateWithoutPaymentsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -17657,6 +17861,7 @@ export type StoreCreateWithoutReturnRequestsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -17762,6 +17967,7 @@ export type StoreUncheckedCreateWithoutReturnRequestsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -17899,6 +18105,7 @@ export type StoreUpdateWithoutReturnRequestsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -18004,6 +18211,7 @@ export type StoreUncheckedUpdateWithoutReturnRequestsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18125,6 +18333,7 @@ export type StoreCreateWithoutSalesPoliciesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -18230,6 +18439,7 @@ export type StoreUncheckedCreateWithoutSalesPoliciesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18367,6 +18577,7 @@ export type StoreUpdateWithoutSalesPoliciesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -18472,6 +18683,7 @@ export type StoreUncheckedUpdateWithoutSalesPoliciesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -18593,6 +18805,7 @@ export type StoreCreateWithoutSellabilityDecisionsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -18698,6 +18911,7 @@ export type StoreUncheckedCreateWithoutSellabilityDecisionsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -18835,6 +19049,7 @@ export type StoreUpdateWithoutSellabilityDecisionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -18940,6 +19155,7 @@ export type StoreUncheckedUpdateWithoutSellabilityDecisionsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19061,6 +19277,7 @@ export type StoreCreateWithoutShippingZonesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -19166,6 +19383,7 @@ export type StoreUncheckedCreateWithoutShippingZonesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19303,6 +19521,7 @@ export type StoreUpdateWithoutShippingZonesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -19408,6 +19627,7 @@ export type StoreUncheckedUpdateWithoutShippingZonesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19529,6 +19749,7 @@ export type StoreCreateWithoutShippingMethodsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -19634,6 +19855,7 @@ export type StoreUncheckedCreateWithoutShippingMethodsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -19771,6 +19993,7 @@ export type StoreUpdateWithoutShippingMethodsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -19876,6 +20099,7 @@ export type StoreUncheckedUpdateWithoutShippingMethodsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -19997,6 +20221,7 @@ export type StoreCreateWithoutShipmentsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -20102,6 +20327,7 @@ export type StoreUncheckedCreateWithoutShipmentsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20239,6 +20465,7 @@ export type StoreUpdateWithoutShipmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -20344,6 +20571,7 @@ export type StoreUncheckedUpdateWithoutShipmentsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20465,6 +20693,7 @@ export type StoreCreateWithoutSubscriptionsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -20570,6 +20799,7 @@ export type StoreUncheckedCreateWithoutSubscriptionsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -20707,6 +20937,7 @@ export type StoreUpdateWithoutSubscriptionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -20812,6 +21043,7 @@ export type StoreUncheckedUpdateWithoutSubscriptionsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -20933,6 +21165,7 @@ export type StoreCreateWithoutTaxRulesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -21038,6 +21271,7 @@ export type StoreUncheckedCreateWithoutTaxRulesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21175,6 +21409,7 @@ export type StoreUpdateWithoutTaxRulesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -21280,6 +21515,7 @@ export type StoreUncheckedUpdateWithoutTaxRulesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21401,6 +21637,7 @@ export type StoreCreateWithoutAnalyticsMetricsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -21506,6 +21743,7 @@ export type StoreUncheckedCreateWithoutAnalyticsMetricsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -21643,6 +21881,7 @@ export type StoreUpdateWithoutAnalyticsMetricsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -21748,6 +21987,7 @@ export type StoreUncheckedUpdateWithoutAnalyticsMetricsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -21869,6 +22109,7 @@ export type StoreCreateWithoutAttributionModelsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -21974,6 +22215,7 @@ export type StoreUncheckedCreateWithoutAttributionModelsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22111,6 +22353,7 @@ export type StoreUpdateWithoutAttributionModelsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -22216,6 +22459,7 @@ export type StoreUncheckedUpdateWithoutAttributionModelsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22337,6 +22581,7 @@ export type StoreCreateWithoutAutomationsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -22442,6 +22687,7 @@ export type StoreUncheckedCreateWithoutAutomationsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -22579,6 +22825,7 @@ export type StoreUpdateWithoutAutomationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -22684,6 +22931,7 @@ export type StoreUncheckedUpdateWithoutAutomationsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -22805,6 +23053,7 @@ export type StoreCreateWithoutBehaviorSegmentsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -22910,6 +23159,7 @@ export type StoreUncheckedCreateWithoutBehaviorSegmentsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23047,6 +23297,7 @@ export type StoreUpdateWithoutBehaviorSegmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -23152,6 +23403,7 @@ export type StoreUncheckedUpdateWithoutBehaviorSegmentsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23273,6 +23525,7 @@ export type StoreCreateWithoutBehaviorProfilesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -23378,6 +23631,7 @@ export type StoreUncheckedCreateWithoutBehaviorProfilesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23515,6 +23769,7 @@ export type StoreUpdateWithoutBehaviorProfilesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -23620,6 +23875,7 @@ export type StoreUncheckedUpdateWithoutBehaviorProfilesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -23741,6 +23997,7 @@ export type StoreCreateWithoutBlogCategoriesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -23846,6 +24103,7 @@ export type StoreUncheckedCreateWithoutBlogCategoriesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -23983,6 +24241,7 @@ export type StoreUpdateWithoutBlogCategoriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -24088,6 +24347,7 @@ export type StoreUncheckedUpdateWithoutBlogCategoriesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24209,6 +24469,7 @@ export type StoreCreateWithoutBlogPostsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -24314,6 +24575,7 @@ export type StoreUncheckedCreateWithoutBlogPostsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24451,6 +24713,7 @@ export type StoreUpdateWithoutBlogPostsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -24556,6 +24819,7 @@ export type StoreUncheckedUpdateWithoutBlogPostsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -24677,6 +24941,7 @@ export type StoreCreateWithoutConversionFlowsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -24782,6 +25047,7 @@ export type StoreUncheckedCreateWithoutConversionFlowsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -24919,6 +25185,7 @@ export type StoreUpdateWithoutConversionFlowsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -25024,6 +25291,7 @@ export type StoreUncheckedUpdateWithoutConversionFlowsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25145,6 +25413,7 @@ export type StoreCreateWithoutCrmContactsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -25250,6 +25519,7 @@ export type StoreUncheckedCreateWithoutCrmContactsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25387,6 +25657,7 @@ export type StoreUpdateWithoutCrmContactsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -25492,6 +25763,7 @@ export type StoreUncheckedUpdateWithoutCrmContactsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -25613,6 +25885,7 @@ export type StoreCreateWithoutCrmTagsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -25718,6 +25991,7 @@ export type StoreUncheckedCreateWithoutCrmTagsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -25855,6 +26129,7 @@ export type StoreUpdateWithoutCrmTagsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -25960,6 +26235,7 @@ export type StoreUncheckedUpdateWithoutCrmTagsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26081,6 +26357,7 @@ export type StoreCreateWithoutNewsletterSubscribersInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -26186,6 +26463,7 @@ export type StoreUncheckedCreateWithoutNewsletterSubscribersInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26323,6 +26601,7 @@ export type StoreUpdateWithoutNewsletterSubscribersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -26428,6 +26707,7 @@ export type StoreUncheckedUpdateWithoutNewsletterSubscribersInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -26549,6 +26829,7 @@ export type StoreCreateWithoutNewsletterCampaignsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -26654,6 +26935,7 @@ export type StoreUncheckedCreateWithoutNewsletterCampaignsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -26791,6 +27073,7 @@ export type StoreUpdateWithoutNewsletterCampaignsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -26896,6 +27179,7 @@ export type StoreUncheckedUpdateWithoutNewsletterCampaignsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27017,6 +27301,7 @@ export type StoreCreateWithoutPublicEventsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -27122,6 +27407,7 @@ export type StoreUncheckedCreateWithoutPublicEventsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27259,6 +27545,7 @@ export type StoreUpdateWithoutPublicEventsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -27364,6 +27651,7 @@ export type StoreUncheckedUpdateWithoutPublicEventsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27485,6 +27773,7 @@ export type StoreCreateWithoutRecommendationRulesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -27590,6 +27879,7 @@ export type StoreUncheckedCreateWithoutRecommendationRulesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -27727,6 +28017,7 @@ export type StoreUpdateWithoutRecommendationRulesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -27832,6 +28123,7 @@ export type StoreUncheckedUpdateWithoutRecommendationRulesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -27953,6 +28245,7 @@ export type StoreCreateWithoutSocialPublicationsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -28058,6 +28351,7 @@ export type StoreUncheckedCreateWithoutSocialPublicationsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28195,6 +28489,7 @@ export type StoreUpdateWithoutSocialPublicationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -28300,6 +28595,7 @@ export type StoreUncheckedUpdateWithoutSocialPublicationsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28421,6 +28717,7 @@ export type StoreCreateWithoutSupportTicketsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -28526,6 +28823,7 @@ export type StoreUncheckedCreateWithoutSupportTicketsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -28663,6 +28961,7 @@ export type StoreUpdateWithoutSupportTicketsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -28768,6 +29067,7 @@ export type StoreUncheckedUpdateWithoutSupportTicketsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -28889,6 +29189,7 @@ export type StoreCreateWithoutHomepagesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -28994,6 +29295,7 @@ export type StoreUncheckedCreateWithoutHomepagesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29131,6 +29433,7 @@ export type StoreUpdateWithoutHomepagesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -29236,6 +29539,7 @@ export type StoreUncheckedUpdateWithoutHomepagesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29357,6 +29661,7 @@ export type StoreCreateWithoutApprovalRequestsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -29462,6 +29767,7 @@ export type StoreUncheckedCreateWithoutApprovalRequestsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -29599,6 +29905,7 @@ export type StoreUpdateWithoutApprovalRequestsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -29704,6 +30011,7 @@ export type StoreUncheckedUpdateWithoutApprovalRequestsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -29825,6 +30133,7 @@ export type StoreCreateWithoutConsentPurposesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -29930,6 +30239,7 @@ export type StoreUncheckedCreateWithoutConsentPurposesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30067,6 +30377,7 @@ export type StoreUpdateWithoutConsentPurposesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -30172,6 +30483,7 @@ export type StoreUncheckedUpdateWithoutConsentPurposesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30293,6 +30605,7 @@ export type StoreCreateWithoutConsentRecordsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -30398,6 +30711,7 @@ export type StoreUncheckedCreateWithoutConsentRecordsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -30535,6 +30849,7 @@ export type StoreUpdateWithoutConsentRecordsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -30640,6 +30955,7 @@ export type StoreUncheckedUpdateWithoutConsentRecordsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -30761,6 +31077,7 @@ export type StoreCreateWithoutEmailMessagesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -30866,6 +31183,7 @@ export type StoreUncheckedCreateWithoutEmailMessagesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31003,6 +31321,7 @@ export type StoreUpdateWithoutEmailMessagesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -31108,6 +31427,7 @@ export type StoreUncheckedUpdateWithoutEmailMessagesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31229,6 +31549,7 @@ export type StoreCreateWithoutExportDefinitionsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -31334,6 +31655,7 @@ export type StoreUncheckedCreateWithoutExportDefinitionsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31471,6 +31793,7 @@ export type StoreUpdateWithoutExportDefinitionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -31576,6 +31899,7 @@ export type StoreUncheckedUpdateWithoutExportDefinitionsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -31697,6 +32021,7 @@ export type StoreCreateWithoutExportRequestsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -31802,6 +32127,7 @@ export type StoreUncheckedCreateWithoutExportRequestsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -31939,6 +32265,7 @@ export type StoreUpdateWithoutExportRequestsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -32044,6 +32371,7 @@ export type StoreUncheckedUpdateWithoutExportRequestsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -32165,6 +32493,7 @@ export type StoreCreateWithoutFraudRiskAssessmentsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -32270,6 +32599,7 @@ export type StoreUncheckedCreateWithoutFraudRiskAssessmentsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -32407,6 +32737,7 @@ export type StoreUpdateWithoutFraudRiskAssessmentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -32512,6 +32843,7 @@ export type StoreUncheckedUpdateWithoutFraudRiskAssessmentsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -32633,6 +32965,7 @@ export type StoreCreateWithoutImportDefinitionsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -32738,6 +33071,7 @@ export type StoreUncheckedCreateWithoutImportDefinitionsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -32875,6 +33209,7 @@ export type StoreUpdateWithoutImportDefinitionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -32980,6 +33315,7 @@ export type StoreUncheckedUpdateWithoutImportDefinitionsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -33101,6 +33437,7 @@ export type StoreCreateWithoutImportRequestsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -33206,6 +33543,7 @@ export type StoreUncheckedCreateWithoutImportRequestsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -33343,6 +33681,7 @@ export type StoreUpdateWithoutImportRequestsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -33448,6 +33787,7 @@ export type StoreUncheckedUpdateWithoutImportRequestsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -33569,6 +33909,7 @@ export type StoreCreateWithoutIntegrationsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -33674,6 +34015,7 @@ export type StoreUncheckedCreateWithoutIntegrationsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -33811,6 +34153,7 @@ export type StoreUpdateWithoutIntegrationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -33916,6 +34259,7 @@ export type StoreUncheckedUpdateWithoutIntegrationsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -34037,6 +34381,7 @@ export type StoreCreateWithoutLocalizationLocalesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -34142,6 +34487,7 @@ export type StoreUncheckedCreateWithoutLocalizationLocalesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -34279,6 +34625,7 @@ export type StoreUpdateWithoutLocalizationLocalesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -34384,6 +34731,7 @@ export type StoreUncheckedUpdateWithoutLocalizationLocalesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -34505,6 +34853,7 @@ export type StoreCreateWithoutLocalizedValuesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -34610,6 +34959,7 @@ export type StoreUncheckedCreateWithoutLocalizedValuesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -34747,6 +35097,7 @@ export type StoreUpdateWithoutLocalizedValuesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -34852,6 +35203,7 @@ export type StoreUncheckedUpdateWithoutLocalizedValuesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -34973,6 +35325,7 @@ export type StoreCreateWithoutNotificationsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -35078,6 +35431,7 @@ export type StoreUncheckedCreateWithoutNotificationsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -35215,6 +35569,7 @@ export type StoreUpdateWithoutNotificationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -35320,6 +35675,7 @@ export type StoreUncheckedUpdateWithoutNotificationsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -35441,6 +35797,7 @@ export type StoreCreateWithoutNotificationPreferencesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -35546,6 +35903,7 @@ export type StoreUncheckedCreateWithoutNotificationPreferencesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -35683,6 +36041,7 @@ export type StoreUpdateWithoutNotificationPreferencesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -35788,6 +36147,7 @@ export type StoreUncheckedUpdateWithoutNotificationPreferencesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -35909,6 +36269,7 @@ export type StoreCreateWithoutSchedulePlansInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -36014,6 +36375,7 @@ export type StoreUncheckedCreateWithoutSchedulePlansInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -36151,6 +36513,7 @@ export type StoreUpdateWithoutSchedulePlansInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -36256,6 +36619,7 @@ export type StoreUncheckedUpdateWithoutSchedulePlansInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -36377,6 +36741,7 @@ export type StoreCreateWithoutWebhookEndpointsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -36482,6 +36847,7 @@ export type StoreUncheckedCreateWithoutWebhookEndpointsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -36619,6 +36985,7 @@ export type StoreUpdateWithoutWebhookEndpointsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -36724,6 +37091,7 @@ export type StoreUncheckedUpdateWithoutWebhookEndpointsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -36845,6 +37213,7 @@ export type StoreCreateWithoutWorkflowDefinitionsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -36950,6 +37319,7 @@ export type StoreUncheckedCreateWithoutWorkflowDefinitionsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -37087,6 +37457,7 @@ export type StoreUpdateWithoutWorkflowDefinitionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -37192,6 +37563,7 @@ export type StoreUncheckedUpdateWithoutWorkflowDefinitionsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -37313,6 +37685,7 @@ export type StoreCreateWithoutWorkflowInstancesInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -37418,6 +37791,7 @@ export type StoreUncheckedCreateWithoutWorkflowInstancesInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -37555,6 +37929,7 @@ export type StoreUpdateWithoutWorkflowInstancesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -37660,6 +38035,7 @@ export type StoreUncheckedUpdateWithoutWorkflowInstancesInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -37781,6 +38157,7 @@ export type StoreCreateWithoutChannelsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -37886,6 +38263,7 @@ export type StoreUncheckedCreateWithoutChannelsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -38023,6 +38401,7 @@ export type StoreUpdateWithoutChannelsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -38128,6 +38507,7 @@ export type StoreUncheckedUpdateWithoutChannelsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -38249,6 +38629,7 @@ export type StoreCreateWithoutMediaAssetsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -38354,6 +38735,7 @@ export type StoreUncheckedCreateWithoutMediaAssetsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -38446,6 +38828,244 @@ export type StoreCreateOrConnectWithoutMediaAssetsInput = {
   create: Prisma.XOR<Prisma.StoreCreateWithoutMediaAssetsInput, Prisma.StoreUncheckedCreateWithoutMediaAssetsInput>
 }
 
+export type StoreCreateWithoutLogoImageInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  addressLine1?: string | null
+  addressCity?: string | null
+  addressPostalCode?: string | null
+  addressCountry?: string | null
+  instagramUrl?: string | null
+  facebookUrl?: string | null
+  orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
+}
+
+export type StoreUncheckedCreateWithoutLogoImageInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  addressLine1?: string | null
+  addressCity?: string | null
+  addressPostalCode?: string | null
+  addressCountry?: string | null
+  instagramUrl?: string | null
+  facebookUrl?: string | null
+  orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
+}
+
+export type StoreCreateOrConnectWithoutLogoImageInput = {
+  where: Prisma.StoreWhereUniqueInput
+  create: Prisma.XOR<Prisma.StoreCreateWithoutLogoImageInput, Prisma.StoreUncheckedCreateWithoutLogoImageInput>
+}
+
+export type StoreCreateManyLogoImageInputEnvelope = {
+  data: Prisma.StoreCreateManyLogoImageInput | Prisma.StoreCreateManyLogoImageInput[]
+  skipDuplicates?: boolean
+}
+
 export type StoreUpsertWithoutMediaAssetsInput = {
   update: Prisma.XOR<Prisma.StoreUpdateWithoutMediaAssetsInput, Prisma.StoreUncheckedUpdateWithoutMediaAssetsInput>
   create: Prisma.XOR<Prisma.StoreCreateWithoutMediaAssetsInput, Prisma.StoreUncheckedCreateWithoutMediaAssetsInput>
@@ -38491,6 +39111,7 @@ export type StoreUpdateWithoutMediaAssetsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -38596,6 +39217,7 @@ export type StoreUncheckedUpdateWithoutMediaAssetsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -38683,6 +39305,62 @@ export type StoreUncheckedUpdateWithoutMediaAssetsInput = {
   fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
 }
 
+export type StoreUpsertWithWhereUniqueWithoutLogoImageInput = {
+  where: Prisma.StoreWhereUniqueInput
+  update: Prisma.XOR<Prisma.StoreUpdateWithoutLogoImageInput, Prisma.StoreUncheckedUpdateWithoutLogoImageInput>
+  create: Prisma.XOR<Prisma.StoreCreateWithoutLogoImageInput, Prisma.StoreUncheckedCreateWithoutLogoImageInput>
+}
+
+export type StoreUpdateWithWhereUniqueWithoutLogoImageInput = {
+  where: Prisma.StoreWhereUniqueInput
+  data: Prisma.XOR<Prisma.StoreUpdateWithoutLogoImageInput, Prisma.StoreUncheckedUpdateWithoutLogoImageInput>
+}
+
+export type StoreUpdateManyWithWhereWithoutLogoImageInput = {
+  where: Prisma.StoreScalarWhereInput
+  data: Prisma.XOR<Prisma.StoreUpdateManyMutationInput, Prisma.StoreUncheckedUpdateManyWithoutLogoImageInput>
+}
+
+export type StoreScalarWhereInput = {
+  AND?: Prisma.StoreScalarWhereInput | Prisma.StoreScalarWhereInput[]
+  OR?: Prisma.StoreScalarWhereInput[]
+  NOT?: Prisma.StoreScalarWhereInput | Prisma.StoreScalarWhereInput[]
+  id?: Prisma.StringFilter<"Store"> | string
+  code?: Prisma.StringFilter<"Store"> | string
+  name?: Prisma.StringFilter<"Store"> | string
+  slug?: Prisma.StringFilter<"Store"> | string
+  status?: Prisma.EnumStoreStatusFilter<"Store"> | $Enums.StoreStatus
+  legalName?: Prisma.StringNullableFilter<"Store"> | string | null
+  siret?: Prisma.StringNullableFilter<"Store"> | string | null
+  vatNumber?: Prisma.StringNullableFilter<"Store"> | string | null
+  supportEmail?: Prisma.StringNullableFilter<"Store"> | string | null
+  supportPhone?: Prisma.StringNullableFilter<"Store"> | string | null
+  shippingReturnsPolicy?: Prisma.StringNullableFilter<"Store"> | string | null
+  addressLine1?: Prisma.StringNullableFilter<"Store"> | string | null
+  addressCity?: Prisma.StringNullableFilter<"Store"> | string | null
+  addressPostalCode?: Prisma.StringNullableFilter<"Store"> | string | null
+  addressCountry?: Prisma.StringNullableFilter<"Store"> | string | null
+  instagramUrl?: Prisma.StringNullableFilter<"Store"> | string | null
+  facebookUrl?: Prisma.StringNullableFilter<"Store"> | string | null
+  orderNumberPrefix?: Prisma.StringNullableFilter<"Store"> | string | null
+  emailConfirmationEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  emailShippingEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  replyToEmail?: Prisma.StringNullableFilter<"Store"> | string | null
+  bankTransferEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFilter<"Store"> | boolean
+  bankTransferInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
+  cashOnDeliveryInstructions?: Prisma.StringNullableFilter<"Store"> | string | null
+  logoImageId?: Prisma.StringNullableFilter<"Store"> | string | null
+  defaultLocaleCode?: Prisma.StringFilter<"Store"> | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFilter<"Store"> | $Enums.CurrencyCode
+  timezone?: Prisma.StringFilter<"Store"> | string
+  isProduction?: Prisma.BoolFilter<"Store"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Store"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Store"> | Date | string
+  activatedAt?: Prisma.DateTimeNullableFilter<"Store"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"Store"> | Date | string | null
+}
+
 export type StoreCreateWithoutSearchDocumentsInput = {
   id?: string
   code: string
@@ -38717,6 +39395,7 @@ export type StoreCreateWithoutSearchDocumentsInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
   domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
   users?: Prisma.UserCreateNestedManyWithoutStoreInput
   customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
@@ -38822,6 +39501,7 @@ export type StoreUncheckedCreateWithoutSearchDocumentsInput = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: string | null
   cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
   defaultLocaleCode: string
   defaultCurrency?: $Enums.CurrencyCode
   timezone?: string
@@ -38959,6 +39639,7 @@ export type StoreUpdateWithoutSearchDocumentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
   domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
   users?: Prisma.UserUpdateManyWithoutStoreNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
@@ -39064,6 +39745,7 @@ export type StoreUncheckedUpdateWithoutSearchDocumentsInput = {
   cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
   defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -39149,6 +39831,306 @@ export type StoreUncheckedUpdateWithoutSearchDocumentsInput = {
   aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
   aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
   fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreCreateManyLogoImageInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  addressLine1?: string | null
+  addressCity?: string | null
+  addressPostalCode?: string | null
+  addressCountry?: string | null
+  instagramUrl?: string | null
+  facebookUrl?: string | null
+  orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+}
+
+export type StoreUpdateWithoutLogoImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreUncheckedUpdateWithoutLogoImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreUncheckedUpdateManyWithoutLogoImageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -39901,6 +40883,7 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: boolean
   cashOnDeliveryInstructions?: boolean
+  logoImageId?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -39909,6 +40892,7 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   updatedAt?: boolean
   activatedAt?: boolean
   archivedAt?: boolean
+  logoImage?: boolean | Prisma.Store$logoImageArgs<ExtArgs>
   domains?: boolean | Prisma.Store$domainsArgs<ExtArgs>
   users?: boolean | Prisma.Store$usersArgs<ExtArgs>
   customers?: boolean | Prisma.Store$customersArgs<ExtArgs>
@@ -40016,6 +41000,7 @@ export type StoreSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: boolean
   cashOnDeliveryInstructions?: boolean
+  logoImageId?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -40024,6 +41009,7 @@ export type StoreSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   updatedAt?: boolean
   activatedAt?: boolean
   archivedAt?: boolean
+  logoImage?: boolean | Prisma.Store$logoImageArgs<ExtArgs>
 }, ExtArgs["result"]["store"]>
 
 export type StoreSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -40052,6 +41038,7 @@ export type StoreSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: boolean
   cashOnDeliveryInstructions?: boolean
+  logoImageId?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -40060,6 +41047,7 @@ export type StoreSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   updatedAt?: boolean
   activatedAt?: boolean
   archivedAt?: boolean
+  logoImage?: boolean | Prisma.Store$logoImageArgs<ExtArgs>
 }, ExtArgs["result"]["store"]>
 
 export type StoreSelectScalar = {
@@ -40088,6 +41076,7 @@ export type StoreSelectScalar = {
   cashOnDeliveryEnabled?: boolean
   bankTransferInstructions?: boolean
   cashOnDeliveryInstructions?: boolean
+  logoImageId?: boolean
   defaultLocaleCode?: boolean
   defaultCurrency?: boolean
   timezone?: boolean
@@ -40098,8 +41087,9 @@ export type StoreSelectScalar = {
   archivedAt?: boolean
 }
 
-export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "siret" | "vatNumber" | "supportEmail" | "supportPhone" | "shippingReturnsPolicy" | "addressLine1" | "addressCity" | "addressPostalCode" | "addressCountry" | "instagramUrl" | "facebookUrl" | "orderNumberPrefix" | "emailConfirmationEnabled" | "emailShippingEnabled" | "replyToEmail" | "bankTransferEnabled" | "cashOnDeliveryEnabled" | "bankTransferInstructions" | "cashOnDeliveryInstructions" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
+export type StoreOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "slug" | "status" | "legalName" | "siret" | "vatNumber" | "supportEmail" | "supportPhone" | "shippingReturnsPolicy" | "addressLine1" | "addressCity" | "addressPostalCode" | "addressCountry" | "instagramUrl" | "facebookUrl" | "orderNumberPrefix" | "emailConfirmationEnabled" | "emailShippingEnabled" | "replyToEmail" | "bankTransferEnabled" | "cashOnDeliveryEnabled" | "bankTransferInstructions" | "cashOnDeliveryInstructions" | "logoImageId" | "defaultLocaleCode" | "defaultCurrency" | "timezone" | "isProduction" | "createdAt" | "updatedAt" | "activatedAt" | "archivedAt", ExtArgs["result"]["store"]>
 export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  logoImage?: boolean | Prisma.Store$logoImageArgs<ExtArgs>
   domains?: boolean | Prisma.Store$domainsArgs<ExtArgs>
   users?: boolean | Prisma.Store$usersArgs<ExtArgs>
   customers?: boolean | Prisma.Store$customersArgs<ExtArgs>
@@ -40180,12 +41170,17 @@ export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   fulfillments?: boolean | Prisma.Store$fulfillmentsArgs<ExtArgs>
   _count?: boolean | Prisma.StoreCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type StoreIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type StoreIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type StoreIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  logoImage?: boolean | Prisma.Store$logoImageArgs<ExtArgs>
+}
+export type StoreIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  logoImage?: boolean | Prisma.Store$logoImageArgs<ExtArgs>
+}
 
 export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Store"
   objects: {
+    logoImage: Prisma.$MediaAssetPayload<ExtArgs> | null
     domains: Prisma.$StoreDomainPayload<ExtArgs>[]
     users: Prisma.$UserPayload<ExtArgs>[]
     customers: Prisma.$CustomerPayload<ExtArgs>[]
@@ -40291,6 +41286,7 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     cashOnDeliveryEnabled: boolean
     bankTransferInstructions: string | null
     cashOnDeliveryInstructions: string | null
+    logoImageId: string | null
     defaultLocaleCode: string
     defaultCurrency: $Enums.CurrencyCode
     timezone: string
@@ -40693,6 +41689,7 @@ readonly fields: StoreFieldRefs;
  */
 export interface Prisma__StoreClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  logoImage<T extends Prisma.Store$logoImageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$logoImageArgs<ExtArgs>>): Prisma.Prisma__MediaAssetClient<runtime.Types.Result.GetResult<Prisma.$MediaAssetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   domains<T extends Prisma.Store$domainsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$domainsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoreDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   users<T extends Prisma.Store$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   customers<T extends Prisma.Store$customersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$customersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -40825,6 +41822,7 @@ export interface StoreFieldRefs {
   readonly cashOnDeliveryEnabled: Prisma.FieldRef<"Store", 'Boolean'>
   readonly bankTransferInstructions: Prisma.FieldRef<"Store", 'String'>
   readonly cashOnDeliveryInstructions: Prisma.FieldRef<"Store", 'String'>
+  readonly logoImageId: Prisma.FieldRef<"Store", 'String'>
   readonly defaultLocaleCode: Prisma.FieldRef<"Store", 'String'>
   readonly defaultCurrency: Prisma.FieldRef<"Store", 'CurrencyCode'>
   readonly timezone: Prisma.FieldRef<"Store", 'String'>
@@ -41087,6 +42085,10 @@ export type StoreCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    */
   data: Prisma.StoreCreateManyInput | Prisma.StoreCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StoreIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -41157,6 +42159,10 @@ export type StoreUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many Stores to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StoreIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -41223,6 +42229,25 @@ export type StoreDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Stores to delete.
    */
   limit?: number
+}
+
+/**
+ * Store.logoImage
+ */
+export type Store$logoImageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MediaAsset
+   */
+  select?: Prisma.MediaAssetSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MediaAsset
+   */
+  omit?: Prisma.MediaAssetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MediaAssetInclude<ExtArgs> | null
+  where?: Prisma.MediaAssetWhereInput
 }
 
 /**
