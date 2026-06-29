@@ -2,10 +2,12 @@ import { createScriptPrismaClient } from "./helpers/prisma-client";
 import { ensureDefaultStore } from "./helpers/admin-bootstrap";
 import type {
   AvailabilityStatus,
+  CurrencyCode,
   InventoryItemStatus,
   MediaAssetKind,
   MediaAssetStatus,
   PriceListStatus,
+  PriceTargetType,
   PrismaClient,
   ProductStatus,
   ProductVariantStatus,
@@ -65,11 +67,15 @@ type SeedProductSpec = {
     inventory: { onHand: number; reserved: number };
     availability: { status: "AVAILABLE" | "UNAVAILABLE"; isSellable: boolean };
     dimensions?: { weightGrams?: number; widthMm?: number; heightMm?: number; depthMm?: number };
-	  }>;
+  }>;
 };
 
 function uploadsUrl(storageKey: string): string {
   return `/uploads/${storageKey.replace(/^\/+/, "")}`;
+}
+
+function amountToCents(amount: string): number {
+  return Math.round(parseFloat(amount) * 100);
 }
 
 function validateVariableProductSpec(spec: SeedProductSpec): void {
@@ -110,7 +116,10 @@ function validateVariableProductSpec(spec: SeedProductSpec): void {
   }
 }
 
-async function ensureCanonicalProductTypes(prisma: PrismaClient, storeId: string): Promise<{
+async function ensureCanonicalProductTypes(
+  prisma: PrismaClient,
+  storeId: string
+): Promise<{
   simpleId: string;
   variableId: string;
 }> {
@@ -322,13 +331,14 @@ async function ensureCategoryIdsByCode(
 async function seedProduct(
   prisma: PrismaClient,
   input: {
-  storeId: string;
-  productTypeId: string;
-  priceListId: string;
-  optionValueIdsByCode: Map<string, string>;
-  categoryIdByCode: Map<string, string>;
-  spec: SeedProductSpec;
-}
+    storeId: string;
+    productTypeId: string;
+    priceListId: string;
+    currencyCode: CurrencyCode;
+    optionValueIdsByCode: Map<string, string>;
+    categoryIdByCode: Map<string, string>;
+    spec: SeedProductSpec;
+  }
 ): Promise<{ productId: string }> {
   validateVariableProductSpec(input.spec);
 
@@ -380,6 +390,9 @@ async function seedProduct(
       isStandalone: false,
       publishedAt: new Date(),
       archivedAt: null,
+      catalogPriceCents: amountToCents(input.spec.pricing.amount),
+      catalogPriceCurrencyCode: input.currencyCode,
+      catalogPriceSource: "PRODUCT" satisfies PriceTargetType,
     },
     create: {
       storeId: input.storeId,
@@ -395,6 +408,9 @@ async function seedProduct(
       isFeatured: true,
       isStandalone: false,
       publishedAt: new Date(),
+      catalogPriceCents: amountToCents(input.spec.pricing.amount),
+      catalogPriceCurrencyCode: input.currencyCode,
+      catalogPriceSource: "PRODUCT" satisfies PriceTargetType,
     },
     select: { id: true },
   });
@@ -459,21 +475,25 @@ async function seedProduct(
   const seo = input.spec.seo;
   if (seo) {
     const ogAssetId = seo.openGraphImageStorageKey
-      ? (await upsertMediaAsset(prisma, input.storeId, {
-          storageKey: seo.openGraphImageStorageKey,
-          originalFilename: seo.openGraphImageStorageKey.split("/").pop() ?? "og.webp",
-          mimeType: seo.openGraphImageStorageKey.endsWith(".jpg") ? "image/jpeg" : "image/webp",
-          altText: `${input.spec.name} — visuel partage`,
-        })).id
+      ? (
+          await upsertMediaAsset(prisma, input.storeId, {
+            storageKey: seo.openGraphImageStorageKey,
+            originalFilename: seo.openGraphImageStorageKey.split("/").pop() ?? "og.webp",
+            mimeType: seo.openGraphImageStorageKey.endsWith(".jpg") ? "image/jpeg" : "image/webp",
+            altText: `${input.spec.name} — visuel partage`,
+          })
+        ).id
       : null;
 
     const twitterAssetId = seo.twitterImageStorageKey
-      ? (await upsertMediaAsset(prisma, input.storeId, {
-          storageKey: seo.twitterImageStorageKey,
-          originalFilename: seo.twitterImageStorageKey.split("/").pop() ?? "twitter.webp",
-          mimeType: seo.twitterImageStorageKey.endsWith(".jpg") ? "image/jpeg" : "image/webp",
-          altText: `${input.spec.name} — visuel partage`,
-        })).id
+      ? (
+          await upsertMediaAsset(prisma, input.storeId, {
+            storageKey: seo.twitterImageStorageKey,
+            originalFilename: seo.twitterImageStorageKey.split("/").pop() ?? "twitter.webp",
+            mimeType: seo.twitterImageStorageKey.endsWith(".jpg") ? "image/jpeg" : "image/webp",
+            altText: `${input.spec.name} — visuel partage`,
+          })
+        ).id
       : null;
 
     await prisma.seoMetadata.upsert({
@@ -1099,6 +1119,7 @@ async function main() {
         storeId: store.id,
         productTypeId: variableId,
         priceListId: priceList.id,
+        currencyCode: "EUR",
         optionValueIdsByCode,
         categoryIdByCode,
         spec: productSpec,
