@@ -2,6 +2,7 @@ SHELL := /bin/bash
 ENV_FILE ?= .env.local
 
 COMPOSE := docker compose --env-file $(ENV_FILE)
+PROD_COMPOSE := docker compose -f docker-compose.prod.yml
 
 PROFILE_CORE := --profile core
 PROFILE_PROXY := --profile proxy
@@ -56,7 +57,9 @@ endef
 	format format-check format-check-local \
 	test test-unit test-e2e test-e2e-ui test-e2e-headed test-select \
 	db-diagnostics-import \
-	local-dev local-generate local-push local-push-reset local-seed local-studio local-validate local-format-db
+	local-dev local-generate local-push local-push-reset local-seed local-studio local-validate local-format-db \
+	prod-health prod-ps prod-images prod-logs prod-logs-app prod-logs-db prod-logs-caddy \
+	prod-backup prod-deploy prod-deploy-safe prod-rollback prod-shell prod-db-shell
 
 help:
 	@printf "$(COLOR_BOLD)Usage:$(COLOR_RESET) make [target]\n\n"
@@ -133,7 +136,22 @@ help:
 	@printf "  $(COLOR_BOLD)test-e2e$(COLOR_RESET)                     Lance les tests e2e en local\n"
 	@printf "  $(COLOR_BOLD)test-e2e-ui$(COLOR_RESET)                  Lance les tests e2e avec UI Playwright\n"
 	@printf "  $(COLOR_BOLD)test-e2e-headed$(COLOR_RESET)              Lance les tests e2e en mode headed\n"
-	@printf "  $(COLOR_BOLD)test-select$(COLOR_RESET)                  Lance les tests selectionnes\n"
+	@printf "  $(COLOR_BOLD)test-select$(COLOR_RESET)                  Lance les tests selectionnes\n\n"
+
+	@printf "$(COLOR_CYAN)Production VPS$(COLOR_RESET) (sur le VPS, via docker-compose.prod.yml)\n"
+	@printf "  $(COLOR_BOLD)prod-health$(COLOR_RESET)                  Verifie l'etat des conteneurs et le HTTPS\n"
+	@printf "  $(COLOR_BOLD)prod-ps$(COLOR_RESET)                      Liste les conteneurs prod\n"
+	@printf "  $(COLOR_BOLD)prod-images$(COLOR_RESET)                  Liste les images Docker prod\n"
+	@printf "  $(COLOR_BOLD)prod-logs$(COLOR_RESET)                    Suit tous les logs prod\n"
+	@printf "  $(COLOR_BOLD)prod-logs-app$(COLOR_RESET)                Suit les logs du conteneur app\n"
+	@printf "  $(COLOR_BOLD)prod-logs-db$(COLOR_RESET)                 Suit les logs de la base de donnees\n"
+	@printf "  $(COLOR_BOLD)prod-logs-caddy$(COLOR_RESET)              Suit les logs de Caddy\n"
+	@printf "  $(COLOR_BOLD)prod-backup$(COLOR_RESET)                  Sauvegarde DB + volumes (scripts/backup.sh)\n"
+	@printf "  $(COLOR_BOLD)prod-deploy$(COLOR_RESET)                  Deploie en production (scripts/deploy.sh)\n"
+	@printf "  $(COLOR_BOLD)prod-deploy-safe$(COLOR_RESET)             Sauvegarde puis deploie en production\n"
+	@printf "  $(COLOR_BOLD)prod-rollback$(COLOR_RESET)                Rollback IMAGE=creatyss:prod-YYYYMMDD-HHMMSS\n"
+	@printf "  $(COLOR_BOLD)prod-shell$(COLOR_RESET)                   Shell dans le conteneur app prod\n"
+	@printf "  $(COLOR_BOLD)prod-db-shell$(COLOR_RESET)                psql dans le conteneur db prod\n"
 
 up:
 	$(call log_info,Demarrage de app + db)
@@ -444,3 +462,69 @@ local-format-db:
 	$(call log_info,Formatage du schema Prisma en local)
 	pnpm run db:format
 	$(call log_success,Schema formate)
+
+# ─── Production VPS ───────────────────────────────────────────────────────────
+
+prod-health:
+	$(call log_info,Healthcheck production)
+	bash scripts/healthcheck.sh
+
+prod-ps:
+	$(PROD_COMPOSE) ps
+
+prod-images:
+	@printf "REPOSITORY\tTAG\tCREATED AT\tSIZE\n"
+	@docker images creatyss --format "{{.Repository}}\t{{.Tag}}\t{{.CreatedAt}}\t{{.Size}}" | sort -r
+
+prod-logs:
+	$(PROD_COMPOSE) logs -f
+
+prod-logs-app:
+	$(PROD_COMPOSE) logs -f app
+
+prod-logs-db:
+	$(PROD_COMPOSE) logs -f db
+
+prod-logs-caddy:
+	$(PROD_COMPOSE) logs -f caddy
+
+prod-backup:
+	$(call log_info,Sauvegarde production)
+	bash scripts/backup.sh
+	$(call log_success,Sauvegarde terminee)
+
+prod-deploy:
+	$(call log_info,Deploiement production)
+	bash scripts/deploy.sh
+
+prod-deploy-safe:
+	$(call log_info,Sauvegarde avant deploiement)
+	bash scripts/backup.sh
+	$(call log_info,Deploiement production)
+	bash scripts/deploy.sh
+
+prod-rollback:
+	@if [ -z "$(IMAGE)" ]; then \
+		printf "$(COLOR_RED)✖$(COLOR_RESET) $(COLOR_BOLD)IMAGE requis — ex : make prod-rollback IMAGE=creatyss:prod-20260629-120000$(COLOR_RESET)\n"; \
+		exit 1; \
+	fi
+	$(call log_info,Verification de l'image $(IMAGE))
+	@docker image inspect $(IMAGE) >/dev/null 2>&1 || \
+		(printf "$(COLOR_RED)✖$(COLOR_RESET) $(COLOR_BOLD)Image $(IMAGE) introuvable localement$(COLOR_RESET)\n" && exit 1)
+	$(call log_info,Retagage $(IMAGE) → creatyss:prod)
+	docker tag $(IMAGE) creatyss:prod
+	$(call log_info,Recreation du conteneur app)
+	$(PROD_COMPOSE) up -d --force-recreate app
+	$(call log_info,Verification post-rollback)
+	bash scripts/healthcheck.sh
+	$(call log_success,Rollback termine)
+
+prod-shell:
+	$(call log_info,Shell dans le conteneur app prod)
+	docker exec -it creatyss-app sh
+
+prod-db-shell:
+	$(call log_info,psql dans le conteneur db prod)
+	@POSTGRES_USER=$$(grep -E '^POSTGRES_USER=' .env | head -1 | cut -d'=' -f2- | tr -d '"' | tr -d "'"); \
+	POSTGRES_DB=$$(grep -E '^POSTGRES_DB=' .env | head -1 | cut -d'=' -f2- | tr -d '"' | tr -d "'"); \
+	docker exec -it creatyss-db psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
