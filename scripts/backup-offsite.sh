@@ -91,7 +91,7 @@ init_dirs() {
 # ── Pull rsync ────────────────────────────────────────────────────────────────
 #
 # Pas de -z/--compress : .dump (pg_dump -Fc) et .tar.gz sont déjà compressés.
-# --no-delete : ne jamais supprimer de fichiers locaux via rsync.
+# Pas de --delete : rsync ne supprime jamais de fichiers locaux sans option explicite.
 # La rotation locale est gérée séparément par prune_local().
 # --include/--exclude : seuls les patterns produits par backup.sh sont copiés.
 # StrictHostKeyChecking=accept-new : accepte un nouvel hôte, rejette un hôte
@@ -101,7 +101,6 @@ pull_backups() {
   log "INFO  Connexion à ${BACKUP_REMOTE_USER}@${BACKUP_REMOTE_HOST}:${BACKUP_REMOTE_DIR}…"
 
   rsync -avh \
-    --no-delete \
     --include='creatyss-*.dump' \
     --include='uploads-*.tar.gz' \
     --include='documents-*.tar.gz' \
@@ -110,7 +109,7 @@ pull_backups() {
            -o BatchMode=yes \
            -o StrictHostKeyChecking=accept-new \
            -o ConnectTimeout=15" \
-    "${BACKUP_REMOTE_USER}@${BACKUP_REMOTE_HOST}:${BACKUP_REMOTE_DIR}/" \
+    "${BACKUP_REMOTE_USER}@${BACKUP_REMOTE_HOST}:./" \
     "${BACKUP_LOCAL_DIR}/" \
     || die "rsync échoué — VPS inaccessible, clé SSH invalide ou permission refusée"
 
