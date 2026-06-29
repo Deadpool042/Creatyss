@@ -4,29 +4,13 @@ import type { CheckoutPaymentMethod } from "@/features/commerce/checkout/types/c
 
 type PaymentMethodSelectorProps = {
   readonly currentPaymentMethod: CheckoutPaymentMethod | null;
-  readonly hasDraft: boolean;
   readonly methods: ReadonlyArray<AvailablePaymentMethod>;
 };
 
 export function PaymentMethodSelector({
   currentPaymentMethod,
-  hasDraft,
   methods,
 }: PaymentMethodSelectorProps) {
-  if (!hasDraft) {
-    return (
-      <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
-        <div className="grid gap-1">
-          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Paiement</p>
-          <h2>Mode de paiement</h2>
-        </div>
-        <p className="text-sm text-muted-foreground">
-          Renseignez vos informations avant de choisir un mode de paiement.
-        </p>
-      </section>
-    );
-  }
-
   if (methods.length === 0) {
     return (
       <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
@@ -34,9 +18,7 @@ export function PaymentMethodSelector({
           <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Paiement</p>
           <h2>Mode de paiement</h2>
         </div>
-        <p className="text-sm text-muted-foreground">
-          Aucun mode de paiement disponible.
-        </p>
+        <p className="text-sm text-muted-foreground">Aucun mode de paiement disponible.</p>
       </section>
     );
   }
@@ -74,9 +56,7 @@ export function PaymentMethodSelector({
                       ].join(" ")}
                       role="radio"
                     >
-                      {isSelected ? (
-                        <span className="size-1.5 rounded-full bg-white" />
-                      ) : null}
+                      {isSelected ? <span className="size-1.5 rounded-full bg-white" /> : null}
                     </span>
                     <span className="font-medium">{method.label}</span>
                   </span>

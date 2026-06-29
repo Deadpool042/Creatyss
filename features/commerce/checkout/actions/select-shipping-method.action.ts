@@ -3,6 +3,7 @@
 import { db } from "@/core/db";
 import { moneyStringToCents } from "@/core/money";
 import { readCartSessionToken } from "@/core/sessions/cart";
+import { writeCheckoutShippingCode } from "@/core/sessions/checkout-shipping";
 import {
   readGuestCheckoutContextByToken,
   upsertCheckoutShippingSelection,
@@ -51,17 +52,8 @@ export async function selectShippingMethodAction(
     return { status: "error", message: "Panier introuvable." };
   }
 
-  // --- 4. Le checkout doit exister pour y associer la sélection
   const draft = checkoutContext.draft;
-
-  if (draft === null) {
-    return {
-      status: "error",
-      message: "Veuillez d'abord renseigner vos coordonnées de livraison.",
-    };
-  }
-
-  const checkoutId = draft.id;
+  const checkoutId = draft?.id ?? null;
 
   // --- 5. Recalculer le subtotal depuis la DB (jamais depuis FormData)
   const subtotalCents = cart.lines.reduce(
@@ -129,15 +121,19 @@ export async function selectShippingMethodAction(
     };
   }
 
-  // --- 10. Persister la sélection
-  await upsertCheckoutShippingSelection({
-    checkoutId,
-    shippingMethodId: shippingMethod.id,
-    methodCode: shippingMethod.code,
-    methodName: shippingMethod.name,
-    amountCents: Math.round(Number(shippingMethod.amount) * 100),
-    currencyCode: shippingMethod.currencyCode as CurrencyCode,
-  });
+  // --- 10. Persister la sélection — en DB si le draft existe, en session sinon
+  if (checkoutId !== null) {
+    await upsertCheckoutShippingSelection({
+      checkoutId,
+      shippingMethodId: shippingMethod.id,
+      methodCode: shippingMethod.code,
+      methodName: shippingMethod.name,
+      amountCents: Math.round(Number(shippingMethod.amount) * 100),
+      currencyCode: shippingMethod.currencyCode as CurrencyCode,
+    });
+  } else {
+    await writeCheckoutShippingCode(shippingMethod.code);
+  }
 
   return { status: "success", message: "Méthode de livraison sélectionnée." };
 }

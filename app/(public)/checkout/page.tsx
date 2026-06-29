@@ -6,8 +6,13 @@ import { Notice } from "@/components/shared/feedback";
 import { moneyStringToCents } from "@/core/money";
 import { readCartSessionToken } from "@/core/sessions/cart";
 import { readCheckoutPaymentMethod } from "@/core/sessions/checkout-payment";
+import { readCheckoutShippingCode } from "@/core/sessions/checkout-shipping";
 import { readGuestCheckoutContextByToken } from "@/features/commerce/cart/lib/guest-cart.repository";
-import type { GuestCheckoutContext } from "@/features/commerce/cart/lib/guest-cart.types";
+import type {
+  GuestCartLine,
+  GuestCheckoutContext,
+} from "@/features/commerce/cart/lib/guest-cart.types";
+
 import {
   createOrderAction,
   saveGuestCheckoutAction,
@@ -135,7 +140,8 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
   const billingSameAsShipping = draft?.billingSameAsShipping ?? true;
 
   const currentShippingSelection = draft?.shippingSelection ?? null;
-  const currentPaymentMethod = draft !== null ? await readCheckoutPaymentMethod() : null;
+  const sessionShippingCode = await readCheckoutShippingCode();
+  const currentPaymentMethod = await readCheckoutPaymentMethod();
   const storeId = cart !== null ? await getStoreIdByCartId(cart.id) : null;
   const discountRulesEnabled = await meetsFeatureLevel("commerce.discounts", "rules", { storeId });
   const discountAutomationEnabled = await meetsFeatureLevel("commerce.discounts", "automation", {
@@ -157,14 +163,14 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         })
       : null;
   const availableMethods =
-    storeId !== null
-      ? await getAvailableShippingMethods({ storeId, subtotalCents })
-      : [];
+    storeId !== null ? await getAvailableShippingMethods({ storeId, subtotalCents }) : [];
   const availablePaymentMethods =
-    storeId !== null
-      ? await getAvailablePaymentMethods({ storeId })
-      : [];
+    storeId !== null ? await getAvailablePaymentMethods({ storeId }) : [];
   const hasPaymentMethods = availablePaymentMethods.length > 0;
+  const selectedShippingCode =
+    currentShippingSelection?.methodCode ??
+    sessionShippingCode ??
+    (availableMethods.length === 1 ? (availableMethods[0]?.code ?? null) : null);
 
   const shippingLineLabel: string = (() => {
     if (currentShippingSelection === null) return "À sélectionner";
@@ -178,9 +184,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
   const totalLabel: string | null = (() => {
     if (currentShippingSelection === null) return null;
     const totalCents =
-      subtotalCents +
-      currentShippingSelection.amountCents -
-      (resolvedDiscount?.amountCents ?? 0);
+      subtotalCents + currentShippingSelection.amountCents - (resolvedDiscount?.amountCents ?? 0);
     return formatCatalogMoneyFromCents(totalCents, currentShippingSelection.currencyCode);
   })();
 
@@ -499,13 +503,11 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
             <ShippingMethodSelector
               availableMethods={availableMethods}
-              currentSelection={currentShippingSelection}
-              hasDraft={draft !== null}
+              selectedCode={selectedShippingCode}
             />
 
             <PaymentMethodSelector
               currentPaymentMethod={currentPaymentMethod}
-              hasDraft={draft !== null}
               methods={availablePaymentMethods}
             />
 
@@ -573,13 +575,11 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
               {cart.lines.length > 0 ? (
                 <div className="grid gap-4">
-                  {cart.lines.map((line) => (
+                  {cart.lines.map((line: GuestCartLine) => (
                     <article className="store-card grid gap-4" key={line.id}>
                       <div className="grid gap-1">
                         <h3>{line.productName}</h3>
-                        <p className="text-[0.95rem] text-foreground/68">
-                          {line.variantName}
-                        </p>
+                        <p className="text-[0.95rem] text-foreground/68">{line.variantName}</p>
                       </div>
 
                       <div className="grid gap-1">
@@ -614,7 +614,9 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                         <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                           Disponibilité
                         </p>
-                        <p className="text-sm text-muted-foreground">{getAvailabilityLabel(line.isAvailable)}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {getAvailabilityLabel(line.isAvailable)}
+                        </p>
                         {!line.isAvailable ? (
                           <Notice tone="alert">
                             Cette ligne bloque la commande tant qu&apos;elle n&apos;est pas corrigée
@@ -664,7 +666,8 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                     Remise
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {resolvedDiscount.isAutomatic ? resolvedDiscount.name : resolvedDiscount.code} - {discountLabel}
+                    {resolvedDiscount.isAutomatic ? resolvedDiscount.name : resolvedDiscount.code} -{" "}
+                    {discountLabel}
                   </p>
                 </div>
               ) : null}

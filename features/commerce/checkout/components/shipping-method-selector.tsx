@@ -1,18 +1,15 @@
 import { formatCatalogMoneyFromCents } from "@/features/storefront/catalog/helpers/catalog-pricing";
 import { selectShippingMethodFormAction } from "@/features/commerce/checkout/actions/select-shipping-method-form.action";
 import type { AvailableShippingMethod } from "@/features/commerce/checkout/queries/get-available-shipping-methods.query";
-import type { GuestCheckoutShippingSelection } from "@/features/commerce/cart/lib/guest-cart.types";
 
 type ShippingMethodSelectorProps = {
   readonly availableMethods: ReadonlyArray<AvailableShippingMethod>;
-  readonly currentSelection: GuestCheckoutShippingSelection | null;
-  readonly hasDraft: boolean;
+  readonly selectedCode: string | null;
 };
 
 export function ShippingMethodSelector({
   availableMethods,
-  currentSelection,
-  hasDraft,
+  selectedCode,
 }: ShippingMethodSelectorProps) {
   if (availableMethods.length === 0) {
     return (
@@ -28,20 +25,6 @@ export function ShippingMethodSelector({
     );
   }
 
-  if (!hasDraft) {
-    return (
-      <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
-        <div className="grid gap-1">
-          <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Livraison</p>
-          <h2>Méthode de livraison</h2>
-        </div>
-        <p className="text-sm text-muted-foreground">
-          Renseignez vos informations de livraison avant de choisir une méthode.
-        </p>
-      </section>
-    );
-  }
-
   return (
     <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
       <div className="grid gap-1">
@@ -51,7 +34,7 @@ export function ShippingMethodSelector({
 
       <div className="grid gap-3">
         {availableMethods.map((method) => {
-          const isSelected = currentSelection?.methodCode === method.code;
+          const isSelected = selectedCode === method.code;
           const amountLabel =
             method.amountCents === 0
               ? "Offert"
@@ -79,9 +62,7 @@ export function ShippingMethodSelector({
                       ].join(" ")}
                       role="radio"
                     >
-                      {isSelected ? (
-                        <span className="size-1.5 rounded-full bg-white" />
-                      ) : null}
+                      {isSelected ? <span className="size-1.5 rounded-full bg-white" /> : null}
                     </span>
                     <span>{method.name}</span>
                   </span>

@@ -48,19 +48,9 @@ export async function selectPaymentMethodAction(
     return { status: "error", message: "Un article de votre panier n'est plus disponible." };
   }
 
-  // --- 4. Le checkout doit exister pour y associer le mode de paiement
-  if (checkoutContext.draft === null) {
-    return {
-      status: "error",
-      message: "Veuillez d'abord renseigner vos coordonnées de livraison.",
-    };
-  }
-
-  // --- 5. Vérifier que la méthode soumise est activée dans les settings du store
+  // --- 4. Vérifier que la méthode soumise est activée dans les settings du store
   const storeId =
-    checkoutContext.cart !== null
-      ? await getStoreIdByCartId(checkoutContext.cart.id)
-      : null;
+    checkoutContext.cart !== null ? await getStoreIdByCartId(checkoutContext.cart.id) : null;
 
   if (storeId !== null) {
     const availableMethods = await getAvailablePaymentMethods({ storeId });

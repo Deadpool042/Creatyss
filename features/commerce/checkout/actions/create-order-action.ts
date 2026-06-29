@@ -2,11 +2,19 @@
 
 import { redirect } from "next/navigation";
 import { clearCartSessionToken, readCartSessionToken } from "@/core/sessions/cart";
-import { clearCheckoutPaymentMethod, readCheckoutPaymentMethod } from "@/core/sessions/checkout-payment";
+import {
+  clearCheckoutPaymentMethod,
+  readCheckoutPaymentMethod,
+} from "@/core/sessions/checkout-payment";
+import {
+  clearCheckoutShippingCode,
+  readCheckoutShippingCode,
+} from "@/core/sessions/checkout-shipping";
 import { createOrderFromGuestCartToken } from "@/features/commerce/orders/lib/order.repository";
 import { OrderRepositoryError } from "@/features/commerce/orders/lib/order.types";
 import {
   readGuestCheckoutContextByToken,
+  upsertCheckoutShippingSelection,
   upsertGuestCheckoutDetails,
 } from "@/features/commerce/cart/lib/guest-cart.repository";
 import { validateGuestCheckoutInput } from "@/entities/checkout/guest-checkout-input";
@@ -14,11 +22,10 @@ import { sendOrderTransactionalEmail } from "@/features/email";
 import { getAvailablePaymentMethods } from "@/features/commerce/checkout/queries/get-available-payment-methods.query";
 import { getStoreIdByCartId } from "@/features/commerce/checkout/queries/get-store-id-by-cart.query";
 import { normalizeDiscountCode } from "@/features/commerce/discounts/lib/resolve-order-discount";
+import { db } from "@/core/db";
+import type { CurrencyCode } from "@/prisma-generated/client";
 
-function buildCheckoutRedirectHref(input: {
-  error: string;
-  discountCode?: string | null;
-}): string {
+function buildCheckoutRedirectHref(input: { error: string; discountCode?: string | null }): string {
   const params = new URLSearchParams();
   params.set("error", input.error);
 
@@ -35,7 +42,7 @@ function buildCheckoutRedirectHref(input: {
 export async function createOrderAction(formData: FormData): Promise<void> {
   const discountCode =
     typeof formData.get("discountCode") === "string"
-      ? formData.get("discountCode")?.toString() ?? ""
+      ? (formData.get("discountCode")?.toString() ?? "")
       : "";
   const cartToken = await readCartSessionToken();
 
@@ -96,13 +103,51 @@ export async function createOrderAction(formData: FormData): Promise<void> {
     redirect(buildCheckoutRedirectHref({ error: "save_failed", discountCode }));
   }
 
-  // Re-read the checkout context after upsert to get the persisted shipping selection.
+  // Re-read the checkout context after upsert to get the draft id and persisted shipping selection.
   // Done outside the order-creation try/catch so a missing_shipping_selection redirect
   // is not swallowed by the generic create_failed handler.
   const refreshedContext = await readGuestCheckoutContextByToken(cartToken);
+  const refreshedDraft = refreshedContext?.draft ?? null;
 
-  if (!refreshedContext?.draft?.shippingSelection) {
+  if (refreshedDraft === null) {
     redirect(buildCheckoutRedirectHref({ error: "missing_shipping_selection", discountCode }));
+  }
+
+  if (refreshedDraft.shippingSelection === null) {
+    // Reconcile: the user may have selected a shipping method before the draft existed.
+    // If a valid code is stored in session, persist it to the draft now.
+    const sessionCode = await readCheckoutShippingCode();
+
+    if (sessionCode === null) {
+      redirect(buildCheckoutRedirectHref({ error: "missing_shipping_selection", discountCode }));
+    }
+
+    const cartRecord = await db.cart.findUnique({
+      where: { id: cart.id },
+      select: { storeId: true },
+    });
+
+    if (cartRecord === null) {
+      redirect(buildCheckoutRedirectHref({ error: "missing_shipping_selection", discountCode }));
+    }
+
+    const shippingMethod = await db.shippingMethod.findFirst({
+      where: { storeId: cartRecord.storeId, code: sessionCode, status: "ACTIVE" },
+      select: { id: true, code: true, name: true, amount: true, currencyCode: true },
+    });
+
+    if (shippingMethod === null) {
+      redirect(buildCheckoutRedirectHref({ error: "missing_shipping_selection", discountCode }));
+    }
+
+    await upsertCheckoutShippingSelection({
+      checkoutId: refreshedDraft.id,
+      shippingMethodId: shippingMethod.id,
+      methodCode: shippingMethod.code,
+      methodName: shippingMethod.name,
+      amountCents: Math.round(Number(shippingMethod.amount) * 100),
+      currencyCode: shippingMethod.currencyCode as CurrencyCode,
+    });
   }
 
   const selectedPaymentMethod = await readCheckoutPaymentMethod();
@@ -146,6 +191,7 @@ export async function createOrderAction(formData: FormData): Promise<void> {
 
     await clearCartSessionToken();
     await clearCheckoutPaymentMethod();
+    await clearCheckoutShippingCode();
   } catch (error) {
     if (error instanceof OrderRepositoryError) {
       redirect(buildCheckoutRedirectHref({ error: error.code, discountCode }));
