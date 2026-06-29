@@ -175,12 +175,15 @@ Limites du smoke : paiement limité à `Virement bancaire` (pas de paiement en l
 
 **Mise à jour 2026-06-29 (déploiement complet via script) :** `scripts/deploy.sh` exécuté sur VPS OVH — déploiement complet validé de bout en bout. Commit déployé : `062b2d4c`. HTTPS : HTTP/2 200. Healthcheck interne : `{"app":"ok","database":"ok","uploads":"ready"}`. Image rollback : `creatyss:prod-20260629-084301`. Sauvegardes produites : DB + uploads + documents. Conteneurs : `creatyss-app` up · `creatyss-db` healthy · `creatyss-caddy` up. Points non bloquants : image placeholder uploads absente (log app), backups générés `root:root` (à surveiller). Production finale `creatyss.fr` non encore basculée.
 
+**Mise à jour 2026-06-29 (recette commerce staging) :** parcours achat complet validé manuellement sur `https://staging.creatyss.lpwebstudio.fr`. Commit : `47aefc40`. Feature flags 32/32 matérialisés, prix canoniques vérifiés en DB (4 produits, valeurs en centimes : mini-sac-clarte 9 900 c / 99,00 EUR, bandouliere-rivoli 12 900 c / 129,00 EUR, pochette-nocturne 5 900 c / 59,00 EUR, cabas-atelier 15 900 c / 159,00 EUR). Parcours virement de bout en bout validé — deux commandes créées en DB (`CRY-XPDCA6TTXG` 105,90 EUR, `CRY-6DCG97F94E` 135,90 EUR). Backup pré-déploiement : `20260629-205224`. Recette Stripe et bascule `creatyss.fr` hors périmètre. Détail : `docs/exploitation/06-recette-commerce-complete.md`.
+
 - [x] Build production validé — `next build` local OK ; build image Docker validé sur VPS (2026-06-28)
 - [x] Variables d'environnement documentées — `docs/exploitation/01-variables-d-environnement.md` (2026-06-12)
 - [x] Sauvegarde DB documentée et testée — `docs/exploitation/02-sauvegarde-restauration-db.md` ; sauvegardes manuelles validées sur staging (2026-06-28) ; restauration DB isolée validée (173 tables, base temporaire, base principale non touchée) (2026-06-28)
 - [x] Médias persistants documentés — `docs/exploitation/03-medias-persistants.md` (2026-06-12)
 - [x] Déploiement VPS répétable — staging `https://staging.creatyss.lpwebstudio.fr` opérationnel (2026-06-28) ; déploiement complet via `scripts/deploy.sh` validé (2026-06-29)
 - [x] Procédure rollback minimale documentée — `docs/exploitation/04-mise-a-jour-et-rollback.md` ; limites de `db push` explicitées (2026-06-12)
+- [x] Recette commerce staging validée — parcours virement complet, 2 commandes en DB, prix canoniques vérifiés (2026-06-29) ; Stripe et bascule `creatyss.fr` hors périmètre
 - [ ] Bascule production finale `creatyss.fr` — non encore exécutée
 
 ---

@@ -25,6 +25,22 @@ Exécution complète de `scripts/deploy.sh` sur VPS OVH :
   - `/opt/backups/creatyss/documents-20260629-084532.tar.gz`
 - Conteneurs après test : `creatyss-app` up · `creatyss-db` healthy · `creatyss-caddy` up
 
+## Preuves — recette commerce staging du 2026-06-29
+
+Déploiement de `47aefc40` sur staging, recette commerce exécutée :
+
+- Commit déployé : `47aefc40` — `fix(seed): populate catalog prices for variable products`
+- Backup pré-déploiement : `20260629-205224`
+- Image rollback : `creatyss:prod-20260629-204948`
+- Feature flags : 32/32 matérialisés après `db:seed`
+- Prix canoniques vérifiés en DB (4 produits : mini-sac-clarte 9 900 c / 99,00 EUR, bandouliere-rivoli 12 900 c / 129,00 EUR, pochette-nocturne 5 900 c / 59,00 EUR, cabas-atelier 15 900 c / 159,00 EUR)
+- Parcours virement validé : boutique → fiche produit → panier → checkout → livraison standard → virement → commande créée
+- Commandes DB : `CRY-XPDCA6TTXG` 105,90 EUR · `CRY-6DCG97F94E` 135,90 EUR
+- Stripe non configuré sur staging — recette Stripe non exécutée
+- Détail : `docs/exploitation/06-recette-commerce-complete.md`
+
+---
+
 ## À surveiller
 
 Points non bloquants observés lors du test du 2026-06-29 :
