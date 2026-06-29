@@ -2,13 +2,37 @@
 
 ## Statut
 
-Clos (staging) — validé le 2026-06-28 sur `https://staging.creatyss.lpwebstudio.fr`
+Clos (staging) — déploiement complet via `scripts/deploy.sh` validé le 2026-06-29 sur `https://staging.creatyss.lpwebstudio.fr`.
 
-Alignement LP-INFRA (2026-06-29) : `scripts/deploy.sh` — URL healthcheck corrigée (`/` → `/api/health`, conforme aux valeurs cibles LP-INFRA/H1-L3). Test production non encore exécuté.
+Production finale `creatyss.fr` : non encore basculée — non validée.
 
 ## Objectif
 
 Valider le build de l'image Docker et rendre le déploiement VPS répétable depuis zéro, de sorte que la boutique soit accessible publiquement sur le VPS OVH avec HTTPS.
+
+## Preuves — test du 2026-06-29
+
+Exécution complète de `scripts/deploy.sh` sur VPS OVH :
+
+- URL staging : `https://staging.creatyss.lpwebstudio.fr` — HTTPS : HTTP/2 200
+- Healthcheck interne : `{"app":"ok","database":"ok","uploads":"ready",...}`
+- Commit déployé : `062b2d4c` — `fix(deploy): use IPv4 loopback for container healthcheck`
+- Image rollback disponible : `creatyss:prod-20260629-084301`
+- Log de déploiement : `/tmp/creatyss-deploy-20260629-084301.log`
+- Sauvegardes produites :
+  - `/opt/backups/creatyss/creatyss-20260629-084532.dump`
+  - `/opt/backups/creatyss/uploads-20260629-084532.tar.gz`
+  - `/opt/backups/creatyss/documents-20260629-084532.tar.gz`
+- Conteneurs après test : `creatyss-app` up · `creatyss-db` healthy · `creatyss-caddy` up
+
+## À surveiller
+
+Points non bloquants observés lors du test du 2026-06-29 :
+
+1. **Image manquante** : log app signale `image invalide ou absente pour /uploads/savoir-faire-placeholder.webp` — asset à vérifier ou à re-uploader en staging.
+2. **Propriétaire des backups** : les archives uploads et documents sont générées avec `root:root` sur le VPS — à surveiller si la rotation automatique tourne sous un utilisateur non-root.
+
+---
 
 ## Périmètre
 
@@ -73,6 +97,8 @@ Restauration DB isolée validée (2026-06-28) :
 - [x] Un redéploiement depuis zéro est exécutable en moins d'une heure en suivant `docs/exploitation/`
 - [x] Restauration DB isolée validée — dump → `creatyss_restore_test`, 173 tables, base principale intacte (2026-06-28)
 - [x] Les cases dans `projet-creatyss.md` (build Docker, déploiement VPS répétable) cochées (2026-06-28)
+- [x] Déploiement complet via `scripts/deploy.sh` validé sur staging (2026-06-29) — cf. section Preuves
+- [ ] Bascule production finale `creatyss.fr` — non encore exécutée
 
 ## Agent recommandé
 
