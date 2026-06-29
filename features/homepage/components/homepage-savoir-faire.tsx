@@ -10,8 +10,6 @@ type HomepageSavoirFaireSectionProps = {
   copy?: HomepageCopy;
 };
 
-const FALLBACK_IMAGE_PATH = "/uploads/savoir-faire-placeholder.webp";
-
 export function HomepageSavoirFaireSection({
   savoirFaireTitle,
   savoirFaireBody,
@@ -22,25 +20,28 @@ export function HomepageSavoirFaireSection({
   const resolvedImagePath =
     savoirFaireImagePath != null && uploadsPublicPath != null
       ? `${uploadsPublicPath}/${savoirFaireImagePath.replace(/^\/+/, "")}`
-      : FALLBACK_IMAGE_PATH;
+      : null;
   return (
     <section className="grid overflow-hidden rounded-xl border border-hero-border/50 bg-hero-bg min-[860px]:grid-cols-[0.95fr_1.05fr] dark:border-hero-border">
       {/* Panneau visuel */}
       <div className="relative min-h-136 overflow-hidden bg-[linear-gradient(145deg,#c8b89e_0%,#a8906e_45%,#6e5840_100%)]">
-        <Image
-          alt={copy.savoirFaire.imageAlt}
-          src={resolvedImagePath}
-          fill
-          className="object-cover object-[58%_center] md:object-[62%_center]"
-          quality={92}
-          sizes="(max-width: 979px) 100vw, 48vw"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(28,22,16,0.18)_0%,rgba(28,22,16,0.04)_36%,rgba(28,22,16,0)_62%)] dark:bg-[linear-gradient(to_top,rgba(0,0,0,0.34)_0%,rgba(0,0,0,0.12)_36%,rgba(0,0,0,0)_62%)]" />
-        {!resolvedImagePath ? (
+        {resolvedImagePath != null ? (
+          <>
+            <Image
+              alt={copy.savoirFaire.imageAlt}
+              src={resolvedImagePath}
+              fill
+              className="object-cover object-[58%_center] md:object-[62%_center]"
+              quality={92}
+              sizes="(max-width: 979px) 100vw, 48vw"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(28,22,16,0.18)_0%,rgba(28,22,16,0.04)_36%,rgba(28,22,16,0)_62%)] dark:bg-[linear-gradient(to_top,rgba(0,0,0,0.34)_0%,rgba(0,0,0,0.12)_36%,rgba(0,0,0,0)_62%)]" />
+          </>
+        ) : (
           <div className="absolute inset-0 grid place-items-center bg-black/5 p-8 text-center text-[0.62rem] uppercase tracking-[0.24em] text-white/35">
             Détail couture · mains au travail · lumière naturelle
           </div>
-        ) : null}
+        )}
 
         <div className="absolute inset-x-0 bottom-0 flex items-center gap-5 bg-[linear-gradient(90deg,rgba(74,54,36,0.96)_0%,rgba(53,38,26,0.94)_100%)] px-8 py-5 text-white backdrop-blur-sm dark:bg-[linear-gradient(90deg,rgba(18,14,10,0.98)_0%,rgba(12,9,7,0.96)_100%)]">
           <div className="font-serif text-[2.2rem] font-light leading-none text-white/42 dark:text-white/55">
