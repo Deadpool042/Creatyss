@@ -64,6 +64,7 @@ type MobileMenuDrawerVariant = "bottomNav" | "topbar";
 
 type MobileMenuDrawerProps = Readonly<{
   variant?: MobileMenuDrawerVariant;
+  logoUrl?: string | null;
 }>;
 
 type DrawerNavItem = Readonly<{
@@ -153,7 +154,7 @@ function DrawerLinkGroup({ label, items }: DrawerLinkGroupProps) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export function MobileMenuDrawer({ variant = "bottomNav" }: MobileMenuDrawerProps) {
+export function MobileMenuDrawer({ variant = "bottomNav", logoUrl = null }: MobileMenuDrawerProps) {
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   return (
@@ -205,14 +206,20 @@ export function MobileMenuDrawer({ variant = "bottomNav" }: MobileMenuDrawerProp
           <DrawerHeader className="relative border-b border-shell-border/70 px-4 pb-4 pt-5 text-left">
             <div className="flex items-start gap-3">
               <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl border border-shell-border bg-background/45 shadow-soft backdrop-blur-md">
-                <Image
-                  src="/uploads/logo.svg"
-                  alt=""
-                  aria-hidden="true"
-                  width={24}
-                  height={24}
-                  className="h-6 w-auto object-contain opacity-90"
-                />
+                {logoUrl !== null ? (
+                  <Image
+                    src={logoUrl}
+                    alt=""
+                    aria-hidden="true"
+                    width={24}
+                    height={24}
+                    className="h-6 w-auto object-contain opacity-90"
+                  />
+                ) : (
+                  <span className="text-xs font-semibold uppercase text-foreground/60">
+                    {brandConfig.name.charAt(0)}
+                  </span>
+                )}
               </div>
               <div className="min-w-0 pt-0.5">
                 <DrawerTitle className="font-semibold tracking-tight text-foreground">

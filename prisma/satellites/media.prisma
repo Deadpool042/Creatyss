@@ -101,6 +101,7 @@ model MediaAsset {
   publicEventsAsPrimaryImage       PublicEvent[]     @relation("PublicEventPrimaryImage")
   publicEventsAsCoverImage         PublicEvent[]     @relation("PublicEventCoverImage")
   bundlesAsPrimaryImage            Bundle[]          @relation("BundlePrimaryImage")
+  storesAsLogo                     Store[]           @relation("StoreLogo")
 
   @@unique([storeId, storageKey])
   @@unique([storeId, slug])

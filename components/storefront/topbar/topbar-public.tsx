@@ -59,6 +59,7 @@ type MarketingHeaderItem = Readonly<{
 type TopbarPublicProps = Readonly<{
   pathname: string;
   localeSelector?: ReactNode;
+  logoUrl?: string | null;
 }>;
 
 const DESKTOP_NAV_ITEMS = [
@@ -132,24 +133,27 @@ function getIsBoutiqueRoute(pathname: string): boolean {
 function PublicLogo({
   prominent = false,
   compactDesktop = false,
+  logoUrl = null,
 }: {
   prominent?: boolean;
   compactDesktop?: boolean;
+  logoUrl?: string | null;
 }) {
   return (
     <Link className="flex min-w-0 items-center gap-2.5 text-foreground" href="/">
-      <Image
-        src="/uploads/logo.svg"
-        alt=""
-        aria-hidden="true"
-        width={36}
-        height={36}
-        className={[
-          "w-auto shrink-0 object-contain",
-
-          prominent ? "h-8 opacity-100" : "h-7 opacity-90",
-        ].join(" ")}
-      />
+      {logoUrl !== null && (
+        <Image
+          src={logoUrl}
+          alt=""
+          aria-hidden="true"
+          width={36}
+          height={36}
+          className={[
+            "w-auto shrink-0 object-contain",
+            prominent ? "h-8 opacity-100" : "h-7 opacity-90",
+          ].join(" ")}
+        />
+      )}
 
       <span
         className={[
@@ -269,19 +273,21 @@ function PublicReassuranceBar() {
 function MobileTopbar({
   pathname,
   localeSelector,
+  logoUrl = null,
 }: {
   pathname: string;
   localeSelector?: ReactNode;
+  logoUrl?: string | null;
 }) {
   return (
     <div className="flex h-14 items-center justify-between desktop:hidden">
-      <PublicLogo />
+      <PublicLogo logoUrl={logoUrl} />
 
       <div className="flex items-center gap-0.5">
         <HeaderActions pathname={pathname} variant="mobile" />
         {localeSelector}
         <div className="hidden md:flex desktop:hidden">
-          <MobileMenuDrawer variant="topbar" />
+          <MobileMenuDrawer variant="topbar" logoUrl={logoUrl} />
         </div>
       </div>
     </div>
@@ -293,7 +299,7 @@ function DesktopNavigation({ pathname }: { pathname: string }) {
     <NavigationMenu className="hidden desktop:flex" aria-label="Navigation principale">
       <NavigationMenuList className="gap-3 lg:gap-4">
         {DESKTOP_NAV_ITEMS.map((link) => {
-          const isComingSoon = ('status' in link) && link.status === "comingSoon";
+          const isComingSoon = "status" in link && link.status === "comingSoon";
           const isCategories = link.href === "/categories";
           const isActive = isPublicLinkActive(pathname, link.href);
 
@@ -373,12 +379,16 @@ function DesktopTopbar({
   isBoutiqueRoute,
 
   localeSelector,
+
+  logoUrl = null,
 }: {
   pathname: string;
 
   isBoutiqueRoute: boolean;
 
   localeSelector?: ReactNode;
+
+  logoUrl?: string | null;
 }) {
   return (
     <div
@@ -389,7 +399,7 @@ function DesktopTopbar({
       ].join(" ")}
     >
       <div className="flex min-w-0 items-center gap-3">
-        <PublicLogo prominent={isBoutiqueRoute} compactDesktop />
+        <PublicLogo prominent={isBoutiqueRoute} compactDesktop logoUrl={logoUrl} />
       </div>
 
       <DesktopNavigation pathname={pathname} />
@@ -450,7 +460,13 @@ function TouchNavItem({
   );
 }
 
-function TouchNavigation({ pathname }: { pathname: string }) {
+function TouchNavigation({
+  pathname,
+  logoUrl = null,
+}: {
+  pathname: string;
+  logoUrl?: string | null;
+}) {
   return (
     <nav
       aria-label="Navigation tactile"
@@ -460,13 +476,13 @@ function TouchNavigation({ pathname }: { pathname: string }) {
         {TOUCH_NAV_ITEMS.map((link) => (
           <TouchNavItem key={link.href} {...link} pathname={pathname} />
         ))}
-        <MobileMenuDrawer />
+        <MobileMenuDrawer logoUrl={logoUrl} />
       </div>
     </nav>
   );
 }
 
-export function TopbarPublic({ pathname, localeSelector }: TopbarPublicProps) {
+export function TopbarPublic({ pathname, localeSelector, logoUrl = null }: TopbarPublicProps) {
   const isBoutiqueRoute = getIsBoutiqueRoute(pathname);
 
   return (
@@ -475,12 +491,13 @@ export function TopbarPublic({ pathname, localeSelector }: TopbarPublicProps) {
         {!isBoutiqueRoute ? <PublicReassuranceBar /> : null}
 
         <div className="mx-auto w-full max-w-430 px-4 sm:px-6 xl:px-12">
-          <MobileTopbar pathname={pathname} localeSelector={localeSelector} />
+          <MobileTopbar pathname={pathname} localeSelector={localeSelector} logoUrl={logoUrl} />
 
           <DesktopTopbar
             pathname={pathname}
             isBoutiqueRoute={isBoutiqueRoute}
             localeSelector={localeSelector}
+            logoUrl={logoUrl}
           />
         </div>
       </header>

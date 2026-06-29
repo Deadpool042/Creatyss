@@ -13,10 +13,8 @@ import { ThemeProvider } from "@/components/shared/theme";
 import { Toaster } from "@/components/ui/sonner";
 import { clientEnv } from "@/core/config/env";
 import { brandConfig } from "@/core/config/brand";
-import {
-  DEFAULT_LOCALE_CODE,
-  SECONDARY_LOCALE_CODES,
-} from "@/core/localization/supported-locales";
+import { getStoreLogo } from "@/features/storefront/store/queries/get-store-logo-url.query";
+import { DEFAULT_LOCALE_CODE, SECONDARY_LOCALE_CODES } from "@/core/localization/supported-locales";
 import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
 
 const jost = Jost({
@@ -44,9 +42,7 @@ export const viewport: Viewport = {
  * Évite un double appel DB si `generateMetadata` et `RootLayout` appellent
  * tous les deux ce guard dans la même requête (React cache = scope request).
  */
-const getLocalizationL3Active = cache(() =>
-  meetsLocalizationLevel("localized-routing")
-);
+const getLocalizationL3Active = cache(() => meetsLocalizationLevel("localized-routing"));
 
 /**
  * Metadata dynamique : génère les alternates hreflang quand L3 est actif.
@@ -112,6 +108,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     redirect(pathWithoutLocale);
   }
 
+  const { logoUrl } = await getStoreLogo();
+
   return (
     <html
       lang={locale}
@@ -132,7 +130,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange={false}
         >
           <TooltipProvider>
-            <PublicSiteShell localeSelector={<LocaleSelector />}>{children}</PublicSiteShell>
+            <PublicSiteShell logoUrl={logoUrl} localeSelector={<LocaleSelector />}>
+              {children}
+            </PublicSiteShell>
           </TooltipProvider>
           <Toaster />
         </ThemeProvider>

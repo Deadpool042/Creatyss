@@ -10,9 +10,14 @@ import { TopbarPublic } from "./topbar/topbar-public";
 type PublicSiteShellProps = Readonly<{
   children: ReactNode;
   localeSelector?: ReactNode;
+  logoUrl?: string | null;
 }>;
 
-export function PublicSiteShell({ children, localeSelector }: PublicSiteShellProps) {
+export function PublicSiteShell({
+  children,
+  localeSelector,
+  logoUrl = null,
+}: PublicSiteShellProps) {
   const pathname = usePathname();
   const isAdminRoute = pathname === "/admin" || pathname.startsWith("/admin/");
 
@@ -23,11 +28,13 @@ export function PublicSiteShell({ children, localeSelector }: PublicSiteShellPro
   return (
     <div className="flex min-h-screen flex-col">
       <OrientationGuard />
-      <TopbarPublic pathname={pathname} localeSelector={localeSelector} />
+      <TopbarPublic pathname={pathname} localeSelector={localeSelector} logoUrl={logoUrl} />
 
-      <main id="main-content" className="mx-auto w-full max-w-full flex-1">{children}</main>
+      <main id="main-content" className="mx-auto w-full max-w-full flex-1">
+        {children}
+      </main>
 
-      <FooterPublic />
+      <FooterPublic logoUrl={logoUrl} />
     </div>
   );
 }

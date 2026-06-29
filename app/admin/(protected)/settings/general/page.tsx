@@ -1,6 +1,7 @@
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { StoreSettingsForm } from "@/features/admin/settings/components/store-settings-form";
+import { StoreLogoSection } from "@/features/admin/settings/components/store-logo-section";
 import { getAdminStoreSettings } from "@/features/admin/settings/queries/get-admin-store-settings.query";
 
 export default async function AdminSettingsGeneralPage() {
@@ -54,6 +55,10 @@ export default async function AdminSettingsGeneralPage() {
           <p className="mt-1 text-sm text-muted-foreground">
             Identité, support et paramètres régionaux de la boutique.
           </p>
+        </div>
+
+        <div className="divide-y divide-surface-border/40">
+          <StoreLogoSection logoUrl={store.logoUrl} storeName={store.name} />
         </div>
 
         <StoreSettingsForm store={store} />

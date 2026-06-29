@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import { getCurrentAdmin } from "@/core/auth/admin/guard";
 import { LoginForm, loginAction } from "@/features/admin/auth";
+import { getStoreLogo } from "@/features/storefront/store/queries/get-store-logo-url.query";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
     : resolvedSearchParams.error;
 
   const showError = errorParam === "invalid_credentials";
+  const { logoUrl } = await getStoreLogo();
 
-  return <LoginForm action={loginAction} showError={showError} />;
+  return <LoginForm action={loginAction} showError={showError} logoUrl={logoUrl} />;
 }

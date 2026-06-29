@@ -9,6 +9,7 @@ import Image from "next/image";
 type LoginFormProps = {
   action: (formData: FormData) => Promise<void>;
   showError?: boolean;
+  logoUrl?: string | null;
 };
 
 function LoginSidebar() {
@@ -73,16 +74,18 @@ function LoginSidebar() {
   );
 }
 
-export function LoginForm({ action, showError = false }: LoginFormProps) {
+export function LoginForm({ action, showError = false, logoUrl = null }: LoginFormProps) {
   return (
     <AuthShell sidebar={<LoginSidebar />}>
       <Card className="overflow-hidden rounded-2xl border border-surface-border bg-surface-panel/92 shadow-card backdrop-blur-sm">
         <div className="h-1 w-full bg-linear-to-r from-foreground via-foreground/70 to-brand" />
 
         <CardHeader className="space-y-4 px-8 pb-6 pt-8">
-          <div className="flex justify-center">
-            <Image src="/uploads/logo.svg" alt="Creatyss Logo" width={150} height={150} />
-          </div>
+          {logoUrl !== null && (
+            <div className="flex justify-center">
+              <Image src={logoUrl} alt="" aria-hidden="true" width={150} height={150} />
+            </div>
+          )}
           <div className="space-y-2">
             <p className="text-[11px] font-medium uppercase tracking-[0.26em] text-muted-foreground">
               Connexion sécurisée

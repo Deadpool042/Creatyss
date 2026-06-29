@@ -54,6 +54,9 @@ model Store {
   bankTransferInstructions   String?
   cashOnDeliveryInstructions String?
 
+  logoImageId String?
+  logoImage   MediaAsset? @relation("StoreLogo", fields: [logoImageId], references: [id], onDelete: SetNull)
+
   defaultLocaleCode String
   defaultCurrency   CurrencyCode @default(EUR)
   timezone          String       @default("Europe/Paris")

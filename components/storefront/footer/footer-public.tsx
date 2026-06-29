@@ -41,7 +41,9 @@ function FooterColumnTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function FooterPublic() {
+type FooterPublicProps = { logoUrl?: string | null };
+
+export function FooterPublic({ logoUrl = null }: FooterPublicProps) {
   return (
     <footer
       aria-label="Pied de page"
@@ -51,14 +53,16 @@ export function FooterPublic() {
         {/* Colonne marque */}
         <div className="flex flex-col gap-3">
           <Link href="/" className="inline-flex items-center gap-2 text-foreground">
-            <Image
-              src="/uploads/logo.svg"
-              alt=""
-              aria-hidden="true"
-              width={24}
-              height={24}
-              className="h-6 w-auto shrink-0 opacity-85"
-            />
+            {logoUrl !== null && (
+              <Image
+                src={logoUrl}
+                alt=""
+                aria-hidden="true"
+                width={24}
+                height={24}
+                className="h-6 w-auto shrink-0 opacity-85"
+              />
+            )}
             <span className="text-[0.88rem] font-semibold uppercase tracking-[0.2em]">
               {brandConfig.name}
             </span>
@@ -147,9 +151,7 @@ export function FooterPublic() {
             ))}
           </ul>
         </nav>
-        <span className="text-[0.78rem] text-text-muted-strong">
-          {brandConfig.tagline}
-        </span>
+        <span className="text-[0.78rem] text-text-muted-strong">{brandConfig.tagline}</span>
       </div>
     </footer>
   );

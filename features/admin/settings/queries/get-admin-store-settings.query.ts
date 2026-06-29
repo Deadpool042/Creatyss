@@ -24,6 +24,8 @@ export type AdminStoreSettings = {
   addressCountry: string | null;
   instagramUrl: string | null;
   facebookUrl: string | null;
+  logoImageId: string | null;
+  logoUrl: string | null;
 };
 
 export async function getAdminStoreSettings(): Promise<AdminStoreSettings | null> {
@@ -52,6 +54,8 @@ export async function getAdminStoreSettings(): Promise<AdminStoreSettings | null
       addressCountry: true,
       instagramUrl: true,
       facebookUrl: true,
+      logoImageId: true,
+      logoImage: { select: { publicUrl: true } },
     },
   });
 
@@ -62,5 +66,6 @@ export async function getAdminStoreSettings(): Promise<AdminStoreSettings | null
     defaultCurrency: store.defaultCurrency as CurrencyCodeValue,
     status: store.status as string,
     updatedAt: store.updatedAt.toISOString(),
+    logoUrl: store.logoImage?.publicUrl ?? null,
   };
 }
