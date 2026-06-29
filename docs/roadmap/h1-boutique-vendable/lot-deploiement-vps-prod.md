@@ -29,7 +29,7 @@ Exécution complète de `scripts/deploy.sh` sur VPS OVH :
 
 Points non bloquants observés lors du test du 2026-06-29 :
 
-1. **Image manquante** : log app signale `image invalide ou absente pour /uploads/savoir-faire-placeholder.webp` — asset à vérifier ou à re-uploader en staging.
+1. ~~**Image manquante** : log app signale `image invalide ou absente pour /uploads/savoir-faire-placeholder.webp`~~ — **résolu** : l'image placeholder est versionnée dans le repo (`/uploads/savoir-faire-placeholder.webp` remplacé par un asset versionné), les médias dynamiques sont maintenant servis via Caddy (volume `uploads_data` monté en `:ro` dans Caddy, handle_path `/uploads/*`).
 2. **Propriétaire des backups** : les archives uploads et documents sont générées avec `root:root` sur le VPS — à surveiller si la rotation automatique tourne sous un utilisateur non-root.
 
 ---
