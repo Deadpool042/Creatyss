@@ -112,7 +112,7 @@ step "Attente de disponibilité (max 60 s)"
 # node:22-alpine dispose de wget (busybox) — pas de curl dans l'image.
 READY=0
 for i in $(seq 1 30); do
-  if docker exec creatyss-app wget -q --spider http://localhost:3000/ 2>/dev/null; then
+  if docker exec creatyss-app wget -q --spider http://localhost:3000/api/health 2>/dev/null; then
     READY=1
     break
   fi
@@ -121,7 +121,7 @@ for i in $(seq 1 30); do
 done
 printf "\n"
 [ "${READY}" -eq 1 ] || die "L'application n'a pas répondu après 60 s — consulter : docker compose -f docker-compose.prod.yml logs app"
-ok "Application prête sur :3000"
+ok "Application prête — /api/health OK"
 
 # ── 7. Vérification HTTPS ─────────────────────────────────────────────────────
 step "Vérification HTTPS (https://${APP_DOMAIN}/)"

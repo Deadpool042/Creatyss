@@ -4,6 +4,8 @@
 
 Clos (staging) — validé le 2026-06-28 sur `https://staging.creatyss.lpwebstudio.fr`
 
+Alignement LP-INFRA (2026-06-29) : `scripts/deploy.sh` — URL healthcheck corrigée (`/` → `/api/health`, conforme aux valeurs cibles LP-INFRA/H1-L3). Test production non encore exécuté.
+
 ## Objectif
 
 Valider le build de l'image Docker et rendre le déploiement VPS répétable depuis zéro, de sorte que la boutique soit accessible publiquement sur le VPS OVH avec HTTPS.
