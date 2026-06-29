@@ -112,7 +112,7 @@ step "Attente de disponibilité (max 60 s)"
 # node:22-alpine dispose de wget (busybox) — pas de curl dans l'image.
 READY=0
 for i in $(seq 1 30); do
-  if docker exec creatyss-app wget -q --spider http://localhost:3000/api/health 2>/dev/null; then
+  if docker exec creatyss-app sh -lc 'wget -qO- http://localhost:3000/api/health | grep -q "\"app\":\"ok\""' 2>/dev/null; then
     READY=1
     break
   fi
