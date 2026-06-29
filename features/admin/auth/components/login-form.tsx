@@ -83,7 +83,7 @@ export function LoginForm({ action, showError = false, logoUrl = null }: LoginFo
         <CardHeader className="space-y-4 px-8 pb-6 pt-8">
           {logoUrl !== null && (
             <div className="flex justify-center">
-              <Image src={logoUrl} alt="" aria-hidden="true" width={150} height={150} />
+              <Image src={logoUrl} alt="" aria-hidden="true" width={150} height={150} unoptimized />
             </div>
           )}
           <div className="space-y-2">

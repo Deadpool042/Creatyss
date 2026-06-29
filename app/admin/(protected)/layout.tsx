@@ -4,7 +4,6 @@ import type { Viewport } from "next";
 import { AdminShell } from "@/components/admin/layout/admin-shell";
 import { db } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
-import { getStoreLogo } from "@/features/storefront/store/queries/get-store-logo-url.query";
 import { adminNavigationGroupDefinitions, adminNavigationItems } from "@/features/admin/navigation";
 import {
   buildAdminMobileMoreNavigationItems,
@@ -22,7 +21,6 @@ export const viewport: Viewport = {
 
 export default async function ProtectedAdminLayout({ children }: { children: ReactNode }) {
   const admin = await requireAuthenticatedAdmin();
-  const { logoUrl } = await getStoreLogo();
 
   const navigationContext = await getAdminNavigationContext({
     db,
@@ -55,7 +53,6 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
     <AdminShell
       displayName={admin.displayName ?? "Admin"}
       email={admin.email}
-      logoUrl={logoUrl}
       rootItems={rootItems}
       groups={groups}
       mobilePrimaryItems={mobilePrimaryItems}

@@ -1,7 +1,6 @@
 // components/admin/navigation/topbar/admin-topbar.tsx
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Bell, ChevronDown, LogOut, Moon } from "lucide-react";
 import type { JSX } from "react";
@@ -21,10 +20,9 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 type AdminTopbarProps = {
   displayName: string;
   email: string;
-  logoUrl?: string | null;
 };
 
-export function AdminTopbar({ displayName, email, logoUrl = null }: AdminTopbarProps): JSX.Element {
+export function AdminTopbar({ displayName, email }: AdminTopbarProps): JSX.Element {
   const initial = displayName.charAt(0).toUpperCase();
 
   return (
@@ -46,20 +44,9 @@ export function AdminTopbar({ displayName, email, logoUrl = null }: AdminTopbarP
             className="inline-flex min-w-0 items-center gap-2.5 [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:gap-2"
           >
             <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-xl border border-surface-border/60 bg-surface-panel/72 shadow-control backdrop-blur-xl [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:size-7.5">
-              {logoUrl !== null ? (
-                <Image
-                  src={logoUrl}
-                  alt=""
-                  aria-hidden="true"
-                  width={16}
-                  height={16}
-                  className="size-4 object-contain"
-                />
-              ) : (
-                <span className="text-[11px] font-semibold tracking-[0.1em] text-foreground/70">
-                  C
-                </span>
-              )}
+              <span className="text-[11px] font-semibold tracking-[0.1em] text-foreground/70">
+                C
+              </span>
             </span>
             <span className="grid min-w-0 text-left leading-tight">
               <span className="truncate text-[15px] font-semibold tracking-tight text-foreground [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:text-[14px]">

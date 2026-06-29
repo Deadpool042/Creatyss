@@ -213,6 +213,7 @@ export function MobileMenuDrawer({ variant = "bottomNav", logoUrl = null }: Mobi
                     aria-hidden="true"
                     width={24}
                     height={24}
+                    unoptimized
                     className="h-6 w-auto object-contain opacity-90"
                   />
                 ) : (

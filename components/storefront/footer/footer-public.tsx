@@ -60,6 +60,7 @@ export function FooterPublic({ logoUrl = null }: FooterPublicProps) {
                 aria-hidden="true"
                 width={24}
                 height={24}
+                unoptimized
                 className="h-6 w-auto shrink-0 opacity-85"
               />
             )}
