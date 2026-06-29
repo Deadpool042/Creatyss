@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
@@ -20,6 +21,7 @@ type Props = {
 };
 
 export function StoreLogoSection({ logoUrl, storeName }: Props) {
+  const router = useRouter();
   const [uploadState, uploadAction, isUploading] = useActionState(uploadStoreLogoAction, IDLE);
   const [removeState, removeAction, isRemoving] = useActionState(removeStoreLogoAction, IDLE);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -28,18 +30,20 @@ export function StoreLogoSection({ logoUrl, storeName }: Props) {
     if (uploadState.status === "success") {
       toast.success(uploadState.message);
       if (fileInputRef.current) fileInputRef.current.value = "";
+      router.refresh();
     } else if (uploadState.status === "error") {
       toast.error(uploadState.message);
     }
-  }, [uploadState]);
+  }, [uploadState, router]);
 
   useEffect(() => {
     if (removeState.status === "success") {
       toast.success(removeState.message);
+      router.refresh();
     } else if (removeState.status === "error") {
       toast.error(removeState.message);
     }
-  }, [removeState]);
+  }, [removeState, router]);
 
   return (
     <AdminFormSection

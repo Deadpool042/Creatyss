@@ -54,6 +54,7 @@ export async function uploadStoreLogoAction(
   }
 
   revalidatePath("/admin/settings/general");
+  revalidatePath("/", "layout");
   return { status: "success", message: "Logo mis à jour." };
 }
 
@@ -74,5 +75,6 @@ export async function removeStoreLogoAction(
   });
 
   revalidatePath("/admin/settings/general");
+  revalidatePath("/", "layout");
   return { status: "success", message: "Logo retiré." };
 }
