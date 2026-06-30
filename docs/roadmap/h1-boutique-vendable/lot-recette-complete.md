@@ -2,7 +2,7 @@
 
 ## Statut
 
-A faire
+Partiellement complété en staging (2026-06-30) — Stripe test et Brevo validés ; production finale `creatyss.com` non basculée
 
 ## Objectif
 
