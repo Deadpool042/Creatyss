@@ -41,6 +41,12 @@ export async function captureAdminPayment(
       data: {
         status: "CONFIRMED",
         updatedAt: new Date(),
+        statusHistory: {
+          create: {
+            status: "CONFIRMED",
+            reasonCode: "admin_payment_captured",
+          },
+        },
       },
     }),
   ]);
