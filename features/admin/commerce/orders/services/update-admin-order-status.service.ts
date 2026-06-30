@@ -1,3 +1,4 @@
+import type { Prisma } from "@/prisma-generated/client";
 import { db } from "@/core/db";
 import {
   toAppOrderStatus,
@@ -50,5 +51,61 @@ export async function updateAdminOrderStatus(input: UpdateOrderStatusInput): Pro
         },
       },
     });
+
+    if (transition.shouldRestock) {
+      await restockCancelledOrderInventory(tx, order.id);
+    }
   });
+}
+
+/**
+ * Restitue le stock consommé à la création d'une commande, de façon idempotente.
+ *
+ * Charge les InventoryMovement referenceType="order" de type CONSUMPTION ou RELEASE,
+ * groupe par inventoryItemId, et n'incrémente que si le net est encore négatif.
+ */
+export async function restockCancelledOrderInventory(
+  tx: Prisma.TransactionClient,
+  orderId: string
+): Promise<void> {
+  const movements = await tx.inventoryMovement.findMany({
+    where: {
+      referenceType: "order",
+      referenceId: orderId,
+      type: { in: ["CONSUMPTION", "RELEASE"] },
+    },
+    select: {
+      inventoryItemId: true,
+      quantityDelta: true,
+    },
+  });
+
+  if (movements.length === 0) return;
+
+  const netByItem = new Map<string, number>();
+  for (const m of movements) {
+    netByItem.set(m.inventoryItemId, (netByItem.get(m.inventoryItemId) ?? 0) + m.quantityDelta);
+  }
+
+  for (const [inventoryItemId, net] of netByItem) {
+    if (net >= 0) continue;
+
+    const restoreQty = -net;
+
+    await tx.inventoryItem.update({
+      where: { id: inventoryItemId },
+      data: { onHandQuantity: { increment: restoreQty } },
+    });
+
+    await tx.inventoryMovement.create({
+      data: {
+        inventoryItemId,
+        type: "RELEASE",
+        quantityDelta: restoreQty,
+        referenceType: "order",
+        referenceId: orderId,
+        reason: "order_cancelled",
+      },
+    });
+  }
 }

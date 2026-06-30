@@ -1181,9 +1181,9 @@ const LIFECYCLE_PRODUCT_SLUG = "e2e-lifecycle-product";
 const LIFECYCLE_PRODUCT_NAME = "Produit Lifecycle E2E";
 const LIFECYCLE_VARIANT_SKU = "E2E-LIFECYCLE-001";
 const LIFECYCLE_VARIANT_NAME = "Version lifecycle E2E";
-// Stock de départ déterministe. Le lifecycle admin (expédition/livraison/
-// annulation) ne décrémente ni ne réincrémente l'inventaire : la valeur reste
-// donc égale à initialOnHand tout au long du test.
+// Stock de départ déterministe. Cette fixture ne crée aucun InventoryMovement
+// CONSUMPTION : la restitution à l'annulation est un no-op, donc onHand reste
+// égal à LIFECYCLE_INITIAL_ON_HAND tout au long du test.
 const LIFECYCLE_INITIAL_ON_HAND = 25;
 
 type FreshLifecycleOrder = {

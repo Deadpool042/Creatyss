@@ -70,7 +70,7 @@ test("admin drives a confirmed order through preparation, shipping and delivery"
   expect(state?.carrier).toBe(CARRIER);
   expect(state?.trackingNumber).toBe(TRACKING);
   expect(state?.deliveredAt).not.toBeNull();
-  // Le lifecycle ne touche pas l'inventaire : stock inchangé.
+  // Fixture sans CONSUMPTION : la restitution à l'expédition/livraison est un no-op.
   expect(state?.inventoryOnHand).toBe(initialOnHand);
 
   // État persistant UI (scopé au détail, après confirmation DB).
@@ -113,7 +113,7 @@ test("admin cancels a confirmed order from the detail dialog", async ({ page }) 
   const state = await readOrderLifecycleState(orderId);
   expect(state).not.toBeNull();
   expect(state?.orderStatus).toBe("CANCELLED");
-  // Aucun restock appliqué par la transition : stock cohérent (inchangé).
+  // Fixture sans CONSUMPTION : la restitution à l'annulation est un no-op, stock inchangé.
   expect(state?.inventoryOnHand).toBe(initialOnHand);
 
   // État persistant UI (scopé au détail, après confirmation DB).
