@@ -1171,3 +1171,282 @@ export async function readReturnState(orderId: string): Promise<ReturnState | nu
     inventoryOnHand,
   };
 }
+
+// ---------------------------------------------------------------------------
+// Admin order lifecycle helpers (CONFIRMED → PROCESSING → COMPLETED/SHIPPED →
+// DELIVERED, et CONFIRMED → CANCELLED)
+// ---------------------------------------------------------------------------
+
+const LIFECYCLE_PRODUCT_SLUG = "e2e-lifecycle-product";
+const LIFECYCLE_PRODUCT_NAME = "Produit Lifecycle E2E";
+const LIFECYCLE_VARIANT_SKU = "E2E-LIFECYCLE-001";
+const LIFECYCLE_VARIANT_NAME = "Version lifecycle E2E";
+// Stock de départ déterministe. Le lifecycle admin (expédition/livraison/
+// annulation) ne décrémente ni ne réincrémente l'inventaire : la valeur reste
+// donc égale à initialOnHand tout au long du test.
+const LIFECYCLE_INITIAL_ON_HAND = 25;
+
+type FreshLifecycleOrder = {
+  orderId: string;
+  orderNumber: string;
+  variantId: string;
+  initialOnHand: number;
+};
+
+/**
+ * Crée une commande CONFIRMED **fraîche et dédiée** au test de lifecycle admin.
+ *
+ * Contrairement à `ensureConfirmedOrderForE2E` (qui réutilise une commande
+ * existante), ce helper crée systématiquement une nouvelle commande avec un
+ * `orderNumber` unique par run, afin que chaque test parte d'un état neuf et ne
+ * partage pas de commande entre specs. Le produit/variante/inventaire sont
+ * dédiés (slug/SKU `*-lifecycle-*`) pour éviter toute collision avec
+ * `commerce-fulfillment.spec.ts`.
+ */
+export async function createFreshOrderForLifecycleE2E(): Promise<FreshLifecycleOrder> {
+  const store = await readDefaultStore();
+  const now = new Date();
+
+  const product = await prisma.product.upsert({
+    where: {
+      storeId_slug: {
+        storeId: store.id,
+        slug: LIFECYCLE_PRODUCT_SLUG,
+      },
+    },
+    update: {
+      name: LIFECYCLE_PRODUCT_NAME,
+      status: "ACTIVE",
+      isStandalone: true,
+      catalogPriceCents: 3500,
+      catalogPriceCurrencyCode: "EUR",
+      publishedAt: now,
+      archivedAt: null,
+    },
+    create: {
+      storeId: store.id,
+      slug: LIFECYCLE_PRODUCT_SLUG,
+      name: LIFECYCLE_PRODUCT_NAME,
+      status: "ACTIVE",
+      isStandalone: true,
+      catalogPriceCents: 3500,
+      catalogPriceCurrencyCode: "EUR",
+      publishedAt: now,
+    },
+    select: { id: true },
+  });
+
+  const variant = await prisma.productVariant.upsert({
+    where: {
+      productId_sku: {
+        productId: product.id,
+        sku: LIFECYCLE_VARIANT_SKU,
+      },
+    },
+    update: {
+      name: LIFECYCLE_VARIANT_NAME,
+      status: "ACTIVE",
+      isDefault: true,
+      sortOrder: 0,
+      archivedAt: null,
+      publishedAt: now,
+    },
+    create: {
+      productId: product.id,
+      sku: LIFECYCLE_VARIANT_SKU,
+      name: LIFECYCLE_VARIANT_NAME,
+      status: "ACTIVE",
+      isDefault: true,
+      sortOrder: 0,
+      publishedAt: now,
+    },
+    select: { id: true },
+  });
+
+  // Réinitialise un stock déterministe à chaque appel (idempotent).
+  const inventory = await prisma.inventoryItem.upsert({
+    where: {
+      storeId_variantId: {
+        storeId: store.id,
+        variantId: variant.id,
+      },
+    },
+    update: {
+      sku: LIFECYCLE_VARIANT_SKU,
+      status: "ACTIVE",
+      onHandQuantity: LIFECYCLE_INITIAL_ON_HAND,
+      reservedQuantity: 0,
+      archivedAt: null,
+    },
+    create: {
+      storeId: store.id,
+      variantId: variant.id,
+      sku: LIFECYCLE_VARIANT_SKU,
+      status: "ACTIVE",
+      onHandQuantity: LIFECYCLE_INITIAL_ON_HAND,
+      reservedQuantity: 0,
+    },
+    select: { onHandQuantity: true },
+  });
+
+  await prisma.availabilityRecord.upsert({
+    where: {
+      storeId_variantId: {
+        storeId: store.id,
+        variantId: variant.id,
+      },
+    },
+    update: {
+      status: "AVAILABLE",
+      isSellable: true,
+      backorderAllowed: false,
+      archivedAt: null,
+    },
+    create: {
+      storeId: store.id,
+      variantId: variant.id,
+      status: "AVAILABLE",
+      isSellable: true,
+      backorderAllowed: false,
+    },
+  });
+
+  // orderNumber unique par run : aucune réutilisation de commande.
+  const unique =
+    `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`.toUpperCase();
+  const orderNumber = `E2E-LC-${unique}`;
+
+  const created = await prisma.$transaction(async (tx) => {
+    const newOrder = await tx.order.create({
+      data: {
+        storeId: store.id,
+        orderNumber,
+        status: "CONFIRMED",
+        currencyCode: "EUR",
+        subtotalAmount: 35,
+        shippingAmount: 7,
+        discountAmount: 0,
+        taxAmount: 0,
+        totalAmount: 42,
+        customerEmail: "e2e-lifecycle@creatyss.test",
+        customerFirstName: "Lifecycle",
+        customerLastName: "E2E",
+        placedAt: now,
+        statusHistory: {
+          create: {
+            status: "CONFIRMED",
+            reasonCode: "e2e_lifecycle_setup",
+            notes: "Created by E2E helper createFreshOrderForLifecycleE2E.",
+          },
+        },
+      },
+      select: { id: true },
+    });
+
+    await tx.orderLine.create({
+      data: {
+        orderId: newOrder.id,
+        productId: product.id,
+        variantId: variant.id,
+        quantity: 1,
+        unitPriceAmount: 35,
+        lineSubtotalAmount: 35,
+        lineDiscountAmount: 0,
+        lineTaxAmount: 0,
+        lineTotalAmount: 35,
+        productName: LIFECYCLE_PRODUCT_NAME,
+        variantName: LIFECYCLE_VARIANT_NAME,
+        sku: LIFECYCLE_VARIANT_SKU,
+      },
+    });
+
+    await tx.payment.create({
+      data: {
+        orderId: newOrder.id,
+        storeId: store.id,
+        provider: "bank_transfer",
+        methodType: "BANK_TRANSFER",
+        status: "CAPTURED",
+        amountAuthorized: 42,
+        amountCaptured: 42,
+        currencyCode: "EUR",
+        capturedAt: now,
+      },
+    });
+
+    return { orderId: newOrder.id };
+  });
+
+  return {
+    orderId: created.orderId,
+    orderNumber,
+    variantId: variant.id,
+    initialOnHand: inventory.onHandQuantity,
+  };
+}
+
+type OrderLifecycleState = {
+  orderStatus: string;
+  shipmentStatus: string | null;
+  carrier: string | null;
+  trackingNumber: string | null;
+  deliveredAt: Date | null;
+  inventoryOnHand: number;
+};
+
+/**
+ * Lit l'état lifecycle d'une commande : statut Order (valeur Prisma), état du
+ * shipment actif (le plus récent non annulé, comme côté service ship/deliver),
+ * et stock courant de l'InventoryItem rattaché à la première ligne.
+ */
+export async function readOrderLifecycleState(
+  orderId: string
+): Promise<OrderLifecycleState | null> {
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    select: {
+      status: true,
+      shipments: {
+        where: { cancelledAt: null },
+        orderBy: [{ shippedAt: "desc" }, { createdAt: "desc" }],
+        take: 1,
+        select: {
+          status: true,
+          carrier: true,
+          trackingNumber: true,
+          deliveredAt: true,
+        },
+      },
+      lines: {
+        take: 1,
+        select: { variantId: true },
+      },
+    },
+  });
+
+  if (order === null) {
+    return null;
+  }
+
+  const shipment = order.shipments[0] ?? null;
+  const variantId = order.lines[0]?.variantId ?? null;
+
+  let inventoryOnHand = 0;
+
+  if (variantId !== null) {
+    const inventory = await prisma.inventoryItem.findFirst({
+      where: { variantId },
+      select: { onHandQuantity: true },
+    });
+    inventoryOnHand = inventory?.onHandQuantity ?? 0;
+  }
+
+  return {
+    orderStatus: order.status,
+    shipmentStatus: shipment?.status ?? null,
+    carrier: shipment?.carrier ?? null,
+    trackingNumber: shipment?.trackingNumber ?? null,
+    deliveredAt: shipment?.deliveredAt ?? null,
+    inventoryOnHand,
+  };
+}
