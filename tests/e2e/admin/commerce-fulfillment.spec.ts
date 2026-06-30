@@ -46,9 +46,9 @@ test("admin can create and fulfill a fulfillment on a confirmed order", async ({
   // Vérifier le feedback de finalisation
   await expect(page.getByText("Préparation terminée.").first()).toBeVisible({ timeout: 10_000 });
 
-  // Vérification DB : statut FULFILLED et stock décrémenté
+  // Vérification DB : statut FULFILLED, stock inchangé (aucune mutation inventaire en V1)
   const state = await readFulfillmentState(orderId);
   expect(state).not.toBeNull();
   expect(state?.status).toBe("FULFILLED");
-  expect(state?.inventoryOnHand).toBeLessThan(10);
+  expect(state?.inventoryOnHand).toBe(10);
 });
