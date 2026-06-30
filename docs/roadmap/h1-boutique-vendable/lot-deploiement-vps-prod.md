@@ -4,7 +4,7 @@
 
 Clos (staging) — déploiement complet via `scripts/deploy.sh` validé le 2026-06-29 sur `https://staging.creatyss.lpwebstudio.fr`.
 
-Production finale `creatyss.fr` : non encore basculée — non validée.
+Production finale `creatyss.com` : non encore basculée — non validée.
 
 ## Objectif
 
@@ -114,7 +114,7 @@ Restauration DB isolée validée (2026-06-28) :
 - [x] Restauration DB isolée validée — dump → `creatyss_restore_test`, 173 tables, base principale intacte (2026-06-28)
 - [x] Les cases dans `projet-creatyss.md` (build Docker, déploiement VPS répétable) cochées (2026-06-28)
 - [x] Déploiement complet via `scripts/deploy.sh` validé sur staging (2026-06-29) — cf. section Preuves
-- [ ] Bascule production finale `creatyss.fr` — non encore exécutée
+- [ ] Bascule production finale `creatyss.com` — non encore exécutée
 
 ## Agent recommandé
 
