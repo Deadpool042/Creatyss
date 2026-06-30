@@ -6,7 +6,7 @@ import { AdminPaymentServiceError } from "./admin-payment-service.errors";
 export async function captureAdminPayment(
   input: AdminPaymentActionInput,
   currentStoreId: string
-): Promise<void> {
+): Promise<{ orderId: string }> {
   const payment = await db.payment.findUnique({
     where: { id: input.paymentId },
     select: { id: true, storeId: true, status: true, amountAuthorized: true, orderId: true },
@@ -56,4 +56,6 @@ export async function captureAdminPayment(
   } catch {
     console.error("[captureAdminPayment] email payment_succeeded non envoyé (non fatal).");
   }
+
+  return { orderId: payment.orderId };
 }
