@@ -50,6 +50,10 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
     redirect(`/checkout/confirmation/${reference}?payment=unavailable`);
   }
 
+  if (paymentContext.paymentMethodType !== null && paymentContext.paymentMethodType !== "CARD") {
+    redirect(`/checkout/confirmation/${reference}?payment=unavailable`);
+  }
+
   let redirectTarget: string | null = null;
 
   try {
@@ -84,56 +88,50 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
       }
     }
 
-    if (redirectTarget !== null) {
-      redirect(redirectTarget);
-    }
-
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      payment_method_types: ["card"],
-      ...(paymentContext.customerEmail !== null
-        ? { customer_email: paymentContext.customerEmail }
-        : {}),
-      line_items: [
-        {
-          price_data: {
-            currency: (paymentContext.currencyCode ?? "eur").toLowerCase(),
-            unit_amount: moneyStringToCents(paymentContext.totalAmount),
-            product_data: {
-              name: `Commande ${paymentContext.reference}`,
+    if (redirectTarget === null) {
+      const session = await stripe.checkout.sessions.create({
+        mode: "payment",
+        payment_method_types: ["card"],
+        ...(paymentContext.customerEmail !== null
+          ? { customer_email: paymentContext.customerEmail }
+          : {}),
+        line_items: [
+          {
+            price_data: {
+              currency: (paymentContext.currencyCode ?? "eur").toLowerCase(),
+              unit_amount: moneyStringToCents(paymentContext.totalAmount),
+              product_data: {
+                name: `Commande ${paymentContext.reference}`,
+              },
             },
+            quantity: 1,
           },
-          quantity: 1,
+        ],
+        metadata: {
+          orderId: paymentContext.orderId,
+          orderReference: paymentContext.reference,
         },
-      ],
-      metadata: {
+        success_url: `${serverEnv.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=return`,
+        cancel_url: `${serverEnv.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=cancelled`,
+      });
+
+      if (!session.url) {
+        throw new Error("Stripe Checkout session returned no URL.");
+      }
+
+      await saveStripeCheckoutSessionForOrder({
         orderId: paymentContext.orderId,
-        orderReference: paymentContext.reference,
-      },
-      success_url: `${serverEnv.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=return`,
-      cancel_url: `${serverEnv.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=cancelled`,
-    });
+        stripeCheckoutSessionId: session.id,
+        stripePaymentIntentId:
+          typeof session.payment_intent === "string" ? session.payment_intent : null,
+      });
 
-    if (!session.url) {
-      throw new Error("Stripe Checkout session returned no URL.");
+      redirectTarget = session.url;
     }
-
-    await saveStripeCheckoutSessionForOrder({
-      orderId: paymentContext.orderId,
-      stripeCheckoutSessionId: session.id,
-      stripePaymentIntentId:
-        typeof session.payment_intent === "string" ? session.payment_intent : null,
-    });
-
-    redirectTarget = session.url;
   } catch (error) {
     console.error(error);
     redirect(`/checkout/confirmation/${reference}?payment=failed`);
   }
 
-  if (redirectTarget === null) {
-    redirect(`/checkout/confirmation/${reference}?payment=failed`);
-  }
-
-  redirect(redirectTarget);
+  redirect(redirectTarget ?? `/checkout/confirmation/${reference}?payment=failed`);
 }

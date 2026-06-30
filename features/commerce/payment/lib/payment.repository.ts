@@ -4,6 +4,7 @@ import {
   toAppPaymentStatus,
   type AppPaymentStatus,
   type OrderStatus,
+  type PrismaPaymentMethodType,
 } from "@/entities/order/order-status";
 
 export type PaymentStartContext = {
@@ -14,6 +15,7 @@ export type PaymentStartContext = {
   customerEmail: string | null;
   orderStatus: OrderStatus;
   paymentStatus: AppPaymentStatus | null;
+  paymentMethodType: PrismaPaymentMethodType | null;
   stripeCheckoutSessionId: string | null;
   stripePaymentIntentId: string | null;
 };
@@ -137,6 +139,7 @@ export async function findPaymentStartContextByOrderReference(
         take: 1,
         select: {
           status: true,
+          methodType: true,
           provider: true,
           providerReference: true,
           providerPaymentId: true,
@@ -149,6 +152,7 @@ export async function findPaymentStartContextByOrderReference(
     return null;
   }
 
+  const latestPayment = order.payments[0] ?? null;
   const latestStripePayment =
     order.payments.find((payment) => payment.provider === STRIPE_PROVIDER) ?? null;
 
@@ -161,6 +165,7 @@ export async function findPaymentStartContextByOrderReference(
     orderStatus: toAppOrderStatus(order.status),
     paymentStatus:
       latestStripePayment !== null ? toAppPaymentStatus(latestStripePayment.status) : null,
+    paymentMethodType: latestPayment?.methodType ?? null,
     stripeCheckoutSessionId: latestStripePayment?.providerReference ?? null,
     stripePaymentIntentId: latestStripePayment?.providerPaymentId ?? null,
   };
