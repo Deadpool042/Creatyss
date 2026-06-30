@@ -1072,6 +1072,176 @@ export async function ensureConfirmedOrderForE2E(): Promise<ConfirmedOrderForE2E
   };
 }
 
+/**
+ * Crée systématiquement une nouvelle commande CONFIRMED avec un `orderNumber`
+ * unique par run (préfixe `E2E-FF-`). Contrairement à
+ * `ensureConfirmedOrderForE2E`, cette fonction ne cherche jamais une commande
+ * existante : chaque spec repart d'un état neuf sans fulfillment préexistant.
+ *
+ * Le produit/variante/inventaire sont les mêmes que pour
+ * `ensureConfirmedOrderForE2E` (slug/SKU FULFILLMENT_*), mais le stock est
+ * réinitialisé à 10 à chaque appel pour garantir un état déterministe.
+ */
+export async function createFreshOrderForFulfillmentE2E(): Promise<ConfirmedOrderForE2E> {
+  const store = await readDefaultStore();
+  const now = new Date();
+
+  const product = await prisma.product.upsert({
+    where: {
+      storeId_slug: {
+        storeId: store.id,
+        slug: FULFILLMENT_PRODUCT_SLUG,
+      },
+    },
+    update: {
+      name: FULFILLMENT_PRODUCT_NAME,
+      status: "ACTIVE",
+      isStandalone: true,
+      catalogPriceCents: 3500,
+      catalogPriceCurrencyCode: "EUR",
+      publishedAt: now,
+      archivedAt: null,
+    },
+    create: {
+      storeId: store.id,
+      slug: FULFILLMENT_PRODUCT_SLUG,
+      name: FULFILLMENT_PRODUCT_NAME,
+      status: "ACTIVE",
+      isStandalone: true,
+      catalogPriceCents: 3500,
+      catalogPriceCurrencyCode: "EUR",
+      publishedAt: now,
+    },
+    select: { id: true },
+  });
+
+  const variant = await prisma.productVariant.upsert({
+    where: {
+      productId_sku: {
+        productId: product.id,
+        sku: FULFILLMENT_VARIANT_SKU,
+      },
+    },
+    update: {
+      name: FULFILLMENT_VARIANT_NAME,
+      status: "ACTIVE",
+      isDefault: true,
+      sortOrder: 0,
+      archivedAt: null,
+      publishedAt: now,
+    },
+    create: {
+      productId: product.id,
+      sku: FULFILLMENT_VARIANT_SKU,
+      name: FULFILLMENT_VARIANT_NAME,
+      status: "ACTIVE",
+      isDefault: true,
+      sortOrder: 0,
+      publishedAt: now,
+    },
+    select: { id: true },
+  });
+
+  // Réinitialise un stock déterministe à chaque appel (idempotent).
+  await prisma.inventoryItem.upsert({
+    where: {
+      storeId_variantId: {
+        storeId: store.id,
+        variantId: variant.id,
+      },
+    },
+    update: {
+      sku: FULFILLMENT_VARIANT_SKU,
+      status: "ACTIVE",
+      onHandQuantity: 10,
+      reservedQuantity: 0,
+      archivedAt: null,
+    },
+    create: {
+      storeId: store.id,
+      variantId: variant.id,
+      sku: FULFILLMENT_VARIANT_SKU,
+      status: "ACTIVE",
+      onHandQuantity: 10,
+      reservedQuantity: 0,
+    },
+  });
+
+  // orderNumber unique par run : aucune réutilisation de commande.
+  const unique =
+    `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`.toUpperCase();
+  const orderNumber = `E2E-FF-${unique}`;
+
+  const order = await prisma.$transaction(async (tx) => {
+    const newOrder = await tx.order.create({
+      data: {
+        storeId: store.id,
+        orderNumber,
+        status: "CONFIRMED",
+        currencyCode: "EUR",
+        subtotalAmount: 35,
+        shippingAmount: 7,
+        discountAmount: 0,
+        taxAmount: 0,
+        totalAmount: 42,
+        customerEmail: "e2e-fulfillment@creatyss.test",
+        customerFirstName: "Test",
+        customerLastName: "E2E",
+        placedAt: now,
+        statusHistory: {
+          create: {
+            status: "CONFIRMED",
+            reasonCode: "e2e_setup",
+            notes: "Created by E2E helper createFreshOrderForFulfillmentE2E.",
+          },
+        },
+      },
+      select: { id: true },
+    });
+
+    const line = await tx.orderLine.create({
+      data: {
+        orderId: newOrder.id,
+        productId: product.id,
+        variantId: variant.id,
+        quantity: 1,
+        unitPriceAmount: 35,
+        lineSubtotalAmount: 35,
+        lineDiscountAmount: 0,
+        lineTaxAmount: 0,
+        lineTotalAmount: 35,
+        productName: FULFILLMENT_PRODUCT_NAME,
+        variantName: FULFILLMENT_VARIANT_NAME,
+        sku: FULFILLMENT_VARIANT_SKU,
+      },
+      select: { id: true },
+    });
+
+    await tx.payment.create({
+      data: {
+        orderId: newOrder.id,
+        storeId: store.id,
+        provider: "bank_transfer",
+        methodType: "BANK_TRANSFER",
+        status: "CAPTURED",
+        amountAuthorized: 42,
+        amountCaptured: 42,
+        currencyCode: "EUR",
+        capturedAt: now,
+      },
+    });
+
+    return { orderId: newOrder.id, orderLineId: line.id };
+  });
+
+  return {
+    orderId: order.orderId,
+    orderLineId: order.orderLineId,
+    variantId: variant.id,
+    storeId: store.id,
+  };
+}
+
 type FulfillmentState = {
   status: string;
   inventoryOnHand: number;

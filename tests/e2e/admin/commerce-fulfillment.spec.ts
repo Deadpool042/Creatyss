@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { loginAsSeedAdmin } from "./admin-auth";
 import {
   activateFeatureFlag,
-  ensureConfirmedOrderForE2E,
+  createFreshOrderForFulfillmentE2E,
   readFulfillmentState,
 } from "../commerce-db";
 
@@ -11,7 +11,7 @@ test.beforeAll(async () => {
 });
 
 test("admin can create and fulfill a fulfillment on a confirmed order", async ({ page }) => {
-  const { orderId } = await ensureConfirmedOrderForE2E();
+  const { orderId } = await createFreshOrderForFulfillmentE2E();
 
   await loginAsSeedAdmin(page);
 
