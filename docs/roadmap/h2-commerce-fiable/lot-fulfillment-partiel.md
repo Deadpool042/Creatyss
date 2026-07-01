@@ -2,18 +2,19 @@
 
 ## Statut
 
-Terminé — implémenté 2026-06-24. Lignes partielles, décrément inventaire transactionnel, lien Shipment optionnel. Typecheck et lint verts.
+Terminé — implémenté 2026-06-24. Lignes partielles, lien Shipment optionnel. Typecheck et lint verts.
+
+**Correction doctrine (2026-07-01)** : un décrément d'inventaire transactionnel à `FULFILLED` avait été introduit puis retiré (double décrément avec la consommation de stock déjà faite à la création de commande). Doctrine V1 confirmée : le stock est consommé à la commande ; le fulfillment ne mute pas l'inventaire. Voir `docs/domains/optional/commerce/fulfillment.md`.
 
 ## Objectif
 
-Étendre le module fulfillment pour gérer la préparation par quantité de ligne (partielle), lier les préparations aux expéditions (`Shipment`), et impacter l'inventaire lors de la préparation. La V1 observée (`commerce.fulfillment` L3) couvre uniquement la préparation "tout ou rien" sans impact inventaire ni lien expédition.
+Étendre le module fulfillment pour gérer la préparation par quantité de ligne (partielle) et lier les préparations aux expéditions (`Shipment`). La V1 observée (`commerce.fulfillment` L3) couvre uniquement la préparation "tout ou rien" sans impact inventaire ni lien expédition ; cette absence d'impact inventaire reste la doctrine finale.
 
 ## Périmètre
 
 Livré au 2026-06-24 :
 
 - `features/admin/commerce/fulfillment/` — logique de préparation partielle par ligne et quantité
-- Décrément inventaire transactionnel sur `InventoryItem` lors de la validation de la préparation
 - Lien `Shipment` optionnel depuis la préparation
 - `features/admin/commerce/shipping/` — lien cohérent depuis la vue expéditions vers la préparation associée
 
@@ -39,27 +40,25 @@ Reste hors de la preuve livrée dans ce lot :
 ## Invariants
 
 - Le workflow PENDING→READY→FULFILLED/CANCELLED existant ne doit pas être redessiné — la préparation partielle s'y greffe
-- Le décrément d'inventaire doit être transactionnel (pas de décrément partiel en cas d'erreur)
+- La transition vers `FULFILLED` ne mute pas l'inventaire (stock déjà consommé à la création de commande)
 - La préparation partielle ne doit pas être possible si la quantité demandée dépasse la quantité disponible
 - Le lien Shipment est optionnel : une préparation peut être finalisée sans expédition associée (livraison en main propre)
 
 ## Risques
 
-- Décrément inventaire : la V1 observée est "sans impact stock" — l'ajout du décrément modifie le comportement existant, risque de double décrément si une commande a déjà été préparée sans impact inventaire
-- Préparations existantes sans impact inventaire : si des préparations ont déjà été créées en production en V1, il faudra décider si elles doivent être réconciliées ou laissées telles quelles
 - Quantités partielles : la logique de résolution des quantités restantes par ligne peut devenir complexe si plusieurs préparations partielles successives sont permises
 
 ## Vérifications
 
 - `pnpm run typecheck`
 - `pnpm run lint`
-- Tests unitaires sur la logique de décrément transactionnel
-- Test manuel : commande multi-lignes → préparation partielle → stock mis à jour → expédition liée
+- Test E2E (`commerce-fulfillment.spec.ts`) : `inventoryOnHand` inchangé après passage à `FULFILLED`
+- Test manuel : commande multi-lignes → préparation partielle → expédition liée, stock inchangé
 
 ## Critères de fin
 
 - Une préparation peut être créée pour un sous-ensemble des lignes de commande
-- La validation d'une préparation décrémente l'inventaire de façon transactionnelle
+- La validation d'une préparation vers `FULFILLED` ne mute pas l'inventaire
 - Une préparation peut être liée à une expédition `Shipment`
 - `typecheck` et `lint` passent sans erreur
 - Le workflow V1 reste fonctionnel sans régression

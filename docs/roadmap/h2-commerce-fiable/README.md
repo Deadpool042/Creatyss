@@ -12,7 +12,7 @@ Consolider le commerce pour qu'il soit légalement conforme et techniquement fia
 
 - `commerce.taxation` L3 : moteur TVA par territoire (métropole + DOM), câblage checkout, seed taux, UI admin lecture — implémentation technique validée, bloqué uniquement sur la confirmation expert-comptable (non technique)
 - `commerce.documents` L3 : confirmation de commande, bon de préparation, facture (`INVOICE`), avoir (`CREDIT_NOTE`) ; Factur-X (XML CII BASIC + PDF/A-3) et stockage persistant (`storageKey`, volume `documents_data`) livrés pour `INVOICE` — `lot-factures-legales-facturx`
-- `commerce.fulfillment` L3 V1+ : lignes partielles, décrément inventaire transactionnel, lien `Shipment` optionnel — `lot-fulfillment-partiel`, implémenté 2026-06-24
+- `commerce.fulfillment` L3 V1+ : lignes partielles, lien `Shipment` optionnel, sans mutation d'inventaire (stock consommé à la commande, `FULFILLED` ne décrémente pas) — `lot-fulfillment-partiel`, implémenté 2026-06-24
 - `commerce.returns` L3 V1+ (admin) : sélection lignes/quantités, restock transactionnel, remboursement Stripe réel (Stripe-first) — `lot-retours-remboursement-complets`, implémenté 2026-06-24
 - Tests E2E discounts, taxation, fulfillment, returns : 4 specs livrés avec helpers DB dédiés — `lot-tests-e2e-commerce`, implémenté 2026-06-24
 
@@ -34,13 +34,13 @@ Consolider le commerce pour qu'il soit légalement conforme et techniquement fia
 
 ## Lots
 
-| Fichier                                                                          | Description                                                                    | Statut                                           |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------ |
-| [lot-tva-validation-prod.md](./lot-tva-validation-prod.md)                       | Valider les taux TVA et la conformité légale avant activation en production    | En attente — validation externe expert-comptable |
-| [lot-factures-legales-facturx.md](./lot-factures-legales-facturx.md)             | Générer des factures conformes Factur-X et stocker les fichiers                | Implémenté (code) — TVA externe en attente       |
-| [lot-retours-remboursement-complets.md](./lot-retours-remboursement-complets.md) | Compléter les retours — sélection lignes, remboursement Stripe réel, restock   | Terminé (admin) — 2026-06-24                     |
-| [lot-fulfillment-partiel.md](./lot-fulfillment-partiel.md)                       | Gérer la préparation par quantité, lier les expéditions, impacter l'inventaire | Terminé — 2026-06-24                             |
-| [lot-tests-e2e-commerce.md](./lot-tests-e2e-commerce.md)                         | Couvrir automatiquement les flux discounts, taxation, fulfillment, returns     | Terminé — 2026-06-24                             |
+| Fichier                                                                          | Description                                                                          | Statut                                           |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| [lot-tva-validation-prod.md](./lot-tva-validation-prod.md)                       | Valider les taux TVA et la conformité légale avant activation en production          | En attente — validation externe expert-comptable |
+| [lot-factures-legales-facturx.md](./lot-factures-legales-facturx.md)             | Générer des factures conformes Factur-X et stocker les fichiers                      | Implémenté (code) — TVA externe en attente       |
+| [lot-retours-remboursement-complets.md](./lot-retours-remboursement-complets.md) | Compléter les retours — sélection lignes, remboursement Stripe réel, restock         | Terminé (admin) — 2026-06-24                     |
+| [lot-fulfillment-partiel.md](./lot-fulfillment-partiel.md)                       | Gérer la préparation par quantité, lier les expéditions (sans mutation d'inventaire) | Terminé — 2026-06-24                             |
+| [lot-tests-e2e-commerce.md](./lot-tests-e2e-commerce.md)                         | Couvrir automatiquement les flux discounts, taxation, fulfillment, returns           | Terminé — 2026-06-24                             |
 
 `lot-tva-validation-prod` est un prérequis de `lot-factures-legales-facturx`. `lot-retours-remboursement-complets` dépend du paiement Stripe (H1). `lot-fulfillment-partiel` peut avancer en parallèle sans dépendance bloquante. `lot-tests-e2e-commerce` attend que les modules fonctionnels soient complets.
 

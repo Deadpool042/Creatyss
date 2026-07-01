@@ -334,8 +334,14 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
   query, actions, carte admin dans le détail commande). Aucun changement de
   schéma (modèle déjà posé).
 
-**Reste** : fulfillment partiel, lien à l'expédition, impact inventaire,
-multi-entrepôt.
+**Doctrine stock V1** : le stock est consommé à la création de la commande
+(`orders`). La transition `FULFILLED` ne mute pas l'inventaire — le
+fulfillment prépare/expédie/livre, il ne décrémente pas. Une tentative
+d'introduire un décrément à `FULFILLED` a été retirée (double décrément).
+Une éventuelle règle de restock à l'annulation de commande relève du domaine
+`inventory`, hors périmètre fulfillment.
+
+**Reste** : fulfillment partiel, lien à l'expédition, multi-entrepôt.
 
 ---
 
