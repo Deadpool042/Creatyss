@@ -24,7 +24,7 @@ Consolider le commerce pour qu'il soit légalement conforme et techniquement fia
 
 ### Vérifications complémentaires de recette — 2026-07-01
 
-Hors modules `commerce.*` ci-dessus, quelques gaps de recette identifiés dans `docs/exploitation/06-recette-commerce-complete.md` ont été vérifiés (local et staging/prod-like) : checkout sans panier (local, OK), confirmation avec référence inexistante (local, OK), admin paiements (local, OK technique minimal — UX non finalisée), email `order_shipped` (local via Mailpit, staging via Brevo, OK). Le cas produit indisponible est désormais **validé localement** (`mini-sac-clarte`, correction `cbb8c34a`, 2026-07-01). Détail : `docs/exploitation/06-recette-commerce-complete.md` et `docs/roadmap/h1-boutique-vendable/lot-recette-complete.md`.
+Hors modules `commerce.*` ci-dessus, quelques gaps de recette identifiés dans `docs/exploitation/06-recette-commerce-complete.md` ont été vérifiés (local et staging/prod-like) : checkout sans panier (local, OK), confirmation avec référence inexistante (local, OK), admin paiements (local, OK technique minimal — UX non finalisée), email `order_shipped` (local via Mailpit, staging via Brevo, OK). Le cas produit indisponible est désormais **validé localement** (`mini-sac-clarte`, correction `cbb8c34a`, 2026-07-01), y compris le bug de désynchronisation admin/storefront/panier sur `AvailabilityRecord` identifié en parallèle (déjà corrigé dans `main`, indépendamment de la branche `fix/catalog-availability-sync`) ; non vérifié en staging/prod-like. Détail : `docs/exploitation/06-recette-commerce-complete.md` et `docs/roadmap/h1-boutique-vendable/lot-recette-complete.md`.
 
 ---
 

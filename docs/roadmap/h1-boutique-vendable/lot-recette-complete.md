@@ -59,7 +59,7 @@ Liste de contrôle humaine :
 - [x] Page de confirmation affichée avec la bonne référence commande — staging, 2026-06-29
 - [x] Email de confirmation reçu avec les bonnes informations (`order_created` + `payment_succeeded`) — staging, 2026-06-30
 - [x] Commande visible dans l'admin avec statut paiement correct — staging, 2026-06-30
-- [x] Cas d'erreur : produit indisponible bloque l'ajout ou le checkout — **validé localement, `mini-sac-clarte` (2026-07-01), correction `cbb8c34a`**
+- [x] Cas d'erreur : produit indisponible bloque l'ajout ou le checkout — **validé localement, `mini-sac-clarte` (2026-07-01), correction `cbb8c34a`, ainsi qu'un bug de désynchronisation admin/storefront/panier sur `AvailabilityRecord` (déjà corrigé dans `main`)**
 - [x] Cas d'erreur : carte refusée (carte test Stripe `4000000000000002`) affiche un message d'erreur clair ; relance après refus validée (fix `d5b48106`, 2026-07-01)
 
 ## Critères de fin
@@ -73,7 +73,7 @@ Liste de contrôle humaine :
 
 - **Validé en staging :** parcours virement complet (2026-06-29), admin commerce complet (2026-06-30), Stripe test (2026-06-30), Brevo staging (2026-06-30), relance paiement après refus (fix `d5b48106`, 2026-07-01)
 - **Vérifications complémentaires H2 (local + staging/prod-like, 2026-07-01) :** checkout sans panier (local, OK), confirmation référence inexistante (local, OK), admin paiements (local, OK technique minimal — UX reportée), email `order_shipped` (local Mailpit + staging Brevo, OK) — détail dans `docs/exploitation/06-recette-commerce-complete.md`
-- **Validé localement (2026-07-01) :** produit indisponible bloque l'ajout au panier — `mini-sac-clarte`, variantes Noir · Lisse (stock 0 → indisponible, stock 1 → en stock) et Sable · Grainé (indisponible), correction `cbb8c34a` (cf. `docs/exploitation/06-recette-commerce-complete.md`)
+- **Validé localement (2026-07-01) :** produit indisponible bloque l'ajout au panier — `mini-sac-clarte`, variantes Noir · Lisse (stock 0 → indisponible, stock 1 → en stock) et Sable · Grainé (indisponible), correction `cbb8c34a` ; ainsi qu'un bug de désynchronisation admin/storefront/panier sur `AvailabilityRecord`, déjà corrigé dans `main`. Non vérifié en staging/prod-like (cf. `docs/exploitation/06-recette-commerce-complete.md`).
 - **Non validé / hors périmètre :** bascule `creatyss.com`, Stripe live, ouverture boutique, vraie transaction cliente, validation externe Factur-X, validation TVA expert-comptable
 
 ## Agent recommandé
