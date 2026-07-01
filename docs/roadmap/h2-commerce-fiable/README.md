@@ -22,6 +22,10 @@ Consolider le commerce pour qu'il soit légalement conforme et techniquement fia
 - `commerce.documents` : validation Factur-X par un outil de conformité officiel (action humaine restante) ; e-reporting PPF absent (hors périmètre documenté) ; `storageKey` reste `null` pour `DELIVERY_NOTE`/`ORDER_CONFIRMATION` (non requis par ce lot)
 - `commerce.returns` : formulaire de demande de retour côté storefront client différé (périmètre séparé, non requis pour la conformité commerce)
 
+### Vérifications complémentaires de recette — 2026-07-01
+
+Hors modules `commerce.*` ci-dessus, quelques gaps de recette identifiés dans `docs/exploitation/06-recette-commerce-complete.md` ont été vérifiés (local et staging/prod-like) : checkout sans panier (local, OK), confirmation avec référence inexistante (local, OK), admin paiements (local, OK technique minimal — UX non finalisée), email `order_shipped` (local via Mailpit, staging via Brevo, OK). Le cas produit indisponible reste **non vérifié**, toujours reporté H2. Détail : `docs/exploitation/06-recette-commerce-complete.md` et `docs/roadmap/h1-boutique-vendable/lot-recette-complete.md`.
+
 ---
 
 ## Dépendances

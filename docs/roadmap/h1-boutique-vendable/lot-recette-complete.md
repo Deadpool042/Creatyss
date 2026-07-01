@@ -72,7 +72,9 @@ Liste de contrôle humaine :
 ## État actuel (2026-07-01)
 
 - **Validé en staging :** parcours virement complet (2026-06-29), admin commerce complet (2026-06-30), Stripe test (2026-06-30), Brevo staging (2026-06-30), relance paiement après refus (fix `d5b48106`, 2026-07-01)
-- **Non validé / hors périmètre :** bascule `creatyss.com`, Stripe live, ouverture boutique, vraie transaction cliente
+- **Vérifications complémentaires H2 (local + staging/prod-like, 2026-07-01) :** checkout sans panier (local, OK), confirmation référence inexistante (local, OK), admin paiements (local, OK technique minimal — UX reportée), email `order_shipped` (local Mailpit + staging Brevo, OK) — détail dans `docs/exploitation/06-recette-commerce-complete.md`
+- **Toujours non vérifié :** produit indisponible bloque l'ajout ou le checkout — reste reporté H2 (cf. ligne dédiée ci-dessus)
+- **Non validé / hors périmètre :** bascule `creatyss.com`, Stripe live, ouverture boutique, vraie transaction cliente, validation externe Factur-X, validation TVA expert-comptable
 
 ## Agent recommandé
 
