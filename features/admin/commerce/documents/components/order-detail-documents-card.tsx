@@ -39,27 +39,20 @@ function hasActiveOrderConfirmation(documents: AdminOrderDocumentSummary[]): boo
 function hasActiveDeliveryNote(documents: AdminOrderDocumentSummary[]): boolean {
   return documents.some(
     (doc) =>
-      doc.typeCode === "DELIVERY_NOTE" &&
-      doc.status !== "CANCELLED" &&
-      doc.status !== "ARCHIVED"
+      doc.typeCode === "DELIVERY_NOTE" && doc.status !== "CANCELLED" && doc.status !== "ARCHIVED"
   );
 }
 
 function hasActiveInvoice(documents: AdminOrderDocumentSummary[]): boolean {
   return documents.some(
-    (doc) =>
-      doc.typeCode === "INVOICE" &&
-      doc.status !== "CANCELLED" &&
-      doc.status !== "ARCHIVED"
+    (doc) => doc.typeCode === "INVOICE" && doc.status !== "CANCELLED" && doc.status !== "ARCHIVED"
   );
 }
 
 function hasActiveCreditNote(documents: AdminOrderDocumentSummary[]): boolean {
   return documents.some(
     (doc) =>
-      doc.typeCode === "CREDIT_NOTE" &&
-      doc.status !== "CANCELLED" &&
-      doc.status !== "ARCHIVED"
+      doc.typeCode === "CREDIT_NOTE" && doc.status !== "CANCELLED" && doc.status !== "ARCHIVED"
   );
 }
 
@@ -97,8 +90,7 @@ export function OrderDetailDocumentsCard({ documents, orderId }: OrderDetailDocu
   } | null>(null);
 
   const confirmationAlreadyExists = generated || hasActiveOrderConfirmation(documents);
-  const deliveryNoteAlreadyExists =
-    deliveryNoteGenerated || hasActiveDeliveryNote(documents);
+  const deliveryNoteAlreadyExists = deliveryNoteGenerated || hasActiveDeliveryNote(documents);
   const invoiceAlreadyExists = invoiceGenerated || hasActiveInvoice(documents);
   const creditNoteAlreadyExists = creditNoteGenerated || hasActiveCreditNote(documents);
 
@@ -319,7 +311,9 @@ export function OrderDetailDocumentsCard({ documents, orderId }: OrderDetailDocu
         ) : null}
 
         <p className="card-meta leading-snug text-text-muted-strong/70">
-          La facture électronique (Factur-X) sera disponible ultérieurement.
+          La facture PDF au format Factur-X est générée et téléchargeable après émission. La
+          validation de conformité externe n&apos;a pas encore été effectuée — à valider avant usage
+          en production réelle.
         </p>
       </div>
     </AdminSplitDetailSectionCard>
