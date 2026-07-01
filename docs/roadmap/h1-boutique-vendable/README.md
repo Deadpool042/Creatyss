@@ -6,7 +6,7 @@ Permettre à la boutique de recevoir de vraies commandes payées en ligne et d'�
 
 ---
 
-## État au 2026-06-28
+## État au 2026-07-01
 
 ### Documenté comme terminé dans `projet-creatyss.md` et les lots associés
 
@@ -36,10 +36,16 @@ Permettre à la boutique de recevoir de vraies commandes payées en ligne et d'�
 - Sécurité VPS : UFW, Fail2Ban, unattended-upgrades, swap configurés
 - Déploiement VPS répétable depuis zéro (cf. `lot-deploiement-vps-prod.md`)
 
+### Documenté comme terminé depuis 2026-06-29 / 2026-07-01
+
+- Recette staging/prod-like validée : parcours virement complet, admin commerce complet, Stripe test, Brevo staging, relance paiement après refus — cf. `lot-recette-complete.md`
+- Vérifications complémentaires H2 traitées en local (2026-07-01) : checkout sans panier, confirmation référence inexistante, admin paiements, email `order_shipped`, produit indisponible (après correction d'un bug de désynchronisation `AvailabilityRecord`, branche `fix/catalog-availability-sync`) — détail dans `docs/exploitation/06-recette-commerce-complete.md`
+- Restauration DB isolée validée le 2026-06-28 (dump → base temporaire, 173 tables, base principale intacte)
+
 ### Documenté comme non terminé
 
-- Recette humaine complète non effectuée : bloquée par configuration Stripe réelle (compte marchand, clés production, webhooks HTTPS) et recette humaine — le VPS et le HTTPS ne sont plus des bloqueurs
-- Restauration DB isolée validée le 2026-06-28 (dump → base temporaire, 173 tables, base principale intacte)
+- Recette avec compte Stripe marchand réel (mode live) et bascule domaine `creatyss.com` : non effectuées — restent les seuls bloqueurs avant ouverture commerciale, non techniques (compte marchand réel, décision de lancement)
+- Recette du cas produit indisponible : validée en local uniquement, non revérifiée en staging/prod-like
 
 ---
 
@@ -53,11 +59,11 @@ Permettre à la boutique de recevoir de vraies commandes payées en ligne et d'�
 
 ## Lots
 
-| Fichier                                                      | Description                                                          | Statut                                                                       |
-| ------------------------------------------------------------ | -------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| [lot-paiement-en-ligne.md](./lot-paiement-en-ligne.md)       | Intégration Stripe pour accepter les paiements par carte             | Implémenté — recette production non exécutée                                 |
-| [lot-deploiement-vps-prod.md](./lot-deploiement-vps-prod.md) | Valider le build image Docker et rendre le déploiement VPS répétable | Terminé (staging) — HTTPS opérationnel, restauration DB complète à confirmer |
-| [lot-recette-complete.md](./lot-recette-complete.md)         | Recette humaine du parcours achat complet en production              | A faire                                                                      |
+| Fichier                                                      | Description                                                          | Statut                                                                                    |
+| ------------------------------------------------------------ | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| [lot-paiement-en-ligne.md](./lot-paiement-en-ligne.md)       | Intégration Stripe pour accepter les paiements par carte             | Implémenté — recette production non exécutée                                              |
+| [lot-deploiement-vps-prod.md](./lot-deploiement-vps-prod.md) | Valider le build image Docker et rendre le déploiement VPS répétable | Terminé (staging) — HTTPS opérationnel, restauration DB complète à confirmer              |
+| [lot-recette-complete.md](./lot-recette-complete.md)         | Recette humaine du parcours achat complet en production              | Validé en staging/prod-like (2026-07-01) — Stripe live et bascule `creatyss.com` restants |
 
 Les trois lots sont séquentiels : le paiement en ligne et le déploiement VPS doivent être terminés avant la recette complète. Les deux premiers peuvent avancer en parallèle.
 
