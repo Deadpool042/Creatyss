@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { db } from "@/core/db";
-import { AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE } from "@/features/automations/shared/automation-job.constants";
+import { AUTOMATION_JOB_TYPE_CODES } from "@/features/automations/shared/automation-job.constants";
 import { ADMIN_AUTOMATIONS_PATH } from "@/features/admin/marketing/automations/shared/admin-automations-routes";
 
 export type ToggleAutomationStatusResult =
@@ -47,7 +47,7 @@ export async function toggleAutomationStatusAction(
     const cancelledJobs = await tx.job.updateMany({
       where: {
         storeId: automation.storeId,
-        typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+        typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
         status: "PENDING",
         archivedAt: null,
         deduplicationKey: {

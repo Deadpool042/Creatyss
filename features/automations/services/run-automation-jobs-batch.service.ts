@@ -2,9 +2,9 @@ import "server-only";
 
 import { db } from "@/core/db";
 import { executeAutomationJob } from "./execute-automation-job.service";
-import { AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE } from "../shared/automation-job.constants";
+import { AUTOMATION_JOB_TYPE_CODES } from "../shared/automation-job.constants";
 
-const SUPPORTED_JOB_TYPE_CODES = [AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE] as const;
+const SUPPORTED_JOB_TYPE_CODES = AUTOMATION_JOB_TYPE_CODES;
 
 const RUNNING_STUCK_THRESHOLD_MS = 15 * 60 * 1000; // 15 minutes
 

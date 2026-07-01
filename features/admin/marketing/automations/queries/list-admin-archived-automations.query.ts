@@ -2,7 +2,7 @@ import "server-only";
 
 import { db } from "@/core/db";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
-import { AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE } from "@/features/automations/shared/automation-job.constants";
+import { AUTOMATION_JOB_TYPE_CODES } from "@/features/automations/shared/automation-job.constants";
 import type {
   AdminArchivedAutomationSummary,
   AdminAutomationJobActivitySummary,
@@ -70,7 +70,7 @@ export async function listAdminArchivedAutomations(): Promise<
     db.job.findMany({
       where: {
         storeId,
-        typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+        typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
         archivedAt: { not: null },
       },
       select: {

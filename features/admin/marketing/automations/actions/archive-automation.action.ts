@@ -6,7 +6,7 @@ import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { db } from "@/core/db";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { buildArchivedAutomationCode } from "@/features/admin/marketing/automations/shared/admin-automation-code";
-import { AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE } from "@/features/automations/shared/automation-job.constants";
+import { AUTOMATION_JOB_TYPE_CODES } from "@/features/automations/shared/automation-job.constants";
 import { ADMIN_AUTOMATIONS_PATH } from "@/features/admin/marketing/automations/shared/admin-automations-routes";
 
 export type ArchiveAutomationResult =
@@ -52,7 +52,7 @@ export async function archiveAutomationAction(
     const cancelledJobs = await tx.job.updateMany({
       where: {
         storeId: automation.storeId,
-        typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+        typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
         status: "PENDING",
         archivedAt: null,
         deduplicationKey: {
@@ -71,7 +71,7 @@ export async function archiveAutomationAction(
     await tx.job.updateMany({
       where: {
         storeId: automation.storeId,
-        typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+        typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
         archivedAt: null,
         status: {
           notIn: ["PENDING", "RUNNING"],

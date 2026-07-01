@@ -26,6 +26,7 @@ import {
   getPassiveActionMessage,
   getPendingExecutionMessage,
   getPendingReadinessSummary,
+  getSubjectLabel,
   getTriggerLabel,
   isRunnableJob,
   STATUS_CONFIG,
@@ -206,12 +207,12 @@ export function AutomationJobRow({
           <p className="mt-0.5 text-xs text-muted-foreground/60">
             {getTriggerLabel(job.triggerType)}
             {` · action ${getActionLabel(job.actionType)}`}
-            {formatSubjectSuffix(job) ? ` · abonné ${formatSubjectSuffix(job)}` : ""}
+            {formatSubjectSuffix(job)
+              ? ` · ${getSubjectLabel(job)} ${formatSubjectSuffix(job)}`
+              : ""}
           </p>
           {pendingExecutionMessage ? (
-            <p className="mt-0.5 text-xs text-muted-foreground/70">
-              {pendingExecutionMessage}
-            </p>
+            <p className="mt-0.5 text-xs text-muted-foreground/70">{pendingExecutionMessage}</p>
           ) : null}
           {job.errorMessage ? (
             <p className="mt-0.5 truncate text-xs text-feedback-error-foreground">
@@ -333,9 +334,7 @@ export function AutomationJobRow({
               </Button>
             </div>
             {!isRunnable ? (
-              <span className="text-xs text-muted-foreground/60">
-                En attente d&apos;échéance
-              </span>
+              <span className="text-xs text-muted-foreground/60">En attente d&apos;échéance</span>
             ) : null}
           </div>
         ) : isRetryable ? (
@@ -416,12 +415,8 @@ export function AutomationJobRow({
         </form>
       ) : null}
 
-      {message ? (
-        <p className="text-xs text-feedback-success-foreground">{message}</p>
-      ) : null}
-      {error ? (
-        <p className="text-xs text-feedback-error-foreground">{error}</p>
-      ) : null}
+      {message ? <p className="text-xs text-feedback-success-foreground">{message}</p> : null}
+      {error ? <p className="text-xs text-feedback-error-foreground">{error}</p> : null}
     </div>
   );
 }

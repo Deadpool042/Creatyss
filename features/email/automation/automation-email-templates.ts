@@ -4,6 +4,11 @@ type BuildAutomationEmailTemplateInput = {
   storeName: string;
   recipientFirstName: string | null;
   templateCode: string | null;
+  triggerType: string;
+  order?: {
+    orderNumber: string;
+    totalFormatted: string;
+  };
 };
 
 export type AutomationEmailTemplate = {
@@ -13,6 +18,12 @@ export type AutomationEmailTemplate = {
 };
 
 const DEFAULT_NEWSLETTER_WELCOME_TEMPLATE_CODE = "newsletter-welcome";
+const DEFAULT_ORDER_PLACED_TEMPLATE_CODE = "order-placed-confirmation";
+
+const DEFAULT_TEMPLATE_CODE_BY_TRIGGER: Record<string, string> = {
+  NEWSLETTER_SUBSCRIBED: DEFAULT_NEWSLETTER_WELCOME_TEMPLATE_CODE,
+  ORDER_PLACED: DEFAULT_ORDER_PLACED_TEMPLATE_CODE,
+};
 
 function wrapHtml(input: {
   title: string;
@@ -38,12 +49,12 @@ function wrapHtml(input: {
 }
 
 export function isSupportedAutomationEmailTemplateCode(
-  templateCode: string | null
+  templateCode: string | null,
+  triggerType: string
 ): boolean {
-  return (
-    templateCode === null ||
-    templateCode === DEFAULT_NEWSLETTER_WELCOME_TEMPLATE_CODE
-  );
+  const defaultCode = DEFAULT_TEMPLATE_CODE_BY_TRIGGER[triggerType];
+
+  return templateCode === null || templateCode === defaultCode;
 }
 
 export function buildAutomationEmailTemplate(
@@ -51,9 +62,33 @@ export function buildAutomationEmailTemplate(
 ): AutomationEmailTemplate {
   const customerName = input.recipientFirstName?.trim() || "cliente";
   const resolvedTemplateCode =
-    input.templateCode === null ? DEFAULT_NEWSLETTER_WELCOME_TEMPLATE_CODE : input.templateCode;
+    input.templateCode ??
+    DEFAULT_TEMPLATE_CODE_BY_TRIGGER[input.triggerType] ??
+    DEFAULT_NEWSLETTER_WELCOME_TEMPLATE_CODE;
 
   switch (resolvedTemplateCode) {
+    case DEFAULT_ORDER_PLACED_TEMPLATE_CODE: {
+      const orderNumber = input.order?.orderNumber ?? "";
+      const subject = `Merci pour votre commande ${orderNumber}`;
+      const body = [
+        `Merci pour votre commande ${orderNumber}${input.order ? ` (${input.order.totalFormatted})` : ""} chez ${input.storeName}.`,
+        "Chaque pièce est préparée avec soin dans notre atelier avant expédition.",
+        "N'hésitez pas à revenir découvrir nos autres créations.",
+      ];
+
+      return {
+        subject,
+        text: [`Bonjour ${customerName},`, "", ...body, "", brandConfig.emailSignature].join("\n"),
+        html: wrapHtml({
+          title: "Merci pour votre commande",
+          greeting: customerName,
+          body,
+          ctaLabel: "Découvrir la boutique",
+          ctaUrl: input.boutiqueUrl,
+        }),
+      };
+    }
+
     case DEFAULT_NEWSLETTER_WELCOME_TEMPLATE_CODE:
     default: {
       const subject = `Bienvenue dans l'univers ${input.storeName}`;

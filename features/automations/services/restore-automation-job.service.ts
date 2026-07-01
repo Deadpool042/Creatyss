@@ -1,7 +1,7 @@
 import "server-only";
 
 import { db } from "@/core/db";
-import { AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE } from "@/features/automations/shared/automation-job.constants";
+import { AUTOMATION_JOB_TYPE_CODES } from "@/features/automations/shared/automation-job.constants";
 
 type RestoreAutomationJobInput = {
   jobId: string;
@@ -42,7 +42,7 @@ export async function restoreAutomationJob(
     where: {
       id: input.jobId,
       storeId: input.storeId,
-      typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+      typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
       archivedAt: { not: null },
     },
     select: {
@@ -79,7 +79,7 @@ export async function restoreAutomationJob(
           where: {
             id: input.jobId,
             storeId: input.storeId,
-            typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+            typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
             status: "CANCELLED",
             errorCode: "archived_by_admin",
             archivedAt: { not: null },
@@ -110,7 +110,7 @@ export async function restoreAutomationJob(
     where: {
       id: input.jobId,
       storeId: input.storeId,
-      typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+      typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
       archivedAt: { not: null },
     },
     data: {

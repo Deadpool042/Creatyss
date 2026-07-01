@@ -13,7 +13,11 @@ import {
   markAutomationEmailSent,
 } from "@/features/email/automation/automation-email.repository";
 import { resolveEmailProvider } from "@/features/email/providers/resolve-email-provider";
-import { AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE } from "@/features/automations/shared/automation-job.constants";
+import {
+  AUTOMATION_JOB_TYPE_CODES,
+  AUTOMATION_NEWSLETTER_SUBSCRIBER_SUBJECT_TYPE,
+  AUTOMATION_ORDER_SUBJECT_TYPE,
+} from "@/features/automations/shared/automation-job.constants";
 
 type ExecuteAutomationJobInput = {
   jobId: string;
@@ -26,7 +30,15 @@ type AutomationJobPayload = {
   triggerType?: unknown;
   actionType?: unknown;
   templateCode?: unknown;
-  newsletterSubscriberId?: unknown;
+};
+
+type EmailRecipient = {
+  email: string;
+  firstName: string | null;
+  order?: {
+    orderNumber: string;
+    totalFormatted: string;
+  };
 };
 
 export class ExecuteAutomationJobError extends Error {
@@ -55,13 +67,10 @@ function parseAutomationJobPayload(payloadJson: string | null): {
   automationId: string;
   actionType: string;
   templateCode: string | null;
-  newsletterSubscriberId: string;
+  triggerType: string;
 } {
   if (!payloadJson) {
-    throw new ExecuteAutomationJobError(
-      "missing_payload",
-      "Payload d'automation manquant."
-    );
+    throw new ExecuteAutomationJobError("missing_payload", "Payload d'automation manquant.");
   }
 
   let payload: AutomationJobPayload;
@@ -69,10 +78,7 @@ function parseAutomationJobPayload(payloadJson: string | null): {
   try {
     payload = JSON.parse(payloadJson) as AutomationJobPayload;
   } catch {
-    throw new ExecuteAutomationJobError(
-      "invalid_payload",
-      "Payload d'automation invalide."
-    );
+    throw new ExecuteAutomationJobError("invalid_payload", "Payload d'automation invalide.");
   }
 
   if (typeof payload.automationId !== "string" || payload.automationId.length === 0) {
@@ -89,35 +95,106 @@ function parseAutomationJobPayload(payloadJson: string | null): {
     );
   }
 
-  if (
-    typeof payload.newsletterSubscriberId !== "string" ||
-    payload.newsletterSubscriberId.length === 0
-  ) {
+  if (typeof payload.triggerType !== "string" || payload.triggerType.length === 0) {
     throw new ExecuteAutomationJobError(
-      "missing_subscriber",
-      "Abonné newsletter absent du payload."
+      "missing_trigger_type",
+      "Type de déclencheur absent du payload."
     );
   }
 
   return {
     automationId: payload.automationId,
     actionType: payload.actionType,
+    triggerType: payload.triggerType,
     templateCode:
       typeof payload.templateCode === "string" && payload.templateCode.length > 0
         ? payload.templateCode
         : null,
-    newsletterSubscriberId: payload.newsletterSubscriberId,
   };
 }
 
-export async function executeAutomationJob(
-  input: ExecuteAutomationJobInput
-): Promise<void> {
+async function resolveEmailRecipient(input: {
+  storeId: string;
+  subjectType: string | null;
+  subjectId: string | null;
+}): Promise<EmailRecipient> {
+  if (!input.subjectId) {
+    throw new ExecuteAutomationJobError("missing_subject_id", "Sujet d'automation absent du job.");
+  }
+
+  if (input.subjectType === AUTOMATION_NEWSLETTER_SUBSCRIBER_SUBJECT_TYPE) {
+    const subscriber = await db.newsletterSubscriber.findFirst({
+      where: {
+        id: input.subjectId,
+        storeId: input.storeId,
+        archivedAt: null,
+      },
+      select: { email: true, firstName: true, status: true },
+    });
+
+    if (!subscriber) {
+      throw new ExecuteAutomationJobError("subscriber_not_found", "Abonné newsletter introuvable.");
+    }
+
+    if (subscriber.status !== "SUBSCRIBED") {
+      throw new ExecuteAutomationJobError(
+        "subscriber_not_subscribed",
+        "L'abonné newsletter n'est plus actif."
+      );
+    }
+
+    return { email: subscriber.email, firstName: subscriber.firstName ?? null };
+  }
+
+  if (input.subjectType === AUTOMATION_ORDER_SUBJECT_TYPE) {
+    const order = await db.order.findFirst({
+      where: {
+        id: input.subjectId,
+        storeId: input.storeId,
+        archivedAt: null,
+      },
+      select: {
+        customerEmail: true,
+        customerFirstName: true,
+        orderNumber: true,
+        totalAmount: true,
+        currencyCode: true,
+      },
+    });
+
+    if (!order) {
+      throw new ExecuteAutomationJobError("order_not_found", "Commande introuvable.");
+    }
+
+    if (!order.customerEmail) {
+      throw new ExecuteAutomationJobError(
+        "order_missing_email",
+        "La commande n'a pas d'email client."
+      );
+    }
+
+    return {
+      email: order.customerEmail,
+      firstName: order.customerFirstName ?? null,
+      order: {
+        orderNumber: order.orderNumber,
+        totalFormatted: `${order.totalAmount.toFixed(2)} ${order.currencyCode}`,
+      },
+    };
+  }
+
+  throw new ExecuteAutomationJobError(
+    "unsupported_subject_type",
+    "Type de sujet d'automation non supporté."
+  );
+}
+
+export async function executeAutomationJob(input: ExecuteAutomationJobInput): Promise<void> {
   const job = await db.job.findFirst({
     where: {
       id: input.jobId,
       storeId: input.storeId,
-      typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+      typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
       archivedAt: null,
     },
     select: {
@@ -125,6 +202,8 @@ export async function executeAutomationJob(
       status: true,
       scheduledAt: true,
       payloadJson: true,
+      subjectType: true,
+      subjectId: true,
     },
   });
 
@@ -140,10 +219,7 @@ export async function executeAutomationJob(
   }
 
   if (job.scheduledAt && job.scheduledAt.getTime() > Date.now()) {
-    throw new ExecuteAutomationJobError(
-      "job_not_due",
-      "Ce job n'est pas encore exécutable."
-    );
+    throw new ExecuteAutomationJobError("job_not_due", "Ce job n'est pas encore exécutable.");
   }
 
   const claimed = await db.job.updateMany({
@@ -181,14 +257,14 @@ export async function executeAutomationJob(
       );
     }
 
-    if (!isSupportedAutomationEmailTemplateCode(payload.templateCode)) {
+    if (!isSupportedAutomationEmailTemplateCode(payload.templateCode, payload.triggerType)) {
       throw new ExecuteAutomationJobError(
         "unsupported_template_code",
         "Le template demandé n'est pas supporté dans ce lot."
       );
     }
 
-    const [automation, subscriber, store] = await Promise.all([
+    const [automation, recipient, store] = await Promise.all([
       db.automation.findFirst({
         where: {
           id: payload.automationId,
@@ -202,18 +278,10 @@ export async function executeAutomationJob(
           actionType: true,
         },
       }),
-      db.newsletterSubscriber.findFirst({
-        where: {
-          id: payload.newsletterSubscriberId,
-          storeId: input.storeId,
-          archivedAt: null,
-        },
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          status: true,
-        },
+      resolveEmailRecipient({
+        storeId: input.storeId,
+        subjectType: job.subjectType,
+        subjectId: job.subjectId,
       }),
       db.store.findFirst({
         where: { id: input.storeId },
@@ -239,35 +307,23 @@ export async function executeAutomationJob(
       );
     }
 
-    if (!subscriber) {
-      throw new ExecuteAutomationJobError(
-        "subscriber_not_found",
-        "Abonné newsletter introuvable."
-      );
-    }
-
-    if (subscriber.status !== "SUBSCRIBED") {
-      throw new ExecuteAutomationJobError(
-        "subscriber_not_subscribed",
-        "L'abonné newsletter n'est plus actif."
-      );
-    }
-
     const boutiqueUrl = new URL("/", serverEnv.appUrl).toString();
     const storeName = store?.name ?? brandConfig.name;
     const replyTo = store?.replyToEmail ?? store?.supportEmail ?? null;
     const template = buildAutomationEmailTemplate({
       storeName,
-      recipientFirstName: subscriber.firstName ?? null,
+      recipientFirstName: recipient.firstName,
       templateCode: automation.templateCode ?? payload.templateCode,
+      triggerType: payload.triggerType,
       boutiqueUrl,
+      ...(recipient.order ? { order: recipient.order } : {}),
     });
 
     const emailProvider = resolveEmailProvider();
     const emailEvent = await createAutomationEmailIfAbsent({
       storeId: input.storeId,
       jobId: input.jobId,
-      recipientEmail: subscriber.email,
+      recipientEmail: recipient.email,
       subjectLine: template.subject,
       bodyText: template.text,
       bodyHtml: template.html,
@@ -277,7 +333,7 @@ export async function executeAutomationJob(
     emailEventId = emailEvent.id;
 
     const result = await emailProvider.sendTransactionalEmail({
-      to: subscriber.email,
+      to: recipient.email,
       subject: template.subject,
       text: template.text,
       html: template.html,

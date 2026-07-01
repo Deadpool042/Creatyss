@@ -1,9 +1,4 @@
-export type AdminAutomationJobStatus =
-  | "PENDING"
-  | "RUNNING"
-  | "SUCCEEDED"
-  | "FAILED"
-  | "CANCELLED";
+export type AdminAutomationJobStatus = "PENDING" | "RUNNING" | "SUCCEEDED" | "FAILED" | "CANCELLED";
 
 export type AdminAutomationJobSummary = {
   id: string;
@@ -11,7 +6,8 @@ export type AdminAutomationJobSummary = {
   automationCode: string | null;
   triggerType: string | null;
   actionType: string | null;
-  newsletterSubscriberId: string | null;
+  subjectType: string | null;
+  subjectId: string | null;
   status: AdminAutomationJobStatus;
   scheduledAt: string | null;
   createdAt: string;

@@ -60,12 +60,14 @@ export const heroStatsConfig = [
   status: AdminAutomationJobStatus | null;
 }>;
 
-export const EMAIL_STATUS_LABELS: Record<NonNullable<AdminAutomationJobSummary["emailStatus"]>, string> =
-  {
-    pending: "Préparé",
-    sent: "Envoyé",
-    failed: "Échoué",
-  };
+export const EMAIL_STATUS_LABELS: Record<
+  NonNullable<AdminAutomationJobSummary["emailStatus"]>,
+  string
+> = {
+  pending: "Préparé",
+  sent: "Envoyé",
+  failed: "Échoué",
+};
 
 export const EMAIL_STATUS_BADGE_STYLES: Record<
   NonNullable<AdminAutomationJobSummary["emailStatus"]>,
@@ -84,12 +86,21 @@ export const JOB_STATUS_LABELS: Record<AdminAutomationJobStatus, string> = {
   CANCELLED: "annulés",
 };
 
+const SUBJECT_LABEL_BY_TYPE: Record<string, string> = {
+  NEWSLETTER_SUBSCRIBER: "abonné",
+  ORDER: "commande",
+};
+
 export function formatSubjectSuffix(job: AdminAutomationJobSummary): string | null {
-  if (!job.newsletterSubscriberId) {
+  if (!job.subjectId) {
     return null;
   }
 
-  return job.newsletterSubscriberId.slice(-8);
+  return job.subjectId.slice(-8);
+}
+
+export function getSubjectLabel(job: AdminAutomationJobSummary): string {
+  return job.subjectType ? (SUBJECT_LABEL_BY_TYPE[job.subjectType] ?? "sujet") : "sujet";
 }
 
 export function getJobShortId(jobId: string): string {
@@ -239,11 +250,7 @@ export function getEmailTraceAvailabilityMessage(job: AdminAutomationJobSummary)
     return "Trace email locale non encore disponible.";
   }
 
-  if (
-    job.status === "SUCCEEDED" ||
-    job.status === "FAILED" ||
-    job.status === "CANCELLED"
-  ) {
+  if (job.status === "SUCCEEDED" || job.status === "FAILED" || job.status === "CANCELLED") {
     return "Aucune trace email locale.";
   }
 
@@ -309,14 +316,12 @@ export function getJobsEmptyStateMessage(input: {
   return "Aucun job d'automation planifié pour le moment.";
 }
 
-export function getJobsCountSummary(input: {
-  visibleCount: number;
-  totalCount: number;
-}): string {
+export function getJobsCountSummary(input: { visibleCount: number; totalCount: number }): string {
   const visibleLabel =
-    input.visibleCount > 1 ? `${input.visibleCount} jobs récents affichés` : `${input.visibleCount} job récent affiché`;
-  const totalLabel =
-    input.totalCount > 1 ? `${input.totalCount} jobs` : `${input.totalCount} job`;
+    input.visibleCount > 1
+      ? `${input.visibleCount} jobs récents affichés`
+      : `${input.visibleCount} job récent affiché`;
+  const totalLabel = input.totalCount > 1 ? `${input.totalCount} jobs` : `${input.totalCount} job`;
 
   if (input.totalCount === 0) {
     return "Aucun job correspondant aux filtres actifs.";

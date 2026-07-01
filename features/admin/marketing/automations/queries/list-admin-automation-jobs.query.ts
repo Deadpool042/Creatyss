@@ -2,7 +2,7 @@ import "server-only";
 
 import { db } from "@/core/db";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
-import { AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE } from "@/features/automations/shared/automation-job.constants";
+import { AUTOMATION_JOB_TYPE_CODES } from "@/features/automations/shared/automation-job.constants";
 import type {
   AdminAutomationJobStatus,
   AdminAutomationJobsStats,
@@ -14,7 +14,6 @@ type AutomationJobPayload = {
   automationCode?: unknown;
   triggerType?: unknown;
   actionType?: unknown;
-  newsletterSubscriberId?: unknown;
 };
 
 type AutomationEmailTrace = Pick<
@@ -32,7 +31,7 @@ function parseAutomationJobPayload(
   payloadJson: string | null
 ): Pick<
   AdminAutomationJobSummary,
-  "automationId" | "automationCode" | "triggerType" | "actionType" | "newsletterSubscriberId"
+  "automationId" | "automationCode" | "triggerType" | "actionType"
 > {
   if (!payloadJson) {
     return {
@@ -40,7 +39,6 @@ function parseAutomationJobPayload(
       automationCode: null,
       triggerType: null,
       actionType: null,
-      newsletterSubscriberId: null,
     };
   }
 
@@ -48,14 +46,9 @@ function parseAutomationJobPayload(
     const payload = JSON.parse(payloadJson) as AutomationJobPayload;
     return {
       automationId: typeof payload.automationId === "string" ? payload.automationId : null,
-      automationCode:
-        typeof payload.automationCode === "string" ? payload.automationCode : null,
+      automationCode: typeof payload.automationCode === "string" ? payload.automationCode : null,
       triggerType: typeof payload.triggerType === "string" ? payload.triggerType : null,
       actionType: typeof payload.actionType === "string" ? payload.actionType : null,
-      newsletterSubscriberId:
-        typeof payload.newsletterSubscriberId === "string"
-          ? payload.newsletterSubscriberId
-          : null,
     };
   } catch {
     return {
@@ -63,7 +56,6 @@ function parseAutomationJobPayload(
       automationCode: null,
       triggerType: null,
       actionType: null,
-      newsletterSubscriberId: null,
     };
   }
 }
@@ -100,7 +92,7 @@ export async function listAdminAutomationJobsWithFilter(
 
   const where = {
     storeId,
-    typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+    typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
     archivedAt: null,
     ...(automationId
       ? {
@@ -121,6 +113,8 @@ export async function listAdminAutomationJobsWithFilter(
         id: true,
         status: true,
         payloadJson: true,
+        subjectType: true,
+        subjectId: true,
         scheduledAt: true,
         createdAt: true,
         startedAt: true,
@@ -196,6 +190,8 @@ export async function listAdminAutomationJobsWithFilter(
       return {
         id: job.id,
         ...payload,
+        subjectType: job.subjectType,
+        subjectId: job.subjectId,
         status: job.status as AdminAutomationJobSummary["status"],
         scheduledAt: job.scheduledAt?.toISOString() ?? null,
         createdAt: job.createdAt.toISOString(),

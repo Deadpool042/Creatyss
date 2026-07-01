@@ -1,7 +1,7 @@
 import "server-only";
 
 import { db } from "@/core/db";
-import { AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE } from "@/features/automations/shared/automation-job.constants";
+import { AUTOMATION_JOB_TYPE_CODES } from "@/features/automations/shared/automation-job.constants";
 
 type ArchiveAutomationJobInput = {
   jobId: string;
@@ -25,7 +25,7 @@ export async function archiveAutomationJob(
     where: {
       id: input.jobId,
       storeId: input.storeId,
-      typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+      typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
       archivedAt: null,
     },
     select: {
@@ -52,7 +52,7 @@ export async function archiveAutomationJob(
       where: {
         id: input.jobId,
         storeId: input.storeId,
-        typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+        typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
         status: "PENDING",
         archivedAt: null,
       },
@@ -79,7 +79,7 @@ export async function archiveAutomationJob(
     where: {
       id: input.jobId,
       storeId: input.storeId,
-      typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+      typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
       archivedAt: null,
     },
     data: {

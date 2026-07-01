@@ -2,7 +2,7 @@ import "server-only";
 
 import { db } from "@/core/db";
 import { executeAutomationJob } from "@/features/automations/services/execute-automation-job.service";
-import { AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE } from "@/features/automations/shared/automation-job.constants";
+import { AUTOMATION_JOB_TYPE_CODES } from "@/features/automations/shared/automation-job.constants";
 
 type RetryAutomationJobInput = {
   jobId: string;
@@ -26,7 +26,7 @@ export async function retryAutomationJob(
     where: {
       id: input.jobId,
       storeId: input.storeId,
-      typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+      typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
       archivedAt: null,
     },
     select: {
@@ -50,7 +50,7 @@ export async function retryAutomationJob(
     where: {
       id: input.jobId,
       storeId: input.storeId,
-      typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+      typeCode: { in: [...AUTOMATION_JOB_TYPE_CODES] },
       status: "FAILED",
       archivedAt: null,
     },
