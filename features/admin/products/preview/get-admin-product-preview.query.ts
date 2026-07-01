@@ -205,9 +205,15 @@ export async function getAdminProductPreviewBySlug(
               altText: true,
             },
           },
-          // Disponibilité V1 : calculée depuis l'inventaire (onHandQuantity - reservedQuantity).
-          // AvailabilityRecord.isSellable (domaine availability) non utilisé en V1 —
-          // à intégrer quand le domaine availability sera alimenté.
+          availabilityRecords: {
+            where: {
+              archivedAt: null,
+            },
+            select: {
+              status: true,
+              isSellable: true,
+            },
+          },
           inventoryItems: {
             where: {
               status: "ACTIVE",
@@ -414,13 +420,12 @@ export async function getAdminProductPreviewBySlug(
     });
   }
 
-  const relatedProductGroups: AdminProductPreviewRelatedProductGroup[] = CATALOG_RELATED_TYPE_ORDER.filter(
-    (t) => relatedGroupsMap.has(t)
-  ).map((t) => ({
-    type: CATALOG_RELATED_TYPE_CONFIG[t]!.type,
-    label: CATALOG_RELATED_TYPE_CONFIG[t]!.label,
-    products: relatedGroupsMap.get(t)!,
-  }));
+  const relatedProductGroups: AdminProductPreviewRelatedProductGroup[] =
+    CATALOG_RELATED_TYPE_ORDER.filter((t) => relatedGroupsMap.has(t)).map((t) => ({
+      type: CATALOG_RELATED_TYPE_CONFIG[t]!.type,
+      label: CATALOG_RELATED_TYPE_CONFIG[t]!.label,
+      products: relatedGroupsMap.get(t)!,
+    }));
 
   const ogImageStorageKey = seoMetadata?.openGraphImage?.storageKey ?? null;
   const twitterImageStorageKey = seoMetadata?.twitterImage?.storageKey ?? null;
