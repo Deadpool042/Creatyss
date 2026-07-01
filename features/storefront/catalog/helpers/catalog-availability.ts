@@ -1,9 +1,6 @@
 import type { AvailabilityStatus } from "@/prisma-generated/client";
 
-export type CatalogStorefrontAvailabilityStatus =
-  | "in-stock"
-  | "made-to-order"
-  | "unavailable";
+export type CatalogStorefrontAvailabilityStatus = "in-stock" | "made-to-order" | "unavailable";
 
 export type InventoryCarrier = {
   inventoryItems: Array<{
@@ -24,18 +21,17 @@ export type VariantAvailabilityCarrier = InventoryCarrier & AvailabilityRecordCa
 function getCatalogAvailabilityStatusFromInventory(
   variant: InventoryCarrier
 ): CatalogStorefrontAvailabilityStatus {
-  return variant.inventoryItems.some(
-    (item) => item.onHandQuantity - item.reservedQuantity > 0
-  )
+  return variant.inventoryItems.some((item) => item.onHandQuantity - item.reservedQuantity > 0)
     ? "in-stock"
     : "unavailable";
 }
 
 function mapAvailabilityRecordStatus(
-  status: AvailabilityStatus
+  status: AvailabilityStatus,
+  hasPhysicalStock: boolean
 ): CatalogStorefrontAvailabilityStatus {
   if (status === "AVAILABLE") {
-    return "in-stock";
+    return hasPhysicalStock ? "in-stock" : "unavailable";
   }
 
   if (status === "PREORDER" || status === "BACKORDER") {
@@ -54,6 +50,10 @@ export function getCatalogVariantAvailabilityStatus(
     return getCatalogAvailabilityStatusFromInventory(variant);
   }
 
+  const hasPhysicalStock = variant.inventoryItems.some(
+    (item) => item.onHandQuantity - item.reservedQuantity > 0
+  );
+
   const sellableRecord = availabilityRecords.find(
     (record) =>
       record.isSellable &&
@@ -63,11 +63,11 @@ export function getCatalogVariantAvailabilityStatus(
   );
 
   if (sellableRecord) {
-    return mapAvailabilityRecordStatus(sellableRecord.status);
+    return mapAvailabilityRecordStatus(sellableRecord.status, hasPhysicalStock);
   }
 
   const mappedStatuses = availabilityRecords.map((record) =>
-    mapAvailabilityRecordStatus(record.status)
+    mapAvailabilityRecordStatus(record.status, hasPhysicalStock)
   );
 
   if (mappedStatuses.includes("in-stock")) {
@@ -81,9 +81,7 @@ export function getCatalogVariantAvailabilityStatus(
   return "unavailable";
 }
 
-export function getCatalogVariantAvailability(
-  variant: VariantAvailabilityCarrier
-): boolean {
+export function getCatalogVariantAvailability(variant: VariantAvailabilityCarrier): boolean {
   const availabilityStatus = getCatalogVariantAvailabilityStatus(variant);
 
   return availabilityStatus === "in-stock" || availabilityStatus === "made-to-order";
