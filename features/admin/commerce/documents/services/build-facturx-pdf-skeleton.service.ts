@@ -84,8 +84,13 @@ export async function buildFacturXPdfSkeleton(): Promise<Uint8Array> {
   const pdf = await PDFDocument.create();
   pdf.registerFontkit(fontkit);
 
-  const regularFont = await pdf.embedFont(readFileSync(FONT_REGULAR_PATH), { subset: true });
-  const boldFont = await pdf.embedFont(readFileSync(FONT_BOLD_PATH), { subset: true });
+  // subset: false — le subsetting de @pdf-lib/fontkit écrit un tag de version
+  // sfnt "true" (0x74727565) au lieu de 0x00010000 dans le FontFile2 généré ;
+  // Chrome/PDFium rejette ce tag et rend la plupart des glyphes invisibles
+  // (texte réduit à quelques lettres isolées très espacées). Police complète
+  // embarquée à la place — toujours compressée (FlateDecode) dans le PDF.
+  const regularFont = await pdf.embedFont(readFileSync(FONT_REGULAR_PATH), { subset: false });
+  const boldFont = await pdf.embedFont(readFileSync(FONT_BOLD_PATH), { subset: false });
 
   const page = pdf.addPage(A4);
   page.drawText("Squelette PDF/A-3 — Factur-X", { x: 50, y: 780, size: 14, font: boldFont });
