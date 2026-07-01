@@ -144,7 +144,7 @@ pièges techniques, comment tester, et ce qui reste. Conforme à `AGENTS.md`
   `docs/domains/cross-cutting/automations.md`.
 - Schéma Prisma minimal de définition posé :
   `prisma/optional/engagement/automations.prisma`
-  + migration `20260614143000_add_automation_schema`.
+  - migration `20260614143000_add_automation_schema`.
 - `/admin/marketing/automations` expose désormais un référentiel admin réel
   des définitions `Automation` :
   création en `DRAFT`, liste et activation/désactivation.
@@ -621,7 +621,9 @@ pnpm seed:test-checkout      # active un paiement + une livraison
 - **Factures** : Factur-X (PDF/A-3 + XML EN 16931), e-reporting PPF, stockage
   persistant des fichiers (`storageKey`).
 - **Taxation** : taux réduits par ciblage catégorie, OSS UE / export hors-UE.
-- **Fulfillment** : partiel par quantité, lien shipment, impact inventaire.
+- **Fulfillment** : partiel par quantité, lien shipment. (Impact inventaire :
+  doctrine corrigée au 2026-07-01 — `FULFILLED` ne mute jamais le stock,
+  consommé à la création de commande ; cf. `fulfillment.md`.)
 - **Returns** : sélection lignes/quantités, lien remboursement (avoir/`payments`),
   restock `inventory`, demande côté client (storefront).
 
