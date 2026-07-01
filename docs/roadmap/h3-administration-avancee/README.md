@@ -19,7 +19,7 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 
 - `commerce.customers` : base admin dédiée observée (liste, détail, commandes, consentements, export RGPD), mais CRM avancé non observé (`CrmContact`, `CrmTag`, segmentation)
 - `engagement.newsletter` : `NewsletterCampaign`/`NewsletterCampaignRecipient` non alimentés, pas d'envoi réel — observé
-- `engagement.automations` : route cron `POST /api/cron/run-automation-jobs` + `runAutomationJobsBatch` observés — scope actuel limité à `NEWSLETTER_SUBSCRIBED` ; `ORDER_PLACED` et autres types non couverts ; activation production (CRON_SECRET + cron externe) non configurée
+- `engagement.automations` : route cron `POST /api/cron/run-automation-jobs` + `runAutomationJobsBatch` observés — scope étendu à `NEWSLETTER_SUBSCRIBED` et `ORDER_PLACED` (batch, exécution, admin) le 2026-07-01 ; activation production (CRON_SECRET + cron externe) non configurée ; `maxAttempts` reste à `1` pour les deux types (aucun retry automatique), extension conditionnelle à une décision produit
 - `engagement.analytics` : bloc "Aujourd'hui vs hier" mock, tracking absent — observé
 - Settings admin : `orders`, `catalog` et `media` observés ; `customers` reste un `AdminComingSoon` assumé, renvoyant vers le lot clients
 
@@ -34,14 +34,14 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 
 ## Lots
 
-| Fichier                                                                    | Description                                                                    | Statut  |
-| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------- |
-| [lot-clients-historique-crm.md](./lot-clients-historique-crm.md)           | Base clients admin — historique commandes, consentements et export RGPD        | Livré — 2026-06-25 |
-| [lot-discounts-backoffice-avance.md](./lot-discounts-backoffice-avance.md) | Back-office DiscountCode dédié, édition de priorité, visualisation redemptions | Livré — 2026-06-25 |
-| [lot-newsletter-campagnes.md](./lot-newsletter-campagnes.md)               | Créer et envoyer des campagnes newsletter réelles                              | A faire |
-| [lot-automations-worker-general.md](./lot-automations-worker-general.md)   | Worker/scheduler général pour exécuter les jobs automatiquement                | En cours — route cron + batch implémentés (scope NEWSLETTER_SUBSCRIBED), extension aux autres types et activation prod restantes |
-| [lot-analytics-tracking-reel.md](./lot-analytics-tracking-reel.md)         | Brancher le bloc "Aujourd'hui vs hier" sur un pipeline tracking minimal        | A faire |
-| [lot-settings-manquants.md](./lot-settings-manquants.md)                   | Ouvrir les sections settings orders, catalog, customers et media               | Terminé — customers reste volontairement en stub |
+| Fichier                                                                    | Description                                                                    | Statut                                                                                                              |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| [lot-clients-historique-crm.md](./lot-clients-historique-crm.md)           | Base clients admin — historique commandes, consentements et export RGPD        | Livré — 2026-06-25                                                                                                  |
+| [lot-discounts-backoffice-avance.md](./lot-discounts-backoffice-avance.md) | Back-office DiscountCode dédié, édition de priorité, visualisation redemptions | Livré — 2026-06-25                                                                                                  |
+| [lot-newsletter-campagnes.md](./lot-newsletter-campagnes.md)               | Créer et envoyer des campagnes newsletter réelles                              | A faire                                                                                                             |
+| [lot-automations-worker-general.md](./lot-automations-worker-general.md)   | Worker/scheduler général pour exécuter les jobs automatiquement                | En cours — NEWSLETTER_SUBSCRIBED + ORDER_PLACED couverts (2026-07-01), activation prod et politique retry restantes |
+| [lot-analytics-tracking-reel.md](./lot-analytics-tracking-reel.md)         | Brancher le bloc "Aujourd'hui vs hier" sur un pipeline tracking minimal        | A faire                                                                                                             |
+| [lot-settings-manquants.md](./lot-settings-manquants.md)                   | Ouvrir les sections settings orders, catalog, customers et media               | Terminé — customers reste volontairement en stub                                                                    |
 
 `lot-newsletter-campagnes` nécessite un provider email. `lot-automations-worker-general` nécessite un socle H2 suffisamment stabilisé pour les déclencheurs `order_created`. `lot-analytics-tracking-reel` nécessite une décision produit préalable.
 

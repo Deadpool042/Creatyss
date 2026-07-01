@@ -2,19 +2,21 @@
 
 ## Statut
 
-En cours
+En cours — Lots A/B/C livrés 2026-07-01, cadrage `docs/lots/2026-07-01-automations-worker-general-cadrage.md`
 
 ## Observé comme implémenté
 
 - Route `POST /api/cron/run-automation-jobs` — protégée par `CRON_SECRET` (Bearer token)
 - Service `runAutomationJobsBatch(batchSize)` — recovery RUNNING bloqués → FAILED, auto-retry FAILED retryables, exécution des PENDING échus
 - Architecture décidée : route Next.js appelée par un cron externe (cron VPS ou scheduler), pas de processus long
+- `SUPPORTED_JOB_TYPE_CODES` étendu via `AUTOMATION_JOB_TYPE_CODES` (`NEWSLETTER_SUBSCRIBED` + `ORDER_PLACED`) — batch, exécution (`execute-automation-job.service.ts` dispatch par `subjectType`/`subjectId`), 5 services admin (`restore/reschedule/archive/cancel/retry`) et l'écran `marketing/automations` (queries/actions liste + compteurs) traitent désormais les deux types
+- Template email `order-placed-confirmation` ajouté (`features/email/automation/automation-email-templates.ts`), déclenché après le `delayMinutes` configuré sur l'automation — distinct de l'email de confirmation transactionnel instantané (`sendOrderTransactionalEmail`, événement `order_created`)
+- Monitoring : `/admin/maintenance/logs` et `/admin/maintenance/observability` étaient déjà agnostiques au `typeCode` — aucune modification requise, les jobs `ORDER_PLACED` y apparaissent automatiquement
 
 ## Restant
 
-- Extension de `SUPPORTED_JOB_TYPE_CODES` à `ORDER_PLACED` et autres types (scope actuel : `NEWSLETTER_SUBSCRIBED` uniquement)
 - Activation production : `CRON_SECRET` dans `.env` + cron externe configuré sur le VPS
-- Monitoring : état du worker visible dans l'observabilité admin existante
+- Lot D (conditionnel, décision produit) : `maxAttempts` fixé à `1` pour les deux types de jobs → aucun retry automatique n'a jamais lieu aujourd'hui. Passer `ORDER_PLACED` à `maxAttempts > 1` nécessite une validation produit et une vérification préalable de l'idempotence de l'envoi email en cas de retry
 
 ## Objectif
 
