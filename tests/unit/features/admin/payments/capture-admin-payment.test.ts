@@ -96,7 +96,9 @@ describe("captureAdminPayment", () => {
     mockDb.$transaction.mockResolvedValue([undefined, undefined]);
     mockSendEmail.mockRejectedValue(new Error("SMTP timeout"));
 
-    await expect(captureAdminPayment(validInput, STORE_ID)).resolves.toBeUndefined();
+    await expect(captureAdminPayment(validInput, STORE_ID)).resolves.toEqual({
+      orderId: ORDER_ID,
+    });
     expect(mockDb.$transaction).toHaveBeenCalledOnce();
   });
 });
