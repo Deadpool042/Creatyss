@@ -8,6 +8,7 @@ export const FEATURE_LEVELS = {
   discounts: ["simple", "rules", "automation"],
   inventory: ["manual", "alerts", "forecasting"],
   localization: ["managed", "multilingual", "localized-routing"],
+  automations: ["basic"],
 } as const;
 
 export const FEATURE_CATALOG = [
@@ -97,7 +98,8 @@ export const FEATURE_CATALOG = [
   {
     key: "platform.integrations",
     label: "Intégrations",
-    description: "Connexions aux services tiers : ERP, CRM, outils marketing et plateformes externes.",
+    description:
+      "Connexions aux services tiers : ERP, CRM, outils marketing et plateformes externes.",
     family: "optional",
     module: "platform",
     defaultState: "inactive",
@@ -107,7 +109,8 @@ export const FEATURE_CATALOG = [
   {
     key: "platform.webhooks",
     label: "Webhooks",
-    description: "Émission d'événements vers des endpoints externes pour intégrations et automatisations.",
+    description:
+      "Émission d'événements vers des endpoints externes pour intégrations et automatisations.",
     family: "optional",
     module: "platform",
     defaultState: "inactive",
@@ -139,7 +142,8 @@ export const FEATURE_CATALOG = [
   {
     key: "satellite.channels",
     label: "Canaux de vente",
-    description: "Gestion des canaux de distribution : marketplaces, réseaux sociaux et points de vente.",
+    description:
+      "Gestion des canaux de distribution : marketplaces, réseaux sociaux et points de vente.",
     family: "satellite",
     module: "satellite",
     defaultState: "inactive",
@@ -172,12 +176,14 @@ export const FEATURE_CATALOG = [
   {
     key: "engagement.automations",
     label: "Automations marketing",
-    description: "Flux automatisés déclenchés par les événements boutique : panier abandonné, relance post-achat, bienvenue abonné.",
+    description:
+      "Flux email automatisés déclenchés par les événements boutique : commande passée, inscription newsletter.",
     family: "optional",
     module: "engagement",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.automations,
   },
   // Catalog products — core capabilities
   {
@@ -294,7 +300,8 @@ export const FEATURE_CATALOG = [
   {
     key: "content.seo",
     label: "SEO global",
-    description: "Gestion des métadonnées SEO et de l'optimisation transverse pour les moteurs de recherche.",
+    description:
+      "Gestion des métadonnées SEO et de l'optimisation transverse pour les moteurs de recherche.",
     family: "cross_cutting",
     module: "content",
     defaultState: "active",
@@ -305,7 +312,8 @@ export const FEATURE_CATALOG = [
   {
     key: "settings.advanced",
     label: "Réglages avancés",
-    description: "Pilotage des fonctionnalités, mutabilité et gouvernance des modules depuis l'admin.",
+    description:
+      "Pilotage des fonctionnalités, mutabilité et gouvernance des modules depuis l'admin.",
     family: "core",
     module: "settings",
     defaultState: "active",
@@ -316,7 +324,8 @@ export const FEATURE_CATALOG = [
   {
     key: "maintenance.observability",
     label: "Observabilité",
-    description: "Supervision transverse de l'état du système, des alertes et des indicateurs de santé.",
+    description:
+      "Supervision transverse de l'état du système, des alertes et des indicateurs de santé.",
     family: "cross_cutting",
     module: "maintenance",
     defaultState: "active",
@@ -352,7 +361,8 @@ export const FEATURE_CATALOG = [
   {
     key: "ai.core",
     label: "Intelligence artificielle",
-    description: "Fonctionnalités IA transverses : génération de contenu, suggestions et automatisations.",
+    description:
+      "Fonctionnalités IA transverses : génération de contenu, suggestions et automatisations.",
     family: "optional",
     module: "ai",
     defaultState: "inactive",

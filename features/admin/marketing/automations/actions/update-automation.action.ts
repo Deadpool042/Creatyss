@@ -8,14 +8,13 @@ import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-st
 import { createAutomationSchema } from "@/features/admin/marketing/automations/schemas/create-automation.schema";
 import { buildArchivedAutomationCode } from "@/features/admin/marketing/automations/shared/admin-automation-code";
 import { ADMIN_AUTOMATIONS_PATH } from "@/features/admin/marketing/automations/shared/admin-automations-routes";
+import { isWiredAutomationCombination } from "@/features/admin/marketing/automations/shared/admin-automation-options";
 
 function isUniqueConstraintError(error: unknown): boolean {
   return typeof error === "object" && error !== null && "code" in error && error.code === "P2002";
 }
 
-export type UpdateAutomationResult =
-  | { ok: true }
-  | { ok: false; error: string };
+export type UpdateAutomationResult = { ok: true } | { ok: false; error: string };
 
 export async function updateAutomationAction(
   automationId: string,
@@ -39,6 +38,10 @@ export async function updateAutomationAction(
 
   if (!parsed.success) {
     return { ok: false, error: "Formulaire invalide — vérifiez les champs." };
+  }
+
+  if (!isWiredAutomationCombination(parsed.data.triggerType, parsed.data.actionType)) {
+    return { ok: false, error: "Ce déclencheur ou cette action n'est pas encore câblé." };
   }
 
   const storeId = await getCurrentStoreId();

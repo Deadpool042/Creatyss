@@ -9,6 +9,8 @@ export function getErrorMessage(code: string): string {
       return "Formulaire invalide — vérifiez les champs.";
     case "missing_store":
       return "Aucune boutique trouvée.";
+    case "unwired_combination":
+      return "Ce déclencheur ou cette action n'est pas encore câblé.";
     default:
       return "La création de l'automation a échoué.";
   }
