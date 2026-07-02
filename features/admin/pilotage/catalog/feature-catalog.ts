@@ -27,6 +27,11 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.fulfillment,
+    levelDescriptions: {
+      manual:
+        "Préparation tout-ou-rien : toutes les lignes de la commande sont préparées ensemble.",
+      partial: "Autorise la sélection de quantités partielles par ligne à la création.",
+    },
   },
   {
     key: "commerce.returns",
@@ -38,6 +43,10 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.returns,
+    levelDescriptions: {
+      manual: "Retour tout-ou-rien : toutes les lignes de la commande sont retournées ensemble.",
+      partial: "Autorise la sélection de quantités partielles par ligne à la création.",
+    },
   },
   {
     key: "commerce.documents",
@@ -50,6 +59,11 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.documents,
+    levelDescriptions: {
+      basic: "Confirmation de commande et bon de préparation uniquement (documents informatifs).",
+      fiscal:
+        "Débloque en plus la facture et l'avoir, à numérotation légale séquentielle irréversible.",
+    },
   },
   {
     key: "commerce.taxation",
@@ -61,6 +75,9 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.taxation,
+    levelDescriptions: {
+      store: "Règles de TVA à l'échelle boutique uniquement (pas de ciblage catégorie/produit).",
+    },
   },
   {
     key: "commerce.payments",
@@ -193,6 +210,9 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.automations,
+    levelDescriptions: {
+      basic: "Déclencheurs commande passée / inscription newsletter, action email uniquement.",
+    },
   },
   // Catalog products — core capabilities
   {

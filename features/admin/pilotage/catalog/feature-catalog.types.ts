@@ -1,8 +1,4 @@
-export type FeatureFamily =
-  | "core"
-  | "cross_cutting"
-  | "optional"
-  | "satellite";
+export type FeatureFamily = "core" | "cross_cutting" | "optional" | "satellite";
 
 export type FeatureRuntimeState =
   | "active"
@@ -12,16 +8,9 @@ export type FeatureRuntimeState =
   | "experimental"
   | "deprecated";
 
-export type FeatureMutability =
-  | "readonly"
-  | "toggleable"
-  | "configurable"
-  | "level_selectable";
+export type FeatureMutability = "readonly" | "toggleable" | "configurable" | "level_selectable";
 
-export type FeatureScope =
-  | "global"
-  | "store"
-  | "user";
+export type FeatureScope = "global" | "store" | "user";
 
 export type FeatureLevelKey = string;
 
@@ -36,5 +25,7 @@ export type FeatureCatalogEntry = Readonly<{
   mutability: FeatureMutability;
   scopes: readonly FeatureScope[];
   levels?: readonly FeatureLevelKey[];
+  /** Description courte par niveau (clé de `levels`), affichée dans le pilotage admin. */
+  levelDescriptions?: Readonly<Record<string, string>>;
   dependencies?: readonly string[];
 }>;

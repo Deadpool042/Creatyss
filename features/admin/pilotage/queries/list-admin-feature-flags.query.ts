@@ -1,10 +1,7 @@
 import { db } from "@/core/db";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { resolveEffectiveLevel } from "@/entities/feature-flags/feature-level";
-import {
-  getFeatureCatalogEntries,
-  findFeatureCatalogEntry,
-} from "../catalog";
+import { getFeatureCatalogEntries, findFeatureCatalogEntry } from "../catalog";
 import type {
   FeatureFamily,
   FeatureMutability,
@@ -38,6 +35,7 @@ export type AdminFeatureFlagView = Readonly<{
   mutability: FeatureMutability | null;
   scopes: readonly FeatureScope[];
   levels?: readonly FeatureLevelKey[];
+  levelDescriptions?: Readonly<Record<string, string>>;
   dependencies?: readonly Readonly<{
     key: string;
     label: string;
@@ -143,10 +141,7 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
   // 1. Toutes les entrées catalogue — avec ou sans row DB
   for (const entry of catalogEntries) {
     const row = dbByCode.get(entry.key) ?? null;
-    const effectiveState =
-      row !== null
-        ? effectiveStateFor(row)
-        : { isActive: false, level: null };
+    const effectiveState = row !== null ? effectiveStateFor(row) : { isActive: false, level: null };
 
     const dependencies = entry.dependencies?.map((dependencyKey) => {
       const dependencyEntry = findFeatureCatalogEntry(dependencyKey);
@@ -174,17 +169,16 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
       mutability: entry.mutability,
       scopes: entry.scopes,
       ...(entry.levels !== undefined ? { levels: entry.levels } : {}),
+      ...(entry.levelDescriptions !== undefined
+        ? { levelDescriptions: entry.levelDescriptions }
+        : {}),
       ...(dependencies !== undefined ? { dependencies } : {}),
       dbState: {
         exists: row !== null,
         id: row?.id ?? null,
-        status: row
-          ? (row.status as AdminFeatureFlagView["dbState"]["status"])
-          : null,
+        status: row ? (row.status as AdminFeatureFlagView["dbState"]["status"]) : null,
         isEnabledByDefault: row?.isEnabledByDefault ?? null,
-        scopeType: row
-          ? (row.scopeType as AdminFeatureFlagView["dbState"]["scopeType"])
-          : null,
+        scopeType: row ? (row.scopeType as AdminFeatureFlagView["dbState"]["scopeType"]) : null,
         overridesCount: row?._count.overrides ?? 0,
         updatedAt: row?.updatedAt.toISOString() ?? null,
         allowedLevels: row?.allowedLevels ?? [],

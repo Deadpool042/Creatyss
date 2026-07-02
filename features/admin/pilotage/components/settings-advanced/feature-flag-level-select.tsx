@@ -28,29 +28,39 @@ type FeatureFlagLevelSelectProps = Readonly<{
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function FeatureFlagLevelSelect({ flag, onFeedback }: FeatureFlagLevelSelectProps) {
-  const { allowedLevels, currentLevel, canSelect, isPending, handleSelect } =
-    useFeatureFlagLevel(flag, onFeedback);
+  const { allowedLevels, currentLevel, canSelect, isPending, handleSelect } = useFeatureFlagLevel(
+    flag,
+    onFeedback
+  );
 
   if (allowedLevels.length === 0) {
     return null;
   }
 
+  const currentLevelDescription =
+    currentLevel !== null ? (flag.levelDescriptions?.[currentLevel] ?? null) : null;
+
   return (
-    <Select
-      onValueChange={handleSelect}
-      disabled={!canSelect || isPending}
-      {...(currentLevel !== null ? { value: currentLevel } : {})}
-    >
-      <SelectTrigger size="sm" aria-label={`Niveau de ${flag.label}`}>
-        <SelectValue placeholder="Niveau" />
-      </SelectTrigger>
-      <SelectContent>
-        {allowedLevels.map((level) => (
-          <SelectItem key={level} value={level}>
-            {humanizeLevel(level)}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="space-y-1.5">
+      <Select
+        onValueChange={handleSelect}
+        disabled={!canSelect || isPending}
+        {...(currentLevel !== null ? { value: currentLevel } : {})}
+      >
+        <SelectTrigger size="sm" aria-label={`Niveau de ${flag.label}`}>
+          <SelectValue placeholder="Niveau" />
+        </SelectTrigger>
+        <SelectContent>
+          {allowedLevels.map((level) => (
+            <SelectItem key={level} value={level}>
+              {humanizeLevel(level)}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {currentLevelDescription !== null ? (
+        <p className="text-xs leading-5 text-muted-foreground/70">{currentLevelDescription}</p>
+      ) : null}
+    </div>
   );
 }
