@@ -125,6 +125,21 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
       capabilitiesAll: [adminNavigationCapabilities.catalog.pricingRead],
     },
   },
+  {
+    key: "catalog-configuration",
+    label: "Configuration",
+    href: "/admin/catalog/settings",
+    iconKey: "settings",
+    group: "catalog",
+    order: 60,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.catalogRead],
+    },
+  },
 
   {
     key: "commerce-overview",
@@ -446,84 +461,6 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     },
   },
   {
-    key: "catalog-settings",
-    label: "Catalogue",
-    href: "/admin/settings/catalog",
-    iconKey: "package",
-    group: "settings",
-    order: 30,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-      settingsHub: true,
-    },
-    access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.catalogRead],
-    },
-  },
-  {
-    key: "orders-settings",
-    label: "Commandes",
-    href: "/admin/settings/orders",
-    iconKey: "shoppingCart",
-    group: "settings",
-    order: 32,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-      settingsHub: true,
-    },
-    access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.ordersRead],
-    },
-  },
-  {
-    key: "payments-settings",
-    label: "Paiements",
-    href: "/admin/settings/payments",
-    iconKey: "creditCard",
-    group: "settings",
-    order: 33,
-    visibility: {
-      sidebar: false,
-      settingsHub: true,
-    },
-    access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.paymentsRead],
-    },
-  },
-  {
-    key: "shipping-settings",
-    label: "Livraison",
-    href: "/admin/settings/shipping",
-    iconKey: "truck",
-    group: "settings",
-    order: 34,
-    visibility: {
-      sidebar: false,
-      settingsHub: true,
-    },
-    access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.shippingRead],
-    },
-  },
-  {
-    key: "media-settings",
-    label: "Médias",
-    href: "/admin/settings/media",
-    iconKey: "imageIcon",
-    group: "settings",
-    order: 36,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-      settingsHub: true,
-    },
-    access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.mediaRead],
-    },
-  },
-  {
     key: "notifications-settings",
     label: "Notifications",
     href: "/admin/settings/notifications",
@@ -598,6 +535,108 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     },
     access: {
       capabilitiesAll: [adminNavigationCapabilities.settings.apiClientsRead],
+    },
+  },
+  {
+    key: "integrations-settings",
+    label: "Intégrations",
+    href: "/admin/settings/integrations",
+    iconKey: "link",
+    group: "settings",
+    order: 42,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.platform.integrations],
+    },
+  },
+  {
+    key: "webhooks-settings",
+    label: "Webhooks",
+    href: "/admin/settings/webhooks",
+    iconKey: "link",
+    group: "settings",
+    order: 43,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.platform.webhooks],
+    },
+  },
+  {
+    key: "search-settings",
+    label: "Recherche",
+    href: "/admin/settings/search",
+    iconKey: "search",
+    group: "settings",
+    order: 44,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.satellite.search],
+    },
+  },
+  {
+    key: "channels-settings",
+    label: "Canaux",
+    href: "/admin/settings/channels",
+    iconKey: "megaphone",
+    group: "settings",
+    order: 45,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.satellite.channels],
+    },
+  },
+  {
+    key: "localization-settings",
+    label: "Localisation",
+    href: "/admin/settings/localization",
+    iconKey: "globe",
+    group: "settings",
+    order: 46,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.platform.localization],
+    },
+  },
+  {
+    key: "ai-settings",
+    label: "Assistance IA",
+    href: "/admin/settings/ai",
+    iconKey: "zap",
+    group: "settings",
+    order: 47,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.ai.core],
     },
   },
 ];

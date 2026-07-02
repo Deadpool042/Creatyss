@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import { AdminSplitPageShell } from "@/components/admin/layout/admin-split-page-shell";
 import { AdminSplitView } from "@/components/admin/layout/admin-split-view";
+import { OrderRouteNav } from "@/features/admin/commerce/orders/shared/components/order-route-nav";
 
 type OrdersLayoutProps = {
   list: ReactNode;
@@ -31,6 +32,7 @@ export default function OrdersLayout({ list, detail }: OrdersLayoutProps) {
         maxDesktopListWidth={460}
         mobileBackToListLabel="Toutes les commandes"
         compactSplit
+        header={<OrderRouteNav />}
       />
     </AdminSplitPageShell>
   );

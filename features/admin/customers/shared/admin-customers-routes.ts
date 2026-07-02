@@ -2,6 +2,7 @@ import { getCustomerFullName } from "@/entities/customer";
 import { slugifyLabel } from "@/entities/shared/slug";
 
 export const ADMIN_CUSTOMERS_LIST_PATH = "/admin/commerce/customers";
+export const ADMIN_CUSTOMERS_SETTINGS_PATH = "/admin/commerce/customers/settings";
 
 type AdminCustomerRouteInput = Readonly<{
   id: string;

@@ -61,7 +61,7 @@ export async function updateAdminPaymentSettingsAction(
       },
     });
 
-    revalidatePath("/admin/settings/payments");
+    revalidatePath("/admin/commerce/payments/settings");
 
     return { status: "success", message: "Réglages paiements enregistrés." };
   } catch (error) {

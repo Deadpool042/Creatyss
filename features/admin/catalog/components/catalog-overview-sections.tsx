@@ -62,7 +62,7 @@ const quickLinks: ReadonlyArray<CatalogQuickLink> = [
     icon: FolderTree,
   },
   {
-    href: "/admin/media",
+    href: "/admin/catalog/media",
     title: "Médias",
     description: "Consolider les visuels, couvertures, miniatures et ressources éditoriales.",
     icon: ImageIcon,

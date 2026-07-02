@@ -28,7 +28,10 @@ Contraintes de validation (`orderSettingsSchema`) :
 
 ---
 
-## 3. Page admin — `/admin/settings/orders`
+## 3. Page admin — `/admin/commerce/orders/settings`
+
+L'ancienne URL `/admin/settings/orders` reste une route de compatibilité qui redirige vers
+`/admin/commerce/orders/settings`.
 
 ### Accès
 
@@ -41,7 +44,9 @@ Contraintes de validation (`orderSettingsSchema`) :
 
 | Fichier | Rôle |
 | --- | --- |
-| `app/admin/(protected)/settings/orders/page.tsx` | Page RSC, vérifie `orders.read`, charge les settings |
+| `app/admin/(protected)/commerce/orders/@detail/settings/page.tsx` | Page RSC du panneau détail, vérifie `orders.read`, charge les settings |
+| `app/admin/(protected)/commerce/orders/@list/settings/page.tsx` | Slot liste conservé pendant l'affichage de la configuration |
+| `app/admin/(protected)/settings/orders/page.tsx` | Redirect de compatibilité vers la page domaine |
 | `features/admin/settings/components/order-settings-form.tsx` | Formulaire client avec aperçu de référence en temps réel |
 | `features/admin/settings/actions/update-admin-order-settings.action.ts` | Server Action, vérifie `orders.write`, persiste en DB |
 | `features/admin/settings/queries/get-admin-order-settings.query.ts` | Lecture de `orderNumberPrefix` depuis le premier store |
@@ -54,7 +59,7 @@ Contraintes de validation (`orderSettingsSchema`) :
 3. Parse via `orderSettingsSchema` (transformation majuscules + validation regex).
 4. Charge le `storeId` courant via `getCurrentStoreId`.
 5. Met à jour `Store.orderNumberPrefix` via `db.store.update`.
-6. Revalide le cache de `/admin/settings/orders`.
+6. Revalide le cache de `/admin/commerce/orders/settings`.
 7. Retourne un état `success` ou `error` avec messages de champs si pertinent.
 
 ### Comportement de la page

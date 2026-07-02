@@ -5,27 +5,27 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import {
-  ADMIN_CUSTOMERS_LIST_PATH,
-  ADMIN_CUSTOMERS_SETTINGS_PATH,
-} from "@/features/admin/customers/shared";
+  ADMIN_CATALOG_MEDIA_PATH,
+  ADMIN_CATALOG_MEDIA_SETTINGS_PATH,
+} from "@/features/admin/catalog/shared/admin-catalog-routes";
 
-const CUSTOMER_ROUTE_NAV_ITEMS = [
-  { key: "list", label: "Liste", href: ADMIN_CUSTOMERS_LIST_PATH },
-  { key: "settings", label: "Configuration", href: ADMIN_CUSTOMERS_SETTINGS_PATH },
+const MEDIA_ROUTE_NAV_ITEMS = [
+  { key: "library", label: "Bibliothèque", href: ADMIN_CATALOG_MEDIA_PATH },
+  { key: "settings", label: "Configuration", href: ADMIN_CATALOG_MEDIA_SETTINGS_PATH },
 ] as const;
 
-export function CustomerRouteNav({ className }: Readonly<{ className?: string }>) {
+export function MediaRouteNav({ className }: Readonly<{ className?: string }>) {
   const pathname = usePathname();
 
   return (
     <nav
-      aria-label="Navigation clients"
+      aria-label="Navigation médias"
       className={cn(
         "flex shrink-0 items-end gap-0 overflow-x-auto border-b border-surface-border/60 scrollbar-none",
         className
       )}
     >
-      {CUSTOMER_ROUTE_NAV_ITEMS.map((item) => {
+      {MEDIA_ROUTE_NAV_ITEMS.map((item) => {
         const isActive = pathname === item.href;
 
         return (

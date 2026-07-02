@@ -1,6 +1,7 @@
 import type { ReadonlyURLSearchParams } from "next/navigation";
 
 export const ADMIN_ORDERS_LIST_PATH = "/admin/commerce/orders";
+export const ADMIN_ORDERS_SETTINGS_PATH = "/admin/commerce/orders/settings";
 
 export function getAdminOrderDetailPath(orderId: string): string {
   return `${ADMIN_ORDERS_LIST_PATH}/${orderId}`;

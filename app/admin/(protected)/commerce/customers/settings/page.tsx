@@ -4,6 +4,7 @@ import { requireAdminCapability } from "@/core/auth/admin/require-admin-capabili
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
 import { CustomerRouteNav } from "@/features/admin/customers/components";
+import { ADMIN_CUSTOMERS_LIST_PATH } from "@/features/admin/customers/shared";
 
 export default async function AdminCommerceCustomersSettingsPage() {
   await requireAdminCapability("admin.settings.customers.read");
@@ -14,7 +15,7 @@ export default async function AdminCommerceCustomersSettingsPage() {
       title="Clients"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
-        { label: "Clients", href: "/admin/commerce/customers" },
+        { label: "Clients", href: ADMIN_CUSTOMERS_LIST_PATH },
         { label: "Configuration" },
       ]}
       showBreadcrumbsInContent={false}

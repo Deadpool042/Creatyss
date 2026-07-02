@@ -1,17 +1,16 @@
 import Link from "next/link";
 import {
   Bell,
-  CreditCard,
-  Image,
+  Globe,
   Key,
-  Package,
+  Link as LinkIcon,
+  Megaphone,
   Search,
   Settings,
-  ShoppingCart,
   Sliders,
   Store,
-  Truck,
   Users,
+  Zap,
 } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
@@ -44,26 +43,6 @@ const SETTINGS_CARD_META: Record<string, SettingsCardMeta> = {
     description: "Adresse, devise, fuseau horaire et coordonnées légales.",
     icon: Store,
   },
-  "catalog-settings": {
-    description: "Options d'affichage des produits et fonctionnalités catalogue.",
-    icon: Package,
-  },
-  "orders-settings": {
-    description: "Traitement des commandes, retours et règles fiscales.",
-    icon: ShoppingCart,
-  },
-  "payments-settings": {
-    description: "Méthodes de paiement acceptées et configuration des prestataires.",
-    icon: CreditCard,
-  },
-  "shipping-settings": {
-    description: "Transporteurs, zones de livraison et frais de port.",
-    icon: Truck,
-  },
-  "media-settings": {
-    description: "Stockage des images, formats acceptés et optimisation.",
-    icon: Image,
-  },
   "notifications-settings": {
     description: "Emails transactionnels et adresse de réponse de la boutique.",
     icon: Bell,
@@ -79,6 +58,30 @@ const SETTINGS_CARD_META: Record<string, SettingsCardMeta> = {
   "api-clients-settings": {
     description: "Clés d'API et accès programmatiques à la boutique.",
     icon: Key,
+  },
+  "integrations-settings": {
+    description: "Connexions aux services tiers et états de synchronisation.",
+    icon: LinkIcon,
+  },
+  "webhooks-settings": {
+    description: "Endpoints sortants et deliveries webhook.",
+    icon: LinkIcon,
+  },
+  "search-settings": {
+    description: "Index de recherche et documents indexables.",
+    icon: Search,
+  },
+  "channels-settings": {
+    description: "Canaux de diffusion et états de publication.",
+    icon: Megaphone,
+  },
+  "localization-settings": {
+    description: "Langues, traductions et paramètres de localisation.",
+    icon: Globe,
+  },
+  "ai-settings": {
+    description: "Providers IA, tâches et usages assistés.",
+    icon: Zap,
   },
   "advanced-settings": {
     description: "Feature flags, variables système et options de débogage.",

@@ -88,4 +88,7 @@ export const adminNavigationFeatureFlags = {
     search: "satellite.search",
     channels: "satellite.channels",
   },
+  ai: {
+    core: "ai.core",
+  },
 } as const;
