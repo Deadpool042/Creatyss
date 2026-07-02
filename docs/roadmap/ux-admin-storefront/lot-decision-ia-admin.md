@@ -2,7 +2,7 @@
 
 ## Statut
 
-Proposition rédigée — 2026-07-02. En attente de validation humaine explicite (cf. Critères de fin) avant tout démarrage de `lot-implementation-nav-admin.md`.
+Validé — 2026-07-02. Séquence retenue : B (resync + labels) en premier micro-lot, A (fusion des 6 duplications) ensuite par sous-lots domaine, C (réduction 8→6 groupes) indépendante et cumulable.
 
 Ce lot n'est explicitement PAS un lot de code. Aucune implémentation ne doit démarrer sur la base de ce document sans validation humaine préalable.
 
@@ -75,7 +75,7 @@ Cette séquence n'est qu'une recommandation : elle n'est pas actée tant que la 
 
 - 2 à 3 options concrètes sont documentées avec leurs avantages/inconvénients respectifs.
 - Une recommandation est formulée mais explicitement présentée comme non actée.
-- [ ] Validation humaine explicite obtenue avant tout démarrage de `lot-implementation-nav-admin.md`.
+- [x] Validation humaine explicite obtenue le 2026-07-02 : séquence B → A validée, C indépendante, cumulable quand commode.
 
 ## Agent recommandé
 
