@@ -10,6 +10,7 @@ export const FEATURE_LEVELS = {
   localization: ["managed", "multilingual", "localized-routing"],
   fulfillment: ["manual", "partial"],
   automations: ["basic"],
+  taxation: ["store"],
 } as const;
 
 export const FEATURE_CATALOG = [
@@ -48,12 +49,13 @@ export const FEATURE_CATALOG = [
   {
     key: "commerce.taxation",
     label: "Fiscalité",
-    description: "Gestion des règles de TVA, taxes locales et conformité fiscale.",
+    description: "Gestion des règles de TVA par territoire (métropole, DOM), à l'échelle boutique.",
     family: "satellite",
     module: "commerce",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.taxation,
   },
   {
     key: "commerce.payments",
