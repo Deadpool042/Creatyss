@@ -10,7 +10,7 @@ Ce document est une proposition de structuration. Toujours distinguer ce qui est
 | ------- | ---------------------------- | ---------------------------------------------------------- |
 | H1      | Boutique vendable            | En cours — paiement live, VPS et recette finale à clôturer |
 | H2      | Commerce fiable              | En cours — conformité externe et validations finales       |
-| H3      | Administration avancée       | En cours — base posée, lots marketing/admin restants       |
+| H3      | Administration avancée       | Livré côté code — activation prod automations et retry conditionnel |
 | H4      | Plateforme et automatisation | En cours — modules L3 lisibles, activations avancées à faire |
 
 Les horizons H1 initial, H2 initial, H3 initial (VPS) et H4 initial (socle clonable) ont été portés par `projet-creatyss.md`. Leur état est documenté dans ce fichier et dans `2026-06-13-audit-catalogue-modules.md`. Les horizons listés ici sont la suite directe, numérotés H1–H4 pour désigner la nouvelle séquence de valeur à livrer.

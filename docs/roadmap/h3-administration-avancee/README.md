@@ -6,7 +6,7 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 
 ---
 
-## État au 2026-06-25
+## État au 2026-07-02
 
 ### Observé comme terminé (base H3)
 
@@ -15,13 +15,18 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 - `commerce.discounts` L3 : remises `simple`/`rules`/`automation`, `FREE_SHIPPING`, ciblage catalogue, `DiscountCode` secondaires — observé
 - `insights.analyticsRead` L3 : bloc "Ce mois" branché sur commandes/clients réels — observé
 
-### Observé comme non terminé
+### Observé comme livré côté code
 
-- `commerce.customers` : base admin dédiée observée (liste, détail, commandes, consentements, export RGPD), mais CRM avancé non observé (`CrmContact`, `CrmTag`, segmentation)
+- `commerce.customers` : base admin dédiée livrée (liste, détail, commandes, consentements, export RGPD) ; CRM avancé (`CrmContact`, `CrmTag`, segmentation) reporté hors H3 livrable
 - `engagement.newsletter` : campagnes réelles livrées (création, prévisualisation, envoi avec invariants RGPD, suivi recipients) au 2026-07-02, recette Mailpit locale validée — cf. `lot-newsletter-campagnes.md`
-- `engagement.automations` : route cron `POST /api/cron/run-automation-jobs` + `runAutomationJobsBatch` observés — scope étendu à `NEWSLETTER_SUBSCRIBED` et `ORDER_PLACED` (batch, exécution, admin) le 2026-07-01 ; activation production (CRON_SECRET + cron externe) non configurée ; `maxAttempts` reste à `1` pour les deux types (aucun retry automatique), extension conditionnelle à une décision produit
+- `engagement.automations` : route cron `POST /api/cron/run-automation-jobs` + `runAutomationJobsBatch` observés — scope étendu à `NEWSLETTER_SUBSCRIBED` et `ORDER_PLACED` (batch, exécution, admin) le 2026-07-01 ; activation production (`CRON_SECRET` + cron externe) reportée au runbook VPS ; `maxAttempts` reste à `1` pour les deux types, retry automatique conditionnel à une décision produit
 - `engagement.analytics` : bloc "Aujourd'hui vs hier" branché sur tracking réel anonyme sans cookie (2026-07-02) — cf. `lot-analytics-tracking-reel.md`
 - Settings admin : les réglages domaine observés sont relocalisés sous leur domaine métier (`orders`, `payments`, `shipping`, `customers`, `catalog`, `media`) avec routes de compatibilité sous `/admin/settings/*` ; le hub `/admin/settings` reste réservé aux réglages transverses purs et est généré depuis `adminNavigationItems`
+
+### Restant hors H3 code
+
+- Activation production automations : définir `CRON_SECRET` et configurer un cron externe sur le VPS pour appeler `POST /api/cron/run-automation-jobs`
+- Retry automatique `ORDER_PLACED` : décision produit préalable requise avant toute hausse de `maxAttempts`
 
 ---
 
@@ -39,11 +44,11 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 | [lot-clients-historique-crm.md](./lot-clients-historique-crm.md)           | Base clients admin — historique commandes, consentements et export RGPD        | Livré — 2026-06-25                                                                                                  |
 | [lot-discounts-backoffice-avance.md](./lot-discounts-backoffice-avance.md) | Back-office DiscountCode dédié, édition de priorité, visualisation redemptions | Livré — 2026-06-25                                                                                                  |
 | [lot-newsletter-campagnes.md](./lot-newsletter-campagnes.md)               | Créer et envoyer des campagnes newsletter réelles                              | Livré — 2026-07-02 (code + revue + recette Mailpit locale)                                                          |
-| [lot-automations-worker-general.md](./lot-automations-worker-general.md)   | Worker/scheduler général pour exécuter les jobs automatiquement                | En cours — NEWSLETTER_SUBSCRIBED + ORDER_PLACED couverts (2026-07-01), activation prod et politique retry restantes |
+| [lot-automations-worker-general.md](./lot-automations-worker-general.md)   | Worker/scheduler général pour exécuter les jobs automatiquement                | Livré côté code — activation prod VPS + retry ORDER_PLACED conditionnels                                            |
 | [lot-analytics-tracking-reel.md](./lot-analytics-tracking-reel.md)         | Brancher le bloc "Aujourd'hui vs hier" sur un pipeline tracking minimal        | Livré — 2026-07-02 (anonyme sans cookie, recette locale)                                                                                                             |
 | [lot-settings-manquants.md](./lot-settings-manquants.md)                   | Ouvrir et relocaliser les réglages domaine, resynchroniser le hub settings     | Terminé — routes domaine + redirects de compatibilité + hub settings resynchronisé (2026-07-02)                     |
 
-`lot-newsletter-campagnes` nécessite un provider email. `lot-automations-worker-general` nécessite un socle H2 suffisamment stabilisé pour les déclencheurs `order_created`. `lot-analytics-tracking-reel` nécessite une décision produit préalable.
+`lot-newsletter-campagnes` nécessite un provider email en production. `lot-automations-worker-general` nécessite une activation VPS explicite (`CRON_SECRET` + cron externe). Le retry automatique `ORDER_PLACED` reste conditionnel à une décision produit.
 
 ---
 
