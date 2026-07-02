@@ -176,6 +176,7 @@ export const wooOrderSchema = z.object({
   status: z.string(),
   currency: z.string().default("EUR"),
   date_created: z.string().nullable().optional(),
+  date_completed: z.string().nullable().optional(),
   discount_total: z.string().default("0"),
   shipping_total: z.string().default("0"),
   total_tax: z.string().default("0"),

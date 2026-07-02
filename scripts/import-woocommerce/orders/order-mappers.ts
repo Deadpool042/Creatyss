@@ -217,5 +217,9 @@ export function mapWooOrderToImportedOrder(
     paymentMethodType: mapPaymentMethodType(wooOrder.payment_method),
     paymentStatus: mapPaymentStatus(status),
     placedAt: wooOrder.date_created ? new Date(wooOrder.date_created) : null,
+    shippedAt:
+      status === OrderStatus.COMPLETED && wooOrder.date_completed
+        ? new Date(wooOrder.date_completed)
+        : null,
   };
 }

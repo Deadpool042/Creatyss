@@ -53,6 +53,13 @@ export type ImportedOrderInput = {
   paymentMethodType: PaymentMethodType;
   paymentStatus: PaymentStatus;
   placedAt: Date | null;
+  /**
+   * Renseigné uniquement quand `status === COMPLETED` et que WooCommerce
+   * fournit `date_completed`. Sert à créer un Shipment minimal cohérent avec
+   * le libellé "Expédiée" affiché en admin pour ce statut — jamais fabriqué,
+   * `null` si WooCommerce ne fournit pas la date.
+   */
+  shippedAt: Date | null;
 };
 
 export type ImportOrdersResult = {

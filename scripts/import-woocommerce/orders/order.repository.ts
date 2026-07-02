@@ -1,6 +1,8 @@
 import {
   OrderAddressType,
+  OrderStatus,
   PaymentStatus,
+  ShipmentStatus,
   type PrismaClient,
 } from "../../../src/generated/prisma/client";
 import type { DbClient } from "../shared/db";
@@ -131,6 +133,24 @@ export async function createOrderWithRelations(
       },
     });
 
+    // Une commande WooCommerce "completed" est mappée vers OrderStatus.COMPLETED,
+    // que l'admin affiche comme "Expédiée" (mapping applicatif existant,
+    // cf. entities/order/order-status.ts). Sans Shipment, la carte "Suivi
+    // d'expédition" affichait "non expédiée" en contradiction avec ce libellé.
+    // On crée donc un Shipment minimal, sans transporteur ni suivi fabriqués
+    // (aucune de ces données n'existe côté WooCommerce) — seule shippedAt est
+    // renseignée, et uniquement si WooCommerce fournit réellement date_completed.
+    if (input.status === OrderStatus.COMPLETED) {
+      await tx.shipment.create({
+        data: {
+          storeId,
+          orderId: order.id,
+          status: ShipmentStatus.SHIPPED,
+          shippedAt: input.shippedAt,
+        },
+      });
+    }
+
     return order;
   });
 }
@@ -138,9 +158,11 @@ export async function createOrderWithRelations(
 // Resync : politique volontairement minimale. Les lignes/adresses ne sont pas
 // recréées à chaque exécution (elles ne changent pas rétroactivement côté
 // WooCommerce une fois la commande passée) — seuls statut et montants sont
-// resynchronisés.
+// resynchronisés. Exception : le Shipment minimal (cf. createOrderWithRelations)
+// est assuré de façon idempotente, pour rattraper les commandes déjà
+// importées avant l'introduction de ce comportement.
 export async function updateOrder(prisma: DbClient, orderId: string, input: ImportedOrderInput) {
-  return prisma.order.update({
+  const order = await prisma.order.update({
     where: {
       id: orderId,
     },
@@ -155,6 +177,27 @@ export async function updateOrder(prisma: DbClient, orderId: string, input: Impo
     },
     select: {
       id: true,
+      storeId: true,
     },
   });
+
+  if (input.status === OrderStatus.COMPLETED) {
+    const existingShipment = await prisma.shipment.findFirst({
+      where: { orderId: order.id },
+      select: { id: true },
+    });
+
+    if (!existingShipment) {
+      await prisma.shipment.create({
+        data: {
+          storeId: order.storeId,
+          orderId: order.id,
+          status: ShipmentStatus.SHIPPED,
+          shippedAt: input.shippedAt,
+        },
+      });
+    }
+  }
+
+  return order;
 }
