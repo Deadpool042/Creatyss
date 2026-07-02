@@ -37,6 +37,8 @@ export type CustomerMinAggregateOutputType = {
   acceptsEmail: boolean | null
   acceptsSms: boolean | null
   notes: string | null
+  sourceSystem: string | null
+  sourceId: string | null
   firstSeenAt: Date | null
   lastSeenAt: Date | null
   activatedAt: Date | null
@@ -59,6 +61,8 @@ export type CustomerMaxAggregateOutputType = {
   acceptsEmail: boolean | null
   acceptsSms: boolean | null
   notes: string | null
+  sourceSystem: string | null
+  sourceId: string | null
   firstSeenAt: Date | null
   lastSeenAt: Date | null
   activatedAt: Date | null
@@ -81,6 +85,8 @@ export type CustomerCountAggregateOutputType = {
   acceptsEmail: number
   acceptsSms: number
   notes: number
+  sourceSystem: number
+  sourceId: number
   firstSeenAt: number
   lastSeenAt: number
   activatedAt: number
@@ -105,6 +111,8 @@ export type CustomerMinAggregateInputType = {
   acceptsEmail?: true
   acceptsSms?: true
   notes?: true
+  sourceSystem?: true
+  sourceId?: true
   firstSeenAt?: true
   lastSeenAt?: true
   activatedAt?: true
@@ -127,6 +135,8 @@ export type CustomerMaxAggregateInputType = {
   acceptsEmail?: true
   acceptsSms?: true
   notes?: true
+  sourceSystem?: true
+  sourceId?: true
   firstSeenAt?: true
   lastSeenAt?: true
   activatedAt?: true
@@ -149,6 +159,8 @@ export type CustomerCountAggregateInputType = {
   acceptsEmail?: true
   acceptsSms?: true
   notes?: true
+  sourceSystem?: true
+  sourceId?: true
   firstSeenAt?: true
   lastSeenAt?: true
   activatedAt?: true
@@ -244,6 +256,8 @@ export type CustomerGroupByOutputType = {
   acceptsEmail: boolean
   acceptsSms: boolean
   notes: string | null
+  sourceSystem: string | null
+  sourceId: string | null
   firstSeenAt: Date | null
   lastSeenAt: Date | null
   activatedAt: Date | null
@@ -287,6 +301,8 @@ export type CustomerWhereInput = {
   acceptsEmail?: Prisma.BoolFilter<"Customer"> | boolean
   acceptsSms?: Prisma.BoolFilter<"Customer"> | boolean
   notes?: Prisma.StringNullableFilter<"Customer"> | string | null
+  sourceSystem?: Prisma.StringNullableFilter<"Customer"> | string | null
+  sourceId?: Prisma.StringNullableFilter<"Customer"> | string | null
   firstSeenAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   lastSeenAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   activatedAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
@@ -329,6 +345,8 @@ export type CustomerOrderByWithRelationInput = {
   acceptsEmail?: Prisma.SortOrder
   acceptsSms?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceSystem?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceId?: Prisma.SortOrderInput | Prisma.SortOrder
   firstSeenAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastSeenAt?: Prisma.SortOrderInput | Prisma.SortOrder
   activatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -361,6 +379,7 @@ export type CustomerOrderByWithRelationInput = {
 export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   storeId_email?: Prisma.CustomerStoreIdEmailCompoundUniqueInput
+  storeId_sourceSystem_sourceId?: Prisma.CustomerStoreIdSourceSystemSourceIdCompoundUniqueInput
   AND?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   OR?: Prisma.CustomerWhereInput[]
   NOT?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
@@ -375,6 +394,8 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   acceptsEmail?: Prisma.BoolFilter<"Customer"> | boolean
   acceptsSms?: Prisma.BoolFilter<"Customer"> | boolean
   notes?: Prisma.StringNullableFilter<"Customer"> | string | null
+  sourceSystem?: Prisma.StringNullableFilter<"Customer"> | string | null
+  sourceId?: Prisma.StringNullableFilter<"Customer"> | string | null
   firstSeenAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   lastSeenAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   activatedAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
@@ -402,7 +423,7 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   giftRequests?: Prisma.GiftRequestListRelationFilter
   loyaltyAccount?: Prisma.XOR<Prisma.LoyaltyAccountNullableScalarRelationFilter, Prisma.LoyaltyAccountWhereInput> | null
   subscriptions?: Prisma.SubscriptionListRelationFilter
-}, "id" | "storeId_email">
+}, "id" | "storeId_email" | "storeId_sourceSystem_sourceId">
 
 export type CustomerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -417,6 +438,8 @@ export type CustomerOrderByWithAggregationInput = {
   acceptsEmail?: Prisma.SortOrder
   acceptsSms?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceSystem?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceId?: Prisma.SortOrderInput | Prisma.SortOrder
   firstSeenAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastSeenAt?: Prisma.SortOrderInput | Prisma.SortOrder
   activatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -445,6 +468,8 @@ export type CustomerScalarWhereWithAggregatesInput = {
   acceptsEmail?: Prisma.BoolWithAggregatesFilter<"Customer"> | boolean
   acceptsSms?: Prisma.BoolWithAggregatesFilter<"Customer"> | boolean
   notes?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
+  sourceSystem?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
+  sourceId?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
   firstSeenAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Customer"> | Date | string | null
   lastSeenAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Customer"> | Date | string | null
   activatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Customer"> | Date | string | null
@@ -466,6 +491,8 @@ export type CustomerCreateInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -508,6 +535,8 @@ export type CustomerUncheckedCreateInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -548,6 +577,8 @@ export type CustomerUpdateInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -590,6 +621,8 @@ export type CustomerUncheckedUpdateInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -631,6 +664,8 @@ export type CustomerCreateManyInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -652,6 +687,8 @@ export type CustomerUpdateManyMutationInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -674,6 +711,8 @@ export type CustomerUncheckedUpdateManyInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -693,6 +732,12 @@ export type CustomerStoreIdEmailCompoundUniqueInput = {
   email: string
 }
 
+export type CustomerStoreIdSourceSystemSourceIdCompoundUniqueInput = {
+  storeId: string
+  sourceSystem: string
+  sourceId: string
+}
+
 export type CustomerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   storeId?: Prisma.SortOrder
@@ -706,6 +751,8 @@ export type CustomerCountOrderByAggregateInput = {
   acceptsEmail?: Prisma.SortOrder
   acceptsSms?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  sourceSystem?: Prisma.SortOrder
+  sourceId?: Prisma.SortOrder
   firstSeenAt?: Prisma.SortOrder
   lastSeenAt?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrder
@@ -728,6 +775,8 @@ export type CustomerMaxOrderByAggregateInput = {
   acceptsEmail?: Prisma.SortOrder
   acceptsSms?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  sourceSystem?: Prisma.SortOrder
+  sourceId?: Prisma.SortOrder
   firstSeenAt?: Prisma.SortOrder
   lastSeenAt?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrder
@@ -750,6 +799,8 @@ export type CustomerMinOrderByAggregateInput = {
   acceptsEmail?: Prisma.SortOrder
   acceptsSms?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  sourceSystem?: Prisma.SortOrder
+  sourceId?: Prisma.SortOrder
   firstSeenAt?: Prisma.SortOrder
   lastSeenAt?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrder
@@ -1128,6 +1179,8 @@ export type CustomerCreateWithoutCartsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -1169,6 +1222,8 @@ export type CustomerUncheckedCreateWithoutCartsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -1224,6 +1279,8 @@ export type CustomerUpdateWithoutCartsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1265,6 +1322,8 @@ export type CustomerUncheckedUpdateWithoutCartsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1304,6 +1363,8 @@ export type CustomerCreateWithoutCheckoutsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -1345,6 +1406,8 @@ export type CustomerUncheckedCreateWithoutCheckoutsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -1400,6 +1463,8 @@ export type CustomerUpdateWithoutCheckoutsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1441,6 +1506,8 @@ export type CustomerUncheckedUpdateWithoutCheckoutsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1480,6 +1547,8 @@ export type CustomerCreateWithoutAddressesInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -1521,6 +1590,8 @@ export type CustomerUncheckedCreateWithoutAddressesInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -1576,6 +1647,8 @@ export type CustomerUpdateWithoutAddressesInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1617,6 +1690,8 @@ export type CustomerUncheckedUpdateWithoutAddressesInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1656,6 +1731,8 @@ export type CustomerCreateWithoutContactPreferencesInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -1697,6 +1774,8 @@ export type CustomerUncheckedCreateWithoutContactPreferencesInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -1752,6 +1831,8 @@ export type CustomerUpdateWithoutContactPreferencesInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1793,6 +1874,8 @@ export type CustomerUncheckedUpdateWithoutContactPreferencesInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1832,6 +1915,8 @@ export type CustomerCreateWithoutOrdersInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -1873,6 +1958,8 @@ export type CustomerUncheckedCreateWithoutOrdersInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -1928,6 +2015,8 @@ export type CustomerUpdateWithoutOrdersInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1969,6 +2058,8 @@ export type CustomerUncheckedUpdateWithoutOrdersInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2008,6 +2099,8 @@ export type CustomerCreateWithoutStoreInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2048,6 +2141,8 @@ export type CustomerUncheckedCreateWithoutStoreInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2118,6 +2213,8 @@ export type CustomerScalarWhereInput = {
   acceptsEmail?: Prisma.BoolFilter<"Customer"> | boolean
   acceptsSms?: Prisma.BoolFilter<"Customer"> | boolean
   notes?: Prisma.StringNullableFilter<"Customer"> | string | null
+  sourceSystem?: Prisma.StringNullableFilter<"Customer"> | string | null
+  sourceId?: Prisma.StringNullableFilter<"Customer"> | string | null
   firstSeenAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   lastSeenAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   activatedAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
@@ -2139,6 +2236,8 @@ export type CustomerCreateWithoutDiscountRedemptionsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2180,6 +2279,8 @@ export type CustomerUncheckedCreateWithoutDiscountRedemptionsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2235,6 +2336,8 @@ export type CustomerUpdateWithoutDiscountRedemptionsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2276,6 +2379,8 @@ export type CustomerUncheckedUpdateWithoutDiscountRedemptionsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2315,6 +2420,8 @@ export type CustomerCreateWithoutGiftCardsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2356,6 +2463,8 @@ export type CustomerUncheckedCreateWithoutGiftCardsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2411,6 +2520,8 @@ export type CustomerUpdateWithoutGiftCardsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2452,6 +2563,8 @@ export type CustomerUncheckedUpdateWithoutGiftCardsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2491,6 +2604,8 @@ export type CustomerCreateWithoutGiftRequestsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2532,6 +2647,8 @@ export type CustomerUncheckedCreateWithoutGiftRequestsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2587,6 +2704,8 @@ export type CustomerUpdateWithoutGiftRequestsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2628,6 +2747,8 @@ export type CustomerUncheckedUpdateWithoutGiftRequestsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2667,6 +2788,8 @@ export type CustomerCreateWithoutLoyaltyAccountInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2708,6 +2831,8 @@ export type CustomerUncheckedCreateWithoutLoyaltyAccountInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2763,6 +2888,8 @@ export type CustomerUpdateWithoutLoyaltyAccountInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2804,6 +2931,8 @@ export type CustomerUncheckedUpdateWithoutLoyaltyAccountInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2843,6 +2972,8 @@ export type CustomerCreateWithoutReturnRequestsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2884,6 +3015,8 @@ export type CustomerUncheckedCreateWithoutReturnRequestsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -2939,6 +3072,8 @@ export type CustomerUpdateWithoutReturnRequestsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2980,6 +3115,8 @@ export type CustomerUncheckedUpdateWithoutReturnRequestsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3019,6 +3156,8 @@ export type CustomerCreateWithoutSubscriptionsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3060,6 +3199,8 @@ export type CustomerUncheckedCreateWithoutSubscriptionsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3115,6 +3256,8 @@ export type CustomerUpdateWithoutSubscriptionsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3156,6 +3299,8 @@ export type CustomerUncheckedUpdateWithoutSubscriptionsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3195,6 +3340,8 @@ export type CustomerCreateWithoutCrmContactInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3236,6 +3383,8 @@ export type CustomerUncheckedCreateWithoutCrmContactInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3291,6 +3440,8 @@ export type CustomerUpdateWithoutCrmContactInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3332,6 +3483,8 @@ export type CustomerUncheckedUpdateWithoutCrmContactInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3371,6 +3524,8 @@ export type CustomerCreateWithoutNewsletterSubscriptionsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3412,6 +3567,8 @@ export type CustomerUncheckedCreateWithoutNewsletterSubscriptionsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3467,6 +3624,8 @@ export type CustomerUpdateWithoutNewsletterSubscriptionsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3508,6 +3667,8 @@ export type CustomerUncheckedUpdateWithoutNewsletterSubscriptionsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3547,6 +3708,8 @@ export type CustomerCreateWithoutEventRegistrationsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3588,6 +3751,8 @@ export type CustomerUncheckedCreateWithoutEventRegistrationsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3643,6 +3808,8 @@ export type CustomerUpdateWithoutEventRegistrationsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3684,6 +3851,8 @@ export type CustomerUncheckedUpdateWithoutEventRegistrationsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3723,6 +3892,8 @@ export type CustomerCreateWithoutEventReservationsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3764,6 +3935,8 @@ export type CustomerUncheckedCreateWithoutEventReservationsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3819,6 +3992,8 @@ export type CustomerUpdateWithoutEventReservationsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3860,6 +4035,8 @@ export type CustomerUncheckedUpdateWithoutEventReservationsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3899,6 +4076,8 @@ export type CustomerCreateWithoutSupportTicketsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3940,6 +4119,8 @@ export type CustomerUncheckedCreateWithoutSupportTicketsInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -3995,6 +4176,8 @@ export type CustomerUpdateWithoutSupportTicketsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4036,6 +4219,8 @@ export type CustomerUncheckedUpdateWithoutSupportTicketsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4075,6 +4260,8 @@ export type CustomerCreateWithoutSupportMessagesAsAuthorInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -4116,6 +4303,8 @@ export type CustomerUncheckedCreateWithoutSupportMessagesAsAuthorInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -4171,6 +4360,8 @@ export type CustomerUpdateWithoutSupportMessagesAsAuthorInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4212,6 +4403,8 @@ export type CustomerUncheckedUpdateWithoutSupportMessagesAsAuthorInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4251,6 +4444,8 @@ export type CustomerCreateWithoutNotificationsAsRecipientInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -4292,6 +4487,8 @@ export type CustomerUncheckedCreateWithoutNotificationsAsRecipientInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -4347,6 +4544,8 @@ export type CustomerUpdateWithoutNotificationsAsRecipientInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4388,6 +4587,8 @@ export type CustomerUncheckedUpdateWithoutNotificationsAsRecipientInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4427,6 +4628,8 @@ export type CustomerCreateWithoutNotificationPreferencesInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -4468,6 +4671,8 @@ export type CustomerUncheckedCreateWithoutNotificationPreferencesInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -4523,6 +4728,8 @@ export type CustomerUpdateWithoutNotificationPreferencesInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4564,6 +4771,8 @@ export type CustomerUncheckedUpdateWithoutNotificationPreferencesInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4603,6 +4812,8 @@ export type CustomerCreateManyStoreInput = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   firstSeenAt?: Date | string | null
   lastSeenAt?: Date | string | null
   activatedAt?: Date | string | null
@@ -4624,6 +4835,8 @@ export type CustomerUpdateWithoutStoreInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4664,6 +4877,8 @@ export type CustomerUncheckedUpdateWithoutStoreInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4704,6 +4919,8 @@ export type CustomerUncheckedUpdateManyWithoutStoreInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   acceptsSms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastSeenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4901,6 +5118,8 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: boolean
+  sourceSystem?: boolean
+  sourceId?: boolean
   firstSeenAt?: boolean
   lastSeenAt?: boolean
   activatedAt?: boolean
@@ -4944,6 +5163,8 @@ export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: boolean
+  sourceSystem?: boolean
+  sourceId?: boolean
   firstSeenAt?: boolean
   lastSeenAt?: boolean
   activatedAt?: boolean
@@ -4967,6 +5188,8 @@ export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: boolean
+  sourceSystem?: boolean
+  sourceId?: boolean
   firstSeenAt?: boolean
   lastSeenAt?: boolean
   activatedAt?: boolean
@@ -4990,6 +5213,8 @@ export type CustomerSelectScalar = {
   acceptsEmail?: boolean
   acceptsSms?: boolean
   notes?: boolean
+  sourceSystem?: boolean
+  sourceId?: boolean
   firstSeenAt?: boolean
   lastSeenAt?: boolean
   activatedAt?: boolean
@@ -4999,7 +5224,7 @@ export type CustomerSelectScalar = {
   updatedAt?: boolean
 }
 
-export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "email" | "firstName" | "lastName" | "displayName" | "phone" | "status" | "isGuest" | "acceptsEmail" | "acceptsSms" | "notes" | "firstSeenAt" | "lastSeenAt" | "activatedAt" | "blockedAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
+export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "email" | "firstName" | "lastName" | "displayName" | "phone" | "status" | "isGuest" | "acceptsEmail" | "acceptsSms" | "notes" | "sourceSystem" | "sourceId" | "firstSeenAt" | "lastSeenAt" | "activatedAt" | "blockedAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
 export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   carts?: boolean | Prisma.Customer$cartsArgs<ExtArgs>
   checkouts?: boolean | Prisma.Customer$checkoutsArgs<ExtArgs>
@@ -5067,6 +5292,8 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     acceptsEmail: boolean
     acceptsSms: boolean
     notes: string | null
+    sourceSystem: string | null
+    sourceId: string | null
     firstSeenAt: Date | null
     lastSeenAt: Date | null
     activatedAt: Date | null
@@ -5529,6 +5756,8 @@ export interface CustomerFieldRefs {
   readonly acceptsEmail: Prisma.FieldRef<"Customer", 'Boolean'>
   readonly acceptsSms: Prisma.FieldRef<"Customer", 'Boolean'>
   readonly notes: Prisma.FieldRef<"Customer", 'String'>
+  readonly sourceSystem: Prisma.FieldRef<"Customer", 'String'>
+  readonly sourceId: Prisma.FieldRef<"Customer", 'String'>
   readonly firstSeenAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly lastSeenAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly activatedAt: Prisma.FieldRef<"Customer", 'DateTime'>
