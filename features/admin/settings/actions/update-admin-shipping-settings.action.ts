@@ -4,6 +4,7 @@ import { db } from "@/core/db";
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { revalidatePath } from "next/cache";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
+import { ADMIN_SHIPPING_SETTINGS_PATH } from "@/features/admin/commerce/shipping/shared/admin-shipping-routes";
 import type { CurrencyCode } from "@/prisma-generated/client";
 import {
   shippingSettingsSchema,
@@ -124,7 +125,7 @@ export async function updateAdminShippingSettingsAction(
       }
     }
 
-    revalidatePath("/admin/settings/shipping");
+    revalidatePath(ADMIN_SHIPPING_SETTINGS_PATH);
 
     return { status: "success", message: "Réglages livraison enregistrés." };
   } catch (error) {

@@ -93,7 +93,7 @@ export function HeroSection({
           Aucun média n&apos;est disponible. Vous pouvez en importer depuis{" "}
           <Link
             className="font-medium text-primary underline-offset-4 hover:underline"
-            href="/admin/media"
+            href="/admin/catalog/media"
           >
             la bibliothèque médias
           </Link>

@@ -27,7 +27,10 @@ Les deux champs `*Enabled` sont indépendants. Les deux champs `*Instructions` s
 
 ---
 
-## 3. Page admin — `/admin/settings/payments`
+## 3. Page admin — `/admin/commerce/payments/settings`
+
+L'ancienne URL `/admin/settings/payments` reste une route de compatibilité qui redirige vers
+`/admin/commerce/payments/settings`.
 
 ### Accès
 
@@ -40,7 +43,8 @@ Les deux champs `*Enabled` sont indépendants. Les deux champs `*Instructions` s
 
 | Fichier | Rôle |
 | --- | --- |
-| `app/admin/(protected)/settings/payments/page.tsx` | Page RSC, vérifie `payments.read`, charge les settings |
+| `app/admin/(protected)/commerce/payments/settings/page.tsx` | Page RSC, vérifie `payments.read`, charge les settings |
+| `app/admin/(protected)/settings/payments/page.tsx` | Redirect de compatibilité vers la page domaine |
 | `features/admin/settings/components/payment-settings-form.tsx` | Formulaire client, gère l'état via `useFormState` |
 | `features/admin/settings/actions/update-admin-payment-settings.action.ts` | Server Action, vérifie `payments.write`, persiste en DB |
 | `features/admin/settings/queries/get-admin-payment-settings.query.ts` | Lecture des 4 champs depuis le premier store |
@@ -52,7 +56,7 @@ Les deux champs `*Enabled` sont indépendants. Les deux champs `*Instructions` s
 2. Parse le `FormData` via `PaymentSettingsSchema`.
 3. Charge le `storeId` courant via `getCurrentStoreId`.
 4. Met à jour les 4 champs sur le store via `db.store.update`.
-5. Revalide le cache de `/admin/settings/payments`.
+5. Revalide le cache de `/admin/commerce/payments/settings`.
 6. Retourne un état `success` ou `error` avec messages de champs si pertinent.
 
 ---

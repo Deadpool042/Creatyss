@@ -3,6 +3,7 @@
 import { db } from "@/core/db";
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { revalidatePath } from "next/cache";
+import { ADMIN_ORDERS_SETTINGS_PATH } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import {
   orderSettingsSchema,
@@ -50,7 +51,7 @@ export async function updateAdminOrderSettingsAction(
       },
     });
 
-    revalidatePath("/admin/settings/orders");
+    revalidatePath(ADMIN_ORDERS_SETTINGS_PATH);
 
     return { status: "success", message: "Réglages commandes enregistrés." };
   } catch {

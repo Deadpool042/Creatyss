@@ -63,7 +63,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   },
   {
     key: "dashboard-catalog",
-    label: "Vue d’ensemble",
+    label: "Vue d’ensemble — Catalogue",
     href: "/admin/catalog/overview",
     iconKey: "search",
     group: "catalog",
@@ -125,10 +125,25 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
       capabilitiesAll: [adminNavigationCapabilities.catalog.pricingRead],
     },
   },
+  {
+    key: "catalog-configuration",
+    label: "Configuration",
+    href: "/admin/catalog/settings",
+    iconKey: "settings",
+    group: "catalog",
+    order: 60,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.catalogRead],
+    },
+  },
 
   {
     key: "commerce-overview",
-    label: "Vue d’ensemble",
+    label: "Vue d’ensemble — Commerce",
     href: "/admin/commerce/overview",
     iconKey: "search",
     group: "commerce",
@@ -203,7 +218,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
 
   {
     key: "content-overview",
-    label: "Vue d’ensemble",
+    label: "Vue d’ensemble — Contenu",
     href: "/admin/content/overview",
     iconKey: "search",
     group: "content",
@@ -276,7 +291,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
 
   {
     key: "marketing-overview",
-    label: "Vue d'ensemble",
+    label: "Vue d'ensemble — Marketing",
     href: "/admin/marketing/overview",
     iconKey: "megaphone",
     group: "marketing",
@@ -403,7 +418,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
 
   {
     key: "settings-overview",
-    label: "Vue d'ensemble",
+    label: "Vue d'ensemble — Réglages",
     href: "/admin/settings",
     iconKey: "settings",
     group: "settings",
@@ -412,6 +427,21 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     visibility: {
       sidebar: true,
       mobileMore: true,
+    },
+  },
+  {
+    key: "general-settings",
+    label: "Général",
+    href: "/admin/settings/general",
+    iconKey: "settings",
+    group: "settings",
+    order: 15,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.generalRead],
     },
   },
   {
@@ -424,69 +454,55 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     visibility: {
       sidebar: true,
       mobileMore: true,
+      settingsHub: true,
     },
     access: {
       capabilitiesAll: [adminNavigationCapabilities.settings.storeRead],
     },
   },
   {
-    key: "catalog-settings",
-    label: "Catalogue",
-    href: "/admin/settings/catalog",
-    iconKey: "package",
+    key: "notifications-settings",
+    label: "Notifications",
+    href: "/admin/settings/notifications",
+    iconKey: "mail",
     group: "settings",
-    order: 30,
+    order: 37,
     visibility: {
-      sidebar: true,
-      mobileMore: true,
+      sidebar: false,
+      settingsHub: true,
     },
     access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.catalogRead],
+      capabilitiesAll: [adminNavigationCapabilities.settings.notificationsRead],
     },
   },
   {
-    key: "orders-settings",
-    label: "Commandes",
-    href: "/admin/settings/orders",
-    iconKey: "shoppingCart",
+    key: "seo-settings",
+    label: "SEO",
+    href: "/admin/settings/seo",
+    iconKey: "search",
     group: "settings",
-    order: 32,
+    order: 38,
     visibility: {
-      sidebar: true,
-      mobileMore: true,
+      sidebar: false,
+      settingsHub: true,
     },
     access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.ordersRead],
+      capabilitiesAll: [adminNavigationCapabilities.settings.seoRead],
     },
   },
   {
-    key: "customers-settings",
-    label: "Clients",
-    href: "/admin/settings/customers",
+    key: "team-settings",
+    label: "Équipe",
+    href: "/admin/settings/team",
     iconKey: "users",
     group: "settings",
-    order: 34,
+    order: 39,
     visibility: {
-      sidebar: true,
-      mobileMore: true,
+      sidebar: false,
+      settingsHub: true,
     },
     access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.customersRead],
-    },
-  },
-  {
-    key: "media-settings",
-    label: "Médias",
-    href: "/admin/settings/media",
-    iconKey: "imageIcon",
-    group: "settings",
-    order: 36,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-    },
-    access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.mediaRead],
+      capabilitiesAll: [adminNavigationCapabilities.settings.teamRead],
     },
   },
   {
@@ -499,10 +515,128 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     visibility: {
       sidebar: true,
       mobileMore: true,
+      settingsHub: true,
     },
     access: {
       internalOnly: true,
       capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+    },
+  },
+  {
+    key: "api-clients-settings",
+    label: "API clients",
+    href: "/admin/settings/api-clients",
+    iconKey: "key",
+    group: "settings",
+    order: 41,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.apiClientsRead],
+    },
+  },
+  {
+    key: "integrations-settings",
+    label: "Intégrations",
+    href: "/admin/settings/integrations",
+    iconKey: "link",
+    group: "settings",
+    order: 42,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.platform.integrations],
+    },
+  },
+  {
+    key: "webhooks-settings",
+    label: "Webhooks",
+    href: "/admin/settings/webhooks",
+    iconKey: "link",
+    group: "settings",
+    order: 43,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.platform.webhooks],
+    },
+  },
+  {
+    key: "search-settings",
+    label: "Recherche",
+    href: "/admin/settings/search",
+    iconKey: "search",
+    group: "settings",
+    order: 44,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.satellite.search],
+    },
+  },
+  {
+    key: "channels-settings",
+    label: "Canaux",
+    href: "/admin/settings/channels",
+    iconKey: "megaphone",
+    group: "settings",
+    order: 45,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.satellite.channels],
+    },
+  },
+  {
+    key: "localization-settings",
+    label: "Localisation",
+    href: "/admin/settings/localization",
+    iconKey: "globe",
+    group: "settings",
+    order: 46,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.platform.localization],
+    },
+  },
+  {
+    key: "ai-settings",
+    label: "Assistance IA",
+    href: "/admin/settings/ai",
+    iconKey: "zap",
+    group: "settings",
+    order: 47,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+      featureFlagsAll: [adminNavigationFeatureFlags.ai.core],
     },
   },
 ];

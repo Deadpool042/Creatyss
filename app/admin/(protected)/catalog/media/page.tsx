@@ -18,6 +18,8 @@ import {
   MediaUploadError,
   type AdminMediaListItem,
 } from "@/features/admin/media";
+import { MediaRouteNav } from "@/features/admin/media/components/media-route-nav";
+import { ADMIN_CATALOG_MEDIA_PATH } from "@/features/admin/catalog/shared/admin-catalog-routes";
 import { archiveAdminMedia } from "@/features/admin/media/services/archive-admin-media.service";
 
 export const dynamic = "force-dynamic";
@@ -87,7 +89,7 @@ async function archiveMediaAction(formData: FormData) {
     await archiveAdminMedia({ assetId: assetId.trim() });
   }
 
-  redirect("/admin/media?status=archived");
+  redirect(`${ADMIN_CATALOG_MEDIA_PATH}?status=archived`);
 }
 
 async function uploadMediaAction(formData: FormData) {
@@ -102,10 +104,10 @@ async function uploadMediaAction(formData: FormData) {
   } catch (error) {
     const errorCode = error instanceof MediaUploadError ? error.code : "upload_failed";
 
-    redirect(`/admin/media?error=${errorCode}`);
+    redirect(`${ADMIN_CATALOG_MEDIA_PATH}?error=${errorCode}`);
   }
 
-  redirect("/admin/media?status=uploaded");
+  redirect(`${ADMIN_CATALOG_MEDIA_PATH}?status=uploaded`);
 }
 
 export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
@@ -141,6 +143,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
         </Button>
       }
     >
+        <MediaRouteNav />
         <AdminFormMessage tone="success" message={successMessage} className="shrink-0" />
         <AdminFormMessage tone="error" message={errorMessage} className="shrink-0" />
 

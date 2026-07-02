@@ -134,7 +134,7 @@ function resolveContextualLinks(
     case "commerce.payments":
       return [{ label: "Paiements", href: "/admin/commerce/payments" }];
     case "commerce.shipping":
-      return [{ label: "Livraison", href: "/admin/settings/shipping" }];
+      return [{ label: "Livraison", href: "/admin/commerce/shipping/settings" }];
     case "commerce.discounts":
       return [{ label: "Remises", href: "/admin/marketing/discounts" }];
     // Engagement

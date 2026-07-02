@@ -47,7 +47,10 @@ Champs significatifs sur `ShippingMethod` :
 
 ---
 
-## 3. Page admin — `/admin/settings/shipping`
+## 3. Page admin — `/admin/commerce/shipping/settings`
+
+L'ancienne URL `/admin/settings/shipping` reste une route de compatibilité qui redirige vers
+`/admin/commerce/shipping/settings`.
 
 ### Accès
 
@@ -60,7 +63,8 @@ Champs significatifs sur `ShippingMethod` :
 
 | Fichier | Rôle |
 | --- | --- |
-| `app/admin/(protected)/settings/shipping/page.tsx` | Page RSC, vérifie `shipping.read`, charge les settings |
+| `app/admin/(protected)/commerce/shipping/settings/page.tsx` | Page RSC, vérifie `shipping.read`, charge les settings |
+| `app/admin/(protected)/settings/shipping/page.tsx` | Redirect de compatibilité vers la page domaine |
 | `features/admin/settings/components/shipping-settings-form.tsx` | Formulaire client avec champs montants décimaux |
 | `features/admin/settings/actions/update-admin-shipping-settings.action.ts` | Server Action, vérifie `shipping.write`, upsert zone + méthodes |
 | `features/admin/settings/queries/get-admin-shipping-settings.query.ts` | Lecture de STANDARD et FREE depuis la DB |
@@ -75,7 +79,7 @@ Champs significatifs sur `ShippingMethod` :
 5. Upsert `ShippingMethod` code `"STANDARD"` avec le montant saisi.
 6. Si seuil défini → upsert `ShippingMethod` code `"FREE"` avec `minSubtotalAmount` et `status: "ACTIVE"`.
 7. Si seuil absent → passe `ShippingMethod` code `"FREE"` en `status: "INACTIVE"` (jamais supprimé).
-8. Revalide le cache de `/admin/settings/shipping`.
+8. Revalide le cache de `/admin/commerce/shipping/settings`.
 
 ### Comportement de la query
 

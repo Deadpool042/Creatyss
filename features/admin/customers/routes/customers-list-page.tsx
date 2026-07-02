@@ -9,7 +9,11 @@ import {
   parseCustomerPerPage,
   parseCustomerSortOption,
 } from "@/entities/customer";
-import { CustomerListFilters, CustomerTable } from "@/features/admin/customers/components";
+import {
+  CustomerListFilters,
+  CustomerRouteNav,
+  CustomerTable,
+} from "@/features/admin/customers/components";
 import { listAdminCustomers } from "@/features/admin/customers/queries";
 
 type CustomersListPageProps = Readonly<{
@@ -107,6 +111,7 @@ export async function CustomersListPage({ searchParams = {} }: CustomersListPage
       showBreadcrumbsInContent={false}
       contentPreset="table"
     >
+      <CustomerRouteNav />
       {content}
     </AdminPageShell>
   );

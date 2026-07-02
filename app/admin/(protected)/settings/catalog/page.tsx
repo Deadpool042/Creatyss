@@ -1,41 +1,7 @@
-import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
-import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { listAdminFeatureFlags } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
-import { CatalogRelatedProductsSection } from "@/features/admin/settings/components/catalog-related-products-section";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
+import { ADMIN_CATALOG_SETTINGS_PATH } from "@/features/admin/catalog/shared/admin-catalog-routes";
 
-const RELATED_FLAG_KEY = "catalog.products.related";
-
-export default async function AdminSettingsCatalogPage() {
-  await requireAdminCapability("admin.settings.catalog.read");
-
-  let flags: Awaited<ReturnType<typeof listAdminFeatureFlags>> = [] as const;
-
-  try {
-    flags = await listAdminFeatureFlags();
-  } catch {
-    // Table non disponible — état fallback
-  }
-
-  const relatedFlag =
-    flags.find((f) => f.key === RELATED_FLAG_KEY) ?? null;
-
-  return (
-    <AdminPageShell
-      scrollBehavior="page"
-      title="Catalogue"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Réglages" },
-        { label: "Catalogue" },
-      ]}
-      showBreadcrumbsInContent={false}
-      showTitleInContent={false}
-    >
-      <div className="space-y-4 px-1">
-        <CatalogRelatedProductsSection flag={relatedFlag} />
-      </div>
-    </AdminPageShell>
-  );
+export default function AdminSettingsCatalogPage() {
+  redirect(ADMIN_CATALOG_SETTINGS_PATH);
 }

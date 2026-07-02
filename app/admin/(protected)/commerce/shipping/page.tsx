@@ -9,6 +9,7 @@ import {
   AdminShipmentsList,
   AdminShipmentsListFilters,
 } from "@/features/admin/commerce/shipping/list/components/admin-shipments-list";
+import { ShippingRouteNav } from "@/features/admin/commerce/shipping/shared/components/shipping-route-nav";
 import type { AdminShipmentStatus } from "@/features/admin/commerce/shipping/list/types/admin-shipment-list.types";
 
 export const dynamic = "force-dynamic";
@@ -66,6 +67,7 @@ export default async function AdminCommerceShippingPage({ searchParams }: AdminC
       contentPreset="table"
     >
       <div className="grid gap-4">
+        <ShippingRouteNav />
         <AdminShipmentsListFilters activeStatus={status} />
         <AdminShipmentsList shipments={result.items} />
       </div>

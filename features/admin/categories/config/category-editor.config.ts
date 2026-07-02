@@ -69,7 +69,7 @@ export const CATEGORY_ARCHIVE_DIALOG_COPY = {
 export const CATEGORY_MEDIA_EMPTY_STATE_COPY = {
   body: "Aucun média disponible.",
   linkLabel: "Ouvrir la médiathèque",
-  linkHref: "/admin/media",
+  linkHref: "/admin/catalog/media",
 } as const;
 
 export const CATEGORY_IMAGE_FORM_COPY = {

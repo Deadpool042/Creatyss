@@ -28,7 +28,7 @@
 
 ### Ce qui est déjà L3
 
-- **Réglages** (`/admin/settings/shipping`) : configuration fonctionnelle —
+- **Réglages** (`/admin/commerce/shipping/settings`) : configuration fonctionnelle —
   upsert `ShippingZone` (FR uniquement, V1) + `ShippingMethod` (`STANDARD`
   payant, `FREE` au-delà d'un seuil). Cf.
   `docs/lots/2026-06-10-settings-shipping-v1-reference.md`.
