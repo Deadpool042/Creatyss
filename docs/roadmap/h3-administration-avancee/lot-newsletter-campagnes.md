@@ -2,7 +2,7 @@
 
 ## Statut
 
-Implémenté (code) — 2026-07-02 — recette manuelle Mailpit restante
+Livré — 2026-07-02 — code + revue (7 findings corrigés) + recette Mailpit locale validée
 
 ## État observé au 2026-07-02
 
@@ -59,7 +59,7 @@ Proposition — non observé comme implémenté à ce jour :
 - [x] `pnpm run typecheck` — 2026-07-02
 - [x] `pnpm run lint` — 2026-07-02
 - [x] Tests unitaires invariants d'envoi (9/9) — 2026-07-02
-- [ ] Test manuel (Mailpit en dev) : création campagne, prévisualisation, envoi, réception, vérification de la non-réception pour un abonné `UNSUBSCRIBED`, lien de désinscription fonctionnel — **restant, validation humaine**
+- [x] Recette Mailpit locale (2026-07-02) : création campagne, aperçu conforme (pied désinscription inclus), envoi confirmé en deux temps, 1 email reçu dans Mailpit pour l'abonné `SUBSCRIBED`, non-réception vérifiée pour l'abonné `UNSUBSCRIBED`, lien de désinscription cliqué → statut `UNSUBSCRIBED` en DB, statuts campagne/recipient corrects (`SENT`, `sentAt`). Note : flag `engagement.newsletter` passé `ACTIVE`+`isEnabledByDefault` en DB locale pour la recette (était `DRAFT` — activation produit toujours non décidée, cf. mémoire lot localization).
 
 ## Critères de fin
 
