@@ -26,6 +26,7 @@ import { OrderDetailDocumentsCard } from "@/features/admin/commerce/documents/co
 import { findFulfillmentByOrderId } from "@/features/admin/commerce/fulfillment/queries/find-fulfillment-by-order.query";
 import { isFulfillmentFeatureActive } from "@/features/admin/commerce/fulfillment/queries/is-fulfillment-feature-active.query";
 import { OrderDetailFulfillmentCard } from "@/features/admin/commerce/fulfillment/components/order-detail-fulfillment-card";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { findReturnByOrderId } from "@/features/admin/commerce/returns/queries/find-return-by-order.query";
 import { isReturnsFeatureActive } from "@/features/admin/commerce/returns/queries/is-returns-feature-active.query";
 import { OrderDetailReturnCard } from "@/features/admin/commerce/returns/components/order-detail-return-card";
@@ -50,14 +51,21 @@ export default async function OrderDetailSlotPage({
   const { id } = await params;
   const resolvedSearchParams = await searchParams;
 
-  const [order, documentsFeatureActive, fulfillmentFeatureActive, returnsFeatureActive, storeId] =
-    await Promise.all([
-      findAdminOrderById(id),
-      isDocumentsFeatureActive(),
-      isFulfillmentFeatureActive(),
-      isReturnsFeatureActive(),
-      getCurrentStoreId(),
-    ]);
+  const [
+    order,
+    documentsFeatureActive,
+    fulfillmentFeatureActive,
+    fulfillmentAllowsPartial,
+    returnsFeatureActive,
+    storeId,
+  ] = await Promise.all([
+    findAdminOrderById(id),
+    isDocumentsFeatureActive(),
+    isFulfillmentFeatureActive(),
+    meetsFeatureLevel("commerce.fulfillment", "partial"),
+    isReturnsFeatureActive(),
+    getCurrentStoreId(),
+  ]);
 
   if (order === null) {
     notFound();
@@ -163,6 +171,7 @@ export default async function OrderDetailSlotPage({
               productName: l.productName,
               quantity: l.quantity,
             }))}
+            allowPartial={fulfillmentAllowsPartial}
           />
         </div>
       ) : null}

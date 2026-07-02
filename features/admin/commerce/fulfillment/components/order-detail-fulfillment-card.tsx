@@ -19,12 +19,19 @@ type Props = Readonly<{
   fulfillment: AdminFulfillmentSummary | null;
   orderId: string;
   orderLines: ReadonlyArray<OrderLineForFulfillment>;
+  /** Niveau `partial` de `commerce.fulfillment` — autorise les quantités partielles à la création. */
+  allowPartial: boolean;
 }>;
 
 const buttonClass =
   "w-fit rounded-lg border border-surface-border bg-surface-panel px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-interactive-hover disabled:cursor-not-allowed disabled:opacity-50";
 
-export function OrderDetailFulfillmentCard({ fulfillment, orderId, orderLines }: Props) {
+export function OrderDetailFulfillmentCard({
+  fulfillment,
+  orderId,
+  orderLines,
+  allowPartial,
+}: Props) {
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
     null
@@ -54,6 +61,11 @@ export function OrderDetailFulfillmentCard({ fulfillment, orderId, orderLines }:
   }
 
   function handleCreate(): void {
+    if (!allowPartial) {
+      run(() => createFulfillmentAction(orderId, undefined), "Préparation créée.");
+      return;
+    }
+
     const lines = orderLines
       .map((l) => ({ orderLineId: l.id, quantity: quantities[l.id] ?? l.quantity }))
       .filter((l) => l.quantity > 0);
@@ -79,30 +91,38 @@ export function OrderDetailFulfillmentCard({ fulfillment, orderId, orderLines }:
       {fulfillment === null ? (
         <div className="grid gap-3">
           <p className="card-copy leading-snug text-foreground">
-            Sélectionnez les quantités à préparer :
+            {allowPartial
+              ? "Sélectionnez les quantités à préparer :"
+              : "Lignes à préparer (commande complète) :"}
           </p>
           <ol className="grid gap-2">
-            {orderLines.map((line) => (
-              <li key={line.id} className="flex items-center gap-3">
-                <input
-                  type="number"
-                  min={0}
-                  max={line.quantity}
-                  value={quantities[line.id] ?? line.quantity}
-                  onChange={(e) =>
-                    setQuantities((prev) => ({
-                      ...prev,
-                      [line.id]: Math.min(line.quantity, Math.max(0, Number(e.target.value))),
-                    }))
-                  }
-                  className="w-16 rounded border border-surface-border bg-surface-panel px-2 py-1 text-sm text-foreground"
-                  disabled={isPending}
-                />
-                <span className="card-meta text-text-muted-strong">
-                  / {line.quantity} × {line.productName}
-                </span>
-              </li>
-            ))}
+            {orderLines.map((line) =>
+              allowPartial ? (
+                <li key={line.id} className="flex items-center gap-3">
+                  <input
+                    type="number"
+                    min={0}
+                    max={line.quantity}
+                    value={quantities[line.id] ?? line.quantity}
+                    onChange={(e) =>
+                      setQuantities((prev) => ({
+                        ...prev,
+                        [line.id]: Math.min(line.quantity, Math.max(0, Number(e.target.value))),
+                      }))
+                    }
+                    className="w-16 rounded border border-surface-border bg-surface-panel px-2 py-1 text-sm text-foreground"
+                    disabled={isPending}
+                  />
+                  <span className="card-meta text-text-muted-strong">
+                    / {line.quantity} × {line.productName}
+                  </span>
+                </li>
+              ) : (
+                <li key={line.id} className="card-meta text-text-muted-strong">
+                  {line.quantity} × {line.productName}
+                </li>
+              )
+            )}
           </ol>
         </div>
       ) : (
