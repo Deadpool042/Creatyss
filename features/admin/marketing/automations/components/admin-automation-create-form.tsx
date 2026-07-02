@@ -7,9 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { createAutomationAction } from "@/features/admin/marketing/automations/actions/create-automation.action";
 import {
   AUTOMATION_ACTION_LABELS,
-  AUTOMATION_ACTION_TYPES,
   AUTOMATION_TRIGGER_LABELS,
-  AUTOMATION_TRIGGER_TYPES,
+  AUTOMATION_WIRED_ACTION_TYPES,
+  AUTOMATION_WIRED_TRIGGER_TYPES,
 } from "@/features/admin/marketing/automations/shared/admin-automation-options";
 import { cn } from "@/lib/utils";
 
@@ -49,8 +49,13 @@ export function AdminAutomationCreateForm() {
 
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="automation-trigger-type">Déclencheur</Label>
-        <select id="automation-trigger-type" name="triggerType" className={selectClassName} defaultValue="CART_ABANDONED">
-          {AUTOMATION_TRIGGER_TYPES.map((triggerType) => (
+        <select
+          id="automation-trigger-type"
+          name="triggerType"
+          className={selectClassName}
+          defaultValue="ORDER_PLACED"
+        >
+          {AUTOMATION_WIRED_TRIGGER_TYPES.map((triggerType) => (
             <option key={triggerType} value={triggerType}>
               {AUTOMATION_TRIGGER_LABELS[triggerType]}
             </option>
@@ -60,8 +65,13 @@ export function AdminAutomationCreateForm() {
 
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="automation-action-type">Action</Label>
-        <select id="automation-action-type" name="actionType" className={selectClassName} defaultValue="EMAIL_MESSAGE">
-          {AUTOMATION_ACTION_TYPES.map((actionType) => (
+        <select
+          id="automation-action-type"
+          name="actionType"
+          className={selectClassName}
+          defaultValue="EMAIL_MESSAGE"
+        >
+          {AUTOMATION_WIRED_ACTION_TYPES.map((actionType) => (
             <option key={actionType} value={actionType}>
               {AUTOMATION_ACTION_LABELS[actionType]}
             </option>

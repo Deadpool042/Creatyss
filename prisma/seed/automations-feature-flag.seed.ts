@@ -2,6 +2,10 @@ import type { PrismaClient } from "@/prisma-generated/client";
 
 export const AUTOMATIONS_FEATURE_CODE = "engagement.automations";
 
+export const AUTOMATIONS_ALLOWED_LEVELS = ["basic"] as const;
+
+export const AUTOMATIONS_DEFAULT_LEVEL: string = AUTOMATIONS_ALLOWED_LEVELS[0];
+
 export async function seedAutomationsFeatureFlag(db: PrismaClient): Promise<void> {
   const store = await db.store.findFirst({
     select: { id: true },
@@ -23,6 +27,8 @@ export async function seedAutomationsFeatureFlag(db: PrismaClient): Promise<void
       name: "Automations marketing",
       description:
         "Activation gouvernee des flux marketing automatises declenches par les evenements boutique.",
+      allowedLevels: [...AUTOMATIONS_ALLOWED_LEVELS],
+      defaultLevel: AUTOMATIONS_DEFAULT_LEVEL,
     },
     create: {
       storeId: store.id,
@@ -33,6 +39,8 @@ export async function seedAutomationsFeatureFlag(db: PrismaClient): Promise<void
       status: "DRAFT",
       scopeType: "STORE",
       isEnabledByDefault: false,
+      allowedLevels: [...AUTOMATIONS_ALLOWED_LEVELS],
+      defaultLevel: AUTOMATIONS_DEFAULT_LEVEL,
     },
   });
 }

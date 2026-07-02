@@ -9,6 +9,7 @@ import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-st
 import { createAutomationSchema } from "@/features/admin/marketing/automations/schemas/create-automation.schema";
 import { buildArchivedAutomationCode } from "@/features/admin/marketing/automations/shared/admin-automation-code";
 import { ADMIN_AUTOMATIONS_PATH } from "@/features/admin/marketing/automations/shared/admin-automations-routes";
+import { isWiredAutomationCombination } from "@/features/admin/marketing/automations/shared/admin-automation-options";
 
 function isUniqueConstraintError(error: unknown): boolean {
   return typeof error === "object" && error !== null && "code" in error && error.code === "P2002";
@@ -33,6 +34,10 @@ export async function createAutomationAction(formData: FormData): Promise<void> 
 
   if (!parsed.success) {
     redirect(`${ADMIN_AUTOMATIONS_PATH}?automation_error=invalid_input`);
+  }
+
+  if (!isWiredAutomationCombination(parsed.data.triggerType, parsed.data.actionType)) {
+    redirect(`${ADMIN_AUTOMATIONS_PATH}?automation_error=unwired_combination`);
   }
 
   const storeId = await getCurrentStoreId();

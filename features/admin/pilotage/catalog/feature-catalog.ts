@@ -9,6 +9,7 @@ export const FEATURE_LEVELS = {
   inventory: ["manual", "alerts", "forecasting"],
   localization: ["managed", "multilingual", "localized-routing"],
   fulfillment: ["manual", "partial"],
+  automations: ["basic"],
 } as const;
 
 export const FEATURE_CATALOG = [
@@ -178,12 +179,13 @@ export const FEATURE_CATALOG = [
     key: "engagement.automations",
     label: "Automations marketing",
     description:
-      "Flux automatisés déclenchés par les événements boutique : panier abandonné, relance post-achat, bienvenue abonné.",
+      "Flux email automatisés déclenchés par les événements boutique : commande passée, inscription newsletter.",
     family: "optional",
     module: "engagement",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.automations,
   },
   // Catalog products — core capabilities
   {

@@ -34,3 +34,31 @@ export const AUTOMATION_ACTION_LABELS: Record<AdminAutomationActionType, string>
   WEBHOOK: "Webhook",
   OTHER: "Autre",
 };
+
+/**
+ * Déclencheurs réellement câblés à une file d'exécution automatique
+ * (cf. `features/automations/services/queue-*-automation-jobs.service.ts`).
+ * Les autres valeurs de `AUTOMATION_TRIGGER_TYPES` existent dans le schéma
+ * mais ne produisent aujourd'hui aucun job — niveau `basic` de
+ * `engagement.automations`.
+ */
+export const AUTOMATION_WIRED_TRIGGER_TYPES = [
+  "ORDER_PLACED",
+  "NEWSLETTER_SUBSCRIBED",
+] as const satisfies readonly AdminAutomationTriggerType[];
+
+/**
+ * Actions réellement exécutées par `execute-automation-job.service.ts`.
+ * Les autres valeurs de `AUTOMATION_ACTION_TYPES` existent dans le schéma
+ * mais sont rejetées à l'exécution — niveau `basic`.
+ */
+export const AUTOMATION_WIRED_ACTION_TYPES = [
+  "EMAIL_MESSAGE",
+] as const satisfies readonly AdminAutomationActionType[];
+
+export function isWiredAutomationCombination(triggerType: string, actionType: string): boolean {
+  return (
+    (AUTOMATION_WIRED_TRIGGER_TYPES as readonly string[]).includes(triggerType) &&
+    (AUTOMATION_WIRED_ACTION_TYPES as readonly string[]).includes(actionType)
+  );
+}
