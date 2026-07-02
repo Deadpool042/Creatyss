@@ -1,10 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import {
-  readCartSessionToken,
-  setCartSessionToken,
-} from "@/core/sessions/cart";
+import { readCartSessionToken, setCartSessionToken } from "@/core/sessions/cart";
 import {
   addGuestCartItemQuantity,
   createGuestCart,
@@ -13,6 +10,7 @@ import {
   findGuestCartVariantById,
 } from "@/features/commerce/cart/lib/guest-cart.repository";
 import { validateCartItemInput } from "@/entities/cart/cart-item-input";
+import { trackStorefrontAnalyticsEvent } from "@/features/analytics/tracking/record-storefront-analytics-event.service";
 
 type AddToCartIntent = "add_to_cart" | "buy_now";
 
@@ -103,6 +101,9 @@ export async function addToCartAction(formData: FormData): Promise<void> {
     console.error(error);
     redirect(`/boutique/${productSlug}?cart_error=save_failed`);
   }
+
+  // Tracking anonyme sans cookie — fire-and-forget, jamais bloquant.
+  trackStorefrontAnalyticsEvent("cartAddition");
 
   if (intent === "buy_now") {
     redirect("/panier?status=buy_now_added");

@@ -12,6 +12,7 @@ import { buildProductPageViewModel } from "@/features/storefront/catalog/product
 import { buildStorefrontProductPageRendering } from "@/features/storefront/catalog/product-page/composition/build-storefront-product-page-rendering";
 import { buildProductJsonLd } from "@/features/storefront/catalog/product-page/model/build-product-json-ld";
 import { getLocalizedProductPageCopy } from "@/features/storefront/catalog/product-page/queries/get-localized-product-page-copy.query";
+import { trackStorefrontAnalyticsEvent } from "@/features/analytics/tracking/record-storefront-analytics-event.service";
 import { buildSeoDescription, pickSeoText } from "@/entities/product/seo-text";
 import { getSeoRobotsFlags } from "@/entities/seo";
 
@@ -73,8 +74,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     defaultValue: metaDescription,
     maxLength: 200,
   });
-  const twitterImageUrl =
-    product.seoTwitterImageUrl ?? product.seoOpenGraphImageUrl ?? ogImageUrl;
+  const twitterImageUrl = product.seoTwitterImageUrl ?? product.seoOpenGraphImageUrl ?? ogImageUrl;
 
   return {
     title: metaTitle,
@@ -109,6 +109,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
+  // Tracking anonyme sans cookie — fire-and-forget, jamais bloquant.
+  trackStorefrontAnalyticsEvent("productView");
+
   const viewModel = buildProductPageViewModel(product);
   const rendering = buildStorefrontProductPageRendering({
     productSlug: product.slug,
@@ -119,10 +122,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const initialFavoriteProductIds = await readFavoriteProductIds();
 
   const heroAsideExtra = (
-    <FavoriteButton
-      productId={product.id}
-      initialFavoriteProductIds={initialFavoriteProductIds}
-    />
+    <FavoriteButton productId={product.id} initialFavoriteProductIds={initialFavoriteProductIds} />
   );
 
   const productJsonLd = buildProductJsonLd({

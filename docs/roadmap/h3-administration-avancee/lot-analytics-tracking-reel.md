@@ -2,7 +2,15 @@
 
 ## Statut
 
-A faire
+Livré — 2026-07-02 — tracking anonyme sans cookie, recette locale validée
+
+## État observé au 2026-07-02
+
+- Décision produit actée : compteurs agrégés côté serveur, anonymes, sans cookie ni identifiant → pas de consentement RGPD requis ; sessions/visiteurs uniques exclus (non mesurables sans identifiant)
+- Métriques : `storefront.product_views` et `storefront.cart_additions`, un snapshot par jour/métrique (upsert + increment), collecte fire-and-forget gatée par `engagement.analytics`
+- Bloc "Aujourd'hui vs hier" branché sur `AnalyticsSnapshot` (query `get-daily-traffic-analytics`), delta nullable si veille absente ; bloc "Ce mois" intact
+- Tests : 7 tests unitaires du service d'agrégation ; suite complète 335/335
+- Recette locale (2026-07-02) : visite fiche produit + ajout panier → snapshots incrémentés en DB → bloc admin affiche les valeurs réelles. Flag `engagement.analytics` activé en DB locale pour la recette (seedé DRAFT)
 
 ## Objectif
 
