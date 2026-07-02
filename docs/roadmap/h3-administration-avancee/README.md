@@ -20,7 +20,7 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 - `commerce.customers` : base admin dédiée observée (liste, détail, commandes, consentements, export RGPD), mais CRM avancé non observé (`CrmContact`, `CrmTag`, segmentation)
 - `engagement.newsletter` : campagnes réelles livrées (création, prévisualisation, envoi avec invariants RGPD, suivi recipients) au 2026-07-02, recette Mailpit locale validée — cf. `lot-newsletter-campagnes.md`
 - `engagement.automations` : route cron `POST /api/cron/run-automation-jobs` + `runAutomationJobsBatch` observés — scope étendu à `NEWSLETTER_SUBSCRIBED` et `ORDER_PLACED` (batch, exécution, admin) le 2026-07-01 ; activation production (CRON_SECRET + cron externe) non configurée ; `maxAttempts` reste à `1` pour les deux types (aucun retry automatique), extension conditionnelle à une décision produit
-- `engagement.analytics` : bloc "Aujourd'hui vs hier" mock, tracking absent — observé
+- `engagement.analytics` : bloc "Aujourd'hui vs hier" branché sur tracking réel anonyme sans cookie (2026-07-02) — cf. `lot-analytics-tracking-reel.md`
 - Settings admin : `orders`, `catalog` et `media` observés ; `customers` reste un `AdminComingSoon` assumé, renvoyant vers le lot clients
 
 ---
@@ -40,7 +40,7 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 | [lot-discounts-backoffice-avance.md](./lot-discounts-backoffice-avance.md) | Back-office DiscountCode dédié, édition de priorité, visualisation redemptions | Livré — 2026-06-25                                                                                                  |
 | [lot-newsletter-campagnes.md](./lot-newsletter-campagnes.md)               | Créer et envoyer des campagnes newsletter réelles                              | Livré — 2026-07-02 (code + revue + recette Mailpit locale)                                                          |
 | [lot-automations-worker-general.md](./lot-automations-worker-general.md)   | Worker/scheduler général pour exécuter les jobs automatiquement                | En cours — NEWSLETTER_SUBSCRIBED + ORDER_PLACED couverts (2026-07-01), activation prod et politique retry restantes |
-| [lot-analytics-tracking-reel.md](./lot-analytics-tracking-reel.md)         | Brancher le bloc "Aujourd'hui vs hier" sur un pipeline tracking minimal        | A faire                                                                                                             |
+| [lot-analytics-tracking-reel.md](./lot-analytics-tracking-reel.md)         | Brancher le bloc "Aujourd'hui vs hier" sur un pipeline tracking minimal        | Livré — 2026-07-02 (anonyme sans cookie, recette locale)                                                                                                             |
 | [lot-settings-manquants.md](./lot-settings-manquants.md)                   | Ouvrir les sections settings orders, catalog, customers et media               | Terminé — customers reste volontairement en stub                                                                    |
 
 `lot-newsletter-campagnes` nécessite un provider email. `lot-automations-worker-general` nécessite un socle H2 suffisamment stabilisé pour les déclencheurs `order_created`. `lot-analytics-tracking-reel` nécessite une décision produit préalable.
