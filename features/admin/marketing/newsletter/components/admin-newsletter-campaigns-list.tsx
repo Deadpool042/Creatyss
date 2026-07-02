@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { sendNewsletterCampaignAction } from "@/features/admin/marketing/newsletter/actions/send-newsletter-campaign.action";
 import { archiveNewsletterCampaignAction } from "@/features/admin/marketing/newsletter/actions/archive-newsletter-campaign.action";
+import { getAdminNewsletterCampaignDetailPath } from "@/features/admin/marketing/newsletter/shared/admin-newsletter-routes";
 import type { AdminNewsletterCampaignSummary } from "@/features/admin/marketing/newsletter/queries/list-admin-newsletter-campaigns.query";
 
 type AdminNewsletterCampaignsListProps = {
@@ -55,18 +56,9 @@ function getStatusBadgeVariant(status: string): CampaignBadgeVariant {
 
 function CampaignRow({ campaign }: { campaign: AdminNewsletterCampaignSummary }) {
   const router = useRouter();
-  const [isSending, startSendTransition] = useTransition();
   const [isArchiving, startArchiveTransition] = useTransition();
 
-  const isPending = isSending || isArchiving;
   const isDraft = campaign.status === "DRAFT";
-
-  function handleSend() {
-    startSendTransition(async () => {
-      await sendNewsletterCampaignAction(campaign.id);
-      router.refresh();
-    });
-  }
 
   function handleArchive() {
     startArchiveTransition(async () => {
@@ -79,7 +71,12 @@ function CampaignRow({ campaign }: { campaign: AdminNewsletterCampaignSummary })
     <div className="flex flex-col gap-3 py-4 first:pt-0 last:pb-0 sm:flex-row sm:items-start sm:justify-between">
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-semibold text-foreground">{campaign.name}</span>
+          <Link
+            href={getAdminNewsletterCampaignDetailPath(campaign.id)}
+            className="text-sm font-semibold text-foreground underline-offset-4 hover:underline"
+          >
+            {campaign.name}
+          </Link>
           <Badge variant={getStatusBadgeVariant(campaign.status)}>
             {getStatusLabel(campaign.status)}
           </Badge>
@@ -96,22 +93,16 @@ function CampaignRow({ campaign }: { campaign: AdminNewsletterCampaignSummary })
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-2">
-        {isDraft ? (
-          <Button
-            type="button"
-            variant="default"
-            size="sm"
-            disabled={isPending}
-            onClick={handleSend}
-          >
-            {isSending ? "Envoi…" : "Envoyer"}
-          </Button>
-        ) : null}
+        <Button asChild variant={isDraft ? "default" : "outline"} size="sm">
+          <Link href={getAdminNewsletterCampaignDetailPath(campaign.id)}>
+            {isDraft ? "Prévisualiser et envoyer" : "Voir le détail"}
+          </Link>
+        </Button>
         <Button
           type="button"
           variant="outline"
           size="sm"
-          disabled={isPending}
+          disabled={isArchiving}
           onClick={handleArchive}
         >
           Archiver
