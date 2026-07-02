@@ -77,6 +77,7 @@ export function buildAdminNavigation({
     .map((groupDefinition) => {
       const groupItems = items
         .filter((item) => item.group === groupDefinition.key)
+        .filter((item) => item.visibility.sidebar)
         .filter((item) => hasAdminNavigationAccess(item, context))
         .sort(sortNavigationItems);
 
@@ -108,6 +109,16 @@ export function buildAdminMobileMoreNavigationItems(
 ): ReadonlyArray<AdminNavigationItem> {
   return items
     .filter((item) => item.visibility.mobileMore)
+    .filter((item) => hasAdminNavigationAccess(item, context))
+    .sort(sortNavigationItems);
+}
+
+export function buildAdminSettingsHubItems(
+  items: ReadonlyArray<AdminNavigationItem>,
+  context: AdminNavigationContext
+): ReadonlyArray<AdminNavigationItem> {
+  return items
+    .filter((item) => item.visibility.settingsHub)
     .filter((item) => hasAdminNavigationAccess(item, context))
     .sort(sortNavigationItems);
 }

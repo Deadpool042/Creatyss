@@ -2,6 +2,7 @@ export {
   buildAdminMobileMoreNavigationItems,
   buildAdminMobilePrimaryNavigationItems,
   buildAdminNavigation,
+  buildAdminSettingsHubItems,
   hasAdminNavigationAccess,
 } from "./build-admin-navigation.helper";
 

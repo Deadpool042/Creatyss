@@ -63,7 +63,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   },
   {
     key: "dashboard-catalog",
-    label: "Vue d’ensemble",
+    label: "Vue d’ensemble — Catalogue",
     href: "/admin/catalog/overview",
     iconKey: "search",
     group: "catalog",
@@ -128,7 +128,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
 
   {
     key: "commerce-overview",
-    label: "Vue d’ensemble",
+    label: "Vue d’ensemble — Commerce",
     href: "/admin/commerce/overview",
     iconKey: "search",
     group: "commerce",
@@ -203,7 +203,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
 
   {
     key: "content-overview",
-    label: "Vue d’ensemble",
+    label: "Vue d’ensemble — Contenu",
     href: "/admin/content/overview",
     iconKey: "search",
     group: "content",
@@ -276,7 +276,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
 
   {
     key: "marketing-overview",
-    label: "Vue d'ensemble",
+    label: "Vue d'ensemble — Marketing",
     href: "/admin/marketing/overview",
     iconKey: "megaphone",
     group: "marketing",
@@ -403,7 +403,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
 
   {
     key: "settings-overview",
-    label: "Vue d'ensemble",
+    label: "Vue d'ensemble — Réglages",
     href: "/admin/settings",
     iconKey: "settings",
     group: "settings",
@@ -412,6 +412,21 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     visibility: {
       sidebar: true,
       mobileMore: true,
+    },
+  },
+  {
+    key: "general-settings",
+    label: "Général",
+    href: "/admin/settings/general",
+    iconKey: "settings",
+    group: "settings",
+    order: 15,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.generalRead],
     },
   },
   {
@@ -424,6 +439,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     visibility: {
       sidebar: true,
       mobileMore: true,
+      settingsHub: true,
     },
     access: {
       capabilitiesAll: [adminNavigationCapabilities.settings.storeRead],
@@ -439,6 +455,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     visibility: {
       sidebar: true,
       mobileMore: true,
+      settingsHub: true,
     },
     access: {
       capabilitiesAll: [adminNavigationCapabilities.settings.catalogRead],
@@ -454,9 +471,40 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     visibility: {
       sidebar: true,
       mobileMore: true,
+      settingsHub: true,
     },
     access: {
       capabilitiesAll: [adminNavigationCapabilities.settings.ordersRead],
+    },
+  },
+  {
+    key: "payments-settings",
+    label: "Paiements",
+    href: "/admin/settings/payments",
+    iconKey: "creditCard",
+    group: "settings",
+    order: 33,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.paymentsRead],
+    },
+  },
+  {
+    key: "shipping-settings",
+    label: "Livraison",
+    href: "/admin/settings/shipping",
+    iconKey: "truck",
+    group: "settings",
+    order: 34,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.shippingRead],
     },
   },
   {
@@ -465,10 +513,11 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     href: "/admin/settings/customers",
     iconKey: "users",
     group: "settings",
-    order: 34,
+    order: 35,
     visibility: {
       sidebar: true,
       mobileMore: true,
+      settingsHub: true,
     },
     access: {
       capabilitiesAll: [adminNavigationCapabilities.settings.customersRead],
@@ -484,9 +533,55 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     visibility: {
       sidebar: true,
       mobileMore: true,
+      settingsHub: true,
     },
     access: {
       capabilitiesAll: [adminNavigationCapabilities.settings.mediaRead],
+    },
+  },
+  {
+    key: "notifications-settings",
+    label: "Notifications",
+    href: "/admin/settings/notifications",
+    iconKey: "mail",
+    group: "settings",
+    order: 37,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.notificationsRead],
+    },
+  },
+  {
+    key: "seo-settings",
+    label: "SEO",
+    href: "/admin/settings/seo",
+    iconKey: "search",
+    group: "settings",
+    order: 38,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.seoRead],
+    },
+  },
+  {
+    key: "team-settings",
+    label: "Équipe",
+    href: "/admin/settings/team",
+    iconKey: "users",
+    group: "settings",
+    order: 39,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.teamRead],
     },
   },
   {
@@ -499,10 +594,26 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     visibility: {
       sidebar: true,
       mobileMore: true,
+      settingsHub: true,
     },
     access: {
       internalOnly: true,
       capabilitiesAll: [adminNavigationCapabilities.settings.advancedRead],
+    },
+  },
+  {
+    key: "api-clients-settings",
+    label: "API clients",
+    href: "/admin/settings/api-clients",
+    iconKey: "key",
+    group: "settings",
+    order: 41,
+    visibility: {
+      sidebar: false,
+      settingsHub: true,
+    },
+    access: {
+      capabilitiesAll: [adminNavigationCapabilities.settings.apiClientsRead],
     },
   },
 ];

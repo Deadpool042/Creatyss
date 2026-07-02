@@ -42,6 +42,11 @@ export type AdminNavigationVisibility = {
   sidebar: boolean;
   mobilePrimary?: boolean;
   mobileMore?: boolean;
+  /**
+   * L'item doit apparaître comme carte dans le hub `/admin/settings`
+   * (indépendant de `sidebar`, qui gère uniquement la navigation latérale).
+   */
+  settingsHub?: boolean;
 };
 
 export type AdminNavigationAccessRule = {
