@@ -157,7 +157,14 @@ export const wooOrderLineItemSchema = z.object({
   subtotal_tax: z.string().default("0"),
   total: z.string().default("0"),
   total_tax: z.string().default("0"),
-  sku: z.string().default(""),
+  // WooCommerce renvoie `null` (pas `""`) pour une ligne de commande sans SKU
+  // — contrairement à `/products` où c'est une chaîne vide. `.nullable()` +
+  // transform évite l'échec de validation observé en exécution réelle.
+  sku: z
+    .string()
+    .nullable()
+    .optional()
+    .transform((value) => value ?? ""),
   price: z.union([z.number(), z.string()]).optional(),
 });
 
