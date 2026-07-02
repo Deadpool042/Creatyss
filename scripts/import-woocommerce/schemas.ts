@@ -106,3 +106,88 @@ export const wordPressMediaSchema = z.object({
 
 export type WordPressPost = z.infer<typeof wordPressPostSchema>;
 export type WordPressMedia = z.infer<typeof wordPressMediaSchema>;
+
+// Champs communs à `billing` et `shipping` sur les entités WooCommerce customer/order.
+// WooCommerce renvoie souvent des chaînes vides plutôt que `null` sur les adresses
+// partiellement remplies, d'où les `.default("")` systématiques.
+export const wooAddressSchema = z.object({
+  first_name: z.string().default(""),
+  last_name: z.string().default(""),
+  company: z.string().default(""),
+  address_1: z.string().default(""),
+  address_2: z.string().default(""),
+  city: z.string().default(""),
+  state: z.string().default(""),
+  postcode: z.string().default(""),
+  country: z.string().default(""),
+});
+
+// `billing` porte en plus l'email et le téléphone du client, absents de `shipping`.
+export const wooBillingAddressSchema = wooAddressSchema.extend({
+  email: z.string().default(""),
+  phone: z.string().default(""),
+});
+
+export const wooShippingAddressSchema = wooAddressSchema;
+
+export type WooAddress = z.infer<typeof wooAddressSchema>;
+export type WooBillingAddress = z.infer<typeof wooBillingAddressSchema>;
+export type WooShippingAddress = z.infer<typeof wooShippingAddressSchema>;
+
+export const wooCustomerSchema = z.object({
+  id: z.number().int(),
+  email: z.string(),
+  first_name: z.string().default(""),
+  last_name: z.string().default(""),
+  billing: wooBillingAddressSchema,
+  shipping: wooShippingAddressSchema,
+  is_paying_customer: z.boolean().default(false),
+  date_created: z.string().nullable().optional(),
+});
+
+export type WooCustomer = z.infer<typeof wooCustomerSchema>;
+
+export const wooOrderLineItemSchema = z.object({
+  id: z.number().int(),
+  name: z.string(),
+  product_id: z.number().int(),
+  variation_id: z.number().int().default(0),
+  quantity: z.number(),
+  subtotal: z.string().default("0"),
+  subtotal_tax: z.string().default("0"),
+  total: z.string().default("0"),
+  total_tax: z.string().default("0"),
+  // WooCommerce renvoie `null` (pas `""`) pour une ligne de commande sans SKU
+  // — contrairement à `/products` où c'est une chaîne vide. `.nullable()` +
+  // transform évite l'échec de validation observé en exécution réelle.
+  sku: z
+    .string()
+    .nullable()
+    .optional()
+    .transform((value) => value ?? ""),
+  price: z.union([z.number(), z.string()]).optional(),
+});
+
+export type WooOrderLineItem = z.infer<typeof wooOrderLineItemSchema>;
+
+export const wooOrderSchema = z.object({
+  id: z.number().int(),
+  number: z.string(),
+  status: z.string(),
+  currency: z.string().default("EUR"),
+  date_created: z.string().nullable().optional(),
+  date_completed: z.string().nullable().optional(),
+  discount_total: z.string().default("0"),
+  shipping_total: z.string().default("0"),
+  total_tax: z.string().default("0"),
+  total: z.string().default("0"),
+  customer_id: z.number().int().default(0),
+  billing: wooBillingAddressSchema,
+  shipping: wooShippingAddressSchema,
+  payment_method: z.string().default(""),
+  payment_method_title: z.string().default(""),
+  customer_note: z.string().default(""),
+  line_items: z.array(wooOrderLineItemSchema).default([]),
+});
+
+export type WooOrder = z.infer<typeof wooOrderSchema>;

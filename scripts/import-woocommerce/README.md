@@ -6,8 +6,8 @@
 
 Ces scripts ont servi à récupérer rapidement le contenu de l'ancien site
 WordPress/WooCommerce (creatyss.com) lors de l'amorçage du projet :
-produits, catégories, médias. Ils ne font **pas** partie du socle
-réutilisable.
+produits, catégories, médias, clients et commandes. Ils ne font **pas**
+partie du socle réutilisable.
 
 Conséquences :
 

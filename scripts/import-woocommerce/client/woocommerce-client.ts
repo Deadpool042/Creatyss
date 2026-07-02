@@ -3,11 +3,15 @@ import { WOO_PER_PAGE } from "../constants";
 import type { ImportWooCommerceEnv } from "../env";
 import {
   wooCategorySchema,
+  wooCustomerSchema,
+  wooOrderSchema,
   wooProductSchema,
   wooVariationSchema,
   wordPressMediaSchema,
   wordPressPostSchema,
   type WooCategory,
+  type WooCustomer,
+  type WooOrder,
   type WooProduct,
   type WooVariation,
   type WordPressMedia,
@@ -136,6 +140,14 @@ export class WooCommerceClient {
 
   fetchVariations(productId: number): Promise<WooVariation[]> {
     return this.fetchPagedCollection(`products/${productId}/variations`, wooVariationSchema);
+  }
+
+  fetchCustomers(): Promise<WooCustomer[]> {
+    return this.fetchPagedCollection("customers", wooCustomerSchema);
+  }
+
+  fetchOrders(): Promise<WooOrder[]> {
+    return this.fetchPagedCollection("orders", wooOrderSchema);
   }
 
   fetchWordPressPosts(): Promise<WordPressPost[]> {

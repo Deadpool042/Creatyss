@@ -146,7 +146,19 @@ export default async function AdminCustomerDetailPage({ params }: AdminCustomerD
             </div>
 
             <div className="mt-8 border-t border-surface-border-subtle pt-6">
-              <CustomerDetailForm customer={customer} />
+              <CustomerDetailForm
+                customer={{
+                  id: customer.id,
+                  firstName: customer.firstName,
+                  lastName: customer.lastName,
+                  displayName: customer.displayName,
+                  phone: customer.phone,
+                  status: customer.status,
+                  acceptsEmail: customer.acceptsEmail,
+                  acceptsSms: customer.acceptsSms,
+                  notes: customer.notes,
+                }}
+              />
             </div>
           </CustomerSection>
 

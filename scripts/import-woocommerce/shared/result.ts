@@ -17,6 +17,11 @@ export type ImportCounters = {
   missingImages: number;
   failedImages: number;
   deletedMediaAssets: number;
+  customersImported: number;
+  customersUpdated: number;
+  customersSkipped: number;
+  ordersImported: number;
+  ordersUpdated: number;
 };
 
 export type ImportResult = {
@@ -40,6 +45,11 @@ export function createEmptyImportResult(): ImportResult {
       missingImages: 0,
       failedImages: 0,
       deletedMediaAssets: 0,
+      customersImported: 0,
+      customersUpdated: 0,
+      customersSkipped: 0,
+      ordersImported: 0,
+      ordersUpdated: 0,
     },
     warnings: [],
   };
