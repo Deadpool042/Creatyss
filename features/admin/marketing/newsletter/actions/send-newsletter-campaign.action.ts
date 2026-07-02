@@ -7,6 +7,10 @@ import { serverEnv } from "@/core/config/env/server";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { resolveEmailProvider } from "@/features/email/providers/resolve-email-provider";
+import {
+  buildNewsletterEmailHtml,
+  buildNewsletterEmailText,
+} from "@/features/admin/marketing/newsletter/lib/build-newsletter-email-content";
 import { ADMIN_NEWSLETTER_CAMPAIGNS_PATH } from "@/features/admin/marketing/newsletter/shared/admin-newsletter-routes";
 
 export type SendNewsletterCampaignResult =
@@ -16,20 +20,6 @@ export type SendNewsletterCampaignResult =
 function buildUnsubscribeUrl(subscriberId: string): string {
   const token = Buffer.from(subscriberId).toString("base64url");
   return `${serverEnv.appUrl}/api/newsletter/unsubscribe?token=${token}`;
-}
-
-function buildEmailHtml(bodyHtml: string, unsubscribeUrl: string): string {
-  return `${bodyHtml}
-<p style="font-size:12px;color:#666666;margin-top:24px;border-top:1px solid #eeeeee;padding-top:12px;">
-  Pour vous désabonner de cette liste, <a href="${unsubscribeUrl}" style="color:#666666;">cliquez ici</a>.
-</p>`;
-}
-
-function buildEmailText(bodyText: string, unsubscribeUrl: string): string {
-  return `${bodyText}
-
----
-Pour vous désabonner : ${unsubscribeUrl}`;
 }
 
 /**
@@ -140,8 +130,8 @@ export async function sendNewsletterCampaignAction(
       await emailProvider.sendTransactionalEmail({
         to: recipient.email,
         subject: campaign.subjectLine,
-        html: buildEmailHtml(campaign.bodyHtml ?? "", unsubscribeUrl),
-        text: buildEmailText(campaign.bodyText ?? "", unsubscribeUrl),
+        html: buildNewsletterEmailHtml(campaign.bodyHtml ?? "", unsubscribeUrl),
+        text: buildNewsletterEmailText(campaign.bodyText ?? "", unsubscribeUrl),
       });
 
       await db.newsletterCampaignRecipient.update({

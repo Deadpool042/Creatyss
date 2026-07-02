@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminDetailMetric } from "@/components/admin/shared/admin-detail-metric";
 import { AdminDataTableFeedbackBanner } from "@/components/admin/tables/layout/admin-data-table-feedback-banner";
 import { Badge } from "@/components/ui/badge";
 import { AdminDiscountCodeCreateForm } from "@/features/admin/marketing/discounts/components/admin-discount-code-create-form";
@@ -117,21 +118,6 @@ function getCodeErrorMessage(code: string): string {
   }
 }
 
-function DetailMetric({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="grid gap-1 border-b border-surface-border-subtle px-5 py-4 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
-      <span className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">{label}</span>
-      <span className="text-sm font-medium text-foreground">{value}</span>
-    </div>
-  );
-}
-
 function DefinitionList({
   items,
 }: {
@@ -143,8 +129,13 @@ function DefinitionList({
   return (
     <dl className="grid gap-4 sm:grid-cols-2">
       {items.map((item) => (
-        <div key={item.label} className="grid gap-1 rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-4">
-          <dt className="text-xs uppercase tracking-[0.14em] text-muted-foreground">{item.label}</dt>
+        <div
+          key={item.label}
+          className="grid gap-1 rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-4"
+        >
+          <dt className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
+            {item.label}
+          </dt>
           <dd className="text-sm text-foreground">{item.value}</dd>
         </div>
       ))}
@@ -156,7 +147,10 @@ export default async function AdminDiscountDetailPage({
   params,
   searchParams,
 }: AdminDiscountDetailPageProps) {
-  const [{ discount: discountId }, resolvedSearchParams] = await Promise.all([params, searchParams]);
+  const [{ discount: discountId }, resolvedSearchParams] = await Promise.all([
+    params,
+    searchParams,
+  ]);
 
   const featureActive = await isDiscountsFeatureActive();
   if (!featureActive) {
@@ -220,10 +214,10 @@ export default async function AdminDiscountDetailPage({
 
         <section className="overflow-hidden rounded-[28px] border border-surface-border bg-surface-panel shadow-card">
           <div className="grid gap-0 md:grid-cols-4">
-            <DetailMetric label="Code principal" value={discount.code} />
-            <DetailMetric label="Type" value={getDiscountTypeLabel(discount.type)} />
-            <DetailMetric label="Valeur" value={getDiscountValueLabel(discount)} />
-            <DetailMetric label="Utilisations" value={String(discount.redemptionsCount)} />
+            <AdminDetailMetric label="Code principal" value={discount.code} />
+            <AdminDetailMetric label="Type" value={getDiscountTypeLabel(discount.type)} />
+            <AdminDetailMetric label="Valeur" value={getDiscountValueLabel(discount)} />
+            <AdminDetailMetric label="Utilisations" value={String(discount.redemptionsCount)} />
           </div>
         </section>
 
@@ -290,7 +284,8 @@ export default async function AdminDiscountDetailPage({
               />
             ) : (
               <p className="text-sm text-muted-foreground">
-                Priorite actuelle : {discount.priority}. Le niveau automation est requis pour la modifier.
+                Priorite actuelle : {discount.priority}. Le niveau automation est requis pour la
+                modifier.
               </p>
             )
           ) : (
@@ -304,7 +299,8 @@ export default async function AdminDiscountDetailPage({
           <div className="mb-5">
             <h2 className="text-lg font-semibold tracking-tight text-foreground">Codes associes</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Codes secondaires relies a cette remise, avec leur statut et leur limite d'utilisation.
+              Codes secondaires relies a cette remise, avec leur statut et leur limite
+              d'utilisation.
             </p>
           </div>
 
@@ -327,7 +323,8 @@ export default async function AdminDiscountDetailPage({
           <div className="mb-5">
             <h2 className="text-lg font-semibold tracking-tight text-foreground">Redemptions</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Historique des utilisations de la remise, avec commande et cliente si ces donnees existent.
+              Historique des utilisations de la remise, avec commande et cliente si ces donnees
+              existent.
             </p>
           </div>
 
