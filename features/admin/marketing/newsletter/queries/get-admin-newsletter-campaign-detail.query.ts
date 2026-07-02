@@ -35,44 +35,43 @@ export async function getAdminNewsletterCampaignDetail(
     return null;
   }
 
-  const campaign = await db.newsletterCampaign.findFirst({
-    where: {
-      id: campaignId,
-      storeId,
-      archivedAt: null,
-    },
-    select: {
-      id: true,
-      code: true,
-      name: true,
-      subjectLine: true,
-      previewText: true,
-      bodyHtml: true,
-      bodyText: true,
-      status: true,
-      sentAt: true,
-      failedAt: true,
-      scheduledAt: true,
-      sendingStartedAt: true,
-      createdAt: true,
-      _count: {
-        select: { recipients: true },
+  const [campaign, sentCount, failedCount] = await Promise.all([
+    db.newsletterCampaign.findFirst({
+      where: {
+        id: campaignId,
+        storeId,
+        archivedAt: null,
       },
-      recipients: {
-        select: {
-          sentAt: true,
-          failedAt: true,
+      select: {
+        id: true,
+        code: true,
+        name: true,
+        subjectLine: true,
+        previewText: true,
+        bodyHtml: true,
+        bodyText: true,
+        status: true,
+        sentAt: true,
+        failedAt: true,
+        scheduledAt: true,
+        sendingStartedAt: true,
+        createdAt: true,
+        _count: {
+          select: { recipients: true },
         },
       },
-    },
-  });
+    }),
+    db.newsletterCampaignRecipient.count({
+      where: { newsletterCampaignId: campaignId, sentAt: { not: null } },
+    }),
+    db.newsletterCampaignRecipient.count({
+      where: { newsletterCampaignId: campaignId, failedAt: { not: null } },
+    }),
+  ]);
 
   if (!campaign) {
     return null;
   }
-
-  const sentCount = campaign.recipients.filter((r) => r.sentAt !== null).length;
-  const failedCount = campaign.recipients.filter((r) => r.failedAt !== null).length;
 
   return {
     id: campaign.id,

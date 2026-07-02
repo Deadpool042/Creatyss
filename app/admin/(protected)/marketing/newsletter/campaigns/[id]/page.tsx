@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminDetailMetric } from "@/components/admin/shared/admin-detail-metric";
 import { Badge } from "@/components/ui/badge";
 import { isNewsletterFeatureActive } from "@/features/admin/marketing/queries/is-newsletter-feature-active.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
@@ -16,6 +17,10 @@ import {
   ADMIN_NEWSLETTER_PATH,
   ADMIN_NEWSLETTER_CAMPAIGNS_PATH,
 } from "@/features/admin/marketing/newsletter/shared/admin-newsletter-routes";
+import {
+  getNewsletterCampaignStatusLabel,
+  getNewsletterCampaignStatusBadgeVariant,
+} from "@/features/admin/marketing/newsletter/shared/newsletter-campaign-status";
 
 export const dynamic = "force-dynamic";
 
@@ -30,46 +35,6 @@ const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
 
 // URL factice affichée dans l'aperçu : le lien réel est généré par abonné à l'envoi.
 const PREVIEW_UNSUBSCRIBE_URL = "#lien-de-desinscription-genere-a-l-envoi";
-
-function getStatusLabel(status: string): string {
-  switch (status) {
-    case "DRAFT":
-      return "Brouillon";
-    case "SCHEDULED":
-      return "Planifiée";
-    case "SENDING":
-      return "En cours d'envoi";
-    case "SENT":
-      return "Envoyée";
-    case "FAILED":
-      return "Échec";
-    case "CANCELLED":
-      return "Annulée";
-    default:
-      return status;
-  }
-}
-
-function getStatusBadgeVariant(status: string): "secondary" | "outline" | "destructive" {
-  switch (status) {
-    case "SENT":
-      return "secondary";
-    case "FAILED":
-    case "CANCELLED":
-      return "destructive";
-    default:
-      return "outline";
-  }
-}
-
-function DetailMetric({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="grid gap-1 border-b border-surface-border-subtle px-5 py-4 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
-      <span className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">{label}</span>
-      <span className="text-sm font-medium text-foreground">{value}</span>
-    </div>
-  );
-}
 
 export default async function AdminNewsletterCampaignDetailPage({
   params,
@@ -89,7 +54,9 @@ export default async function AdminNewsletterCampaignDetailPage({
 
   if (campaign === null) notFound();
 
-  const isDraft = campaign.status === "DRAFT";
+  // Avant le premier envoi, aucun recipient n'est matérialisé : le nombre
+  // pertinent est l'audience courante, affichée par le panneau d'envoi.
+  const recipientCountLabel = campaign.status === "DRAFT" ? "—" : String(campaign.recipientCount);
   const previewHtml = campaign.bodyHtml
     ? buildNewsletterEmailHtml(campaign.bodyHtml, PREVIEW_UNSUBSCRIBE_URL)
     : null;
@@ -120,17 +87,20 @@ export default async function AdminNewsletterCampaignDetailPage({
 
         <section className="overflow-hidden rounded-[28px] border border-surface-border bg-surface-panel shadow-card">
           <div className="grid gap-0 md:grid-cols-4">
-            <DetailMetric label="Statut" value={getStatusLabel(campaign.status)} />
-            <DetailMetric label="Destinataires" value={String(campaign.recipientCount)} />
-            <DetailMetric label="Envoyés" value={String(campaign.sentCount)} />
-            <DetailMetric label="Échecs" value={String(campaign.failedCount)} />
+            <AdminDetailMetric
+              label="Statut"
+              value={getNewsletterCampaignStatusLabel(campaign.status)}
+            />
+            <AdminDetailMetric label="Destinataires" value={recipientCountLabel} />
+            <AdminDetailMetric label="Envoyés" value={String(campaign.sentCount)} />
+            <AdminDetailMetric label="Échecs" value={String(campaign.failedCount)} />
           </div>
         </section>
 
         <section className="rounded-[28px] border border-surface-border bg-surface-panel p-6 shadow-card">
           <div className="mb-4 flex flex-wrap items-center gap-3">
-            <Badge variant={getStatusBadgeVariant(campaign.status)}>
-              {getStatusLabel(campaign.status)}
+            <Badge variant={getNewsletterCampaignStatusBadgeVariant(campaign.status)}>
+              {getNewsletterCampaignStatusLabel(campaign.status)}
             </Badge>
             <span className="text-xs text-muted-foreground">
               Créée le {dateFormatter.format(campaign.createdAt)}
@@ -198,16 +168,11 @@ export default async function AdminNewsletterCampaignDetailPage({
             </p>
           </div>
 
-          {isDraft ? (
-            <AdminNewsletterCampaignSendPanel
-              campaignId={campaign.id}
-              subscriberCount={subscriberCount}
-            />
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              Cette campagne n&apos;est plus un brouillon — l&apos;envoi n&apos;est plus disponible.
-            </p>
-          )}
+          <AdminNewsletterCampaignSendPanel
+            campaignId={campaign.id}
+            campaignStatus={campaign.status}
+            subscriberCount={subscriberCount}
+          />
         </section>
       </div>
     </AdminPageShell>
