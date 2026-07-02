@@ -508,22 +508,6 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     },
   },
   {
-    key: "customers-settings",
-    label: "Clients",
-    href: "/admin/settings/customers",
-    iconKey: "users",
-    group: "settings",
-    order: 35,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-      settingsHub: true,
-    },
-    access: {
-      capabilitiesAll: [adminNavigationCapabilities.settings.customersRead],
-    },
-  },
-  {
     key: "media-settings",
     label: "Médias",
     href: "/admin/settings/media",

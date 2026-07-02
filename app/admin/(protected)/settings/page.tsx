@@ -11,7 +11,6 @@ import {
   Sliders,
   Store,
   Truck,
-  UserCog,
   Users,
 } from "lucide-react";
 
@@ -72,10 +71,6 @@ const SETTINGS_CARD_META: Record<string, SettingsCardMeta> = {
   "seo-settings": {
     description: "Métadonnées globales, sitemap et balises par défaut.",
     icon: Search,
-  },
-  "customers-settings": {
-    description: "Politiques de compte client et durée de rétention des données.",
-    icon: UserCog,
   },
   "team-settings": {
     description: "Membres, rôles et permissions d'accès à l'administration.",
