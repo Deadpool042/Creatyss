@@ -4,16 +4,21 @@
  * - Bloc "Ce mois" : données réelles (`Order`/`Customer`, lecture live à la
  *   demande) si `monthly` est fourni — cf.
  *   `docs/lots/2026-06-13-engagement-analytics-cadrage.md` (décision B1/C1).
- * - Bloc "Aujourd'hui vs hier" et "Pages les plus visitées" : mocks assumés,
- *   nécessitent un pipeline de tracking absent du repo (hors périmètre,
- *   "Analytics complexes").
+ * - Bloc "Aujourd'hui vs hier" : données réelles (`AnalyticsSnapshot`
+ *   quotidiens, tracking anonyme sans cookie — cf.
+ *   `features/analytics/tracking/record-storefront-analytics-event.service.ts`)
+ *   si `daily` est fourni ; mock sinon (comportement antérieur).
+ * - Bloc "Pages les plus visitées" : mock assumé, nécessite un tracking par
+ *   page absent du repo (hors périmètre, "Analytics complexes").
  * Domaine : analytics (prisma/optional/engagement/analytics.prisma)
- * Modèles : AnalyticsMetric, AnalyticsSnapshot (non alimentés par ce cockpit)
+ * Modèles : AnalyticsMetric, AnalyticsSnapshot (alimentés par le tracking
+ * storefront pour les vues produit et ajouts panier uniquement)
  */
 import { Activity, Eye, ShoppingCart, TrendingDown, TrendingUp, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { CommerceAnalyticsInsights } from "@/features/admin/insights/queries/get-commerce-analytics-insights.query";
+import type { DailyTrafficAnalytics } from "@/features/admin/insights/queries/get-daily-traffic-analytics.query";
 import type { MonthlyCommerceAnalytics } from "@/features/admin/insights/queries/get-monthly-commerce-analytics.query";
 
 // ── Mock data ─────────────────────────────────────────────────────────────
@@ -57,15 +62,18 @@ function KpiCard({
   hint,
   icon: Icon,
   accent,
+  isMock = true,
 }: {
   label: string;
   value: string;
-  delta: number;
+  /** `null` : variation non calculable (référence à zéro). */
+  delta: number | null;
   hint: string;
   icon: React.ComponentType<{ className?: string }>;
   accent?: string;
+  isMock?: boolean;
 }) {
-  const isPositive = delta >= 0;
+  const isPositive = delta !== null && delta >= 0;
   const DeltaIcon = isPositive ? TrendingUp : TrendingDown;
   return (
     <div
@@ -77,21 +85,27 @@ function KpiCard({
       <div className="flex items-center justify-between gap-2">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
           {label}
-          <span className="ml-1.5 font-normal text-muted-foreground/40">(mock)</span>
+          {isMock ? (
+            <span className="ml-1.5 font-normal text-muted-foreground/40">(mock)</span>
+          ) : null}
         </p>
         <Icon className="size-4 shrink-0 text-muted-foreground/40" />
       </div>
       <p className="text-3xl font-semibold tracking-tight text-foreground">{value}</p>
       <div className="flex items-center gap-1.5">
-        <span
-          className={cn(
-            "inline-flex items-center gap-0.5 text-xs font-medium",
-            isPositive ? "text-feedback-success-foreground" : "text-feedback-error-foreground"
-          )}
-        >
-          <DeltaIcon className="size-3" />
-          {Math.abs(delta).toFixed(1)}%
-        </span>
+        {delta === null ? (
+          <span className="text-xs font-medium text-muted-foreground/60">—</span>
+        ) : (
+          <span
+            className={cn(
+              "inline-flex items-center gap-0.5 text-xs font-medium",
+              isPositive ? "text-feedback-success-foreground" : "text-feedback-error-foreground"
+            )}
+          >
+            <DeltaIcon className="size-3" />
+            {Math.abs(delta).toFixed(1)}%
+          </span>
+        )}
         <span className="text-xs text-muted-foreground">{hint}</span>
       </div>
     </div>
@@ -108,11 +122,18 @@ type AnalyticsOverviewSectionsProps = {
    */
   monthly?: MonthlyCommerceAnalytics | null;
   insights?: CommerceAnalyticsInsights | null;
+  /**
+   * Compteurs storefront « aujourd'hui vs hier » (tracking anonyme sans
+   * cookie, `AnalyticsSnapshot` quotidiens). `null` si le niveau `read`
+   * n'est pas atteint — le bloc reste alors un mock (comportement antérieur).
+   */
+  daily?: DailyTrafficAnalytics | null;
 };
 
 export function AnalyticsOverviewSections({
   monthly = null,
   insights = null,
+  daily = null,
 }: AnalyticsOverviewSectionsProps) {
   return (
     <div>
@@ -122,56 +143,78 @@ export function AnalyticsOverviewSections({
           Aujourd'hui vs hier
         </p>
         <p className="mt-0.5 text-[11px] text-muted-foreground/50">
-          Données de démonstration — nécessite un pipeline de tracking du
-          trafic (non implémenté).
+          {daily === null
+            ? "Données de démonstration — nécessite le niveau read du module analytics."
+            : "Compteurs agrégés côté serveur, anonymes et sans cookie. Sessions et visiteurs uniques non mesurables sans identifiant."}
         </p>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        <KpiCard
-          label="Sessions"
-          value={TODAY.sessions.toLocaleString("fr-FR")}
-          delta={TODAY.sessionsDelta}
-          hint="vs hier"
-          icon={Activity}
-        />
-        <KpiCard
-          label="Visiteurs uniques"
-          value={TODAY.uniqueVisitors.toLocaleString("fr-FR")}
-          delta={TODAY.uniqueVisitorsDelta}
-          hint="vs hier"
-          icon={Users}
-        />
-        <KpiCard
-          label="Pages vues"
-          value={TODAY.pageViews.toLocaleString("fr-FR")}
-          delta={TODAY.pageViewsDelta}
-          hint="vs hier"
-          icon={Eye}
-        />
-        <KpiCard
-          label="Taux de conversion"
-          value={`${TODAY.conversionRate}%`}
-          delta={TODAY.conversionRateDelta}
-          hint="sessions → commande"
-          icon={ShoppingCart}
-          accent="bg-emerald-50/60"
-        />
-        <KpiCard
-          label="Panier moyen"
-          value={`${TODAY.avgOrderValue} €`}
-          delta={TODAY.avgOrderValueDelta}
-          hint="vs hier"
-          icon={ShoppingCart}
-        />
-        <KpiCard
-          label="Revenu"
-          value={`${TODAY.revenue.toLocaleString("fr-FR")} €`}
-          delta={TODAY.revenueDelta}
-          hint="vs hier"
-          icon={TrendingUp}
-          accent="bg-emerald-50/60"
-        />
-      </div>
+      {daily !== null ? (
+        <div className="grid gap-3 sm:grid-cols-2">
+          <KpiCard
+            label="Vues produit"
+            value={daily.productViews.today.toLocaleString("fr-FR")}
+            delta={daily.productViews.deltaPercent}
+            hint="vs hier"
+            icon={Eye}
+            isMock={false}
+          />
+          <KpiCard
+            label="Ajouts panier"
+            value={daily.cartAdditions.today.toLocaleString("fr-FR")}
+            delta={daily.cartAdditions.deltaPercent}
+            hint="vs hier"
+            icon={ShoppingCart}
+            isMock={false}
+          />
+        </div>
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <KpiCard
+            label="Sessions"
+            value={TODAY.sessions.toLocaleString("fr-FR")}
+            delta={TODAY.sessionsDelta}
+            hint="vs hier"
+            icon={Activity}
+          />
+          <KpiCard
+            label="Visiteurs uniques"
+            value={TODAY.uniqueVisitors.toLocaleString("fr-FR")}
+            delta={TODAY.uniqueVisitorsDelta}
+            hint="vs hier"
+            icon={Users}
+          />
+          <KpiCard
+            label="Pages vues"
+            value={TODAY.pageViews.toLocaleString("fr-FR")}
+            delta={TODAY.pageViewsDelta}
+            hint="vs hier"
+            icon={Eye}
+          />
+          <KpiCard
+            label="Taux de conversion"
+            value={`${TODAY.conversionRate}%`}
+            delta={TODAY.conversionRateDelta}
+            hint="sessions → commande"
+            icon={ShoppingCart}
+            accent="bg-emerald-50/60"
+          />
+          <KpiCard
+            label="Panier moyen"
+            value={`${TODAY.avgOrderValue} €`}
+            delta={TODAY.avgOrderValueDelta}
+            hint="vs hier"
+            icon={ShoppingCart}
+          />
+          <KpiCard
+            label="Revenu"
+            value={`${TODAY.revenue.toLocaleString("fr-FR")} €`}
+            delta={TODAY.revenueDelta}
+            hint="vs hier"
+            icon={TrendingUp}
+            accent="bg-emerald-50/60"
+          />
+        </div>
+      )}
 
       {/* Body */}
       <div className="mt-6 grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.8fr)]">
@@ -330,7 +373,9 @@ export function AnalyticsOverviewSections({
                   Statuts des commandes créées ce mois
                 </p>
                 {insights.statusBreakdown.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">Aucune commande créée sur la période courante.</p>
+                  <p className="text-sm text-muted-foreground">
+                    Aucune commande créée sur la période courante.
+                  </p>
                 ) : (
                   <div className="grid gap-2">
                     {insights.statusBreakdown.map((status) => (
@@ -371,24 +416,18 @@ export function AnalyticsOverviewSections({
             ) : (
               <p className="mt-2 text-[11px] leading-5 text-muted-foreground/70">
                 Bloc "Ce mois" : vue calculée à la demande depuis{" "}
-                <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
-                  Order
-                </code>{" "}
+                <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">Order</code>{" "}
                 /{" "}
                 <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
                   Customer
                 </code>
-                , non historisée (
-                <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
-                  AnalyticsMetric
-                </code>{" "}
-                /{" "}
+                , non historisée. Niveau `insights` : lectures commerce additionnelles (`Order` /
+                `OrderLine`). Bloc "Aujourd'hui vs hier" : compteurs quotidiens{" "}
                 <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
                   AnalyticsSnapshot
                 </code>{" "}
-                non alimentés). Niveau `insights` : lectures commerce
-                additionnelles (`Order` / `OrderLine`). Bloc "Aujourd'hui vs
-                hier" : mock, source tracking absente.
+                alimentés par le tracking storefront anonyme sans cookie (vues produit, ajouts
+                panier).
                 <br />
                 Doctrine :{" "}
                 <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
