@@ -9,6 +9,7 @@ import {
   IssueCreditNoteError,
 } from "@/features/admin/commerce/documents/services/issue-credit-note.service";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 type IssueCreditNoteActionResult = { success: true } | { success: false; error: string };
 
@@ -22,6 +23,10 @@ export async function issueCreditNoteAction(orderId: string): Promise<IssueCredi
   const featureActive = await isDocumentsFeatureActive();
   if (!featureActive) {
     return { success: false, error: "La fonctionnalité documents n'est pas activée." };
+  }
+
+  if (!(await meetsFeatureLevel("commerce.documents", "fiscal"))) {
+    return { success: false, error: "L'émission d'avoir n'est pas activée pour ce niveau." };
   }
 
   const storeId = await getCurrentStoreId();
