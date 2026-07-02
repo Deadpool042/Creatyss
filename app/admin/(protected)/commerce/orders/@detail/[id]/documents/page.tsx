@@ -10,6 +10,7 @@ import {
 import { isDocumentsFeatureActive } from "@/features/admin/commerce/documents/queries/is-documents-feature-active.query";
 import { findDocumentsByOrderId } from "@/features/admin/commerce/documents/queries/find-documents-by-order.query";
 import { OrderDetailDocumentsCard } from "@/features/admin/commerce/documents/components/order-detail-documents-card";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export const dynamic = "force-dynamic";
 
@@ -22,8 +23,9 @@ type OrderDocumentsSlotPageProps = Readonly<{
 export default async function OrderDocumentsSlotPage({ params }: OrderDocumentsSlotPageProps) {
   const { id } = await params;
 
-  const [featureActive, order, documents] = await Promise.all([
+  const [featureActive, allowFiscal, order, documents] = await Promise.all([
     isDocumentsFeatureActive(),
+    meetsFeatureLevel("commerce.documents", "fiscal"),
     db.order.findUnique({
       where: { id },
       select: { id: true, orderNumber: true },
@@ -53,7 +55,7 @@ export default async function OrderDocumentsSlotPage({ params }: OrderDocumentsS
       </div>
 
       <div className={buildAdminOrdersDetailSectionClassName()}>
-        <OrderDetailDocumentsCard documents={documents} orderId={id} />
+        <OrderDetailDocumentsCard documents={documents} orderId={id} allowFiscal={allowFiscal} />
       </div>
     </AdminSplitDetailPaneShell>
   );

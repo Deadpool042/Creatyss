@@ -12,6 +12,7 @@ export const FEATURE_LEVELS = {
   automations: ["basic"],
   returns: ["manual", "partial"],
   taxation: ["store"],
+  documents: ["basic", "fiscal"],
 } as const;
 
 export const FEATURE_CATALOG = [
@@ -41,12 +42,14 @@ export const FEATURE_CATALOG = [
   {
     key: "commerce.documents",
     label: "Documents commerciaux",
-    description: "Génération des factures, bons de commande et documents d'expédition.",
+    description:
+      "Documents de commande : confirmation et bon de préparation (basic), facture et avoir à numérotation légale (fiscal).",
     family: "satellite",
     module: "commerce",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.documents,
   },
   {
     key: "commerce.taxation",

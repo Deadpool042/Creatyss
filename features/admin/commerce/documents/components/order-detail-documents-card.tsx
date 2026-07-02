@@ -59,9 +59,15 @@ function hasActiveCreditNote(documents: AdminOrderDocumentSummary[]): boolean {
 type OrderDetailDocumentsCardProps = Readonly<{
   documents: AdminOrderDocumentSummary[];
   orderId: string;
+  /** Niveau `fiscal` de `commerce.documents` — autorise l'émission facture/avoir. */
+  allowFiscal: boolean;
 }>;
 
-export function OrderDetailDocumentsCard({ documents, orderId }: OrderDetailDocumentsCardProps) {
+export function OrderDetailDocumentsCard({
+  documents,
+  orderId,
+  allowFiscal,
+}: OrderDetailDocumentsCardProps) {
   const [isPending, startTransition] = useTransition();
   const [generated, setGenerated] = useState(false);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
@@ -262,52 +268,56 @@ export function OrderDetailDocumentsCard({ documents, orderId }: OrderDetailDocu
           </p>
         ) : null}
 
-        {invoiceAlreadyExists ? (
-          <p className="card-meta leading-snug text-text-muted-strong">Facture déjà émise</p>
-        ) : (
-          <button
-            type="button"
-            onClick={handleIssueInvoice}
-            disabled={isInvoicePending}
-            className="w-fit rounded-lg border border-surface-border bg-surface-panel px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-interactive-hover disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isInvoicePending ? "Émission en cours…" : "Émettre la facture"}
-          </button>
-        )}
+        {allowFiscal ? (
+          <>
+            {invoiceAlreadyExists ? (
+              <p className="card-meta leading-snug text-text-muted-strong">Facture déjà émise</p>
+            ) : (
+              <button
+                type="button"
+                onClick={handleIssueInvoice}
+                disabled={isInvoicePending}
+                className="w-fit rounded-lg border border-surface-border bg-surface-panel px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-interactive-hover disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isInvoicePending ? "Émission en cours…" : "Émettre la facture"}
+              </button>
+            )}
 
-        {invoiceFeedback !== null ? (
-          <p
-            className={`card-meta leading-snug ${
-              invoiceFeedback.type === "success" ? "text-text-success" : "text-text-alert"
-            }`}
-          >
-            {invoiceFeedback.message}
-          </p>
-        ) : null}
+            {invoiceFeedback !== null ? (
+              <p
+                className={`card-meta leading-snug ${
+                  invoiceFeedback.type === "success" ? "text-text-success" : "text-text-alert"
+                }`}
+              >
+                {invoiceFeedback.message}
+              </p>
+            ) : null}
 
-        {invoiceAlreadyExists ? (
-          creditNoteAlreadyExists ? (
-            <p className="card-meta leading-snug text-text-muted-strong">Avoir déjà émis</p>
-          ) : (
-            <button
-              type="button"
-              onClick={handleIssueCreditNote}
-              disabled={isCreditNotePending}
-              className="w-fit rounded-lg border border-surface-border bg-surface-panel px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-interactive-hover disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isCreditNotePending ? "Émission en cours…" : "Émettre un avoir"}
-            </button>
-          )
-        ) : null}
+            {invoiceAlreadyExists ? (
+              creditNoteAlreadyExists ? (
+                <p className="card-meta leading-snug text-text-muted-strong">Avoir déjà émis</p>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleIssueCreditNote}
+                  disabled={isCreditNotePending}
+                  className="w-fit rounded-lg border border-surface-border bg-surface-panel px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-interactive-hover disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isCreditNotePending ? "Émission en cours…" : "Émettre un avoir"}
+                </button>
+              )
+            ) : null}
 
-        {creditNoteFeedback !== null ? (
-          <p
-            className={`card-meta leading-snug ${
-              creditNoteFeedback.type === "success" ? "text-text-success" : "text-text-alert"
-            }`}
-          >
-            {creditNoteFeedback.message}
-          </p>
+            {creditNoteFeedback !== null ? (
+              <p
+                className={`card-meta leading-snug ${
+                  creditNoteFeedback.type === "success" ? "text-text-success" : "text-text-alert"
+                }`}
+              >
+                {creditNoteFeedback.message}
+              </p>
+            ) : null}
+          </>
         ) : null}
 
         <p className="card-meta leading-snug text-text-muted-strong/70">

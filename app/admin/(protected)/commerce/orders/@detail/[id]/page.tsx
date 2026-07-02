@@ -54,6 +54,7 @@ export default async function OrderDetailSlotPage({
   const [
     order,
     documentsFeatureActive,
+    documentsAllowFiscal,
     fulfillmentFeatureActive,
     fulfillmentAllowsPartial,
     returnsFeatureActive,
@@ -62,6 +63,7 @@ export default async function OrderDetailSlotPage({
   ] = await Promise.all([
     findAdminOrderById(id),
     isDocumentsFeatureActive(),
+    meetsFeatureLevel("commerce.documents", "fiscal"),
     isFulfillmentFeatureActive(),
     meetsFeatureLevel("commerce.fulfillment", "partial"),
     isReturnsFeatureActive(),
@@ -196,7 +198,11 @@ export default async function OrderDetailSlotPage({
 
       {documents !== null ? (
         <div className={buildAdminOrdersDetailSectionClassName()}>
-          <OrderDetailDocumentsCard documents={documents} orderId={id} />
+          <OrderDetailDocumentsCard
+            documents={documents}
+            orderId={id}
+            allowFiscal={documentsAllowFiscal}
+          />
         </div>
       ) : null}
 
