@@ -10,6 +10,7 @@ export const FEATURE_LEVELS = {
   localization: ["managed", "multilingual", "localized-routing"],
   fulfillment: ["manual", "partial"],
   automations: ["basic"],
+  returns: ["manual", "partial"],
 } as const;
 
 export const FEATURE_CATALOG = [
@@ -32,8 +33,9 @@ export const FEATURE_CATALOG = [
     family: "satellite",
     module: "commerce",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.returns,
   },
   {
     key: "commerce.documents",

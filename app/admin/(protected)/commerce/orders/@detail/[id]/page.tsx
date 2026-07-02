@@ -57,6 +57,7 @@ export default async function OrderDetailSlotPage({
     fulfillmentFeatureActive,
     fulfillmentAllowsPartial,
     returnsFeatureActive,
+    returnsAllowPartial,
     storeId,
   ] = await Promise.all([
     findAdminOrderById(id),
@@ -64,6 +65,7 @@ export default async function OrderDetailSlotPage({
     isFulfillmentFeatureActive(),
     meetsFeatureLevel("commerce.fulfillment", "partial"),
     isReturnsFeatureActive(),
+    meetsFeatureLevel("commerce.returns", "partial"),
     getCurrentStoreId(),
   ]);
 
@@ -187,6 +189,7 @@ export default async function OrderDetailSlotPage({
               variantName: l.variantName ?? null,
               quantity: l.quantity,
             }))}
+            allowPartial={returnsAllowPartial}
           />
         </div>
       ) : null}

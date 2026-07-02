@@ -2,6 +2,10 @@ import type { PrismaClient } from "@/prisma-generated/client";
 
 export const RETURNS_FEATURE_CODE = "commerce.returns";
 
+export const RETURNS_ALLOWED_LEVELS = ["manual", "partial"] as const;
+
+export const RETURNS_DEFAULT_LEVEL: string = RETURNS_ALLOWED_LEVELS[0];
+
 export async function seedReturnsFeatureFlag(db: PrismaClient): Promise<void> {
   const store = await db.store.findFirst({
     select: { id: true },
@@ -17,6 +21,8 @@ export async function seedReturnsFeatureFlag(db: PrismaClient): Promise<void> {
     update: {
       name: "Retours",
       description: "Gestion des demandes de retour et de leurs décisions.",
+      allowedLevels: [...RETURNS_ALLOWED_LEVELS],
+      defaultLevel: RETURNS_DEFAULT_LEVEL,
     },
     create: {
       storeId: store.id,
@@ -26,6 +32,8 @@ export async function seedReturnsFeatureFlag(db: PrismaClient): Promise<void> {
       status: "DRAFT",
       scopeType: "STORE",
       isEnabledByDefault: false,
+      allowedLevels: [...RETURNS_ALLOWED_LEVELS],
+      defaultLevel: RETURNS_DEFAULT_LEVEL,
     },
   });
 }

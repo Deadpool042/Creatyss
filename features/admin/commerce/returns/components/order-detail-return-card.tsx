@@ -19,6 +19,8 @@ type Props = Readonly<{
   request: AdminReturnSummary | null;
   orderId: string;
   orderLines: ReadonlyArray<OrderLineForReturn>;
+  /** Niveau `partial` de `commerce.returns` — autorise les quantités partielles à la création. */
+  allowPartial: boolean;
 }>;
 
 const buttonClass =
@@ -54,7 +56,7 @@ const NEXT_ACTIONS: Record<
   ARCHIVED: [],
 };
 
-export function OrderDetailReturnCard({ request, orderId, orderLines }: Props) {
+export function OrderDetailReturnCard({ request, orderId, orderLines, allowPartial }: Props) {
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
     null
@@ -79,6 +81,11 @@ export function OrderDetailReturnCard({ request, orderId, orderLines }: Props) {
   }
 
   function handleCreate(): void {
+    if (!allowPartial) {
+      run(() => createReturnAction(orderId, undefined), "Demande de retour ouverte.");
+      return;
+    }
+
     const lines = orderLines
       .map((l) => ({ orderLineId: l.id, quantity: quantities[l.id] ?? l.quantity }))
       .filter((l) => l.quantity > 0);
@@ -102,31 +109,40 @@ export function OrderDetailReturnCard({ request, orderId, orderLines }: Props) {
       {request === null ? (
         <div className="grid gap-3">
           <p className="card-copy leading-snug text-foreground">
-            Sélectionnez les lignes à retourner :
+            {allowPartial
+              ? "Sélectionnez les lignes à retourner :"
+              : "Lignes à retourner (commande complète) :"}
           </p>
           <ol className="grid gap-2">
-            {orderLines.map((line) => (
-              <li key={line.id} className="flex items-center gap-3">
-                <input
-                  type="number"
-                  min={0}
-                  max={line.quantity}
-                  value={quantities[line.id] ?? line.quantity}
-                  onChange={(e) =>
-                    setQuantities((prev) => ({
-                      ...prev,
-                      [line.id]: Math.min(line.quantity, Math.max(0, Number(e.target.value))),
-                    }))
-                  }
-                  className="w-16 rounded border border-surface-border bg-surface-panel px-2 py-1 text-sm text-foreground"
-                  disabled={isPending}
-                />
-                <span className="card-meta text-text-muted-strong">
-                  / {line.quantity} × {line.productName}
+            {orderLines.map((line) =>
+              allowPartial ? (
+                <li key={line.id} className="flex items-center gap-3">
+                  <input
+                    type="number"
+                    min={0}
+                    max={line.quantity}
+                    value={quantities[line.id] ?? line.quantity}
+                    onChange={(e) =>
+                      setQuantities((prev) => ({
+                        ...prev,
+                        [line.id]: Math.min(line.quantity, Math.max(0, Number(e.target.value))),
+                      }))
+                    }
+                    className="w-16 rounded border border-surface-border bg-surface-panel px-2 py-1 text-sm text-foreground"
+                    disabled={isPending}
+                  />
+                  <span className="card-meta text-text-muted-strong">
+                    / {line.quantity} × {line.productName}
+                    {line.variantName ? ` (${line.variantName})` : ""}
+                  </span>
+                </li>
+              ) : (
+                <li key={line.id} className="card-meta text-text-muted-strong">
+                  {line.quantity} × {line.productName}
                   {line.variantName ? ` (${line.variantName})` : ""}
-                </span>
-              </li>
-            ))}
+                </li>
+              )
+            )}
           </ol>
         </div>
       ) : (
