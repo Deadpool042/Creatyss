@@ -6,12 +6,12 @@ Ce document est une proposition de structuration. Toujours distinguer ce qui est
 
 ## État synthétique des horizons
 
-| Horizon | Titre                        | Statut                                                     |
-| ------- | ---------------------------- | ---------------------------------------------------------- |
-| H1      | Boutique vendable            | En cours — paiement live, VPS et recette finale à clôturer |
-| H2      | Commerce fiable              | En cours — conformité externe et validations finales       |
+| Horizon | Titre                        | Statut                                                              |
+| ------- | ---------------------------- | ------------------------------------------------------------------- |
+| H1      | Boutique vendable            | En cours — paiement live, VPS et recette finale à clôturer          |
+| H2      | Commerce fiable              | En cours — conformité externe et validations finales                |
 | H3      | Administration avancée       | Livré côté code — activation prod automations et retry conditionnel |
-| H4      | Plateforme et automatisation | En cours — modules L3 lisibles, activations avancées à faire |
+| H4      | Plateforme et automatisation | En cours — modules L3 lisibles, activations avancées à faire        |
 
 Les horizons H1 initial, H2 initial, H3 initial (VPS) et H4 initial (socle clonable) ont été portés par `projet-creatyss.md`. Leur état est documenté dans ce fichier et dans `2026-06-13-audit-catalogue-modules.md`. Les horizons listés ici sont la suite directe, numérotés H1–H4 pour désigner la nouvelle séquence de valeur à livrer.
 
@@ -22,6 +22,18 @@ Les horizons H1 initial, H2 initial, H3 initial (VPS) et H4 initial (socle clona
 Les horizons sont ordonnés par valeur métier : H1 (mise en production) déboque H2 (commerce légal), qui débloque H3 (admin enrichie). H4 regroupe des capacités à plus long terme qui peuvent avancer en parallèle sur certains lots dès que les prérequis techniques sont satisfaits.
 
 Il n'existe pas de règle rigide de séquencement interne à chaque horizon. Des micro-lots non bloquants peuvent avancer en parallèle lorsqu'ils n'ont pas de dépendance sur un lot précédent. Cela est signalé dans chaque fichier de lot concerné.
+
+---
+
+## Chantiers cross-cutting
+
+Chantiers hors séquence H1-H4 de valeur métier, pouvant avancer en parallèle sans dépendre de l'ordre de priorisation ci-dessus.
+
+| Chantier            | Titre                                     | Statut  |
+| ------------------- | ----------------------------------------- | ------- |
+| UX admin/storefront | Navigation admin et complétude storefront | À faire |
+
+- [UX — Navigation admin et complétude storefront](./ux-admin-storefront/README.md)
 
 ---
 
