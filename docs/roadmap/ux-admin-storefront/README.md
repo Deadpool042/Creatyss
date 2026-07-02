@@ -44,7 +44,7 @@ Pas de problème de navigation signalé sur ce volet.
 | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
 | [lot-audit-navigation-admin.md](./lot-audit-navigation-admin.md)           | Cartographie complète et factuelle de la navigation admin actuelle                | Livré — 2026-07-02, cf. [audit](../../audit/2026-07-02-audit-navigation-admin.md) |
 | [lot-decision-ia-admin.md](./lot-decision-ia-admin.md)                     | Décision produit sur la restructuration de la navigation admin (pas de code)      | Validé — 2026-07-02, séquence B → A retenue, C indépendante                       |
-| [lot-implementation-nav-admin.md](./lot-implementation-nav-admin.md)       | Micro-lots d'implémentation de la nouvelle navigation, groupe par groupe          | À faire — prêt à démarrer (option B en premier)                                   |
+| [lot-implementation-nav-admin.md](./lot-implementation-nav-admin.md)       | Micro-lots d'implémentation de la nouvelle navigation, groupe par groupe          | En cours — option B livrée, pilote `customers` livré, 5 domaines restants         |
 | [lot-audit-completude-storefront.md](./lot-audit-completude-storefront.md) | Vérifier chaque page publique contre les horizons H1-H4 livrés, lister les écarts | À faire                                                                           |
 
 ---
