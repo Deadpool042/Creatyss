@@ -9,6 +9,7 @@ import {
   CreateReturnRequestError,
 } from "@/features/admin/commerce/returns/services/create-return-request.service";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 type ActionResult = { success: true } | { success: false; error: string };
 
@@ -26,6 +27,10 @@ export async function createReturnAction(
 
   if (!(await isReturnsFeatureActive())) {
     return { success: false, error: "Les retours ne sont pas activés." };
+  }
+
+  if (lines !== undefined && !(await meetsFeatureLevel("commerce.returns", "partial"))) {
+    return { success: false, error: "Le retour partiel n'est pas activé pour ce niveau." };
   }
 
   const storeId = await getCurrentStoreId();
