@@ -9,6 +9,7 @@ import {
   CreateFulfillmentError,
 } from "@/features/admin/commerce/fulfillment/services/create-fulfillment.service";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 type ActionResult = { success: true } | { success: false; error: string };
 
@@ -26,6 +27,10 @@ export async function createFulfillmentAction(
 
   if (!(await isFulfillmentFeatureActive())) {
     return { success: false, error: "La préparation logistique n'est pas activée." };
+  }
+
+  if (lines !== undefined && !(await meetsFeatureLevel("commerce.fulfillment", "partial"))) {
+    return { success: false, error: "La préparation partielle n'est pas activée pour ce niveau." };
   }
 
   const storeId = await getCurrentStoreId();
