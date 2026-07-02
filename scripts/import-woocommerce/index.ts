@@ -7,11 +7,13 @@ import { ensureCanonicalProductTypes } from "./bootstrap/ensure-canonical-produc
 import { importBlogPosts } from "./blog/blog-import.service";
 import { importCategories } from "./categories/category-import.service";
 import { WooCommerceClient } from "./client/woocommerce-client";
+import { importCustomers } from "./customers/customer-import.service";
 import { readImportWooCommerceEnv } from "./env";
+import { importOrders } from "./orders/order-import.service";
 import { importProducts } from "./products/product-import.service";
 import { resetImportedCatalog } from "./reset/reset-imported-catalog";
 import { deleteUnreferencedImportedMediaAssets } from "./media/media-asset.repository";
-import type { PreparedWooProduct, WordPressMedia } from "./schemas";
+import type { PreparedWooProduct, WooCustomer, WooOrder, WordPressMedia } from "./schemas";
 import {
   endProgress,
   failSpinner,
@@ -51,6 +53,21 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     startSpinner("Fetching blog posts");
     const blogPosts = await wooClient.fetchWordPressPosts();
     succeedSpinner(`Fetched ${blogPosts.length} blog posts`);
+
+    let wooCustomers: WooCustomer[] = [];
+    let wooOrders: WooOrder[] = [];
+
+    if (!options.skipCustomersOrders) {
+      logStep("Fetching customers from WooCommerce");
+      startSpinner("Fetching customers");
+      wooCustomers = await wooClient.fetchCustomers();
+      succeedSpinner(`Fetched ${wooCustomers.length} customers`);
+
+      logStep("Fetching orders from WooCommerce");
+      startSpinner("Fetching orders");
+      wooOrders = await wooClient.fetchOrders();
+      succeedSpinner(`Fetched ${wooOrders.length} orders`);
+    }
 
     const featuredMediaByPostId = new Map<number, WordPressMedia | null>();
 
@@ -154,6 +171,31 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
     incrementCounter(result, "missingImages", importedVariants.skippedImages);
     incrementCounter(result, "failedImages", importedVariants.failedImages);
 
+    if (!options.skipCustomersOrders) {
+      logStep("Importing customers");
+      const importedCustomers = await importCustomers(prisma, {
+        storeId: store.id,
+        customers: wooCustomers,
+      });
+      incrementCounter(result, "customersImported", importedCustomers.imported);
+      incrementCounter(result, "customersUpdated", importedCustomers.updated);
+      incrementCounter(result, "customersSkipped", importedCustomers.skipped);
+
+      logStep("Importing orders");
+      const variantIdByExternalId = new Map(
+        importedVariants.importedVariants.map((variant) => [variant.externalId, variant.variantId])
+      );
+      const importedOrders = await importOrders(prisma, {
+        storeId: store.id,
+        orders: wooOrders,
+        customerIdByExternalId: importedCustomers.customerIdByExternalId,
+        productIdByExternalId: importedProducts.productIdByExternalId,
+        variantIdByExternalId,
+      });
+      incrementCounter(result, "ordersImported", importedOrders.imported);
+      incrementCounter(result, "ordersUpdated", importedOrders.updated);
+    }
+
     logStep("Importing blog posts");
     const importedBlogPosts = await importBlogPosts(prisma, {
       env,
@@ -195,6 +237,11 @@ export async function runImportWooCommerceCatalog(argv: readonly string[]): Prom
         `${result.counters.failedImages} ${pluralize(result.counters.failedImages, "image en erreur", "images en erreur")}`,
         `${result.counters.reusedImages} ${pluralize(result.counters.reusedImages, "image réutilisée", "images réutilisées")}`,
         `${result.counters.deletedMediaAssets} ${pluralize(result.counters.deletedMediaAssets, "asset média supprimé", "assets médias supprimés")}`,
+        `${result.counters.customersImported} ${pluralize(result.counters.customersImported, "client importé", "clients importés")}`,
+        `${result.counters.customersUpdated} ${pluralize(result.counters.customersUpdated, "client mis à jour", "clients mis à jour")}`,
+        `${result.counters.customersSkipped} ${pluralize(result.counters.customersSkipped, "client ignoré", "clients ignorés")}`,
+        `${result.counters.ordersImported} ${pluralize(result.counters.ordersImported, "commande importée", "commandes importées")}`,
+        `${result.counters.ordersUpdated} ${pluralize(result.counters.ordersUpdated, "commande mise à jour", "commandes mises à jour")}`,
       ].join(", ")
     );
   } catch (error: unknown) {

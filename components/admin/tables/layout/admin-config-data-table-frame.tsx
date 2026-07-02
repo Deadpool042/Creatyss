@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 type AdminConfigDataTableFrameProps = {
@@ -29,7 +29,7 @@ export function AdminConfigDataTableFrame({
   return (
     <>
       <div className={cn("hidden min-h-0 flex-1 flex-col gap-3 lg:flex", desktopClassName)}>
-        {toolbar}
+        <Fragment key="toolbar-desktop">{toolbar}</Fragment>
         <div className={cn("flex min-h-0 flex-1 flex-col", desktopContentClassName)}>
           {desktopContent}
         </div>
@@ -38,7 +38,7 @@ export function AdminConfigDataTableFrame({
       </div>
 
       <div className={cn("flex min-h-0 flex-1 flex-col lg:hidden", mobileClassName)}>
-        {toolbar}
+        <Fragment key="toolbar-mobile">{toolbar}</Fragment>
         <div
           data-scroll-root="true"
           className={cn(

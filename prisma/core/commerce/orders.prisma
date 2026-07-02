@@ -41,6 +41,9 @@ model Order {
 
   notes String?
 
+  sourceSystem String?
+  sourceId     String?
+
   placedAt    DateTime?
   cancelledAt DateTime?
   archivedAt  DateTime?
@@ -71,6 +74,7 @@ model Order {
   inventoryReservations InventoryReservation[]
 
   @@unique([storeId, orderNumber])
+  @@unique([storeId, sourceSystem, sourceId])
   @@index([storeId, status])
   @@index([customerId, status])
   @@index([checkoutId])

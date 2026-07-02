@@ -60,6 +60,8 @@ export type OrderMinAggregateOutputType = {
   customerFirstName: string | null
   customerLastName: string | null
   notes: string | null
+  sourceSystem: string | null
+  sourceId: string | null
   placedAt: Date | null
   cancelledAt: Date | null
   archivedAt: Date | null
@@ -85,6 +87,8 @@ export type OrderMaxAggregateOutputType = {
   customerFirstName: string | null
   customerLastName: string | null
   notes: string | null
+  sourceSystem: string | null
+  sourceId: string | null
   placedAt: Date | null
   cancelledAt: Date | null
   archivedAt: Date | null
@@ -110,6 +114,8 @@ export type OrderCountAggregateOutputType = {
   customerFirstName: number
   customerLastName: number
   notes: number
+  sourceSystem: number
+  sourceId: number
   placedAt: number
   cancelledAt: number
   archivedAt: number
@@ -153,6 +159,8 @@ export type OrderMinAggregateInputType = {
   customerFirstName?: true
   customerLastName?: true
   notes?: true
+  sourceSystem?: true
+  sourceId?: true
   placedAt?: true
   cancelledAt?: true
   archivedAt?: true
@@ -178,6 +186,8 @@ export type OrderMaxAggregateInputType = {
   customerFirstName?: true
   customerLastName?: true
   notes?: true
+  sourceSystem?: true
+  sourceId?: true
   placedAt?: true
   cancelledAt?: true
   archivedAt?: true
@@ -203,6 +213,8 @@ export type OrderCountAggregateInputType = {
   customerFirstName?: true
   customerLastName?: true
   notes?: true
+  sourceSystem?: true
+  sourceId?: true
   placedAt?: true
   cancelledAt?: true
   archivedAt?: true
@@ -315,6 +327,8 @@ export type OrderGroupByOutputType = {
   customerFirstName: string | null
   customerLastName: string | null
   notes: string | null
+  sourceSystem: string | null
+  sourceId: string | null
   placedAt: Date | null
   cancelledAt: Date | null
   archivedAt: Date | null
@@ -363,6 +377,8 @@ export type OrderWhereInput = {
   customerFirstName?: Prisma.StringNullableFilter<"Order"> | string | null
   customerLastName?: Prisma.StringNullableFilter<"Order"> | string | null
   notes?: Prisma.StringNullableFilter<"Order"> | string | null
+  sourceSystem?: Prisma.StringNullableFilter<"Order"> | string | null
+  sourceId?: Prisma.StringNullableFilter<"Order"> | string | null
   placedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   archivedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
@@ -408,6 +424,8 @@ export type OrderOrderByWithRelationInput = {
   customerFirstName?: Prisma.SortOrderInput | Prisma.SortOrder
   customerLastName?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceSystem?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceId?: Prisma.SortOrderInput | Prisma.SortOrder
   placedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -438,6 +456,7 @@ export type OrderOrderByWithRelationInput = {
 export type OrderWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   storeId_orderNumber?: Prisma.OrderStoreIdOrderNumberCompoundUniqueInput
+  storeId_sourceSystem_sourceId?: Prisma.OrderStoreIdSourceSystemSourceIdCompoundUniqueInput
   AND?: Prisma.OrderWhereInput | Prisma.OrderWhereInput[]
   OR?: Prisma.OrderWhereInput[]
   NOT?: Prisma.OrderWhereInput | Prisma.OrderWhereInput[]
@@ -457,6 +476,8 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   customerFirstName?: Prisma.StringNullableFilter<"Order"> | string | null
   customerLastName?: Prisma.StringNullableFilter<"Order"> | string | null
   notes?: Prisma.StringNullableFilter<"Order"> | string | null
+  sourceSystem?: Prisma.StringNullableFilter<"Order"> | string | null
+  sourceId?: Prisma.StringNullableFilter<"Order"> | string | null
   placedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   archivedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
@@ -482,7 +503,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   loyaltyTransactions?: Prisma.LoyaltyTransactionListRelationFilter
   fulfillments?: Prisma.FulfillmentListRelationFilter
   inventoryReservations?: Prisma.InventoryReservationListRelationFilter
-}, "id" | "storeId_orderNumber">
+}, "id" | "storeId_orderNumber" | "storeId_sourceSystem_sourceId">
 
 export type OrderOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -502,6 +523,8 @@ export type OrderOrderByWithAggregationInput = {
   customerFirstName?: Prisma.SortOrderInput | Prisma.SortOrder
   customerLastName?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceSystem?: Prisma.SortOrderInput | Prisma.SortOrder
+  sourceId?: Prisma.SortOrderInput | Prisma.SortOrder
   placedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -535,6 +558,8 @@ export type OrderScalarWhereWithAggregatesInput = {
   customerFirstName?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   customerLastName?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
+  sourceSystem?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
+  sourceId?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   placedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
   archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
@@ -556,6 +581,8 @@ export type OrderCreateInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -601,6 +628,8 @@ export type OrderUncheckedCreateInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -638,6 +667,8 @@ export type OrderUpdateInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -683,6 +714,8 @@ export type OrderUncheckedUpdateInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -724,6 +757,8 @@ export type OrderCreateManyInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -745,6 +780,8 @@ export type OrderUpdateManyMutationInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -770,6 +807,8 @@ export type OrderUncheckedUpdateManyInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -792,6 +831,12 @@ export type OrderStoreIdOrderNumberCompoundUniqueInput = {
   orderNumber: string
 }
 
+export type OrderStoreIdSourceSystemSourceIdCompoundUniqueInput = {
+  storeId: string
+  sourceSystem: string
+  sourceId: string
+}
+
 export type OrderCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   storeId?: Prisma.SortOrder
@@ -810,6 +855,8 @@ export type OrderCountOrderByAggregateInput = {
   customerFirstName?: Prisma.SortOrder
   customerLastName?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  sourceSystem?: Prisma.SortOrder
+  sourceId?: Prisma.SortOrder
   placedAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
@@ -843,6 +890,8 @@ export type OrderMaxOrderByAggregateInput = {
   customerFirstName?: Prisma.SortOrder
   customerLastName?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  sourceSystem?: Prisma.SortOrder
+  sourceId?: Prisma.SortOrder
   placedAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
@@ -868,6 +917,8 @@ export type OrderMinOrderByAggregateInput = {
   customerFirstName?: Prisma.SortOrder
   customerLastName?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  sourceSystem?: Prisma.SortOrder
+  sourceId?: Prisma.SortOrder
   placedAt?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
@@ -1319,6 +1370,8 @@ export type OrderCreateWithoutCartInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1362,6 +1415,8 @@ export type OrderUncheckedCreateWithoutCartInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1432,6 +1487,8 @@ export type OrderScalarWhereInput = {
   customerFirstName?: Prisma.StringNullableFilter<"Order"> | string | null
   customerLastName?: Prisma.StringNullableFilter<"Order"> | string | null
   notes?: Prisma.StringNullableFilter<"Order"> | string | null
+  sourceSystem?: Prisma.StringNullableFilter<"Order"> | string | null
+  sourceId?: Prisma.StringNullableFilter<"Order"> | string | null
   placedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   cancelledAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
   archivedAt?: Prisma.DateTimeNullableFilter<"Order"> | Date | string | null
@@ -1453,6 +1510,8 @@ export type OrderCreateWithoutCheckoutInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1496,6 +1555,8 @@ export type OrderUncheckedCreateWithoutCheckoutInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1559,6 +1620,8 @@ export type OrderCreateWithoutCustomerInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1602,6 +1665,8 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1665,6 +1730,8 @@ export type OrderCreateWithoutLinesInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1709,6 +1776,8 @@ export type OrderUncheckedCreateWithoutLinesInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1761,6 +1830,8 @@ export type OrderUpdateWithoutLinesInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1805,6 +1876,8 @@ export type OrderUncheckedUpdateWithoutLinesInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1841,6 +1914,8 @@ export type OrderCreateWithoutAddressesInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1885,6 +1960,8 @@ export type OrderUncheckedCreateWithoutAddressesInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1937,6 +2014,8 @@ export type OrderUpdateWithoutAddressesInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1981,6 +2060,8 @@ export type OrderUncheckedUpdateWithoutAddressesInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2017,6 +2098,8 @@ export type OrderCreateWithoutShippingSelectionInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2061,6 +2144,8 @@ export type OrderUncheckedCreateWithoutShippingSelectionInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2113,6 +2198,8 @@ export type OrderUpdateWithoutShippingSelectionInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2157,6 +2244,8 @@ export type OrderUncheckedUpdateWithoutShippingSelectionInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2193,6 +2282,8 @@ export type OrderCreateWithoutStatusHistoryInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2237,6 +2328,8 @@ export type OrderUncheckedCreateWithoutStatusHistoryInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2289,6 +2382,8 @@ export type OrderUpdateWithoutStatusHistoryInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2333,6 +2428,8 @@ export type OrderUncheckedUpdateWithoutStatusHistoryInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2369,6 +2466,8 @@ export type OrderCreateWithoutStoreInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2412,6 +2511,8 @@ export type OrderUncheckedCreateWithoutStoreInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2475,6 +2576,8 @@ export type OrderCreateWithoutDiscountRedemptionsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2519,6 +2622,8 @@ export type OrderUncheckedCreateWithoutDiscountRedemptionsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2571,6 +2676,8 @@ export type OrderUpdateWithoutDiscountRedemptionsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2615,6 +2722,8 @@ export type OrderUncheckedUpdateWithoutDiscountRedemptionsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2651,6 +2760,8 @@ export type OrderCreateWithoutDocumentsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2695,6 +2806,8 @@ export type OrderUncheckedCreateWithoutDocumentsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2747,6 +2860,8 @@ export type OrderUpdateWithoutDocumentsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2791,6 +2906,8 @@ export type OrderUncheckedUpdateWithoutDocumentsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2827,6 +2944,8 @@ export type OrderCreateWithoutFulfillmentsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2871,6 +2990,8 @@ export type OrderUncheckedCreateWithoutFulfillmentsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -2923,6 +3044,8 @@ export type OrderUpdateWithoutFulfillmentsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2967,6 +3090,8 @@ export type OrderUncheckedUpdateWithoutFulfillmentsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3003,6 +3128,8 @@ export type OrderCreateWithoutPurchasedGiftCardsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3047,6 +3174,8 @@ export type OrderUncheckedCreateWithoutPurchasedGiftCardsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3099,6 +3228,8 @@ export type OrderUpdateWithoutPurchasedGiftCardsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3143,6 +3274,8 @@ export type OrderUncheckedUpdateWithoutPurchasedGiftCardsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3179,6 +3312,8 @@ export type OrderCreateWithoutGiftCardTransactionsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3223,6 +3358,8 @@ export type OrderUncheckedCreateWithoutGiftCardTransactionsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3275,6 +3412,8 @@ export type OrderUpdateWithoutGiftCardTransactionsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3319,6 +3458,8 @@ export type OrderUncheckedUpdateWithoutGiftCardTransactionsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3355,6 +3496,8 @@ export type OrderCreateWithoutGiftRequestsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3399,6 +3542,8 @@ export type OrderUncheckedCreateWithoutGiftRequestsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3451,6 +3596,8 @@ export type OrderUpdateWithoutGiftRequestsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3495,6 +3642,8 @@ export type OrderUncheckedUpdateWithoutGiftRequestsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3531,6 +3680,8 @@ export type OrderCreateWithoutInventoryReservationsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3575,6 +3726,8 @@ export type OrderUncheckedCreateWithoutInventoryReservationsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3627,6 +3780,8 @@ export type OrderUpdateWithoutInventoryReservationsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3671,6 +3826,8 @@ export type OrderUncheckedUpdateWithoutInventoryReservationsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3707,6 +3864,8 @@ export type OrderCreateWithoutLoyaltyTransactionsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3751,6 +3910,8 @@ export type OrderUncheckedCreateWithoutLoyaltyTransactionsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3803,6 +3964,8 @@ export type OrderUpdateWithoutLoyaltyTransactionsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3847,6 +4010,8 @@ export type OrderUncheckedUpdateWithoutLoyaltyTransactionsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3883,6 +4048,8 @@ export type OrderCreateWithoutPaymentsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3927,6 +4094,8 @@ export type OrderUncheckedCreateWithoutPaymentsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -3979,6 +4148,8 @@ export type OrderUpdateWithoutPaymentsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4023,6 +4194,8 @@ export type OrderUncheckedUpdateWithoutPaymentsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4059,6 +4232,8 @@ export type OrderCreateWithoutReturnRequestsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -4103,6 +4278,8 @@ export type OrderUncheckedCreateWithoutReturnRequestsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -4155,6 +4332,8 @@ export type OrderUpdateWithoutReturnRequestsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4199,6 +4378,8 @@ export type OrderUncheckedUpdateWithoutReturnRequestsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4235,6 +4416,8 @@ export type OrderCreateWithoutShipmentsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -4279,6 +4462,8 @@ export type OrderUncheckedCreateWithoutShipmentsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -4331,6 +4516,8 @@ export type OrderUpdateWithoutShipmentsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4375,6 +4562,8 @@ export type OrderUncheckedUpdateWithoutShipmentsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4411,6 +4600,8 @@ export type OrderCreateWithoutSupportTicketsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -4455,6 +4646,8 @@ export type OrderUncheckedCreateWithoutSupportTicketsInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -4507,6 +4700,8 @@ export type OrderUpdateWithoutSupportTicketsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4551,6 +4746,8 @@ export type OrderUncheckedUpdateWithoutSupportTicketsInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4590,6 +4787,8 @@ export type OrderCreateManyCartInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -4611,6 +4810,8 @@ export type OrderUpdateWithoutCartInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4654,6 +4855,8 @@ export type OrderUncheckedUpdateWithoutCartInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4694,6 +4897,8 @@ export type OrderUncheckedUpdateManyWithoutCartInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4718,6 +4923,8 @@ export type OrderCreateManyCheckoutInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -4739,6 +4946,8 @@ export type OrderUpdateWithoutCheckoutInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4782,6 +4991,8 @@ export type OrderUncheckedUpdateWithoutCheckoutInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4822,6 +5033,8 @@ export type OrderUncheckedUpdateManyWithoutCheckoutInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4846,6 +5059,8 @@ export type OrderCreateManyCustomerInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -4867,6 +5082,8 @@ export type OrderUpdateWithoutCustomerInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4910,6 +5127,8 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4950,6 +5169,8 @@ export type OrderUncheckedUpdateManyWithoutCustomerInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4974,6 +5195,8 @@ export type OrderCreateManyStoreInput = {
   customerFirstName?: string | null
   customerLastName?: string | null
   notes?: string | null
+  sourceSystem?: string | null
+  sourceId?: string | null
   placedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -4995,6 +5218,8 @@ export type OrderUpdateWithoutStoreInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5038,6 +5263,8 @@ export type OrderUncheckedUpdateWithoutStoreInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5078,6 +5305,8 @@ export type OrderUncheckedUpdateManyWithoutStoreInput = {
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   placedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5260,6 +5489,8 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   customerFirstName?: boolean
   customerLastName?: boolean
   notes?: boolean
+  sourceSystem?: boolean
+  sourceId?: boolean
   placedAt?: boolean
   cancelledAt?: boolean
   archivedAt?: boolean
@@ -5306,6 +5537,8 @@ export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   customerFirstName?: boolean
   customerLastName?: boolean
   notes?: boolean
+  sourceSystem?: boolean
+  sourceId?: boolean
   placedAt?: boolean
   cancelledAt?: boolean
   archivedAt?: boolean
@@ -5335,6 +5568,8 @@ export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   customerFirstName?: boolean
   customerLastName?: boolean
   notes?: boolean
+  sourceSystem?: boolean
+  sourceId?: boolean
   placedAt?: boolean
   cancelledAt?: boolean
   archivedAt?: boolean
@@ -5364,6 +5599,8 @@ export type OrderSelectScalar = {
   customerFirstName?: boolean
   customerLastName?: boolean
   notes?: boolean
+  sourceSystem?: boolean
+  sourceId?: boolean
   placedAt?: boolean
   cancelledAt?: boolean
   archivedAt?: boolean
@@ -5371,7 +5608,7 @@ export type OrderSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "customerId" | "checkoutId" | "cartId" | "orderNumber" | "status" | "currencyCode" | "subtotalAmount" | "shippingAmount" | "discountAmount" | "taxAmount" | "totalAmount" | "customerEmail" | "customerFirstName" | "customerLastName" | "notes" | "placedAt" | "cancelledAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "customerId" | "checkoutId" | "cartId" | "orderNumber" | "status" | "currencyCode" | "subtotalAmount" | "shippingAmount" | "discountAmount" | "taxAmount" | "totalAmount" | "customerEmail" | "customerFirstName" | "customerLastName" | "notes" | "sourceSystem" | "sourceId" | "placedAt" | "cancelledAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   store?: boolean | Prisma.StoreDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.Order$customerArgs<ExtArgs>
@@ -5450,6 +5687,8 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     customerFirstName: string | null
     customerLastName: string | null
     notes: string | null
+    sourceSystem: string | null
+    sourceId: string | null
     placedAt: Date | null
     cancelledAt: Date | null
     archivedAt: Date | null
@@ -5915,6 +6154,8 @@ export interface OrderFieldRefs {
   readonly customerFirstName: Prisma.FieldRef<"Order", 'String'>
   readonly customerLastName: Prisma.FieldRef<"Order", 'String'>
   readonly notes: Prisma.FieldRef<"Order", 'String'>
+  readonly sourceSystem: Prisma.FieldRef<"Order", 'String'>
+  readonly sourceId: Prisma.FieldRef<"Order", 'String'>
   readonly placedAt: Prisma.FieldRef<"Order", 'DateTime'>
   readonly cancelledAt: Prisma.FieldRef<"Order", 'DateTime'>
   readonly archivedAt: Prisma.FieldRef<"Order", 'DateTime'>

@@ -44,6 +44,9 @@ model Customer {
   acceptsSms   Boolean @default(false)
   notes        String?
 
+  sourceSystem String?
+  sourceId     String?
+
   firstSeenAt DateTime?
   lastSeenAt  DateTime?
   activatedAt DateTime?
@@ -73,6 +76,7 @@ model Customer {
   subscriptions            Subscription[]
 
   @@unique([storeId, email])
+  @@unique([storeId, sourceSystem, sourceId])
   @@index([storeId])
   @@index([status])
   @@index([isGuest])
