@@ -2,7 +2,7 @@
 
 ## Statut
 
-À faire
+Livré — 2026-07-02. Résultat : `docs/audit/2026-07-02-audit-navigation-admin.md`.
 
 ## Objectif
 
