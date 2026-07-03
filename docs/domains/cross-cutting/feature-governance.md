@@ -97,16 +97,23 @@ Mécanisme **générique** et **optionnel** : une feature graduée expose un
 features ; seul l'ensemble des niveaux varie. L'IA n'est qu'un exemple parmi
 d'autres.
 
-Exemples génériques (noms à stabiliser dans le catalogue cible) :
+Paliers stabilisés dans `FEATURE_LEVELS`
+(`features/admin/pilotage/catalog/feature-catalog.ts`) :
 
-| Feature    | Paliers indicatifs                              |
-| ---------- | ----------------------------------------------- |
-| IA         | basic → assistant → advanced → automation       |
-| analytics  | read → insights → recommendations               |
-| newsletter | basic → segmentation → automation               |
-| media      | upload → optimization → generation → automation |
-| discounts  | simple → rule-based → automated                 |
-| inventory  | manual → alerts → forecasting                   |
+| Feature                      | Paliers                                            |
+| ---------------------------- | -------------------------------------------------- |
+| `ai.core`                    | basic → assistant → advanced → automation          |
+| `engagement.analytics`       | read → insights → recommendations                  |
+| `engagement.newsletter`      | basic → segmentation → automation                  |
+| `catalog.products.media`     | basic → optimization → generation → automation     |
+| `commerce.discounts`         | simple → rules → automation                        |
+| `catalog.products.inventory` | manual → alerts → forecasting                      |
+| `platform.localization`      | managed → multilingual → localized-routing         |
+| `commerce.fulfillment`       | manual → partial                                   |
+| `commerce.returns`           | manual → partial                                   |
+| `commerce.documents`         | basic → fiscal                                     |
+| `commerce.taxation`          | store (niveau unique — cible produit non tranchée) |
+| `engagement.automations`     | basic (niveau unique — extensible)                 |
 
 La doctrine retenue n'est pas la liste des niveaux mais le **mécanisme** : une
 feature graduée déclare ses niveaux autorisés ; l'admin sélectionne un niveau
