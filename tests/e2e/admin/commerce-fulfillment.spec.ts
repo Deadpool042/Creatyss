@@ -20,7 +20,11 @@ test("admin can create and fulfill a fulfillment on a confirmed order", async ({
 
   // Vérifier que la section "Préparation logistique" est visible
   const fulfillmentSection = page.getByText("Préparation logistique").first();
-  if (!(await fulfillmentSection.isVisible({ timeout: 10_000 }).catch(() => false))) {
+  const fulfillmentSectionVisible = await fulfillmentSection
+    .waitFor({ state: "visible", timeout: 10_000 })
+    .then(() => true)
+    .catch(() => false);
+  if (!fulfillmentSectionVisible) {
     test.skip(
       true,
       "fulfillment section not visible — feature flag may be inactive or UI not rendered"
