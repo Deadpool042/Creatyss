@@ -2,7 +2,13 @@
 
 ## Statut
 
-À faire. Ce lot n'est explicitement PAS un lot de code — aucune implémentation ne doit démarrer sur la base de ce document sans validation humaine préalable.
+Livré — 2026-07-03.
+
+**Mécanisme d'activation vérifié** : `core/config/env/stripe.ts` (`isStripeConfigured()`) lit `STRIPE_SECRET_KEY` et `STRIPE_WEBHOOK_SECRET` (variables d'environnement serveur, jamais stockées en base) et rejette les valeurs placeholder. `get-available-payment-methods.query.ts` n'active la méthode `card` que si **les deux conditions** sont réunies : `meetsFeatureLevel("commerce.payments", "online")` (déjà pilotable depuis Modules & fonctionnalités) **et** `isStripeConfigured()`. Le toggle d'activation existait donc déjà — ce n'était pas un gap identifié correctement dans l'audit initial.
+
+**Décision actée** : ni l'option 1 (toggle) ni l'option 2 (config complète) ne s'appliquaient telles quelles puisque le toggle existe déjà et que les clés ne doivent pas être éditables depuis l'admin (sécurité). Décision retenue, hybride : ajouter un **indicateur de statut lecture seule** (connecté/non connecté, sans exposer les clés) sur `/admin/commerce/payments/settings`, pour que l'utilisatrice comprenne immédiatement pourquoi le paiement carte n'apparaît pas au checkout si l'une des deux conditions manque.
+
+**Implémenté** : `features/admin/settings/queries/get-card-payment-status.query.ts` (nouvelle query), `features/admin/settings/components/card-payment-status-notice.tsx` (nouveau composant), intégré dans `app/admin/(protected)/commerce/payments/settings/page.tsx`. Vérifié visuellement (Stripe configuré en local avec clés test + niveau "En ligne" actif → statut "actif" affiché). `typecheck` et `lint` passent.
 
 ## Objectif
 
