@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PackageIcon, SearchIcon } from "lucide-react";
+import { OrderTrackingForm } from "@/features/commerce/checkout/components/order-tracking-form";
 
 export const metadata: Metadata = {
   title: "Mon compte — Creatyss",
@@ -35,29 +36,7 @@ export default function ComptePage() {
           </div>
         </div>
 
-        <form action="/checkout/confirmation" method="GET" className="space-y-4">
-          <div>
-            <label htmlFor="reference" className="mb-1.5 block text-[13px] font-medium text-foreground">
-              Référence de commande
-            </label>
-            <input
-              id="reference"
-              name="reference"
-              type="text"
-              placeholder="CRY-XXXXXXXXXX"
-              className="w-full rounded-xl border border-surface-border/60 bg-background px-4 py-2.5 font-mono text-sm text-foreground placeholder:text-muted-foreground/40 focus:border-brand/50 focus:outline-none focus:ring-2 focus:ring-brand/20"
-            />
-            <p className="mt-1.5 text-[11px] text-muted-foreground/60">
-              Disponible dans votre email de confirmation.
-            </p>
-          </div>
-          <button
-            type="submit"
-            className="w-full rounded-xl bg-foreground py-2.5 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
-          >
-            Rechercher
-          </button>
-        </form>
+        <OrderTrackingForm />
       </div>
 
       {/* Section compte complet — à venir */}
@@ -72,7 +51,8 @@ export default function ComptePage() {
               </span>
             </p>
             <p className="mt-1 text-xs leading-5 text-muted-foreground">
-              Historique complet des commandes, gestion des adresses et préférences. Disponible prochainement.
+              Historique complet des commandes, gestion des adresses et préférences. Disponible
+              prochainement.
             </p>
           </div>
         </div>
@@ -81,7 +61,10 @@ export default function ComptePage() {
       {/* Aide */}
       <p className="mt-6 text-center text-xs text-muted-foreground">
         Une question ?{" "}
-        <Link href="/contact" className="underline underline-offset-2 hover:text-foreground transition-colors">
+        <Link
+          href="/contact"
+          className="underline underline-offset-2 hover:text-foreground transition-colors"
+        >
           Contactez-nous
         </Link>
       </p>
