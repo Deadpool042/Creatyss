@@ -18,6 +18,7 @@ import { Activity, Eye, ShoppingCart, TrendingDown, TrendingUp, Users } from "lu
 
 import { cn } from "@/lib/utils";
 import type { CommerceAnalyticsInsights } from "@/features/admin/insights/queries/get-commerce-analytics-insights.query";
+import type { CommerceAnalyticsRecommendations } from "@/features/admin/insights/queries/get-commerce-analytics-recommendations.query";
 import type { DailyTrafficAnalytics } from "@/features/admin/insights/queries/get-daily-traffic-analytics.query";
 import type { MonthlyCommerceAnalytics } from "@/features/admin/insights/queries/get-monthly-commerce-analytics.query";
 
@@ -123,6 +124,12 @@ type AnalyticsOverviewSectionsProps = {
   monthly?: MonthlyCommerceAnalytics | null;
   insights?: CommerceAnalyticsInsights | null;
   /**
+   * Insights actionnables (produits en repli / en croissance). `null` si
+   * `meetsFeatureLevel("engagement.analytics", "recommendations")` est faux
+   * — la section n'est alors pas affichée.
+   */
+  recommendations?: CommerceAnalyticsRecommendations | null;
+  /**
    * Compteurs storefront « aujourd'hui vs hier » (tracking anonyme sans
    * cookie, `AnalyticsSnapshot` quotidiens). `null` si le niveau `read`
    * n'est pas atteint — le bloc reste alors un mock (comportement antérieur).
@@ -133,6 +140,7 @@ type AnalyticsOverviewSectionsProps = {
 export function AnalyticsOverviewSections({
   monthly = null,
   insights = null,
+  recommendations = null,
   daily = null,
 }: AnalyticsOverviewSectionsProps) {
   return (
@@ -299,6 +307,72 @@ export function AnalyticsOverviewSections({
                   ))}
                 </div>
               )}
+            </section>
+          ) : null}
+
+          {recommendations !== null ? (
+            <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+                Recommandations
+              </p>
+              <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
+                Produits à surveiller
+              </h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/70">
+                    En repli
+                  </p>
+                  {recommendations.decliningProducts.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">
+                      Aucun produit en repli sur les 30 derniers jours.
+                    </p>
+                  ) : (
+                    <div className="divide-y divide-surface-border/30">
+                      {recommendations.decliningProducts.map((product) => (
+                        <div
+                          key={`${product.productId ?? "product"}-${product.productName}`}
+                          className="flex items-center justify-between gap-3 py-2 first:pt-0 last:pb-0"
+                        >
+                          <p className="min-w-0 truncate text-sm text-foreground">
+                            {product.productName}
+                          </p>
+                          <span className="inline-flex shrink-0 items-center gap-0.5 text-xs font-medium text-feedback-error-foreground">
+                            <TrendingDown className="size-3" />0 vente (vs{" "}
+                            {product.previousQuantity})
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/70">
+                    En croissance
+                  </p>
+                  {recommendations.growingProducts.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">
+                      Aucun produit en forte croissance ce mois.
+                    </p>
+                  ) : (
+                    <div className="divide-y divide-surface-border/30">
+                      {recommendations.growingProducts.map((product) => (
+                        <div
+                          key={`${product.productId ?? "product"}-${product.productName}`}
+                          className="flex items-center justify-between gap-3 py-2 first:pt-0 last:pb-0"
+                        >
+                          <p className="min-w-0 truncate text-sm text-foreground">
+                            {product.productName}
+                          </p>
+                          <span className="inline-flex shrink-0 items-center gap-0.5 text-xs font-medium text-feedback-success-foreground">
+                            <TrendingUp className="size-3" />+{product.growth}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             </section>
           ) : null}
         </div>

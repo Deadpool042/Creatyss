@@ -101,8 +101,7 @@ export const FEATURE_CATALOG = [
       read: "Lecture admin des paiements et de leur statut, sans action de transition.",
       manual:
         "Autorise les actions admin sur paiements manuels en attente : marquer reçu ou annuler.",
-      online:
-        "Débloque en plus le paiement carte au checkout quand Stripe est configuré.",
+      online: "Débloque en plus le paiement carte au checkout quand Stripe est configuré.",
     },
   },
   {
@@ -253,7 +252,7 @@ export const FEATURE_CATALOG = [
       insights:
         "Ajoute panier moyen, répartition des commandes par statut et top produits du mois.",
       recommendations:
-        "Non implémenté à ce stade — hors périmètre, réservé à un futur domaine dédié.",
+        "Insights actionnables dérivés d'Order/OrderLine : produits en repli (0 vente sur 30 jours après une période active) et produits en forte croissance (vs mois précédent).",
     },
     levels: FEATURE_LEVELS.analytics,
   },
@@ -286,8 +285,7 @@ export const FEATURE_CATALOG = [
     levelDescriptions: {
       "base-price": "Tarif boutique par défaut sur la fiche produit, sans grilles avancées.",
       "price-lists": "Ajoute la gestion des listes de prix et des tarifs multi-grilles.",
-      "scheduled-pricing":
-        "Ajoute les fenêtres tarifaires datées sur les prix produit déjà gérés.",
+      "scheduled-pricing": "Ajoute les fenêtres tarifaires datées sur les prix produit déjà gérés.",
     },
     levels: FEATURE_LEVELS.pricing,
   },
