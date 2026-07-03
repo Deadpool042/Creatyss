@@ -7,7 +7,6 @@ import {
   AUTOMATION_NEWSLETTER_SUBSCRIBER_SUBJECT_TYPE,
 } from "@/features/automations/shared/automation-job.constants";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
 
 type QueueNewsletterSubscribedAutomationJobsInput = {
   storeId: string;
@@ -56,7 +55,7 @@ export async function queueNewsletterSubscribedAutomationJobs(
 ): Promise<number> {
   const [newsletterAutomationLevelMet, automationsFeatureActive] = await Promise.all([
     meetsFeatureLevel("engagement.newsletter", "automation", { storeId: input.storeId }),
-    queryFeatureFlagActive("engagement.automations", { storeId: input.storeId }),
+    meetsFeatureLevel("engagement.automations", "basic", { storeId: input.storeId }),
   ]);
 
   if (!newsletterAutomationLevelMet || !automationsFeatureActive) {

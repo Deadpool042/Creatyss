@@ -104,7 +104,7 @@ cf. section optional).
 - **L1 placeholder (Coming Soon)** : 0/32
 - **L0 catalogué sans code** : 0/32
 - **Niveaux annoncés non câblés** : aucun — tous les niveaux déclarés sont câblés au 2026-07-03
-- **Guards de base migrés `meetsFeatureLevel`** : payments/shipping/webhooks/pricing/availability/variants/related/blog (lot 2026-07-03 batch 2), newsletter/analytics/ai/automations/discounts/fulfillment/returns/documents/taxation (lot 2026-07-03 batch 3). Reste sur `queryFeatureFlagActive` booléen (features non graduées, sans entrée `FEATURE_LEVELS`) : notifications/integrations/search/channels
+- **Guards de base migrés `meetsFeatureLevel`** : payments/shipping/webhooks/pricing/availability/variants/related/blog (lot 2026-07-03 batch 2), newsletter/analytics/ai/automations/discounts/fulfillment/returns/documents/taxation (lot 2026-07-03 batch 3). Batch 4 (2026-07-03) : les 4 derniers appels directs à `queryFeatureFlagActive` contournant un guard nommé sont alignés — `record-storefront-analytics-event.service.ts` (`engagement.analytics`, niveau `read`), `queue-order-placed-automation-jobs.service.ts`, `queue-newsletter-subscribed-automation-jobs.service.ts` et `get-admin-newsletter-automation-snapshot.query.ts` (`engagement.automations`, niveau `basic`). Reste sur `queryFeatureFlagActive` booléen (features non graduées, sans entrée `FEATURE_LEVELS`) : notifications/integrations/search/channels — seuls call sites restants du mécanisme booléen
 
 ## 5. Point de doctrine à signaler (écart catalogue / roadmap)
 

@@ -15,13 +15,13 @@ vi.mock("@/features/admin/store/queries/get-current-store-id.query", () => ({
   getCurrentStoreId: vi.fn(),
 }));
 
-vi.mock("@/features/feature-flags/queries/query-feature-flag-active", () => ({
-  queryFeatureFlagActive: vi.fn(),
+vi.mock("@/features/feature-flags/queries/get-feature-level-state.query", () => ({
+  meetsFeatureLevel: vi.fn(),
 }));
 
 import { db } from "@/core/db";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import {
   recordStorefrontAnalyticsEvent,
   trackStorefrontAnalyticsEvent,
@@ -33,7 +33,7 @@ const mockDb = db as unknown as {
 };
 
 const mockGetCurrentStoreId = getCurrentStoreId as ReturnType<typeof vi.fn>;
-const mockQueryFeatureFlagActive = queryFeatureFlagActive as ReturnType<typeof vi.fn>;
+const mockMeetsFeatureLevel = meetsFeatureLevel as ReturnType<typeof vi.fn>;
 
 const STORE_ID = "store_1";
 const METRIC_ID = "metric_1";
@@ -45,7 +45,7 @@ describe("recordStorefrontAnalyticsEvent", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockGetCurrentStoreId.mockResolvedValue(STORE_ID);
-    mockQueryFeatureFlagActive.mockResolvedValue(true);
+    mockMeetsFeatureLevel.mockResolvedValue(true);
     mockDb.analyticsMetric.upsert.mockResolvedValue({ id: METRIC_ID });
     mockDb.analyticsSnapshot.upsert.mockResolvedValue({ id: "snapshot_1" });
   });
@@ -55,17 +55,17 @@ describe("recordStorefrontAnalyticsEvent", () => {
 
     await recordStorefrontAnalyticsEvent("productView", NOW);
 
-    expect(mockQueryFeatureFlagActive).not.toHaveBeenCalled();
+    expect(mockMeetsFeatureLevel).not.toHaveBeenCalled();
     expect(mockDb.analyticsMetric.upsert).not.toHaveBeenCalled();
     expect(mockDb.analyticsSnapshot.upsert).not.toHaveBeenCalled();
   });
 
   it("n'écrit rien si le flag engagement.analytics est inactif", async () => {
-    mockQueryFeatureFlagActive.mockResolvedValue(false);
+    mockMeetsFeatureLevel.mockResolvedValue(false);
 
     await recordStorefrontAnalyticsEvent("productView", NOW);
 
-    expect(mockQueryFeatureFlagActive).toHaveBeenCalledWith("engagement.analytics", {
+    expect(mockMeetsFeatureLevel).toHaveBeenCalledWith("engagement.analytics", "read", {
       storeId: STORE_ID,
     });
     expect(mockDb.analyticsMetric.upsert).not.toHaveBeenCalled();

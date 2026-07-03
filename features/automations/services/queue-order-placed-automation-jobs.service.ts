@@ -6,7 +6,7 @@ import {
   AUTOMATION_ORDER_PLACED_PAYLOAD_SCHEMA,
   AUTOMATION_ORDER_SUBJECT_TYPE,
 } from "@/features/automations/shared/automation-job.constants";
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 type QueueOrderPlacedAutomationJobsInput = {
   storeId: string;
@@ -40,7 +40,7 @@ export async function queueOrderPlacedAutomationJobs(
   tx: DbTx,
   input: QueueOrderPlacedAutomationJobsInput
 ): Promise<number> {
-  const automationsFeatureActive = await queryFeatureFlagActive("engagement.automations", {
+  const automationsFeatureActive = await meetsFeatureLevel("engagement.automations", "basic", {
     storeId: input.storeId,
   });
 

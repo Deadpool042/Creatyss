@@ -2,7 +2,7 @@ import "server-only";
 
 import { db } from "@/core/db";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 /**
  * Tracking storefront anonyme sans cookie (décision produit — lot
@@ -75,7 +75,7 @@ export async function recordStorefrontAnalyticsEvent(
     return;
   }
 
-  const featureActive = await queryFeatureFlagActive(ANALYTICS_FEATURE_CODE, { storeId });
+  const featureActive = await meetsFeatureLevel(ANALYTICS_FEATURE_CODE, "read", { storeId });
 
   if (!featureActive) {
     return;

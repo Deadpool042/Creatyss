@@ -4,7 +4,6 @@ import { db } from "@/core/db";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE } from "@/features/automations/shared/automation-job.constants";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
 
 export type AdminNewsletterAutomationSnapshot = {
   newsletterAutomationLevelMet: boolean;
@@ -29,44 +28,50 @@ export async function getAdminNewsletterAutomationSnapshot(): Promise<AdminNewsl
     };
   }
 
-  const [newsletterAutomationLevelMet, automationsFeatureActive, activeAutomationCount, pendingJobCount, readyJobCount, failedJobCount] =
-    await Promise.all([
-      meetsFeatureLevel("engagement.newsletter", "automation", { storeId }),
-      queryFeatureFlagActive("engagement.automations", { storeId }),
-      db.automation.count({
-        where: {
-          storeId,
-          status: "ACTIVE",
-          triggerType: "NEWSLETTER_SUBSCRIBED",
-          archivedAt: null,
-        },
-      }),
-      db.job.count({
-        where: {
-          storeId,
-          typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
-          status: "PENDING",
-          archivedAt: null,
-        },
-      }),
-      db.job.count({
-        where: {
-          storeId,
-          typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
-          status: "PENDING",
-          archivedAt: null,
-          scheduledAt: { lte: new Date() },
-        },
-      }),
-      db.job.count({
-        where: {
-          storeId,
-          typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
-          status: "FAILED",
-          archivedAt: null,
-        },
-      }),
-    ]);
+  const [
+    newsletterAutomationLevelMet,
+    automationsFeatureActive,
+    activeAutomationCount,
+    pendingJobCount,
+    readyJobCount,
+    failedJobCount,
+  ] = await Promise.all([
+    meetsFeatureLevel("engagement.newsletter", "automation", { storeId }),
+    meetsFeatureLevel("engagement.automations", "basic", { storeId }),
+    db.automation.count({
+      where: {
+        storeId,
+        status: "ACTIVE",
+        triggerType: "NEWSLETTER_SUBSCRIBED",
+        archivedAt: null,
+      },
+    }),
+    db.job.count({
+      where: {
+        storeId,
+        typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+        status: "PENDING",
+        archivedAt: null,
+      },
+    }),
+    db.job.count({
+      where: {
+        storeId,
+        typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+        status: "PENDING",
+        archivedAt: null,
+        scheduledAt: { lte: new Date() },
+      },
+    }),
+    db.job.count({
+      where: {
+        storeId,
+        typeCode: AUTOMATION_NEWSLETTER_SUBSCRIBED_JOB_TYPE,
+        status: "FAILED",
+        archivedAt: null,
+      },
+    }),
+  ]);
 
   return {
     newsletterAutomationLevelMet,

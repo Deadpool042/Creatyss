@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@/features/feature-flags/queries/query-feature-flag-active", () => ({
-  queryFeatureFlagActive: vi.fn(),
+vi.mock("@/features/feature-flags/queries/get-feature-level-state.query", () => ({
+  meetsFeatureLevel: vi.fn(),
 }));
 
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { queueOrderPlacedAutomationJobs } from "@/features/automations/services/queue-order-placed-automation-jobs.service";
 import {
   AUTOMATION_ORDER_PLACED_JOB_TYPE,
@@ -12,7 +12,7 @@ import {
   AUTOMATION_ORDER_SUBJECT_TYPE,
 } from "@/features/automations/shared/automation-job.constants";
 
-const mockQueryFeatureFlagActive = queryFeatureFlagActive as ReturnType<typeof vi.fn>;
+const mockMeetsFeatureLevel = meetsFeatureLevel as ReturnType<typeof vi.fn>;
 
 function buildMockTx(
   automations: {
@@ -40,11 +40,11 @@ const OCCURRED_AT = new Date("2026-06-27T10:00:00.000Z");
 describe("queueOrderPlacedAutomationJobs", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockQueryFeatureFlagActive.mockResolvedValue(true);
+    mockMeetsFeatureLevel.mockResolvedValue(true);
   });
 
   it("retourne 0 si la feature automations est inactive", async () => {
-    mockQueryFeatureFlagActive.mockResolvedValue(false);
+    mockMeetsFeatureLevel.mockResolvedValue(false);
     const tx = buildMockTx([]);
 
     const result = await queueOrderPlacedAutomationJobs(tx as never, {
@@ -183,7 +183,7 @@ describe("queueOrderPlacedAutomationJobs", () => {
       occurredAt: OCCURRED_AT,
     });
 
-    expect(mockQueryFeatureFlagActive).toHaveBeenCalledWith("engagement.automations", {
+    expect(mockMeetsFeatureLevel).toHaveBeenCalledWith("engagement.automations", "basic", {
       storeId: "store_xyz",
     });
   });
