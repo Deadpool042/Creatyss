@@ -133,8 +133,8 @@ Le domaine protège la gouvernance des usages IA, pas la vérité métier finale
 
 Au 16 juin 2026, le niveau fonctionnel `ai.core` est consomme ainsi :
 
-- `basic` : lecture et observabilite admin du modele `AiProvider` / `AiTask`
-- `assistant` : suggestion SEO manuelle pour produit et article de blog, avec application explicite par l'operateur
+- `basic` : lecture et observabilite admin du modele `AiProvider` / `AiTask`, et suggestion SEO manuelle pour produit
+- `assistant` : suggestion SEO manuelle pour article de blog, en plus du produit, avec application explicite par l'operateur
 - `advanced` : historique local reutilisable des suggestions SEO deja tracees sur le meme sujet
 - `automation` : preparation automatique d'une premiere suggestion SEO quand aucun historique n'existe encore pour le sujet courant
 

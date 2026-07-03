@@ -25,7 +25,7 @@ export default async function ProductDetailSeoPage({
   const [editor, aiSuggestionEnabled, aiSuggestionHistoryEnabled, aiSuggestionAutomationEnabled] =
     await Promise.all([
       readAdminProductEditorBySlug(slug),
-      meetsFeatureLevel("ai.core", "assistant"),
+      meetsFeatureLevel("ai.core", "basic"),
       meetsFeatureLevel("ai.core", "advanced"),
       meetsFeatureLevel("ai.core", "automation"),
     ]);
