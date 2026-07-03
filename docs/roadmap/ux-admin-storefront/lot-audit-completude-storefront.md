@@ -2,7 +2,13 @@
 
 ## Statut
 
-À faire
+Livré — 2026-07-03. Rapport : `docs/audit/2026-07-03-audit-completude-storefront.md`.
+
+Constat principal : le badge "À venir" sur l'espace client complet (`/compte`) est cohérent avec la doc — ni le code ni la roadmap H1-H4 ne le revendiquent comme livré. Le SEO storefront "en consolidation" (`projet-creatyss.md`) est confirmé exact, non obsolète.
+
+**Écart corrigé pendant ce lot** (hors périmètre initial de l'audit, mais bug confirmé et isolé) : le formulaire "Suivre une commande" sur `/compte` soumettait en GET vers `/checkout/confirmation?reference=...`, une URL qui ne correspond à aucune route existante (seule `[reference]/page.tsx` existe, en segment de chemin) — 404 systématique. Corrigé via `OrderTrackingForm` (composant client), vérifié en conditions réelles.
+
+Autres écarts observés, non corrigés (hors périmètre de ce lot, pas de plan de remédiation) : `/categories` absente du sitemap, `favoris` implémentée sans trace dans la roadmap H1-H4, formulaire de contact non câblé (déjà auto-déclaré "en cours d'activation" dans le code).
 
 ## Objectif
 
