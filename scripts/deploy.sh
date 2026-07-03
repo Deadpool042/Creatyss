@@ -102,7 +102,7 @@ step "Synchronisation du schéma Prisma (db:push)"
 docker compose -f "${COMPOSE_FILE}" --profile jobs run --rm db-push
 ok "Schéma synchronisé"
 
-# ── 4bis. Reseed des niveaux de features graduées ────────────────────────────
+# ── 6. Reseed des niveaux de features graduées ───────────────────────────────
 step "Reseed des niveaux de features graduées (db:seed:flags)"
 # Ne touche que allowedLevels/defaultLevel — jamais de données de démo, jamais
 # le niveau choisi par un opérateur (stocké séparément dans FeatureFlagOverride).
@@ -114,13 +114,13 @@ docker compose -f "${COMPOSE_FILE}" --profile jobs run --rm db-validate-levels \
   || die "Dérive détectée entre FEATURE_LEVELS (code) et allowedLevels (base) — voir logs ci-dessus"
 ok "Niveaux cohérents entre code et base"
 
-# ── 5. Recréation du conteneur app ───────────────────────────────────────────
+# ── 8. Recréation du conteneur app ───────────────────────────────────────────
 step "Redémarrage de l'application"
 # --force-recreate recharge les variables .env et l'image fraîchement buildée.
 docker compose -f "${COMPOSE_FILE}" up -d --force-recreate app
 ok "Conteneur app recréé"
 
-# ── 6. Attente de disponibilité ───────────────────────────────────────────────
+# ── 9. Attente de disponibilité ───────────────────────────────────────────────
 step "Attente de disponibilité (max 60 s)"
 # L'app n'expose pas de port hôte : on passe par docker exec.
 # node:22-alpine dispose de wget (busybox) — pas de curl dans l'image.
@@ -137,7 +137,7 @@ printf "\n"
 [ "${READY}" -eq 1 ] || die "L'application n'a pas répondu après 60 s — consulter : docker compose -f docker-compose.prod.yml logs app"
 ok "Application prête — /api/health OK"
 
-# ── 7. Vérification HTTPS ─────────────────────────────────────────────────────
+# ── 10. Vérification HTTPS ────────────────────────────────────────────────────
 step "Vérification HTTPS (https://${APP_DOMAIN}/)"
 if command -v curl >/dev/null 2>&1; then
   HTTP_CODE="$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://${APP_DOMAIN}/" || echo '000')"
