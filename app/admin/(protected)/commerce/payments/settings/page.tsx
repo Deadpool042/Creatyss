@@ -1,12 +1,15 @@
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { PaymentRouteNav } from "@/features/admin/commerce/payments/shared/components/payment-route-nav";
+import { CardPaymentStatusNotice } from "@/features/admin/settings/components/card-payment-status-notice";
 import { PaymentSettingsForm } from "@/features/admin/settings/components/payment-settings-form";
 import { getAdminPaymentSettings } from "@/features/admin/settings/queries/get-admin-payment-settings.query";
+import { getCardPaymentStatus } from "@/features/admin/settings/queries/get-card-payment-status.query";
 
 export default async function AdminCommercePaymentsSettingsPage() {
   await requireAdminCapability("admin.settings.payments.read");
   const settings = await getAdminPaymentSettings();
+  const cardPaymentStatus = await getCardPaymentStatus();
 
   return (
     <AdminPageShell
@@ -35,6 +38,8 @@ export default async function AdminCommercePaymentsSettingsPage() {
             l&apos;atelier.
           </p>
         </div>
+
+        <CardPaymentStatusNotice status={cardPaymentStatus} />
 
         <PaymentSettingsForm settings={settings} />
       </div>
