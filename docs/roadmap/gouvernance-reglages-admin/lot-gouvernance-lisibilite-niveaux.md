@@ -2,7 +2,7 @@
 
 ## Statut
 
-À faire.
+Livré — 2026-07-03. `levelLabels` ajouté aux 20 entrées graduées du catalogue (`feature-catalog.ts`), propagé par `list-admin-feature-flags.query.ts`, affiché dans `feature-flag-level-select.tsx` : tous les niveaux autorisés listés avec libellé FR + description, niveau courant marqué "Actuel". Vérifié visuellement sur `pricing` et `localization`. `typecheck` et `lint` passent.
 
 ## Objectif
 
