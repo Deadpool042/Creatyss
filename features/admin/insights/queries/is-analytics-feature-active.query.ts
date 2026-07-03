@@ -1,7 +1,7 @@
 import "server-only";
 
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export async function isAnalyticsFeatureActive(): Promise<boolean> {
-  return queryFeatureFlagActive("engagement.analytics");
+  return meetsFeatureLevel("engagement.analytics", "read");
 }

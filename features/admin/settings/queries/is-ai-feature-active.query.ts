@@ -1,7 +1,7 @@
 import "server-only";
 
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export async function isAiFeatureActive(): Promise<boolean> {
-  return queryFeatureFlagActive("ai.core");
+  return meetsFeatureLevel("ai.core", "basic");
 }

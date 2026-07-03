@@ -100,28 +100,28 @@ d'autres.
 Paliers stabilisés dans `FEATURE_LEVELS`
 (`features/admin/pilotage/catalog/feature-catalog.ts`) :
 
-| Feature                      | Paliers                                                              |
-| ---------------------------- | -------------------------------------------------------------------- |
-| `ai.core`                    | basic → assistant → advanced → automation                            |
-| `engagement.analytics`       | read → insights → recommendations (`recommendations` non implémenté) |
-| `engagement.newsletter`      | basic → segmentation → automation                                    |
-| `catalog.products.media`     | basic → optimization → generation → automation                       |
-| `commerce.discounts`         | simple → rules → automation                                          |
-| `catalog.products.inventory` | manual → alerts → forecasting                                        |
-| `platform.localization`      | managed → multilingual → localized-routing                           |
-| `commerce.fulfillment`       | manual → partial                                                     |
-| `commerce.returns`           | manual → partial                                                     |
-| `commerce.documents`         | basic → fiscal                                                       |
-| `commerce.taxation`          | store (niveau unique — cible produit non tranchée)                   |
-| `engagement.automations`     | basic (niveau unique — extensible)                                   |
-| `commerce.payments`          | read → manual → online                                               |
-| `platform.webhooks`          | read → manage → retry                                                |
-| `commerce.shipping`          | read → dispatch → delivery                                           |
-| `catalog.products.pricing`   | base-price → price-lists → scheduled-pricing                         |
-| `catalog.products.availability` | sellability → scheduling → preorder                               |
-| `content.blog`               | draft → publish                                                      |
-| `catalog.products.related`   | storefront → manage                                                  |
-| `catalog.products.variants`  | read → manage → options                                              |
+| Feature                         | Paliers                                                              |
+| ------------------------------- | -------------------------------------------------------------------- |
+| `ai.core`                       | basic → assistant → advanced → automation                            |
+| `engagement.analytics`          | read → insights → recommendations (`recommendations` non implémenté) |
+| `engagement.newsletter`         | basic → segmentation → automation                                    |
+| `catalog.products.media`        | basic → optimization → generation → automation                       |
+| `commerce.discounts`            | simple → rules → automation                                          |
+| `catalog.products.inventory`    | manual → alerts → forecasting                                        |
+| `platform.localization`         | managed → multilingual → localized-routing                           |
+| `commerce.fulfillment`          | manual → partial                                                     |
+| `commerce.returns`              | manual → partial                                                     |
+| `commerce.documents`            | basic → fiscal                                                       |
+| `commerce.taxation`             | store (niveau unique — cible produit non tranchée)                   |
+| `engagement.automations`        | basic (niveau unique — extensible)                                   |
+| `commerce.payments`             | read → manual → online                                               |
+| `platform.webhooks`             | read → manage → retry                                                |
+| `commerce.shipping`             | read → dispatch → delivery                                           |
+| `catalog.products.pricing`      | base-price → price-lists → scheduled-pricing                         |
+| `catalog.products.availability` | sellability → scheduling → preorder                                  |
+| `content.blog`                  | draft → publish                                                      |
+| `catalog.products.related`      | storefront → manage                                                  |
+| `catalog.products.variants`     | read → manage → options                                              |
 
 La doctrine retenue n'est pas la liste des niveaux mais le **mécanisme** : une
 feature graduée déclare ses niveaux autorisés ; l'admin sélectionne un niveau
@@ -137,36 +137,44 @@ Deux axes orthogonaux décrivent une feature :
   `experimental` ;
 - **`level`** : niveau effectif, uniquement pour les features graduées.
 
-| Feature                      | Décrite par                  |
-| ---------------------------- | ---------------------------- |
-| `commerce.payments`          | `status` + `level`           |
-| `commerce.shipping`          | `status` + `level`           |
-| `catalog.products.pricing`   | `status` + `level`           |
-| `catalog.products.availability` | `status` + `level`         |
-| `content.blog`               | `status` + `level`           |
-| `catalog.products.inventory` | `status` + `level` si gradué |
-| `catalog.products.variants`  | `status` + `level`           |
-| `ai.core`                    | `status` + `level`           |
+| Feature                         | Décrite par                  |
+| ------------------------------- | ---------------------------- |
+| `commerce.payments`             | `status` + `level`           |
+| `commerce.shipping`             | `status` + `level`           |
+| `catalog.products.pricing`      | `status` + `level`           |
+| `catalog.products.availability` | `status` + `level`           |
+| `content.blog`                  | `status` + `level`           |
+| `catalog.products.inventory`    | `status` + `level` si gradué |
+| `catalog.products.variants`     | `status` + `level`           |
+| `ai.core`                       | `status` + `level`           |
+| `engagement.newsletter`         | `status` + `level`           |
+| `engagement.analytics`          | `status` + `level`           |
+| `engagement.automations`        | `status` + `level`           |
+| `commerce.discounts`            | `status` + `level`           |
+| `commerce.fulfillment`          | `status` + `level`           |
+| `commerce.returns`              | `status` + `level`           |
+| `commerce.documents`            | `status` + `level`           |
+| `commerce.taxation`             | `status` + `level`           |
 
 ### Propositions sans gradation runtime observée
 
 Les features suivantes restent atomiques dans le code actuel. Les niveaux
 ci-dessous sont des propositions de cadrage, pas des niveaux runtime actifs.
 
-| Feature                         | État observé                            | Proposition de paliers si le code évolue                         |
-| ------------------------------- | --------------------------------------- | ----------------------------------------------------------------- |
-| `platform.notifications`        | lecture admin du référentiel            | read → preferences → emit                                         |
-| `platform.integrations`         | lecture admin du référentiel            | read → credentials → sync                                         |
-| `satellite.search`              | lecture admin de `SearchDocument`       | read → index → storefront                                         |
-| `satellite.channels`            | lecture admin canaux/statuts            | read → eligibility → publish                                      |
-| `catalog.products.seo`          | core, actif, non désactivable           | metadata → social-preview → ai-assist                             |
-| `catalog.products.categories`   | core, actif, non désactivable           | flat → hierarchy → merchandising                                  |
-| `content.homepage`              | module éditorial core/cross-cutting     | edit → merchandising → localized si une gradation devient utile   |
-| `content.seo`                   | réglage transversal                     | metadata → social → structured-data                               |
-| `settings.advanced`             | pilotage système core                   | garder atomique ; la gradation doit porter sur les flags pilotés   |
-| `maintenance.observability`     | lecture système                         | health → jobs → alerts                                            |
-| `maintenance.logs`              | lecture journaux                         | read → filter → export                                            |
-| `insights.analyticsRead`        | capability de lecture dépendante        | garder atomique tant que `engagement.analytics` porte les niveaux |
+| Feature                       | État observé                        | Proposition de paliers si le code évolue                          |
+| ----------------------------- | ----------------------------------- | ----------------------------------------------------------------- |
+| `platform.notifications`      | lecture admin du référentiel        | read → preferences → emit                                         |
+| `platform.integrations`       | lecture admin du référentiel        | read → credentials → sync                                         |
+| `satellite.search`            | lecture admin de `SearchDocument`   | read → index → storefront                                         |
+| `satellite.channels`          | lecture admin canaux/statuts        | read → eligibility → publish                                      |
+| `catalog.products.seo`        | core, actif, non désactivable       | metadata → social-preview → ai-assist                             |
+| `catalog.products.categories` | core, actif, non désactivable       | flat → hierarchy → merchandising                                  |
+| `content.homepage`            | module éditorial core/cross-cutting | edit → merchandising → localized si une gradation devient utile   |
+| `content.seo`                 | réglage transversal                 | metadata → social → structured-data                               |
+| `settings.advanced`           | pilotage système core               | garder atomique ; la gradation doit porter sur les flags pilotés  |
+| `maintenance.observability`   | lecture système                     | health → jobs → alerts                                            |
+| `maintenance.logs`            | lecture journaux                    | read → filter → export                                            |
+| `insights.analyticsRead`      | capability de lecture dépendante    | garder atomique tant que `engagement.analytics` porte les niveaux |
 
 Ne pas mélanger le header Prisma `/// Level: L4` (maturité documentaire du
 modèle) avec un `level` fonctionnel runtime (intensité de la feature activée).

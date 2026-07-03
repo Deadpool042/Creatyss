@@ -1,7 +1,7 @@
 import "server-only";
 
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export async function isTaxationFeatureActive(): Promise<boolean> {
-  return queryFeatureFlagActive("commerce.taxation");
+  return meetsFeatureLevel("commerce.taxation", "store");
 }
