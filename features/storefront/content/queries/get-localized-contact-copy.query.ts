@@ -16,7 +16,8 @@ import {
 import { resolvePreferredLocaleCode } from "@/entities/localization/resolve-preferred-locale";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { contentPagesCopyConfig } from "@/features/storefront/content/config/content-pages-copy.config";
-import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 
 /**
  * Résout le dictionnaire page Contact en y appliquant les `LocalizedValue`
@@ -35,7 +36,7 @@ import { meetsLocalizationLevel } from "@/features/localization/queries/get-loca
  * fallback vers la locale par défaut) sont appliquées en override.
  */
 export async function getLocalizedContactCopy(): Promise<ContactPageCopyDictionary> {
-  const allowed = await meetsLocalizationLevel("multilingual");
+  const allowed = await meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual");
 
   if (!allowed) {
     return contentPagesCopyConfig.contact;

@@ -402,13 +402,15 @@ Les règles pures de résolution (`resolveEffectiveLevel`, `meetsRequiredLevel`)
 vivent dans `entities/feature-flags/feature-level.ts`. Le runtime transverse
 de résolution (`getFeatureLevelState`, `meetsFeatureLevel`,
 `queryFeatureFlagActive`) vit dans
-`features/feature-flags/queries/` et sert déjà l'admin, le storefront et les
-routes API. Le premier guard gradué spécialisé reste
-`getLocalizationFeatureState` / `meetsLocalizationLevel` dans
-`features/localization/queries/get-localization-feature-state.query.ts`, pour
-le flag `platform.localization` (seedé en DRAFT, `allowedLevels =
+`features/feature-flags/queries/` et sert désormais toutes les features
+graduées, y compris `platform.localization` (seedé en DRAFT, `allowedLevels =
 ["managed", "multilingual", "localized-routing"]`, `defaultLevel =
-"managed"` — cf. `docs/lots/2026-06-12-localization-l1-cadrage.md`).
+"managed"` — cf. `docs/lots/2026-06-12-localization-l1-cadrage.md`). Le guard
+spécialisé `getLocalizationFeatureState` / `meetsLocalizationLevel`, premier
+guard gradué du repo, a été retiré au profit du guard générique ; seul
+`LOCALIZATION_FEATURE_CODE` reste exporté depuis
+`features/localization/queries/get-localization-feature-state.query.ts` pour
+les appelants qui référencent le code du flag sans passer par le guard.
 
 Le feature flag est un mécanisme de variation contrôlée. Il n'est pas la
 doctrine produit : il l'exécute.

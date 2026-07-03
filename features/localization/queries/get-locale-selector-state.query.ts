@@ -4,7 +4,8 @@ import { db } from "@/core/db";
 import { readLocalePreferenceCookie } from "@/core/sessions/locale-preference";
 import { resolvePreferredLocaleCode } from "@/entities/localization/resolve-preferred-locale";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
-import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 import { listActiveLocalizationLocales } from "@/features/localization/queries/list-active-localization-locales.query";
 
 /**
@@ -12,9 +13,9 @@ import { listActiveLocalizationLocales } from "@/features/localization/queries/l
  * storefront (cf. docs/lots/2026-06-13-localization-l2-cadrage.md).
  *
  * Combine :
- * - le guard gradué `meetsLocalizationLevel("multilingual")` (toujours
- *   `false` tant que le flag `platform.localization` est DRAFT — le
- *   sélecteur reste invisible par défaut) ;
+ * - le guard gradué `meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual")`
+ *   (toujours `false` tant que le flag `platform.localization` est DRAFT —
+ *   le sélecteur reste invisible par défaut) ;
  * - au moins deux locales `ACTIVE` (sinon un sélecteur n'a pas de sens) ;
  * - la résolution de la locale active via la préférence cookie
  *   (`resolvePreferredLocaleCode`).
@@ -32,7 +33,7 @@ export type LocaleSelectorState =
 const HIDDEN_STATE: LocaleSelectorState = { isVisible: false };
 
 export async function getLocaleSelectorState(): Promise<LocaleSelectorState> {
-  const allowed = await meetsLocalizationLevel("multilingual");
+  const allowed = await meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual");
 
   if (!allowed) {
     return HIDDEN_STATE;

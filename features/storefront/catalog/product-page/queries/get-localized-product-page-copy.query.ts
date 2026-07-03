@@ -18,7 +18,8 @@ import {
   productPageCopyConfig,
   type ProductPageCopy,
 } from "@/features/storefront/catalog/product-page/config/product-page-copy.config";
-import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 
 /**
  * Généralisation `LocalizedValue`, pilote n°2 (fiche produit), cf.
@@ -41,7 +42,7 @@ import { meetsLocalizationLevel } from "@/features/localization/queries/get-loca
  * `productPageCopyConfig`.
  */
 export async function getLocalizedProductPageCopy(): Promise<ProductPageCopy> {
-  const allowed = await meetsLocalizationLevel("multilingual");
+  const allowed = await meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual");
 
   if (!allowed) {
     return productPageCopyConfig;

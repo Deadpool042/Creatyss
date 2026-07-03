@@ -10,7 +10,8 @@ import { listHomepageTranslations } from "@/features/admin/settings/queries/list
 import { listProductPageTranslations } from "@/features/admin/settings/queries/list-product-page-translations.query";
 import { listBoutiquePageTranslations } from "@/features/admin/settings/queries/list-boutique-page-translations.query";
 import { listContactPageTranslations } from "@/features/admin/settings/queries/list-contact-page-translations.query";
-import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 
 export const dynamic = "force-dynamic";
 
@@ -27,19 +28,18 @@ export default async function AdvancedSettingsDetailLocalizationTranslationsPage
     notFound();
   }
 
-  const featureActive = await meetsLocalizationLevel("multilingual");
+  const featureActive = await meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual");
 
   if (!featureActive) {
     redirect("/admin/settings/advanced/optional");
   }
 
-  const [homepageState, productPageState, boutiquePageState, contactPageState] =
-    await Promise.all([
-      listHomepageTranslations(),
-      listProductPageTranslations(),
-      listBoutiquePageTranslations(),
-      listContactPageTranslations(),
-    ]);
+  const [homepageState, productPageState, boutiquePageState, contactPageState] = await Promise.all([
+    listHomepageTranslations(),
+    listProductPageTranslations(),
+    listBoutiquePageTranslations(),
+    listContactPageTranslations(),
+  ]);
 
   if (!homepageState.hasTargetLocale) {
     return (
@@ -80,7 +80,8 @@ export default async function AdvancedSettingsDetailLocalizationTranslationsPage
                 <span className="font-medium text-foreground">
                   {productPageState.targetLocale.name}
                 </span>{" "}
-                (<code className="font-mono text-[11px]">{productPageState.targetLocale.code}</code>)
+                (<code className="font-mono text-[11px]">{productPageState.targetLocale.code}</code>
+                )
               </p>
             </div>
             <ProductPageTranslationsForm
@@ -99,7 +100,9 @@ export default async function AdvancedSettingsDetailLocalizationTranslationsPage
                 <span className="font-medium text-foreground">
                   {boutiquePageState.targetLocale.name}
                 </span>{" "}
-                (<code className="font-mono text-[11px]">{boutiquePageState.targetLocale.code}</code>)
+                (
+                <code className="font-mono text-[11px]">{boutiquePageState.targetLocale.code}</code>
+                )
               </p>
             </div>
             <BoutiquePageTranslationsForm
@@ -118,7 +121,8 @@ export default async function AdvancedSettingsDetailLocalizationTranslationsPage
                 <span className="font-medium text-foreground">
                   {contactPageState.targetLocale.name}
                 </span>{" "}
-                (<code className="font-mono text-[11px]">{contactPageState.targetLocale.code}</code>)
+                (<code className="font-mono text-[11px]">{contactPageState.targetLocale.code}</code>
+                )
               </p>
             </div>
             <ContactPageTranslationsForm

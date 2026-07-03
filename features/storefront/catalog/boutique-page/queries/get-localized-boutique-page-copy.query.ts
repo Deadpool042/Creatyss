@@ -18,7 +18,8 @@ import {
   boutiqueCopyConfig,
   type BoutiquePageCopy,
 } from "@/features/storefront/catalog/boutique-page/config/boutique-copy.config";
-import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 
 /**
  * Généralisation `LocalizedValue`, pilote n°3 (page boutique), cf.
@@ -42,7 +43,7 @@ import { meetsLocalizationLevel } from "@/features/localization/queries/get-loca
  * affecté.
  */
 export async function getLocalizedBoutiquePageCopy(): Promise<BoutiquePageCopy> {
-  const allowed = await meetsLocalizationLevel("multilingual");
+  const allowed = await meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual");
 
   if (!allowed) {
     return boutiqueCopyConfig;
