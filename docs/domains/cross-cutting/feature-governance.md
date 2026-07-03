@@ -100,32 +100,74 @@ d'autres.
 Paliers stabilisés dans `FEATURE_LEVELS`
 (`features/admin/pilotage/catalog/feature-catalog.ts`) :
 
-| Feature                         | Paliers                                                              |
-| ------------------------------- | -------------------------------------------------------------------- |
-| `ai.core`                       | basic → assistant → advanced → automation                            |
-| `engagement.analytics`          | read → insights → recommendations (`recommendations` non implémenté) |
-| `engagement.newsletter`         | basic → segmentation → automation                                    |
-| `catalog.products.media`        | basic → optimization → generation → automation                       |
-| `commerce.discounts`            | simple → rules → automation                                          |
-| `catalog.products.inventory`    | manual → alerts → forecasting                                        |
-| `platform.localization`         | managed → multilingual → localized-routing                           |
-| `commerce.fulfillment`          | manual → partial                                                     |
-| `commerce.returns`              | manual → partial                                                     |
-| `commerce.documents`            | basic → fiscal                                                       |
-| `commerce.taxation`             | store (niveau unique — cible produit non tranchée)                   |
-| `engagement.automations`        | basic (niveau unique — extensible)                                   |
-| `commerce.payments`             | read → manual → online                                               |
-| `platform.webhooks`             | read → manage → retry                                                |
-| `commerce.shipping`             | read → dispatch → delivery                                           |
-| `catalog.products.pricing`      | base-price → price-lists → scheduled-pricing                         |
-| `catalog.products.availability` | sellability → scheduling → preorder                                  |
-| `content.blog`                  | draft → publish                                                      |
-| `catalog.products.related`      | storefront → manage                                                  |
-| `catalog.products.variants`     | read → manage → options                                              |
+| Feature                         | Paliers                                            |
+| ------------------------------- | -------------------------------------------------- |
+| `ai.core`                       | basic → assistant → advanced → automation          |
+| `engagement.analytics`          | read → insights → recommendations                  |
+| `engagement.newsletter`         | basic → segmentation → automation                  |
+| `catalog.products.media`        | basic → optimization → generation → automation     |
+| `commerce.discounts`            | simple → rules → automation                        |
+| `catalog.products.inventory`    | manual → alerts → forecasting                      |
+| `platform.localization`         | managed → multilingual → localized-routing         |
+| `commerce.fulfillment`          | manual → partial                                   |
+| `commerce.returns`              | manual → partial                                   |
+| `commerce.documents`            | basic → fiscal                                     |
+| `commerce.taxation`             | store (niveau unique — cible produit non tranchée) |
+| `engagement.automations`        | basic (niveau unique — extensible)                 |
+| `commerce.payments`             | read → manual → online                             |
+| `platform.webhooks`             | read → manage → retry                              |
+| `commerce.shipping`             | read → dispatch → delivery                         |
+| `catalog.products.pricing`      | base-price → price-lists → scheduled-pricing       |
+| `catalog.products.availability` | sellability → scheduling → preorder                |
+| `content.blog`                  | draft → publish                                    |
+| `catalog.products.related`      | storefront → manage                                |
+| `catalog.products.variants`     | read → manage → options                            |
 
 La doctrine retenue n'est pas la liste des niveaux mais le **mécanisme** : une
 feature graduée déclare ses niveaux autorisés ; l'admin sélectionne un niveau
 parmi ceux autorisés ; le guard bloque les fonctions au-delà du niveau actif.
+
+### Règle `defaultLevel`
+
+Le `defaultLevel` seedé pour une feature graduée doit toujours correspondre au
+comportement de production **immédiatement antérieur** à l'introduction de la
+gradation pour cette feature — jamais un choix arbitraire. Deux cas observés,
+tous deux conformes à cette règle :
+
+- **Feature graduée a posteriori sur du code déjà actif** (ex. `commerce.payments`,
+  `commerce.shipping`, `platform.webhooks`, `catalog.products.pricing` /
+  `availability` / `variants` / `related`, `content.blog`) → `defaultLevel` =
+  niveau **maximal**. La capacité complète existait déjà avant la gradation ;
+  démarrer plus bas retirerait silencieusement des capacités à des boutiques
+  existantes.
+- **Feature graduée dès son introduction** (ex. `ai.core`, `engagement.newsletter`
+  / `analytics` / `automations`, `commerce.discounts` / `fulfillment` /
+  `returns` / `documents` / `taxation`, `platform.localization`) →
+  `defaultLevel` = niveau **minimal**. Rollout prudent d'une capacité jamais
+  activée par défaut avant ce lot.
+- **Cas apparemment exceptionnel mais conforme** : `catalog.products.inventory`
+  et `catalog.products.media` sont `core`/actives de longue date, mais leur
+  `defaultLevel` est le niveau minimal (`manual`/`basic`). Ce n'est pas une
+  exception : ce niveau minimal correspond exactement au comportement
+  pré-gradation (seuil de stock fixe non configurable / upload manuel sans
+  diagnostic) — les niveaux supérieurs sont des capacités additionnelles
+  introduites avec la gradation, pas retirées par elle.
+
+Toute PR qui ajoute une gradation à une feature existante doit vérifier
+laquelle des deux situations s'applique avant de choisir `defaultLevel`.
+
+### Niveaux planchers structurels
+
+Pour une feature `core`/toujours active (`defaultState: "active"`), le niveau
+le plus bas déclaré n'a pas vocation à avoir de call-site `meetsFeatureLevel`
+dédié : l'onglet ou la page admin correspondante est toujours visible, seuls
+les paliers d'escalade au-dessus du plancher sont gatés explicitement. C'est
+le cas de `base-price` (pricing), `sellability` (availability), `read`
+(variants), `manual` (inventory), `basic` (media), `draft` (blog) — un audit
+futur ne doit pas les signaler comme des « niveaux fantômes » : ce sont des
+planchers structurels, pas des capacités manquantes. Le seul niveau
+réellement non câblé à ce jour est documenté explicitement ci-dessus quand il
+existe.
 
 ---
 
