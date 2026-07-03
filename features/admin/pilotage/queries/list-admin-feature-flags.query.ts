@@ -35,6 +35,7 @@ export type AdminFeatureFlagView = Readonly<{
   mutability: FeatureMutability | null;
   scopes: readonly FeatureScope[];
   levels?: readonly FeatureLevelKey[];
+  levelLabels?: Readonly<Record<string, string>>;
   levelDescriptions?: Readonly<Record<string, string>>;
   dependencies?: readonly Readonly<{
     key: string;
@@ -169,6 +170,7 @@ export async function listAdminFeatureFlags(): Promise<readonly AdminFeatureFlag
       mutability: entry.mutability,
       scopes: entry.scopes,
       ...(entry.levels !== undefined ? { levels: entry.levels } : {}),
+      ...(entry.levelLabels !== undefined ? { levelLabels: entry.levelLabels } : {}),
       ...(entry.levelDescriptions !== undefined
         ? { levelDescriptions: entry.levelDescriptions }
         : {}),

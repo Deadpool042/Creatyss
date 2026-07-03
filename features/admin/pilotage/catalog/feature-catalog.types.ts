@@ -25,6 +25,8 @@ export type FeatureCatalogEntry = Readonly<{
   mutability: FeatureMutability;
   scopes: readonly FeatureScope[];
   levels?: readonly FeatureLevelKey[];
+  /** Libellé FR court par niveau (clé de `levels`), affiché dans le sélecteur de niveau. */
+  levelLabels?: Readonly<Record<string, string>>;
   /** Description courte par niveau (clé de `levels`), affichée dans le pilotage admin. */
   levelDescriptions?: Readonly<Record<string, string>>;
   dependencies?: readonly string[];

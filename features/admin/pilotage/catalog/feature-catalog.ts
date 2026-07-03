@@ -35,6 +35,10 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.fulfillment,
+    levelLabels: {
+      manual: "Manuel",
+      partial: "Partiel",
+    },
     levelDescriptions: {
       manual:
         "Préparation tout-ou-rien : toutes les lignes de la commande sont préparées ensemble.",
@@ -51,6 +55,10 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.returns,
+    levelLabels: {
+      manual: "Manuel",
+      partial: "Partiel",
+    },
     levelDescriptions: {
       manual: "Retour tout-ou-rien : toutes les lignes de la commande sont retournées ensemble.",
       partial: "Autorise la sélection de quantités partielles par ligne à la création.",
@@ -67,6 +75,10 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.documents,
+    levelLabels: {
+      basic: "Basique",
+      fiscal: "Fiscal",
+    },
     levelDescriptions: {
       basic: "Confirmation de commande et bon de préparation uniquement (documents informatifs).",
       fiscal:
@@ -83,6 +95,9 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.taxation,
+    levelLabels: {
+      store: "Boutique",
+    },
     levelDescriptions: {
       store: "Règles de TVA à l'échelle boutique uniquement (pas de ciblage catégorie/produit).",
     },
@@ -97,6 +112,11 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.payments,
+    levelLabels: {
+      read: "Lecture",
+      manual: "Manuel",
+      online: "En ligne",
+    },
     levelDescriptions: {
       read: "Lecture admin des paiements et de leur statut, sans action de transition.",
       manual:
@@ -114,6 +134,11 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.shipping,
+    levelLabels: {
+      read: "Lecture",
+      dispatch: "Expédition",
+      delivery: "Livraison confirmée",
+    },
     levelDescriptions: {
       read: "Lecture admin des expéditions et de leurs statuts.",
       dispatch:
@@ -131,6 +156,11 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.discounts,
+    levelLabels: {
+      simple: "Simple",
+      rules: "Règles",
+      automation: "Automatisation",
+    },
     levelDescriptions: {
       simple:
         "CRUD admin des remises (pourcentage/montant fixe, scope commande), sans effet panier.",
@@ -172,6 +202,11 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store", "global"],
     levels: FEATURE_LEVELS.webhooks,
+    levelLabels: {
+      read: "Lecture",
+      manage: "Gestion",
+      retry: "Relance",
+    },
     levelDescriptions: {
       read: "Lecture admin des endpoints webhook sortants et de leurs deliveries.",
       manage: "Autorise la création et l'activation/désactivation des endpoints webhook.",
@@ -187,6 +222,11 @@ export const FEATURE_CATALOG = [
     defaultState: "inactive",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelLabels: {
+      managed: "Géré",
+      multilingual: "Multilingue",
+      "localized-routing": "Routing localisé",
+    },
     levelDescriptions: {
       managed: "Gestion de la locale par défaut de la boutique, sans contenu traduit.",
       multilingual:
@@ -228,6 +268,11 @@ export const FEATURE_CATALOG = [
     defaultState: "inactive",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelLabels: {
+      basic: "Basique",
+      segmentation: "Segmentation",
+      automation: "Automatisation",
+    },
     levelDescriptions: {
       basic:
         "Référentiel des abonnés (admin + souscription storefront), sans campagne ni segmentation.",
@@ -247,6 +292,11 @@ export const FEATURE_CATALOG = [
     defaultState: "inactive",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelLabels: {
+      read: "Lecture",
+      insights: "Analyses",
+      recommendations: "Recommandations",
+    },
     levelDescriptions: {
       read: "Lecture live du mois courant : chiffre d'affaires, commandes, nouveaux clients, taux d'annulation.",
       insights:
@@ -267,6 +317,9 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.automations,
+    levelLabels: {
+      basic: "Basique",
+    },
     levelDescriptions: {
       basic: "Déclencheurs commande passée / inscription newsletter, action email uniquement.",
     },
@@ -282,6 +335,11 @@ export const FEATURE_CATALOG = [
     defaultState: "active",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelLabels: {
+      "base-price": "Prix de base",
+      "price-lists": "Listes de prix",
+      "scheduled-pricing": "Tarification planifiée",
+    },
     levelDescriptions: {
       "base-price": "Tarif boutique par défaut sur la fiche produit, sans grilles avancées.",
       "price-lists": "Ajoute la gestion des listes de prix et des tarifs multi-grilles.",
@@ -299,6 +357,11 @@ export const FEATURE_CATALOG = [
     defaultState: "active",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelLabels: {
+      sellability: "Vendabilité",
+      scheduling: "Planification",
+      preorder: "Précommande",
+    },
     levelDescriptions: {
       sellability:
         "Statut commercial, vendabilité en ligne et autorisation de commande en rupture.",
@@ -317,6 +380,11 @@ export const FEATURE_CATALOG = [
     defaultState: "active",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelLabels: {
+      manual: "Manuel",
+      alerts: "Alertes",
+      forecasting: "Prévisions",
+    },
     levelDescriptions: {
       manual: "Seuil de stock faible fixe (2 unités), non configurable.",
       alerts: "Seuil de stock faible configurable par variante dans l'éditeur produit.",
@@ -334,6 +402,12 @@ export const FEATURE_CATALOG = [
     defaultState: "active",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelLabels: {
+      basic: "Basique",
+      optimization: "Optimisation",
+      generation: "Génération",
+      automation: "Automatisation",
+    },
     levelDescriptions: {
       basic: "Upload et gestion manuelle des médias, sans diagnostic ni génération.",
       optimization:
@@ -354,6 +428,11 @@ export const FEATURE_CATALOG = [
     defaultState: "active",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelLabels: {
+      read: "Lecture",
+      manage: "Gestion",
+      options: "Options",
+    },
     levelDescriptions: {
       read: "Lecture des variantes et de leur structure dans l'éditeur produit.",
       manage: "Création, modification, suppression et choix de la variante par défaut.",
@@ -394,6 +473,10 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.relatedProducts,
+    levelLabels: {
+      storefront: "Storefront",
+      manage: "Gestion",
+    },
     levelDescriptions: {
       storefront: "Affiche les suggestions de produits liés sur les fiches produit publiques.",
       manage:
@@ -411,6 +494,10 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.blog,
+    levelLabels: {
+      draft: "Brouillon",
+      publish: "Publication",
+    },
     levelDescriptions: {
       draft: "Édition admin des brouillons, sans diffusion publique du blog.",
       publish: "Ajoute la publication storefront des articles et du listing blog.",
@@ -497,6 +584,12 @@ export const FEATURE_CATALOG = [
     defaultState: "inactive",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelLabels: {
+      basic: "Basique",
+      assistant: "Assistant",
+      advanced: "Avancé",
+      automation: "Automatisation",
+    },
     levelDescriptions: {
       basic:
         "Lecture/observabilité admin des tâches IA, et suggestion SEO manuelle pour un produit.",

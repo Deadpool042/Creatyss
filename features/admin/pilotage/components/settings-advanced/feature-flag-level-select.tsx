@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -13,6 +14,7 @@ import { useFeatureFlagLevel } from "@/features/admin/pilotage/hooks/use-feature
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+/** Repli si un niveau n'a pas (encore) de libellé FR dans le catalogue — ne doit pas masquer un oubli. */
 function humanizeLevel(level: string): string {
   const withSpaces = level.replace(/[-_]/g, " ");
   return withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1);
@@ -37,11 +39,12 @@ export function FeatureFlagLevelSelect({ flag, onFeedback }: FeatureFlagLevelSel
     return null;
   }
 
-  const currentLevelDescription =
-    currentLevel !== null ? (flag.levelDescriptions?.[currentLevel] ?? null) : null;
+  function labelFor(level: string): string {
+    return flag.levelLabels?.[level] ?? humanizeLevel(level);
+  }
 
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-2.5">
       <Select
         onValueChange={handleSelect}
         disabled={!canSelect || isPending}
@@ -53,14 +56,39 @@ export function FeatureFlagLevelSelect({ flag, onFeedback }: FeatureFlagLevelSel
         <SelectContent>
           {allowedLevels.map((level) => (
             <SelectItem key={level} value={level}>
-              {humanizeLevel(level)}
+              {labelFor(level)}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
-      {currentLevelDescription !== null ? (
-        <p className="text-xs leading-5 text-muted-foreground/70">{currentLevelDescription}</p>
-      ) : null}
+
+      <ul className="space-y-1.5 rounded-md border border-border/60 bg-muted/20 p-2.5">
+        {allowedLevels.map((level) => {
+          const isCurrent = level === currentLevel;
+          const description = flag.levelDescriptions?.[level] ?? null;
+
+          return (
+            <li key={level} className="text-xs leading-5">
+              <span
+                className={cn(
+                  "font-medium",
+                  isCurrent ? "text-foreground" : "text-muted-foreground/80"
+                )}
+              >
+                {labelFor(level)}
+                {isCurrent ? (
+                  <span className="ml-1.5 rounded-sm bg-foreground/10 px-1 py-0.5 text-[10px] font-medium uppercase tracking-wide text-foreground/70">
+                    Actuel
+                  </span>
+                ) : null}
+              </span>
+              {description !== null ? (
+                <p className="text-muted-foreground/70">{description}</p>
+              ) : null}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
