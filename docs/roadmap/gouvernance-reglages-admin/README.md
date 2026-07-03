@@ -39,7 +39,7 @@ Audit complet réalisé en lecture seule (Phase 1 du protocole `settings/*`, cf.
 | Fichier                                                                          | Description                                                                                                         | Statut             |
 | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------ |
 | [lot-gouvernance-lisibilite-niveaux.md](./lot-gouvernance-lisibilite-niveaux.md) | Rendre lisible, pour chaque niveau d'une fonctionnalité graduée, ce qu'il fait et ce qu'il apporte, avant sélection | Livré — 2026-07-03 |
-| [lot-nav-avance-clarification.md](./lot-nav-avance-clarification.md)             | Signaler visuellement que "Avancé" est un panneau technique, distinct des réglages métier                           | À faire            |
+| [lot-nav-avance-clarification.md](./lot-nav-avance-clarification.md)             | Signaler visuellement que "Avancé" est un panneau technique, distinct des réglages métier                           | Livré — 2026-07-03 |
 | [lot-livraison-zones-methodes.md](./lot-livraison-zones-methodes.md)             | UI de gestion de plusieurs zones et méthodes de livraison, sur le modèle Prisma existant                            | À faire            |
 | [lot-decision-paiement-carte.md](./lot-decision-paiement-carte.md)               | Décision produit : exposer ou non Stripe/carte dans l'admin (pas de code)                                           | À faire            |
 

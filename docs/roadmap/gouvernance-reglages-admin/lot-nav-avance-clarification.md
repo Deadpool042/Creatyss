@@ -2,7 +2,9 @@
 
 ## Statut
 
-À faire.
+Livré — 2026-07-03. Libellé de navigation renommé en "Modules & fonctionnalités" (validé avec le propriétaire produit), titre et description de l'écran `/admin/settings/advanced/overview` reformulés pour signaler explicitement le pilotage d'activation/niveau avant configuration de valeur. `typecheck` et `lint` passent.
+
+Point vérifié et volontairement non traité dans ce lot : le chevauchement thématique "Boutique" (`/admin/settings/store`) vs "Général" (`/admin/settings/general`) est confirmé (statut/domaines vs identité/légal/contact), mais fusionner ou restructurer ces deux écrans est un changement plus lourd que la seule clarification de libellé — à cadrer comme décision séparée si jugé prioritaire, pas dans ce lot.
 
 ## Objectif
 
