@@ -321,6 +321,15 @@ passent la vendabilité mais restent bloqués par le stock au panier. La
 re-vérification de vendabilité à la création de commande n'est pas encore en
 place (défense en profondeur possible).
 
+**Invariant confirmé par bug (2026-07-01) : tout consommateur de `AvailabilityRecord`
+doit filtrer `archivedAt: null`.** Deux lectures ne le faisaient pas :
+`get-admin-product-preview.query.ts` (n'exposait pas du tout `availabilityRecords`,
+retombait sur le calcul stock brut, désynchronisé du storefront) et
+`guest-cart.repository.ts` (sélectionnait `availabilityRecords` sans filtre
+`archivedAt`, laissant un enregistrement archivé bloquer un ajout au panier).
+Les deux lectures sont désormais alignées sur `catalog-availability.ts` /
+`selects.ts` (storefront), qui filtraient déjà correctement.
+
 ## Questions ouvertes
 
 À confirmer explicitement dans le projet :
