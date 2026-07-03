@@ -5,11 +5,12 @@ import { revalidatePath } from "next/cache";
 
 import { db } from "@/core/db";
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { isTransitionAllowed, type StatusTransitionMap } from "@/core/shared/status-transitions";
 import { ADMIN_SHIPPING_SETTINGS_PATH } from "@/features/admin/commerce/shipping/shared/admin-shipping-routes";
 
 type ShippingZoneStatus = "ACTIVE" | "INACTIVE" | "ARCHIVED";
 
-const ALLOWED_TRANSITIONS: Record<ShippingZoneStatus, ShippingZoneStatus[]> = {
+const ALLOWED_TRANSITIONS: StatusTransitionMap<ShippingZoneStatus> = {
   ACTIVE: ["INACTIVE", "ARCHIVED"],
   INACTIVE: ["ACTIVE", "ARCHIVED"],
   ARCHIVED: [],
@@ -34,8 +35,7 @@ export async function updateShippingZoneStatusAction(formData: FormData): Promis
     redirect(`${ADMIN_SHIPPING_SETTINGS_PATH}?sz_error=not_found`);
   }
 
-  const allowed = ALLOWED_TRANSITIONS[zone.status] ?? [];
-  if (!allowed.includes(nextStatus)) {
+  if (!isTransitionAllowed(ALLOWED_TRANSITIONS, zone.status, nextStatus)) {
     redirect(`${ADMIN_SHIPPING_SETTINGS_PATH}?sz_error=invalid_transition`);
   }
 

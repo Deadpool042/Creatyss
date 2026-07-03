@@ -5,12 +5,14 @@ import { revalidatePath } from "next/cache";
 
 import { db } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { isTransitionAllowed, type StatusTransitionMap } from "@/core/shared/status-transitions";
 import { ADMIN_PRICING_PATH } from "@/features/admin/catalog/shared/admin-pricing-routes";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 type TargetStatus = "ACTIVE" | "INACTIVE" | "ARCHIVED";
+type PriceListStatus = "DRAFT" | TargetStatus;
 
-const ALLOWED_TRANSITIONS: Record<string, TargetStatus[]> = {
+const ALLOWED_TRANSITIONS: StatusTransitionMap<PriceListStatus> = {
   DRAFT: ["ACTIVE", "ARCHIVED"],
   ACTIVE: ["INACTIVE", "ARCHIVED"],
   INACTIVE: ["ACTIVE", "ARCHIVED"],
@@ -39,8 +41,7 @@ export async function updatePriceListStatusAction(formData: FormData): Promise<v
     redirect(`${ADMIN_PRICING_PATH}?pl_error=not_found`);
   }
 
-  const allowed = ALLOWED_TRANSITIONS[priceList.status] ?? [];
-  if (!allowed.includes(nextStatus)) {
+  if (!isTransitionAllowed(ALLOWED_TRANSITIONS, priceList.status as PriceListStatus, nextStatus)) {
     redirect(`${ADMIN_PRICING_PATH}?pl_error=invalid_transition`);
   }
 
