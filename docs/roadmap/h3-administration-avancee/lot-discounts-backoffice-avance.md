@@ -21,10 +21,10 @@ Livré au 2026-06-25 :
 - `features/admin/marketing/discounts/components/admin-discount-redemptions-table.tsx` — visualisation des `DiscountRedemption`
 - `features/admin/marketing/discounts/actions/toggle-discount-code-status.action.ts` — activation/désactivation de code avec contrôle boutique courante et niveau de feature
 - `features/admin/marketing/discounts/components/admin-discounts-list.tsx` — navigation liste → détail
+- `tests/e2e/admin/commerce-discounts.spec.ts` — test e2e admin dédié à la page détail (création de code secondaire, désactivation/réactivation, édition de priorité, cas d'erreur) ; 5 tests unitaires sur les actions/queries (`tests/unit/features/admin/marketing/discounts/`)
 
 Reste en dehors de la preuve livrée dans ce lot :
 
-- test e2e admin dédié à cette nouvelle page détail
 - feedback UX avancé globalisé côté back-office (bannière ou toasts centralisés)
 
 ## Hors périmètre
