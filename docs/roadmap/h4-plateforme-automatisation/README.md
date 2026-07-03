@@ -10,7 +10,7 @@
 
 ### Observé comme terminé (base)
 
-- `platform.webhooks` L3 lecture seule : seed, page admin `/admin/settings/webhooks`, lecture `WebhookEndpoint`/`WebhookDelivery` — observé
+- `platform.webhooks` L3 gradué : seed, page admin `/admin/settings/webhooks`, lecture `WebhookEndpoint`/`WebhookDelivery`, gestion endpoints et relance delivery derrière niveaux `read`/`manage`/`retry` — observé
 - `platform.integrations` L3 lecture seule : seed, page admin `/admin/settings/integrations`, lecture `Integration`/`IntegrationCredential`/`IntegrationSyncState` — observé
 - `satellite.channels` L3 lecture seule : seed, page admin `/admin/settings/channels`, lecture `Channel`/`ChannelProductStatus`/`ChannelVariantStatus` — observé
 - `satellite.search` L3 lecture seule : seed, page admin `/admin/settings/search`, lecture `SearchDocument` — observé
@@ -19,7 +19,7 @@
 
 ### Observé comme non terminé
 
-- `platform.webhooks` : livraison webhook sortante avec signature HMAC et retry absente — observé ; sémantique entrants vs sortants à clarifier — documenté dans `docs/lots/2026-06-14-platform-webhooks-cadrage.md`
+- `platform.webhooks` : livraison webhook sortante avec signature HMAC et retry manuel gradué `retry` — observé ; sémantique entrants vs sortants à clarifier — documenté dans `docs/lots/2026-06-14-platform-webhooks-cadrage.md`
 - `platform.integrations` : aucun adaptateur provider concret — observé
 - `satellite.channels` : aucune synchronisation vers Google/Meta — observé
 - `satellite.search` : aucun moteur de recherche storefront — observé

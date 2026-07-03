@@ -5,6 +5,8 @@ type ReadonlyFlagDef = {
   name: string;
   description: string;
   scopeType: "STORE" | "GLOBAL";
+  allowedLevels?: readonly string[];
+  defaultLevel?: string;
 };
 
 /**
@@ -20,6 +22,8 @@ const CORE_CROSS_CUTTING_FLAGS: readonly ReadonlyFlagDef[] = [
     name: "Blog",
     description: "Gestion des articles de blog et de la structure éditoriale.",
     scopeType: "STORE",
+    allowedLevels: ["draft", "publish"],
+    defaultLevel: "publish",
   },
   {
     code: "content.homepage",
@@ -92,6 +96,8 @@ export async function seedCoreCrossCuttingFlags(
         description: flag.description,
         status: "ACTIVE",
         isEnabledByDefault: true,
+        allowedLevels: flag.allowedLevels ? [...flag.allowedLevels] : [],
+        defaultLevel: flag.defaultLevel ?? null,
         archivedAt: null,
       },
       create: {
@@ -102,8 +108,8 @@ export async function seedCoreCrossCuttingFlags(
         status: "ACTIVE",
         scopeType: flag.scopeType,
         isEnabledByDefault: true,
-        allowedLevels: [],
-        defaultLevel: null,
+        allowedLevels: flag.allowedLevels ? [...flag.allowedLevels] : [],
+        defaultLevel: flag.defaultLevel ?? null,
       },
     });
   }

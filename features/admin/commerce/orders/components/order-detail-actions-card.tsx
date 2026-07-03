@@ -24,21 +24,25 @@ type OrderDetailActionsCardProps = Readonly<{
     trackingUrl: string | null;
   };
   allowedTransitions: readonly OrderStatus[];
+  canConfirmDelivery: boolean;
+  canDispatchShipping: boolean;
   shipmentStatus: string | null;
 }>;
 
 export function OrderDetailActionsCard({
   order,
   allowedTransitions,
+  canConfirmDelivery,
+  canDispatchShipping,
   shipmentStatus,
 }: OrderDetailActionsCardProps) {
   const shippingFieldId = `tracking-reference-${order.id}`;
   const carrierFieldId = `carrier-${order.id}`;
   const trackingUrlFieldId = `tracking-url-${order.id}`;
-  const canShip = allowedTransitions.includes("shipped");
-  const canDeliver = shipmentStatus === "SHIPPED";
+  const canShip = canDispatchShipping && allowedTransitions.includes("shipped");
+  const canDeliver = canConfirmDelivery && shipmentStatus === "SHIPPED";
   const statusTransitions = allowedTransitions.filter((nextStatus) => nextStatus !== "shipped");
-  const hasActions = allowedTransitions.length > 0 || canDeliver;
+  const hasActions = canShip || canDeliver || statusTransitions.length > 0;
 
   return (
     <AdminSplitDetailSectionCard tone="secondary">

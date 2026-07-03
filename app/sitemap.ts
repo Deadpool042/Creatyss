@@ -14,12 +14,14 @@ import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-l
 import { SECONDARY_LOCALE_CODES } from "@/core/localization/supported-locales";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [products, blogPosts, categories, seoSettings, isL3Active] = await Promise.all([
+  const [products, blogPosts, categories, seoSettings, isL3Active, canPublishBlog] =
+    await Promise.all([
     getPublishedProductsForSitemap(),
     getPublishedBlogPostsForSitemap(),
     getPublishedCategoriesForSitemap(),
     getAdminSeoSettings().catch(() => null),
     meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "localized-routing"),
+    meetsFeatureLevel("content.blog", "publish"),
   ]);
 
   const includeHomepage = seoSettings?.sitemapIncluded !== false;
@@ -39,11 +41,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       priority: 0.9,
     },
-    {
-      url: `${serverEnv.appUrl}/blog`,
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
+    ...(canPublishBlog
+      ? [
+          {
+            url: `${serverEnv.appUrl}/blog`,
+            changeFrequency: "weekly" as const,
+            priority: 0.7,
+          },
+        ]
+      : []),
     {
       url: `${serverEnv.appUrl}/mentions-legales`,
       changeFrequency: "yearly",
@@ -119,11 +125,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily" as const,
       priority: 0.9,
     },
-    {
-      url: `${serverEnv.appUrl}/${localeCode}/blog`,
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
-    },
+    ...(canPublishBlog
+      ? [
+          {
+            url: `${serverEnv.appUrl}/${localeCode}/blog`,
+            changeFrequency: "weekly" as const,
+            priority: 0.7,
+          },
+        ]
+      : []),
     ...products
       .filter((p) => p.sitemapIncluded)
       .map((p) => ({

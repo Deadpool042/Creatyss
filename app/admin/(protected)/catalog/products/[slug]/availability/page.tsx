@@ -13,6 +13,7 @@ import { ProductAvailabilityTab } from "@/features/admin/products/components/edi
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
 import { buildAdminProductAvailabilityPath } from "@/features/admin/products/navigation";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +29,11 @@ export default async function ProductDetailAvailabilityPage({
     notFound();
   }
 
-  const variantsData = await readAdminProductVariants(product.id);
+  const [variantsData, allowScheduledAvailability, allowPreorderAvailability] = await Promise.all([
+    readAdminProductVariants(product.id),
+    meetsFeatureLevel("catalog.products.availability", "scheduling"),
+    meetsFeatureLevel("catalog.products.availability", "preorder"),
+  ]);
 
   return (
     <AdminPageShell
@@ -54,6 +59,8 @@ export default async function ProductDetailAvailabilityPage({
         productId={product.id}
         variants={variantsData?.variants ?? []}
         isStandalone={product.isStandalone}
+        allowScheduledAvailability={allowScheduledAvailability}
+        allowPreorderAvailability={allowPreorderAvailability}
       />
     </AdminPageShell>
   );

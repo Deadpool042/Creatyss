@@ -69,9 +69,17 @@ const removedPermissionCodes = [
   "admin.settings.legal.write",
 ] as const;
 
-const featureFlagCodes = [
-  adminNavigationFeatureFlags.commerce.payments,
-  adminNavigationFeatureFlags.commerce.shipping,
+const featureFlagDefs = [
+  {
+    code: adminNavigationFeatureFlags.commerce.payments,
+    allowedLevels: ["read", "manual", "online"],
+    defaultLevel: "online",
+  },
+  {
+    code: adminNavigationFeatureFlags.commerce.shipping,
+    allowedLevels: ["read", "dispatch", "delivery"],
+    defaultLevel: "delivery",
+  },
 ] as const;
 
 function permissionNameFromCode(code: string): string {
@@ -188,29 +196,33 @@ export async function seedAdminNavigationAccess(db: PrismaClient): Promise<void>
     return;
   }
 
-  for (const code of featureFlagCodes) {
+  for (const flag of featureFlagDefs) {
     await db.featureFlag.upsert({
       where: {
         storeId_code: {
           storeId: store.id,
-          code,
+          code: flag.code,
         },
       },
       update: {
-        name: featureFlagNameFromCode(code),
-        description: code,
+        name: featureFlagNameFromCode(flag.code),
+        description: flag.code,
         status: "ACTIVE",
         isEnabledByDefault: true,
+        allowedLevels: [...flag.allowedLevels],
+        defaultLevel: flag.defaultLevel,
         archivedAt: null,
       },
       create: {
         storeId: store.id,
-        code,
-        name: featureFlagNameFromCode(code),
-        description: code,
+        code: flag.code,
+        name: featureFlagNameFromCode(flag.code),
+        description: flag.code,
         status: "ACTIVE",
         scopeType: "STORE",
         isEnabledByDefault: true,
+        allowedLevels: [...flag.allowedLevels],
+        defaultLevel: flag.defaultLevel,
       },
     });
   }

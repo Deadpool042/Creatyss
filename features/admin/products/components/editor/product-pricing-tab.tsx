@@ -26,6 +26,8 @@ type ProductPricingTabProps = {
   priceLists: readonly AdminPriceListOption[];
   pricingData: AdminProductPricingData;
   isStandalone: boolean;
+  allowAdvancedPriceLists: boolean;
+  allowScheduledPricing: boolean;
 };
 
 type ProductPricingTabInnerProps = ProductPricingTabProps & {
@@ -103,6 +105,8 @@ function ProductPricingTabInner({
   priceLists,
   pricingData,
   isStandalone,
+  allowAdvancedPriceLists,
+  allowScheduledPricing,
   onReset,
 }: ProductPricingTabInnerProps): JSX.Element {
   const router = useRouter();
@@ -201,51 +205,53 @@ function ProductPricingTabInner({
                             </AdminFormField>
                           </div>
 
-                          <details className="rounded-xl border border-surface-border bg-background/50 px-4 py-3">
-                            <summary className="cursor-pointer list-none text-sm font-medium text-foreground">
-                              {PRODUCT_PRICING_TAB_COPY.promotionAdvancedLabel}
-                            </summary>
-                            <div className="mt-3 space-y-3">
-                              <div className="flex flex-wrap items-center gap-2">
-                                <span className="text-xs font-medium text-muted-foreground">
-                                  {PRODUCT_PRICING_TAB_COPY.promotionPeriodLabel}
-                                </span>
-                                <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
-                              </div>
-                              <p className="text-xs leading-5 text-muted-foreground">
-                                {PRODUCT_PRICING_TAB_COPY.promotionDatesHint}
-                              </p>
-                              <div className="grid gap-3 sm:grid-cols-2">
-                                <AdminFormField
-                                  label={PRODUCT_PRICING_TAB_COPY.promotionStartLabel}
-                                  htmlFor={`startsAt-${defaultPriceList.id}`}
-                                  error={state.fieldErrors[`startsAt:${defaultPriceList.id}`]}
-                                >
-                                  <Input
-                                    id={`startsAt-${defaultPriceList.id}`}
-                                    name={`startsAt:${defaultPriceList.id}`}
-                                    type="date"
-                                    defaultValue={startsAt ?? ""}
-                                    className="text-sm font-mono"
-                                  />
-                                </AdminFormField>
+                          {allowScheduledPricing ? (
+                            <details className="rounded-xl border border-surface-border bg-background/50 px-4 py-3">
+                              <summary className="cursor-pointer list-none text-sm font-medium text-foreground">
+                                {PRODUCT_PRICING_TAB_COPY.promotionAdvancedLabel}
+                              </summary>
+                              <div className="mt-3 space-y-3">
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <span className="text-xs font-medium text-muted-foreground">
+                                    {PRODUCT_PRICING_TAB_COPY.promotionPeriodLabel}
+                                  </span>
+                                  <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
+                                </div>
+                                <p className="text-xs leading-5 text-muted-foreground">
+                                  {PRODUCT_PRICING_TAB_COPY.promotionDatesHint}
+                                </p>
+                                <div className="grid gap-3 sm:grid-cols-2">
+                                  <AdminFormField
+                                    label={PRODUCT_PRICING_TAB_COPY.promotionStartLabel}
+                                    htmlFor={`startsAt-${defaultPriceList.id}`}
+                                    error={state.fieldErrors[`startsAt:${defaultPriceList.id}`]}
+                                  >
+                                    <Input
+                                      id={`startsAt-${defaultPriceList.id}`}
+                                      name={`startsAt:${defaultPriceList.id}`}
+                                      type="date"
+                                      defaultValue={startsAt ?? ""}
+                                      className="text-sm font-mono"
+                                    />
+                                  </AdminFormField>
 
-                                <AdminFormField
-                                  label={PRODUCT_PRICING_TAB_COPY.promotionEndLabel}
-                                  htmlFor={`endsAt-${defaultPriceList.id}`}
-                                  error={state.fieldErrors[`endsAt:${defaultPriceList.id}`]}
-                                >
-                                  <Input
-                                    id={`endsAt-${defaultPriceList.id}`}
-                                    name={`endsAt:${defaultPriceList.id}`}
-                                    type="date"
-                                    defaultValue={endsAt ?? ""}
-                                    className="text-sm font-mono"
-                                  />
-                                </AdminFormField>
+                                  <AdminFormField
+                                    label={PRODUCT_PRICING_TAB_COPY.promotionEndLabel}
+                                    htmlFor={`endsAt-${defaultPriceList.id}`}
+                                    error={state.fieldErrors[`endsAt:${defaultPriceList.id}`]}
+                                  >
+                                    <Input
+                                      id={`endsAt-${defaultPriceList.id}`}
+                                      name={`endsAt:${defaultPriceList.id}`}
+                                      type="date"
+                                      defaultValue={endsAt ?? ""}
+                                      className="text-sm font-mono"
+                                    />
+                                  </AdminFormField>
+                                </div>
                               </div>
-                            </div>
-                          </details>
+                            </details>
+                          ) : null}
                         </>
                       );
                     })()}
@@ -257,7 +263,7 @@ function ProductPricingTabInner({
                 )}
               </section>
 
-              {advancedPriceLists.length > 0 ? (
+              {allowAdvancedPriceLists && advancedPriceLists.length > 0 ? (
                 <section className="grid gap-6 py-6">
                   <ProductPricingSectionIntro
                     eyebrow="Grilles avancées"
@@ -323,46 +329,48 @@ function ProductPricingTabInner({
                               </AdminFormField>
                             </div>
 
-                            <details className="rounded-lg border border-surface-border bg-background/40 px-3 py-2.5">
-                              <summary className="cursor-pointer list-none text-xs font-medium text-muted-foreground">
-                                {PRODUCT_PRICING_TAB_COPY.promotionAdvancedShort}
-                                <span className="ml-2 align-middle">
-                                  <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
-                                </span>
-                              </summary>
-                              <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                                <AdminFormField
-                                  label={PRODUCT_PRICING_TAB_COPY.promotionStartLabel}
-                                  htmlFor={`startsAt-${priceList.id}`}
-                                  error={state.fieldErrors[`startsAt:${priceList.id}`]}
-                                >
-                                  <Input
-                                    id={`startsAt-${priceList.id}`}
-                                    name={`startsAt:${priceList.id}`}
-                                    type="date"
-                                    defaultValue={startsAt ?? ""}
-                                    className="text-sm font-mono"
-                                  />
-                                </AdminFormField>
+                            {allowScheduledPricing ? (
+                              <details className="rounded-lg border border-surface-border bg-background/40 px-3 py-2.5">
+                                <summary className="cursor-pointer list-none text-xs font-medium text-muted-foreground">
+                                  {PRODUCT_PRICING_TAB_COPY.promotionAdvancedShort}
+                                  <span className="ml-2 align-middle">
+                                    <PromotionBadge startsAt={startsAt} endsAt={endsAt} />
+                                  </span>
+                                </summary>
+                                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                                  <AdminFormField
+                                    label={PRODUCT_PRICING_TAB_COPY.promotionStartLabel}
+                                    htmlFor={`startsAt-${priceList.id}`}
+                                    error={state.fieldErrors[`startsAt:${priceList.id}`]}
+                                  >
+                                    <Input
+                                      id={`startsAt-${priceList.id}`}
+                                      name={`startsAt:${priceList.id}`}
+                                      type="date"
+                                      defaultValue={startsAt ?? ""}
+                                      className="text-sm font-mono"
+                                    />
+                                  </AdminFormField>
 
-                                <AdminFormField
-                                  label={PRODUCT_PRICING_TAB_COPY.promotionEndLabel}
-                                  htmlFor={`endsAt-${priceList.id}`}
-                                  error={state.fieldErrors[`endsAt:${priceList.id}`]}
-                                >
-                                  <Input
-                                    id={`endsAt-${priceList.id}`}
-                                    name={`endsAt:${priceList.id}`}
-                                    type="date"
-                                    defaultValue={endsAt ?? ""}
-                                    className="text-sm font-mono"
-                                  />
-                                </AdminFormField>
-                              </div>
-                              <p className="mt-3 text-xs leading-5 text-muted-foreground">
-                                {PRODUCT_PRICING_TAB_COPY.advancedStorefrontNote}
-                              </p>
-                            </details>
+                                  <AdminFormField
+                                    label={PRODUCT_PRICING_TAB_COPY.promotionEndLabel}
+                                    htmlFor={`endsAt-${priceList.id}`}
+                                    error={state.fieldErrors[`endsAt:${priceList.id}`]}
+                                  >
+                                    <Input
+                                      id={`endsAt-${priceList.id}`}
+                                      name={`endsAt:${priceList.id}`}
+                                      type="date"
+                                      defaultValue={endsAt ?? ""}
+                                      className="text-sm font-mono"
+                                    />
+                                  </AdminFormField>
+                                </div>
+                                <p className="mt-3 text-xs leading-5 text-muted-foreground">
+                                  {PRODUCT_PRICING_TAB_COPY.advancedStorefrontNote}
+                                </p>
+                              </details>
+                            ) : null}
                           </div>
                         );
                       })}

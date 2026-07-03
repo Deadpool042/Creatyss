@@ -95,8 +95,10 @@ export async function WebhooksGovernancePanel() {
       <GovernanceDomainContext>
         Ce flag gouverne les{" "}
         <span className="font-medium text-foreground">webhooks sortants</span> (endpoints,
-        historique de livraison). La sémantique entrante est à clarifier — seule l'observation du
-        modèle réel est implémentée.
+        historique de livraison). Le niveau <code className="font-mono text-[10px]">read</code>{" "}
+        ouvre la lecture, <code className="font-mono text-[10px]">manage</code> autorise la
+        gestion des endpoints, et <code className="font-mono text-[10px]">retry</code> autorise
+        la relance manuelle des deliveries. La sémantique entrante reste à clarifier.
       </GovernanceDomainContext>
       {data.totalEndpoints > 0 ? (
         <GovernanceStatGrid stats={stats} />

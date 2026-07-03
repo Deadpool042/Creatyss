@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { db } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { deliverWebhook } from "@/features/webhooks/services/deliver-webhook.service";
 
@@ -16,6 +17,10 @@ export async function retryWebhookDeliveryAction(
   deliveryId: string
 ): Promise<RetryWebhookDeliveryResult> {
   await requireAuthenticatedAdmin();
+
+  if (!(await meetsFeatureLevel("platform.webhooks", "retry"))) {
+    return { ok: false, error: "Niveau webhooks insuffisant pour relancer une delivery." };
+  }
 
   const storeId = await getCurrentStoreId();
   if (!storeId) {

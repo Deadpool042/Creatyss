@@ -8,6 +8,7 @@ import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { createPriceListSchema } from "@/features/admin/catalog/schemas/price-list.schema";
 import { ADMIN_PRICING_PATH } from "@/features/admin/catalog/shared/admin-pricing-routes";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 function isUniqueConstraintError(error: unknown): boolean {
   return (
@@ -20,6 +21,10 @@ function isUniqueConstraintError(error: unknown): boolean {
 
 export async function createPriceListAction(formData: FormData): Promise<void> {
   await requireAuthenticatedAdmin();
+
+  if (!(await meetsFeatureLevel("catalog.products.pricing", "price-lists"))) {
+    redirect(`${ADMIN_PRICING_PATH}?pl_error=pricing_level_insufficient`);
+  }
 
   const rawDescription = String(formData.get("description") ?? "").trim();
 

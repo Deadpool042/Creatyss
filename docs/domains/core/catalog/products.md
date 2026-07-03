@@ -434,6 +434,61 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Gradation tarification produit
+
+`catalog.products.pricing` est gradué dans `FEATURE_CATALOG` parce que le code
+sépare trois capacités réelles :
+
+- `base-price` : prix boutique par défaut sur la fiche produit.
+- `price-lists` : gestion des listes de prix et des tarifs avancés par grille.
+- `scheduled-pricing` : fenêtres promotionnelles datées sur les prix produit.
+
+Le niveau seedé par défaut est `scheduled-pricing` afin de préserver le
+comportement historique complet quand la feature catalogue est active.
+
+## Gradation disponibilité produit
+
+`catalog.products.availability` est gradué dans `FEATURE_CATALOG` parce que le
+code sépare trois capacités réelles :
+
+- `sellability` : statut commercial, vendabilité en ligne et commande en
+  rupture.
+- `scheduling` : fenêtres datées de début et fin de vente.
+- `preorder` : ouverture et fermeture datées des précommandes.
+
+Le niveau seedé par défaut est `preorder` afin de préserver le comportement
+historique complet quand la feature catalogue est active.
+
+## Gradation produits liés
+
+`catalog.products.related` est gradué dans `FEATURE_CATALOG` parce que le code
+sépare deux usages réels :
+
+- `storefront` : affichage public des suggestions sur la fiche produit, via
+  `isRelatedProductsFeatureActive()` et `ProductRelatedSection`.
+- `manage` : édition admin des relations merchandising via
+  `/admin/catalog/products/[slug]/related` et
+  `updateProductRelatedProductsAction()`.
+
+Cette gradation ne change pas le modèle `RelatedProduct`. Elle distingue
+seulement l'exposition storefront de la capacité d'administration.
+
+## Gradation variantes produit
+
+`catalog.products.variants` est gradué dans `FEATURE_CATALOG` parce que le code
+sépare trois capacités réelles de l'éditeur produit :
+
+- `read` : consultation de l'onglet variantes, des variantes existantes et de
+  la structure d'options.
+- `manage` : création, modification, suppression et sélection de la variante
+  par défaut via les actions serveur de variantes.
+- `options` : gestion des valeurs d'options couleur associées aux variantes.
+
+Le niveau seedé par défaut est `options` afin de préserver le comportement
+historique complet quand la feature catalogue est active.
+
+---
+
 ## Documents liés
 
 - `../../../architecture/10-fondations/10-principes-d-architecture.md`

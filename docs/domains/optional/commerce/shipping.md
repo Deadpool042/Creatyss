@@ -234,3 +234,19 @@ Cf. `docs/lots/2026-06-13-commerce-shipping-cadrage.md`.
   commande associée. Remplace l'ancien `AdminComingSoon`.
 - Restent hors périmètre : intégrations transporteurs, webhooks,
   notifications automatiques, multi-colis, livraison partielle.
+
+### Gradation 2026-07-03
+
+`commerce.shipping` est gradué dans `FEATURE_CATALOG` parce que le code expose
+trois paliers distincts :
+
+- `read` : lecture admin des expéditions via `/admin/commerce/shipping` et
+  `listAdminShipments()`.
+- `dispatch` : action admin `shipOrderAction()` / `shipAdminOrder()` pour
+  marquer une commande comme expédiée avec transporteur, référence et URL de
+  suivi saisis manuellement.
+- `delivery` : action admin `deliverOrderAction()` / `deliverAdminOrder()` pour
+  confirmer la livraison d'une expédition déjà `SHIPPED`.
+
+Cette gradation ne crée aucune intégration transporteur. Elle borne seulement
+les transitions manuelles déjà présentes.

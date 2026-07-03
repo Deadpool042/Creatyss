@@ -34,8 +34,9 @@ export async function BlogGovernancePanel() {
     <GovernancePanelShell label="Gouvernance · Blog">
       <GovernanceDomainContext>
         Ce flag gouverne le <span className="font-medium text-foreground">module blog</span> —
-        articles, catégories, SEO par article. L'accès admin et le rendu storefront sont tous deux
-        conditionnés par ce flag.
+        articles, catégories, SEO par article. Le niveau <code className="font-mono text-[10px]">draft</code>
+        conserve l'édition admin ; <code className="font-mono text-[10px]">publish</code> ajoute
+        la diffusion storefront des articles.
       </GovernanceDomainContext>
       {data.total > 0 ? (
         <GovernanceStatGrid stats={stats} />

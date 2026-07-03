@@ -381,6 +381,23 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Gradation fonctionnelle observée
+
+`commerce.payments` est gradué dans `FEATURE_CATALOG` parce que le code expose
+déjà trois paliers distincts :
+
+- `read` : accès à `/admin/commerce/payments` et lecture des paiements réels via
+  `listAdminPayments()`.
+- `manual` : actions admin sur paiements en attente non carte, via
+  `captureAdminPaymentAction()` et `cancelAdminPaymentAction()`.
+- `online` : exposition du paiement carte au checkout via
+  `getAvailablePaymentMethods()`, uniquement si Stripe est configuré.
+
+Cette gradation ne crée pas de nouveau moyen de paiement. Elle place seulement
+des guards gradués sur des comportements déjà existants.
+
+---
+
 ## Documents liés
 
 - `../../../architecture/10-fondations/10-principes-d-architecture.md`

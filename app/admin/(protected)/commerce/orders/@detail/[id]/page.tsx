@@ -59,6 +59,8 @@ export default async function OrderDetailSlotPage({
     fulfillmentAllowsPartial,
     returnsFeatureActive,
     returnsAllowPartial,
+    shippingAllowDispatch,
+    shippingAllowDelivery,
     storeId,
   ] = await Promise.all([
     findAdminOrderById(id),
@@ -68,6 +70,8 @@ export default async function OrderDetailSlotPage({
     meetsFeatureLevel("commerce.fulfillment", "partial"),
     isReturnsFeatureActive(),
     meetsFeatureLevel("commerce.returns", "partial"),
+    meetsFeatureLevel("commerce.shipping", "dispatch"),
+    meetsFeatureLevel("commerce.shipping", "delivery"),
     getCurrentStoreId(),
   ]);
 
@@ -120,6 +124,8 @@ export default async function OrderDetailSlotPage({
 
         <OrderDetailActionsCard
           allowedTransitions={vm.allowedTransitions}
+          canConfirmDelivery={shippingAllowDelivery}
+          canDispatchShipping={shippingAllowDispatch}
           order={vm.orderMeta}
           shipmentStatus={vm.shippingInfo.status}
         />

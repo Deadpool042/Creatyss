@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 import { db } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { createWebhookEndpointSchema } from "@/features/admin/settings/webhooks/schemas/create-webhook-endpoint.schema";
 
@@ -22,6 +23,10 @@ export async function createWebhookEndpointAction(
   formData: FormData
 ): Promise<CreateWebhookEndpointResult> {
   await requireAuthenticatedAdmin();
+
+  if (!(await meetsFeatureLevel("platform.webhooks", "manage"))) {
+    return { ok: false, error: "Niveau webhooks insuffisant pour créer un endpoint." };
+  }
 
   const raw = {
     name: formData.get("name"),

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { isPaymentsFeatureActive } from "@/features/admin/commerce/queries/is-payments-feature-active.query";
 import { listAdminPayments } from "@/features/admin/commerce/payments/list/queries/list-admin-payments.query";
@@ -19,7 +20,10 @@ export default async function AdminCommercePaymentsPage() {
   const storeId = await getCurrentStoreId();
   if (!storeId) notFound();
 
-  const result = await listAdminPayments(storeId);
+  const [result, canManageManualPayments] = await Promise.all([
+    listAdminPayments(storeId),
+    meetsFeatureLevel("commerce.payments", "manual", { storeId }),
+  ]);
 
   return (
     <AdminPageShell
@@ -35,7 +39,7 @@ export default async function AdminCommercePaymentsPage() {
       contentPreset="table"
     >
       <PaymentRouteNav />
-      <AdminPaymentsList payments={result.items} />
+      <AdminPaymentsList payments={result.items} canManageManualPayments={canManageManualPayments} />
     </AdminPageShell>
   );
 }

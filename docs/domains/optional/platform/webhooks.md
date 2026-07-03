@@ -380,7 +380,22 @@ Etat reel apres lot :
 - **lecture admin du referentiel actuel** : oui ;
 - **pipeline entrant conforme doctrine** : non ;
 - **resolution de la divergence** : non ;
-- **actions runtime** : non.
+- **actions runtime** : oui, bornées aux endpoints sortants et aux deliveries.
+
+### Gradation 2026-07-03
+
+`platform.webhooks` est gradué dans `FEATURE_CATALOG` parce que le code expose
+trois paliers distincts sur le modèle réel `WebhookEndpoint` / `WebhookDelivery` :
+
+- `read` : lecture admin des endpoints et deliveries via
+  `getAdminWebhooksSnapshot()`.
+- `manage` : création d'endpoint et activation/désactivation via
+  `createWebhookEndpointAction()` et `toggleWebhookEndpointAction()`.
+- `retry` : relance manuelle d'une delivery en échec via
+  `retryWebhookDeliveryAction()`.
+
+Cette gradation reste limitée aux webhooks sortants actuellement observés. Elle
+ne tranche pas la doctrine historique des webhooks entrants.
 
 Le prochain increment devra donc trancher explicitement si :
 

@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { getAdminBlogPostById } from "../queries";
 import { updateAdminBlogPost } from "../services/update-admin-blog-post.service";
 import { BlogPostFormSchema } from "../schemas/blog-post-form-schema";
 import { AdminBlogServiceError } from "../types";
@@ -24,6 +26,19 @@ export async function updateBlogPostAction(formData: FormData): Promise<void> {
   }
 
   const data = parsed.data;
+  const existingPost = await getAdminBlogPostById(id);
+
+  if (existingPost === null) {
+    redirect("/admin/content/blog?error=missing_blog_post");
+  }
+
+  if (
+    data.status === "published" &&
+    existingPost.status !== "published" &&
+    !(await meetsFeatureLevel("content.blog", "publish"))
+  ) {
+    redirect(`/admin/content/blog/${id}?error=publish_level_insufficient`);
+  }
 
   try {
     const result = await updateAdminBlogPost({

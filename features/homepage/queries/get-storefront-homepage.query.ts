@@ -2,6 +2,7 @@ import { HomepageSectionType, HomepageStatus } from "@/prisma-generated/client";
 
 import { db } from "@/core/db";
 import { localUploadExists } from "@/core/uploads/check-local-upload";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export type StorefrontHomepageData = {
   hero: { title: string | null; text: string | null; imageStorageKey: string | null } | null;
@@ -64,80 +65,83 @@ export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | 
     return null;
   }
 
-  const homepage = await db.homepage.findFirst({
-    where: {
-      storeId: store.id,
-      status: HomepageStatus.ACTIVE,
-      archivedAt: null,
-    },
-    orderBy: [{ isDefault: "desc" }, { updatedAt: "desc" }],
-    select: {
-      sections: {
-        where: {
-          isActive: true,
-          archivedAt: null,
-        },
-        orderBy: { sortOrder: "asc" },
-        select: {
-          code: true,
-          type: true,
-          title: true,
-          subtitle: true,
-          body: true,
-          ctaLabel: true,
-          ctaHref: true,
-          primaryImage: {
-            select: { storageKey: true },
+  const [homepage, canPublishBlog] = await Promise.all([
+    db.homepage.findFirst({
+      where: {
+        storeId: store.id,
+        status: HomepageStatus.ACTIVE,
+        archivedAt: null,
+      },
+      orderBy: [{ isDefault: "desc" }, { updatedAt: "desc" }],
+      select: {
+        sections: {
+          where: {
+            isActive: true,
+            archivedAt: null,
           },
-          featuredProducts: {
-            orderBy: { sortOrder: "asc" },
-            select: {
-              product: {
-                select: {
-                  id: true,
-                  name: true,
-                  slug: true,
-                  shortDescription: true,
-                  primaryImage: {
-                    select: { storageKey: true, altText: true },
+          orderBy: { sortOrder: "asc" },
+          select: {
+            code: true,
+            type: true,
+            title: true,
+            subtitle: true,
+            body: true,
+            ctaLabel: true,
+            ctaHref: true,
+            primaryImage: {
+              select: { storageKey: true },
+            },
+            featuredProducts: {
+              orderBy: { sortOrder: "asc" },
+              select: {
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                    slug: true,
+                    shortDescription: true,
+                    primaryImage: {
+                      select: { storageKey: true, altText: true },
+                    },
                   },
                 },
               },
             },
-          },
-          featuredCategories: {
-            orderBy: { sortOrder: "asc" },
-            select: {
-              category: {
-                select: {
-                  id: true,
-                  name: true,
-                  slug: true,
-                  primaryImage: {
-                    select: { storageKey: true, altText: true },
+            featuredCategories: {
+              orderBy: { sortOrder: "asc" },
+              select: {
+                category: {
+                  select: {
+                    id: true,
+                    name: true,
+                    slug: true,
+                    primaryImage: {
+                      select: { storageKey: true, altText: true },
+                    },
                   },
                 },
               },
             },
-          },
-          featuredPosts: {
-            orderBy: { sortOrder: "asc" },
-            take: 1,
-            select: {
-              blogPost: {
-                select: {
-                  slug: true,
-                  title: true,
-                  excerpt: true,
-                  publishedAt: true,
+            featuredPosts: {
+              orderBy: { sortOrder: "asc" },
+              take: 1,
+              select: {
+                blogPost: {
+                  select: {
+                    slug: true,
+                    title: true,
+                    excerpt: true,
+                    publishedAt: true,
+                  },
                 },
               },
             },
           },
         },
       },
-    },
-  });
+    }),
+    meetsFeatureLevel("content.blog", "publish"),
+  ]);
 
   if (homepage === null) {
     return null;
@@ -240,6 +244,7 @@ export async function getStorefrontHomepage(): Promise<StorefrontHomepageData | 
 
     if (
       section.type === HomepageSectionType.BLOG_POSTS &&
+      canPublishBlog &&
       featuredPost === null
     ) {
       const first = section.featuredPosts[0];

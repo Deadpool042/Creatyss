@@ -1,6 +1,8 @@
 import type { PrismaClient } from "@/prisma-generated/client";
 
 export const WEBHOOKS_FEATURE_CODE = "platform.webhooks";
+const WEBHOOKS_ALLOWED_LEVELS = ["read", "manage", "retry"] as const;
+const WEBHOOKS_DEFAULT_LEVEL = "retry";
 
 export async function seedWebhooksFeatureFlag(db: PrismaClient): Promise<void> {
   const store = await db.store.findFirst({
@@ -22,6 +24,8 @@ export async function seedWebhooksFeatureFlag(db: PrismaClient): Promise<void> {
     update: {
       name: "Webhooks",
       description: "Referentiel actuel des endpoints webhook et de leurs deliveries.",
+      allowedLevels: [...WEBHOOKS_ALLOWED_LEVELS],
+      defaultLevel: WEBHOOKS_DEFAULT_LEVEL,
     },
     create: {
       storeId: store.id,
@@ -31,6 +35,8 @@ export async function seedWebhooksFeatureFlag(db: PrismaClient): Promise<void> {
       status: "DRAFT",
       scopeType: "STORE",
       isEnabledByDefault: false,
+      allowedLevels: [...WEBHOOKS_ALLOWED_LEVELS],
+      defaultLevel: WEBHOOKS_DEFAULT_LEVEL,
     },
   });
 }

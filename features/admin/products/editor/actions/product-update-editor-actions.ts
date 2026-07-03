@@ -1,6 +1,7 @@
 "use server";
 
 import { refresh } from "next/cache";
+import { db } from "@/core/db";
 import {
   validateAdminProductCategoryLinks,
   validateAdminProductCharacteristics,
@@ -45,6 +46,7 @@ import {
 } from "../types";
 import { priceEntrySchema, productSeoFormSchema } from "../schemas";
 import type { AdminProductActionResult } from "@/features/admin/products/types";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 // ---------------------------------------------------------------------------
 // updateProductAvailabilityAction
@@ -107,6 +109,10 @@ export const updateProductAvailabilityAction: ProductAvailabilityFormAction = as
   _prevState,
   formData
 ) => {
+  const [allowScheduledAvailability, allowPreorderAvailability] = await Promise.all([
+    meetsFeatureLevel("catalog.products.availability", "scheduling"),
+    meetsFeatureLevel("catalog.products.availability", "preorder"),
+  ]);
   const productIdValue = getString(formData, "productId");
 
   if (typeof productIdValue !== "string" || productIdValue.trim().length === 0) {
@@ -155,6 +161,25 @@ export const updateProductAvailabilityAction: ProductAvailabilityFormAction = as
     const sellableUntil = normalizeDateTime(sellableUntilMap[variantId]);
     const preorderStartsAt = normalizeDateTime(preorderStartsAtMap[variantId]);
     const preorderEndsAt = normalizeDateTime(preorderEndsAtMap[variantId]);
+
+    if (!allowScheduledAvailability && (sellableFrom !== null || sellableUntil !== null)) {
+      return {
+        ...productAvailabilityFormInitialState,
+        status: "error",
+        message: "Le niveau disponibilité actuel n'autorise pas les fenêtres de vente.",
+      };
+    }
+
+    if (
+      !allowPreorderAvailability &&
+      (status === "preorder" || preorderStartsAt !== null || preorderEndsAt !== null)
+    ) {
+      return {
+        ...productAvailabilityFormInitialState,
+        status: "error",
+        message: "Le niveau disponibilité actuel n'autorise pas la précommande.",
+      };
+    }
 
     rows.push({
       variantId,
@@ -752,9 +777,46 @@ function ensureNonEmpty(value: string): string | null {
   return normalized.length > 0 ? normalized : null;
 }
 
+async function canManageVariantOptions() {
+  return meetsFeatureLevel("catalog.products.variants", "options");
+}
+
+async function resolvePricingAccess(productId: string) {
+  const product = await db.product.findUnique({
+    where: { id: productId },
+    select: { storeId: true },
+  });
+
+  if (product === null) {
+    return null;
+  }
+
+  const [canManagePriceLists, canManageScheduledPricing, priceLists] = await Promise.all([
+    meetsFeatureLevel("catalog.products.pricing", "price-lists"),
+    meetsFeatureLevel("catalog.products.pricing", "scheduled-pricing"),
+    db.priceList.findMany({
+      where: { storeId: product.storeId, archivedAt: null },
+      select: { id: true, isDefault: true },
+    }),
+  ]);
+
+  return {
+    canManagePriceLists,
+    canManageScheduledPricing,
+    defaultPriceListIds: new Set(
+      priceLists.filter((priceList) => priceList.isDefault).map((priceList) => priceList.id)
+    ),
+    priceListIds: new Set(priceLists.map((priceList) => priceList.id)),
+  };
+}
+
 export async function createProductOptionColorValueAction(
   input: CreateProductOptionColorValueInput
 ): Promise<AdminProductActionResult> {
+  if (!(await canManageVariantOptions())) {
+    return { status: "error", message: "Niveau variantes insuffisant." };
+  }
+
   const productId = ensureNonEmpty(input.productId);
   const optionId = ensureNonEmpty(input.optionId);
   const label = ensureNonEmpty(input.label);
@@ -795,6 +857,10 @@ export async function createProductOptionColorValueAction(
 export async function updateProductOptionColorValueAction(
   input: UpdateProductOptionColorValueInput
 ): Promise<AdminProductActionResult> {
+  if (!(await canManageVariantOptions())) {
+    return { status: "error", message: "Niveau variantes insuffisant." };
+  }
+
   const productId = ensureNonEmpty(input.productId);
   const optionValueId = ensureNonEmpty(input.optionValueId);
   const label = ensureNonEmpty(input.label);
@@ -838,6 +904,10 @@ export async function updateProductOptionColorValueAction(
 export async function archiveProductOptionColorValueAction(
   input: ArchiveProductOptionColorValueInput
 ): Promise<AdminProductActionResult> {
+  if (!(await canManageVariantOptions())) {
+    return { status: "error", message: "Niveau variantes insuffisant." };
+  }
+
   const productId = ensureNonEmpty(input.productId);
   const optionValueId = ensureNonEmpty(input.optionValueId);
 
@@ -885,6 +955,15 @@ export const updateProductPricesAction: ProductPricingFormAction = async (_prevS
       message: "Produit introuvable.",
     };
   }
+  const pricingAccess = await resolvePricingAccess(productIdValue.trim());
+
+  if (pricingAccess === null) {
+    return {
+      ...productPricingFormInitialState,
+      status: "error",
+      message: "Produit introuvable.",
+    };
+  }
 
   const priceListIds: string[] = [];
   for (const key of formData.keys()) {
@@ -894,6 +973,17 @@ export const updateProductPricesAction: ProductPricingFormAction = async (_prevS
         priceListIds.push(priceListId);
       }
     }
+  }
+
+  if (
+    !pricingAccess.canManagePriceLists &&
+    priceListIds.some((priceListId) => !pricingAccess.defaultPriceListIds.has(priceListId))
+  ) {
+    return {
+      ...productPricingFormInitialState,
+      status: "error",
+      message: "Le niveau tarifaire actuel n'autorise pas les grilles avancées.",
+    };
   }
 
   const fieldErrors: Record<string, string> = {};
@@ -908,6 +998,14 @@ export const updateProductPricesAction: ProductPricingFormAction = async (_prevS
   const toArchive: string[] = [];
 
   for (const priceListId of priceListIds) {
+    if (!pricingAccess.priceListIds.has(priceListId)) {
+      return {
+        ...productPricingFormInitialState,
+        status: "error",
+        message: "Liste de prix invalide.",
+      };
+    }
+
     const rawAmount = formData.get(`amount:${priceListId}`);
     if (typeof rawAmount !== "string" || rawAmount.trim().length === 0) {
       toArchive.push(priceListId);
@@ -917,6 +1015,18 @@ export const updateProductPricesAction: ProductPricingFormAction = async (_prevS
     const rawCostAmount = formData.get(`costAmount:${priceListId}`);
     const rawStartsAt = formData.get(`startsAt:${priceListId}`);
     const rawEndsAt = formData.get(`endsAt:${priceListId}`);
+
+    if (
+      !pricingAccess.canManageScheduledPricing &&
+      ((typeof rawStartsAt === "string" && rawStartsAt.trim().length > 0) ||
+        (typeof rawEndsAt === "string" && rawEndsAt.trim().length > 0))
+    ) {
+      return {
+        ...productPricingFormInitialState,
+        status: "error",
+        message: "Le niveau tarifaire actuel n'autorise pas les périodes promotionnelles.",
+      };
+    }
 
     const parsed = priceEntrySchema.safeParse({
       priceListId,
@@ -1043,6 +1153,14 @@ export const updateProductRelatedProductsAction: ProductRelatedProductsFormActio
   _prevState,
   formData
 ) => {
+  if (!(await meetsFeatureLevel("catalog.products.related", "manage"))) {
+    return {
+      ...productRelatedProductsFormInitialState,
+      status: "error",
+      message: "Niveau produits liés insuffisant pour cette action.",
+    };
+  }
+
   const productIdValue = getString(formData, "productId");
 
   if (typeof productIdValue !== "string" || productIdValue.trim().length === 0) {

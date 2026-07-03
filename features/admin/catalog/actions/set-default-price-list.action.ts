@@ -6,9 +6,14 @@ import { revalidatePath } from "next/cache";
 import { db, withTransaction } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { ADMIN_PRICING_PATH } from "@/features/admin/catalog/shared/admin-pricing-routes";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export async function setDefaultPriceListAction(formData: FormData): Promise<void> {
   await requireAuthenticatedAdmin();
+
+  if (!(await meetsFeatureLevel("catalog.products.pricing", "price-lists"))) {
+    redirect(`${ADMIN_PRICING_PATH}?pl_error=pricing_level_insufficient`);
+  }
 
   const id = String(formData.get("id") ?? "").trim();
 

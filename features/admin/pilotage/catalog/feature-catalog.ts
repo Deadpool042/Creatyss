@@ -13,6 +13,14 @@ export const FEATURE_LEVELS = {
   returns: ["manual", "partial"],
   taxation: ["store"],
   documents: ["basic", "fiscal"],
+  payments: ["read", "manual", "online"],
+  webhooks: ["read", "manage", "retry"],
+  shipping: ["read", "dispatch", "delivery"],
+  pricing: ["base-price", "price-lists", "scheduled-pricing"],
+  availability: ["sellability", "scheduling", "preorder"],
+  blog: ["draft", "publish"],
+  relatedProducts: ["storefront", "manage"],
+  variants: ["read", "manage", "options"],
 } as const;
 
 export const FEATURE_CATALOG = [
@@ -86,8 +94,16 @@ export const FEATURE_CATALOG = [
     family: "satellite",
     module: "commerce",
     defaultState: "active",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.payments,
+    levelDescriptions: {
+      read: "Lecture admin des paiements et de leur statut, sans action de transition.",
+      manual:
+        "Autorise les actions admin sur paiements manuels en attente : marquer reçu ou annuler.",
+      online:
+        "Débloque en plus le paiement carte au checkout quand Stripe est configuré.",
+    },
   },
   {
     key: "commerce.shipping",
@@ -96,8 +112,15 @@ export const FEATURE_CATALOG = [
     family: "satellite",
     module: "commerce",
     defaultState: "active",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.shipping,
+    levelDescriptions: {
+      read: "Lecture admin des expéditions et de leurs statuts.",
+      dispatch:
+        "Autorise le marquage manuel d'une commande comme expédiée avec transporteur et suivi.",
+      delivery: "Autorise en plus la confirmation manuelle de livraison.",
+    },
   },
   {
     key: "commerce.discounts",
@@ -147,8 +170,14 @@ export const FEATURE_CATALOG = [
     family: "optional",
     module: "platform",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store", "global"],
+    levels: FEATURE_LEVELS.webhooks,
+    levelDescriptions: {
+      read: "Lecture admin des endpoints webhook sortants et de leurs deliveries.",
+      manage: "Autorise la création et l'activation/désactivation des endpoints webhook.",
+      retry: "Autorise en plus la relance manuelle des deliveries en échec.",
+    },
   },
   {
     key: "platform.localization",
@@ -252,8 +281,15 @@ export const FEATURE_CATALOG = [
     module: "catalog",
     capability: "catalog.products.pricing",
     defaultState: "active",
-    mutability: "readonly",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levelDescriptions: {
+      "base-price": "Tarif boutique par défaut sur la fiche produit, sans grilles avancées.",
+      "price-lists": "Ajoute la gestion des listes de prix et des tarifs multi-grilles.",
+      "scheduled-pricing":
+        "Ajoute les fenêtres tarifaires datées sur les prix produit déjà gérés.",
+    },
+    levels: FEATURE_LEVELS.pricing,
   },
   {
     key: "catalog.products.availability",
@@ -263,8 +299,15 @@ export const FEATURE_CATALOG = [
     module: "catalog",
     capability: "catalog.products.availability",
     defaultState: "active",
-    mutability: "readonly",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levelDescriptions: {
+      sellability:
+        "Statut commercial, vendabilité en ligne et autorisation de commande en rupture.",
+      scheduling: "Ajoute les fenêtres de vente datées (début/fin de vendabilité).",
+      preorder: "Ajoute l'ouverture et la fermeture datées des précommandes.",
+    },
+    levels: FEATURE_LEVELS.availability,
   },
   {
     key: "catalog.products.inventory",
@@ -311,8 +354,14 @@ export const FEATURE_CATALOG = [
     module: "catalog",
     capability: "catalog.products.variants",
     defaultState: "active",
-    mutability: "readonly",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levelDescriptions: {
+      read: "Lecture des variantes et de leur structure dans l'éditeur produit.",
+      manage: "Création, modification, suppression et choix de la variante par défaut.",
+      options: "Ajoute la gestion des valeurs d'options couleur utilisées par les variantes.",
+    },
+    levels: FEATURE_LEVELS.variants,
   },
   {
     key: "catalog.products.seo",
@@ -344,8 +393,14 @@ export const FEATURE_CATALOG = [
     module: "catalog",
     capability: "catalog.products.related",
     defaultState: "active",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.relatedProducts,
+    levelDescriptions: {
+      storefront: "Affiche les suggestions de produits liés sur les fiches produit publiques.",
+      manage:
+        "Autorise en plus l'édition admin des relations related, cross-sell, up-sell, accessory et similar.",
+    },
   },
   // Content — cross-cutting modules (structure éditoriale transverse)
   {
@@ -355,8 +410,13 @@ export const FEATURE_CATALOG = [
     family: "cross_cutting",
     module: "content",
     defaultState: "active",
-    mutability: "readonly",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.blog,
+    levelDescriptions: {
+      draft: "Édition admin des brouillons, sans diffusion publique du blog.",
+      publish: "Ajoute la publication storefront des articles et du listing blog.",
+    },
   },
   {
     key: "content.homepage",

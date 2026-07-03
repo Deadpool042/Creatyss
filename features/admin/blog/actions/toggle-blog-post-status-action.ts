@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { getAdminBlogPostById } from "../queries";
 import { toggleAdminBlogPostStatus } from "../services";
 import { getBlogPostPublishability } from "@/entities/blog/blog-post-publishability";
@@ -31,6 +32,10 @@ export async function toggleBlogPostStatusAction(formData: FormData): Promise<vo
   }
 
   if (post.status === "draft") {
+    if (!(await meetsFeatureLevel("content.blog", "publish"))) {
+      redirect(`/admin/content/blog/${postId}?error=publish_level_insufficient`);
+    }
+
     const publishability = getBlogPostPublishability({ content: post.content });
 
     if (!publishability.ok) {

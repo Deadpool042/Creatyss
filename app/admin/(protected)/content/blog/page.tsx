@@ -6,6 +6,7 @@ import { Notice } from "@/components/shared/feedback";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { cn } from "@/lib/utils";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { listAdminBlogPosts, toggleBlogPostStatusAction } from "@/features/admin/blog";
 
 export const dynamic = "force-dynamic";
@@ -24,6 +25,9 @@ function getStatusMessage(status: string | undefined): string | null {
 
 function getErrorMessage(error: string | undefined): string | null {
   if (error === "missing_blog_post") return "L'article demandé est introuvable.";
+  if (error === "publish_level_insufficient") {
+    return "Le niveau blog actuel n'autorise pas la publication storefront.";
+  }
   return null;
 }
 
@@ -39,7 +43,10 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
     : resolvedSearchParams.error;
   const successMessage = getStatusMessage(statusParam);
   const errorMessage = getErrorMessage(errorParam);
-  const blogPosts = await listAdminBlogPosts();
+  const [blogPosts, canPublishBlog] = await Promise.all([
+    listAdminBlogPosts(),
+    meetsFeatureLevel("content.blog", "publish"),
+  ]);
 
   const published = blogPosts.filter((p) => p.status === "published").length;
   const drafts = blogPosts.filter((p) => p.status === "draft").length;
@@ -148,21 +155,23 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
                   >
                     <Edit3 className="size-3.5" />
                   </Link>
-                  <form action={toggleBlogPostStatusAction}>
-                    <input type="hidden" name="postId" value={post.id} />
-                    <button
-                      type="submit"
-                      disabled={post.status === "draft" && !post.hasContent}
-                      title={post.status === "published" ? "Passer en brouillon" : "Publier"}
-                      className="flex size-8 items-center justify-center rounded-xl text-muted-foreground/60 transition-colors hover:bg-surface-subtle hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
-                    >
-                      {post.status === "published" ? (
-                        <EyeOff className="size-3.5" />
-                      ) : (
-                        <Eye className="size-3.5" />
-                      )}
-                    </button>
-                  </form>
+                  {(post.status === "published" || canPublishBlog) && (
+                    <form action={toggleBlogPostStatusAction}>
+                      <input type="hidden" name="postId" value={post.id} />
+                      <button
+                        type="submit"
+                        disabled={post.status === "draft" && !post.hasContent}
+                        title={post.status === "published" ? "Passer en brouillon" : "Publier"}
+                        className="flex size-8 items-center justify-center rounded-xl text-muted-foreground/60 transition-colors hover:bg-surface-subtle hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        {post.status === "published" ? (
+                          <EyeOff className="size-3.5" />
+                        ) : (
+                          <Eye className="size-3.5" />
+                        )}
+                      </button>
+                    </form>
+                  )}
                 </div>
               </div>
             ))}

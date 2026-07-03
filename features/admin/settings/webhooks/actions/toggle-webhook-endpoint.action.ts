@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { db } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 
 export type ToggleWebhookEndpointResult = { ok: true } | { ok: false; error: string };
@@ -12,6 +13,10 @@ export async function toggleWebhookEndpointAction(
   endpointId: string
 ): Promise<ToggleWebhookEndpointResult> {
   await requireAuthenticatedAdmin();
+
+  if (!(await meetsFeatureLevel("platform.webhooks", "manage"))) {
+    return { ok: false, error: "Niveau webhooks insuffisant pour modifier un endpoint." };
+  }
 
   const storeId = await getCurrentStoreId();
   if (!storeId) {

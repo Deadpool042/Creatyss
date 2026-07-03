@@ -42,9 +42,12 @@ export async function PaymentsGovernancePanel() {
     <GovernancePanelShell label="Gouvernance · Paiements">
       <GovernanceDomainContext>
         Ce flag gouverne l'ensemble du{" "}
-        <span className="font-medium text-foreground">module paiements</span> — tentatives,
-        captures, remboursements. Il conditionne l'accès à la vue{" "}
-        <code className="font-mono text-[10px]">/admin/commerce/payments</code>.
+        <span className="font-medium text-foreground">module paiements</span>. Le niveau{" "}
+        <code className="font-mono text-[10px]">read</code> ouvre la lecture admin,{" "}
+        <code className="font-mono text-[10px]">manual</code> autorise les transitions
+        manuelles sur paiements en attente, et{" "}
+        <code className="font-mono text-[10px]">online</code> débloque le paiement carte au
+        checkout si Stripe est configuré.
       </GovernanceDomainContext>
       {data.total > 0 ? (
         <GovernanceStatGrid stats={stats} />
@@ -110,9 +113,11 @@ export async function ShippingGovernancePanel() {
     <GovernancePanelShell label="Gouvernance · Expédition">
       <GovernanceDomainContext>
         Ce flag gouverne le suivi des{" "}
-        <span className="font-medium text-foreground">expéditions</span> (transporteur, numéro de
-        suivi, statut de livraison). Saisie manuelle uniquement — sans intégration transporteur
-        dans cette version.
+        <span className="font-medium text-foreground">expéditions</span>. Le niveau{" "}
+        <code className="font-mono text-[10px]">read</code> ouvre la lecture admin,{" "}
+        <code className="font-mono text-[10px]">dispatch</code> autorise le marquage expédié avec
+        suivi manuel, et <code className="font-mono text-[10px]">delivery</code> autorise la
+        confirmation de livraison.
       </GovernanceDomainContext>
       {data.total > 0 ? (
         <GovernanceStatGrid stats={stats} />

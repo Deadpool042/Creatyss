@@ -45,6 +45,8 @@ export function getOrderDetailErrorMessage(error: string | undefined): string | 
       return "La commande n'a pas pu être marquée comme expédiée.";
     case "deliver_failed":
       return "La commande n'a pas pu être marquée comme livrée.";
+    case "shipping_level_insufficient":
+      return "Le niveau livraison actif ne permet pas cette action.";
     case "update_failed":
       return "La commande n'a pas pu être mise à jour.";
     default:

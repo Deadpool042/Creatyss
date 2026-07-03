@@ -27,6 +27,8 @@ type ProductAvailabilityTabProps = {
   productId: string;
   variants: AdminProductVariantListItem[];
   isStandalone: boolean;
+  allowScheduledAvailability: boolean;
+  allowPreorderAvailability: boolean;
 };
 
 type ProductAvailabilitySectionIntroProps = {
@@ -83,12 +85,26 @@ function ProductAvailabilitySectionIntro({
 type AvailabilityFieldsProps = {
   variantId: string;
   availability: AdminProductVariantAvailability;
+  allowScheduledAvailability: boolean;
+  allowPreorderAvailability: boolean;
 };
 
-function AvailabilityFields({ variantId, availability }: AvailabilityFieldsProps): JSX.Element {
+function AvailabilityFields({
+  variantId,
+  availability,
+  allowScheduledAvailability,
+  allowPreorderAvailability,
+}: AvailabilityFieldsProps): JSX.Element {
   const [selectedStatus, setSelectedStatus] = useState<AdminProductVariantAvailability["status"]>(
     availability.status
   );
+  const statusEntries = Object.entries(availabilityStatusLabels).filter(([value]) => {
+    if (value === "preorder" && !allowPreorderAvailability) {
+      return false;
+    }
+
+    return true;
+  });
 
   return (
     <div className="space-y-3">
@@ -103,7 +119,7 @@ function AvailabilityFields({ variantId, availability }: AvailabilityFieldsProps
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {Object.entries(availabilityStatusLabels).map(([value, label]) => (
+              {statusEntries.map(([value, label]) => (
                 <SelectItem key={value} value={value}>
                   {label}
                 </SelectItem>
@@ -148,52 +164,58 @@ function AvailabilityFields({ variantId, availability }: AvailabilityFieldsProps
         au panier est autorisé.
       </p>
 
-      <div className="grid gap-3 md:grid-cols-2">
-        <AdminFormField label="Début de vente">
-          <Input
-            type="datetime-local"
-            name={`availabilitySellableFrom:${variantId}`}
-            defaultValue={toDateTimeLocalValue(availability.sellableFrom)}
-            className="text-sm"
-          />
-        </AdminFormField>
-        <AdminFormField label="Fin de vente">
-          <Input
-            type="datetime-local"
-            name={`availabilitySellableUntil:${variantId}`}
-            defaultValue={toDateTimeLocalValue(availability.sellableUntil)}
-            className="text-sm"
-          />
-        </AdminFormField>
-        {selectedStatus === "preorder" && (
-          <>
-            <AdminFormField label="Début de précommande">
-              <Input
-                type="datetime-local"
-                name={`availabilityPreorderStartsAt:${variantId}`}
-                defaultValue={toDateTimeLocalValue(availability.preorderStartsAt)}
-                className="text-sm"
-              />
-            </AdminFormField>
-            <AdminFormField label="Fin de précommande">
-              <Input
-                type="datetime-local"
-                name={`availabilityPreorderEndsAt:${variantId}`}
-                defaultValue={toDateTimeLocalValue(availability.preorderEndsAt)}
-                className="text-sm"
-              />
-            </AdminFormField>
-          </>
-        )}
-      </div>
+      {allowScheduledAvailability ? (
+        <div className="grid gap-3 md:grid-cols-2">
+          <AdminFormField label="Début de vente">
+            <Input
+              type="datetime-local"
+              name={`availabilitySellableFrom:${variantId}`}
+              defaultValue={toDateTimeLocalValue(availability.sellableFrom)}
+              className="text-sm"
+            />
+          </AdminFormField>
+          <AdminFormField label="Fin de vente">
+            <Input
+              type="datetime-local"
+              name={`availabilitySellableUntil:${variantId}`}
+              defaultValue={toDateTimeLocalValue(availability.sellableUntil)}
+              className="text-sm"
+            />
+          </AdminFormField>
+          {allowPreorderAvailability && selectedStatus === "preorder" ? (
+            <>
+              <AdminFormField label="Début de précommande">
+                <Input
+                  type="datetime-local"
+                  name={`availabilityPreorderStartsAt:${variantId}`}
+                  defaultValue={toDateTimeLocalValue(availability.preorderStartsAt)}
+                  className="text-sm"
+                />
+              </AdminFormField>
+              <AdminFormField label="Fin de précommande">
+                <Input
+                  type="datetime-local"
+                  name={`availabilityPreorderEndsAt:${variantId}`}
+                  defaultValue={toDateTimeLocalValue(availability.preorderEndsAt)}
+                  className="text-sm"
+                />
+              </AdminFormField>
+            </>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }
 
 function VariantAvailabilityCard({
   variant,
+  allowScheduledAvailability,
+  allowPreorderAvailability,
 }: {
   variant: AdminProductVariantListItem;
+  allowScheduledAvailability: boolean;
+  allowPreorderAvailability: boolean;
 }): JSX.Element {
   return (
     <div
@@ -205,7 +227,12 @@ function VariantAvailabilityCard({
         <p className="text-xs font-mono text-muted-foreground">{variant.sku}</p>
       </div>
 
-      <AvailabilityFields variantId={variant.id} availability={variant.availability} />
+      <AvailabilityFields
+        variantId={variant.id}
+        availability={variant.availability}
+        allowScheduledAvailability={allowScheduledAvailability}
+        allowPreorderAvailability={allowPreorderAvailability}
+      />
     </div>
   );
 }
@@ -215,6 +242,8 @@ export function ProductAvailabilityTab({
   productId,
   variants,
   isStandalone,
+  allowScheduledAvailability,
+  allowPreorderAvailability,
 }: ProductAvailabilityTabProps): JSX.Element {
   const [state, formAction, pending] = useActionState(action, productAvailabilityFormInitialState);
   const hasVariants = variants.length > 0;
@@ -267,6 +296,8 @@ export function ProductAvailabilityTab({
                       <AvailabilityFields
                         variantId={standaloneVariant.id}
                         availability={standaloneVariant.availability}
+                        allowScheduledAvailability={allowScheduledAvailability}
+                        allowPreorderAvailability={allowPreorderAvailability}
                       />
                     </>
                   )}
@@ -282,7 +313,12 @@ export function ProductAvailabilityTab({
                   {hasVariants ? (
                     <div className="grid gap-4">
                       {variants.map((variant) => (
-                        <VariantAvailabilityCard key={variant.id} variant={variant} />
+                        <VariantAvailabilityCard
+                          key={variant.id}
+                          variant={variant}
+                          allowScheduledAvailability={allowScheduledAvailability}
+                          allowPreorderAvailability={allowPreorderAvailability}
+                        />
                       ))}
                     </div>
                   ) : (

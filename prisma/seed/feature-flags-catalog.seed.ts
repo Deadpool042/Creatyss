@@ -36,18 +36,24 @@ const CATALOG_PRODUCT_FLAGS: readonly CatalogProductFlagDef[] = [
     name: "Variantes produit",
     description: "Gestion des déclinaisons (taille, couleur, etc.).",
     isEnabledByDefault: true,
+    allowedLevels: ["read", "manage", "options"],
+    defaultLevel: "options",
   },
   {
     code: "catalog.products.pricing",
     name: "Tarification produit",
     description: "Gestion des prix, des taxes et des règles tarifaires.",
     isEnabledByDefault: true,
+    allowedLevels: ["base-price", "price-lists", "scheduled-pricing"],
+    defaultLevel: "scheduled-pricing",
   },
   {
     code: "catalog.products.availability",
     name: "Disponibilité produit",
     description: "Gestion de la disponibilité et de la visibilité des produits.",
     isEnabledByDefault: true,
+    allowedLevels: ["sellability", "scheduling", "preorder"],
+    defaultLevel: "preorder",
   },
   {
     code: "catalog.products.inventory",
@@ -62,6 +68,8 @@ const CATALOG_PRODUCT_FLAGS: readonly CatalogProductFlagDef[] = [
     name: "Produits associés",
     description: "Gestion des suggestions de produits similaires ou complémentaires.",
     isEnabledByDefault: true,
+    allowedLevels: ["storefront", "manage"],
+    defaultLevel: "manage",
   },
 ] as const;
 

@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { sendOrderTransactionalEmail } from "@/features/email";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { shipOrderSchema } from "@/features/admin/commerce/orders/schemas/ship-order.schema";
 import { shipAdminOrder } from "@/features/admin/commerce/orders/services/ship-admin-order.service";
 import { AdminOrderServiceError } from "@/features/admin/commerce/orders/services/admin-order-service.errors";
@@ -23,6 +24,10 @@ export async function shipOrderAction(formData: FormData): Promise<void> {
 
   if (!parsed.success) {
     redirect(`${ADMIN_ORDERS_LIST_PATH}?error=invalid_order_action`);
+  }
+
+  if (!(await meetsFeatureLevel("commerce.shipping", "dispatch"))) {
+    redirect(`${getAdminOrderDetailPath(parsed.data.orderId)}?order_error=shipping_level_insufficient`);
   }
 
   try {

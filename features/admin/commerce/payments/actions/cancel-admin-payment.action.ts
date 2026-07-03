@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { adminPaymentActionSchema } from "@/features/admin/commerce/payments/shared/schemas/admin-payment-action.schema";
 import { cancelAdminPayment } from "@/features/admin/commerce/payments/shared/services/cancel-admin-payment.service";
@@ -16,6 +17,10 @@ export async function cancelAdminPaymentAction(
   formData: FormData
 ): Promise<CancelPaymentResult> {
   await requireAdminCapability("admin.commerce.payments.cancel");
+
+  if (!(await meetsFeatureLevel("commerce.payments", "manual"))) {
+    return { status: "error", message: "Niveau paiements insuffisant pour cette action." };
+  }
 
   const parsed = adminPaymentActionSchema.safeParse({
     paymentId: String(formData.get("paymentId") ?? ""),

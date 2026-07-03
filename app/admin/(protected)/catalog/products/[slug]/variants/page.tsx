@@ -21,6 +21,7 @@ import { ProductVariantsTab } from "@/features/admin/products/components/editor/
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
 import { buildAdminProductVariantsPath } from "@/features/admin/products/navigation";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export const dynamic = "force-dynamic";
 
@@ -42,6 +43,10 @@ export default async function ProductDetailVariantsPage({
     product.productTypeId
       ? readAdminProductTypeWithOptions(product.productTypeId)
       : Promise.resolve([]),
+  ]);
+  const [canManageVariants, canManageVariantOptions] = await Promise.all([
+    meetsFeatureLevel("catalog.products.variants", "manage"),
+    meetsFeatureLevel("catalog.products.variants", "options"),
   ]);
 
   return (
@@ -69,13 +74,21 @@ export default async function ProductDetailVariantsPage({
         variants={variantsData?.variants ?? []}
         images={imagesData?.images ?? []}
         productOptions={productOptions}
-        createAction={createProductVariantAction}
-        updateAction={updateProductVariantAction}
-        setDefaultAction={setDefaultProductVariantAction}
-        deleteAction={deleteProductVariantAction}
-        createOptionColorValueAction={createProductOptionColorValueAction}
-        updateOptionColorValueAction={updateProductOptionColorValueAction}
-        archiveOptionColorValueAction={archiveProductOptionColorValueAction}
+        {...(canManageVariants
+          ? {
+              createAction: createProductVariantAction,
+              updateAction: updateProductVariantAction,
+              setDefaultAction: setDefaultProductVariantAction,
+              deleteAction: deleteProductVariantAction,
+            }
+          : {})}
+        {...(canManageVariantOptions
+          ? {
+              createOptionColorValueAction: createProductOptionColorValueAction,
+              updateOptionColorValueAction: updateProductOptionColorValueAction,
+              archiveOptionColorValueAction: archiveProductOptionColorValueAction,
+            }
+          : {})}
       />
     </AdminPageShell>
   );

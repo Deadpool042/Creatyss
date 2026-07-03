@@ -11,6 +11,7 @@ import { ProductPricingTab } from "@/features/admin/products/components/editor/p
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
 import { buildAdminProductPricingPath } from "@/features/admin/products/navigation";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export const dynamic = "force-dynamic";
 
@@ -26,10 +27,15 @@ export default async function ProductDetailPricingPage({
     notFound();
   }
 
-  const [pricingData, priceLists] = await Promise.all([
+  const [pricingData, priceLists, canManagePriceLists, canManageScheduledPricing] = await Promise.all([
     readAdminProductPrices({ productId: product.id }),
     readAdminPriceLists(),
+    meetsFeatureLevel("catalog.products.pricing", "price-lists"),
+    meetsFeatureLevel("catalog.products.pricing", "scheduled-pricing"),
   ]);
+  const visiblePriceLists = canManagePriceLists
+    ? priceLists
+    : priceLists.filter((priceList) => priceList.isDefault);
 
   return (
     <AdminPageShell
@@ -52,9 +58,11 @@ export default async function ProductDetailPricingPage({
     >
       <ProductPricingTab
         action={updateProductPricesAction}
-        priceLists={priceLists}
+        priceLists={visiblePriceLists}
         pricingData={pricingData}
         isStandalone={product.isStandalone}
+        allowAdvancedPriceLists={canManagePriceLists}
+        allowScheduledPricing={canManageScheduledPricing}
       />
     </AdminPageShell>
   );

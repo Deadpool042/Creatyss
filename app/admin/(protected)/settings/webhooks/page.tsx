@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { requireInternalAdminCapability } from "@/core/auth/admin/require-internal-admin-capability";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { WebhooksPanel } from "@/features/admin/settings/components/webhooks-panel";
 import {
   getAdminWebhooksSnapshot,
@@ -37,9 +38,11 @@ export default async function AdminSettingsWebhooksPage({
     notFound();
   }
 
-  const [snapshot, resolvedSearchParams] = await Promise.all([
+  const [snapshot, resolvedSearchParams, canManageWebhooks, canRetryWebhooks] = await Promise.all([
     getAdminWebhooksSnapshot(),
     searchParams,
+    meetsFeatureLevel("platform.webhooks", "manage"),
+    meetsFeatureLevel("platform.webhooks", "retry"),
   ]);
 
   const retryableDeliveries = snapshot.deliveries.filter((d) =>
@@ -61,11 +64,13 @@ export default async function AdminSettingsWebhooksPage({
       contentPreset="table"
     >
       <div className="grid gap-6">
-        <WebhookEndpointCreateForm initialSecret={resolvedSearchParams.secret} />
+        {canManageWebhooks ? (
+          <WebhookEndpointCreateForm initialSecret={resolvedSearchParams.secret} />
+        ) : null}
 
         <WebhooksPanel snapshot={snapshot} />
 
-        {retryableDeliveries.length > 0 ? (
+        {canRetryWebhooks && retryableDeliveries.length > 0 ? (
           <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
             <h2 className="text-lg font-semibold tracking-tight text-foreground">
               Deliveries en echec — relance manuelle

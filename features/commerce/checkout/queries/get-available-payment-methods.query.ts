@@ -1,6 +1,6 @@
 import { db } from "@/core/db";
 import { isStripeConfigured } from "@/core/config/env/stripe";
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export type AvailablePaymentMethod = {
   readonly id: "bank_transfer" | "cash_on_delivery" | "card";
@@ -43,8 +43,10 @@ export async function getAvailablePaymentMethods(input: {
     });
   }
 
-  const paymentsFeatureActive = await queryFeatureFlagActive("commerce.payments", { storeId });
-  if (paymentsFeatureActive && isStripeConfigured()) {
+  const onlinePaymentsEnabled = await meetsFeatureLevel("commerce.payments", "online", {
+    storeId,
+  });
+  if (onlinePaymentsEnabled && isStripeConfigured()) {
     methods.push({
       id: "card",
       label: "Carte bancaire",

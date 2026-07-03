@@ -1,4 +1,5 @@
 import { db } from "@/core/db";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export type CatalogSitemapBlogPost = {
   slug: string;
@@ -7,6 +8,10 @@ export type CatalogSitemapBlogPost = {
 };
 
 export async function getPublishedBlogPostsForSitemap(): Promise<CatalogSitemapBlogPost[]> {
+  if (!(await meetsFeatureLevel("content.blog", "publish"))) {
+    return [];
+  }
+
   const posts = await db.blogPost.findMany({
     where: {
       status: "ACTIVE",

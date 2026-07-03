@@ -1,8 +1,13 @@
 import { db } from "@/core/db";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { SeoSubjectType } from "@/prisma-generated/client";
 import type { CatalogBlogDetail } from "@/features/storefront/content/blog/types/catalog-blog.types";
 
 export async function getPublishedBlogPostBySlug(slug: string): Promise<CatalogBlogDetail | null> {
+  if (!(await meetsFeatureLevel("content.blog", "publish"))) {
+    return null;
+  }
+
   const post = await db.blogPost.findFirst({
     where: {
       slug,

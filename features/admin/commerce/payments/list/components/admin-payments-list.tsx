@@ -11,6 +11,7 @@ import type {
 
 type AdminPaymentsListProps = {
   payments: ReadonlyArray<AdminPaymentSummary>;
+  canManageManualPayments: boolean;
 };
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
@@ -66,7 +67,7 @@ async function cancelFormAction(formData: FormData): Promise<void> {
   await cancelAdminPaymentAction(formData);
 }
 
-export function AdminPaymentsList({ payments }: AdminPaymentsListProps) {
+export function AdminPaymentsList({ payments, canManageManualPayments }: AdminPaymentsListProps) {
   if (payments.length === 0) {
     return (
       <p className="py-10 text-center text-sm text-muted-foreground">
@@ -82,7 +83,7 @@ export function AdminPaymentsList({ payments }: AdminPaymentsListProps) {
           [payment.customerFirstName, payment.customerLastName].filter(Boolean).join(" ") ||
           payment.customerEmail;
 
-        const isPending = payment.status === "pending";
+        const canActOnPayment = payment.status === "pending" && canManageManualPayments;
 
         return (
           <div
@@ -126,7 +127,7 @@ export function AdminPaymentsList({ payments }: AdminPaymentsListProps) {
             </div>
 
             {/* Actions inline (pending uniquement) */}
-            {isPending ? (
+            {canActOnPayment ? (
               <div className="flex shrink-0 flex-wrap gap-2 sm:flex-col sm:items-end">
                 {payment.methodType !== "card" ? (
                   <form action={captureFormAction}>

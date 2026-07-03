@@ -1,5 +1,14 @@
 # Blog
 
+## Gradation 2026-07-03
+
+`content.blog` est désormais gradué sur deux capacités observées dans le code :
+
+- `draft` : édition admin des articles, sans diffusion publique.
+- `publish` : diffusion storefront du listing blog, du détail article, du journal homepage et du sitemap blog.
+
+Le niveau seedé par défaut est `publish` afin de préserver le comportement historique complet.
+
 ## Rôle
 
 Le domaine `blog` porte les articles éditoriaux structurés du système.

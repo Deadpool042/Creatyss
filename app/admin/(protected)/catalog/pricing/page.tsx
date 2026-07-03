@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { listAdminPriceLists, type AdminPriceListSummary } from "@/features/admin/catalog/queries/list-admin-price-lists.query";
 import { PriceListCreateDialog } from "@/features/admin/catalog/components/price-list-create-dialog";
 import { PriceListRowActions } from "@/features/admin/catalog/components/price-list-row-actions";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,7 @@ function getPricingErrorMessage(code: string): string {
     case "not_found": return "Liste de prix introuvable.";
     case "not_active": return "Seule une liste active peut être définie par défaut.";
     case "invalid_transition": return "Cette transition de statut n'est pas autorisée.";
+    case "pricing_level_insufficient": return "Le niveau tarifaire actuel n'autorise pas cette action.";
     default: return "L'opération a échoué.";
   }
 }
@@ -35,9 +37,10 @@ type AdminCatalogPricingPageProps = Readonly<{
 }>;
 
 export default async function AdminCatalogPricingPage({ searchParams }: AdminCatalogPricingPageProps) {
-  const [resolvedSearchParams, priceLists] = await Promise.all([
+  const [resolvedSearchParams, priceLists, canManagePriceLists] = await Promise.all([
     searchParams,
     listAdminPriceLists().catch((): AdminPriceListSummary[] => []),
+    meetsFeatureLevel("catalog.products.pricing", "price-lists"),
   ]);
 
   const activeLists = priceLists.filter((p) => p.status === "ACTIVE").length;
@@ -56,7 +59,7 @@ export default async function AdminCatalogPricingPage({ searchParams }: AdminCat
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
-      topbarAction={<PriceListCreateDialog />}
+      topbarAction={canManagePriceLists ? <PriceListCreateDialog /> : undefined}
     >
       {/* Feedback */}
       {resolvedSearchParams.pl_created ? (
@@ -189,12 +192,18 @@ export default async function AdminCatalogPricingPage({ searchParams }: AdminCat
                     >
                       {cfg.label}
                     </span>
-                    <PriceListRowActions list={list} />
+                    {canManagePriceLists ? <PriceListRowActions list={list} /> : null}
                   </div>
                 </div>
               );
             })}
           </div>
+
+          {!canManagePriceLists ? (
+            <p className="text-xs text-muted-foreground/70">
+              Le niveau <code>price-lists</code> est requis pour créer, activer ou changer les listes.
+            </p>
+          ) : null}
 
           <p className="text-xs text-muted-foreground/50">
             Les prix par produit se configurent dans l&apos;onglet Prix de chaque fiche produit.

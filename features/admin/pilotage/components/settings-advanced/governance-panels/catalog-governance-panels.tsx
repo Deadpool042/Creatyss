@@ -39,7 +39,8 @@ export async function PricingGovernancePanel() {
       <GovernanceDomainContext>
         Ce flag gouverne les <span className="font-medium text-foreground">listes de prix</span>,{" "}
         les <span className="font-medium text-foreground">prix produit</span> et les{" "}
-        <span className="font-medium text-foreground">prix variante</span>. Les montants sont
+        <span className="font-medium text-foreground">fenêtres promotionnelles</span> par niveaux :
+        prix boutique par défaut, grilles avancées, puis tarification planifiée. Les montants sont
         stockés TTC — la ventilation HT/TVA relève du domaine{" "}
         <code className="font-mono text-[10px]">taxation</code>.
       </GovernanceDomainContext>
@@ -83,8 +84,8 @@ export async function VariantsGovernancePanel() {
     <GovernancePanelShell label="Gouvernance · Variantes">
       <GovernanceDomainContext>
         Ce flag gouverne les <span className="font-medium text-foreground">variantes produit</span>{" "}
-        (options, valeurs, prix variante). Sans ce flag actif, les produits sont proposés en version
-        unique sans déclinaison.
+        par niveaux : lecture de la structure, mutations des variantes, puis gestion des valeurs
+        d'options couleur. Le niveau par défaut conserve la capacité complète existante.
       </GovernanceDomainContext>
       {data.totalVariants > 0 ? (
         <GovernanceStatGrid stats={stats} />
@@ -148,9 +149,9 @@ export async function AvailabilityGovernancePanel() {
     <GovernancePanelShell label="Gouvernance · Disponibilité">
       <GovernanceDomainContext>
         Ce flag gouverne les{" "}
-        <span className="font-medium text-foreground">règles de disponibilité</span> par canal,
-        territoire ou période. Il détermine si un produit est accessible à la vente selon le
-        contexte client.
+        <span className="font-medium text-foreground">règles de disponibilité</span> par niveaux :
+        vendabilité simple, fenêtres de vente, puis précommande datée. Il détermine si un produit
+        est accessible à la vente selon le contexte client.
       </GovernanceDomainContext>
       {data.totalRecords > 0 || data.totalPolicies > 0 ? (
         <GovernanceStatGrid stats={stats} columns={2} />
@@ -211,7 +212,10 @@ export async function RelatedGovernancePanel() {
       <GovernanceDomainContext>
         Ce flag gouverne les{" "}
         <span className="font-medium text-foreground">suggestions de produits liés</span> affichées
-        sur chaque fiche produit. Il peut encourager la découverte et augmenter le panier moyen.
+        sur chaque fiche produit. Le niveau{" "}
+        <code className="font-mono text-[10px]">storefront</code> active l'affichage public ;{" "}
+        <code className="font-mono text-[10px]">manage</code> autorise aussi l'édition admin des
+        relations merchandising.
       </GovernanceDomainContext>
       {data.totalLinks > 0 ? (
         <GovernanceStatGrid stats={stats} columns={2} />

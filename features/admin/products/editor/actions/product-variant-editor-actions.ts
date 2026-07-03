@@ -18,6 +18,7 @@ import {
   updateProductVariant,
 } from "../services";
 import type { AdminProductVariantInputErrorCode } from "@/entities/product/admin-product-variant-input";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 // ---------------------------------------------------------------------------
 // Shared helpers
@@ -25,6 +26,18 @@ import type { AdminProductVariantInputErrorCode } from "@/entities/product/admin
 
 function getField(formData: FormData, key: string): FormDataEntryValue | null {
   return formData.get(key);
+}
+
+async function canManageProductVariants() {
+  return meetsFeatureLevel("catalog.products.variants", "manage");
+}
+
+function variantLevelError() {
+  return {
+    ...productVariantFormInitialState,
+    status: "error",
+    message: "Niveau variantes insuffisant.",
+  } as const;
 }
 
 function mapValidationError(code: AdminProductVariantInputErrorCode) {
@@ -85,6 +98,10 @@ export const createProductVariantAction: ProductVariantFormAction = async (
   _prevState,
   formData
 ) => {
+  if (!(await canManageProductVariants())) {
+    return variantLevelError();
+  }
+
   const productIdValue = getField(formData, "productId");
 
   if (typeof productIdValue !== "string" || productIdValue.trim().length === 0) {
@@ -233,6 +250,13 @@ export const createProductVariantAction: ProductVariantFormAction = async (
 export async function deleteProductVariantAction(
   input: DeleteProductVariantInput
 ): Promise<DeleteProductVariantResult> {
+  if (!(await canManageProductVariants())) {
+    return {
+      status: "error",
+      message: "Niveau variantes insuffisant.",
+    };
+  }
+
   try {
     await deleteProductVariant({
       productId: input.productId,
@@ -270,6 +294,13 @@ export async function deleteProductVariantAction(
 export async function setDefaultProductVariantAction(
   input: SetDefaultProductVariantInput
 ): Promise<SetDefaultProductVariantResult> {
+  if (!(await canManageProductVariants())) {
+    return {
+      status: "error",
+      message: "Niveau variantes insuffisant.",
+    };
+  }
+
   try {
     await setDefaultProductVariant({
       productId: input.productId,
@@ -305,6 +336,10 @@ export const updateProductVariantAction: ProductVariantFormAction = async (
   _prevState,
   formData
 ) => {
+  if (!(await canManageProductVariants())) {
+    return variantLevelError();
+  }
+
   const productIdValue = getField(formData, "productId");
   const variantIdValue = getField(formData, "variantId");
 
