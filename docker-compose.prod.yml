@@ -106,6 +106,32 @@ services:
     entrypoint: ["pnpm", "run", "db:push"]
     restart: "no"
 
+  # Job ponctuel : reseed ciblé des niveaux de FeatureFlag (allowedLevels/
+  # defaultLevel) — jamais de données de démo. Safe à rejouer, idempotent.
+  db-seed-flags:
+    image: creatyss:prod
+    profiles: ["jobs"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    entrypoint: ["pnpm", "run", "db:seed:flags"]
+    restart: "no"
+
+  # Job ponctuel : vérifie que allowedLevels/defaultLevel en base
+  # correspondent à FEATURE_LEVELS déclaré dans le code. Read-only.
+  db-validate-levels:
+    image: creatyss:prod
+    profiles: ["jobs"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    entrypoint: ["pnpm", "run", "db:validate:levels"]
+    restart: "no"
+
 volumes:
   postgres_data:
   uploads_data:

@@ -10,10 +10,12 @@
 #   3. Reconstruction de l'image avec tag daté (permet rollback)
 #   4. Sauvegarde complète (DB + volumes) avant modification de schéma
 #   5. Synchronisation du schéma Prisma (db:push)
-#   6. Recréation du conteneur app sur la nouvelle image
-#   7. Attente de disponibilité (max 60 s)
-#   8. Vérification HTTPS
-#   9. Résumé
+#   6. Reseed des niveaux de features graduées (db:seed:flags)
+#   7. Vérification de cohérence des niveaux (db:validate:levels)
+#   8. Recréation du conteneur app sur la nouvelle image
+#   9. Attente de disponibilité (max 60 s)
+#   10. Vérification HTTPS
+#   11. Résumé
 #
 # S'arrête immédiatement sur toute erreur (set -Eeuo pipefail).
 
@@ -99,6 +101,18 @@ step "Synchronisation du schéma Prisma (db:push)"
 # --accept-data-loss est embarqué dans le script package.json (cf. doc 04).
 docker compose -f "${COMPOSE_FILE}" --profile jobs run --rm db-push
 ok "Schéma synchronisé"
+
+# ── 4bis. Reseed des niveaux de features graduées ────────────────────────────
+step "Reseed des niveaux de features graduées (db:seed:flags)"
+# Ne touche que allowedLevels/defaultLevel — jamais de données de démo, jamais
+# le niveau choisi par un opérateur (stocké séparément dans FeatureFlagOverride).
+docker compose -f "${COMPOSE_FILE}" --profile jobs run --rm db-seed-flags
+ok "Niveaux de features reseedés"
+
+step "Vérification de cohérence des niveaux (db:validate:levels)"
+docker compose -f "${COMPOSE_FILE}" --profile jobs run --rm db-validate-levels \
+  || die "Dérive détectée entre FEATURE_LEVELS (code) et allowedLevels (base) — voir logs ci-dessus"
+ok "Niveaux cohérents entre code et base"
 
 # ── 5. Recréation du conteneur app ───────────────────────────────────────────
 step "Redémarrage de l'application"
