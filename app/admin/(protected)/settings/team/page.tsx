@@ -9,7 +9,10 @@ import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
 
-import { listAdminUsers, type AdminUserSummary } from "@/features/admin/settings/queries/list-admin-users.query";
+import {
+  listAdminUsers,
+  type AdminUserSummary,
+} from "@/features/admin/settings/queries/list-admin-users.query";
 
 export const dynamic = "force-dynamic";
 
@@ -21,14 +24,25 @@ const dateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   minute: "2-digit",
 });
 
-const STATUS_CONFIG: Record<AdminUserSummary["status"], {
-  label: string;
-  badge: string;
-  icon: React.ComponentType<{ className?: string }>;
-}> = {
+const STATUS_CONFIG: Record<
+  AdminUserSummary["status"],
+  {
+    label: string;
+    badge: string;
+    icon: React.ComponentType<{ className?: string }>;
+  }
+> = {
   INVITED: { label: "Invité", badge: "bg-surface-subtle text-muted-foreground", icon: Clock },
-  ACTIVE: { label: "Actif", badge: "bg-feedback-success-surface/75 text-feedback-success-foreground", icon: UserCheck },
-  SUSPENDED: { label: "Suspendu", badge: "bg-feedback-warning-surface/75 text-feedback-warning-foreground", icon: UserX },
+  ACTIVE: {
+    label: "Actif",
+    badge: "bg-feedback-success-surface/75 text-feedback-success-foreground",
+    icon: UserCheck,
+  },
+  SUSPENDED: {
+    label: "Suspendu",
+    badge: "bg-feedback-warning-surface/75 text-feedback-warning-foreground",
+    icon: UserX,
+  },
   ARCHIVED: { label: "Archivé", badge: "bg-surface-subtle text-muted-foreground/60", icon: UserX },
 };
 
@@ -61,11 +75,7 @@ export default async function AdminSettingsTeamPage() {
     <AdminPageShell
       scrollBehavior="page"
       title="Équipe"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Réglages" },
-        { label: "Équipe" },
-      ]}
+      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Équipe" }]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="form"
@@ -76,9 +86,7 @@ export default async function AdminSettingsTeamPage() {
             <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
               Accès admin
             </p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-              Équipe
-            </h1>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">Équipe</h1>
             <p className="mt-1 text-sm text-muted-foreground">
               Membres ayant accès à l'espace d'administration. Rôles et permissions gérés via le
               schéma d'identité.
@@ -96,15 +104,35 @@ export default async function AdminSettingsTeamPage() {
         ) : (
           <>
             {/* Stats */}
-            <div className="mb-4 grid grid-cols-3 gap-3">
+            <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
               {[
                 { label: "Total", value: users.length },
-                { label: "Actifs", value: active, accent: active > 0 ? "text-feedback-success-foreground" : undefined },
-                { label: "En attente", value: invited, accent: invited > 0 ? "text-feedback-warning-foreground" : undefined },
+                {
+                  label: "Actifs",
+                  value: active,
+                  accent: active > 0 ? "text-feedback-success-foreground" : undefined,
+                },
+                {
+                  label: "En attente",
+                  value: invited,
+                  accent: invited > 0 ? "text-feedback-warning-foreground" : undefined,
+                },
               ].map((s) => (
-                <div key={s.label} className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 px-4 py-3 shadow-sm backdrop-blur-sm">
-                  <p className={cn("text-2xl font-semibold tracking-tight", s.accent ?? "text-foreground")}>{s.value}</p>
-                  <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">{s.label}</p>
+                <div
+                  key={s.label}
+                  className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 px-4 py-3 shadow-sm backdrop-blur-sm"
+                >
+                  <p
+                    className={cn(
+                      "text-2xl font-semibold tracking-tight",
+                      s.accent ?? "text-foreground"
+                    )}
+                  >
+                    {s.value}
+                  </p>
+                  <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+                    {s.label}
+                  </p>
                 </div>
               ))}
             </div>
@@ -114,17 +142,23 @@ export default async function AdminSettingsTeamPage() {
               {users.map((user) => {
                 const cfg = STATUS_CONFIG[user.status];
                 const StatusIcon = cfg.icon;
-                const fullName = [user.firstName, user.lastName].filter(Boolean).join(" ") || user.displayName;
+                const fullName =
+                  [user.firstName, user.lastName].filter(Boolean).join(" ") || user.displayName;
 
                 return (
-                  <div key={user.id} className="flex items-center gap-3 px-4 py-3.5 hover:bg-surface-subtle/20 transition-colors">
+                  <div
+                    key={user.id}
+                    className="flex items-center gap-3 px-4 py-3.5 hover:bg-surface-subtle/20 transition-colors"
+                  >
                     {/* Avatar */}
-                    <div className={cn(
-                      "flex size-9 shrink-0 items-center justify-center rounded-xl border text-[13px] font-semibold",
-                      user.status === "ACTIVE"
-                        ? "border-feedback-success-border/50 bg-feedback-success-surface/20 text-feedback-success-foreground"
-                        : "border-surface-border/60 bg-surface-subtle text-muted-foreground"
-                    )}>
+                    <div
+                      className={cn(
+                        "flex size-9 shrink-0 items-center justify-center rounded-xl border text-[13px] font-semibold",
+                        user.status === "ACTIVE"
+                          ? "border-feedback-success-border/50 bg-feedback-success-surface/20 text-feedback-success-foreground"
+                          : "border-surface-border/60 bg-surface-subtle text-muted-foreground"
+                      )}
+                    >
                       {user.email.charAt(0).toUpperCase()}
                     </div>
 
@@ -169,7 +203,12 @@ export default async function AdminSettingsTeamPage() {
                     </span>
 
                     {/* Statut */}
-                    <span className={cn("shrink-0 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium", cfg.badge)}>
+                    <span
+                      className={cn(
+                        "shrink-0 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium",
+                        cfg.badge
+                      )}
+                    >
                       <StatusIcon className="size-3" />
                       {cfg.label}
                     </span>
@@ -201,7 +240,6 @@ export default async function AdminSettingsTeamPage() {
                 );
               })}
             </div>
-
           </>
         )}
       </div>

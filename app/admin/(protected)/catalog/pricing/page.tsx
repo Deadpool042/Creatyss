@@ -3,7 +3,10 @@ import { CheckCircle2, Clock, Euro, Star, Tag } from "lucide-react";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
-import { listAdminPriceLists, type AdminPriceListSummary } from "@/features/admin/catalog/queries/list-admin-price-lists.query";
+import {
+  listAdminPriceLists,
+  type AdminPriceListSummary,
+} from "@/features/admin/catalog/queries/list-admin-price-lists.query";
 import { PriceListCreateDialog } from "@/features/admin/catalog/components/price-list-create-dialog";
 import { PriceListRowActions } from "@/features/admin/catalog/components/price-list-row-actions";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
@@ -14,21 +17,32 @@ const dateFormatter = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
 
 const STATUS_CONFIG: Record<AdminPriceListSummary["status"], { label: string; badge: string }> = {
   DRAFT: { label: "Brouillon", badge: "bg-surface-subtle text-muted-foreground" },
-  ACTIVE: { label: "Actif", badge: "bg-feedback-success-surface/75 text-feedback-success-foreground" },
+  ACTIVE: {
+    label: "Actif",
+    badge: "bg-feedback-success-surface/75 text-feedback-success-foreground",
+  },
   INACTIVE: { label: "Inactif", badge: "bg-surface-subtle text-muted-foreground/70" },
   ARCHIVED: { label: "Archivé", badge: "bg-surface-subtle text-muted-foreground/50" },
 };
 
 function getPricingErrorMessage(code: string): string {
   switch (code) {
-    case "duplicate_code": return "Une liste avec ce code existe déjà.";
-    case "invalid_input": return "Formulaire invalide — vérifiez les champs.";
-    case "missing_store": return "Aucune boutique trouvée.";
-    case "not_found": return "Liste de prix introuvable.";
-    case "not_active": return "Seule une liste active peut être définie par défaut.";
-    case "invalid_transition": return "Cette transition de statut n'est pas autorisée.";
-    case "pricing_level_insufficient": return "Le niveau tarifaire actuel n'autorise pas cette action.";
-    default: return "L'opération a échoué.";
+    case "duplicate_code":
+      return "Une liste avec ce code existe déjà.";
+    case "invalid_input":
+      return "Formulaire invalide — vérifiez les champs.";
+    case "missing_store":
+      return "Aucune boutique trouvée.";
+    case "not_found":
+      return "Liste de prix introuvable.";
+    case "not_active":
+      return "Seule une liste active peut être définie par défaut.";
+    case "invalid_transition":
+      return "Cette transition de statut n'est pas autorisée.";
+    case "pricing_level_insufficient":
+      return "Le niveau tarifaire actuel n'autorise pas cette action.";
+    default:
+      return "L'opération a échoué.";
   }
 }
 
@@ -36,7 +50,9 @@ type AdminCatalogPricingPageProps = Readonly<{
   searchParams: Promise<{ pl_created?: string; pl_updated?: string; pl_error?: string }>;
 }>;
 
-export default async function AdminCatalogPricingPage({ searchParams }: AdminCatalogPricingPageProps) {
+export default async function AdminCatalogPricingPage({
+  searchParams,
+}: AdminCatalogPricingPageProps) {
   const [resolvedSearchParams, priceLists, canManagePriceLists] = await Promise.all([
     searchParams,
     listAdminPriceLists().catch((): AdminPriceListSummary[] => []),
@@ -44,7 +60,10 @@ export default async function AdminCatalogPricingPage({ searchParams }: AdminCat
   ]);
 
   const activeLists = priceLists.filter((p) => p.status === "ACTIVE").length;
-  const totalEntries = priceLists.reduce((sum, p) => sum + p.productPricesCount + p.variantPricesCount, 0);
+  const totalEntries = priceLists.reduce(
+    (sum, p) => sum + p.productPricesCount + p.variantPricesCount,
+    0
+  );
   const defaultList = priceLists.find((p) => p.isDefault);
 
   return (
@@ -58,7 +77,7 @@ export default async function AdminCatalogPricingPage({ searchParams }: AdminCat
       ]}
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
-      contentPreset="table"
+      contentPreset="overview"
       topbarAction={canManagePriceLists ? <PriceListCreateDialog /> : undefined}
     >
       {/* Feedback */}
@@ -88,7 +107,7 @@ export default async function AdminCatalogPricingPage({ searchParams }: AdminCat
       ) : (
         <>
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {[
               { label: "Listes total", value: priceLists.length },
               {
@@ -102,7 +121,12 @@ export default async function AdminCatalogPricingPage({ searchParams }: AdminCat
                 key={s.label}
                 className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 px-4 py-3 shadow-sm backdrop-blur-sm"
               >
-                <p className={cn("text-2xl font-semibold tracking-tight", s.accent ?? "text-foreground")}>
+                <p
+                  className={cn(
+                    "text-2xl font-semibold tracking-tight",
+                    s.accent ?? "text-foreground"
+                  )}
+                >
                   {s.value}
                 </p>
                 <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
@@ -123,7 +147,8 @@ export default async function AdminCatalogPricingPage({ searchParams }: AdminCat
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {defaultList.currencyCode} ·{" "}
-                    {defaultList.productPricesCount + defaultList.variantPricesCount} prix configurés
+                    {defaultList.productPricesCount + defaultList.variantPricesCount} prix
+                    configurés
                   </p>
                 </div>
                 <span className="ml-auto shrink-0 inline-flex h-6 items-center rounded-md bg-feedback-success-surface/75 px-2 text-[11px] font-medium text-feedback-success-foreground">
@@ -164,7 +189,9 @@ export default async function AdminCatalogPricingPage({ searchParams }: AdminCat
                   {/* Info */}
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <p className="truncate text-[13px] font-medium text-foreground">{list.name}</p>
+                      <p className="truncate text-[13px] font-medium text-foreground">
+                        {list.name}
+                      </p>
                       <code className="rounded bg-surface-subtle px-1 font-mono text-[10px] text-muted-foreground/60">
                         {list.code}
                       </code>
@@ -201,7 +228,8 @@ export default async function AdminCatalogPricingPage({ searchParams }: AdminCat
 
           {!canManagePriceLists ? (
             <p className="text-xs text-muted-foreground/70">
-              Le niveau <code>price-lists</code> est requis pour créer, activer ou changer les listes.
+              Le niveau <code>price-lists</code> est requis pour créer, activer ou changer les
+              listes.
             </p>
           ) : null}
 

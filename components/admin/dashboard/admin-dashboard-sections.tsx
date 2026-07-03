@@ -34,7 +34,7 @@ type AdminPulseMetric = {
   label: string;
   value: string;
   hint: string;
-  accentClassName: string;
+  chartVar: string;
   icon: ComponentType<{ className?: string }>;
 };
 
@@ -50,6 +50,7 @@ type AdminPriority = {
   title: string;
   detail: string;
   state: string;
+  tone: "info" | "warning" | "neutral";
 };
 
 const quickLinks: AdminQuickLink[] = [
@@ -101,28 +102,28 @@ function buildPulseMetrics(stats: AdminDashboardStats): ReadonlyArray<AdminPulse
       label: "Catalogue vivant",
       value: `${formatCount(stats.productsCount)} fiches`,
       hint: "Base réelle du catalogue disponible côté admin.",
-      accentClassName: "bg-emerald-500/12 text-emerald-700 dark:text-emerald-300",
+      chartVar: "--chart-1",
       icon: Package,
     },
     {
       label: "Pipeline commerce",
       value: `${formatCount(stats.ordersCount)} commande${stats.ordersCount > 1 ? "s" : ""}`,
       hint: "Commandes enregistrées et accessibles pour le suivi de votre activité.",
-      accentClassName: "bg-sky-500/12 text-sky-700 dark:text-sky-300",
+      chartVar: "--chart-2",
       icon: ShoppingBag,
     },
     {
       label: "Contenu éditorial",
       value: `${formatCount(stats.blogPostsCount)} article${stats.blogPostsCount > 1 ? "s" : ""}`,
       hint: "Articles et pages disponibles dans votre espace éditorial.",
-      accentClassName: "bg-amber-500/14 text-amber-700 dark:text-amber-300",
+      chartVar: "--chart-3",
       icon: FileText,
     },
     {
       label: "Lecture business",
       value: "—",
       hint: "Indicateurs de performance commerciale, disponibles à l'activation des modules analytics.",
-      accentClassName: "bg-violet-500/12 text-violet-700 dark:text-violet-300",
+      chartVar: "--chart-4",
       icon: TrendingUp,
     },
   ];
@@ -139,7 +140,7 @@ function buildReadinessTracks(stats: AdminDashboardStats): ReadonlyArray<AdminRe
       detail: "Produits, catégories, médias et structure d’édition déjà utilisables.",
       progressLabel: productMomentum,
       progressWidthClassName: stats.productsCount > 0 ? "w-[78%]" : "w-[34%]",
-      toneClassName: "bg-emerald-500",
+      toneClassName: "bg-[var(--chart-1)]",
     },
     {
       title: "Commerce",
@@ -147,14 +148,15 @@ function buildReadinessTracks(stats: AdminDashboardStats): ReadonlyArray<AdminRe
         "Commandes présentes. Les vues de pilotage et les automatismes restent à approfondir.",
       progressLabel: commerceMomentum,
       progressWidthClassName: stats.ordersCount > 0 ? "w-[49%]" : "w-[37%]",
-      toneClassName: "bg-sky-500",
+      toneClassName: "bg-[var(--chart-2)]",
     },
     {
       title: "Contenu",
-      detail: "Homepage et blog sont disponibles. L’outillage éditorial sera enrichi progressivement.",
+      detail:
+        "Homepage et blog sont disponibles. L’outillage éditorial sera enrichi progressivement.",
       progressLabel: contentMomentum,
       progressWidthClassName: stats.blogPostsCount > 0 ? "w-[56%]" : "w-[18%]",
-      toneClassName: "bg-amber-500",
+      toneClassName: "bg-[var(--chart-3)]",
     },
   ];
 }
@@ -168,6 +170,7 @@ function buildPriorities(stats: AdminDashboardStats): ReadonlyArray<AdminPriorit
           ? "Le coeur produit est visible. Il faut stabiliser variantes, édition fine et QA mobile."
           : "Les écrans sont prêts à accueillir le vrai flux catalogue dès les premières fiches.",
       state: "En cours",
+      tone: "info",
     },
     {
       title: "Rendre le commerce lisible",
@@ -176,6 +179,7 @@ function buildPriorities(stats: AdminDashboardStats): ReadonlyArray<AdminPriorit
           ? "Il y a déjà des commandes à lire, mais le cockpit de suivi reste à densifier."
           : "Le module commandes doit encore être outillé avant un pilotage quotidien complet.",
       state: "À structurer",
+      tone: "warning",
     },
     {
       title: "Brancher le contenu storefront",
@@ -184,9 +188,16 @@ function buildPriorities(stats: AdminDashboardStats): ReadonlyArray<AdminPriorit
           ? "Le blog est actif. Homepage, mises en avant et calendrier éditorial sont les prochaines étapes."
           : "L'espace éditorial est prêt à accueillir vos premiers contenus.",
       state: "En préparation",
+      tone: "neutral",
     },
   ];
 }
+
+const PRIORITY_BADGE_CLASSNAMES: Record<AdminPriority["tone"], string> = {
+  info: "bg-feedback-info-surface text-feedback-info-foreground",
+  warning: "bg-feedback-warning-surface text-feedback-warning-foreground",
+  neutral: "bg-surface-subtle text-text-muted-strong",
+};
 
 export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }): JSX.Element {
   const pulseMetrics = buildPulseMetrics(stats);
@@ -195,7 +206,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
 
   return (
     <div className="flex flex-col gap-5 md:gap-6">
-      <section className="grid gap-4 xl:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
+      <section className="grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
         <Card className="overflow-hidden rounded-3xl border-shell-border-strong bg-[linear-gradient(145deg,color-mix(in_srgb,var(--surface-panel)_90%,white)_0%,color-mix(in_srgb,var(--surface-panel)_70%,var(--shell-surface))_100%)] shadow-card">
           <CardHeader className="gap-4 pb-0">
             <div className="flex flex-wrap items-center gap-2">
@@ -209,7 +220,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
             </div>
 
             <div className="space-y-3">
-              <CardTitle className="max-w-3xl text-3xl font-semibold tracking-tight text-foreground md:text-[2.4rem]">
+              <CardTitle className="max-w-3xl text-2xl font-semibold tracking-tight text-foreground sm:text-3xl md:text-[2.4rem]">
                 Un cockpit sobre pour piloter le catalogue, le contenu et le commerce.
               </CardTitle>
               <CardDescription className="max-w-2xl text-base leading-7 text-text-muted-strong">
@@ -219,39 +230,35 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
             </div>
           </CardHeader>
 
-          <CardContent className="grid gap-3 pt-5 md:grid-cols-2">
-            {pulseMetrics.map((metric) => {
-              const Icon = metric.icon;
+          <CardContent className="pt-5">
+            <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
+              {pulseMetrics.map((metric) => {
+                const Icon = metric.icon;
 
-              return (
-                <div
-                  key={metric.label}
-                  className="rounded-xl border border-shell-border/70 bg-surface-panel/70 p-4"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="space-y-2">
-                      <p className="text-xs font-semibold tracking-[0.24em] text-text-muted-strong uppercase">
-                        {metric.label}
-                      </p>
-                      <p className="text-2xl font-semibold tracking-tight text-foreground">
-                        {metric.value}
-                      </p>
-                    </div>
-
+                return (
+                  <div key={metric.label} className="flex items-start gap-3">
                     <span
-                      className={cn(
-                        "inline-flex h-10 w-10 items-center justify-center rounded-2xl",
-                        metric.accentClassName
-                      )}
+                      className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl"
+                      style={{
+                        backgroundColor: `color-mix(in srgb, var(${metric.chartVar}) 16%, transparent)`,
+                        color: `var(${metric.chartVar})`,
+                      }}
                     >
                       <Icon className="h-5 w-5" />
                     </span>
+                    <div className="min-w-0 space-y-1">
+                      <p className="text-xs font-semibold tracking-[0.2em] text-text-muted-strong uppercase">
+                        {metric.label}
+                      </p>
+                      <p className="text-xl font-semibold tracking-tight text-foreground">
+                        {metric.value}
+                      </p>
+                      <p className="text-sm leading-6 text-text-muted-soft">{metric.hint}</p>
+                    </div>
                   </div>
-
-                  <p className="mt-3 text-sm leading-6 text-text-muted-soft">{metric.hint}</p>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </CardContent>
         </Card>
 
@@ -261,7 +268,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               <Activity className="h-4 w-4" />
               Aujourd’hui
             </div>
-            <CardTitle className="text-2xl font-semibold tracking-tight">
+            <CardTitle className="text-xl font-semibold tracking-tight sm:text-2xl">
               Priorités immédiates
             </CardTitle>
             <CardDescription className="leading-6">
@@ -269,49 +276,40 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-4 pt-4">
-            {priorities.map((priority, index) => (
-              <div
-                key={priority.title}
-                className="rounded-xl border border-surface-border-subtle bg-surface-panel/70 p-4"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="space-y-1.5">
-                    <p className="text-base font-medium text-foreground">{priority.title}</p>
-                    <p className="text-sm leading-6 text-text-muted-soft">{priority.detail}</p>
-                  </div>
-                  <span
-                    className={cn(
-                      "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium",
-                      index === 0
-                        ? "bg-emerald-500/12 text-emerald-700 dark:text-emerald-300"
-                        : index === 1
-                          ? "bg-sky-500/12 text-sky-700 dark:text-sky-300"
-                          : "bg-amber-500/14 text-amber-700 dark:text-amber-300"
-                    )}
-                  >
-                    {priority.state}
-                  </span>
+          <CardContent className="divide-y divide-surface-border-subtle pt-1">
+            {priorities.map((priority) => (
+              <div key={priority.title} className="flex items-start justify-between gap-3 py-4">
+                <div className="min-w-0 space-y-1.5">
+                  <p className="text-base font-medium text-foreground">{priority.title}</p>
+                  <p className="text-sm leading-6 text-text-muted-soft">{priority.detail}</p>
                 </div>
+                <span
+                  className={cn(
+                    "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium",
+                    PRIORITY_BADGE_CLASSNAMES[priority.tone]
+                  )}
+                >
+                  {priority.state}
+                </span>
               </div>
             ))}
           </CardContent>
         </Card>
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.95fr)]">
+      <section className="grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.95fr)]">
         <Card className="rounded-2xl bg-surface-panel/80 shadow-sm">
           <CardHeader className="gap-2 border-b border-surface-border-subtle/80 pb-4">
             <div className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.22em] text-text-muted-strong uppercase">
               <TrendingUp className="h-4 w-4" />
               Readiness
             </div>
-            <CardTitle className="text-2xl font-semibold tracking-tight">
+            <CardTitle className="text-xl font-semibold tracking-tight sm:text-2xl">
               État d’avancement des chantiers
             </CardTitle>
             <CardDescription className="leading-6">
-              Avancement des zones principales de votre administration. Les indicateurs évolueront
-              à mesure que les modules seront activés.
+              Avancement des zones principales de votre administration. Les indicateurs évolueront à
+              mesure que les modules seront activés.
             </CardDescription>
           </CardHeader>
 
@@ -328,7 +326,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
                   </span>
                 </div>
 
-                <div className="h-2 rounded-full bg-foreground/[0.07]">
+                <div className="h-2 rounded-full bg-foreground/10">
                   <div
                     className={cn(
                       "h-full rounded-full",
@@ -348,7 +346,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               <AlertTriangle className="h-4 w-4" />
               Vigilance
             </div>
-            <CardTitle className="text-2xl font-semibold tracking-tight">
+            <CardTitle className="text-xl font-semibold tracking-tight sm:text-2xl">
               Ce qui mérite votre attention
             </CardTitle>
             <CardDescription className="leading-6">
@@ -356,9 +354,9 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-3 pt-5">
-            <div className="flex items-start gap-3 rounded-xl border border-amber-500/20 bg-amber-500/8 p-4">
-              <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-300" />
+          <CardContent className="divide-y divide-surface-border-subtle pt-1">
+            <div className="flex items-start gap-3 border-l-2 border-feedback-warning-foreground/50 py-4 pl-3">
+              <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-feedback-warning-foreground" />
               <div className="space-y-1">
                 <p className="text-sm font-medium text-foreground">Indicateurs de performance</p>
                 <p className="text-sm leading-6 text-text-muted-soft">
@@ -368,8 +366,8 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               </div>
             </div>
 
-            <div className="flex items-start gap-3 rounded-xl border border-sky-500/20 bg-sky-500/8 p-4">
-              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-sky-600 dark:text-sky-300" />
+            <div className="flex items-start gap-3 border-l-2 border-feedback-success-foreground/50 py-4 pl-3">
+              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-feedback-success-foreground" />
               <div className="space-y-1">
                 <p className="text-sm font-medium text-foreground">Base admin stable</p>
                 <p className="text-sm leading-6 text-text-muted-soft">
@@ -379,13 +377,13 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               </div>
             </div>
 
-            <div className="rounded-xl border border-surface-border-subtle bg-surface-panel/70 p-4">
+            <div className="py-4">
               <p className="text-xs font-semibold tracking-[0.24em] text-text-muted-strong uppercase">
                 Prochain palier recommandé
               </p>
               <p className="mt-2 text-sm leading-6 text-text-muted-soft">
-                Approfondir le suivi des commandes, enrichir les contenus storefront et activer
-                les indicateurs de performance commerciale.
+                Approfondir le suivi des commandes, enrichir les contenus storefront et activer les
+                indicateurs de performance commerciale.
               </p>
             </div>
           </CardContent>
@@ -393,22 +391,22 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
       </section>
 
       <section className="space-y-3">
-        <div className="flex items-end justify-between gap-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-1">
             <p className="text-xs font-semibold tracking-[0.24em] text-text-muted-strong uppercase">
               Accès rapides
             </p>
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+            <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
               Les zones qui font avancer la boutique
             </h2>
           </div>
 
-          <span className="hidden rounded-full border border-shell-border/70 bg-surface-panel/80 px-3 py-1 text-xs text-text-muted-strong sm:inline-flex">
+          <span className="hidden rounded-full border border-shell-border/70 bg-surface-panel/80 px-3 py-1 text-xs text-text-muted-strong sm:inline-flex sm:w-fit">
             Modules activables progressivement
           </span>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {quickLinks.map((item) => {
             const Icon = item.icon;
 

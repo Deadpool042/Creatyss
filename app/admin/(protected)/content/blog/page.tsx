@@ -78,17 +78,30 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
       {blogPosts.length > 0 ? (
         <>
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {[
               { label: "Total", value: blogPosts.length },
-              { label: "Publiés", value: published, accent: published > 0 ? "text-feedback-success-foreground" : undefined },
-              { label: "Brouillons", value: drafts, accent: drafts > 0 ? "text-feedback-warning-foreground" : undefined },
+              {
+                label: "Publiés",
+                value: published,
+                accent: published > 0 ? "text-feedback-success-foreground" : undefined,
+              },
+              {
+                label: "Brouillons",
+                value: drafts,
+                accent: drafts > 0 ? "text-feedback-warning-foreground" : undefined,
+              },
             ].map((s) => (
               <div
                 key={s.label}
                 className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 px-4 py-3 text-center shadow-sm backdrop-blur-sm"
               >
-                <p className={cn("text-2xl font-semibold tracking-tight", s.accent ?? "text-foreground")}>
+                <p
+                  className={cn(
+                    "text-2xl font-semibold tracking-tight",
+                    s.accent ?? "text-foreground"
+                  )}
+                >
                   {s.value}
                 </p>
                 <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
@@ -101,10 +114,7 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
           {/* Liste articles */}
           <div className="divide-y divide-surface-border/40">
             {blogPosts.map((post) => (
-              <div
-                key={post.id}
-                className="flex items-start gap-4 py-4 first:pt-0 last:pb-0"
-              >
+              <div key={post.id} className="flex items-start gap-4 py-4 first:pt-0 last:pb-0">
                 {/* Icône statut */}
                 <div
                   className={cn(
