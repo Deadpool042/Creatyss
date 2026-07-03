@@ -2,12 +2,12 @@
 
 ## Statut
 
-En cours. `lot-decision-ia-admin.md` validé (2026-07-02). Deux sous-lots livrés sur la branche `feature/admin-nav-settings-sync` (non mergée) :
+En cours. `lot-decision-ia-admin.md` validé (2026-07-02). Deux sous-lots livrés et fusionnés dans `main` (ex-branche `feature/admin-nav-settings-sync`) :
 
 - **Option B (resync hub/sidebar)** — livré. Hub `/admin/settings` dérivé de `admin-navigation.data.ts` via `buildAdminSettingsHubItems`, filtré par capabilities réelles (avant : aucune vérification d'accès sur le hub). 5 labels "Vue d'ensemble" différenciés par domaine.
 - **Option A, pilote domaine `customers`** — livré. `settings/customers` (stub `AdminComingSoon`) fusionné dans `commerce/customers/settings`, avec redirect conservé et nav locale à 2 entrées (`CustomerRouteNav`). Item `customers-settings` supprimé de `admin-navigation.data.ts` (pas seulement masqué, pour éviter un doublon dans le menu mobile).
 
-Reste à faire : 5 sous-lots domaine (catalog, orders, media, payments, shipping), chacun un lot indépendant suivant le pattern ci-dessous. Vérification responsive live non exécutée sur les 2 sous-lots livrés (pas de canal navigateur disponible en session) — à faire avant merge de `feature/admin-nav-settings-sync`.
+Reste à faire : 5 sous-lots domaine (catalog, orders, media, payments, shipping), chacun un lot indépendant suivant le pattern ci-dessous. Vérification responsive live non exécutée sur les 2 sous-lots déjà fusionnés (pas de canal navigateur disponible en session) — à faire dès qu'un canal navigateur est disponible.
 
 ## Objectif
 
