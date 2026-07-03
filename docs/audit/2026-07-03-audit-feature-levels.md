@@ -4,6 +4,16 @@ Suite au chantier de généralisation des guards `meetsFeatureLevel` (batches 2/
 
 Toujours distinguer Observé / Documenté / Déduit / Proposition.
 
+**Mise à jour 2026-07-03 (suite) :** les 5 propositions ont été traitées sur
+la branche `feature/analytics-recommendations-and-audit-fixes` (commits
+`d97254fd` P1+P5, `4c40b9e4` P2, `ee0b0d06` P3, `b78ac0e7` P4) —
+`docs/domains/cross-cutting/feature-governance.md` formalise les règles
+`defaultLevel` et niveaux planchers ; `pnpm run db:seed:flags` et
+`pnpm run db:validate:levels` sont opérationnels ; `engagement.analytics.recommendations`
+est implémenté (insights actionnables Order/OrderLine, testé et vérifié en
+navigateur). P4 tranché avec l'utilisateur : scope « insights actionnables
+admin », pas de recommandations storefront.
+
 ---
 
 ## 1. Constat critique initial — corrigé après vérification
