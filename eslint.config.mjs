@@ -52,7 +52,12 @@ export default defineConfig([
   },
 
   {
-    files: ["scripts/**/*.{ts,tsx,js,mjs}", "prisma/seed.ts", "prisma/seed/**/*.{ts,tsx}"],
+    files: [
+      "scripts/**/*.{ts,tsx,js,mjs}",
+      "prisma/seed.ts",
+      "prisma/seed/**/*.{ts,tsx}",
+      "prisma/reseed-feature-flags.ts",
+    ],
     rules: {
       "no-console": ["warn", { allow: ["log", "info", "warn", "error"] }],
     },
