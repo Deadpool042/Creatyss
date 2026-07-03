@@ -275,9 +275,9 @@ export const FEATURE_CATALOG = [
     },
     levelDescriptions: {
       basic:
-        "Référentiel des abonnés (admin + souscription storefront), sans campagne ni segmentation.",
+        "Référentiel des abonnés (admin + souscription storefront) et envoi de campagnes email, sans segmentation.",
       segmentation:
-        "Filtres de segmentation sur le référentiel réel des abonnés (statut, source, récence), sans campagne.",
+        "Filtres de segmentation sur le référentiel réel des abonnés (statut, source, récence).",
       automation:
         "Souscription à une newsletter déclenche une automation email (si engagement.automations est actif).",
     },

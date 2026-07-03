@@ -99,16 +99,16 @@ function ContextualLinks({ flag }: { flag: AdminFeatureFlagView }) {
 
 type ContextualLink = { label: string; href: string };
 
-function resolveContextualLinks(
-  key: string,
-  _level: string | null
-): ContextualLink[] {
+function resolveContextualLinks(key: string, _level: string | null): ContextualLink[] {
   switch (key) {
     // Platform — optional
     case "platform.localization":
       return [
         { label: "Réglages", href: "/admin/settings/advanced/optional/localization/settings" },
-        { label: "Traductions", href: "/admin/settings/advanced/optional/localization/translations" },
+        {
+          label: "Traductions",
+          href: "/admin/settings/advanced/optional/localization/translations",
+        },
       ];
     case "platform.notifications":
       return [{ label: "Notifications", href: "/admin/settings/notifications" }];
@@ -123,12 +123,19 @@ function resolveContextualLinks(
       return [{ label: "Canaux", href: "/admin/settings/channels" }];
     // AI
     case "ai.core":
-      return [{ label: "Réglages IA", href: "/admin/settings/ai" }];
+      // "Réglages IA" est un tableau de bord passif (observabilité des tâches) ;
+      // l'usage réel (suggestion SEO) se fait depuis la fiche produit et l'article de blog.
+      return [
+        { label: "Réglages IA", href: "/admin/settings/ai" },
+        { label: "Produits (SEO)", href: "/admin/catalog/products" },
+        { label: "Blog (SEO)", href: "/admin/content/blog" },
+      ];
     // Commerce
     case "commerce.fulfillment":
       return [{ label: "Commandes", href: "/admin/commerce/orders" }];
     case "commerce.documents":
-      return [{ label: "Documents", href: "/admin/commerce/documents" }];
+      // Pas d'écran dédié : les documents se génèrent depuis chaque commande.
+      return [{ label: "Commandes (documents par commande)", href: "/admin/commerce/orders" }];
     case "commerce.taxation":
       return [{ label: "Fiscalité", href: "/admin/commerce/taxation" }];
     case "commerce.payments":
@@ -193,8 +200,7 @@ export function FeatureFlagDetail({ flag }: FeatureFlagDetailProps) {
 
   const isReadonly = flag.mutability === "readonly";
   const canRenderToggle =
-    flag.mutability === "toggleable" ||
-    flag.mutability === "level_selectable";
+    flag.mutability === "toggleable" || flag.mutability === "level_selectable";
 
   const isLevelSelectable =
     flag.mutability === "level_selectable" &&
@@ -256,12 +262,8 @@ export function FeatureFlagDetail({ flag }: FeatureFlagDetailProps) {
                 className="flex items-center justify-between gap-3 rounded-lg border border-surface-border/60 bg-surface-panel-soft/60 px-3 py-2"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-xs font-medium text-foreground">
-                    {dependency.label}
-                  </p>
-                  <code className="text-[10px] text-muted-foreground/50">
-                    {dependency.key}
-                  </code>
+                  <p className="truncate text-xs font-medium text-foreground">{dependency.label}</p>
+                  <code className="text-[10px] text-muted-foreground/50">{dependency.key}</code>
                 </div>
                 <Badge
                   variant="outline"
@@ -291,9 +293,7 @@ export function FeatureFlagDetail({ flag }: FeatureFlagDetailProps) {
 
       {/* Feedback inline */}
       {feedback !== null && (
-        <Notice tone={feedback.tone === "alert" ? "alert" : "success"}>
-          {feedback.message}
-        </Notice>
+        <Notice tone={feedback.tone === "alert" ? "alert" : "success"}>{feedback.message}</Notice>
       )}
     </div>
   );
