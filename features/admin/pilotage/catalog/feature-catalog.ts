@@ -109,6 +109,13 @@ export const FEATURE_CATALOG = [
     mutability: "level_selectable",
     scopes: ["store"],
     levels: FEATURE_LEVELS.discounts,
+    levelDescriptions: {
+      simple:
+        "CRUD admin des remises (pourcentage/montant fixe, scope commande), sans effet panier.",
+      rules:
+        "Remise appliquée au checkout : code promo, ciblage produit/variante/catégorie, livraison offerte.",
+      automation: "Remises automatiques (sans code) appliquées au checkout selon leur priorité.",
+    },
   },
   // Platform — optional modules
   {
@@ -152,6 +159,13 @@ export const FEATURE_CATALOG = [
     defaultState: "inactive",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelDescriptions: {
+      managed: "Gestion de la locale par défaut de la boutique, sans contenu traduit.",
+      multilingual:
+        "Copies traduites servies côté storefront et admin selon la locale demandée, avec repli sur la locale par défaut.",
+      "localized-routing":
+        "Routing localisé complet (URLs par locale, hreflang, sitemap localisé, sélecteur de langue).",
+    },
     levels: FEATURE_LEVELS.localization,
   },
   // Satellite — search and channels
@@ -186,6 +200,14 @@ export const FEATURE_CATALOG = [
     defaultState: "inactive",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelDescriptions: {
+      basic:
+        "Référentiel des abonnés (admin + souscription storefront), sans campagne ni segmentation.",
+      segmentation:
+        "Filtres de segmentation sur le référentiel réel des abonnés (statut, source, récence), sans campagne.",
+      automation:
+        "Souscription à une newsletter déclenche une automation email (si engagement.automations est actif).",
+    },
     levels: FEATURE_LEVELS.newsletter,
   },
   {
@@ -197,6 +219,13 @@ export const FEATURE_CATALOG = [
     defaultState: "inactive",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelDescriptions: {
+      read: "Lecture live du mois courant : chiffre d'affaires, commandes, nouveaux clients, taux d'annulation.",
+      insights:
+        "Ajoute panier moyen, répartition des commandes par statut et top produits du mois.",
+      recommendations:
+        "Non implémenté à ce stade — hors périmètre, réservé à un futur domaine dédié.",
+    },
     levels: FEATURE_LEVELS.analytics,
   },
   {
@@ -247,6 +276,11 @@ export const FEATURE_CATALOG = [
     defaultState: "active",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelDescriptions: {
+      manual: "Seuil de stock faible fixe (2 unités), non configurable.",
+      alerts: "Seuil de stock faible configurable par variante dans l'éditeur produit.",
+      forecasting: "Ajoute une lecture locale de couverture de stock dans l'onglet stock produit.",
+    },
     levels: FEATURE_LEVELS.inventory,
   },
   {
@@ -259,6 +293,14 @@ export const FEATURE_CATALOG = [
     defaultState: "active",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelDescriptions: {
+      basic: "Upload et gestion manuelle des médias, sans diagnostic ni génération.",
+      optimization:
+        "Diagnostic « sans texte alternatif » dans l'onglet médias de l'éditeur produit.",
+      generation: "Génération locale déterministe des textes alternatifs manquants, à la demande.",
+      automation:
+        "Complétion automatique des textes alternatifs à l'ajout d'une image (upload/attach).",
+    },
     levels: FEATURE_LEVELS.media,
   },
   {
@@ -397,6 +439,14 @@ export const FEATURE_CATALOG = [
     defaultState: "inactive",
     mutability: "level_selectable",
     scopes: ["store"],
+    levelDescriptions: {
+      basic:
+        "Lecture/observabilité admin des tâches IA, et suggestion SEO manuelle pour un produit.",
+      assistant: "Ajoute la suggestion SEO manuelle pour un article de blog.",
+      advanced: "Historique local réutilisable des suggestions SEO déjà tracées sur un même sujet.",
+      automation:
+        "Préparation automatique d'une première suggestion SEO quand aucun historique n'existe.",
+    },
     levels: FEATURE_LEVELS.ai,
   },
 ] as const satisfies readonly FeatureCatalogEntry[];
