@@ -2,7 +2,15 @@
 
 ## Statut
 
-À faire.
+Livré — 2026-07-03, périmètre réduit à l'admin (décision produit explicite).
+
+**Décision de périmètre** : le checkout est mono-pays (`shippingCountryCode` typé littéral `"FR"` dans `guest-cart.repository.ts`, aucun sélecteur pays dans le formulaire, `get-available-shipping-methods.query.ts` ne filtre pas par zone). Construire une vraie sélection géographique aurait exigé une migration Prisma (champ pays sur `ShippingZone`) et une restructuration du flux checkout (interactivité client pour re-filtrer les méthodes après saisie du pays). Décision actée : garder les zones comme organisation admin uniquement — le client voit toutes les méthodes actives, comme aujourd'hui. La sélection géographique reste un lot futur distinct, non cadré ici.
+
+**Livré** : CRUD complet zones + méthodes côté admin (`/admin/commerce/shipping/settings`, section "Zones supplémentaires"), sous forme de dialogues de création + actions de statut (activer/désactiver/archiver), sur le modèle exact d'`update-price-list-status.action.ts`. La zone "FR" reste intouchée, pilotée par `ShippingSettingsForm` — zéro régression.
+
+Note de session : ce lot a été commencé en parallèle par une autre session (schémas + actions zone déjà présents à la reprise, avec un `TODO(human)` sur les transitions de statut de zone) ; complété et corrigé dans cette session (méthodes, UI, transitions de statut).
+
+Vérifié de bout en bout : création d'une zone "Union européenne" + méthode "Colis suivi Europe" (14,90 €), activation/désactivation testées, méthode visible et sélectionnable au checkout public. `typecheck` et `lint` passent.
 
 ## Objectif
 
