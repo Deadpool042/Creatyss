@@ -2,7 +2,7 @@
 
 ## Statut
 
-En cours — pilotes `product-page` et `boutique-page` observés, généralisation métier restante
+En cours — pilotes `product-page`, `boutique-page` et pages de contenu observés, généralisation métier produit/blog restante
 
 ## Objectif
 
@@ -17,29 +17,32 @@ Poursuivre la généralisation de la convention `LocalizedValue` au-delà des pi
   - `homepage`
   - `features/storefront/catalog/product-page/**` + admin translations associées
   - `features/storefront/catalog/boutique-page/**` + admin translations associées
+- Pilote pages de contenu livré côté code :
+  - `contact` : lecture storefront localisée + édition admin
+  - `a-propos` : lecture storefront localisée + édition admin
+  - `les-marches` : lecture storefront localisée + édition admin
 - Cibles restantes non observées :
   - contenus métier produit au sens large (`name`, `description`, `shortDescription`)
   - blog (`title`, `excerpt`, `content`)
-  - pages de contenu supplémentaires, déjà identifiées comme prochain candidat (`content-pages-copy.config.ts`)
 
 Poursuite proposée :
 
 - réutiliser le pattern existant sans le redessiner
-- choisir un prochain pilote explicite parmi `content-pages-copy` ou le blog
+- choisir un prochain pilote explicite parmi le blog ou les vrais champs produit
 - ne lancer la migration des vrais champs métier produit qu'avec un cadrage de migration dédié
 
 ## Hors périmètre
 
 - Traduction automatique (machine translation via API)
 - Workflow collaboratif de traduction (rôles traducteur, validation)
-- Multilangue pour les catégories, les pages de contenu statiques et les emails transactionnels (peuvent suivre lot par lot)
+- Multilangue pour les catégories, les autres pages statiques et les emails transactionnels (peuvent suivre lot par lot)
 - Ajout de nouvelles locales (la gestion des locales supportées est dans `core/localization/supported-locales.ts`, hors périmètre de ce lot)
 
 ## Dépendances
 
 - `platform.localization` L3 complet et routing localisé observés comme prérequis (déjà satisfaits)
 - Convention `LocalizedValue` et `resolve-locale-content.ts` observées (base existante à ne pas modifier)
-- Décision produit : prochaine cible prioritaire entre `content-pages`, blog, ou vrais champs produit
+- Décision produit : prochaine cible prioritaire entre blog ou vrais champs produit
 
 ## Invariants
 
