@@ -27,7 +27,7 @@ export function FeatureFlagsOverview({ stats }: FeatureFlagsOverviewProps) {
 
   return (
     <AdminSplitDetailOverviewShell
-      title="Pilotage avancé"
+      title="Modules & fonctionnalités"
       contentWidth="fluid"
       hero={
         <AdminOverviewHero
@@ -35,8 +35,8 @@ export function FeatureFlagsOverview({ stats }: FeatureFlagsOverviewProps) {
           align="leading"
           eyebrow="Pilotage"
           icon={Sparkles}
-          title="Vue d'ensemble de la gouvernance"
-          description="État global du catalogue de feature flags et de leur présence en base de données."
+          title="Activer et régler le niveau de chaque fonctionnalité"
+          description="Ici, on active ou on ajuste le niveau des fonctionnalités du site. Les valeurs métier (prix, stock, livraison, etc.) se configurent dans les écrans dédiés, accessibles depuis chaque fonctionnalité."
           metrics={[
             {
               label: "Entrées",

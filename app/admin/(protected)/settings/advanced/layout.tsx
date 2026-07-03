@@ -9,12 +9,19 @@ type AdvancedSettingsLayoutProps = {
   detail: ReactNode;
 };
 
-export default async function AdvancedSettingsLayout({ list, detail }: AdvancedSettingsLayoutProps) {
+export default async function AdvancedSettingsLayout({
+  list,
+  detail,
+}: AdvancedSettingsLayoutProps) {
   await requireInternalAdminCapability("admin.settings.advanced.read");
   return (
     <AdminSplitPageShell
-      title="Avancé"
-      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Avancé" }]}
+      title="Modules & fonctionnalités"
+      breadcrumbs={[
+        { label: "Admin", href: "/admin" },
+        { label: "Réglages" },
+        { label: "Modules & fonctionnalités" },
+      ]}
     >
       <AdminSplitView
         list={list}

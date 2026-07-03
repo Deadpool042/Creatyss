@@ -507,7 +507,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   },
   {
     key: "advanced-settings",
-    label: "Avancé",
+    label: "Modules & fonctionnalités",
     href: "/admin/settings/advanced/overview",
     iconKey: "sliders",
     group: "settings",
