@@ -14,8 +14,12 @@ import {
 } from "@/entities/localization/resolve-localized-value";
 import { resolvePreferredLocaleCode } from "@/entities/localization/resolve-preferred-locale";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
-import { homepageCopyConfig, type HomepageCopy } from "@/features/homepage/config/homepage-copy.config";
-import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
+import {
+  homepageCopyConfig,
+  type HomepageCopy,
+} from "@/features/homepage/config/homepage-copy.config";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 
 /**
  * Lot 4 sous-lot 5 — câblage lecture multilingue du pilote homepage (cf.
@@ -38,7 +42,7 @@ import { meetsLocalizationLevel } from "@/features/localization/queries/get-loca
  * `homepageCopyConfig`.
  */
 export async function getLocalizedHomepageCopy(): Promise<HomepageCopy> {
-  const allowed = await meetsLocalizationLevel("multilingual");
+  const allowed = await meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual");
 
   if (!allowed) {
     return homepageCopyConfig;

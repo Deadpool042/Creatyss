@@ -15,7 +15,8 @@ import { clientEnv } from "@/core/config/env";
 import { brandConfig } from "@/core/config/brand";
 import { getStoreLogo } from "@/features/storefront/store/queries/get-store-logo-url.query";
 import { DEFAULT_LOCALE_CODE, SECONDARY_LOCALE_CODES } from "@/core/localization/supported-locales";
-import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 
 const jost = Jost({
   subsets: ["latin"],
@@ -42,7 +43,9 @@ export const viewport: Viewport = {
  * Évite un double appel DB si `generateMetadata` et `RootLayout` appellent
  * tous les deux ce guard dans la même requête (React cache = scope request).
  */
-const getLocalizationL3Active = cache(() => meetsLocalizationLevel("localized-routing"));
+const getLocalizationL3Active = cache(() =>
+  meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "localized-routing")
+);
 
 /**
  * Metadata dynamique : génère les alternates hreflang quand L3 est actif.

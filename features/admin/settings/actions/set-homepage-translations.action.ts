@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 
 import { db } from "@/core/db";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
-import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 import {
   HOMEPAGE_COPY_FIELDS,
   HOMEPAGE_COPY_SUBJECT_ID,
@@ -31,7 +32,7 @@ export async function setHomepageTranslationsAction(
   _prevState: HomepageTranslationsFormState,
   formData: FormData
 ): Promise<HomepageTranslationsFormState> {
-  const allowed = await meetsLocalizationLevel("multilingual");
+  const allowed = await meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual");
 
   if (!allowed) {
     return { status: "error", message: "Fonctionnalité de localisation non activée." };

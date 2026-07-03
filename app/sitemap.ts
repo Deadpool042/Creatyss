@@ -9,7 +9,8 @@ import {
 } from "@/features/storefront/catalog";
 import { getPublishedBlogPostsForSitemap } from "@/features/storefront/content/blog";
 import { getAdminSeoSettings } from "@/features/admin/settings/queries/get-seo-settings.query";
-import { meetsLocalizationLevel } from "@/features/localization/queries/get-localization-feature-state.query";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 import { SECONDARY_LOCALE_CODES } from "@/core/localization/supported-locales";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -18,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getPublishedBlogPostsForSitemap(),
     getPublishedCategoriesForSitemap(),
     getAdminSeoSettings().catch(() => null),
-    meetsLocalizationLevel("localized-routing"),
+    meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "localized-routing"),
   ]);
 
   const includeHomepage = seoSettings?.sitemapIncluded !== false;
