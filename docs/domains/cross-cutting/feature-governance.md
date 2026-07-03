@@ -100,20 +100,20 @@ d'autres.
 Paliers stabilisés dans `FEATURE_LEVELS`
 (`features/admin/pilotage/catalog/feature-catalog.ts`) :
 
-| Feature                      | Paliers                                            |
-| ---------------------------- | -------------------------------------------------- |
-| `ai.core`                    | basic → assistant → advanced → automation          |
-| `engagement.analytics`       | read → insights → recommendations                  |
-| `engagement.newsletter`      | basic → segmentation → automation                  |
-| `catalog.products.media`     | basic → optimization → generation → automation     |
-| `commerce.discounts`         | simple → rules → automation                        |
-| `catalog.products.inventory` | manual → alerts → forecasting                      |
-| `platform.localization`      | managed → multilingual → localized-routing         |
-| `commerce.fulfillment`       | manual → partial                                   |
-| `commerce.returns`           | manual → partial                                   |
-| `commerce.documents`         | basic → fiscal                                     |
-| `commerce.taxation`          | store (niveau unique — cible produit non tranchée) |
-| `engagement.automations`     | basic (niveau unique — extensible)                 |
+| Feature                      | Paliers                                                              |
+| ---------------------------- | -------------------------------------------------------------------- |
+| `ai.core`                    | basic → assistant → advanced → automation                            |
+| `engagement.analytics`       | read → insights → recommendations (`recommendations` non implémenté) |
+| `engagement.newsletter`      | basic → segmentation → automation                                    |
+| `catalog.products.media`     | basic → optimization → generation → automation                       |
+| `commerce.discounts`         | simple → rules → automation                                          |
+| `catalog.products.inventory` | manual → alerts → forecasting                                        |
+| `platform.localization`      | managed → multilingual → localized-routing                           |
+| `commerce.fulfillment`       | manual → partial                                                     |
+| `commerce.returns`           | manual → partial                                                     |
+| `commerce.documents`         | basic → fiscal                                                       |
+| `commerce.taxation`          | store (niveau unique — cible produit non tranchée)                   |
+| `engagement.automations`     | basic (niveau unique — extensible)                                   |
 
 La doctrine retenue n'est pas la liste des niveaux mais le **mécanisme** : une
 feature graduée déclare ses niveaux autorisés ; l'admin sélectionne un niveau
