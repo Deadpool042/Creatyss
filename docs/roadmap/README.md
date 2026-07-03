@@ -29,10 +29,10 @@ Il n'existe pas de règle rigide de séquencement interne à chaque horizon. Des
 
 Chantiers hors séquence H1-H4 de valeur métier, pouvant avancer en parallèle sans dépendre de l'ordre de priorisation ci-dessus.
 
-| Chantier                     | Titre                                                             | Statut                                                              |
-| ---------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------- |
-| UX admin/storefront          | Navigation admin et complétude storefront                         | En cours — navigation admin terminée, complétude storefront à faire |
-| Gouvernance & réglages admin | Lisibilité gouvernance fonctionnalités, réglages métier manquants | À faire — audit livré, 4 lots documentés                            |
+| Chantier                     | Titre                                                             | Statut                                                                                                           |
+| ---------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| UX admin/storefront          | Navigation admin et complétude storefront                         | En cours — navigation admin terminée, complétude storefront à faire                                              |
+| Gouvernance & réglages admin | Lisibilité gouvernance fonctionnalités, réglages métier manquants | Terminé — 4 lots livrés (lisibilité niveaux, clarification nav, livraison zones/méthodes, statut paiement carte) |
 
 - [UX — Navigation admin et complétude storefront](./ux-admin-storefront/README.md)
 - [Gouvernance des fonctionnalités et complétude des réglages admin](./gouvernance-reglages-admin/README.md)
