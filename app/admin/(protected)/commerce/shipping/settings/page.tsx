@@ -16,6 +16,8 @@ function getShippingZoneErrorMessage(code: string): string {
     case "not_found":
     case "zone_not_found":
       return "Zone ou méthode introuvable.";
+    case "zone_archived":
+      return "Cette zone est archivée — réactivez-la avant d'y ajouter une méthode.";
     case "invalid_transition":
       return "Cette transition de statut n'est pas autorisée.";
     default:

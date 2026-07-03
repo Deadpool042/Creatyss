@@ -39,12 +39,23 @@ export async function createShippingMethodAction(formData: FormData): Promise<vo
 
   const data = parsed.data;
 
-  const zone = await db.shippingZone.findFirst({
-    where: { id: data.shippingZoneId, storeId },
-    select: { id: true },
-  });
+  let zone: { id: string; status: string } | null;
+  try {
+    zone = await db.shippingZone.findFirst({
+      where: { id: data.shippingZoneId, storeId },
+      select: { id: true, status: true },
+    });
+  } catch (error) {
+    console.error(error);
+    redirect(`${ADMIN_SHIPPING_SETTINGS_PATH}?sm_error=zone_not_found`);
+  }
+
   if (zone === null) {
     redirect(`${ADMIN_SHIPPING_SETTINGS_PATH}?sm_error=zone_not_found`);
+  }
+
+  if (zone.status === "ARCHIVED") {
+    redirect(`${ADMIN_SHIPPING_SETTINGS_PATH}?sm_error=zone_archived`);
   }
 
   try {

@@ -40,12 +40,28 @@ export async function updateShippingZoneStatusAction(formData: FormData): Promis
   }
 
   try {
-    await db.shippingZone.update({
-      where: { id },
-      data: {
-        status: nextStatus,
-        ...(nextStatus === "ARCHIVED" ? { archivedAt: new Date() } : {}),
-      },
+    await db.$transaction(async (tx) => {
+      await tx.shippingZone.update({
+        where: { id },
+        data: {
+          status: nextStatus,
+          ...(nextStatus === "ARCHIVED" ? { archivedAt: new Date() } : {}),
+        },
+      });
+
+      // Une zone désactivée ou archivée ne doit plus exposer ses méthodes au
+      // checkout — celui-ci ne filtre que par statut de méthode, jamais par
+      // zone. Sans cette cascade, une méthode active resterait achetable
+      // malgré une zone archivée.
+      if (nextStatus === "INACTIVE" || nextStatus === "ARCHIVED") {
+        await tx.shippingMethod.updateMany({
+          where: { shippingZoneId: id, status: "ACTIVE" },
+          data: {
+            status: nextStatus,
+            ...(nextStatus === "ARCHIVED" ? { archivedAt: new Date() } : {}),
+          },
+        });
+      }
     });
   } catch (error) {
     console.error(error);
