@@ -1,5 +1,9 @@
 # Lot 1 — Toolbar unifiée + liste produits
 
+## Statut
+
+Livré — 2026-07-04. Toolbar unifiée sur `catalog/products` (bouton de création intégré à la bande recherche/filtres/tri/vue) + largeur de l'éditeur produit corrigée sur ses 10 onglets. `typecheck` et `lint` passent.
+
 ## Objectif
 
 Composer une toolbar de page unifiée (style Finder/System Settings) au-dessus de l'existant `AdminPageShell`/`AdminPageContextBar`, l'appliquer sur `catalog/products` comme écran de référence, et brancher le tri de colonnes réel sur `ProductTable` — ce lot sert de pattern de référence pour les lots 2 et 3.
@@ -105,4 +109,6 @@ Composer une toolbar de page unifiée (style Finder/System Settings) au-dessus d
 
 ## Notes de livraison
 
-(à compléter pendant l'exécution)
+- Bug hors périmètre découvert et corrigé : `AdminPageShell` en mode `scrollBehavior="external"` ne bornait jamais la hauteur de son wrapper de contenu sur desktop (le parent applique `overflow-hidden` en `display:block`, pas `flex` — la classe `flex-1` du wrapper n'avait donc aucun effet). Conséquence réelle : sur `catalog/products` (154 résultats), impossible de scroller au-delà des ~13 premières lignes. Corrigé par `lg:h-full` sur ce wrapper (commit séparé). Vérifié sans régression sur les écrans split-view (`commerce/orders`), qui gèrent leur propre scroll indépendamment.
+- Écart de périmètre assumé : la largeur des 10 onglets de l'éditeur produit (`max-w-6xl` recapé indépendamment du plafond `max-w-7xl` du shell) a été corrigée dans ce même lot suite à un retour direct du propriétaire produit pendant la revue visuelle — hors périmètre initial du fichier de lot, mais même famille d'écran et même session.
+- Décision de composition (toolbar) tranchée par le propriétaire produit en langage naturel plutôt que par contribution de code directe (contexte : session en mode "Learning", TODO(human) posé puis résolu sur validation verbale explicite).

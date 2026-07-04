@@ -31,11 +31,11 @@ Les lots pilotes 2 et 3 dépendent de la validation visuelle du lot pilote 1 (r�
 
 ## Lots
 
-| Fichier                                                  | Description                                                              | Statut      |
-| -------------------------------------------------------- | ------------------------------------------------------------------------ | ----------- |
-| [lot-1-toolbar-produits.md](./lot-1-toolbar-produits.md) | Toolbar unifiée + liste produits (référence du nouveau pattern de liste) | En cours    |
-| lot-2-liste-commandes.md (à créer)                       | Aligner `OrdersPanelList` sur le pattern validé au lot 1                 | Non démarré |
-| lot-3-navigation-settings.md (à créer)                   | Navigation groupée style System Settings pour `settings/*`               | Non démarré |
+| Fichier                                                  | Description                                                              | Statut             |
+| -------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------ |
+| [lot-1-toolbar-produits.md](./lot-1-toolbar-produits.md) | Toolbar unifiée + liste produits (référence du nouveau pattern de liste) | Livré — 2026-07-04 |
+| lot-2-liste-commandes.md (à créer)                       | Aligner `OrdersPanelList` sur le pattern validé au lot 1                 | Non démarré        |
+| lot-3-navigation-settings.md (à créer)                   | Navigation groupée style System Settings pour `settings/*`               | Non démarré        |
 
 Généralisation aux autres domaines (`content/*`, `commerce/{customers,documents,payments,shipping,taxation}`, `insights/*`, `maintenance/*`, `marketing/*`) : non planifiée en détail, dépend du retour visuel sur les 3 lots pilotes.
 
