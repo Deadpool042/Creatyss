@@ -68,9 +68,21 @@ function AdminPageContextBar({
     return null;
   }
 
+  // Colonne uniquement quand une vraie liste de breadcrumbs doit pouvoir passer sous les
+  // actions sur petit écran ; sans breadcrumbs (juste retour + action), une seule ligne suffit
+  // et évite une bande à moitié vide sur mobile.
+  const rowLayoutClassName = hasBreadcrumbs
+    ? "flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
+    : "flex-row items-center justify-between gap-2";
+
   return (
     <div className="shrink-0 border-b border-shell-border/60 bg-shell-surface/88 supports-backdrop-filter:bg-shell-surface/72 supports-backdrop-filter:backdrop-blur-xl ">
-      <div className="safe-px-layout flex flex-col gap-2 py-2.5 sm:flex-row sm:items-center sm:justify-between [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:gap-1.5 [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:py-1.5">
+      <div
+        className={cn(
+          "safe-px-layout flex py-2.5 [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:gap-1.5 [@media(pointer:coarse)_and_(orientation:landscape)_and_(max-height:480px)]:py-1.5",
+          rowLayoutClassName
+        )}
+      >
         <div className="flex min-w-0 items-center gap-2 overflow-hidden">
           {navigation ? <AdminPageBackLink navigation={navigation} /> : null}
 

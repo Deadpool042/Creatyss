@@ -633,8 +633,8 @@ export function ProductImagesTab({
 
   return (
     <>
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(3.5rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom))] lg:pb-4">
+      <div>
+        <div className="pb-[calc(3.5rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom))] lg:pb-4">
           <div className={PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME}>
             <div className="min-w-0 space-y-5 md:space-y-6">
               <AdminFormMessage

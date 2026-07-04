@@ -126,10 +126,10 @@ function ProductPricingTabInner({
   const storefrontPricingHint = PRODUCT_PRICING_TAB_COPY.storefrontHint;
 
   return (
-    <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+    <form action={formAction} className="relative">
       <input type="hidden" name="productId" value={pricingData.productId} />
 
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
+      <div className="pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
         <div className={PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME}>
           <div className="min-w-0 space-y-5 md:space-y-6">
             <AdminFormMessage

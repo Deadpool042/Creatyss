@@ -98,7 +98,7 @@ function ProductCategoriesTabInner({
         : `${manager.linkedCategoryIds.length} catégories liées`;
 
   return (
-    <form action={formAction} className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+    <form action={formAction} className="relative">
       <input type="hidden" name="productId" value={product.product.id} />
 
       {manager.linkedCategoryIds.map((categoryId) => (
@@ -118,7 +118,7 @@ function ProductCategoriesTabInner({
         <input type="hidden" name="categoryPrimaryIds" value={manager.primaryCategoryId} />
       ) : null}
 
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
+      <div className="pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
         <div className={PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME}>
           <div className="min-w-0 space-y-5 md:space-y-6">
             <AdminFormMessage

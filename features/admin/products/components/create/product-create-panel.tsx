@@ -60,7 +60,10 @@ function ProductCreatePanelInner({ action, onReset }: ProductCreatePanelInnerPro
   }
 
   return (
-    <form action={formAction} className="relative flex h-full min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-surface-border bg-surface-panel shadow-card">
+    <form
+      action={formAction}
+      className="relative rounded-2xl border border-surface-border bg-surface-panel shadow-card"
+    >
       <div className="site-header-blur hidden shrink-0 border-b border-surface-border lg:block">
         <div className="px-6 py-5">
           <h2 className="text-sm font-semibold">{PRODUCT_CREATE_PAGE_COPY.title}</h2>
@@ -70,7 +73,7 @@ function ProductCreatePanelInner({ action, onReset }: ProductCreatePanelInnerPro
         </div>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+      <div>
         <div
           className={[
             "mx-auto max-w-4xl space-y-4 px-3 pt-4",
@@ -168,7 +171,9 @@ function ProductCreatePanelInner({ action, onReset }: ProductCreatePanelInnerPro
             className="h-8 rounded-full px-3 sm:h-9 sm:px-4"
             disabled={pending || nameValue.trim().length === 0 || slugValue.trim().length === 0}
           >
-            {pending ? PRODUCT_CREATE_PANEL_COPY.createPending : PRODUCT_CREATE_PANEL_COPY.createButton}
+            {pending
+              ? PRODUCT_CREATE_PANEL_COPY.createPending
+              : PRODUCT_CREATE_PANEL_COPY.createButton}
           </Button>
         </>
       </AdminFormFooter>
@@ -176,9 +181,7 @@ function ProductCreatePanelInner({ action, onReset }: ProductCreatePanelInnerPro
   );
 }
 
-export function ProductCreatePanel({
-  action,
-}: ProductCreateFormProps): JSX.Element {
+export function ProductCreatePanel({ action }: ProductCreateFormProps): JSX.Element {
   const [formInstanceKey, setFormInstanceKey] = useState(0);
 
   return (
