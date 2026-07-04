@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
-import type { FormEvent, JSX } from "react";
+import type { FormEvent, JSX, ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -20,6 +20,8 @@ type AdminMediaAssetCardProps = {
   asset: AdminMediaAssetCardItem;
   assetId: string;
   archiveAction: (formData: FormData) => void | Promise<void>;
+  /** Actions additionnelles composées par l'appelant (ex. recadrage). */
+  actions?: ReactNode;
 };
 
 function getFormatLabel(mimeType: string): string {
@@ -95,6 +97,7 @@ export function AdminMediaAssetCard({
   asset,
   assetId,
   archiveAction,
+  actions,
 }: AdminMediaAssetCardProps) {
   const formatLabel = getFormatLabel(asset.mimeType);
 
@@ -137,11 +140,14 @@ export function AdminMediaAssetCard({
               </span>
             </div>
 
-            <ArchiveMediaButton
-              assetId={assetId}
-              assetName={asset.originalName}
-              archiveAction={archiveAction}
-            />
+            <div className="flex items-center gap-2">
+              {actions}
+              <ArchiveMediaButton
+                assetId={assetId}
+                assetName={asset.originalName}
+                archiveAction={archiveAction}
+              />
+            </div>
           </div>
 
           <div className="space-y-2">

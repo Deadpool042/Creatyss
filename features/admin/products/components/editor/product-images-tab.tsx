@@ -2,7 +2,14 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useActionState, useMemo, useState, useTransition, type ChangeEvent, type JSX } from "react";
+import {
+  useActionState,
+  useMemo,
+  useState,
+  useTransition,
+  type ChangeEvent,
+  type JSX,
+} from "react";
 import { Images, Sparkles, Upload } from "lucide-react";
 
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
@@ -46,15 +53,21 @@ type UploadProductImagesAction = (
   prevState: UploadProductImagesFormState,
   formData: FormData
 ) => Promise<UploadProductImagesFormState>;
-type DeleteProductImageAction = (input: DeleteProductImageInput) => Promise<DeleteProductImageResult>;
+type DeleteProductImageAction = (
+  input: DeleteProductImageInput
+) => Promise<DeleteProductImageResult>;
 type UpdateProductImageAltTextAction = (
   input: UpdateProductImageAltTextInput
 ) => Promise<UpdateProductImageAltTextResult>;
 type GenerateMissingProductImageAltTextAction = (
   input: GenerateMissingProductImageAltTextInput
 ) => Promise<GenerateMissingProductImageAltTextResult>;
-type ReorderProductImageAction = (input: ReorderProductImageInput) => Promise<ReorderProductImageResult>;
-type AttachProductImagesAction = (input: AttachProductImagesInput) => Promise<AttachProductImagesResult>;
+type ReorderProductImageAction = (
+  input: ReorderProductImageInput
+) => Promise<ReorderProductImageResult>;
+type AttachProductImagesAction = (
+  input: AttachProductImagesInput
+) => Promise<AttachProductImagesResult>;
 
 type MessageState = {
   status: "success" | "error";
@@ -512,7 +525,8 @@ export function ProductImagesTab({
   }, [productImages]);
 
   const missingAltTextCount = useMemo(
-    () => productImages.filter((image) => !image.altText || image.altText.trim().length === 0).length,
+    () =>
+      productImages.filter((image) => !image.altText || image.altText.trim().length === 0).length,
     [productImages]
   );
 
@@ -650,129 +664,6 @@ export function ProductImagesTab({
                     description="Gérez l’ordre, l’image principale et la cohérence éditoriale de la galerie sans mélanger cette étape avec le reste de la fiche."
                   />
 
-                  <div className="rounded-xl border border-surface-border/60 bg-surface-subtle/10 px-4 py-3">
-                    <p className="text-xs font-bold uppercase tracking-wide text-foreground">
-                      Convention média — galerie produit
-                    </p>
-                    <div className="mt-2 space-y-2 text-xs text-muted-foreground">
-                      <p>
-                        Pour garantir un rendu storefront premium, stable et cohérent, toutes les
-                        images de galerie produit doivent respecter les règles suivantes.
-                      </p>
-                      <div>
-                        <p className="font-medium text-foreground">Ratio</p>
-                        <ul className="list-disc pl-4">
-                          <li>Image galerie source : 4:5</li>
-                          <li>Miniatures UI : 1:1 dérivées de l&apos;image galerie</li>
-                        </ul>
-                      </div>
-                      <div>
-                        <p className="font-medium text-foreground">Ordre recommandé</p>
-                        <ol className="list-decimal pl-4">
-                          <li>Vue principale hero</li>
-                          <li>Vue portée ou vue d&apos;échelle</li>
-                          <li>Détail matière ou finition</li>
-                          <li>Détail fonctionnel</li>
-                          <li>Vue complémentaire</li>
-                        </ol>
-                      </div>
-                      <div>
-                        <p className="font-medium text-foreground">Règles éditoriales</p>
-                        <ul className="list-disc pl-4">
-                          <li>Le produit doit rester clairement lisible</li>
-                          <li>La première image doit montrer le produit entier</li>
-                          <li>Les détails serrés ne doivent jamais être en première position</li>
-                          <li>Le cadrage doit rester cohérent d&apos;une image à l&apos;autre</li>
-                          <li>
-                            La lumière et la distance de prise de vue doivent rester homogènes
-                          </li>
-                          <li>
-                            Une image non conforme au ratio 4:5 n&apos;est pas considérée comme
-                            hero-ready
-                          </li>
-                        </ul>
-                      </div>
-                      <p>
-                        Cette convention évite les compensations CSS en front et permet un hero
-                        produit plus stable, plus lisible et plus premium sur desktop comme sur
-                        mobile.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="text-sm text-muted-foreground">
-                    {productImages.length} image{productImages.length > 1 ? "s" : ""}
-                  </div>
-
-                  {showMediaGenerationTools ? (
-                    <div className="rounded-xl border border-surface-border/60 bg-surface-panel px-4 py-4">
-                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <div className="space-y-1">
-                          <p className="text-sm font-medium text-foreground">
-                            Generation locale des textes alternatifs
-                          </p>
-                          <p className="text-xs leading-5 text-muted-foreground">
-                            Complete uniquement les images sans texte alternatif avec une base
-                            editoriale deterministe issue du nom produit et de l&apos;ordre de la
-                            galerie.
-                          </p>
-                        </div>
-
-                        <Button
-                          type="button"
-                          variant="outline"
-                          disabled={!generateMissingAltTextAction || missingAltTextCount === 0 || isGeneratingAltText}
-                          onClick={handleGenerateMissingAltText}
-                        >
-                          <Sparkles className="mr-2 h-4 w-4" />
-                          {isGeneratingAltText ? "Generation..." : "Generer les textes manquants"}
-                        </Button>
-                      </div>
-                    </div>
-                  ) : null}
-
-                  {showMediaAutomationTools ? (
-                    <div className="rounded-xl border border-surface-border/60 bg-surface-subtle/20 px-4 py-4">
-                      <p className="text-sm font-medium text-foreground">Automation media active</p>
-                      <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                        Les images ajoutees sans texte alternatif sont completees automatiquement a
-                        l&apos;upload et lors du rattachement depuis la mediatheque. Les textes
-                        deja renseignes ne sont jamais ecrases.
-                      </p>
-                    </div>
-                  ) : null}
-
-                  <div
-                    className={`grid gap-2 text-xs text-muted-foreground sm:grid-cols-3 ${showMediaOptimizationDiagnostics ? "lg:grid-cols-4" : ""}`}
-                  >
-                    <div className="rounded-lg border border-surface-border/60 px-3 py-2">
-                      <p className="text-[11px] uppercase tracking-wide">Conformes 4:5</p>
-                      <p className="mt-1 text-sm font-semibold text-feedback-success-foreground">
-                        {ratioStats.conformCount}
-                      </p>
-                    </div>
-                    <div className="rounded-lg border border-surface-border/60 px-3 py-2">
-                      <p className="text-[11px] uppercase tracking-wide">À recadrer</p>
-                      <p className="mt-1 text-sm font-semibold text-feedback-warning-foreground">
-                        {ratioStats.nonConformCount}
-                      </p>
-                    </div>
-                    <div className="rounded-lg border border-surface-border/60 px-3 py-2">
-                      <p className="text-[11px] uppercase tracking-wide">Dimensions inconnues</p>
-                      <p className="mt-1 text-sm font-semibold text-muted-foreground">
-                        {ratioStats.unknownCount}
-                      </p>
-                    </div>
-                    {showMediaOptimizationDiagnostics ? (
-                      <div className="rounded-lg border border-surface-border/60 px-3 py-2">
-                        <p className="text-[11px] uppercase tracking-wide">Sans texte alternatif</p>
-                        <p className="mt-1 text-sm font-semibold text-feedback-warning-foreground">
-                          {missingAltTextCount}
-                        </p>
-                      </div>
-                    ) : null}
-                  </div>
-
                   {uploadImagesAction || attachImagesAction ? (
                     <div className="grid gap-3 sm:grid-cols-2">
                       {uploadImagesAction ? (
@@ -837,6 +728,145 @@ export function ProductImagesTab({
                     </div>
                   ) : null}
 
+                  <ProductImageGallerySection
+                    productId={productId}
+                    images={productImages}
+                    {...(setPrimaryImageAction ? { onSetPrimary: handleSetPrimary } : {})}
+                    {...(deleteImageAction ? { onDelete: handleDelete } : {})}
+                    {...(updateAltTextAction ? { onUpdateAltText: handleUpdateAltText } : {})}
+                    {...(reorderImageAction ? { onReorder: handleReorder } : {})}
+                  />
+
+                  <details className="group rounded-xl border border-surface-border/60 bg-surface-subtle/10">
+                    <summary className="cursor-pointer select-none list-none px-4 py-3 text-xs font-bold uppercase tracking-wide text-foreground [&::-webkit-details-marker]:hidden">
+                      Convention média — galerie produit
+                      <span className="ml-2 font-normal normal-case tracking-normal text-muted-foreground group-open:hidden">
+                        — afficher les règles
+                      </span>
+                    </summary>
+                    <div className="space-y-2 px-4 pb-4 text-xs text-muted-foreground">
+                      <p>
+                        Pour garantir un rendu storefront premium, stable et cohérent, toutes les
+                        images de galerie produit doivent respecter les règles suivantes.
+                      </p>
+                      <div>
+                        <p className="font-medium text-foreground">Ratio</p>
+                        <ul className="list-disc pl-4">
+                          <li>Image galerie source : 4:5</li>
+                          <li>Miniatures UI : 1:1 dérivées de l&apos;image galerie</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">Ordre recommandé</p>
+                        <ol className="list-decimal pl-4">
+                          <li>Vue principale hero</li>
+                          <li>Vue portée ou vue d&apos;échelle</li>
+                          <li>Détail matière ou finition</li>
+                          <li>Détail fonctionnel</li>
+                          <li>Vue complémentaire</li>
+                        </ol>
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">Règles éditoriales</p>
+                        <ul className="list-disc pl-4">
+                          <li>Le produit doit rester clairement lisible</li>
+                          <li>La première image doit montrer le produit entier</li>
+                          <li>Les détails serrés ne doivent jamais être en première position</li>
+                          <li>Le cadrage doit rester cohérent d&apos;une image à l&apos;autre</li>
+                          <li>
+                            La lumière et la distance de prise de vue doivent rester homogènes
+                          </li>
+                          <li>
+                            Une image non conforme au ratio 4:5 n&apos;est pas considérée comme
+                            hero-ready
+                          </li>
+                        </ul>
+                      </div>
+                      <p>
+                        Cette convention évite les compensations CSS en front et permet un hero
+                        produit plus stable, plus lisible et plus premium sur desktop comme sur
+                        mobile.
+                      </p>
+                    </div>
+                  </details>
+
+                  <div className="text-sm text-muted-foreground">
+                    {productImages.length} image{productImages.length > 1 ? "s" : ""}
+                  </div>
+
+                  {showMediaGenerationTools ? (
+                    <div className="rounded-xl border border-surface-border/60 bg-surface-panel px-4 py-4">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium text-foreground">
+                            Generation locale des textes alternatifs
+                          </p>
+                          <p className="text-xs leading-5 text-muted-foreground">
+                            Complete uniquement les images sans texte alternatif avec une base
+                            editoriale deterministe issue du nom produit et de l&apos;ordre de la
+                            galerie.
+                          </p>
+                        </div>
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          disabled={
+                            !generateMissingAltTextAction ||
+                            missingAltTextCount === 0 ||
+                            isGeneratingAltText
+                          }
+                          onClick={handleGenerateMissingAltText}
+                        >
+                          <Sparkles className="mr-2 h-4 w-4" />
+                          {isGeneratingAltText ? "Generation..." : "Generer les textes manquants"}
+                        </Button>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {showMediaAutomationTools ? (
+                    <div className="rounded-xl border border-surface-border/60 bg-surface-subtle/20 px-4 py-4">
+                      <p className="text-sm font-medium text-foreground">Automation media active</p>
+                      <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                        Les images ajoutees sans texte alternatif sont completees automatiquement a
+                        l&apos;upload et lors du rattachement depuis la mediatheque. Les textes deja
+                        renseignes ne sont jamais ecrases.
+                      </p>
+                    </div>
+                  ) : null}
+
+                  <div
+                    className={`grid gap-2 text-xs text-muted-foreground sm:grid-cols-3 ${showMediaOptimizationDiagnostics ? "lg:grid-cols-4" : ""}`}
+                  >
+                    <div className="rounded-lg border border-surface-border/60 px-3 py-2">
+                      <p className="text-[11px] uppercase tracking-wide">Conformes 4:5</p>
+                      <p className="mt-1 text-sm font-semibold text-feedback-success-foreground">
+                        {ratioStats.conformCount}
+                      </p>
+                    </div>
+                    <div className="rounded-lg border border-surface-border/60 px-3 py-2">
+                      <p className="text-[11px] uppercase tracking-wide">À recadrer</p>
+                      <p className="mt-1 text-sm font-semibold text-feedback-warning-foreground">
+                        {ratioStats.nonConformCount}
+                      </p>
+                    </div>
+                    <div className="rounded-lg border border-surface-border/60 px-3 py-2">
+                      <p className="text-[11px] uppercase tracking-wide">Dimensions inconnues</p>
+                      <p className="mt-1 text-sm font-semibold text-muted-foreground">
+                        {ratioStats.unknownCount}
+                      </p>
+                    </div>
+                    {showMediaOptimizationDiagnostics ? (
+                      <div className="rounded-lg border border-surface-border/60 px-3 py-2">
+                        <p className="text-[11px] uppercase tracking-wide">Sans texte alternatif</p>
+                        <p className="mt-1 text-sm font-semibold text-feedback-warning-foreground">
+                          {missingAltTextCount}
+                        </p>
+                      </div>
+                    ) : null}
+                  </div>
+
                   {primaryImage ? (
                     <div className="rounded-xl border border-surface-border/60 px-4 py-3 text-sm">
                       <span className="font-medium">Image principale du produit : </span>
@@ -849,15 +879,6 @@ export function ProductImagesTab({
                       Aucune image principale du produit n&apos;est définie.
                     </div>
                   )}
-
-                  <ProductImageGallerySection
-                    productId={productId}
-                    images={productImages}
-                    {...(setPrimaryImageAction ? { onSetPrimary: handleSetPrimary } : {})}
-                    {...(deleteImageAction ? { onDelete: handleDelete } : {})}
-                    {...(updateAltTextAction ? { onUpdateAltText: handleUpdateAltText } : {})}
-                    {...(reorderImageAction ? { onReorder: handleReorder } : {})}
-                  />
                 </section>
               </div>
             </div>
@@ -865,14 +886,13 @@ export function ProductImagesTab({
             <aside className="min-w-0 xl:sticky xl:top-6">
               <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/80">
                 <section className="grid gap-4 px-5 py-5">
-                  <ProductImagesSectionIntro
-                    eyebrow="Repères"
-                    title="Lecture galerie"
-                  />
+                  <ProductImagesSectionIntro eyebrow="Repères" title="Lecture galerie" />
 
                   <div className="divide-y divide-surface-border">
                     <div className="grid gap-1.5 py-3 first:pt-0">
-                      <ProductSectionEyebrow className="tracking-[0.14em]">Lien produit</ProductSectionEyebrow>
+                      <ProductSectionEyebrow className="tracking-[0.14em]">
+                        Lien produit
+                      </ProductSectionEyebrow>
                       <p className="text-sm font-medium text-foreground">{productSlug}</p>
                       <p className="text-sm leading-6 text-muted-foreground">
                         Le slug aide à vérifier rapidement que vous êtes bien sur la bonne fiche.
@@ -880,30 +900,40 @@ export function ProductImagesTab({
                     </div>
 
                     <div className="grid gap-1.5 py-3">
-                      <ProductSectionEyebrow className="tracking-[0.14em]">Image principale</ProductSectionEyebrow>
+                      <ProductSectionEyebrow className="tracking-[0.14em]">
+                        Image principale
+                      </ProductSectionEyebrow>
                       <p className="text-sm font-medium text-foreground">
                         {primaryImage ? "Définie" : "Aucune"}
                       </p>
                       <p className="text-sm leading-6 text-muted-foreground">
-                        La première image storefront doit montrer le produit entier et rester hero-ready.
+                        La première image storefront doit montrer le produit entier et rester
+                        hero-ready.
                       </p>
                     </div>
 
                     <div className="grid gap-1.5 py-3">
-                      <ProductSectionEyebrow className="tracking-[0.14em]">Conformité 4:5</ProductSectionEyebrow>
+                      <ProductSectionEyebrow className="tracking-[0.14em]">
+                        Conformité 4:5
+                      </ProductSectionEyebrow>
                       <p className="text-sm font-medium text-foreground">
-                        {ratioStats.conformCount} conforme{ratioStats.conformCount > 1 ? "s" : ""} · {ratioStats.nonConformCount} à recadrer
+                        {ratioStats.conformCount} conforme{ratioStats.conformCount > 1 ? "s" : ""} ·{" "}
+                        {ratioStats.nonConformCount} à recadrer
                       </p>
                       <p className="text-sm leading-6 text-muted-foreground">
-                        Gardez un ratio source cohérent pour éviter les compensations de mise en page côté boutique.
+                        Gardez un ratio source cohérent pour éviter les compensations de mise en
+                        page côté boutique.
                       </p>
                     </div>
 
                     <div className="grid gap-1.5 py-3 last:pb-0">
-                      <ProductSectionEyebrow className="tracking-[0.14em]">Identifiant</ProductSectionEyebrow>
+                      <ProductSectionEyebrow className="tracking-[0.14em]">
+                        Identifiant
+                      </ProductSectionEyebrow>
                       <p className="truncate text-sm font-medium text-foreground">{productId}</p>
                       <p className="text-sm leading-6 text-muted-foreground">
-                        Utile pour les rapprochements internes ou les vérifications côté médiathèque.
+                        Utile pour les rapprochements internes ou les vérifications côté
+                        médiathèque.
                       </p>
                     </div>
                   </div>

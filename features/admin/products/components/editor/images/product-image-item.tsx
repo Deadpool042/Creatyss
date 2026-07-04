@@ -2,7 +2,19 @@
 
 import Image from "next/image";
 import { useState, useTransition, type JSX } from "react";
-import { ArrowDown, ArrowUp, Check, MoreHorizontal, Pencil, Star, Trash2, X } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  Check,
+  Crop,
+  MoreHorizontal,
+  Pencil,
+  Star,
+  Trash2,
+  X,
+} from "lucide-react";
+
+import { MediaCropDialog } from "@/features/admin/media/components/media-crop-dialog";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,16 +35,14 @@ function hasRealImage(url: string | null): boolean {
   return typeof url === "string" && url.trim().length > 0;
 }
 
-function getRatioConformity(widthPx: number | null, heightPx: number | null): {
+function getRatioConformity(
+  widthPx: number | null,
+  heightPx: number | null
+): {
   status: "conform" | "non_conform" | "unknown";
   label: string;
 } {
-  if (
-    widthPx === null ||
-    heightPx === null ||
-    widthPx <= 0 ||
-    heightPx <= 0
-  ) {
+  if (widthPx === null || heightPx === null || widthPx <= 0 || heightPx <= 0) {
     return { status: "unknown", label: "Dimensions inconnues" };
   }
 
@@ -72,10 +82,12 @@ export function ProductImageItem({
   onReorder,
 }: ProductImageItemProps): JSX.Element {
   const [isEditingAltText, setIsEditingAltText] = useState(false);
+  const [isCropDialogOpen, setIsCropDialogOpen] = useState(false);
   const [altText, setAltText] = useState(image.altText ?? "");
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const ratioConformity = getRatioConformity(image.widthPx, image.heightPx);
+  const canCrop = hasRealImage(image.publicUrl);
 
   async function handleSetPrimary(): Promise<void> {
     if (!onSetPrimary || image.isPrimary) {
@@ -185,6 +197,24 @@ export function ProductImageItem({
                 </TooltipContent>
               </Tooltip>
 
+              {/* Bouton "Recadrer" — visible desktop uniquement */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    disabled={!canCrop || isPending}
+                    onClick={() => setIsCropDialogOpen(true)}
+                    className="hidden h-8 w-8 rounded-full border border-white/15 bg-background/80 text-foreground shadow-sm backdrop-blur sm:inline-flex"
+                    aria-label="Recadrer l'image"
+                  >
+                    <Crop className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">Recadrer l&apos;image</TooltipContent>
+              </Tooltip>
+
               {/* Bouton "Modifier le texte alt" — visible desktop uniquement */}
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -247,6 +277,17 @@ export function ProductImageItem({
                   </DropdownMenuItem>
 
                   {/* Mobile uniquement : actions exposées en boutons inline sur desktop */}
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      setIsCropDialogOpen(true);
+                    }}
+                    disabled={!canCrop || isPending}
+                    className="sm:hidden"
+                  >
+                    <Crop className="mr-2 h-4 w-4" />
+                    Recadrer l&apos;image
+                  </DropdownMenuItem>
+
                   <DropdownMenuItem
                     onSelect={() => {
                       setIsEditingAltText(true);
@@ -359,6 +400,16 @@ export function ProductImageItem({
           </div>
         ) : null}
       </div>
+
+      {canCrop ? (
+        <MediaCropDialog
+          open={isCropDialogOpen}
+          onOpenChange={setIsCropDialogOpen}
+          assetId={image.mediaAssetId}
+          imageUrl={image.publicUrl!}
+          {...(image.altText ? { imageLabel: image.altText } : {})}
+        />
+      ) : null}
     </div>
   );
 }

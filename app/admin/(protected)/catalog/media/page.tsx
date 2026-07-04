@@ -1,9 +1,7 @@
 import { redirect } from "next/navigation";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminCollectionSection } from "@/components/admin/cards/admin-collection-section";
-import {
-  AdminFormActions,
-} from "@/components/admin/forms/admin-form-actions";
+import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
@@ -18,6 +16,7 @@ import {
   MediaUploadError,
   type AdminMediaListItem,
 } from "@/features/admin/media";
+import { MediaCropButton } from "@/features/admin/media/components/media-crop-button";
 import { MediaRouteNav } from "@/features/admin/media/components/media-route-nav";
 import { ADMIN_CATALOG_MEDIA_PATH } from "@/features/admin/catalog/shared/admin-catalog-routes";
 import { archiveAdminMedia } from "@/features/admin/media/services/archive-admin-media.service";
@@ -143,99 +142,110 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
         </Button>
       }
     >
-        <MediaRouteNav />
-        <AdminFormMessage tone="success" message={successMessage} className="shrink-0" />
-        <AdminFormMessage tone="error" message={errorMessage} className="shrink-0" />
+      <MediaRouteNav />
+      <AdminFormMessage tone="success" message={successMessage} className="shrink-0" />
+      <AdminFormMessage tone="error" message={errorMessage} className="shrink-0" />
 
-        <div id="admin-media-upload" className="shrink-0 scroll-mt-24">
-          <AdminFormSection
-            description="Ajoutez ici une image prête à être réutilisée. Formats acceptés : JPEG, PNG, WebP, AVIF. Taille maximale : 10 MB."
-            eyebrow="Import"
-            title="Importer une image"
-          >
-            <form
-              action={uploadMediaAction}
-              className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start"
-            >
-              <div className="rounded-2xl border border-surface-border bg-card p-4 shadow-card">
-                <AdminFormField
-                  htmlFor="media-file"
-                  label="Image"
-                  description="Sélectionnez un fichier source depuis votre poste. Le média reste ensuite immédiatement disponible dans l'administration."
-                  required
-                >
-                  <Input
-                    accept="image/jpeg,image/png,image/webp,image/avif"
-                    className="h-11 rounded-2xl border-surface-border bg-card px-3 shadow-none file:mr-3 file:rounded-full file:border file:border-surface-border file:bg-surface-panel file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-foreground"
-                    id="media-file"
-                    name="file"
-                    required
-                    type="file"
-                  />
-                </AdminFormField>
-              </div>
-
-              <div className="grid gap-4">
-                <div className="grid gap-3 text-sm leading-6 text-muted-foreground">
-                  <p>
-                    Réutilisable ensuite dans les produits, catégories, articles et sections
-                    éditoriales.
-                  </p>
-                  <p>Import limité à 10 MB, avec prise en charge des fichiers JPEG, PNG, WebP et AVIF.</p>
-                </div>
-
-                <AdminFormActions className="sm:justify-end lg:justify-start">
-                  <Button className="sm:min-w-40" type="submit">
-                    Importer le média
-                  </Button>
-                </AdminFormActions>
-              </div>
-            </form>
-          </AdminFormSection>
-        </div>
-
-        <AdminCollectionSection
-          className="min-h-0 flex-1"
-          contentClassName="min-h-0 flex-1 overflow-y-auto pr-1"
-          description="Chaque image reste immédiatement réutilisable. Les informations techniques sont présentées comme des repères de contrôle, sans surcharger la lecture."
-          eyebrow="Bibliothèque"
-          title="Bibliothèque locale"
-          variant="plain"
-          meta={
-            assets.length > 0 ? (
-              <span className="inline-flex h-7 items-center rounded-full border border-surface-border bg-surface-panel-soft px-3 text-xs font-medium text-foreground">
-                {assets.length} média{assets.length > 1 ? "s" : ""}
-              </span>
-            ) : null
-          }
+      <div id="admin-media-upload" className="shrink-0 scroll-mt-24">
+        <AdminFormSection
+          description="Ajoutez ici une image prête à être réutilisée. Formats acceptés : JPEG, PNG, WebP, AVIF. Taille maximale : 10 MB."
+          eyebrow="Import"
+          title="Importer une image"
         >
-          {assets.length > 0 ? (
-            <div className="admin-media-grid grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
-              {assets.map((asset) => (
-                <AdminMediaAssetCard
-                  key={asset.id}
-                  assetId={asset.id}
-                  archiveAction={archiveMediaAction}
-                  asset={{
-                    originalName: asset.originalName,
-                    previewUrl: asset.previewUrl,
-                    createdAtLabel: mediaDateFormatter.format(new Date(asset.createdAt)),
-                    byteSizeLabel: formatByteSize(asset.byteSize),
-                    dimensionsLabel: formatDimensions(asset),
-                    mimeType: asset.mimeType,
-                    filePath: asset.filePath,
-                  }}
+          <form
+            action={uploadMediaAction}
+            className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start"
+          >
+            <div className="rounded-2xl border border-surface-border bg-card p-4 shadow-card">
+              <AdminFormField
+                htmlFor="media-file"
+                label="Image"
+                description="Sélectionnez un fichier source depuis votre poste. Le média reste ensuite immédiatement disponible dans l'administration."
+                required
+              >
+                <Input
+                  accept="image/jpeg,image/png,image/webp,image/avif"
+                  className="h-11 rounded-2xl border-surface-border bg-card px-3 shadow-none file:mr-3 file:rounded-full file:border file:border-surface-border file:bg-surface-panel file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-foreground"
+                  id="media-file"
+                  name="file"
+                  required
+                  type="file"
                 />
-              ))}
+              </AdminFormField>
             </div>
-          ) : (
-            <AdminEmptyState
-              description="Importez une première image pour commencer votre bibliothèque."
-              eyebrow="Aucun média"
-              title="La bibliothèque est encore vide"
-            />
-          )}
-        </AdminCollectionSection>
+
+            <div className="grid gap-4">
+              <div className="grid gap-3 text-sm leading-6 text-muted-foreground">
+                <p>
+                  Réutilisable ensuite dans les produits, catégories, articles et sections
+                  éditoriales.
+                </p>
+                <p>
+                  Import limité à 10 MB, avec prise en charge des fichiers JPEG, PNG, WebP et AVIF.
+                </p>
+              </div>
+
+              <AdminFormActions className="sm:justify-end lg:justify-start">
+                <Button className="sm:min-w-40" type="submit">
+                  Importer le média
+                </Button>
+              </AdminFormActions>
+            </div>
+          </form>
+        </AdminFormSection>
+      </div>
+
+      <AdminCollectionSection
+        className="min-h-0 flex-1"
+        contentClassName="min-h-0 flex-1 overflow-y-auto pr-1"
+        description="Chaque image reste immédiatement réutilisable. Les informations techniques sont présentées comme des repères de contrôle, sans surcharger la lecture."
+        eyebrow="Bibliothèque"
+        title="Bibliothèque locale"
+        variant="plain"
+        meta={
+          assets.length > 0 ? (
+            <span className="inline-flex h-7 items-center rounded-full border border-surface-border bg-surface-panel-soft px-3 text-xs font-medium text-foreground">
+              {assets.length} média{assets.length > 1 ? "s" : ""}
+            </span>
+          ) : null
+        }
+      >
+        {assets.length > 0 ? (
+          <div className="admin-media-grid grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
+            {assets.map((asset) => (
+              <AdminMediaAssetCard
+                key={asset.id}
+                assetId={asset.id}
+                archiveAction={archiveMediaAction}
+                actions={
+                  asset.previewUrl ? (
+                    <MediaCropButton
+                      assetId={asset.id}
+                      imageUrl={asset.previewUrl}
+                      imageLabel={asset.originalName}
+                    />
+                  ) : undefined
+                }
+                asset={{
+                  originalName: asset.originalName,
+                  previewUrl: asset.previewUrl,
+                  createdAtLabel: mediaDateFormatter.format(new Date(asset.createdAt)),
+                  byteSizeLabel: formatByteSize(asset.byteSize),
+                  dimensionsLabel: formatDimensions(asset),
+                  mimeType: asset.mimeType,
+                  filePath: asset.filePath,
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <AdminEmptyState
+            description="Importez une première image pour commencer votre bibliothèque."
+            eyebrow="Aucun média"
+            title="La bibliothèque est encore vide"
+          />
+        )}
+      </AdminCollectionSection>
     </AdminPageShell>
   );
 }

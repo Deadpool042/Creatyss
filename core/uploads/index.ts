@@ -22,6 +22,7 @@ export {
 } from "./paths";
 export {
   ACCEPTED_IMAGE_MIME_TYPES,
+  cropImageToWebp,
   IMAGE_MAX_DIMENSION_PX,
   IMAGE_OUTPUT_FORMAT,
   IMAGE_WEBP_QUALITY,
@@ -29,5 +30,6 @@ export {
   MAX_IMAGE_FILE_SIZE_BYTES,
   processImageToWebp,
 } from "./image-processing";
+export type { NormalizedCropRegion } from "./image-processing";
 export { saveUploadedImage } from "./save-image";
 export type { SavedImageResult } from "./save-image";
