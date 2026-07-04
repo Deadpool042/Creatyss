@@ -37,6 +37,7 @@ Les lots pilotes 2 et 3 dépendent de la validation visuelle du lot pilote 1 (r�
 | [lot-2-liste-commandes.md](./lot-2-liste-commandes.md)         | Aligner `OrdersPanelList` sur le pattern validé au lot 1                 | Livré — 2026-07-04 |
 | [lot-3-navigation-settings.md](./lot-3-navigation-settings.md) | Navigation groupée style System Settings pour `settings/*`               | Livré — 2026-07-04 |
 | [lot-4-dashboard.md](./lot-4-dashboard.md)                     | Aplatir le dashboard en cockpit macOS plus dense                         | Livré — 2026-07-04 |
+| [lot-5-categories-list-sort.md](./lot-5-categories-list-sort.md) | Exposer le tri existant dans la split-list catégories                    | Livré — 2026-07-04 |
 
 Généralisation aux autres domaines (`content/*`, `commerce/{customers,documents,payments,shipping,taxation}`, `insights/*`, `maintenance/*`, `marketing/*`) : non planifiée en détail, dépend du retour visuel sur les 3 lots pilotes.
 

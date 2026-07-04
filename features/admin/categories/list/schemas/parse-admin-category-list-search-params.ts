@@ -1,4 +1,7 @@
-import { CATEGORY_FILTER_VALID_VALUES } from "@/features/admin/categories/config";
+import {
+  CATEGORY_FILTER_VALID_VALUES,
+  CATEGORY_LIST_DEFAULT_SORT,
+} from "@/features/admin/categories/config";
 import type { AdminCategoryStatus } from "@/features/admin/categories/list/types/admin-category-card-item.types";
 import type {
   CategoryFeaturedFilter,
@@ -14,7 +17,7 @@ const VALID_STATUSES =
 const VALID_FEATURED =
   CATEGORY_FILTER_VALID_VALUES.featured satisfies readonly CategoryFeaturedFilter[];
 const VALID_PER_PAGE = CATEGORY_FILTER_VALID_VALUES.perPage;
-const DEFAULT_SORT: CategorySortOption = "name-asc";
+const DEFAULT_SORT: CategorySortOption = CATEGORY_LIST_DEFAULT_SORT;
 const DEFAULT_PER_PAGE = CATEGORY_FILTER_VALID_VALUES.perPageDefault;
 
 function toSingleString(value: string | string[] | undefined): string | null {

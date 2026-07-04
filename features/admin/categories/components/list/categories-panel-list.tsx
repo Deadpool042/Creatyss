@@ -16,6 +16,8 @@ import {
 } from "@/features/admin/categories/shared/admin-categories-routes";
 import {
   CATEGORY_LIST_COPY,
+  CATEGORY_LIST_DEFAULT_SORT,
+  CATEGORY_SORT_OPTIONS,
   CATEGORY_STATUS_LABELS,
   CATEGORY_STATUS_OPTIONS,
 } from "@/features/admin/categories/config/category-list.config";
@@ -77,6 +79,9 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
     searchPlaceholder: CATEGORY_LIST_COPY.searchPlaceholder,
     statusOptions: CATEGORY_STATUS_OPTIONS,
     allStatusLabel: CATEGORY_LIST_COPY.splitAllStatusLabel,
+    sortOptions: CATEGORY_SORT_OPTIONS,
+    defaultSort: CATEGORY_LIST_DEFAULT_SORT,
+    sortLabel: CATEGORY_LIST_COPY.splitSortLabel,
     density: "compact" as const,
     filterAriaLabel: CATEGORY_LIST_COPY.splitFilterAriaLabel,
   };

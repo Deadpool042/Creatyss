@@ -5,6 +5,19 @@ import {
 import type { AdminCategoryStatus } from "@/features/admin/categories/types";
 import type { CategoryFeaturedFilter, CategorySortOption } from "@/features/admin/categories/list";
 
+export const CATEGORY_LIST_DEFAULT_SORT: CategorySortOption = "name-asc";
+
+export type CategoryListSortOption = Readonly<{
+  value: CategorySortOption;
+  label: string;
+}>;
+
+export const CATEGORY_SORT_OPTIONS: readonly CategoryListSortOption[] = [
+  { value: "name-asc", label: "Nom A à Z" },
+  { value: "name-desc", label: "Nom Z à A" },
+  { value: "updated-desc", label: "Modifiées récemment" },
+];
+
 export const CATEGORY_FILTER_VALID_VALUES = {
   statuses: CATEGORY_LIFECYCLE_STATUS_VALUES satisfies readonly AdminCategoryStatus[],
   featured: ["featured", "not-featured"] satisfies readonly CategoryFeaturedFilter[],
@@ -39,7 +52,8 @@ export const CATEGORY_LIST_COPY = {
   splitOverviewTitle: "Vue d’ensemble",
   searchPlaceholder: "Rechercher…",
   splitAllStatusLabel: "Tous les statuts",
-  splitFilterAriaLabel: "Filtrer les catégories",
+  splitFilterAriaLabel: "Filtrer et trier les catégories",
+  splitSortLabel: "Tri",
   filtersTitle: "Filtres",
   filterCategoriesLabel: "Catégories",
   filterStatusLabel: "Statut",
