@@ -15,6 +15,7 @@ import {
   OrderDetailShippingCard,
   OrderDetailStatusHistoryCard,
   OrderDetailSummaryCard,
+  OrderDetailTabs,
 } from "@/features/admin/commerce/orders";
 import {
   ADMIN_ORDERS_DETAIL_CONTENT_CLASS,
@@ -89,6 +90,8 @@ export default async function OrderDetailSlotPage({
   const returnRequest =
     returnsFeatureActive && storeId !== null ? await findReturnByOrderId(storeId, id) : null;
 
+  const hasProcessingTab = fulfillmentFeatureActive || returnsFeatureActive || documents !== null;
+
   return (
     <AdminSplitDetailPaneShell
       constrainContent={false}
@@ -131,89 +134,88 @@ export default async function OrderDetailSlotPage({
         />
       </div>
 
-      <div
-        className={buildAdminOrdersDetailSectionClassName(
-          "grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(20rem,0.9fr)] xl:items-start"
-        )}
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          <OrderDetailCustomerCard customer={vm.customer} />
+      <div className={buildAdminOrdersDetailSectionClassName()}>
+        <OrderDetailTabs
+          details={
+            <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(20rem,0.9fr)] xl:items-start">
+              <div className="grid gap-4 md:grid-cols-2">
+                <OrderDetailCustomerCard customer={vm.customer} />
 
-          <OrderDetailShippingCard
-            carrier={vm.shippingInfo.carrier}
-            deliveredAtLabel={vm.shippingInfo.deliveredAtLabel}
-            shipmentStatus={vm.shippingInfo.status}
-            shippedAtLabel={vm.shippingInfo.shippedAtLabel}
-            trackingReference={vm.shippingInfo.trackingReference}
-            trackingUrl={vm.shippingInfo.trackingUrl}
-          />
+                <OrderDetailShippingCard
+                  carrier={vm.shippingInfo.carrier}
+                  deliveredAtLabel={vm.shippingInfo.deliveredAtLabel}
+                  shipmentStatus={vm.shippingInfo.status}
+                  shippedAtLabel={vm.shippingInfo.shippedAtLabel}
+                  trackingReference={vm.shippingInfo.trackingReference}
+                  trackingUrl={vm.shippingInfo.trackingUrl}
+                />
 
-          {order.payment ? <OrderDetailPaymentCard payment={order.payment} /> : null}
+                {order.payment ? <OrderDetailPaymentCard payment={order.payment} /> : null}
 
-          {vm.shippingAddress ? (
-            <OrderDetailShippingAddressCard address={vm.shippingAddress} />
-          ) : null}
+                {vm.shippingAddress ? (
+                  <OrderDetailShippingAddressCard address={vm.shippingAddress} />
+                ) : null}
 
-          <OrderDetailBillingAddressCard billing={vm.billing} />
-        </div>
+                <OrderDetailBillingAddressCard billing={vm.billing} />
+              </div>
 
-        <OrderDetailLinesPanel
-          lines={order.lines}
-          subtotalAmount={order.subtotalAmount}
-          shippingAmount={order.shippingAmount}
-          discountAmount={order.discountAmount}
-          taxAmount={order.taxAmount}
-          totalAmount={order.totalAmount}
+              <OrderDetailLinesPanel
+                lines={order.lines}
+                subtotalAmount={order.subtotalAmount}
+                shippingAmount={order.shippingAmount}
+                discountAmount={order.discountAmount}
+                taxAmount={order.taxAmount}
+                totalAmount={order.totalAmount}
+              />
+            </div>
+          }
+          processing={
+            hasProcessingTab ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {fulfillmentFeatureActive ? (
+                  <OrderDetailFulfillmentCard
+                    fulfillment={fulfillment}
+                    orderId={id}
+                    orderLines={order.lines.map((l) => ({
+                      id: l.id,
+                      productName: l.productName,
+                      quantity: l.quantity,
+                    }))}
+                    allowPartial={fulfillmentAllowsPartial}
+                  />
+                ) : null}
+
+                {returnsFeatureActive ? (
+                  <OrderDetailReturnCard
+                    request={returnRequest}
+                    orderId={id}
+                    orderLines={order.lines.map((l) => ({
+                      id: l.id,
+                      productName: l.productName,
+                      variantName: l.variantName ?? null,
+                      quantity: l.quantity,
+                    }))}
+                    allowPartial={returnsAllowPartial}
+                  />
+                ) : null}
+
+                {documents !== null ? (
+                  <OrderDetailDocumentsCard
+                    documents={documents}
+                    orderId={id}
+                    allowFiscal={documentsAllowFiscal}
+                  />
+                ) : null}
+              </div>
+            ) : undefined
+          }
+          history={
+            <div className="grid gap-4 md:grid-cols-2">
+              <OrderDetailStatusHistoryCard statusHistory={vm.statusHistory} />
+              <OrderDetailEmailEventsCard emailEvents={order.emailEvents} />
+            </div>
+          }
         />
-      </div>
-
-      <div className={buildAdminOrdersDetailSectionClassName()}>
-        <OrderDetailStatusHistoryCard statusHistory={vm.statusHistory} />
-      </div>
-
-      {fulfillmentFeatureActive ? (
-        <div className={buildAdminOrdersDetailSectionClassName()}>
-          <OrderDetailFulfillmentCard
-            fulfillment={fulfillment}
-            orderId={id}
-            orderLines={order.lines.map((l) => ({
-              id: l.id,
-              productName: l.productName,
-              quantity: l.quantity,
-            }))}
-            allowPartial={fulfillmentAllowsPartial}
-          />
-        </div>
-      ) : null}
-
-      {returnsFeatureActive ? (
-        <div className={buildAdminOrdersDetailSectionClassName()}>
-          <OrderDetailReturnCard
-            request={returnRequest}
-            orderId={id}
-            orderLines={order.lines.map((l) => ({
-              id: l.id,
-              productName: l.productName,
-              variantName: l.variantName ?? null,
-              quantity: l.quantity,
-            }))}
-            allowPartial={returnsAllowPartial}
-          />
-        </div>
-      ) : null}
-
-      {documents !== null ? (
-        <div className={buildAdminOrdersDetailSectionClassName()}>
-          <OrderDetailDocumentsCard
-            documents={documents}
-            orderId={id}
-            allowFiscal={documentsAllowFiscal}
-          />
-        </div>
-      ) : null}
-
-      <div className={buildAdminOrdersDetailSectionClassName()}>
-        <OrderDetailEmailEventsCard emailEvents={order.emailEvents} />
       </div>
     </AdminSplitDetailPaneShell>
   );

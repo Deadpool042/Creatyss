@@ -14,6 +14,7 @@ export { OrderDetailPaymentCard } from "./components/order-detail-payment-card";
 export { OrderDetailShippingAddressCard } from "./components/order-detail-shipping-address-card";
 export { OrderDetailShippingCard } from "./components/order-detail-shipping-card";
 export { OrderDetailSummaryCard } from "./components/order-detail-summary-card";
+export { OrderDetailTabs } from "./components/order-detail-tabs";
 export { OrderRowActions } from "./components/order-row-actions";
 export { OrdersPanelList } from "./components/orders-panel-list";
 export { AdminOrdersDetailOverview } from "./overview/components/admin-orders-detail-overview";
