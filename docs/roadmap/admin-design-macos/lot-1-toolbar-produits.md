@@ -1,0 +1,108 @@
+# Lot 1 — Toolbar unifiée + liste produits
+
+## Objectif
+
+Composer une toolbar de page unifiée (style Finder/System Settings) au-dessus de l'existant `AdminPageShell`/`AdminPageContextBar`, l'appliquer sur `catalog/products` comme écran de référence, et brancher le tri de colonnes réel sur `ProductTable` — ce lot sert de pattern de référence pour les lots 2 et 3.
+
+---
+
+## Périmètre
+
+- Composition de toolbar : fusionner contexte (retour/breadcrumb) + recherche/filtre + action principale en une seule bande dense, au-dessus de `AdminPageShell`.
+- Application sur `app/admin/(protected)/catalog/products/**` (liste uniquement — pas `[slug]/*`).
+- Tri de colonnes réel sur `ProductTable` (actuellement non branché malgré la présence du tri dans `DataTable` générique).
+- Conservation stricte des bulk actions et de la vue mobile cards existantes.
+
+---
+
+## Hors périmètre
+
+- Tout token (couleur, radius, shadow) — `app/styles/theme.css`, `themes/creatyss.*.css` intouchables.
+- `catalog/products/[slug]/*` (déjà couvert par `ProductRouteNav`, non concerné).
+- `OrdersPanelList` et `settings/*` (lots 2 et 3, dépendants de la validation de ce lot).
+- Ajout d'un "quick edit" inline (gap identifié mais hors périmètre de ce lot, à cadrer séparément si retenu).
+
+---
+
+## Source de vérité
+
+- `AGENTS.md`
+- `docs/architecture/90-reference/design-system.md` (contrat de tokens — ne pas franchir)
+- `docs/audit/2026-07-03-audit-design-admin.md`
+- `docs/roadmap/admin-design-macos/README.md`
+- `components/admin/layout/admin-page-shell.tsx`, `admin-page-header.tsx`
+- `features/admin/products/components/list/**`
+
+---
+
+## Invariants
+
+- Aucun changement de token CSS.
+- Aucun changement de contrat de données produit (queries, actions serveur inchangées).
+- Bulk actions et suppression définitive existantes doivent continuer à fonctionner à l'identique.
+- Vue mobile (cards) non régressée.
+
+---
+
+## Fichiers concernés
+
+### À modifier
+
+- `components/admin/layout/admin-page-shell.tsx` (ou composant de composition dédié si la fusion toolbar dépasse la responsabilité actuelle de ce fichier — à trancher pendant l'exécution)
+- `features/admin/products/components/list/toolbar/product-list-toolbar.tsx`
+- `features/admin/products/components/list/table/product-table.tsx`
+- `features/admin/products/components/list/table/desktop/product-table-desktop.config.tsx`
+
+### À lire seulement
+
+- `components/admin/layout/admin-page-header.tsx`
+- `features/admin/products/components/list/toolbar/product-table-filter-controls.tsx`
+- `features/admin/products/components/list/toolbar/product-table-toolbar-bulk-actions.tsx`
+- `components/ui/data-table.tsx` (référence de tri tanstack, ne pas forcément réutiliser tel quel)
+
+### Explicitement intouchables
+
+- `app/styles/theme.css`, `app/styles/themes/creatyss.*.css`
+- `features/admin/commerce/orders/components/orders-panel-list.tsx`
+- `app/admin/(protected)/settings/**`
+
+---
+
+## Risques
+
+- Fusionner la toolbar peut affecter d'autres écrans consommant `AdminPageShell`/`AdminPageContextBar` (composant partagé) — vérifier les sites d'appel avant modification, ne pas casser les écrans non concernés par ce lot.
+- Le tri de colonnes doit rester cohérent avec la pagination et les filtres déjà en place côté query — vérifier qu'aucune régression de performance ou de résultat n'apparaît.
+
+---
+
+## Plan d'exécution
+
+1. Lire en détail `admin-page-shell.tsx`, `admin-page-header.tsx` et les sites d'appel pour mesurer l'impact d'une fusion de toolbar.
+2. Concevoir la composition de toolbar unifiée (recherche + filtre + action) pour `catalog/products`.
+3. Brancher le tri réel sur `ProductTable`.
+4. Vérifier visuellement desktop et mobile (dev server).
+5. `pnpm run typecheck` et `pnpm run lint`.
+
+---
+
+## Vérifications
+
+- `pnpm run typecheck`
+- `pnpm run lint`
+- Vérification manuelle desktop + mobile sur `catalog/products` (recherche, filtre, tri, bulk actions, suppression)
+- Tests Playwright ciblés si le tri introduit un comportement interactif non couvert
+
+---
+
+## Critères de fin
+
+- Toolbar unifiée visible et fonctionnelle sur `catalog/products`.
+- Tri de colonnes fonctionnel sur au moins une colonne pertinente (ex. nom, prix, stock).
+- Bulk actions et suppression définitive non régressées.
+- `typecheck`/`lint` passent.
+
+---
+
+## Notes de livraison
+
+(à compléter pendant l'exécution)
