@@ -74,13 +74,13 @@ export function FeatureFlagsOverview({ stats }: FeatureFlagsOverviewProps) {
             description="État global du catalogue de feature flags et de leur présence en base de données."
           />
           <div className="mt-5 space-y-2">
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               <StatsCard title="Entrées" value={totalCatalogCount} />
               <StatsCard title="Créées en DB" value={dbCreatedCount} />
               <StatsCard title="Non créées" value={missingDbCount} />
               <StatsCard title="Non cataloguées" value={unmappedCount} />
             </div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               <StatsCard title="Actifs" value={activeCount} />
               <StatsCard title="Inactifs" value={inactiveCount} />
               <StatsCard title="Brouillons" value={draftCount} />

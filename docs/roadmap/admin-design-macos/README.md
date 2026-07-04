@@ -38,6 +38,7 @@ Les lots pilotes 2 et 3 dépendent de la validation visuelle du lot pilote 1 (r�
 | [lot-3-navigation-settings.md](./lot-3-navigation-settings.md) | Navigation groupée style System Settings pour `settings/*`               | Livré — 2026-07-04 |
 | [lot-4-dashboard.md](./lot-4-dashboard.md)                     | Aplatir le dashboard en cockpit macOS plus dense                         | Livré — 2026-07-04 |
 | [lot-5-categories-list-sort.md](./lot-5-categories-list-sort.md) | Exposer le tri existant dans la split-list catégories                    | Livré — 2026-07-04 |
+| [lot-6-settings-advanced-overview.md](./lot-6-settings-advanced-overview.md) | Reflow mobile des stats `settings/advanced`                              | Livré — 2026-07-04 |
 
 Généralisation aux autres domaines (`content/*`, `commerce/{customers,documents,payments,shipping,taxation}`, `insights/*`, `maintenance/*`, `marketing/*`) : non planifiée en détail, dépend du retour visuel sur les 3 lots pilotes.
 
