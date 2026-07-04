@@ -1,10 +1,10 @@
-import { ORDER_STATUS_FILTERS } from "@/features/admin/commerce/orders/config/order-list.config";
+import {
+  ORDER_LIST_DEFAULT_SORT,
+  ORDER_STATUS_FILTERS,
+} from "@/features/admin/commerce/orders/config/order-list.config";
 import type { OrderStatus } from "@/entities/order/order-status-transition";
 
-import type {
-  AdminOrderListFilters,
-  AdminOrderListSort,
-} from "../types/admin-order-list.types";
+import type { AdminOrderListFilters, AdminOrderListSort } from "../types/admin-order-list.types";
 
 type RawSearchParams = Record<string, string | string[] | undefined>;
 
@@ -15,7 +15,7 @@ const VALID_SORTS: readonly AdminOrderListSort[] = [
   "updated-asc",
 ];
 
-const DEFAULT_SORT: AdminOrderListSort = "created-desc";
+const DEFAULT_SORT: AdminOrderListSort = ORDER_LIST_DEFAULT_SORT;
 
 function toSingleString(value: string | string[] | undefined): string | null {
   if (typeof value === "string") return value;
@@ -26,9 +26,7 @@ function toSingleString(value: string | string[] | undefined): string | null {
 function parseStatusParam(value: string | null): readonly OrderStatus[] {
   if (!value) return [];
   const validSet = new Set<string>(ORDER_STATUS_FILTERS);
-  return value
-    .split(",")
-    .filter((s): s is OrderStatus => validSet.has(s));
+  return value.split(",").filter((s): s is OrderStatus => validSet.has(s));
 }
 
 function parseSortParam(value: string | null): AdminOrderListSort {

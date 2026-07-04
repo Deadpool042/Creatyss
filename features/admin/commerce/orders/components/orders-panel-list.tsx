@@ -13,7 +13,11 @@ import {
   getPaymentStatusLabel,
 } from "@/entities/order/order-status-presentation";
 import { getOrderStatusBadgeVariant } from "@/features/admin/commerce/orders/config/order-ui.config";
-import { ORDER_STATUS_FILTERS } from "@/features/admin/commerce/orders/config/order-list.config";
+import {
+  ORDER_LIST_DEFAULT_SORT,
+  ORDER_SORT_OPTIONS,
+  ORDER_STATUS_FILTERS,
+} from "@/features/admin/commerce/orders/config/order-list.config";
 import {
   ADMIN_ORDERS_LIST_PATH,
   getAdminOrderDetailPath,
@@ -52,8 +56,10 @@ export function OrdersPanelList({ orders }: OrdersPanelListProps) {
       label: getOrderStatusLabel(status),
     })),
     allStatusLabel: "Tous les statuts",
+    sortOptions: ORDER_SORT_OPTIONS,
+    defaultSort: ORDER_LIST_DEFAULT_SORT,
     density: "compact" as const,
-    filterAriaLabel: "Filtrer les commandes",
+    filterAriaLabel: "Filtrer et trier les commandes",
   };
 
   const emptyState = (

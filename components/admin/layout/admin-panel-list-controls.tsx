@@ -38,11 +38,21 @@ export type AdminPanelListControlStatusOption = Readonly<{
   label: string;
 }>;
 
+export type AdminPanelListControlSortOption = Readonly<{
+  value: string;
+  label: string;
+}>;
+
 type AdminPanelListControlsProps = Readonly<{
   listPath: string;
   searchPlaceholder: string;
   statusOptions: readonly AdminPanelListControlStatusOption[];
   allStatusLabel?: string;
+  /** Options de tri exposées dans le menu de filtres. Absentes = comportement historique (categories). */
+  sortOptions?: readonly AdminPanelListControlSortOption[];
+  /** Valeur de tri par défaut — omise de l'URL pour garder des liens propres. */
+  defaultSort?: string;
+  sortLabel?: string;
   density?: "default" | "compact";
   visibility?: "all" | "desktop" | "mobile";
   filterAriaLabel?: string;
@@ -55,6 +65,9 @@ export function AdminPanelListControls({
   searchPlaceholder,
   statusOptions,
   allStatusLabel = "Tous les statuts",
+  sortOptions,
+  defaultSort,
+  sortLabel = "Tri",
   density = "default",
   visibility = "all",
   filterAriaLabel = "Filtrer la liste",
@@ -66,6 +79,9 @@ export function AdminPanelListControls({
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const currentSearch = searchParams.get("search") ?? "";
   const currentStatus = searchParams.get("status") ?? "";
+  const currentSort = searchParams.get("sort") ?? "";
+  const hasSortControl = Boolean(sortOptions && sortOptions.length > 0);
+  const effectiveSort = currentSort || defaultSort || "";
   const isCompact = density === "compact";
   const rootClassName = isCompact ? "flex flex-col gap-1.5 " : "grid gap-2 ";
   const inputClassName = cn(isCompact && "h-8 text-sm", searchInputClassName);
@@ -88,13 +104,30 @@ export function AdminPanelListControls({
     setMobileFiltersOpen(false);
   }
 
+  function buildParams(overrides: { status?: string | null; sort?: string | null }) {
+    const params: { search?: string; status?: string; sort?: string } = {};
+    if (currentSearch) params.search = currentSearch;
+    const status = overrides.status !== undefined ? overrides.status : currentStatus || null;
+    if (status) params.status = status;
+    const sort = overrides.sort !== undefined ? overrides.sort : currentSort || null;
+    if (sort && sort !== defaultSort) params.sort = sort;
+    return params;
+  }
+
   function handleStatusChange(value: string) {
     const nextStatus = value === "all" ? null : value;
-    const params: { search?: string; status?: string } = {};
-    if (currentSearch) params.search = currentSearch;
-    if (nextStatus) params.status = nextStatus;
-    const nextUrl = buildAdminFilterHref(listPath, params);
+    const nextUrl = buildAdminFilterHref(listPath, buildParams({ status: nextStatus }));
     router.replace(nextUrl, { scroll: false });
+  }
+
+  function handleSortChange(value: string) {
+    const nextUrl = buildAdminFilterHref(listPath, buildParams({ sort: value }));
+    router.replace(nextUrl, { scroll: false });
+  }
+
+  function applySortFilter(value: string) {
+    handleSortChange(value);
+    setMobileFiltersOpen(false);
   }
 
   function renderFilterTrigger(className?: string) {
@@ -148,6 +181,7 @@ export function AdminPanelListControls({
                 className={mobileToolbarInputClassName}
               />
               {currentStatus && <input type="hidden" name="status" value={currentStatus} />}
+              {currentSort && <input type="hidden" name="sort" value={currentSort} />}
             </form>
 
             <DropdownMenu>
@@ -156,6 +190,20 @@ export function AdminPanelListControls({
                 <DropdownMenuLabel>Statut</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {renderFilterOptions(handleStatusChange)}
+                {hasSortControl ? (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuLabel>{sortLabel}</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuRadioGroup value={effectiveSort} onValueChange={handleSortChange}>
+                      {sortOptions?.map((option) => (
+                        <DropdownMenuRadioItem key={option.value} value={option.value}>
+                          {option.label}
+                        </DropdownMenuRadioItem>
+                      ))}
+                    </DropdownMenuRadioGroup>
+                  </>
+                ) : null}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -174,6 +222,7 @@ export function AdminPanelListControls({
                       className={mobileOverlayInputClassName}
                     />
                     {currentStatus && <input type="hidden" name="status" value={currentStatus} />}
+                    {currentSort && <input type="hidden" name="sort" value={currentSort} />}
                   </form>
 
                   <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
@@ -255,6 +304,39 @@ export function AdminPanelListControls({
                             );
                           })}
                         </div>
+
+                        {hasSortControl ? (
+                          <>
+                            <p className="mb-3 mt-6 text-xs font-semibold uppercase tracking-[0.22em] text-text-muted-strong">
+                              {sortLabel}
+                            </p>
+                            <div className="grid gap-2">
+                              {sortOptions?.map((option) => {
+                                const isActive = effectiveSort === option.value;
+                                return (
+                                  <button
+                                    key={option.value}
+                                    type="button"
+                                    className={cn(
+                                      "flex min-h-11 w-full items-center justify-between rounded-2xl border px-3.5 py-3 text-left text-sm shadow-sm transition-colors",
+                                      isActive
+                                        ? "border-control-border-strong bg-control-surface-selected text-foreground"
+                                        : "border-control-border/70 bg-surface-panel/70 text-text-muted-strong hover:bg-control-surface-hover"
+                                    )}
+                                    onClick={() => applySortFilter(option.value)}
+                                  >
+                                    <span>{option.label}</span>
+                                    {isActive ? (
+                                      <span className="text-[11px] font-medium text-text-muted-strong">
+                                        Actif
+                                      </span>
+                                    ) : null}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </>
+                        ) : null}
                       </div>
                     </SheetContent>
                   </Sheet>
@@ -277,6 +359,7 @@ export function AdminPanelListControls({
           className={inputClassName}
         />
         {currentStatus && <input type="hidden" name="status" value={currentStatus} />}
+        {currentSort && <input type="hidden" name="sort" value={currentSort} />}
       </form>
       <Select value={currentStatus || "all"} onValueChange={handleStatusChange}>
         <SelectTrigger size={resolvedSelectTriggerSize} className={selectTriggerClassName}>

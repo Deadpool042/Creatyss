@@ -1,4 +1,5 @@
 import type { OrderStatus } from "@/entities/order/order-status-transition";
+import type { AdminOrderListSort } from "@/features/admin/commerce/orders/list/types/admin-order-list.types";
 import { ADMIN_ORDERS_LIST_PATH } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
 
 export const ORDER_STATUS_FILTERS = [
@@ -8,6 +9,19 @@ export const ORDER_STATUS_FILTERS = [
   "shipped",
   "cancelled",
 ] as const satisfies readonly OrderStatus[];
+
+export const ORDER_LIST_DEFAULT_SORT: AdminOrderListSort = "created-desc";
+
+export type OrderSortOption = Readonly<{
+  value: AdminOrderListSort;
+  label: string;
+}>;
+
+export const ORDER_SORT_OPTIONS: readonly OrderSortOption[] = [
+  { value: "created-desc", label: "Plus récentes d'abord" },
+  { value: "created-asc", label: "Plus anciennes d'abord" },
+  { value: "updated-desc", label: "Modifiées récemment" },
+];
 
 export const ORDER_NAVIGATION_CONFIG = {
   home: {
