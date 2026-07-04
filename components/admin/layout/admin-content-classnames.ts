@@ -18,7 +18,10 @@
  */
 
 const ADMIN_CONTENT_BASE =
-  "safe-px-layout w-full min-w-0 gap-4 overflow-x-hidden pt-4 " +
+  // overflow-x-clip (et non hidden) : hidden ferait de ce wrapper un scroll container,
+  // ce qui casserait tout `position: sticky` descendant (asides des onglets produit) —
+  // clip coupe le débordement horizontal sans capturer le contexte de scroll.
+  "safe-px-layout w-full min-w-0 gap-4 overflow-x-clip pt-4 " +
   "max-sm:landscape:gap-3 max-sm:landscape:pt-3 " +
   "md:gap-6 md:pt-5 lg:gap-6 lg:pt-0 lg:pb-8";
 
@@ -26,7 +29,7 @@ const ADMIN_CONTENT_WIDE = `${ADMIN_CONTENT_BASE} mx-auto max-w-7xl`;
 
 const ADMIN_CONTENT_PRESETS = {
   dashboard:
-    "safe-px-layout mx-auto w-full min-w-0 max-w-7xl gap-4 overflow-x-hidden pt-4 " +
+    "safe-px-layout mx-auto w-full min-w-0 max-w-7xl gap-4 overflow-x-clip pt-4 " +
     "max-sm:landscape:gap-3 max-sm:landscape:pt-3 " +
     "md:gap-6 md:pt-5 lg:gap-6 lg:pt-6 landscape:pb-2",
 
