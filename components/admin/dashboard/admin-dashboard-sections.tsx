@@ -16,7 +16,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ADMIN_CATEGORIES_LIST_PATH } from "@/features/admin/categories";
 import { ADMIN_ORDERS_LIST_PATH } from "@/features/admin/commerce/orders/shared/admin-orders-routes";
@@ -205,12 +204,12 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
   const priorities = buildPriorities(stats);
 
   return (
-    <div className="flex flex-col gap-5 md:gap-6">
-      <section className="grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(20rem,0.7fr)]">
-        <Card className="overflow-hidden rounded-3xl border-shell-border-strong bg-[linear-gradient(145deg,color-mix(in_srgb,var(--surface-panel)_90%,white)_0%,color-mix(in_srgb,var(--surface-panel)_70%,var(--shell-surface))_100%)] shadow-card">
-          <CardHeader className="gap-4 pb-0">
+    <div className="flex flex-col gap-8 md:gap-10">
+      <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+        <div className="space-y-6">
+          <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center rounded-full border border-shell-border/70 bg-surface-subtle px-2.5 py-1 text-[10px] font-semibold tracking-[0.24em] text-text-muted-strong uppercase">
+              <span className="inline-flex items-center rounded-full border border-shell-border/70 bg-surface-subtle px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-text-muted-strong">
                 Tableau de bord
               </span>
               <span className="inline-flex items-center gap-1 rounded-full bg-foreground/6 px-2.5 py-1 text-[11px] text-text-muted-strong">
@@ -219,181 +218,171 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               </span>
             </div>
 
-            <div className="space-y-3">
-              <CardTitle className="max-w-3xl text-2xl font-semibold tracking-tight text-foreground sm:text-3xl md:text-[2.4rem]">
-                Un cockpit sobre pour piloter le catalogue, le contenu et le commerce.
-              </CardTitle>
-              <CardDescription className="max-w-2xl text-base leading-7 text-text-muted-strong">
-                Les indicateurs du catalogue et du commerce reflètent vos données réelles. D'autres
-                métriques s'enrichiront à mesure que les modules seront activés.
-              </CardDescription>
+            <div className="max-w-4xl space-y-3">
+              <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+                Piloter le catalogue, le contenu et le commerce sans changer d’écran.
+              </h1>
+              <p className="max-w-2xl text-base leading-7 text-text-muted-strong">
+                Les indicateurs reflètent vos données réelles. Les zones non activées restent
+                signalées sans prendre le dessus sur les actions utiles du jour.
+              </p>
             </div>
-          </CardHeader>
+          </div>
 
-          <CardContent className="pt-5">
-            <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
-              {pulseMetrics.map((metric) => {
-                const Icon = metric.icon;
+          <div className="grid overflow-hidden rounded-2xl border border-surface-border bg-surface-panel/70 shadow-sm sm:grid-cols-2 2xl:grid-cols-4">
+            {pulseMetrics.map((metric) => {
+              const Icon = metric.icon;
 
-                return (
-                  <div key={metric.label} className="flex items-start gap-3">
+              return (
+                <div
+                  key={metric.label}
+                  className="flex min-h-36 flex-col justify-between gap-4 border-b border-surface-border/60 p-4 last:border-b-0 sm:[&:nth-child(2n)]:border-l sm:[&:nth-last-child(-n+2)]:border-b-0 2xl:border-b-0 2xl:border-l 2xl:first:border-l-0"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-text-muted-strong">
+                      {metric.label}
+                    </p>
                     <span
-                      className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl"
+                      className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
                       style={{
-                        backgroundColor: `color-mix(in srgb, var(${metric.chartVar}) 16%, transparent)`,
+                        backgroundColor: `color-mix(in srgb, var(${metric.chartVar}) 14%, transparent)`,
                         color: `var(${metric.chartVar})`,
                       }}
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-4 w-4" />
                     </span>
-                    <div className="min-w-0 space-y-1">
-                      <p className="text-xs font-semibold tracking-[0.2em] text-text-muted-strong uppercase">
-                        {metric.label}
-                      </p>
-                      <p className="text-xl font-semibold tracking-tight text-foreground">
-                        {metric.value}
-                      </p>
-                      <p className="text-sm leading-6 text-text-muted-soft">{metric.hint}</p>
-                    </div>
                   </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+                  <div className="space-y-1.5">
+                    <p className="text-2xl font-semibold tracking-tight text-foreground">
+                      {metric.value}
+                    </p>
+                    <p className="text-sm leading-6 text-text-muted-soft">{metric.hint}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
 
-        <Card className="rounded-2xl bg-surface-panel/80 shadow-sm">
-          <CardHeader className="gap-2 border-b border-surface-border-subtle/80 pb-4">
-            <div className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.22em] text-text-muted-strong uppercase">
+        <aside className="overflow-hidden rounded-2xl border border-surface-border bg-surface-panel/70 shadow-sm">
+          <div className="border-b border-surface-border/70 px-4 py-3">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-text-muted-strong">
               <Activity className="h-4 w-4" />
               Aujourd’hui
             </div>
-            <CardTitle className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground">
               Priorités immédiates
-            </CardTitle>
-            <CardDescription className="leading-6">
-              Repères de pilotage pour avancer au quotidien sur votre boutique.
-            </CardDescription>
-          </CardHeader>
+            </h2>
+          </div>
 
-          <CardContent className="divide-y divide-surface-border-subtle pt-1">
+          <div className="divide-y divide-surface-border/60">
             {priorities.map((priority) => (
-              <div key={priority.title} className="flex items-start justify-between gap-3 py-4">
-                <div className="min-w-0 space-y-1.5">
-                  <p className="text-base font-medium text-foreground">{priority.title}</p>
-                  <p className="text-sm leading-6 text-text-muted-soft">{priority.detail}</p>
+              <div key={priority.title} className="grid gap-2 px-4 py-4">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-sm font-medium text-foreground">{priority.title}</p>
+                  <span
+                    className={cn(
+                      "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium",
+                      PRIORITY_BADGE_CLASSNAMES[priority.tone]
+                    )}
+                  >
+                    {priority.state}
+                  </span>
                 </div>
-                <span
-                  className={cn(
-                    "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium",
-                    PRIORITY_BADGE_CLASSNAMES[priority.tone]
-                  )}
-                >
-                  {priority.state}
-                </span>
+                <p className="text-sm leading-6 text-text-muted-soft">{priority.detail}</p>
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </aside>
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.95fr)]">
-        <Card className="rounded-2xl bg-surface-panel/80 shadow-sm">
-          <CardHeader className="gap-2 border-b border-surface-border-subtle/80 pb-4">
-            <div className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.22em] text-text-muted-strong uppercase">
+      <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="overflow-hidden rounded-2xl border border-surface-border bg-surface-panel/70 shadow-sm">
+          <div className="border-b border-surface-border/70 px-4 py-3">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-text-muted-strong">
               <TrendingUp className="h-4 w-4" />
               Readiness
             </div>
-            <CardTitle className="text-xl font-semibold tracking-tight sm:text-2xl">
+            <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground">
               État d’avancement des chantiers
-            </CardTitle>
-            <CardDescription className="leading-6">
-              Avancement des zones principales de votre administration. Les indicateurs évolueront à
-              mesure que les modules seront activés.
-            </CardDescription>
-          </CardHeader>
+            </h2>
+          </div>
 
-          <CardContent className="space-y-4 pt-5">
+          <div className="divide-y divide-surface-border/60">
             {readinessTracks.map((track) => (
-              <div key={track.title} className="space-y-2.5">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <p className="text-base font-medium text-foreground">{track.title}</p>
-                    <p className="text-sm leading-6 text-text-muted-soft">{track.detail}</p>
+              <div
+                key={track.title}
+                className="grid gap-3 px-4 py-4 md:grid-cols-[10rem_minmax(0,1fr)_4rem] md:items-center"
+              >
+                <p className="text-sm font-medium text-foreground">{track.title}</p>
+                <div className="space-y-2">
+                  <p className="text-sm leading-6 text-text-muted-soft">{track.detail}</p>
+                  <div className="h-2 rounded-full bg-foreground/10">
+                    <div
+                      className={cn(
+                        "h-full rounded-full",
+                        track.progressWidthClassName,
+                        track.toneClassName
+                      )}
+                    />
                   </div>
-                  <span className="shrink-0 text-sm font-semibold text-foreground">
-                    {track.progressLabel}
-                  </span>
                 </div>
-
-                <div className="h-2 rounded-full bg-foreground/10">
-                  <div
-                    className={cn(
-                      "h-full rounded-full",
-                      track.progressWidthClassName,
-                      track.toneClassName
-                    )}
-                  />
-                </div>
+                <span className="text-sm font-semibold text-foreground md:text-right">
+                  {track.progressLabel}
+                </span>
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card className="rounded-2xl bg-surface-panel/80 shadow-sm">
-          <CardHeader className="gap-2 border-b border-surface-border-subtle/80 pb-4">
-            <div className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.22em] text-text-muted-strong uppercase">
+        <aside className="overflow-hidden rounded-2xl border border-surface-border bg-surface-panel/70 shadow-sm">
+          <div className="border-b border-surface-border/70 px-4 py-3">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-text-muted-strong">
               <AlertTriangle className="h-4 w-4" />
               Vigilance
             </div>
-            <CardTitle className="text-xl font-semibold tracking-tight sm:text-2xl">
-              Ce qui mérite votre attention
-            </CardTitle>
-            <CardDescription className="leading-6">
-              Points d’attention pour avancer sereinement sur chaque module de votre boutique.
-            </CardDescription>
-          </CardHeader>
+            <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground">
+              À surveiller
+            </h2>
+          </div>
 
-          <CardContent className="divide-y divide-surface-border-subtle pt-1">
-            <div className="flex items-start gap-3 border-l-2 border-feedback-warning-foreground/50 py-4 pl-3">
+          <div className="divide-y divide-surface-border/60">
+            <div className="flex items-start gap-3 px-4 py-4">
               <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-feedback-warning-foreground" />
               <div className="space-y-1">
                 <p className="text-sm font-medium text-foreground">Indicateurs de performance</p>
                 <p className="text-sm leading-6 text-text-muted-soft">
-                  Conversion, panier moyen et trafic seront disponibles une fois les modules
-                  analytics activés.
+                  Conversion, panier moyen et trafic arrivent avec les modules analytics.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3 border-l-2 border-feedback-success-foreground/50 py-4 pl-3">
+            <div className="flex items-start gap-3 px-4 py-4">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-feedback-success-foreground" />
               <div className="space-y-1">
                 <p className="text-sm font-medium text-foreground">Base admin stable</p>
                 <p className="text-sm leading-6 text-text-muted-soft">
-                  Authentification, shell responsive et workflow catalogue ont désormais une base
-                  cohérente.
+                  Authentification, shell responsive et workflow catalogue ont une base cohérente.
                 </p>
               </div>
             </div>
 
-            <div className="py-4">
-              <p className="text-xs font-semibold tracking-[0.24em] text-text-muted-strong uppercase">
-                Prochain palier recommandé
+            <div className="px-4 py-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-text-muted-strong">
+                Prochain palier
               </p>
               <p className="mt-2 text-sm leading-6 text-text-muted-soft">
-                Approfondir le suivi des commandes, enrichir les contenus storefront et activer les
-                indicateurs de performance commerciale.
+                Approfondir le suivi commandes, enrichir le storefront et activer les performances.
               </p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </aside>
       </section>
 
       <section className="space-y-3">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-1">
-            <p className="text-xs font-semibold tracking-[0.24em] text-text-muted-strong uppercase">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-text-muted-strong">
               Accès rapides
             </p>
             <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
@@ -406,7 +395,7 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
           </span>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 lg:grid-cols-2">
           {quickLinks.map((item) => {
             const Icon = item.icon;
 
@@ -414,33 +403,18 @@ export function AdminDashboardSections({ stats }: { stats: AdminDashboardStats }
               <Link
                 key={item.href}
                 href={item.href}
-                className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+                className="group flex min-h-20 items-center gap-3 rounded-2xl border border-surface-border bg-surface-panel/70 px-4 py-3 shadow-sm transition hover:border-shell-border-strong hover:bg-surface-panel focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
               >
-                <Card className="h-full rounded-2xl bg-surface-panel/80 transition duration-200 hover:-translate-y-0.5 hover:border-shell-border-strong hover:shadow-sm">
-                  <CardHeader className="gap-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="space-y-2">
-                        <CardTitle className="text-xl font-semibold tracking-tight">
-                          {item.title}
-                        </CardTitle>
-                        <CardDescription className="text-sm leading-6">
-                          {item.description}
-                        </CardDescription>
-                      </div>
-
-                      <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-foreground/6 text-foreground">
-                        <Icon className="h-5 w-5" />
-                      </span>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="pt-1">
-                    <span className="inline-flex items-center gap-2 text-sm font-medium text-foreground/76 transition group-hover:text-foreground">
-                      Ouvrir le module
-                      <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-                    </span>
-                  </CardContent>
-                </Card>
+                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-foreground/6 text-foreground">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-semibold text-foreground">{item.title}</span>
+                  <span className="mt-0.5 line-clamp-2 block text-sm leading-6 text-text-muted-soft">
+                    {item.description}
+                  </span>
+                </span>
+                <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-foreground" />
               </Link>
             );
           })}
