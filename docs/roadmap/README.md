@@ -29,13 +29,15 @@ Il n'existe pas de règle rigide de séquencement interne à chaque horizon. Des
 
 Chantiers hors séquence H1-H4 de valeur métier, pouvant avancer en parallèle sans dépendre de l'ordre de priorisation ci-dessus.
 
-| Chantier                     | Titre                                                             | Statut                                                                                                           |
-| ---------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| UX admin/storefront          | Navigation admin et complétude storefront                         | Terminé — navigation admin fusionnée, audit storefront livré (1 bug corrigé)                                     |
-| Gouvernance & réglages admin | Lisibilité gouvernance fonctionnalités, réglages métier manquants | Terminé — 4 lots livrés (lisibilité niveaux, clarification nav, livraison zones/méthodes, statut paiement carte) |
+| Chantier                     | Titre                                                                         | Statut                                                                                                                                                                           |
+| ---------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UX admin/storefront          | Navigation admin et complétude storefront                                     | Terminé — navigation admin fusionnée, audit storefront livré (1 bug corrigé)                                                                                                     |
+| Gouvernance & réglages admin | Lisibilité gouvernance fonctionnalités, réglages métier manquants             | Terminé — 4 lots livrés (lisibilité niveaux, clarification nav, livraison zones/méthodes, statut paiement carte)                                                                 |
+| Audit design admin           | Lisibilité et responsive du layout admin (dashboard, listes, détail commande) | Terminé — 5 micro-lots livrés (dashboard aplati, duplication liste/overview corrigée, réglages vérifiés conformes, détail commande en onglets, grilles non responsive corrigées) |
 
 - [UX — Navigation admin et complétude storefront](./ux-admin-storefront/README.md)
 - [Gouvernance des fonctionnalités et complétude des réglages admin](./gouvernance-reglages-admin/README.md)
+- [Audit design admin — 2026-07-03](../audit/2026-07-03-audit-design-admin.md)
 
 ---
 
