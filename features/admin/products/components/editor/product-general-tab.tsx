@@ -31,6 +31,7 @@ import {
 } from "@/features/admin/products/config";
 import { getProductTypeLabel } from "@/features/admin/products/components/shared/product-type-label";
 import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
+import { PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME } from "@/features/admin/products/components/shared/product-module-page-shell";
 
 type ProductGeneralTabProps = {
   action: ProductGeneralFormAction;
@@ -160,7 +161,7 @@ function ProductGeneralTabInner({
       <div>
         <input type="hidden" name="productId" value={product.product.id} />
 
-        <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3 ">
+        <div className={PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME}>
           <div className="min-w-0 space-y-5 md:space-y-6">
             <AdminFormMessage
               tone="error"

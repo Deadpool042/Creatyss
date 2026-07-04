@@ -1,14 +1,13 @@
 "use client";
 
-import { useState, type JSX } from "react";
+import { useState, type JSX, type ReactNode } from "react";
 import { Filter } from "lucide-react";
 
-import {
-  AdminConfigDataTableToolbar,
-} from "@/components/admin/tables/admin-config-data-table-toolbar";
+import { AdminConfigDataTableToolbar } from "@/components/admin/tables/admin-config-data-table-toolbar";
 import { AdminDataTableFeedbackBanner } from "@/components/admin/tables/layout/admin-data-table-feedback-banner";
 import { AdminSelectFilterControl } from "@/components/admin/tables/filters/admin-select-filter-control";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import {
   PRODUCT_LIST_ACTIONS_COPY,
@@ -28,10 +27,13 @@ const MOBILE_BULK_BAR_BOTTOM_CLASS_NAME =
 
 type ProductTableToolbarProps = Readonly<{
   onOpenPermanentDeleteDialog: () => void;
+  /** Action de création produit — vivait avant dans AdminPageContextBar (barre séparée). */
+  createAction?: ReactNode;
 }>;
 
 export function ProductListToolbar({
   onOpenPermanentDeleteDialog,
+  createAction,
 }: ProductTableToolbarProps): JSX.Element {
   const { state, actions, view } = useProductTableContext();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -87,6 +89,14 @@ export function ProductListToolbar({
               view={view}
               className="shrink-0 scale-[0.92] origin-right"
             />
+            {createAction ? (
+              <>
+                <Separator orientation="vertical" className="h-5" />
+                <div className="shrink-0 [&_button]:h-9 [&_button]:rounded-full [&_button]:px-3 [&_button]:text-xs">
+                  {createAction}
+                </div>
+              </>
+            ) : null}
           </div>
         }
         desktopFilters={
@@ -115,6 +125,12 @@ export function ProductListToolbar({
               triggerClassName="h-8 w-34 text-xs text-foreground/65"
             />
             <ProductTableToolbarViewSwitch view={view} />
+            {createAction ? (
+              <>
+                <Separator orientation="vertical" className="h-5" />
+                {createAction}
+              </>
+            ) : null}
           </div>
         }
         activeFilters={activeFilterItems}

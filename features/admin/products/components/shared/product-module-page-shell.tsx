@@ -36,6 +36,15 @@ type ProductModulePageShellProps = Pick<
 
 export const PRODUCT_MODULE_PAGE_CONTENT_CLASSNAME = "lg:pb-0";
 
+/**
+ * Grille commune à tous les onglets de l'éditeur produit (contenu principal + panneau latéral
+ * 21rem). Le plafond de largeur est aligné sur le preset "detail" du shell (max-w-7xl) : avant,
+ * ce conteneur recapait indépendamment à max-w-6xl, ce qui resserrait la page en dessous de ce
+ * que le shell autorisait déjà — deux autorités de largeur qui se contredisaient.
+ */
+export const PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME =
+  "mx-auto grid w-full max-w-7xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3";
+
 export function getProductModulePageShellProps({
   product,
   pageTitle: _pageTitle,

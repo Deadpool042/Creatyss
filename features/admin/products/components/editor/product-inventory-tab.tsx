@@ -14,6 +14,7 @@ import {
   type ProductInventoryFormAction,
 } from "@/features/admin/products/editor/types";
 import type { AdminInventoryForecastItem } from "@/features/admin/products/editor/queries";
+import { PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME } from "@/features/admin/products/components/shared/product-module-page-shell";
 
 type ProductInventorySectionIntroProps = {
   eyebrow: string;
@@ -262,7 +263,7 @@ export function ProductInventoryTab({
       ))}
 
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(7rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-14">
-        <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3">
+        <div className={PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME}>
           <div className="min-w-0 space-y-5 md:space-y-6">
             <AdminFormMessage
               tone={state.status === "error" ? "error" : "success"}

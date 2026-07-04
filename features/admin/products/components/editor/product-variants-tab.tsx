@@ -20,6 +20,7 @@ import type { AdminProductActionResult } from "@/features/admin/products/types";
 import { ProductVariantColorValuesAccordion } from "./variants/product-variant-color-values-accordion";
 import { ProductVariantEditorSheet } from "./variants/product-variant-editor-sheet";
 import { ProductVariantItem } from "./variants/product-variant-item";
+import { PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME } from "@/features/admin/products/components/shared/product-module-page-shell";
 
 type SetDefaultProductVariantAction = (
   input: SetDefaultProductVariantInput
@@ -254,7 +255,7 @@ export function ProductVariantsTab({
   return (
     <>
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(3.5rem+env(safe-area-inset-bottom)+0.75rem)] [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom)+0.5rem)] lg:pb-6">
-        <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3">
+        <div className={PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME}>
           <div className="min-w-0 space-y-5 md:space-y-6">
             <AdminFormMessage
               tone="error"

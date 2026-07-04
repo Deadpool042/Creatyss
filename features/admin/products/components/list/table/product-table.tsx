@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState, type JSX } from "react";
+import { useCallback, useState, type JSX, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 
 import {
@@ -10,10 +10,7 @@ import {
 import { AdminConfigDataTable } from "@/components/admin/tables/admin-config-data-table";
 import { AdminConfigDataTableFrame } from "@/components/admin/tables/layout/admin-config-data-table-frame";
 import { AdminPaginationBar } from "@/components/admin/tables/layout/admin-pagination-bar";
-import {
-  PRODUCT_FILTER_VALID_VALUES,
-  PRODUCT_TABLE_COPY,
-} from "@/features/admin/products/config";
+import { PRODUCT_FILTER_VALID_VALUES, PRODUCT_TABLE_COPY } from "@/features/admin/products/config";
 import { buildAdminProductEditPath } from "@/features/admin/products/navigation";
 import type { ProductListView, ProductTableItem } from "@/features/admin/products/list/types";
 import { useProductTableContext } from "../desktop/product-table-context";
@@ -30,7 +27,12 @@ type ProductTableActionProps = Readonly<{
   onConfirmPermanentDelete?: (slug: string) => void | Promise<void>;
 }>;
 
-export function ProductTable(): JSX.Element {
+type ProductTableProps = Readonly<{
+  /** Action de création, remontée depuis la page pour vivre dans la toolbar unifiée plutôt que dans AdminPageContextBar. */
+  createAction?: ReactNode;
+}>;
+
+export function ProductTable({ createAction }: ProductTableProps): JSX.Element {
   const { state, actions, view, total, perPage, onMobileVisibleSelectionChange } =
     useProductTableContext();
   const [permanentDeleteDialogOpen, setPermanentDeleteDialogOpen] = useState(false);
@@ -40,7 +42,10 @@ export function ProductTable(): JSX.Element {
   const isBulkPending = actions.isBulkPending;
   const isFiltered = state.search.trim().length > 0 || state.activeFilters.length > 0;
   const toolbar = (
-    <ProductListToolbar onOpenPermanentDeleteDialog={() => setPermanentDeleteDialogOpen(true)} />
+    <ProductListToolbar
+      onOpenPermanentDeleteDialog={() => setPermanentDeleteDialogOpen(true)}
+      createAction={createAction}
+    />
   );
   const actionProps = getProductTableActionProps({ actions, view });
   const desktopColumns = createProductTableDesktopColumns({
@@ -145,9 +150,15 @@ export function ProductTable(): JSX.Element {
                 view={view}
                 isSelected={actions.selectedProductIds.includes(product.id)}
                 onToggleSelection={actions.toggleProductSelection}
-                {...(actionProps.onConfirmArchive ? { onConfirmArchive: actionProps.onConfirmArchive } : {})}
-                {...(actionProps.onConfirmRestore ? { onConfirmRestore: actionProps.onConfirmRestore } : {})}
-                {...(actionProps.onConfirmPermanentDelete ? { onConfirmPermanentDelete: actionProps.onConfirmPermanentDelete } : {})}
+                {...(actionProps.onConfirmArchive
+                  ? { onConfirmArchive: actionProps.onConfirmArchive }
+                  : {})}
+                {...(actionProps.onConfirmRestore
+                  ? { onConfirmRestore: actionProps.onConfirmRestore }
+                  : {})}
+                {...(actionProps.onConfirmPermanentDelete
+                  ? { onConfirmPermanentDelete: actionProps.onConfirmPermanentDelete }
+                  : {})}
               />
             )}
           />

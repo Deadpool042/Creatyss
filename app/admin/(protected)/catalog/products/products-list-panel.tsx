@@ -69,7 +69,6 @@ export async function ProductsListPanel({
   return (
     <AdminPageShell
       title={isTrashView ? PRODUCT_LIST_PAGE_COPY.titleTrash : PRODUCT_LIST_PAGE_COPY.title}
-      topbarAction={isTrashView ? undefined : <ProductCreateTopbarMenu />}
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
         { label: "Catalogue", href: "/admin/catalog/overview" },
@@ -89,7 +88,7 @@ export async function ProductsListPanel({
         perPage={perPage}
         statusCounts={statusCounts}
       >
-        <ProductTable />
+        <ProductTable createAction={isTrashView ? undefined : <ProductCreateTopbarMenu />} />
       </ProductTableProvider>
     </AdminPageShell>
   );

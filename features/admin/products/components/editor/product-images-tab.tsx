@@ -37,6 +37,7 @@ import {
 } from "@/features/admin/products/editor/types";
 import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
 import { ProductImageItem } from "./images/product-image-item";
+import { PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME } from "@/features/admin/products/components/shared/product-module-page-shell";
 
 type SetProductPrimaryImageAction = (
   input: SetProductPrimaryImageInput
@@ -634,7 +635,7 @@ export function ProductImagesTab({
     <>
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(3.5rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:pb-[calc(2.75rem+env(safe-area-inset-bottom))] lg:pb-4">
-          <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-4 md:px-6 md:py-6 xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start xl:px-0 [@media(max-height:480px)]:gap-4 [@media(max-height:480px)]:py-3">
+          <div className={PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME}>
             <div className="min-w-0 space-y-5 md:space-y-6">
               <AdminFormMessage
                 tone={messageState?.status === "success" ? "success" : "error"}
