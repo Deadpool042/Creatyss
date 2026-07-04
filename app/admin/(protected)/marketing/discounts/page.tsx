@@ -8,8 +8,7 @@ import { listDiscountTargetOptions } from "@/features/admin/marketing/discounts/
 import { isDiscountsFeatureActive } from "@/features/admin/marketing/queries/is-discounts-feature-active.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { listAdminDiscounts } from "@/features/admin/marketing/discounts/queries/list-admin-discounts.query";
-import { AdminDiscountsList } from "@/features/admin/marketing/discounts/components/admin-discounts-list";
-import { AdminDiscountCreateForm } from "@/features/admin/marketing/discounts/components/admin-discount-create-form";
+import { AdminDiscountsPanel } from "@/features/admin/marketing/discounts/components/admin-discounts-panel";
 
 export const dynamic = "force-dynamic";
 
@@ -92,7 +91,13 @@ export default async function AdminMarketingDiscountsPage({
     >
       <div className="grid gap-6">
         <AdminDataTableFeedbackBanner
-          message={resolvedSearchParams.discount_created ? (automationLevelMet ? "Remise créée." : "Code promo créé.") : null}
+          message={
+            resolvedSearchParams.discount_created
+              ? automationLevelMet
+                ? "Remise créée."
+                : "Code promo créé."
+              : null
+          }
         />
         <AdminDataTableFeedbackBanner
           message={
@@ -103,30 +108,19 @@ export default async function AdminMarketingDiscountsPage({
           tone="error"
         />
 
-        <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
-          <h2 className="mb-1 text-lg font-semibold tracking-tight text-foreground">
-            {automationLevelMet ? "Nouvelle remise" : "Nouveau code promo"}
-          </h2>
-          <p className="mb-4 text-xs text-muted-foreground">
-            {automationLevelMet
-              ? "Pourcentage ou montant fixe, applicable au panier ou à une sélection catalogue. Une remise peut rester manuelle ou devenir automatique au checkout."
-              : "Pourcentage ou montant fixe, applicable au panier. Les remises automatiques et le ciblage catalogue nécessitent des niveaux supérieurs."}
-          </p>
-          <AdminDiscountCreateForm
-            automationEnabled={automationLevelMet}
-            rulesEnabled={rulesLevelMet}
-            products={targetOptions.products}
-            variants={targetOptions.variants}
-            categories={targetOptions.categories}
-          />
-        </section>
-
-        <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold tracking-tight text-foreground">
-            Codes promo
-          </h2>
-          <AdminDiscountsList discounts={discounts} />
-        </section>
+        <AdminDiscountsPanel
+          discounts={discounts}
+          automationEnabled={automationLevelMet}
+          rulesEnabled={rulesLevelMet}
+          products={targetOptions.products}
+          variants={targetOptions.variants}
+          categories={targetOptions.categories}
+          errorMessage={
+            resolvedSearchParams.discount_error
+              ? getErrorMessage(resolvedSearchParams.discount_error)
+              : null
+          }
+        />
       </div>
     </AdminPageShell>
   );

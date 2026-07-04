@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 
 type AdminDiscountsListProps = {
   discounts: ReadonlyArray<AdminDiscountSummary>;
+  emptyMessage?: string;
 };
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
@@ -90,11 +91,7 @@ function getUsageLabel(discount: AdminDiscountSummary): string {
   return `${discount.redemptionsCount} / ${discount.maxRedemptions}`;
 }
 
-function DiscountStatusBadge({
-  status,
-}: {
-  status: AdminDiscountSummary["status"];
-}) {
+function DiscountStatusBadge({ status }: { status: AdminDiscountSummary["status"] }) {
   return <Badge variant={getStatusBadgeVariant(status)}>{getStatusLabel(status)}</Badge>;
 }
 
@@ -139,7 +136,8 @@ function DiscountMobileCard({ discount }: { discount: AdminDiscountSummary }) {
             ) : null}
             {discount.codesCount > 0 ? (
               <Badge variant="outline">
-                {discount.codesCount} code{discount.codesCount > 1 ? "s" : ""} secondaire{discount.codesCount > 1 ? "s" : ""}
+                {discount.codesCount} code{discount.codesCount > 1 ? "s" : ""} secondaire
+                {discount.codesCount > 1 ? "s" : ""}
               </Badge>
             ) : null}
           </div>
@@ -151,7 +149,13 @@ function DiscountMobileCard({ discount }: { discount: AdminDiscountSummary }) {
       <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
         <div className="grid gap-0.5">
           <span className="text-muted-foreground/60">Type</span>
-          <span className="text-foreground">{discount.type === "FREE_SHIPPING" ? "Livraison" : discount.type === "FIXED_AMOUNT" ? "Montant fixe" : "Pourcentage"}</span>
+          <span className="text-foreground">
+            {discount.type === "FREE_SHIPPING"
+              ? "Livraison"
+              : discount.type === "FIXED_AMOUNT"
+                ? "Montant fixe"
+                : "Pourcentage"}
+          </span>
         </div>
         <div className="grid gap-0.5">
           <span className="text-muted-foreground/60">Valeur</span>
@@ -179,11 +183,11 @@ function DiscountMobileCard({ discount }: { discount: AdminDiscountSummary }) {
   );
 }
 
-export function AdminDiscountsList({ discounts }: AdminDiscountsListProps) {
+export function AdminDiscountsList({ discounts, emptyMessage }: AdminDiscountsListProps) {
   if (discounts.length === 0) {
     return (
       <p className="py-10 text-center text-sm text-muted-foreground">
-        Aucune remise pour le moment.
+        {emptyMessage ?? "Aucune remise pour le moment."}
       </p>
     );
   }
@@ -223,7 +227,8 @@ export function AdminDiscountsList({ discounts }: AdminDiscountsListProps) {
                       ) : null}
                       {discount.codesCount > 0 ? (
                         <Badge variant="outline">
-                          {discount.codesCount} code{discount.codesCount > 1 ? "s" : ""} secondaire{discount.codesCount > 1 ? "s" : ""}
+                          {discount.codesCount} code{discount.codesCount > 1 ? "s" : ""} secondaire
+                          {discount.codesCount > 1 ? "s" : ""}
                         </Badge>
                       ) : null}
                     </div>
@@ -237,7 +242,9 @@ export function AdminDiscountsList({ discounts }: AdminDiscountsListProps) {
                       ? "Montant fixe"
                       : "Pourcentage"}
                 </AdminTableCell>
-                <AdminTableCell className="text-foreground">{getTypeLabel(discount)}</AdminTableCell>
+                <AdminTableCell className="text-foreground">
+                  {getTypeLabel(discount)}
+                </AdminTableCell>
                 <AdminTableCell className="text-muted-foreground">
                   <div className="grid gap-1">
                     <span>{getValidityLabel(discount)}</span>
@@ -245,17 +252,23 @@ export function AdminDiscountsList({ discounts }: AdminDiscountsListProps) {
                       <span className="text-xs">Limite totale : {discount.maxRedemptions}</span>
                     ) : null}
                     {discount.maxRedemptionsPerCode !== null ? (
-                      <span className="text-xs">Limite par code : {discount.maxRedemptionsPerCode}</span>
+                      <span className="text-xs">
+                        Limite par code : {discount.maxRedemptionsPerCode}
+                      </span>
                     ) : null}
                     {discount.maxRedemptionsPerUser !== null ? (
-                      <span className="text-xs">Limite par client : {discount.maxRedemptionsPerUser}</span>
+                      <span className="text-xs">
+                        Limite par client : {discount.maxRedemptionsPerUser}
+                      </span>
                     ) : null}
                   </div>
                 </AdminTableCell>
                 <AdminTableCell>
                   <DiscountStatusBadge status={discount.status} />
                 </AdminTableCell>
-                <AdminTableCell className="text-foreground">{getUsageLabel(discount)}</AdminTableCell>
+                <AdminTableCell className="text-foreground">
+                  {getUsageLabel(discount)}
+                </AdminTableCell>
                 <AdminTableCell className="text-right">
                   <div className={cn("flex justify-end gap-2")}>
                     <Button asChild type="button" variant="secondary" size="sm">

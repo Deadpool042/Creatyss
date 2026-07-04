@@ -31,16 +31,17 @@ Les lots pilotes 2 et 3 dépendent de la validation visuelle du lot pilote 1 (r�
 
 ## Lots
 
-| Fichier                                                        | Description                                                              | Statut             |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------ |
-| [lot-1-toolbar-produits.md](./lot-1-toolbar-produits.md)       | Toolbar unifiée + liste produits (référence du nouveau pattern de liste) | Livré — 2026-07-04 |
-| [lot-2-liste-commandes.md](./lot-2-liste-commandes.md)         | Aligner `OrdersPanelList` sur le pattern validé au lot 1                 | Livré — 2026-07-04 |
-| [lot-3-navigation-settings.md](./lot-3-navigation-settings.md) | Navigation groupée style System Settings pour `settings/*`               | Livré — 2026-07-04 |
-| [lot-4-dashboard.md](./lot-4-dashboard.md)                     | Aplatir le dashboard en cockpit macOS plus dense                         | Livré — 2026-07-04 |
-| [lot-5-categories-list-sort.md](./lot-5-categories-list-sort.md) | Exposer le tri existant dans la split-list catégories                    | Livré — 2026-07-04 |
-| [lot-6-settings-advanced-overview.md](./lot-6-settings-advanced-overview.md) | Reflow mobile des stats `settings/advanced`                              | Livré — 2026-07-04 |
+| Fichier                                                                                      | Description                                                              | Statut             |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------ |
+| [lot-1-toolbar-produits.md](./lot-1-toolbar-produits.md)                                     | Toolbar unifiée + liste produits (référence du nouveau pattern de liste) | Livré — 2026-07-04 |
+| [lot-2-liste-commandes.md](./lot-2-liste-commandes.md)                                       | Aligner `OrdersPanelList` sur le pattern validé au lot 1                 | Livré — 2026-07-04 |
+| [lot-3-navigation-settings.md](./lot-3-navigation-settings.md)                               | Navigation groupée style System Settings pour `settings/*`               | Livré — 2026-07-04 |
+| [lot-4-dashboard.md](./lot-4-dashboard.md)                                                   | Aplatir le dashboard en cockpit macOS plus dense                         | Livré — 2026-07-04 |
+| [lot-5-categories-list-sort.md](./lot-5-categories-list-sort.md)                             | Exposer le tri existant dans la split-list catégories                    | Livré — 2026-07-04 |
+| [lot-6-settings-advanced-overview.md](./lot-6-settings-advanced-overview.md)                 | Reflow mobile des stats `settings/advanced`                              | Livré — 2026-07-04 |
 | [lot-7-settings-advanced-governance-grids.md](./lot-7-settings-advanced-governance-grids.md) | Rendre responsives les grilles de gouvernance avancée                    | Livré — 2026-07-04 |
-| [lot-8-maintenance-stats-mobile.md](./lot-8-maintenance-stats-mobile.md) | Reflow mobile des stats maintenance                                      | Livré — 2026-07-04 |
+| [lot-8-maintenance-stats-mobile.md](./lot-8-maintenance-stats-mobile.md)                     | Reflow mobile des stats maintenance                                      | Livré — 2026-07-04 |
+| [lot-9-discounts-toolbar-sheet.md](./lot-9-discounts-toolbar-sheet.md)                       | Codes promo : toolbar unifiée + création en Sheet                        | Livré — 2026-07-05 |
 
 Généralisation aux autres domaines (`content/*`, `commerce/{customers,documents,payments,shipping,taxation}`, `insights/*`, `maintenance/*`, `marketing/*`) : non planifiée en détail, dépend du retour visuel sur les 3 lots pilotes.
 
