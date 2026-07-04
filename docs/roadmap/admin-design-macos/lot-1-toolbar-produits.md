@@ -116,3 +116,13 @@ Composer une toolbar de page unifiée (style Finder/System Settings) au-dessus d
 - `AdminFormFooter` (mode `overlay`) utilisait `position:absolute`, qui exige un ancêtre positionné et borné en hauteur pour flotter réellement — jamais le cas ici. Passé en `position:fixed` (pill flottante sur mobile, bande sticky classique sur desktop), répondant aussi à la demande explicite du propriétaire produit ("le CTA, peut-être le rendre flottant").
 - `AdminPageContextBar` (bande retour + action, partagée par tout l'admin) forçait un empilement sur deux lignes en mobile même sans breadcrumb à afficher — bande à moitié vide constatée sur capture mobile. Corrigée pour rester sur une seule ligne quand aucun breadcrumb n'est présent.
 - Vérification mobile réelle non faite dans cette session : l'outil de redimensionnement de fenêtre du navigateur automatisé ne fonctionne pas dans cet environnement (`resize_window` rapporte un succès mais `window.innerWidth` ne change pas). Diagnostic et correctifs mobile fondés sur lecture de code + les captures d'écran réelles fournies par l'utilisateur, pas sur une vérification interactive directe.
+
+## Retouches post-livraison (2026-07-04, commit 0bfaf8a2)
+
+Suite au retour visuel du propriétaire produit (captures desktop + émulation DevTools iPhone SE 375px) :
+
+- **CTA "au milieu" sur desktop** : la bande d'actions (`AdminFormFooter`, mode overlay `lg:sticky lg:w-full`) vivait dans la colonne formulaire et s'arrêtait à sa largeur — pas macOS. Remplacée par une pill compacte `position:fixed` ancrée en bas à droite (`lg:right-6`), les actions d'un panneau macOS vivant en bas-droite.
+- **CTA non flottant sur mobile (`/edit`)** : `product-general-tab` était le seul resté en mode non-overlay avec un `sticky` artisanal — avec un contenu court, la bande traînait en pleine page. Basculé en overlay comme les 8 autres onglets ; les overrides `bottom`/`lg:bottom-0` par onglet ont été supprimés (une seule autorité de positionnement : le composant).
+- **Dégagement** : en mode overlay, `AdminFormFooter` rend désormais un spacer en flux (`h-16 lg:h-20`) pour que la fin du formulaire ne soit jamais recouverte par la pill, safe-area comprise.
+- **Breadcrumbs `/preview` incohérents** : la page construisait son propre shell ("Retour à l'éditeur" + breadcrumb complet sur deux lignes) alors que les 9 autres onglets passent par `getProductModulePageShellProps` (bande compacte "< Produits", breadcrumbs masqués). Alignée sur le shell partagé.
+- Vérifié à 375×667 réels (émulation DevTools active sur l'onglet) : pill flottante au-dessus de la bottom nav sur `/seo` et `/edit`, bande retour compacte sur `/preview`. Rendu desktop de la pill bas-droite déduit du code, à confirmer visuellement par le propriétaire produit.
