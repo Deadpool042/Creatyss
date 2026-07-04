@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   Bell,
+  ChevronRight,
   Globe,
   Key,
   Link as LinkIcon,
@@ -93,6 +94,42 @@ function getSettingsCardMeta(item: AdminNavigationItem): SettingsCardMeta {
   return SETTINGS_CARD_META[item.key] ?? { description: "", icon: Settings };
 }
 
+// Regroupement façon macOS System Settings — métadonnée d'affichage locale au hub,
+// même statut que SETTINGS_CARD_META. Tout item hors groupe tombe dans "Autres".
+const SETTINGS_GROUPS: readonly { title: string; itemKeys: readonly string[] }[] = [
+  {
+    title: "Boutique",
+    itemKeys: ["general-settings", "store-settings", "seo-settings", "localization-settings"],
+  },
+  { title: "Communication", itemKeys: ["notifications-settings", "channels-settings"] },
+  { title: "Accès & sécurité", itemKeys: ["team-settings", "api-clients-settings"] },
+  { title: "Connexions", itemKeys: ["integrations-settings", "webhooks-settings"] },
+  { title: "Plateforme", itemKeys: ["search-settings", "ai-settings", "advanced-settings"] },
+];
+
+function groupSettingsCards(
+  cards: readonly AdminNavigationItem[]
+): { title: string; items: AdminNavigationItem[] }[] {
+  const byKey = new Map(cards.map((card) => [card.key, card]));
+  const grouped = SETTINGS_GROUPS.map((group) => ({
+    title: group.title,
+    items: group.itemKeys
+      .map((key) => byKey.get(key))
+      .filter((item): item is AdminNavigationItem => item !== undefined),
+  }));
+
+  const knownKeys = new Set(SETTINGS_GROUPS.flatMap((group) => group.itemKeys));
+  const others = cards.filter(
+    (card) => !knownKeys.has(card.key) && card.key !== "settings-overview"
+  );
+
+  if (others.length > 0) {
+    grouped.push({ title: "Autres", items: [...others] });
+  }
+
+  return grouped.filter((group) => group.items.length > 0);
+}
+
 // ── Page ───────────────────────────────────────────────────────────────────
 
 export default async function AdminSettingsPage() {
@@ -129,29 +166,41 @@ export default async function AdminSettingsPage() {
           </p>
         </div>
 
-        {/* Grille de cartes */}
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {cards.map((card) => {
-            const meta = getSettingsCardMeta(card);
+        {/* Navigation groupée façon System Settings */}
+        <div className="mx-auto grid w-full max-w-3xl gap-6">
+          {groupSettingsCards(cards).map((group) => (
+            <section key={group.title} className="grid gap-2">
+              <h2 className="px-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                {group.title}
+              </h2>
+              <div className="divide-y divide-surface-border/50 overflow-hidden rounded-2xl border border-surface-border/60 bg-surface-panel/60 shadow-sm backdrop-blur-sm">
+                {group.items.map((card) => {
+                  const meta = getSettingsCardMeta(card);
 
-            return (
-              <Link
-                key={card.key}
-                href={card.href}
-                className="flex items-start gap-4 rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-4 shadow-sm backdrop-blur-sm transition-colors hover:border-surface-border hover:bg-surface-panel"
-              >
-                <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl bg-surface-subtle">
-                  <meta.icon className="size-4 text-muted-foreground" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-[13px] font-medium text-foreground">{card.label}</p>
-                  <p className="mt-0.5 text-xs leading-5 text-muted-foreground">
-                    {meta.description}
-                  </p>
-                </div>
-              </Link>
-            );
-          })}
+                  return (
+                    <Link
+                      key={card.key}
+                      href={card.href}
+                      className="group flex items-center gap-3.5 px-4 py-3 transition-colors hover:bg-surface-subtle/50"
+                    >
+                      <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-surface-subtle">
+                        <meta.icon className="size-4 text-muted-foreground" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[13px] font-medium text-foreground">{card.label}</p>
+                        {meta.description ? (
+                          <p className="mt-0.5 truncate text-xs leading-5 text-muted-foreground">
+                            {meta.description}
+                          </p>
+                        ) : null}
+                      </div>
+                      <ChevronRight className="size-4 shrink-0 text-muted-foreground/50 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
         </div>
       </div>
     </AdminPageShell>
