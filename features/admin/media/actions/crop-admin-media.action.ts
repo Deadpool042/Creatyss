@@ -3,6 +3,7 @@
 import { refresh } from "next/cache";
 import { z } from "zod";
 
+import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import {
   cropAdminMedia,
   MediaCropError,
@@ -45,6 +46,8 @@ const CROP_ERROR_MESSAGES: Record<MediaCropError["code"], string> = {
 export async function cropAdminMediaAction(
   input: CropAdminMediaActionInput
 ): Promise<CropAdminMediaActionResult> {
+  await requireAuthenticatedAdmin();
+
   const parsed = cropAdminMediaSchema.safeParse(input);
 
   if (!parsed.success) {
