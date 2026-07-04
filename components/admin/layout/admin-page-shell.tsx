@@ -143,6 +143,12 @@ function AdminPageContent({ children, scrollBehavior, className }: AdminPageCont
         className={cn(
           "flex min-w-0 flex-col",
           scrollBehavior === "page" && "lg:min-h-full",
+          // "external" : le parent (juste au-dessus) est borné en hauteur mais n'est pas un
+          // conteneur flex (il porte overflow-hidden en display:block) — flex-1 n'a donc aucun
+          // effet ici. Sans hauteur explicite, ce wrapper grandit avec son contenu (height:auto)
+          // et le viewport de scroll interne (ex. table produits) ne reçoit jamais de hauteur
+          // bornée, donc plus aucun scroll n'est possible au-delà de la première page visible.
+          scrollBehavior === "external" && "lg:h-full",
           className
         )}
       >
