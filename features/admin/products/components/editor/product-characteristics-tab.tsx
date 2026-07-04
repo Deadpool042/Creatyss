@@ -372,11 +372,6 @@ function ProductCharacteristicsTabInner({
 
       <AdminFormFooter
         actionsClassName="w-full justify-between gap-2 sm:w-auto sm:justify-end"
-        className={[
-          "bottom-[calc(3.5rem+env(safe-area-inset-bottom))]",
-          "[@media(max-height:480px)]:bottom-[calc(2.75rem+env(safe-area-inset-bottom))]",
-          "lg:bottom-0",
-        ].join(" ")}
         overlay
       >
         <Button

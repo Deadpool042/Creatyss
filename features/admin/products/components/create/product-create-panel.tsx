@@ -152,7 +152,7 @@ function ProductCreatePanelInner({ action, onReset }: ProductCreatePanelInnerPro
           CREATE_PANEL_FOOTER_BOTTOM_CLASS,
           CREATE_PANEL_FOOTER_BOTTOM_LANDSCAPE_CLASS,
           "sm:px-4 sm:py-3",
-          "lg:bottom-0 lg:px-4 lg:py-3",
+          "lg:px-4 lg:py-3",
         ].join(" ")}
       >
         <>

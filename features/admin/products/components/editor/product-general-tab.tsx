@@ -416,8 +416,8 @@ function ProductGeneralTabInner({
       </div>
 
       <AdminFormFooter
-        actionsClassName="w-full justify-between gap-2 sm:w-auto sm:justify-end "
-        className="sticky bottom-[calc(3.5rem+env(safe-area-inset-bottom))] [@media(max-height:480px)]:bottom-[calc(2.75rem+env(safe-area-inset-bottom))] lg:bottom-0"
+        overlay
+        actionsClassName="w-full justify-between gap-2 sm:w-auto sm:justify-end"
       >
         <Button
           variant="ghost"

@@ -13,10 +13,8 @@ import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { Notice } from "@/components/shared/feedback";
 import { Button } from "@/components/ui/button";
-import {
-  ADMIN_PRODUCTS_LIST_PATH,
-  buildAdminProductEditPath,
-} from "@/features/admin/products/navigation";
+import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
+import { buildAdminProductPreviewPath } from "@/features/admin/products/navigation";
 import {
   getAdminProductPreviewBySlug,
   type AdminProductPreview,
@@ -81,20 +79,13 @@ export default async function ProductDetailPreviewPage({ params }: PreviewPagePr
 
   return (
     <AdminPageShell
-      title={product.name}
-      navigation={{
-        label: "Retour à l'éditeur",
-        href: buildAdminProductEditPath(product.slug),
-      }}
-      scrollBehavior="page"
-      contentPreset="detail"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Catalogue", href: "/admin/catalog/overview" },
-        { label: "Produits", href: ADMIN_PRODUCTS_LIST_PATH },
-        { label: product.name, href: buildAdminProductEditPath(product.slug) },
-        { label: "Aperçu" },
-      ]}
+      {...getProductModulePageShellProps({
+        product,
+        pageTitle: "Aperçu produit",
+        pageDescription: "Affiche la fiche produit telle qu'elle apparaîtrait en vitrine publique.",
+        currentLabel: "Aperçu",
+        currentHref: buildAdminProductPreviewPath(product.slug),
+      })}
       header={
         <AdminPageHeader
           className="hidden lg:block"

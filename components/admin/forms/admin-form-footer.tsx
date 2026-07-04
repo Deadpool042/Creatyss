@@ -12,11 +12,11 @@ type AdminFormFooterProps = Readonly<{
 
 /**
  * En mode "overlay", flotte au-dessus du contenu plutôt que de rester à plat en fin de flux —
- * en pill sur mobile (même esprit que la barre de bulk actions mobile des listes), en bande
- * pleine largeur classique sur desktop (assez d'espace pour ne pas avoir besoin de flotter).
- * Repose sur `position: fixed`, indépendant de toute chaîne de hauteur bornée — contrairement à
- * l'ancien `position: absolute` qui exigeait un ancêtre positionné et borné en hauteur, absent
- * des pages produit (scrollBehavior="page", scroll de page naturel, pas de conteneur borné).
+ * en pill pleine largeur au-dessus de la bottom nav sur mobile, en pill compacte ancrée en bas
+ * à droite sur desktop (esprit macOS : les actions d'un panneau vivent en bas à droite, jamais
+ * en bande coupée à la largeur de la colonne de formulaire).
+ * Repose sur `position: fixed`, indépendant de toute chaîne de hauteur bornée. Un spacer en flux
+ * garantit que la fin du formulaire n'est jamais masquée par la pill, quel que soit le viewport.
  */
 export function AdminFormFooter({
   children,
@@ -24,16 +24,16 @@ export function AdminFormFooter({
   actionsClassName,
   overlay = false,
 }: AdminFormFooterProps) {
-  return (
+  const footer = (
     <div
       className={cn(
         overlay
           ? [
-              "site-header-blur fixed inset-x-3 z-30 rounded-2xl border border-shell-border-strong px-4 py-2.5 shadow-lg",
+              "site-header-blur fixed z-30 rounded-2xl border border-shell-border-strong shadow-lg",
+              "inset-x-3 px-4 py-2.5",
               "bottom-[calc(3.5rem+env(safe-area-inset-bottom)+0.5rem)]",
               "[@media(max-height:480px)]:bottom-[calc(2.75rem+env(safe-area-inset-bottom)+0.4rem)]",
-              "lg:sticky lg:inset-x-auto lg:bottom-0 lg:z-auto lg:w-full lg:rounded-none",
-              "lg:border-x-0 lg:border-b-0 lg:border-t lg:border-shell-border lg:px-6 lg:py-2.5 lg:shadow-card",
+              "lg:inset-x-auto lg:right-6 lg:bottom-[calc(1.5rem+env(safe-area-inset-bottom))] lg:w-auto lg:px-4 lg:py-2.5",
             ].join(" ")
           : [
               "site-header-blur w-full shrink-0",
@@ -52,5 +52,17 @@ export function AdminFormFooter({
         </AdminFormActions>
       </div>
     </div>
+  );
+
+  if (!overlay) {
+    return footer;
+  }
+
+  return (
+    <>
+      {/* Dégagement en flux : la pill fixe ne doit jamais recouvrir la fin du formulaire. */}
+      <div aria-hidden className="h-16 shrink-0 lg:h-20" />
+      {footer}
+    </>
   );
 }
