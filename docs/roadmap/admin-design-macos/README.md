@@ -40,6 +40,7 @@ Les lots pilotes 2 et 3 dépendent de la validation visuelle du lot pilote 1 (r�
 | [lot-5-categories-list-sort.md](./lot-5-categories-list-sort.md) | Exposer le tri existant dans la split-list catégories                    | Livré — 2026-07-04 |
 | [lot-6-settings-advanced-overview.md](./lot-6-settings-advanced-overview.md) | Reflow mobile des stats `settings/advanced`                              | Livré — 2026-07-04 |
 | [lot-7-settings-advanced-governance-grids.md](./lot-7-settings-advanced-governance-grids.md) | Rendre responsives les grilles de gouvernance avancée                    | Livré — 2026-07-04 |
+| [lot-8-maintenance-stats-mobile.md](./lot-8-maintenance-stats-mobile.md) | Reflow mobile des stats maintenance                                      | Livré — 2026-07-04 |
 
 Généralisation aux autres domaines (`content/*`, `commerce/{customers,documents,payments,shipping,taxation}`, `insights/*`, `maintenance/*`, `marketing/*`) : non planifiée en détail, dépend du retour visuel sur les 3 lots pilotes.
 
