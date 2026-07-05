@@ -96,12 +96,12 @@ const TOUCH_NAV_ITEMS = [
 ] satisfies readonly PublicNavItem[];
 
 const MOBILE_COMPACT_HEADER_ACTIONS = [
-  { href: "/recherche", label: "Rechercher", icon: SearchIcon, status: "comingSoon" },
+  { href: "/boutique", label: "Rechercher", icon: SearchIcon },
   { href: "/panier", label: "Panier", icon: ShoppingCartIcon },
 ] satisfies readonly PublicNavItem[];
 
 const TOUCH_LARGE_HEADER_ACTIONS = [
-  { href: "/recherche", label: "Rechercher", icon: SearchIcon, status: "comingSoon" },
+  { href: "/boutique", label: "Rechercher", icon: SearchIcon },
 
   { href: "/compte", label: "Mon compte", icon: UserIcon },
 

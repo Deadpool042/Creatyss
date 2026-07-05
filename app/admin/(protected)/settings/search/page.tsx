@@ -59,9 +59,11 @@ export default async function AdminSettingsSearchPage() {
         <section className="rounded-2xl border border-dashed border-surface-border/60 bg-surface-subtle/10 p-5">
           <h2 className="text-lg font-semibold tracking-tight text-foreground">Portee du lot</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Cette page observe l&apos;etat reel de <code>SearchDocument</code>. Les prochains
-            increments pourront brancher des producteurs d&apos;index, des rebuilds ou une recherche
-            storefront, mais rien de cela n&apos;est active ici.
+            Cette page observe l&apos;etat reel de <code>SearchDocument</code>. L&apos;index est
+            alimente automatiquement par les mutations produit (creation, edition, archivage) et la
+            recherche plein texte du storefront (<code>/boutique?q=</code>) le consomme lorsque
+            cette capacite est active. Pour indexer les produits anterieurs a l&apos;activation :{" "}
+            <code>pnpm exec tsx scripts/backfill-search-documents.ts</code>.
           </p>
           <Link
             href="/admin/settings/advanced/overview"
