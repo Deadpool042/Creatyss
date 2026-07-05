@@ -5,8 +5,7 @@ import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { ADMIN_PRODUCTS_LIST_PATH } from "@/features/admin/products/navigation";
 import { listAdminBlogPosts } from "@/features/admin/blog";
 import { ContentRouteNav } from "@/features/admin/content/components/content-route-nav";
-import { listAdminProducts } from "@/features/admin/products/list/queries";
-import { getDefaultProductsListParams } from "@/app/admin/(protected)/catalog/products/products-list-params";
+import { countProductsMissingSeo } from "@/features/admin/content/queries/count-products-missing-seo.query";
 
 export const dynamic = "force-dynamic";
 
@@ -19,16 +18,11 @@ export default async function AdminContentSeoPage() {
   let posts: { totalMissing: number; total: number } = { totalMissing: 0, total: 0 };
 
   try {
-    const params = getDefaultProductsListParams();
-    const [productResult, blogPosts] = await Promise.all([
-      listAdminProducts({ ...params, view: "active", perPage: 200 }),
+    const [seoCoverage, blogPosts] = await Promise.all([
+      countProductsMissingSeo(),
       listAdminBlogPosts(),
     ]);
-    // Produits sans titre SEO ou sans description SEO (approximation via hasContent)
-    products = {
-      total: productResult.total,
-      totalSeoMissing: Math.round(productResult.total * 0.6), // MOCK partiel — SEO fields not in summary
-    };
+    products = seoCoverage;
     posts = {
       total: blogPosts.length,
       totalMissing: blogPosts.filter((p) => !p.hasContent || p.status === "draft").length,
@@ -49,7 +43,7 @@ export default async function AdminContentSeoPage() {
       label: "Titres SEO produits",
       detail: `${products.total} produits — ${products.totalSeoMissing > 0 ? `${products.totalSeoMissing} sans titre SEO personnalisé` : "tous configurés"}.`,
       ok: products.totalSeoMissing === 0,
-      mock: true,
+      mock: false,
     },
     {
       key: "blog",
@@ -88,9 +82,7 @@ export default async function AdminContentSeoPage() {
             <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
               Référencement
             </p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-              SEO
-            </h1>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">SEO</h1>
           </div>
           <div className="flex items-center gap-3 rounded-2xl border border-surface-border/60 bg-surface-panel/60 px-5 py-3 shadow-sm backdrop-blur-sm">
             <div className="text-center">
