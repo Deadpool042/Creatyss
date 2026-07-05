@@ -56,7 +56,6 @@ export default async function AdminMarketingDiscountsPage({
           { label: "Marketing", href: "/admin/marketing/overview" },
           { label: "Réductions" },
         ]}
-        showBreadcrumbsInContent={false}
         showTitleInContent={false}
       >
         <AdminComingSoon
@@ -85,7 +84,6 @@ export default async function AdminMarketingDiscountsPage({
         { label: "Marketing", href: "/admin/marketing/overview" },
         { label: "Réductions" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >

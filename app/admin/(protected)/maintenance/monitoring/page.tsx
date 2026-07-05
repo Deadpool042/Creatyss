@@ -134,7 +134,6 @@ export default async function AdminMaintenanceMonitoringPage() {
         { label: "Maintenance" },
         { label: "Monitoring" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >

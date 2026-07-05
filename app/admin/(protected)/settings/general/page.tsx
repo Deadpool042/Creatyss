@@ -18,7 +18,6 @@ export default async function AdminSettingsGeneralPage() {
           { label: "Réglages" },
           { label: "Général" },
         ]}
-        showBreadcrumbsInContent={false}
         showTitleInContent={false}
         contentPreset="form"
       >
@@ -40,7 +39,6 @@ export default async function AdminSettingsGeneralPage() {
         { label: "Réglages" },
         { label: "Général" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="form"
     >

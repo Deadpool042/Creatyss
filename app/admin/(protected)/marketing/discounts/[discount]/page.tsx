@@ -186,7 +186,6 @@ export default async function AdminDiscountDetailPage({
         { label: "Reductions", href: ADMIN_DISCOUNTS_PATH },
         { label: discount.code },
       ]}
-      showBreadcrumbsInContent={false}
       contentPreset="detail"
     >
       <div className="space-y-6">

@@ -14,7 +14,6 @@ export default async function AdminContentOverviewPage() {
         { label: "Admin", href: "/admin" },
         { label: "Contenu" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
     >
       <ContentOverviewSections stats={stats} />

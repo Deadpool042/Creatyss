@@ -30,7 +30,6 @@ export default async function AdminSettingsAiPage() {
         { label: "Avance", href: "/admin/settings/advanced/overview" },
         { label: "Assistance IA" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >

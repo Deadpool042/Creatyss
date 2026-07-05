@@ -17,7 +17,6 @@ export default async function AdminSettingsStorePage() {
           { label: "Réglages" },
           { label: "Boutique" },
         ]}
-        showBreadcrumbsInContent={false}
         showTitleInContent={false}
         contentPreset="form"
       >
@@ -37,7 +36,6 @@ export default async function AdminSettingsStorePage() {
         { label: "Réglages" },
         { label: "Boutique" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="form"
     >

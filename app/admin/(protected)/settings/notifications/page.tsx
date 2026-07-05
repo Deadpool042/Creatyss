@@ -28,7 +28,6 @@ export default async function AdminSettingsNotificationsPage() {
         { label: "Réglages" },
         { label: "Notifications" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="form"
     >

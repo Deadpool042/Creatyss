@@ -77,7 +77,6 @@ export default async function AdminContentSeoPage() {
         { label: "SEO" },
       ]}
       contentPreset="detail"
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
     >
       <div className="mx-auto w-full max-w-4xl">

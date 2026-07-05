@@ -43,7 +43,6 @@ export default async function AdminMaintenanceObservabilityPage() {
         { label: "Maintenance" },
         { label: "Observabilité" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="detail"
     >

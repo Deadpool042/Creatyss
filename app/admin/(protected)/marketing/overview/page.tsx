@@ -8,7 +8,6 @@ export default function AdminMarketingOverviewPage() {
       title="Marketing"
       contentPreset="overview"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Marketing" }]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
     >
       <MarketingOverviewSections />

@@ -30,7 +30,6 @@ export default async function AdminSettingsSearchPage() {
         { label: "Avance", href: "/admin/settings/advanced/overview" },
         { label: "Recherche indexee" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >

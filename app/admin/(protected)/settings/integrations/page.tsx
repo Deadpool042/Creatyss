@@ -30,7 +30,6 @@ export default async function AdminSettingsIntegrationsPage() {
         { label: "Avance", href: "/admin/settings/advanced/overview" },
         { label: "Integrations externes" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >

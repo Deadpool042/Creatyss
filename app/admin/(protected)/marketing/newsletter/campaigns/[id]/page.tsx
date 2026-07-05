@@ -74,7 +74,6 @@ export default async function AdminNewsletterCampaignDetailPage({
         { label: "Campagnes", href: ADMIN_NEWSLETTER_CAMPAIGNS_PATH },
         { label: campaign.name },
       ]}
-      showBreadcrumbsInContent={false}
       contentPreset="detail"
     >
       <div className="space-y-6">

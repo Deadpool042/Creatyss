@@ -41,7 +41,6 @@ export default async function AdminInsightsAnalyticsPage() {
         { label: "Insights" },
         { label: "Analytics" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
     >
       <AnalyticsOverviewSections

@@ -59,7 +59,6 @@ export default async function AdminSettingsWebhooksPage({
         { label: "Avance", href: "/admin/settings/advanced/overview" },
         { label: "Webhooks" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >
