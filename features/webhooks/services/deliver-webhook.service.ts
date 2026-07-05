@@ -18,19 +18,33 @@ export type WebhookDeliveryOutcome = {
   errorMessage: string | null;
 };
 
+export function buildWebhookSignature(secret: string, bodyJson: string): string {
+  const sig = createHmac("sha256", secret).update(bodyJson).digest("hex");
+  return `sha256=${sig}`;
+}
+
+export function buildWebhookHeaders(
+  eventType: string,
+  secret: string | null,
+  bodyJson: string
+): Record<string, string> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "X-Webhook-Event": eventType,
+  };
+
+  if (secret) {
+    headers["X-Webhook-Signature"] = buildWebhookSignature(secret, bodyJson);
+  }
+
+  return headers;
+}
+
 export async function deliverWebhook(
   payload: WebhookDeliveryPayload
 ): Promise<WebhookDeliveryOutcome> {
   const bodyJson = JSON.stringify(payload.body);
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    "X-Webhook-Event": payload.eventType,
-  };
-
-  if (payload.secret) {
-    const sig = createHmac("sha256", payload.secret).update(bodyJson).digest("hex");
-    headers["X-Webhook-Signature"] = `sha256=${sig}`;
-  }
+  const headers = buildWebhookHeaders(payload.eventType, payload.secret, bodyJson);
 
   try {
     const controller = new AbortController();
