@@ -50,10 +50,10 @@ Ordre recommandé : A → B → D (indépendants, risque nul) puis D1 → C + E,
 - **D4 — Statu quo assumé pour le hub global settings.** Pas de nav secondaire dans `settings/*` : le hub racine et la sidebar assurent la circulation. Exception documentée ici.
 - **D5 — Statu quo assumé pour insights (2026-07-05).** Le domaine n'expose qu'une seule vue (`insights/analytics`) : pas de nav de domaine, d'overview ni de hub tant qu'une deuxième vue n'existe pas. Le shell, les breadcrumbs et l'écran de statut flag inactif (lot H) suffisent. Exception documentée ici, à réévaluer quand insights s'étoffera.
 
-## Écarts hors périmètre consignés (à traiter dans d'autres chantiers)
+## Écarts hors périmètre consignés
 
-- Statistique mockée en dur dans `content/seo/page.tsx` (~l.30, `totalSeoMissing`).
-- Mapping d'erreurs métier dupliqué dans les pages (`getTaxErrorMessage`, `getShippingZoneErrorMessage`).
+- ~~Statistique mockée en dur dans `content/seo/page.tsx`~~ — **traité le 2026-07-05** (merge b3057997) : query `countProductsMissingSeo` sur `SeoMetadata`, score SEO réel dans content/seo et l'overview.
+- ~~Mapping d'erreurs métier dupliqué dans les pages~~ — **requalifié le 2026-07-05** : après relecture des corps, chaque mapping porte des codes et messages propres à son contexte ; seuls 2 codes génériques se répètent. Factoriser créerait une abstraction sans besoin démontré. Pattern colocalisé-par-page assumé.
 
 ## Invariants
 
