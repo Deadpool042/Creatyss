@@ -1,12 +1,14 @@
 import { notFound } from "next/navigation";
 
-import { AdminStatusBadge, type AdminStatusVariant } from "@/components/admin/shared/admin-status-badge";
+import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import {
+  AdminStatusBadge,
+  type AdminStatusVariant,
+} from "@/components/admin/shared/admin-status-badge";
 import {
   EditorialPageForm,
   PageBodyForm,
   PageStatusToggle,
-  PagesPageHeader,
-  PagesPageShell,
   getAdminPageDetail,
   type AdminPageStatus,
 } from "@/features/admin/pages";
@@ -35,11 +37,21 @@ export default async function AdminContentPageDetailPage({
   if (page === null) notFound();
 
   return (
-    <PagesPageShell>
+    <AdminPageShell
+      scrollBehavior="page"
+      title={page.title}
+      navigation={{ label: "Retour", href: "/admin/content/pages" }}
+      breadcrumbs={[
+        { label: "Admin", href: "/admin" },
+        { label: "Contenu", href: "/admin/content/overview" },
+        { label: "Pages", href: "/admin/content/pages" },
+        { label: page.title },
+      ]}
+      contentPreset="detail"
+    >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2">
-            <PagesPageHeader title={page.title} />
             {page.isSystemPage ? (
               <span className="inline-flex h-5 shrink-0 items-center rounded-md bg-surface-subtle px-1.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                 Page système
@@ -52,9 +64,7 @@ export default async function AdminContentPageDetailPage({
             {page.isSystemPage ? " · Titre, slug et code non modifiables" : ""}
           </p>
         </div>
-        {page.isSystemPage ? (
-          <PageStatusToggle pageId={page.id} status={page.status} />
-        ) : null}
+        {page.isSystemPage ? <PageStatusToggle pageId={page.id} status={page.status} /> : null}
       </div>
 
       {page.isSystemPage ? (
@@ -69,6 +79,6 @@ export default async function AdminContentPageDetailPage({
           status={page.status}
         />
       )}
-    </PagesPageShell>
+    </AdminPageShell>
   );
 }

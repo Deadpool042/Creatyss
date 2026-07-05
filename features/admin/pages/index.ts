@@ -4,8 +4,6 @@ export {
   PageStatusToggle,
   PagesEmptyState,
   PagesList,
-  PagesPageHeader,
-  PagesPageShell,
 } from "./components";
 export { toggleAdminPageStatusAction } from "./actions/toggle-admin-page-status.action";
 export { updateAdminPageBodyAction } from "./actions/update-admin-page-body.action";
@@ -19,8 +17,4 @@ export {
   type AdminPageBodyInput,
 } from "./schemas";
 
-export type {
-  AdminPageDetail,
-  AdminPagesListItem,
-  AdminPageStatus,
-} from "./types";
+export type { AdminPageDetail, AdminPagesListItem, AdminPageStatus } from "./types";
