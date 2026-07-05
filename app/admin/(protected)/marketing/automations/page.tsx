@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { Zap } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { AdminArchivedAutomationJobsSection } from "@/features/admin/marketing/automations/components/admin-archived-automation-jobs-section";
 import { AdminArchivedAutomationsSection } from "@/features/admin/marketing/automations/components/admin-archived-automations-section";
 import { AdminAutomationDefinitionsSection } from "@/features/admin/marketing/automations/components/admin-automation-definitions-section";
@@ -58,7 +59,28 @@ export default async function AdminMarketingAutomationsPage({
   searchParams,
 }: AdminMarketingAutomationsPageProps) {
   const featureActive = await isAutomationsFeatureActive();
-  if (!featureActive) notFound();
+
+  if (!featureActive) {
+    return (
+      <AdminPageShell
+        scrollBehavior="page"
+        title="Automations"
+        breadcrumbs={[
+          { label: "Admin", href: "/admin" },
+          { label: "Marketing", href: "/admin/marketing/overview" },
+          { label: "Automations" },
+        ]}
+        showTitleInContent={false}
+      >
+        <AdminFeatureDisabledState
+          capabilityName="Automations"
+          description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur engagement.automations pour ouvrir les automatisations."
+          icon={Zap}
+        />
+      </AdminPageShell>
+    );
+  }
+
   const nowIso = new Date().toISOString();
   const resolvedSearchParams = await searchParams;
   const selectedAutomationId =

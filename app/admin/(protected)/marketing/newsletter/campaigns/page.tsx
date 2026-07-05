@@ -1,8 +1,8 @@
-import { notFound } from "next/navigation";
 import { Mail } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
+import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { isNewsletterFeatureActive } from "@/features/admin/marketing/queries/is-newsletter-feature-active.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { listAdminNewsletterCampaigns } from "@/features/admin/marketing/newsletter/queries/list-admin-newsletter-campaigns.query";
@@ -33,7 +33,28 @@ export default async function AdminNewsletterCampaignsPage({
   searchParams,
 }: AdminNewsletterCampaignsPageProps) {
   const featureActive = await isNewsletterFeatureActive();
-  if (!featureActive) notFound();
+
+  if (!featureActive) {
+    return (
+      <AdminPageShell
+        scrollBehavior="page"
+        title="Campagnes"
+        breadcrumbs={[
+          { label: "Admin", href: "/admin" },
+          { label: "Marketing", href: "/admin/marketing/overview" },
+          { label: "Newsletter", href: "/admin/marketing/newsletter" },
+          { label: "Campagnes" },
+        ]}
+        showTitleInContent={false}
+      >
+        <AdminFeatureDisabledState
+          capabilityName="Campagnes newsletter"
+          description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur engagement.newsletter pour ouvrir les campagnes."
+          icon={Mail}
+        />
+      </AdminPageShell>
+    );
+  }
 
   const basicLevelMet = await meetsFeatureLevel("engagement.newsletter", "basic");
 

@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { Radio } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { requireInternalAdminCapability } from "@/core/auth/admin/require-internal-admin-capability";
 import { ChannelsPanel } from "@/features/admin/settings/components/channels-panel";
 import { getAdminChannelsSnapshot } from "@/features/admin/settings/queries/get-admin-channels-snapshot.query";
@@ -15,7 +16,26 @@ export default async function AdminSettingsChannelsPage() {
   const featureActive = await isChannelsFeatureActive();
 
   if (!featureActive) {
-    notFound();
+    return (
+      <AdminPageShell
+        scrollBehavior="page"
+        title="Canaux de diffusion"
+        breadcrumbs={[
+          { label: "Admin", href: "/admin" },
+          { label: "Reglages", href: "/admin/settings" },
+          { label: "Avance", href: "/admin/settings/advanced/overview" },
+          { label: "Canaux de diffusion" },
+        ]}
+        showTitleInContent={false}
+        contentPreset="table"
+      >
+        <AdminFeatureDisabledState
+          capabilityName="Canaux de diffusion"
+          description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur satellite.channels pour ouvrir les canaux."
+          icon={Radio}
+        />
+      </AdminPageShell>
+    );
   }
 
   const snapshot = await getAdminChannelsSnapshot();
@@ -37,14 +57,12 @@ export default async function AdminSettingsChannelsPage() {
         <ChannelsPanel snapshot={snapshot} />
 
         <section className="rounded-2xl border border-dashed border-surface-border/60 bg-surface-subtle/10 p-5">
-          <h2 className="text-lg font-semibold tracking-tight text-foreground">
-            Portee du lot
-          </h2>
+          <h2 className="text-lg font-semibold tracking-tight text-foreground">Portee du lot</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Cette page observe l&apos;etat reel de <code>Channel</code>, <code>ChannelProductStatus</code>{" "}
-            et <code>ChannelVariantStatus</code>. Les prochains increments pourront ajouter la
-            creation de canaux, les regles d&apos;eligibilite ou les synchronisations provider,
-            mais rien de cela n&apos;est ouvert ici.
+            Cette page observe l&apos;etat reel de <code>Channel</code>,{" "}
+            <code>ChannelProductStatus</code> et <code>ChannelVariantStatus</code>. Les prochains
+            increments pourront ajouter la creation de canaux, les regles d&apos;eligibilite ou les
+            synchronisations provider, mais rien de cela n&apos;est ouvert ici.
           </p>
           <Link
             href="/admin/settings/advanced/overview"
