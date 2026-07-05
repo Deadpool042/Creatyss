@@ -20,7 +20,6 @@ export default async function AdminCommercePaymentsSettingsPage() {
         { label: "Paiements", href: "/admin/commerce/payments" },
         { label: "Configuration" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="form"
     >
