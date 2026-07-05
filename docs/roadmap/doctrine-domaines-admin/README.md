@@ -1,6 +1,6 @@
 # Doctrine domaines admin — extension de la doctrine UI/UX catalog
 
-> Chantier transverse · Ouvert le 2026-07-05 · Statut : cadré, aucun lot démarré
+> Chantier transverse · Ouvert le 2026-07-05 · Statut : lots A–F et H livrés, reste G
 > Audit source : [2026-07-05-audit-doctrine-domaines-admin.md](../../audit/2026-07-05-audit-doctrine-domaines-admin.md)
 > Référence doctrinale : [admin-design-macos / lot 11](../admin-design-macos/lot-11-breadcrumbs-hub-catalogue.md)
 
@@ -23,16 +23,16 @@
 
 ## Lots
 
-| Lot | Titre                                                                                                                                                                  | Effort | Dépendances | Statut  |
-| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ----------- | ------- |
-| A   | Grammaire breadcrumbs commerce (réinsérer le segment « Commerce » dans payments/shipping/customers settings)                                                           | S      | —           | À faire |
-| B   | content/pages sur `AdminPageShell` (supprimer `PagesPageShell` custom, liste + détail)                                                                                 | S      | —           | À faire |
-| C   | Taxation dans le parcours commerce (route nav + quick links TVA/configurations dans l'overview)                                                                        | S      | Décision D1 | À faire |
-| D   | `MaintenanceRouteNav` (logs, monitoring, observability)                                                                                                                | S      | —           | À faire |
-| E   | Hub configuration commerce (modèle catalog : paiements, livraison, TVA, clients, statuts par niveau ; remplace l'`AdminComingSoon` customers)                          | M      | Décision D1 | À faire |
-| F   | Hub configuration marketing (niveaux discounts simple/rules/automation et newsletter basic/segmentation ; factoriser la logique de statut de discounts/page.tsx)       | M      | Décision D3 | À faire |
-| G   | Hub configuration content + route nav (Blog, Pages, Accueil, SEO ; niveau blog visible)                                                                                | M      | Décision D2 | À faire |
-| H   | Doctrine « flag inactif ≠ notFound » (settings/{ai,integrations,search,channels,webhooks}, insights, marketing/\*, taxation → écran de statut « Capacité désactivée ») | S/M    | Décision D3 | À faire |
+| Lot | Titre                                                                                                                                                                  | Effort | Dépendances | Statut                           |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ----------- | -------------------------------- |
+| A   | Grammaire breadcrumbs commerce (réinsérer le segment « Commerce » dans payments/shipping/customers settings)                                                           | S      | —           | Livré (a068e8ab)                 |
+| B   | content/pages sur `AdminPageShell` (supprimer `PagesPageShell` custom, liste + détail)                                                                                 | S      | —           | Livré (c3064281)                 |
+| C   | Taxation dans le parcours commerce (route nav + quick links TVA/configurations dans l'overview)                                                                        | S      | Décision D1 | Livré (f2e807fb)                 |
+| D   | `MaintenanceRouteNav` (logs, monitoring, observability)                                                                                                                | S      | —           | Livré (295d922f)                 |
+| E   | Hub configuration commerce (modèle catalog : paiements, livraison, TVA, clients, statuts par niveau ; remplace l'`AdminComingSoon` customers)                          | M      | Décision D1 | Livré (f2e807fb)                 |
+| F   | Hub configuration marketing (niveaux discounts simple/rules/automation et newsletter basic/segmentation ; factoriser la logique de statut de discounts/page.tsx)       | M      | Décision D3 | Livré (ce lot)                   |
+| G   | Hub configuration content + route nav (Blog, Pages, Accueil, SEO ; niveau blog visible)                                                                                | M      | Décision D2 | À faire                          |
+| H   | Doctrine « flag inactif ≠ notFound » (settings/{ai,integrations,search,channels,webhooks}, insights, marketing/\*, taxation → écran de statut « Capacité désactivée ») | S/M    | Décision D3 | Livré (7fcf3279, merge 574f33d3) |
 
 Ordre recommandé : A → B → D (indépendants, risque nul) puis D1 → C + E, D3 → H + F, D2 → G.
 
