@@ -179,9 +179,7 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
           : `${publishedPages} publiée${publishedPages > 1 ? "s" : ""} sur ${totalPages}`,
       progress: totalPages === 0 ? 0 : Math.round((publishedPages / totalPages) * 100),
       toneClassName:
-        publishedPages === 0
-          ? "text-muted-foreground"
-          : "text-feedback-success-foreground",
+        publishedPages === 0 ? "text-muted-foreground" : "text-feedback-success-foreground",
       isMock: false,
     },
     {
@@ -195,7 +193,7 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
           : seoOverallScore >= 40
             ? "text-feedback-warning-foreground"
             : "text-feedback-error-foreground",
-      isMock: false,
+      isMock: true,
     },
   ];
 
@@ -216,8 +214,7 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
     signals.push({
       key: "homepage_draft",
       label: "Page d'accueil non publiée",
-      detail:
-        "La boutique est visible mais sans page d'accueil éditoriale. Finaliser et publier.",
+      detail: "La boutique est visible mais sans page d'accueil éditoriale. Finaliser et publier.",
       tone: "warning",
       isMock: false,
     });
@@ -229,7 +226,7 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
       label: "Aucune page légale publiée",
       detail: "CGV, Mentions légales, Politique de confidentialité — obligatoires avant lancement.",
       tone: "error",
-      isMock: true,
+      isMock: false,
     });
   }
 
