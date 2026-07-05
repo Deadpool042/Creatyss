@@ -1,4 +1,5 @@
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { MarketingRouteNav } from "@/features/admin/marketing/components/marketing-route-nav";
 import { MarketingSettingsHub } from "@/features/admin/settings/components/marketing-settings-hub";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
@@ -32,6 +33,7 @@ export default async function AdminMarketingSettingsPage() {
         { label: "Configuration" },
       ]}
     >
+      <MarketingRouteNav />
       <MarketingSettingsHub
         discounts={{
           simple: discountsSimple,

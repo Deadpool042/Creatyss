@@ -3,6 +3,7 @@ import { Mail } from "lucide-react";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
+import { MarketingRouteNav } from "@/features/admin/marketing/components/marketing-route-nav";
 import { isNewsletterFeatureActive } from "@/features/admin/marketing/queries/is-newsletter-feature-active.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { listAdminNewsletterCampaigns } from "@/features/admin/marketing/newsletter/queries/list-admin-newsletter-campaigns.query";
@@ -47,6 +48,7 @@ export default async function AdminNewsletterCampaignsPage({
         ]}
         showTitleInContent={false}
       >
+        <MarketingRouteNav />
         <AdminFeatureDisabledState
           capabilityName="Campagnes newsletter"
           description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur engagement.newsletter pour ouvrir les campagnes."
@@ -71,6 +73,7 @@ export default async function AdminNewsletterCampaignsPage({
         ]}
         showTitleInContent={false}
       >
+        <MarketingRouteNav />
         <AdminComingSoon
           title="Campagnes newsletter"
           description="Créez et envoyez des campagnes email à vos abonnés. Suivez les statuts d'envoi par destinataire."
@@ -100,6 +103,7 @@ export default async function AdminNewsletterCampaignsPage({
       showTitleInContent={false}
       contentPreset="table"
     >
+      <MarketingRouteNav />
       <div className="grid gap-6">
         {resolvedSearchParams.campaign_created ? (
           <p className="rounded-lg border border-feedback-success-border bg-feedback-success-surface px-3 py-2 text-sm text-feedback-success-foreground">
