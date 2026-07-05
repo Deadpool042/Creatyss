@@ -1,9 +1,9 @@
-import { notFound } from "next/navigation";
 import { Mail } from "lucide-react";
 import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
+import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { Button } from "@/components/ui/button";
 import { isNewsletterFeatureActive } from "@/features/admin/marketing/queries/is-newsletter-feature-active.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
@@ -103,7 +103,27 @@ export default async function AdminMarketingNewsletterPage({
   searchParams,
 }: AdminMarketingNewsletterPageProps) {
   const featureActive = await isNewsletterFeatureActive();
-  if (!featureActive) notFound();
+
+  if (!featureActive) {
+    return (
+      <AdminPageShell
+        scrollBehavior="page"
+        title="Newsletter"
+        breadcrumbs={[
+          { label: "Admin", href: "/admin" },
+          { label: "Marketing", href: "/admin/marketing/overview" },
+          { label: "Newsletter" },
+        ]}
+        showTitleInContent={false}
+      >
+        <AdminFeatureDisabledState
+          capabilityName="Newsletter"
+          description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur engagement.newsletter pour ouvrir les abonnés."
+          icon={Mail}
+        />
+      </AdminPageShell>
+    );
+  }
 
   const [basicLevelMet, segmentationLevelMet, automationSnapshot] = await Promise.all([
     meetsFeatureLevel("engagement.newsletter", "basic"),

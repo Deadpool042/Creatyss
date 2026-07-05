@@ -1,6 +1,7 @@
-import { notFound } from "next/navigation";
+import { BarChart3 } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { AnalyticsOverviewSections } from "@/features/admin/insights/components/analytics-overview-sections";
 import { getCommerceAnalyticsInsights } from "@/features/admin/insights/queries/get-commerce-analytics-insights.query";
 import { getCommerceAnalyticsRecommendations } from "@/features/admin/insights/queries/get-commerce-analytics-recommendations.query";
@@ -11,7 +12,28 @@ import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-
 
 export default async function AdminInsightsAnalyticsPage() {
   const featureActive = await isAnalyticsFeatureActive();
-  if (!featureActive) notFound();
+
+  if (!featureActive) {
+    return (
+      <AdminPageShell
+        scrollBehavior="page"
+        title="Analytics"
+        contentPreset="overview"
+        breadcrumbs={[
+          { label: "Admin", href: "/admin" },
+          { label: "Insights" },
+          { label: "Analytics" },
+        ]}
+        showTitleInContent={false}
+      >
+        <AdminFeatureDisabledState
+          capabilityName="Analytics"
+          description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur engagement.analytics pour ouvrir les statistiques."
+          icon={BarChart3}
+        />
+      </AdminPageShell>
+    );
+  }
 
   const [
     monthlyLevelMet,

@@ -1,6 +1,7 @@
-import { notFound } from "next/navigation";
+import { Webhook } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { requireInternalAdminCapability } from "@/core/auth/admin/require-internal-admin-capability";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { WebhooksPanel } from "@/features/admin/settings/components/webhooks-panel";
@@ -35,7 +36,26 @@ export default async function AdminSettingsWebhooksPage({
   const featureActive = await isWebhooksFeatureActive();
 
   if (!featureActive) {
-    notFound();
+    return (
+      <AdminPageShell
+        scrollBehavior="page"
+        title="Webhooks"
+        breadcrumbs={[
+          { label: "Admin", href: "/admin" },
+          { label: "Reglages", href: "/admin/settings" },
+          { label: "Avance", href: "/admin/settings/advanced/overview" },
+          { label: "Webhooks" },
+        ]}
+        showTitleInContent={false}
+        contentPreset="table"
+      >
+        <AdminFeatureDisabledState
+          capabilityName="Webhooks"
+          description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur platform.webhooks pour ouvrir les webhooks."
+          icon={Webhook}
+        />
+      </AdminPageShell>
+    );
   }
 
   const [snapshot, resolvedSearchParams, canManageWebhooks, canRetryWebhooks] = await Promise.all([

@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { Search } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { requireInternalAdminCapability } from "@/core/auth/admin/require-internal-admin-capability";
 import { SearchDocumentsPanel } from "@/features/admin/settings/components/search-documents-panel";
 import { isSearchFeatureActive } from "@/features/admin/settings/queries/is-search-feature-active.query";
@@ -15,7 +16,26 @@ export default async function AdminSettingsSearchPage() {
   const featureActive = await isSearchFeatureActive();
 
   if (!featureActive) {
-    notFound();
+    return (
+      <AdminPageShell
+        scrollBehavior="page"
+        title="Recherche indexee"
+        breadcrumbs={[
+          { label: "Admin", href: "/admin" },
+          { label: "Reglages", href: "/admin/settings" },
+          { label: "Avance", href: "/admin/settings/advanced/overview" },
+          { label: "Recherche indexee" },
+        ]}
+        showTitleInContent={false}
+        contentPreset="table"
+      >
+        <AdminFeatureDisabledState
+          capabilityName="Recherche indexée"
+          description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur satellite.search pour ouvrir l'index de recherche."
+          icon={Search}
+        />
+      </AdminPageShell>
+    );
   }
 
   const snapshot = await listAdminSearchDocuments();
@@ -37,13 +57,11 @@ export default async function AdminSettingsSearchPage() {
         <SearchDocumentsPanel snapshot={snapshot} />
 
         <section className="rounded-2xl border border-dashed border-surface-border/60 bg-surface-subtle/10 p-5">
-          <h2 className="text-lg font-semibold tracking-tight text-foreground">
-            Portee du lot
-          </h2>
+          <h2 className="text-lg font-semibold tracking-tight text-foreground">Portee du lot</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Cette page observe l&apos;etat reel de <code>SearchDocument</code>. Les prochains
-            increments pourront brancher des producteurs d&apos;index, des rebuilds ou une
-            recherche storefront, mais rien de cela n&apos;est active ici.
+            increments pourront brancher des producteurs d&apos;index, des rebuilds ou une recherche
+            storefront, mais rien de cela n&apos;est active ici.
           </p>
           <Link
             href="/admin/settings/advanced/overview"

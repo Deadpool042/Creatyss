@@ -1,9 +1,7 @@
-import Link from "next/link";
 import { Percent } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
-import { Button } from "@/components/ui/button";
+import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { isTaxationFeatureActive } from "@/features/admin/commerce/taxation/queries/is-taxation-feature-active.query";
 import { listAdminTaxRules } from "@/features/admin/commerce/taxation/queries/list-admin-tax-rules.query";
 import { AdminTaxRulesList } from "@/features/admin/commerce/taxation/components/admin-tax-rules-list";
@@ -47,16 +45,10 @@ export default async function AdminCommerceTaxationPage({
         showTitleInContent={false}
         contentPreset="table"
       >
-        <AdminEmptyState
-          eyebrow="Capacité désactivée"
-          title="TVA non activée pour cette boutique"
+        <AdminFeatureDisabledState
+          capabilityName="TVA"
           description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur commerce.taxation pour ouvrir les règles de TVA."
           icon={Percent}
-          actionNode={
-            <Button asChild size="sm">
-              <Link href="/admin/settings/advanced">Voir les réglages avancés</Link>
-            </Button>
-          }
         />
       </AdminPageShell>
     );

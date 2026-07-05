@@ -1,8 +1,8 @@
-import { notFound } from "next/navigation";
 import { Percent } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
+import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { AdminDataTableFeedbackBanner } from "@/components/admin/tables/layout/admin-data-table-feedback-banner";
 import { listDiscountTargetOptions } from "@/features/admin/marketing/discounts/queries/list-discount-target-options.query";
 import { isDiscountsFeatureActive } from "@/features/admin/marketing/queries/is-discounts-feature-active.query";
@@ -40,7 +40,27 @@ export default async function AdminMarketingDiscountsPage({
   searchParams,
 }: AdminMarketingDiscountsPageProps) {
   const featureActive = await isDiscountsFeatureActive();
-  if (!featureActive) notFound();
+
+  if (!featureActive) {
+    return (
+      <AdminPageShell
+        scrollBehavior="page"
+        title="Codes promo"
+        breadcrumbs={[
+          { label: "Admin", href: "/admin" },
+          { label: "Marketing", href: "/admin/marketing/overview" },
+          { label: "Réductions" },
+        ]}
+        showTitleInContent={false}
+      >
+        <AdminFeatureDisabledState
+          capabilityName="Codes promo"
+          description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur commerce.discounts pour ouvrir les remises."
+          icon={Percent}
+        />
+      </AdminPageShell>
+    );
+  }
 
   const simpleLevelMet = await meetsFeatureLevel("commerce.discounts", "simple");
   const rulesLevelMet = await meetsFeatureLevel("commerce.discounts", "rules");
