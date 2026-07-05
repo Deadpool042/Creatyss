@@ -10,7 +10,6 @@ import { readAdminProductEditorBySlug } from "@/features/admin/products/editor/q
 import { ProductSeoTab } from "@/features/admin/products/components/editor/product-seo-tab";
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
-import { buildAdminProductSeoPath } from "@/features/admin/products/navigation";
 import { listSeoSuggestionHistory } from "@/features/ai-assistance/queries";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
@@ -48,8 +47,6 @@ export default async function ProductDetailSeoPage({
         pageTitle: "SEO produit",
         pageDescription:
           "Gerez le referencement, l'indexation, l'URL canonique et les apercus de partage du produit.",
-        currentLabel: "SEO",
-        currentHref: buildAdminProductSeoPath(editor.product.slug),
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={editor.product.id}

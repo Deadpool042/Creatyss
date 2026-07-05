@@ -12,7 +12,6 @@ import {
 import { ProductRelatedProductsTab } from "@/features/admin/products/components/editor/product-related-products-tab";
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
-import { buildAdminProductRelatedPath } from "@/features/admin/products/navigation";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export const dynamic = "force-dynamic";
@@ -47,8 +46,6 @@ export default async function ProductDetailRelatedPage({
         pageTitle: "Produits lies",
         pageDescription:
           "Gerez les relations merchandising bornees : related, cross-sell, up-sell, accessory et similar.",
-        currentLabel: "Produits lies",
-        currentHref: buildAdminProductRelatedPath(editor.product.slug),
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={editor.product.id}

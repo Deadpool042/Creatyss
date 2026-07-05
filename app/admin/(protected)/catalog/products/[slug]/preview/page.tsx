@@ -14,7 +14,6 @@ import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { Notice } from "@/components/shared/feedback";
 import { Button } from "@/components/ui/button";
 import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
-import { buildAdminProductPreviewPath } from "@/features/admin/products/navigation";
 import {
   getAdminProductPreviewBySlug,
   type AdminProductPreview,
@@ -83,8 +82,6 @@ export default async function ProductDetailPreviewPage({ params }: PreviewPagePr
         product,
         pageTitle: "Aperçu produit",
         pageDescription: "Affiche la fiche produit telle qu'elle apparaîtrait en vitrine publique.",
-        currentLabel: "Aperçu",
-        currentHref: buildAdminProductPreviewPath(product.slug),
       })}
       header={
         <AdminPageHeader

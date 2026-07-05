@@ -31,7 +31,6 @@ import {
 import {
   ADMIN_PRODUCTS_CREATE_PATH,
   buildAdminProductBreadcrumbs,
-  buildAdminProductEditPath,
   ADMIN_PRODUCTS_LIST_PATH,
   ADMIN_PRODUCTS_TRASH_PATH,
 } from "@/features/admin/products/navigation";
@@ -193,8 +192,6 @@ export default async function ProductDetailEditPage({
         product: editor.product,
         pageTitle: editor.product.name,
         pageDescription: PRODUCT_EDITOR_PAGE_COPY.description,
-        currentLabel: "Edition",
-        currentHref: buildAdminProductEditPath(editor.product.slug),
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={editor.product.id}

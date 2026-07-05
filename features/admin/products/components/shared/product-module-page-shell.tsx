@@ -15,8 +15,6 @@ type ProductModulePageShellConfig = {
   };
   pageTitle: string;
   pageDescription: string;
-  currentLabel: string;
-  currentHref: string;
   topbarAction?: ReactNode;
   headerActions?: ReactNode;
 };
@@ -49,8 +47,6 @@ export function getProductModulePageShellProps({
   product,
   pageTitle: _pageTitle,
   pageDescription: _pageDescription,
-  currentLabel: _currentLabel,
-  currentHref: _currentHref,
   topbarAction,
   headerActions,
 }: ProductModulePageShellConfig): ProductModulePageShellProps {

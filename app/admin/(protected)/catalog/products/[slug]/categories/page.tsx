@@ -17,7 +17,6 @@ import { getProductModulePageShellProps } from "@/features/admin/products/compon
 import { PRODUCT_CREATE_PAGE_COPY } from "@/features/admin/products/config";
 import {
   ADMIN_PRODUCTS_CREATE_PATH,
-  buildAdminProductCategoriesPath,
 } from "@/features/admin/products/navigation";
 
 export const dynamic = "force-dynamic";
@@ -43,8 +42,6 @@ export default async function ProductDetailCategoriesPage({
         pageTitle: "Rattachements categories",
         pageDescription:
           "Gerez la categorie principale et les rattachements taxonomiques du produit sans replier cette responsabilite dans le coeur produit.",
-        currentLabel: "Categories",
-        currentHref: buildAdminProductCategoriesPath(editor.product.slug),
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={editor.product.id}
