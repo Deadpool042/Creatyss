@@ -3,13 +3,12 @@
  *
  * Agrège l'état éditorial de la boutique pour le cockpit content/overview.
  *
- * Données réelles : blog (listAdminBlogPosts disponible).
- * Données mockées : homepage, pages, SEO — domaines définis dans le schéma
- * Prisma et la doctrine (docs/domains/optional/) mais sans admin-UI finalisé.
- * Les mocks sont explicitement labellisés MOCK dans le code pour faciliter
- * la migration vers de vraies queries lors de l'activation de ces domaines.
+ * Données réelles : blog, homepage, pages.
+ * Données partiellement estimées : SEO global, faute de lecture transverse consolidée.
  */
 import { listAdminBlogPosts } from "@/features/admin/blog/queries";
+import { getAdminHomepageEditorData } from "@/features/admin/homepage";
+import { getAdminPagesList } from "@/features/admin/pages";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -47,11 +46,11 @@ export type ContentOverviewStats = {
   draftPosts: number;
   recentPosts: ContentRecentPost[];
 
-  // Homepage — mock (domaine homepage-editorial, Prisma activé mais admin UI à venir)
+  // Homepage — réel
   homepagePublished: boolean;
   homepageSectionsCount: number;
 
-  // Pages — mock (domaine pages, Prisma activé mais admin UI à venir)
+  // Pages — réel
   totalPages: number;
   publishedPages: number;
 
@@ -114,19 +113,41 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
       hasContent: p.hasContent,
     }));
 
-  // ── Homepage MOCK ────────────────────────────────────────────────────────
-  // Domaine : homepage-editorial (docs/domains/optional/homepage-editorial.md)
-  // Prisma : prisma/optional/homepage.prisma — HomepageSection, etc.
-  // Admin UI : à implémenter (content/homepage/page.tsx existant mais basique)
-  const homepagePublished: boolean = false; // MOCK — pas encore publié
-  const homepageSectionsCount: number = 3; // MOCK — sections configurées en dev
+  // ── Homepage réelle ──────────────────────────────────────────────────────
+  let homepagePublished = false;
+  let homepageSectionsCount = 0;
 
-  // ── Pages MOCK ───────────────────────────────────────────────────────────
-  // Domaine : pages (docs/domains/optional/pages.md)
-  // Prisma : prisma/core/content/pages.prisma — Page, PageSection, PageBlock
-  // Admin UI : content/pages — non implémenté
-  const totalPages: number = 4; // MOCK — pages prévues (CGV, À propos, FAQ, Contact)
-  const publishedPages: number = 0; // MOCK — aucune publiée
+  try {
+    const homepageData = await getAdminHomepageEditorData();
+    if (homepageData !== null) {
+      const { homepage } = homepageData;
+      homepagePublished = homepage.status === "ACTIVE";
+      homepageSectionsCount = [
+        homepage.heroTitle,
+        homepage.editorialTitle,
+        homepage.featuredProducts.length > 0 ? "products" : null,
+        homepage.featuredCategories.length > 0 ? "categories" : null,
+        homepage.featuredBlogPosts.length > 0 ? "blog" : null,
+      ].filter((value) => {
+        if (typeof value === "string") return value.trim().length > 0;
+        return Boolean(value);
+      }).length;
+    }
+  } catch {
+    // degradation gracieuse
+  }
+
+  // ── Pages réelles ────────────────────────────────────────────────────────
+  let totalPages = 0;
+  let publishedPages = 0;
+
+  try {
+    const pages = await getAdminPagesList();
+    totalPages = pages.length;
+    publishedPages = pages.filter((page) => page.status === "ACTIVE").length;
+  } catch {
+    // degradation gracieuse
+  }
 
   // ── SEO MOCK ─────────────────────────────────────────────────────────────
   // Domaine : seo cross-cutting (docs/architecture/)
@@ -147,7 +168,7 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
       toneClassName: homepagePublished
         ? "text-feedback-success-foreground"
         : "text-feedback-warning-foreground",
-      isMock: true,
+      isMock: false,
     },
     {
       key: "pages",
@@ -158,10 +179,8 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
           : `${publishedPages} publiée${publishedPages > 1 ? "s" : ""} sur ${totalPages}`,
       progress: totalPages === 0 ? 0 : Math.round((publishedPages / totalPages) * 100),
       toneClassName:
-        publishedPages === 0
-          ? "text-muted-foreground"
-          : "text-feedback-success-foreground",
-      isMock: true,
+        publishedPages === 0 ? "text-muted-foreground" : "text-feedback-success-foreground",
+      isMock: false,
     },
     {
       key: "seo",
@@ -195,10 +214,9 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
     signals.push({
       key: "homepage_draft",
       label: "Page d'accueil non publiée",
-      detail:
-        "La boutique est visible mais sans page d'accueil éditoriale. Finaliser et publier.",
+      detail: "La boutique est visible mais sans page d'accueil éditoriale. Finaliser et publier.",
       tone: "warning",
-      isMock: true,
+      isMock: false,
     });
   }
 
@@ -208,7 +226,7 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
       label: "Aucune page légale publiée",
       detail: "CGV, Mentions légales, Politique de confidentialité — obligatoires avant lancement.",
       tone: "error",
-      isMock: true,
+      isMock: false,
     });
   }
 

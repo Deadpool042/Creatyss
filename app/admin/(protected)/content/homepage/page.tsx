@@ -6,6 +6,7 @@ import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { getUploadsPublicPath } from "@/core/uploads";
+import { ContentRouteNav } from "@/features/admin/content/components/content-route-nav";
 import {
   createHomepageAction,
   getAdminHomepageEditorData,
@@ -74,10 +75,11 @@ export default async function AdminHomepagePage({ searchParams }: AdminHomepageP
         title="Édition de la page d'accueil"
         breadcrumbs={[
           { label: "Admin", href: "/admin" },
-          { label: "Contenu" },
+          { label: "Contenu", href: "/admin/content/overview" },
           { label: "Accueil" },
         ]}
         contentPreset="detail"
+        showTitleInContent={false}
         header={
           <AdminPageHeader
             mobileHidden
@@ -87,6 +89,7 @@ export default async function AdminHomepagePage({ searchParams }: AdminHomepageP
           />
         }
       >
+        <ContentRouteNav />
         {explicitErrorMessage ? <Notice tone="alert">{explicitErrorMessage}</Notice> : null}
         <Notice tone="note">
           Aucune page d&apos;accueil n&apos;existe encore pour cette boutique. Vous pouvez créer la
@@ -123,10 +126,11 @@ export default async function AdminHomepagePage({ searchParams }: AdminHomepageP
       title="Édition de la page d'accueil"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
-        { label: "Contenu" },
+        { label: "Contenu", href: "/admin/content/overview" },
         { label: "Accueil" },
       ]}
       contentPreset="detail"
+      showTitleInContent={false}
       header={
         <AdminPageHeader
           mobileHidden
@@ -136,6 +140,7 @@ export default async function AdminHomepagePage({ searchParams }: AdminHomepageP
         />
       }
     >
+      <ContentRouteNav />
       {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {explicitErrorMessage ? <Notice tone="alert">{explicitErrorMessage}</Notice> : null}
 

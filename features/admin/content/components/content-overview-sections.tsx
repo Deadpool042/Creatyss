@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   AlertTriangle,
   ArrowRight,
+  BadgeCheck,
   CheckCircle2,
   FileText,
   Globe,
@@ -14,39 +15,39 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import {
+  ADMIN_CONTENT_BLOG_PATH,
+  ADMIN_CONTENT_HOMEPAGE_PATH,
+  ADMIN_CONTENT_PAGES_PATH,
+  ADMIN_CONTENT_SEO_PATH,
+} from "@/features/admin/content/shared/admin-content-routes";
 import type { ContentOverviewStats } from "@/features/admin/content/queries/get-content-overview-stats.query";
-
-// ── Paths ──────────────────────────────────────────────────────────────────
-const BLOG_PATH = "/admin/content/blog";
-const HOMEPAGE_PATH = "/admin/content/homepage";
-const PAGES_PATH = "/admin/content/pages";
-const SEO_PATH = "/admin/content/seo";
 
 // ── Quick links ────────────────────────────────────────────────────────────
 const QUICK_LINKS = [
   {
-    href: BLOG_PATH,
+    href: ADMIN_CONTENT_BLOG_PATH,
     title: "Blog",
     description: "Écrire, planifier et publier les articles éditoriaux de la boutique.",
     icon: Newspaper,
     available: true,
   },
   {
-    href: HOMEPAGE_PATH,
+    href: ADMIN_CONTENT_HOMEPAGE_PATH,
     title: "Page d'accueil",
     description: "Composer les sections, produits mis en avant et appels à l'action.",
     icon: LayoutTemplate,
     available: true,
   },
   {
-    href: PAGES_PATH,
+    href: ADMIN_CONTENT_PAGES_PATH,
     title: "Pages",
     description: "CGV, Mentions légales, À propos, FAQ — pages éditoriales statiques.",
     icon: FileText,
-    available: false, // admin UI à venir
+    available: true,
   },
   {
-    href: SEO_PATH,
+    href: ADMIN_CONTENT_SEO_PATH,
     title: "SEO",
     description: "Métadonnées globales, titres, descriptions et plan de site.",
     icon: Search,
@@ -180,9 +181,10 @@ function SignalItem({
 // ── Main component ─────────────────────────────────────────────────────────
 type ContentOverviewSectionsProps = {
   stats: ContentOverviewStats;
+  canPublishBlog: boolean;
 };
 
-export function ContentOverviewSections({ stats }: ContentOverviewSectionsProps) {
+export function ContentOverviewSections({ stats, canPublishBlog }: ContentOverviewSectionsProps) {
   const heroMetrics = [
     {
       label: "Articles blog",
@@ -196,13 +198,13 @@ export function ContentOverviewSections({ stats }: ContentOverviewSectionsProps)
     {
       label: "Page d'accueil",
       value: stats.homepagePublished ? "Publiée" : "Brouillon",
-      hint: `${stats.homepageSectionsCount} section${stats.homepageSectionsCount > 1 ? "s" : ""} configurée${stats.homepageSectionsCount > 1 ? "s" : ""} · mock`,
+      hint: `${stats.homepageSectionsCount} section${stats.homepageSectionsCount > 1 ? "s" : ""} configurée${stats.homepageSectionsCount > 1 ? "s" : ""}`,
       accentClassName: stats.homepagePublished ? "bg-emerald-50/60" : "bg-amber-50/60",
     },
     {
       label: "Pages légales",
       value: `${stats.publishedPages}/${stats.totalPages}`,
-      hint: "CGV, Mentions légales, FAQ · mock",
+      hint: "CGV, Mentions légales, FAQ et pages éditoriales",
       accentClassName:
         stats.publishedPages === 0 && stats.totalPages > 0 ? "bg-red-50/60" : undefined,
     },
@@ -232,6 +234,28 @@ export function ContentOverviewSections({ stats }: ContentOverviewSectionsProps)
       <div className="mt-6 grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.8fr)]">
         {/* Colonne principale */}
         <div className="flex flex-col gap-4">
+          <section className="rounded-2xl border border-surface-border/60 bg-[linear-gradient(145deg,color-mix(in_srgb,var(--surface-panel)_92%,white)_0%,color-mix(in_srgb,var(--surface-panel)_72%,var(--shell-surface))_100%)] p-5 shadow-card">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+                  Hub contenu
+                </p>
+                <h2 className="mt-1 text-xl font-semibold tracking-tight text-foreground">
+                  Blog, pages, accueil et SEO dans un même domaine
+                </h2>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                  Le domaine contenu s’utilise désormais comme un tout : pilotage, surfaces
+                  éditoriales et optimisation storefront.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 rounded-full border border-surface-border/60 bg-surface-panel/70 px-3 py-1.5 text-xs font-medium text-foreground">
+                <BadgeCheck className="size-3.5 text-muted-foreground" />
+                Blog storefront : {canPublishBlog ? "publication active" : "niveau brouillon"}
+              </div>
+            </div>
+          </section>
+
           {/* Articles récents */}
           <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
             <div className="mb-4 flex items-center justify-between gap-3">
@@ -244,7 +268,7 @@ export function ContentOverviewSections({ stats }: ContentOverviewSectionsProps)
                 </h2>
               </div>
               <Link
-                href={BLOG_PATH}
+                href={ADMIN_CONTENT_BLOG_PATH}
                 className="inline-flex items-center gap-1 rounded-full border border-surface-border/60 bg-surface-panel px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-surface-panel-soft hover:text-foreground"
               >
                 Tous les articles
@@ -260,7 +284,7 @@ export function ContentOverviewSections({ stats }: ContentOverviewSectionsProps)
                   Rédigez le premier article pour démarrer le blog éditorial.
                 </p>
                 <Link
-                  href={`${BLOG_PATH}/new`}
+                  href={`${ADMIN_CONTENT_BLOG_PATH}/new`}
                   className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
                 >
                   <Sparkles className="size-3.5" />
@@ -409,9 +433,8 @@ export function ContentOverviewSections({ stats }: ContentOverviewSectionsProps)
                   Données partiellement mockées
                 </p>
                 <p className="mt-0.5 text-[11px] leading-5 text-muted-foreground/70">
-                  Blog : données réelles. Homepage, pages, SEO : indicateurs
-                  estimés — seront remplacés par des vraies queries lors de
-                  l'activation de ces domaines.
+                  Blog, pages et accueil : données réelles. SEO reste encore
+                  partiellement estimé faute de lecture transverse consolidée.
                 </p>
               </div>
             </div>

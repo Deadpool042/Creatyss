@@ -4,11 +4,13 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/shared/feedback";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { cn } from "@/lib/utils";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { listAdminBlogPosts } from "@/features/admin/blog";
 import { BlogPostsPanel } from "@/features/admin/blog/components/blog-posts-panel";
+import { ContentRouteNav } from "@/features/admin/content/components/content-route-nav";
 
 export const dynamic = "force-dynamic";
 
@@ -61,6 +63,13 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={
+        <AdminPageHeader
+          eyebrow="Contenu"
+          title="Articles"
+          description="Pilotage éditorial du blog, publication storefront et suivi des brouillons."
+        />
+      }
       topbarAction={
         <Button asChild size="sm" className="rounded-full gap-1.5">
           <Link href="/admin/content/blog/new">
@@ -70,11 +79,26 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
         </Button>
       }
     >
+      <ContentRouteNav />
       {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
       {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
 
       {blogPosts.length > 0 ? (
         <>
+          <div className="rounded-2xl border border-surface-border/60 bg-[linear-gradient(145deg,color-mix(in_srgb,var(--surface-panel)_92%,white)_0%,color-mix(in_srgb,var(--surface-panel)_72%,var(--shell-surface))_100%)] px-4 py-3 shadow-card">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+              Niveau blog
+            </p>
+            <p className="mt-1 text-sm font-medium text-foreground">
+              {canPublishBlog ? "Publication storefront active" : "Mode brouillon uniquement"}
+            </p>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">
+              {canPublishBlog
+                ? "Les articles publiés peuvent alimenter le storefront."
+                : "Le blog reste éditable côté admin, sans diffusion publique tant que le niveau `publish` n’est pas actif."}
+            </p>
+          </div>
+
           {/* Stats */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {[
@@ -112,11 +136,22 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
           <BlogPostsPanel posts={blogPosts} canPublishBlog={canPublishBlog} />
         </>
       ) : (
-        <AdminEmptyState
-          eyebrow="Aucun article"
-          title="Le blog ne contient pas encore d'article"
-          description="Créez un premier article pour alimenter la partie éditoriale de la boutique."
-        />
+        <>
+          <div className="rounded-2xl border border-surface-border/60 bg-[linear-gradient(145deg,color-mix(in_srgb,var(--surface-panel)_92%,white)_0%,color-mix(in_srgb,var(--surface-panel)_72%,var(--shell-surface))_100%)] px-4 py-3 shadow-card">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+              Niveau blog
+            </p>
+            <p className="mt-1 text-sm font-medium text-foreground">
+              {canPublishBlog ? "Publication storefront active" : "Mode brouillon uniquement"}
+            </p>
+          </div>
+
+          <AdminEmptyState
+            eyebrow="Aucun article"
+            title="Le blog ne contient pas encore d'article"
+            description="Créez un premier article pour alimenter la partie éditoriale de la boutique."
+          />
+        </>
       )}
     </AdminPageShell>
   );

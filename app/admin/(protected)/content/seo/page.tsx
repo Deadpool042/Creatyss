@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, FileText, Globe, Package, Tag } from "lucide-
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { ADMIN_PRODUCTS_LIST_PATH } from "@/features/admin/products/navigation";
 import { listAdminBlogPosts } from "@/features/admin/blog";
+import { ContentRouteNav } from "@/features/admin/content/components/content-route-nav";
 import { listAdminProducts } from "@/features/admin/products/list/queries";
 import { getDefaultProductsListParams } from "@/app/admin/(protected)/catalog/products/products-list-params";
 
@@ -80,6 +81,7 @@ export default async function AdminContentSeoPage() {
       showTitleInContent={false}
     >
       <div className="mx-auto w-full max-w-4xl">
+        <ContentRouteNav className="mb-6" />
         {/* ── Hero score ─────────────────────────────────────────────── */}
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
