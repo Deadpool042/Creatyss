@@ -15,6 +15,7 @@ export default async function AdminCommerceCustomersSettingsPage() {
       title="Clients"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
+        { label: "Commerce", href: "/admin/commerce/overview" },
         { label: "Clients", href: ADMIN_CUSTOMERS_LIST_PATH },
         { label: "Configuration" },
       ]}

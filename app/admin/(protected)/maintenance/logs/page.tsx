@@ -1,6 +1,7 @@
 import { AlertCircle, CheckCircle2, Clock, Loader2, XCircle } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { MaintenanceRouteNav } from "@/features/admin/maintenance/components/maintenance-route-nav";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
 import { listAdminJobs, type AdminJobSummary } from "@/features/admin/maintenance/queries/list-admin-jobs.query";
@@ -67,6 +68,7 @@ export default async function AdminMaintenanceLogsPage() {
       showTitleInContent={false}
       contentPreset="table"
     >
+      <MaintenanceRouteNav />
       {/* Stats */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {heroStats.map((s) => (

@@ -17,6 +17,7 @@ export default async function AdminCommercePaymentsSettingsPage() {
       title="Paiements"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
+        { label: "Commerce", href: "/admin/commerce/overview" },
         { label: "Paiements", href: "/admin/commerce/payments" },
         { label: "Configuration" },
       ]}
