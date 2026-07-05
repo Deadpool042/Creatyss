@@ -2,6 +2,7 @@ import { Percent } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
+import { CommerceRouteNav } from "@/features/admin/commerce/components/commerce-route-nav";
 import { isTaxationFeatureActive } from "@/features/admin/commerce/taxation/queries/is-taxation-feature-active.query";
 import { listAdminTaxRules } from "@/features/admin/commerce/taxation/queries/list-admin-tax-rules.query";
 import { AdminTaxRulesList } from "@/features/admin/commerce/taxation/components/admin-tax-rules-list";
@@ -45,6 +46,7 @@ export default async function AdminCommerceTaxationPage({
         showTitleInContent={false}
         contentPreset="table"
       >
+        <CommerceRouteNav />
         <AdminFeatureDisabledState
           capabilityName="TVA"
           description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur commerce.taxation pour ouvrir les règles de TVA."
@@ -68,6 +70,7 @@ export default async function AdminCommerceTaxationPage({
       showTitleInContent={false}
       contentPreset="table"
     >
+      <CommerceRouteNav />
       <div className="grid gap-6">
         {resolvedSearchParams.tax_created ? (
           <p className="rounded-lg border border-feedback-success-border bg-feedback-success-surface px-3 py-2 text-sm text-feedback-success-foreground">
