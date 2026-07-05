@@ -75,7 +75,6 @@ export async function ProductsListPanel({
         { label: "Produits" },
       ]}
       contentPreset="table"
-      showBreadcrumbsInContent={false}
       scrollBehavior="external"
     >
       <ProductTableProvider

@@ -3,6 +3,7 @@ export { parseProductsPageParams } from "./parse-products-page-params";
 export {
   buildAdminProductAvailabilityPath,
   ADMIN_PRODUCTS_CREATE_PATH,
+  buildAdminProductBreadcrumbs,
   buildAdminProductCategoriesPath,
   buildAdminProductCharacteristicsPath,
   ADMIN_PRODUCTS_LIST_PATH,

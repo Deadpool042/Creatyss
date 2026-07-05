@@ -4,7 +4,7 @@ import type { AdminPageShell } from "@/components/admin/layout/admin-page-shell"
 import { PRODUCT_EDITOR_NAV_COPY } from "@/features/admin/products/config";
 import {
   ADMIN_PRODUCTS_LIST_PATH,
-  buildAdminProductEditPath,
+  buildAdminProductBreadcrumbs,
 } from "@/features/admin/products/navigation";
 
 type ProductModulePageShellConfig = {
@@ -49,7 +49,7 @@ export function getProductModulePageShellProps({
   product,
   pageTitle: _pageTitle,
   pageDescription: _pageDescription,
-  currentLabel,
+  currentLabel: _currentLabel,
   currentHref: _currentHref,
   topbarAction,
   headerActions,
@@ -70,14 +70,7 @@ export function getProductModulePageShellProps({
     scrollBehavior: "page",
     contentPreset: "detail",
     contentClassName: PRODUCT_MODULE_PAGE_CONTENT_CLASSNAME,
-    breadcrumbs: [
-      { label: "Admin", href: "/admin" },
-      { label: "Catalogue", href: "/admin/catalog/overview" },
-      { label: "Produits", href: ADMIN_PRODUCTS_LIST_PATH },
-      { label: product.name, href: buildAdminProductEditPath(product.slug) },
-      { label: currentLabel },
-    ],
-    showBreadcrumbsInContent: false,
+    breadcrumbs: buildAdminProductBreadcrumbs(product.name),
     showTitleInContent: false,
   };
 }

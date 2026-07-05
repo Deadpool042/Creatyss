@@ -1,3 +1,5 @@
+import type { AppBreadcrumbItem } from "@/components/shared";
+
 export const ADMIN_PRODUCTS_LIST_PATH = "/admin/catalog/products";
 export const ADMIN_PRODUCTS_CREATE_PATH = `${ADMIN_PRODUCTS_LIST_PATH}/new`;
 export const ADMIN_PRODUCTS_TRASH_PATH = `${ADMIN_PRODUCTS_LIST_PATH}?view=trash`;
@@ -48,4 +50,15 @@ export function buildAdminProductCharacteristicsPath(slug: string): string {
 
 export function buildAdminProductRelatedPath(slug: string): string {
   return `${buildAdminProductPath(slug)}/related`;
+}
+
+export function buildAdminProductBreadcrumbs(
+  productName: string
+): ReadonlyArray<AppBreadcrumbItem> {
+  return [
+    { label: "Admin", href: "/admin" },
+    { label: "Catalogue", href: "/admin/catalog/overview" },
+    { label: "Produits", href: ADMIN_PRODUCTS_LIST_PATH },
+    { label: productName },
+  ];
 }
