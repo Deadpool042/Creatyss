@@ -5,6 +5,7 @@ import {
   ADMIN_CONTENT_OVERVIEW_PATH,
   ADMIN_CONTENT_PAGES_PATH,
   ADMIN_CONTENT_SEO_PATH,
+  ADMIN_CONTENT_SETTINGS_PATH,
 } from "@/features/admin/content/shared/admin-content-routes";
 
 const CONTENT_ROUTE_NAV_ITEMS = [
@@ -13,6 +14,7 @@ const CONTENT_ROUTE_NAV_ITEMS = [
   { key: "pages", label: "Pages", href: ADMIN_CONTENT_PAGES_PATH },
   { key: "homepage", label: "Accueil", href: ADMIN_CONTENT_HOMEPAGE_PATH },
   { key: "seo", label: "SEO", href: ADMIN_CONTENT_SEO_PATH },
+  { key: "settings", label: "Configuration", href: ADMIN_CONTENT_SETTINGS_PATH },
 ] as const;
 
 export function ContentRouteNav({ className }: Readonly<{ className?: string }>) {
