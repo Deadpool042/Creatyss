@@ -34,7 +34,7 @@ Chantiers hors séquence H1-H4 de valeur métier, pouvant avancer en parallèle 
 | UX admin/storefront               | Navigation admin et complétude storefront                                     | Terminé — navigation admin fusionnée, audit storefront livré (1 bug corrigé)                                                                                                     |
 | Gouvernance & réglages admin      | Lisibilité gouvernance fonctionnalités, réglages métier manquants             | Terminé — 4 lots livrés (lisibilité niveaux, clarification nav, livraison zones/méthodes, statut paiement carte)                                                                 |
 | Audit design admin                | Lisibilité et responsive du layout admin (dashboard, listes, détail commande) | Terminé — 5 micro-lots livrés (dashboard aplati, duplication liste/overview corrigée, réglages vérifiés conformes, détail commande en onglets, grilles non responsive corrigées) |
-| Refonte composition admin (macOS) | Toolbar unifiée, patterns de liste, navigation réglages — parité WooCommerce  | En cours — lot pilote 1 (toolbar + liste produits) démarré                                                                                                                       |
+| Refonte composition admin (macOS) | Toolbar unifiée, patterns de liste, navigation réglages — parité WooCommerce  | Terminé — 10 lots livrés (2026-07-05) : toolbar unifiée, listes commandes/catégories, hub settings, dashboard, reflows mobiles, discounts et blog outillés                       |
 
 - [UX — Navigation admin et complétude storefront](./ux-admin-storefront/README.md)
 - [Gouvernance des fonctionnalités et complétude des réglages admin](./gouvernance-reglages-admin/README.md)
