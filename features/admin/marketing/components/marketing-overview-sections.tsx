@@ -6,22 +6,14 @@
  *            automations (référentiel admin, exécution à venir).
  */
 import Link from "next/link";
-import {
-  ArrowRight,
-  Mail,
-  Megaphone,
-  Percent,
-  Tag,
-  TrendingUp,
-  Users,
-  Zap,
-} from "lucide-react";
+import { ArrowRight, Mail, Megaphone, Percent, Tag, TrendingUp, Users, Zap } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 const DISCOUNTS_PATH = "/admin/marketing/discounts";
 const NEWSLETTER_PATH = "/admin/marketing/newsletter";
 const AUTOMATIONS_PATH = "/admin/marketing/automations";
+const MARKETING_SETTINGS_PATH = "/admin/marketing/settings";
 
 // ── Mock data (labellisé explicitement) ──────────────────────────────────
 
@@ -233,9 +225,7 @@ export function MarketingOverviewSections() {
                   {MOCK_AUTOMATIONS.active} flux actif
                   {MOCK_AUTOMATIONS.active > 1 ? "s" : ""}
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  Panier abandonné · Email post-achat
-                </p>
+                <p className="text-xs text-muted-foreground">Panier abandonné · Email post-achat</p>
               </div>
               <span className="shrink-0 rounded-full bg-feedback-success-surface/60 px-2 py-1 text-[11px] font-medium text-feedback-success-foreground">
                 Actif
@@ -259,21 +249,21 @@ export function MarketingOverviewSections() {
               Module marketing
             </p>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Codes promo, newsletter et automations. Référentiel admin
-              disponible ; exécution métier des automations encore hors lot.
+              Codes promo, newsletter et automations. Référentiel admin disponible ; exécution
+              métier des automations encore hors lot.
             </p>
           </div>
+          <Link
+            href={MARKETING_SETTINGS_PATH}
+            className="mt-4 inline-flex items-center gap-1 self-start rounded-full border border-surface-border/60 bg-surface-panel px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-surface-panel-soft hover:text-foreground"
+          >
+            Ouvrir la configuration marketing <ArrowRight className="size-3" />
+          </Link>
           <p className="mt-4 text-[11px] leading-5 text-muted-foreground/50">
-            Données de cette page : <em>mocks de démonstration</em>.
-            Les vraies queries seront connectées à{" "}
-            <code className="rounded bg-surface-subtle px-1 font-mono">
-              Discount
-            </code>
-            ,{" "}
-            <code className="rounded bg-surface-subtle px-1 font-mono">
-              NewsletterCampaign
-            </code>{" "}
-            et au référentiel `Automation` déjà présent en base.
+            Données de cette page : <em>mocks de démonstration</em>. Les vraies queries seront
+            connectées à <code className="rounded bg-surface-subtle px-1 font-mono">Discount</code>,{" "}
+            <code className="rounded bg-surface-subtle px-1 font-mono">NewsletterCampaign</code> et
+            au référentiel `Automation` déjà présent en base.
           </p>
         </section>
       </div>
