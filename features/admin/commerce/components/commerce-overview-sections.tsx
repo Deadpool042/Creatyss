@@ -7,6 +7,8 @@ import {
   CreditCard,
   Info,
   Package,
+  Percent,
+  Settings2,
   ShoppingBag,
   Truck,
   Users,
@@ -20,6 +22,8 @@ const COMMERCE_ORDERS_PATH = "/admin/commerce/orders";
 const COMMERCE_CUSTOMERS_PATH = "/admin/commerce/customers";
 const COMMERCE_PAYMENTS_PATH = "/admin/commerce/payments";
 const COMMERCE_SHIPPING_PATH = "/admin/commerce/shipping";
+const COMMERCE_TAXATION_PATH = "/admin/commerce/taxation";
+const COMMERCE_SETTINGS_PATH = "/admin/commerce/settings";
 
 // ── Types locaux ───────────────────────────────────────────────────────────
 type CommerceHeroMetric = {
@@ -62,6 +66,18 @@ const QUICK_LINKS: ReadonlyArray<CommerceQuickLink> = [
     description: "Gérer les expéditions, les transporteurs et les numéros de suivi.",
     icon: Truck,
   },
+  {
+    href: COMMERCE_TAXATION_PATH,
+    title: "TVA",
+    description: "Configurer les règles de taxation par territoire de livraison.",
+    icon: Percent,
+  },
+  {
+    href: COMMERCE_SETTINGS_PATH,
+    title: "Configuration",
+    description: "Centraliser les réglages paiements, livraison, TVA et clients.",
+    icon: Settings2,
+  },
 ];
 
 function formatRevenue(amount: number): string {
@@ -100,8 +116,7 @@ function SignalItem({
   detail: string;
   tone: "warning" | "error" | "info";
 }) {
-  const Icon =
-    tone === "error" ? AlertTriangle : tone === "warning" ? Clock : Info;
+  const Icon = tone === "error" ? AlertTriangle : tone === "warning" ? Clock : Info;
 
   const toneClass =
     tone === "error"
@@ -309,9 +324,7 @@ export function CommerceOverviewSections({ stats }: CommerceOverviewSectionsProp
             {stats.signals.length === 0 ? (
               <div className="flex items-center gap-2.5 rounded-xl bg-feedback-success-surface/40 px-3 py-2.5">
                 <CheckCircle2 className="size-4 shrink-0 text-feedback-success-foreground" />
-                <p className="text-[13px] text-feedback-success-foreground">
-                  Aucune alerte active
-                </p>
+                <p className="text-[13px] text-feedback-success-foreground">Aucune alerte active</p>
               </div>
             ) : (
               <div className="divide-y divide-surface-border/30">
@@ -341,9 +354,13 @@ export function CommerceOverviewSections({ stats }: CommerceOverviewSectionsProp
                     ["cancelled", "Annulées"],
                   ] as [string, string][]
                 )
-                  .filter(([key]) => (stats.ordersByStatus[key as keyof typeof stats.ordersByStatus] ?? 0) > 0)
+                  .filter(
+                    ([key]) =>
+                      (stats.ordersByStatus[key as keyof typeof stats.ordersByStatus] ?? 0) > 0
+                  )
                   .map(([key, label]) => {
-                    const count = stats.ordersByStatus[key as keyof typeof stats.ordersByStatus] ?? 0;
+                    const count =
+                      stats.ordersByStatus[key as keyof typeof stats.ordersByStatus] ?? 0;
                     const pct = Math.round((count / stats.totalOrders) * 100);
                     return (
                       <div key={key} className="flex items-center gap-3">
