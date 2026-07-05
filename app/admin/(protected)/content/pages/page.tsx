@@ -1,5 +1,6 @@
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { ContentRouteNav } from "@/features/admin/content/components/content-route-nav";
 import { PagesEmptyState, PagesList, getAdminPagesList } from "@/features/admin/pages";
 
 export const dynamic = "force-dynamic";
@@ -17,6 +18,7 @@ export default async function AdminContentPagesPage() {
         { label: "Pages" },
       ]}
       contentPreset="table"
+      showTitleInContent={false}
       header={
         <AdminPageHeader
           eyebrow="Contenu"
@@ -25,6 +27,7 @@ export default async function AdminContentPagesPage() {
         />
       }
     >
+      <ContentRouteNav />
       {pages.length > 0 ? <PagesList pages={pages} /> : <PagesEmptyState />}
     </AdminPageShell>
   );

@@ -12,6 +12,7 @@ import {
   getAdminPageDetail,
   type AdminPageStatus,
 } from "@/features/admin/pages";
+import { ContentRouteNav } from "@/features/admin/content/components/content-route-nav";
 
 const STATUS_VARIANTS: Record<AdminPageStatus, AdminStatusVariant> = {
   DRAFT: "draft",
@@ -49,6 +50,7 @@ export default async function AdminContentPageDetailPage({
       ]}
       contentPreset="detail"
     >
+      <ContentRouteNav />
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2">

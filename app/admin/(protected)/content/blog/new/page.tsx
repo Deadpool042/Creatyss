@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { getUploadsPublicPath } from "@/core/uploads";
 import { BlogImagePickerField } from "@/features/admin/blog";
 import { createBlogPostAction } from "@/features/admin/blog/actions/create-blog-post-action";
+import { ContentRouteNav } from "@/features/admin/content/components/content-route-nav";
 import { listAdminMediaAssets } from "@/features/admin/media";
 
 async function handleCreateBlogPost(formData: FormData): Promise<void> {
@@ -50,8 +51,10 @@ export default async function NewAdminBlogPostPage({ searchParams }: NewAdminBlo
         { label: "Nouvel article" },
       ]}
       contentPreset="form"
+      showTitleInContent={false}
       header={<AdminPageHeader eyebrow="Blog" title="Nouvel article" description="Création d'un article de blog." />}
     >
+      <ContentRouteNav />
       {errorMessage !== null && (
         <Notice tone="alert">{errorMessage}</Notice>
       )}

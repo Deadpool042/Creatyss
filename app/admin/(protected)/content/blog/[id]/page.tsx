@@ -19,6 +19,7 @@ import { updateBlogPostAction } from "@/features/admin/blog/actions/update-blog-
 import { BlogPostTranslationsForm } from "@/features/admin/blog/components/blog-post-translations-form";
 import { getAdminBlogPostDetail } from "@/features/admin/blog/queries/get-admin-blog-post-detail.query";
 import { listBlogPostTranslations } from "@/features/admin/blog/queries/list-blog-post-translations.query";
+import { ContentRouteNav } from "@/features/admin/content/components/content-route-nav";
 import { listAdminMediaAssets } from "@/features/admin/media";
 
 async function handleUpdateBlogPost(formData: FormData): Promise<void> {
@@ -91,6 +92,7 @@ export default async function EditAdminBlogPostPage({
         { label: post.title },
       ]}
       contentPreset="form"
+      showTitleInContent={false}
       header={
         <AdminPageHeader
           eyebrow="Blog"
@@ -99,6 +101,7 @@ export default async function EditAdminBlogPostPage({
         />
       }
     >
+      <ContentRouteNav />
       {errorMessage !== null && <Notice tone="alert">{errorMessage}</Notice>}
       <AdminFormSection>
         <form action={handleUpdateBlogPost} className="grid gap-4">
