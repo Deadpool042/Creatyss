@@ -53,6 +53,7 @@ export default async function AdminCommerceShippingSettingsPage({
         title="Livraison"
         breadcrumbs={[
           { label: "Admin", href: "/admin" },
+          { label: "Commerce", href: "/admin/commerce/overview" },
           { label: "Livraisons", href: "/admin/commerce/shipping" },
           { label: "Configuration" },
         ]}
@@ -77,6 +78,7 @@ export default async function AdminCommerceShippingSettingsPage({
       title="Livraison"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
+        { label: "Commerce", href: "/admin/commerce/overview" },
         { label: "Livraisons", href: "/admin/commerce/shipping" },
         { label: "Configuration" },
       ]}
