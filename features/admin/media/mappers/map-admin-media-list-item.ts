@@ -5,8 +5,14 @@ type MediaAssetListSource = {
   originalFilename: string;
   storageKey: string;
   publicUrl: string | null;
+  slug?: string | null;
+  title?: string | null;
+  altText?: string | null;
+  caption?: string | null;
+  description?: string | null;
   mimeType: string;
   createdAt: Date;
+  archivedAt?: Date | null;
   sizeBytes: number | null;
   widthPx: number | null;
   heightPx: number | null;
@@ -40,8 +46,14 @@ export function mapAdminMediaListItem(asset: MediaAssetListSource): AdminMediaLi
     }),
     filePath: asset.storageKey,
     previewUrl: normalizePreviewUrl(asset.publicUrl),
+    slug: asset.slug ?? null,
+    title: asset.title ?? null,
+    altText: asset.altText ?? null,
+    caption: asset.caption ?? null,
+    description: asset.description ?? null,
     mimeType: asset.mimeType,
     createdAt: asset.createdAt.toISOString(),
+    archivedAt: asset.archivedAt?.toISOString() ?? null,
     byteSize: asset.sizeBytes,
     imageWidth: asset.widthPx,
     imageHeight: asset.heightPx,
