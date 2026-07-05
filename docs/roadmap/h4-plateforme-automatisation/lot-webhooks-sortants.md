@@ -6,11 +6,11 @@ Terminé — 2026-07-05, branche `feature/platform-webhooks-delivery`. Sémantiq
 
 ## Objectif
 
-Implémenter la livraison webhook sortante avec signature HMAC et retry automatique. Le modèle `WebhookEndpoint`/`WebhookDelivery` est observé en Prisma et la page admin de lecture est observée, mais aucune livraison réelle n'est implémentée. La sémantique entrants vs sortants doit être tranchée avant ce lot.
+Implémenter la livraison webhook sortante avec signature HMAC et retry automatique. Le modèle `WebhookEndpoint`/`WebhookDelivery` était déjà observé en Prisma et la page admin de lecture existait ; le lot est désormais livré avec sémantique tranchée en sortants.
 
 ## Périmètre
 
-Proposition — non observé comme implémenté à ce jour :
+Livré et observé :
 
 - `prisma/optional/platform/webhooks.prisma` — modèles `WebhookEndpoint` et `WebhookDelivery` déjà posés (observés)
 - `features/admin/settings/webhooks/` — extension de la page lecture existante :
@@ -29,7 +29,7 @@ Proposition — non observé comme implémenté à ce jour :
 
 ## Dépendances
 
-- Clarification sémantique tranchée : le cadrage `docs/lots/2026-06-14-platform-webhooks-cadrage.md` documente l'écart entre la doctrine "webhooks entrants" et le modèle Prisma observé (`endpoints`/`deliveries` = sortants) — `architect-review` doit trancher avant toute implémentation
+- Clarification sémantique tranchée : `docs/lots/2026-07-05-platform-webhooks-semantique.md`
 - H1/H2 : catalogue et commandes stables pour définir les événements à émettre (ex. `order.created`, `order.shipped`)
 - Système de jobs existant pour la livraison asynchrone
 
@@ -41,7 +41,6 @@ Proposition — non observé comme implémenté à ce jour :
 
 ## Risques
 
-- Sémantique ambiguë : si la doctrine "entrants" est maintenue, le modèle actuel (`endpoints`/`deliveries`) décrit les sortants — un redesign Prisma serait nécessaire pour les entrants
 - Sécurité : le secret HMAC est stocké en clair en V1 (aucun service de chiffrement réversible n'existe dans le repo — le pattern `IntegrationCredential` observé est un hash one-way, inutilisable pour un secret à récupérer) ; chiffrement AES à cadrer dans un lot séparé
 - Retry sur endpoint mort : sans circuit-breaker, un endpoint en erreur permanente génère un volume de tentatives inutiles
 

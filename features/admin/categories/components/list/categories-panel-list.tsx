@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { AdminSplitListPane } from "@/components/admin/layout/admin-split-list-pane";
 import { AdminSplitOverviewItem } from "@/components/admin/layout/admin-split-overview-item";
 import { AdminSplitListItem } from "@/components/admin/layout/admin-split-list-item";
@@ -11,6 +13,7 @@ import { AdminPanelListControls } from "@/components/admin/layout/admin-panel-li
 import type { AdminCategoryCardItem, AdminCategoryStatus } from "@/features/admin/categories/list";
 import {
   ADMIN_CATEGORIES_LIST_PATH,
+  ADMIN_CATEGORIES_NEW_PATH,
   getAdminCategoryDetailPath,
   withAdminCategoryListParams,
 } from "@/features/admin/categories/shared/admin-categories-routes";
@@ -56,6 +59,14 @@ function CategoryThumbnail({ name, imageUrl }: { name: string; imageUrl: string 
   );
 }
 
+function formatProductsLabel(count: number) {
+  return `${count} produit${count > 1 ? "s" : ""}`;
+}
+
+function formatChildrenLabel(count: number) {
+  return `${count} sous-cat.${count > 1 ? "" : ""}`;
+}
+
 type CategoriesPanelListProps = {
   categories: AdminCategoryCardItem[];
 };
@@ -64,6 +75,9 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const overviewHref = `${ADMIN_CATEGORIES_LIST_PATH}/overview`;
+  const publishedCount = categories.filter((category) => category.status === "active").length;
+  const featuredCount = categories.filter((category) => category.isFeatured).length;
+  const linkedProductsCount = categories.reduce((sum, category) => sum + category.productCount, 0);
 
   const isOverviewActive = pathname === ADMIN_CATEGORIES_LIST_PATH || pathname === overviewHref;
   const activeSlug = isOverviewActive
@@ -99,16 +113,47 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
       controls={<AdminPanelListControls {...controlsProps} visibility="desktop" />}
       mobileControls={<AdminPanelListControls {...controlsProps} visibility="mobile" />}
       overview={
-        <AdminSplitOverviewItem
-          href={withAdminCategoryListParams(overviewHref, searchParams)}
-          active={isOverviewActive}
-          title={CATEGORY_LIST_COPY.splitOverviewTitle}
-          meta={
-            <Badge variant="secondary" className="w-fit shrink-0 px-1.5 py-0 text-[10px]">
-              {categories.length} catégorie{categories.length > 1 ? "s" : ""}
-            </Badge>
-          }
-        />
+        <div className="space-y-3">
+          <div className="rounded-[1.35rem] border border-surface-border/70 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface-panel)_92%,white)_0%,color-mix(in_srgb,var(--surface-panel)_74%,var(--shell-surface))_100%)] p-4 shadow-card">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 space-y-1">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  Lecture rapide
+                </p>
+                <p className="text-sm font-medium text-foreground">
+                  Structurez la navigation boutique avant d’entrer dans le détail.
+                </p>
+                <p className="text-xs leading-5 text-muted-foreground">
+                  Les catégories publiées, mises en avant et déjà reliées aux produits se lisent ici
+                  d’un coup d’œil.
+                </p>
+              </div>
+
+              <Button asChild size="sm" className="rounded-full">
+                <Link href={ADMIN_CATEGORIES_NEW_PATH}>Nouvelle</Link>
+              </Button>
+            </div>
+
+            <div className="mt-4 grid gap-2 sm:grid-cols-3">
+              <CategoryStatPill label="Publiées" value={publishedCount} />
+              <CategoryStatPill label="Mises en avant" value={featuredCount} />
+              <CategoryStatPill label="Produits reliés" value={linkedProductsCount} />
+            </div>
+          </div>
+
+          <AdminSplitOverviewItem
+            href={withAdminCategoryListParams(overviewHref, searchParams)}
+            active={isOverviewActive}
+            title="Vue d’ensemble des catégories"
+            description="Ouvrez la synthèse de la hiérarchie, des catégories à fort impact et des repères d’exploitation."
+            meta={
+              <Badge variant="secondary" className="w-fit shrink-0 px-1.5 py-0 text-[10px]">
+                {categories.length} catégorie{categories.length > 1 ? "s" : ""}
+              </Badge>
+            }
+            warning={publishedCount === 0 ? "Aucune catégorie publiée" : undefined}
+          />
+        </div>
       }
       isEmpty={categories.length === 0}
       emptyState={<ul>{emptyState}</ul>}
@@ -130,19 +175,35 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
                   active={isDetailActive}
                   tooltipContent={category.name}
                   data-category-row={category.slug}
-                  className="flex min-h-13 items-center gap-2.5 rounded-r-[1rem] rounded-l-sm"
+                  className="flex min-h-16 items-center gap-2.5 rounded-r-[1rem] rounded-l-sm"
                 >
                   <CategoryThumbnail name={category.name} imageUrl={category.primaryImageUrl} />
-                  <div className="flex min-w-0 flex-1 items-center gap-2">
-                    <span className="truncate text-[13px] font-medium text-page-foreground">
-                      {category.name}
-                    </span>
-                    <Badge
-                      variant={getCategoryStatusBadgeVariant(category.status)}
-                      className="w-fit shrink-0 px-1.5 py-0 text-[10px]"
-                    >
-                      {CATEGORY_STATUS_LABELS[category.status]}
-                    </Badge>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="truncate text-[13px] font-medium text-page-foreground">
+                        {category.name}
+                      </span>
+                      {category.isFeatured ? (
+                        <Badge variant="outline" className="w-fit shrink-0 px-1.5 py-0 text-[10px]">
+                          {CATEGORY_LIST_COPY.featuredBadgeLabel}
+                        </Badge>
+                      ) : null}
+                    </div>
+                    <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                      <Badge
+                        variant={getCategoryStatusBadgeVariant(category.status)}
+                        className="w-fit shrink-0 px-1.5 py-0 text-[10px]"
+                      >
+                        {CATEGORY_STATUS_LABELS[category.status]}
+                      </Badge>
+                      <span className="text-[11px] text-muted-foreground">
+                        {formatProductsLabel(category.productCount)}
+                      </span>
+                      <span className="text-[11px] text-muted-foreground">·</span>
+                      <span className="text-[11px] text-muted-foreground">
+                        {formatChildrenLabel(category.childrenCount)}
+                      </span>
+                    </div>
                   </div>
                 </AdminSplitListItem>
               </li>
@@ -151,5 +212,16 @@ export function CategoriesPanelList({ categories }: CategoriesPanelListProps) {
         </ul>
       </ScrollArea>
     </AdminSplitListPane>
+  );
+}
+
+function CategoryStatPill({ label, value }: Readonly<{ label: string; value: number }>) {
+  return (
+    <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/70 px-3 py-2.5">
+      <p className="text-lg font-semibold tracking-tight text-foreground">{value}</p>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+        {label}
+      </p>
+    </div>
   );
 }
