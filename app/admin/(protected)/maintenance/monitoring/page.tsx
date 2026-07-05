@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AlertTriangle, CheckCircle2, Clock, Database, GitBranch, Package, Zap } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { MaintenanceRouteNav } from "@/features/admin/maintenance/components/maintenance-route-nav";
 import { cn } from "@/lib/utils";
 import { getAdminSystemHealth } from "@/features/admin/maintenance/queries/get-admin-system-health.query";
 
@@ -137,6 +138,7 @@ export default async function AdminMaintenanceMonitoringPage() {
       showTitleInContent={false}
       contentPreset="table"
     >
+      <MaintenanceRouteNav />
       {/* État global */}
       <div
         className={cn(

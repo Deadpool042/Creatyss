@@ -1,6 +1,7 @@
 import { AlertTriangle, CheckCircle2, Info, Shield } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { MaintenanceRouteNav } from "@/features/admin/maintenance/components/maintenance-route-nav";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
 import { getAdminSystemHealth, type AdminAuditLogEntry } from "@/features/admin/maintenance/queries/get-admin-system-health.query";
@@ -46,6 +47,7 @@ export default async function AdminMaintenanceObservabilityPage() {
       showTitleInContent={false}
       contentPreset="detail"
     >
+      <MaintenanceRouteNav />
       {!health ? (
         <AdminEmptyState
           eyebrow="Indisponible"
