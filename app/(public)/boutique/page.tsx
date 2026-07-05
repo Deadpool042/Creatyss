@@ -17,6 +17,7 @@ import { BoutiquePage } from "@/features/storefront/catalog/boutique-page/compon
 import { buildBoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/composition/build-boutique-page-view-model";
 import { getLocalizedBoutiquePageCopy } from "@/features/storefront/catalog/boutique-page/queries/get-localized-boutique-page-copy.query";
 import { catalogSearchParamsSchema } from "@/features/storefront/catalog/schemas/catalog-search-params.schema";
+import { searchPublishedProductIds } from "@/features/search/queries/search-published-product-ids.query";
 
 export const dynamic = "force-dynamic";
 const BOUTIQUE_PRODUCTS_PAGE_SIZE = 12;
@@ -182,36 +183,44 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     minPrice: catalogSearchParams.minPrice,
     maxPrice: catalogSearchParams.maxPrice,
   });
+  // FTS résolu une seule fois (null si satellite.search inactif → fallback ILIKE).
+  const searchProductIds =
+    searchQuery === null ? null : await searchPublishedProductIds(searchQuery);
   const totalProductCount = await countPublishedProducts({
     searchQuery,
+    searchProductIds,
     categorySlugs: filters.categorySlugs,
     availabilityStatus: filters.availabilityStatus,
     minPriceCents: filters.minPriceCents,
     maxPriceCents: filters.maxPriceCents,
   });
-  const totalPages = Math.max(
-    1,
-    Math.ceil(totalProductCount / BOUTIQUE_PRODUCTS_PAGE_SIZE)
-  );
+  const totalPages = Math.max(1, Math.ceil(totalProductCount / BOUTIQUE_PRODUCTS_PAGE_SIZE));
   const requestedPage = catalogSearchParams.page;
   const currentPage = Math.min(Math.max(1, requestedPage), totalPages);
   const shouldRedirectToCanonicalPage =
     hasPageParam &&
-    (
-      rawRequestedPage === null ||
+    (rawRequestedPage === null ||
       rawRequestedPage < 1 ||
       rawRequestedPage === 1 ||
-      rawRequestedPage !== currentPage
-    );
+      rawRequestedPage !== currentPage);
 
   if (shouldRedirectToCanonicalPage) {
     redirect(buildCanonicalBoutiqueHref(resolvedSearchParams, currentPage));
   }
 
   const skip = (currentPage - 1) * BOUTIQUE_PRODUCTS_PAGE_SIZE;
-  const [productsPage, categories, initialFavoriteProductIds, inStockCount, madeToOrderCount, unavailableCount, boutiquePageCopy] = await Promise.all([
+  const [
+    productsPage,
+    categories,
+    initialFavoriteProductIds,
+    inStockCount,
+    madeToOrderCount,
+    unavailableCount,
+    boutiquePageCopy,
+  ] = await Promise.all([
     listPublishedProductsPage({
       searchQuery,
+      searchProductIds,
       categorySlugs: filters.categorySlugs,
       availabilityStatus: filters.availabilityStatus,
       minPriceCents: filters.minPriceCents,
@@ -225,6 +234,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     readFavoriteProductIds(),
     countPublishedProducts({
       searchQuery,
+      searchProductIds,
       categorySlugs: filters.categorySlugs,
       availabilityStatus: "in-stock",
       minPriceCents: filters.minPriceCents,
@@ -232,6 +242,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     }),
     countPublishedProducts({
       searchQuery,
+      searchProductIds,
       categorySlugs: filters.categorySlugs,
       availabilityStatus: "made-to-order",
       minPriceCents: filters.minPriceCents,
@@ -239,6 +250,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     }),
     countPublishedProducts({
       searchQuery,
+      searchProductIds,
       categorySlugs: filters.categorySlugs,
       availabilityStatus: "unavailable",
       minPriceCents: filters.minPriceCents,
@@ -273,7 +285,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     availabilityCounts: {
       "in-stock": inStockCount,
       "made-to-order": madeToOrderCount,
-      "unavailable": unavailableCount,
+      unavailable: unavailableCount,
     },
   });
 

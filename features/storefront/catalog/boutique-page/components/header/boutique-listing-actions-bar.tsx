@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { BoutiqueActiveFilters } from "@/features/storefront/catalog/boutique-page/components/filters/boutique-active-filters";
 import { BoutiqueMobileFilters } from "@/features/storefront/catalog/boutique-page/components/filters/boutique-mobile-filters";
+import { BoutiqueSearchForm } from "@/features/storefront/catalog/boutique-page/components/form/boutique-search-form";
 import { BoutiqueSortForm } from "@/features/storefront/catalog/boutique-page/components/form/boutique-sort-form";
 import { BoutiqueFiltersDrawer } from "@/features/storefront/catalog/boutique-page/components/sidebar/boutique-filters-drawer";
 import type { BoutiquePageViewModel } from "@/features/storefront/catalog/boutique-page/types";
@@ -36,6 +37,15 @@ export function BoutiqueListingActionsBar({ model }: BoutiqueListingActionsBarPr
               "hidden tablet:inline-flex tablet:h-9 tablet:rounded-lg tablet:px-3 tablet:text-sm wide:hidden"
             )}
             triggerTestId="boutique-filter-trigger-tablet"
+          />
+
+          <BoutiqueSearchForm
+            searchQuery={model.searchQuery}
+            selectedCategorySlugs={model.selectedCategorySlugs}
+            selectedAvailabilityStatus={model.selectedAvailabilityStatus}
+            selectedMinPriceCents={model.selectedMinPriceCents}
+            selectedMaxPriceCents={model.selectedMaxPriceCents}
+            selectedSort={model.selectedSort}
           />
 
           <span
