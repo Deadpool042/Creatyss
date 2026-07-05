@@ -1,6 +1,7 @@
 import { db } from "@/core/db";
 import { mapProductLifecycleStatusToPrismaStatus } from "@/entities/product";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
+import { syncProductSearchDocumentInTx } from "@/features/search/services/sync-product-search-document.service";
 
 import type { AdminCreatableProductTypeCode } from "./create-product.types";
 
@@ -115,10 +116,7 @@ export async function ensureAdminCreatableProductTypes(): Promise<{
   });
 
   const order = new Map<AdminCreatableProductTypeCode, number>(
-    ADMIN_CREATABLE_PRODUCT_TYPE_DEFINITIONS.map((item, index) => [
-      item.code,
-      index,
-    ])
+    ADMIN_CREATABLE_PRODUCT_TYPE_DEFINITIONS.map((item, index) => [item.code, index])
   );
 
   const ordered = productTypes
@@ -150,9 +148,7 @@ type CreateProductServiceInput = {
   isStandalone: boolean;
 };
 
-export async function createProduct(
-  input: CreateProductServiceInput
-): Promise<{ id: string }> {
+export async function createProduct(input: CreateProductServiceInput): Promise<{ id: string }> {
   const existingProduct = await db.product.findFirst({
     where: { slug: input.slug },
     select: { id: true },
@@ -185,6 +181,15 @@ export async function createProduct(
           sortOrder: 0,
         },
       });
+    }
+
+    try {
+      await syncProductSearchDocumentInTx(tx, product.id);
+    } catch (searchError) {
+      console.error(
+        "[products] syncProductSearchDocumentInTx failed — create unaffected",
+        searchError
+      );
     }
 
     return { id: product.id };

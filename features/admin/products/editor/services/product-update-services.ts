@@ -12,6 +12,7 @@ import { type SeoIndexingMode } from "@/entities/seo";
 import { InventoryItemStatus } from "@/prisma-generated/client";
 import { withTransaction, type DbExecutor } from "@/core/db";
 import { recomputeProductCatalogPriceSnapshot } from "@/features/catalog/shared";
+import { syncProductSearchDocumentInTx } from "@/features/search/services/sync-product-search-document.service";
 
 import {
   AdminProductEditorServiceError,
@@ -320,6 +321,15 @@ export async function updateProductGeneral(
           id: true,
         },
       });
+
+      try {
+        await syncProductSearchDocumentInTx(tx, updated.id);
+      } catch (searchError) {
+        console.error(
+          "[products] syncProductSearchDocumentInTx failed — update unaffected",
+          searchError
+        );
+      }
 
       return { id: updated.id, wasConvertedToVariable };
     } catch (error: unknown) {
@@ -711,9 +721,7 @@ type UpdateProductPricesServiceInput = {
   toArchive: string[];
 };
 
-export async function updateProductPrices(
-  input: UpdateProductPricesServiceInput
-): Promise<void> {
+export async function updateProductPrices(input: UpdateProductPricesServiceInput): Promise<void> {
   await withTransaction(async (tx) => {
     await assertProductExists(tx, input.productId);
 
@@ -734,8 +742,7 @@ export async function updateProductPrices(
         entry.costAmount !== null && entry.costAmount.trim().length > 0
           ? parseFloat(entry.costAmount)
           : null;
-      const safeCostAmount =
-        costAmount !== null && Number.isFinite(costAmount) ? costAmount : null;
+      const safeCostAmount = costAmount !== null && Number.isFinite(costAmount) ? costAmount : null;
 
       await tx.productPrice.upsert({
         where: {

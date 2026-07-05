@@ -1,4 +1,8 @@
 import { withTransaction } from "@/core/db";
+import {
+  removeProductSearchDocumentInTx,
+  syncProductSearchDocumentInTx,
+} from "@/features/search/services/sync-product-search-document.service";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -32,9 +36,7 @@ type DeleteProductPermanentlyServiceResult = {
 // archiveProduct
 // ---------------------------------------------------------------------------
 
-export async function archiveProduct(
-  input: ArchiveProductInput
-): Promise<ArchiveProductResult> {
+export async function archiveProduct(input: ArchiveProductInput): Promise<ArchiveProductResult> {
   return withTransaction(async (tx) => {
     const product = await tx.product.findFirst({
       where: {
@@ -50,7 +52,7 @@ export async function archiveProduct(
       throw new Error("product_not_found");
     }
 
-    return tx.product.update({
+    const archived = await tx.product.update({
       where: {
         id: product.id,
       },
@@ -61,6 +63,17 @@ export async function archiveProduct(
         id: true,
       },
     });
+
+    try {
+      await syncProductSearchDocumentInTx(tx, archived.id);
+    } catch (searchError) {
+      console.error(
+        "[products] syncProductSearchDocumentInTx failed — archive unaffected",
+        searchError
+      );
+    }
+
+    return archived;
   });
 }
 
@@ -68,9 +81,7 @@ export async function archiveProduct(
 // restoreProduct
 // ---------------------------------------------------------------------------
 
-export async function restoreProduct(
-  input: RestoreProductInput
-): Promise<RestoreProductResult> {
+export async function restoreProduct(input: RestoreProductInput): Promise<RestoreProductResult> {
   return withTransaction(async (tx) => {
     const product = await tx.product.findFirst({
       where: {
@@ -88,7 +99,7 @@ export async function restoreProduct(
       throw new Error("product_not_found");
     }
 
-    return tx.product.update({
+    const restored = await tx.product.update({
       where: {
         id: product.id,
       },
@@ -99,6 +110,17 @@ export async function restoreProduct(
         id: true,
       },
     });
+
+    try {
+      await syncProductSearchDocumentInTx(tx, restored.id);
+    } catch (searchError) {
+      console.error(
+        "[products] syncProductSearchDocumentInTx failed — restore unaffected",
+        searchError
+      );
+    }
+
+    return restored;
   });
 }
 
@@ -208,6 +230,15 @@ export async function deleteProductPermanently(
     }
 
     await deleteProductCatalogByIdInTx(tx, product.id);
+
+    try {
+      await removeProductSearchDocumentInTx(tx, product.id);
+    } catch (searchError) {
+      console.error(
+        "[products] removeProductSearchDocumentInTx failed — delete unaffected",
+        searchError
+      );
+    }
 
     return {
       id: product.id,
