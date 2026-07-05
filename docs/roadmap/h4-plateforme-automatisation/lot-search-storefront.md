@@ -2,7 +2,16 @@
 
 ## Statut
 
-A faire
+Terminé — 2026-07-05
+
+Décision moteur : PostgreSQL FTS dictionnaire `french` (pas d'Algolia — volume boutique artisanale, aucune dépendance externe). Livré en 4 micro-lots :
+
+1. index GIN fonctionnel `to_tsvector('french', indexedText)` sur `search_documents` (migration `20260705100000`) ;
+2. indexation synchrone dans la transaction des mutations produit (création, édition générale, archivage, restauration, suppression) via `features/search/services/sync-product-search-document.service.ts`, pattern try/catch non bloquant du repository orders ; le nom est doublé dans `indexedText` pour la pondération `ts_rank` ;
+3. requête FTS `features/search/queries/search-published-product-ids.query.ts` branchée sur le paramètre `q` existant de `/boutique` — résolue une fois par rendu, fallback ILIKE inchangé quand `satellite.search` est inactif ;
+4. barre de recherche visible dans la toolbar boutique (`boutique-search-form.tsx`), liens topbar « Rechercher » activés vers `/boutique`, script `scripts/backfill-search-documents.ts` pour les produits antérieurs à l'activation, encart admin mis à jour.
+
+Recette : typecheck, lint, 440 tests unitaires verts ; recette navigateur desktop + mobile (`?q=pochettes` matche « Pochette » par stemming, multi-mots OK, dépubliés exclus via statut de document).
 
 ## Objectif
 
