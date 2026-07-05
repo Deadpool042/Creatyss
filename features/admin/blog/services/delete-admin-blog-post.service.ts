@@ -26,6 +26,8 @@ export async function deleteAdminBlogPost(id: string): Promise<boolean> {
       },
     });
 
+    // Archivage soft : les `LocalizedValue` de l'article sont conservées,
+    // aucun hard delete n'existe donc pas d'orphelins possibles.
     return true;
   });
 }

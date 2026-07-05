@@ -14,8 +14,11 @@ import { BlogImagePickerField, requestBlogPostSeoSuggestionAction } from "@/feat
 import { BlogSeoFieldsWithAi } from "@/features/admin/blog/components/blog-seo-fields-with-ai";
 import { listSeoSuggestionHistory } from "@/features/ai-assistance/queries";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 import { updateBlogPostAction } from "@/features/admin/blog/actions/update-blog-post-action";
+import { BlogPostTranslationsForm } from "@/features/admin/blog/components/blog-post-translations-form";
 import { getAdminBlogPostDetail } from "@/features/admin/blog/queries/get-admin-blog-post-detail.query";
+import { listBlogPostTranslations } from "@/features/admin/blog/queries/list-blog-post-translations.query";
 import { listAdminMediaAssets } from "@/features/admin/media";
 
 async function handleUpdateBlogPost(formData: FormData): Promise<void> {
@@ -50,19 +53,24 @@ export default async function EditAdminBlogPostPage({
     aiSuggestionEnabled,
     aiSuggestionHistoryEnabled,
     aiSuggestionAutomationEnabled,
-  ] =
-    await Promise.all([
-      getAdminBlogPostDetail({ postId: id }),
-      listAdminMediaAssets(),
-      Promise.resolve(getUploadsPublicPath()),
-      meetsFeatureLevel("ai.core", "assistant"),
-      meetsFeatureLevel("ai.core", "advanced"),
-      meetsFeatureLevel("ai.core", "automation"),
-    ]);
+    multilingualEnabled,
+  ] = await Promise.all([
+    getAdminBlogPostDetail({ postId: id }),
+    listAdminMediaAssets(),
+    Promise.resolve(getUploadsPublicPath()),
+    meetsFeatureLevel("ai.core", "assistant"),
+    meetsFeatureLevel("ai.core", "advanced"),
+    meetsFeatureLevel("ai.core", "automation"),
+    meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual"),
+  ]);
 
   if (post === null) {
     notFound();
   }
+
+  const translationsState = multilingualEnabled
+    ? await listBlogPostTranslations({ postId: post.id })
+    : null;
 
   const aiSuggestionHistory = aiSuggestionHistoryEnabled
     ? await listSeoSuggestionHistory({
@@ -91,9 +99,7 @@ export default async function EditAdminBlogPostPage({
         />
       }
     >
-      {errorMessage !== null && (
-        <Notice tone="alert">{errorMessage}</Notice>
-      )}
+      {errorMessage !== null && <Notice tone="alert">{errorMessage}</Notice>}
       <AdminFormSection>
         <form action={handleUpdateBlogPost} className="grid gap-4">
           <input type="hidden" name="postId" value={post.id} />
@@ -122,7 +128,12 @@ export default async function EditAdminBlogPostPage({
           </AdminFormField>
 
           <AdminFormField htmlFor="blog-content" label="Contenu">
-            <Textarea id="blog-content" name="content" rows={10} defaultValue={post.content ?? ""} />
+            <Textarea
+              id="blog-content"
+              name="content"
+              rows={10}
+              defaultValue={post.content ?? ""}
+            />
           </AdminFormField>
 
           <BlogSeoFieldsWithAi
@@ -159,6 +170,19 @@ export default async function EditAdminBlogPostPage({
           </AdminFormActions>
         </form>
       </AdminFormSection>
+
+      {translationsState !== null && translationsState.hasTargetLocale && (
+        <AdminFormSection
+          eyebrow="Localisation"
+          title={`Traductions (${translationsState.targetLocaleName})`}
+        >
+          <BlogPostTranslationsForm
+            postId={post.id}
+            targetLocaleName={translationsState.targetLocaleName}
+            fields={translationsState.fields}
+          />
+        </AdminFormSection>
+      )}
     </AdminPageShell>
   );
 }
