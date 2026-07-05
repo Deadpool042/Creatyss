@@ -1,5 +1,6 @@
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { CommerceRouteNav } from "@/features/admin/commerce/components/commerce-route-nav";
 import { CommerceSettingsHub } from "@/features/admin/settings/components/commerce-settings-hub";
 import { getCardPaymentStatus } from "@/features/admin/settings/queries/get-card-payment-status.query";
 import { isTaxationFeatureActive } from "@/features/admin/commerce/taxation/queries/is-taxation-feature-active.query";
@@ -25,6 +26,7 @@ export default async function AdminCommerceSettingsPage() {
         { label: "Configuration" },
       ]}
     >
+      <CommerceRouteNav />
       <CommerceSettingsHub cardPaymentStatus={cardPaymentStatus} taxationActive={taxationActive} />
     </AdminPageShell>
   );
