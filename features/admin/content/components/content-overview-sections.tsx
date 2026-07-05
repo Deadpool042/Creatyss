@@ -103,9 +103,7 @@ function ReadinessRow({
         <p className="text-[13px] font-medium text-foreground">
           {label}
           {isMock ? (
-            <span className="ml-1.5 align-middle text-[10px] text-muted-foreground/50">
-              (mock)
-            </span>
+            <span className="ml-1.5 align-middle text-[10px] text-muted-foreground/50">(mock)</span>
           ) : null}
         </p>
         <p className="mt-0.5 text-xs text-muted-foreground">{detail}</p>
@@ -124,7 +122,12 @@ function ReadinessRow({
             style={{ width: `${progress}%` }}
           />
         </div>
-        <span className={cn("w-8 shrink-0 text-right text-xs font-semibold tabular-nums", toneClassName)}>
+        <span
+          className={cn(
+            "w-8 shrink-0 text-right text-xs font-semibold tabular-nums",
+            toneClassName
+          )}
+        >
           {progress}%
         </span>
       </div>
@@ -211,7 +214,7 @@ export function ContentOverviewSections({ stats, canPublishBlog }: ContentOvervi
     {
       label: "Score SEO",
       value: `${stats.seoOverallScore}/100`,
-      hint: "Estimation partielle sur produits + blog · mock",
+      hint: "Couverture des titres SEO sur les produits actifs",
       accentClassName:
         stats.seoOverallScore >= 70
           ? "bg-emerald-50/60"
@@ -226,7 +229,11 @@ export function ContentOverviewSections({ stats, canPublishBlog }: ContentOvervi
       {/* ── Hero metrics ──────────────────────────────────────────────── */}
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {heroMetrics.map(({ accentClassName, ...rest }) => (
-          <HeroMetric key={rest.label} {...rest} {...(accentClassName ? { accentClassName } : {})} />
+          <HeroMetric
+            key={rest.label}
+            {...rest}
+            {...(accentClassName ? { accentClassName } : {})}
+          />
         ))}
       </div>
 
@@ -424,17 +431,14 @@ export function ContentOverviewSections({ stats, canPublishBlog }: ContentOvervi
             </div>
           </section>
 
-          {/* Note mock */}
           <section className="rounded-2xl border border-surface-border/40 bg-surface-panel/30 p-4">
             <div className="flex items-start gap-2">
               <Globe className="mt-0.5 size-4 shrink-0 text-muted-foreground/50" />
               <div>
-                <p className="text-[11px] font-medium text-muted-foreground">
-                  Données partiellement mockées
-                </p>
+                <p className="text-[11px] font-medium text-muted-foreground">Portée des données</p>
                 <p className="mt-0.5 text-[11px] leading-5 text-muted-foreground/70">
-                  Blog, pages et accueil : données réelles. SEO reste encore
-                  partiellement estimé faute de lecture transverse consolidée.
+                  Blog, pages, accueil et couverture SEO produits : données réelles. Le score SEO
+                  mesure les titres personnalisés des produits actifs (SeoMetadata).
                 </p>
               </div>
             </div>

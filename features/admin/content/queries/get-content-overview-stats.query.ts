@@ -7,6 +7,7 @@
  * Données partiellement estimées : SEO global, faute de lecture transverse consolidée.
  */
 import { listAdminBlogPosts } from "@/features/admin/blog/queries";
+import { countProductsMissingSeo } from "@/features/admin/content/queries/count-products-missing-seo.query";
 import { getAdminHomepageEditorData } from "@/features/admin/homepage";
 import { getAdminPagesList } from "@/features/admin/pages";
 
@@ -149,11 +150,17 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
     // degradation gracieuse
   }
 
-  // ── SEO MOCK ─────────────────────────────────────────────────────────────
-  // Domaine : seo cross-cutting (docs/architecture/)
-  // Prisma : prisma/cross-cutting/seo.prisma — SeoMetadata
-  // Admin UI : content/seo existant — métadonnées partielles
-  const seoOverallScore: number = 42; // MOCK — score partiel, SEO produits manquants
+  // ── SEO réel : couverture des titres SEO produits (SeoMetadata) ─────────
+  let seoOverallScore = 0;
+  try {
+    const seoCoverage = await countProductsMissingSeo();
+    seoOverallScore =
+      seoCoverage.total === 0
+        ? 0
+        : Math.round(((seoCoverage.total - seoCoverage.totalSeoMissing) / seoCoverage.total) * 100);
+  } catch {
+    // degradation gracieuse
+  }
 
   // ── Readiness ────────────────────────────────────────────────────────────
   const readinessItems: ContentReadinessItem[] = [
@@ -185,7 +192,7 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
     {
       key: "seo",
       label: "SEO",
-      detail: `Score estimé ${seoOverallScore}/100 — compléter les titres produits`,
+      detail: `Couverture ${seoOverallScore}/100 — titres SEO produits personnalisés`,
       progress: seoOverallScore,
       toneClassName:
         seoOverallScore >= 70
@@ -193,7 +200,7 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
           : seoOverallScore >= 40
             ? "text-feedback-warning-foreground"
             : "text-feedback-error-foreground",
-      isMock: true,
+      isMock: false,
     },
   ];
 
@@ -234,9 +241,9 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
     signals.push({
       key: "seo_low",
       label: "SEO incomplet",
-      detail: "Moins de la moitié des métadonnées SEO sont renseignées.",
+      detail: "Moins de la moitié des produits actifs ont un titre SEO personnalisé.",
       tone: "warning",
-      isMock: true,
+      isMock: false,
     });
   }
 
