@@ -36,12 +36,12 @@
 
 Ordre recommandé : A → B → D (indépendants, risque nul) puis D1 → C + E, D3 → H + F, D2 → G.
 
-## Décisions à trancher avant les lots dépendants
+## Décisions (tranchées le 2026-07-05)
 
-- **D1 — Route du hub commerce** : créer `/admin/commerce/settings` (symétrie avec `/admin/catalog/settings`) ou promouvoir une page existante ? Impacte C et E.
-- **D2 — Content mérite-t-il un settings dédié** (`/admin/content/settings`) ou le niveau blog s'expose-t-il ailleurs ? Impacte G.
-- **D3 — Doctrine `notFound()` sur flag inactif** : remplacer partout par un écran de statut (« Capacité désactivée — pilotée dans Réglages avancés »), ou conserver le 404 pour certaines capacités volontairement invisibles ? Impacte F et H. À valider contre la doctrine flags atomiques (notifications/integrations/search/channels).
-- **D4 — Nav secondaire du hub global settings** : l'absence de route nav dans `settings/*` est-elle un choix (hub racine = circulation) ou un écart à corriger ? Aucun lot ouvert tant que non tranché.
+- **D1 — Route du hub commerce : `/admin/commerce/settings`.** Symétrie stricte avec `/admin/catalog/settings` ; les redirects du hub global pointent déjà vers les settings de domaine.
+- **D2 — Content : hub léger.** `/admin/content/settings` sur le même pattern, surface minimale (un seul levier gradué aujourd'hui : blog draft/publish). Pas de sur-architecture.
+- **D3 — Fin des `notFound()` sur flag inactif côté admin.** Un admin authentifié voit un écran de statut « Capacité désactivée — pilotée dans Réglages avancés » (lien vers la gouvernance). Le 404 reste réservé aux ressources inexistantes. S'applique à marketing/\*, taxation, insights et settings/{ai,integrations,search,channels,webhooks} ; la gradation Prisma des flags atomiques reste inchangée.
+- **D4 — Statu quo assumé pour le hub global settings.** Pas de nav secondaire dans `settings/*` : le hub racine et la sidebar assurent la circulation. Exception documentée ici.
 
 ## Écarts hors périmètre consignés (à traiter dans d'autres chantiers)
 
