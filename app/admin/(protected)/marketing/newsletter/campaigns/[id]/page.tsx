@@ -6,6 +6,7 @@ import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminDetailMetric } from "@/components/admin/shared/admin-detail-metric";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { Badge } from "@/components/ui/badge";
+import { MarketingRouteNav } from "@/features/admin/marketing/components/marketing-route-nav";
 import { isNewsletterFeatureActive } from "@/features/admin/marketing/queries/is-newsletter-feature-active.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { getAdminNewsletterCampaignDetail } from "@/features/admin/marketing/newsletter/queries/get-admin-newsletter-campaign-detail.query";
@@ -56,6 +57,7 @@ export default async function AdminNewsletterCampaignDetailPage({
           { label: "Campagnes", href: ADMIN_NEWSLETTER_CAMPAIGNS_PATH },
         ]}
       >
+        <MarketingRouteNav />
         <AdminFeatureDisabledState
           capabilityName="Campagnes newsletter"
           description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur engagement.newsletter pour ouvrir les campagnes."
@@ -97,6 +99,7 @@ export default async function AdminNewsletterCampaignDetailPage({
       ]}
       contentPreset="detail"
     >
+      <MarketingRouteNav />
       <div className="space-y-6">
         <AdminPageHeader
           eyebrow="Campagnes newsletter"

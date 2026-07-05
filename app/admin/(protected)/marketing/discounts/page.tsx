@@ -9,6 +9,7 @@ import { isDiscountsFeatureActive } from "@/features/admin/marketing/queries/is-
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { listAdminDiscounts } from "@/features/admin/marketing/discounts/queries/list-admin-discounts.query";
 import { AdminDiscountsPanel } from "@/features/admin/marketing/discounts/components/admin-discounts-panel";
+import { MarketingRouteNav } from "@/features/admin/marketing/components/marketing-route-nav";
 
 export const dynamic = "force-dynamic";
 
@@ -53,6 +54,7 @@ export default async function AdminMarketingDiscountsPage({
         ]}
         showTitleInContent={false}
       >
+        <MarketingRouteNav />
         <AdminFeatureDisabledState
           capabilityName="Codes promo"
           description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur commerce.discounts pour ouvrir les remises."
@@ -78,6 +80,7 @@ export default async function AdminMarketingDiscountsPage({
         ]}
         showTitleInContent={false}
       >
+        <MarketingRouteNav />
         <AdminComingSoon
           title="Codes promo"
           description="Créez des codes de réduction, planifiez des promotions automatiques et définissez les conditions d'application sur le catalogue ou le panier."
@@ -107,6 +110,7 @@ export default async function AdminMarketingDiscountsPage({
       showTitleInContent={false}
       contentPreset="table"
     >
+      <MarketingRouteNav />
       <div className="grid gap-6">
         <AdminDataTableFeedbackBanner
           message={

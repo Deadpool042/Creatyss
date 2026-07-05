@@ -3,6 +3,7 @@ import { Zap } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
+import { MarketingRouteNav } from "@/features/admin/marketing/components/marketing-route-nav";
 import { AdminArchivedAutomationJobsSection } from "@/features/admin/marketing/automations/components/admin-archived-automation-jobs-section";
 import { AdminArchivedAutomationsSection } from "@/features/admin/marketing/automations/components/admin-archived-automations-section";
 import { AdminAutomationDefinitionsSection } from "@/features/admin/marketing/automations/components/admin-automation-definitions-section";
@@ -72,6 +73,7 @@ export default async function AdminMarketingAutomationsPage({
         ]}
         showTitleInContent={false}
       >
+        <MarketingRouteNav />
         <AdminFeatureDisabledState
           capabilityName="Automations"
           description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur engagement.automations pour ouvrir les automatisations."
@@ -204,6 +206,7 @@ export default async function AdminMarketingAutomationsPage({
       showTitleInContent={false}
       contentPreset="table"
     >
+      <MarketingRouteNav />
       <div className="grid gap-6">
         {resolvedSearchParams.automation_created ? (
           <p className="rounded-lg border border-feedback-success-border bg-feedback-success-surface px-3 py-2 text-sm text-feedback-success-foreground">

@@ -14,6 +14,7 @@ import { AdminDiscountRedemptionsTable } from "@/features/admin/marketing/discou
 import { getAdminDiscountDetail } from "@/features/admin/marketing/discounts/queries/get-admin-discount-detail.query";
 import { listDiscountRedemptions } from "@/features/admin/marketing/discounts/queries/list-discount-redemptions.query";
 import { ADMIN_DISCOUNTS_PATH } from "@/features/admin/marketing/discounts/shared/admin-discounts-routes";
+import { MarketingRouteNav } from "@/features/admin/marketing/components/marketing-route-nav";
 import { isDiscountsFeatureActive } from "@/features/admin/marketing/queries/is-discounts-feature-active.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
@@ -165,6 +166,7 @@ export default async function AdminDiscountDetailPage({
           { label: "Réductions", href: ADMIN_DISCOUNTS_PATH },
         ]}
       >
+        <MarketingRouteNav />
         <AdminFeatureDisabledState
           capabilityName="Codes promo"
           description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur commerce.discounts pour ouvrir les remises."
@@ -205,6 +207,7 @@ export default async function AdminDiscountDetailPage({
       ]}
       contentPreset="detail"
     >
+      <MarketingRouteNav />
       <div className="space-y-6">
         <AdminPageHeader
           eyebrow="Reductions"

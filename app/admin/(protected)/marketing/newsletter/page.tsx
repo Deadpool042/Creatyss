@@ -9,6 +9,7 @@ import { isNewsletterFeatureActive } from "@/features/admin/marketing/queries/is
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { listAdminNewsletterSubscribers } from "@/features/admin/marketing/newsletter/queries/list-admin-newsletter-subscribers.query";
 import { getAdminNewsletterAutomationSnapshot } from "@/features/admin/marketing/newsletter/queries/get-admin-newsletter-automation-snapshot.query";
+import { MarketingRouteNav } from "@/features/admin/marketing/components/marketing-route-nav";
 import { AdminNewsletterAutomationPanel } from "@/features/admin/marketing/newsletter/components/admin-newsletter-automation-panel";
 import { AdminNewsletterSegmentationPanel } from "@/features/admin/marketing/newsletter/components/admin-newsletter-segmentation-panel";
 import { AdminNewsletterSubscribersList } from "@/features/admin/marketing/newsletter/components/admin-newsletter-subscribers-list";
@@ -116,6 +117,7 @@ export default async function AdminMarketingNewsletterPage({
         ]}
         showTitleInContent={false}
       >
+        <MarketingRouteNav />
         <AdminFeatureDisabledState
           capabilityName="Newsletter"
           description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur engagement.newsletter pour ouvrir les abonnés."
@@ -143,6 +145,7 @@ export default async function AdminMarketingNewsletterPage({
         ]}
         showTitleInContent={false}
       >
+        <MarketingRouteNav />
         <AdminComingSoon
           title="Newsletter"
           description="Gérez les abonnés, composez des campagnes email, suivez les taux d'ouverture et de clic. Segmentation par comportement d'achat."
@@ -182,6 +185,7 @@ export default async function AdminMarketingNewsletterPage({
         </Button>
       }
     >
+      <MarketingRouteNav />
       <div className="grid gap-6">
         {resolvedSearchParams.newsletter_created ? (
           <p className="rounded-lg border border-feedback-success-border bg-feedback-success-surface px-3 py-2 text-sm text-feedback-success-foreground">

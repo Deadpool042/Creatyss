@@ -1,5 +1,6 @@
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { MarketingOverviewSections } from "@/features/admin/marketing/components/marketing-overview-sections";
+import { MarketingRouteNav } from "@/features/admin/marketing/components/marketing-route-nav";
 
 export default function AdminMarketingOverviewPage() {
   return (
@@ -10,6 +11,7 @@ export default function AdminMarketingOverviewPage() {
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Marketing" }]}
       showTitleInContent={false}
     >
+      <MarketingRouteNav />
       <MarketingOverviewSections />
     </AdminPageShell>
   );
