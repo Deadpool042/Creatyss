@@ -48,6 +48,7 @@ Ordre recommandé : A → B → D (indépendants, risque nul) puis D1 → C + E,
 - **D2 — Content : hub léger.** `/admin/content/settings` sur le même pattern, surface minimale (un seul levier gradué aujourd'hui : blog draft/publish). Pas de sur-architecture.
 - **D3 — Fin des `notFound()` sur flag inactif côté admin.** Un admin authentifié voit un écran de statut « Capacité désactivée — pilotée dans Réglages avancés » (lien vers la gouvernance). Le 404 reste réservé aux ressources inexistantes. S'applique à marketing/\*, taxation, insights et settings/{ai,integrations,search,channels,webhooks} ; la gradation Prisma des flags atomiques reste inchangée.
 - **D4 — Statu quo assumé pour le hub global settings.** Pas de nav secondaire dans `settings/*` : le hub racine et la sidebar assurent la circulation. Exception documentée ici.
+- **D5 — Statu quo assumé pour insights (2026-07-05).** Le domaine n'expose qu'une seule vue (`insights/analytics`) : pas de nav de domaine, d'overview ni de hub tant qu'une deuxième vue n'existe pas. Le shell, les breadcrumbs et l'écran de statut flag inactif (lot H) suffisent. Exception documentée ici, à réévaluer quand insights s'étoffera.
 
 ## Écarts hors périmètre consignés (à traiter dans d'autres chantiers)
 
