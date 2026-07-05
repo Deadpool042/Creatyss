@@ -2,7 +2,7 @@
 
 ## Statut
 
-A faire
+En cours — 2026-07-05. Sémantique tranchée (sortants, cf. `docs/lots/2026-07-05-platform-webhooks-semantique.md`), doctrine réécrite. Périmètre restant réduit par rapport au cadrage initial : le service HMAC (`deliver-webhook.service.ts`) et un CRUD partiel admin (création, toggle, relance manuelle synchrone) sont déjà livrés — il manque la livraison automatique sur événement, le retry avec backoff, l'historique admin et les tests.
 
 ## Objectif
 
@@ -42,7 +42,7 @@ Proposition — non observé comme implémenté à ce jour :
 ## Risques
 
 - Sémantique ambiguë : si la doctrine "entrants" est maintenue, le modèle actuel (`endpoints`/`deliveries`) décrit les sortants — un redesign Prisma serait nécessaire pour les entrants
-- Sécurité : le secret HMAC par endpoint doit être stocké chiffré en DB (pattern `IntegrationCredential` déjà en place comme référence)
+- Sécurité : le secret HMAC est stocké en clair en V1 (aucun service de chiffrement réversible n'existe dans le repo — le pattern `IntegrationCredential` observé est un hash one-way, inutilisable pour un secret à récupérer) ; chiffrement AES à cadrer dans un lot séparé
 - Retry sur endpoint mort : sans circuit-breaker, un endpoint en erreur permanente génère un volume de tentatives inutiles
 
 ## Vérifications
