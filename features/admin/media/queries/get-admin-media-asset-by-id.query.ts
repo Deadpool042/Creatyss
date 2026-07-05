@@ -9,6 +9,7 @@ export async function getAdminMediaAssetById(id: string): Promise<AdminMediaList
     where: {
       id,
       kind: MediaAssetKind.IMAGE,
+      archivedAt: null,
     },
     select: {
       id: true,
