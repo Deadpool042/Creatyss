@@ -40,14 +40,14 @@
 
 ## Lots
 
-| Fichier                                                          | Description                                                           | Statut  |
-| ---------------------------------------------------------------- | --------------------------------------------------------------------- | ------- |
-| [lot-webhooks-sortants.md](./lot-webhooks-sortants.md)           | Livraison webhook sortante avec signature HMAC et retry               | A faire |
-| [lot-integrations-providers.md](./lot-integrations-providers.md) | Brancher un premier adaptateur concret sur le modèle Integration      | A faire |
-| [lot-channels-google-meta.md](./lot-channels-google-meta.md)     | Synchroniser le catalogue vers Google Merchant Center ou Meta Catalog | A faire |
-| [lot-search-storefront.md](./lot-search-storefront.md)           | Recherche full-text dans le storefront                                | A faire |
+| Fichier                                                          | Description                                                               | Statut                                                                          |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| [lot-webhooks-sortants.md](./lot-webhooks-sortants.md)           | Livraison webhook sortante avec signature HMAC et retry                   | Terminé — 2026-07-05                                                            |
+| [lot-integrations-providers.md](./lot-integrations-providers.md) | Brancher un premier adaptateur concret sur le modèle Integration          | A faire                                                                         |
+| [lot-channels-google-meta.md](./lot-channels-google-meta.md)     | Synchroniser le catalogue vers Google Merchant Center ou Meta Catalog     | A faire                                                                         |
+| [lot-search-storefront.md](./lot-search-storefront.md)           | Recherche full-text dans le storefront                                    | A faire                                                                         |
 | [lot-multilangue-generalise.md](./lot-multilangue-generalise.md) | Étendre la généralisation `LocalizedValue` au-delà des pilotes déjà faits | En cours — pilote pages de contenu branché, champs métier produit/blog restants |
-| [lot-ai-sdk-provider.md](./lot-ai-sdk-provider.md)               | Brancher un SDK AI réel sur le modèle AiProvider                      | A faire |
+| [lot-ai-sdk-provider.md](./lot-ai-sdk-provider.md)               | Brancher un SDK AI réel sur le modèle AiProvider                          | A faire                                                                         |
 
 Tous ces lots sont relativement indépendants entre eux et peuvent être priorisés selon la valeur métier perçue. `lot-multilangue-generalise` dispose déjà de pilotes observés et peut se poursuivre dès que la prochaine cible de contenu est tranchée. `lot-webhooks-sortants` bénéficie d'un catalogue stable (H2 recommandé).
 

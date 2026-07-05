@@ -2,7 +2,7 @@
 
 ## Statut
 
-En cours — 2026-07-05. Sémantique tranchée (sortants, cf. `docs/lots/2026-07-05-platform-webhooks-semantique.md`), doctrine réécrite. Périmètre restant réduit par rapport au cadrage initial : le service HMAC (`deliver-webhook.service.ts`) et un CRUD partiel admin (création, toggle, relance manuelle synchrone) sont déjà livrés — il manque la livraison automatique sur événement, le retry avec backoff, l'historique admin et les tests.
+Terminé — 2026-07-05, branche `feature/platform-webhooks-delivery`. Sémantique tranchée (sortants, cf. `docs/lots/2026-07-05-platform-webhooks-semantique.md`), doctrine réécrite. Livré : enqueue transactionnel `order.created` via jobs (`queue-webhook-delivery-jobs.service.ts`, dédup par idempotencyKey), worker cron batch (`/api/cron/run-webhook-delivery-jobs` : claim atomique, recovery RUNNING > 15 min, auto-retry sous `maxAttempts`), livraison HMAC (`deliver-webhook.service.ts`), gestion admin des endpoints (création, toggle, relance manuelle) et tests unitaires des quatre services (42 tests).
 
 ## Objectif
 
