@@ -3,6 +3,7 @@
 import { useState, type JSX } from "react";
 import { Crop } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { MediaCropDialog } from "./media-crop-dialog";
 
 type MediaCropButtonProps = Readonly<{
@@ -21,14 +22,16 @@ export function MediaCropButton({
 
   return (
     <>
-      <button
+      <Button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-surface-border bg-surface-panel/90 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:border-surface-border-strong hover:text-foreground"
+        variant="outline"
+        size="sm"
+        className="w-full sm:w-auto"
       >
         <Crop className="h-3.5 w-3.5" />
         Recadrer
-      </button>
+      </Button>
 
       <MediaCropDialog
         open={open}

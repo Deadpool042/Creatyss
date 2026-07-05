@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { AdminCollectionSection } from "@/components/admin/cards/admin-collection-section";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
+import { Badge } from "@/components/ui/badge";
 import type { AdminMediaListItem } from "@/features/admin/media/types/admin-media-list-item.types";
 import type { AdminMediaStats } from "@/features/admin/settings/queries/get-media-stats.query";
 
@@ -41,34 +43,24 @@ export function AdminMediaLibraryView({
   return (
     <div className="grid min-h-0 flex-1 gap-6 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-start">
       <section className="grid min-w-0 gap-4">
-        <div className="rounded-2xl border border-surface-border/60 bg-card px-5 py-5 shadow-card">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-            <div className="grid gap-1.5">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary/80">
-                Bibliothèque
-              </p>
-              <h2 className="text-xl font-semibold tracking-tight text-foreground">
-                Images locales
-              </h2>
-              <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-                La grille se concentre sur les visuels. Sélectionnez une image pour afficher ses
-                informations et ses actions dans le panneau latéral.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-              <span className="inline-flex h-8 items-center rounded-full border border-surface-border bg-surface-panel-soft px-3 font-medium text-foreground">
+        <AdminCollectionSection
+          eyebrow="Bibliothèque"
+          title="Images locales"
+          description="La grille se concentre sur les visuels. Sélectionnez une image pour afficher ses informations et ses actions dans le panneau latéral."
+          variant="plain"
+          meta={
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="outline">
                 {integerFormatter.format(totalCount)} image{totalCount > 1 ? "s" : ""}
-              </span>
+              </Badge>
               {assets.length > 0 ? (
-                <span className="inline-flex h-8 items-center rounded-full border border-surface-border bg-surface-panel-soft px-3">
+                <Badge variant="outline">
                   {integerFormatter.format(rangeStart)}-{integerFormatter.format(rangeEnd)}
-                </span>
+                </Badge>
               ) : null}
             </div>
-          </div>
-        </div>
-
+          }
+        >
         {assets.length > 0 ? (
           <>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
@@ -97,12 +89,13 @@ export function AdminMediaLibraryView({
             ) : null}
           </>
         ) : (
-          <AdminEmptyState
-            description="Importez une première image pour commencer votre bibliothèque."
-            eyebrow="Aucun média"
-            title="La bibliothèque est encore vide"
-          />
-        )}
+            <AdminEmptyState
+              description="Importez une première image pour commencer votre bibliothèque."
+              eyebrow="Aucun média"
+              title="La bibliothèque est encore vide"
+            />
+          )}
+        </AdminCollectionSection>
       </section>
 
       <aside className="min-w-0 xl:sticky xl:top-6">

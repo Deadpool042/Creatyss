@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Archive } from "lucide-react";
 
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Button } from "@/components/ui/button";
 import type { AdminMediaListItem } from "@/features/admin/media/types/admin-media-list-item.types";
 
@@ -43,56 +44,52 @@ export function AdminMediaSelectedAside({
       </div>
 
       <div className="grid gap-5 px-5 py-5">
-        <div className="flex items-start justify-between gap-3">
-          <div className="grid gap-1.5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary/80">
-              Média sélectionné
-            </p>
-            <h3 className="break-words text-lg font-semibold tracking-tight text-foreground">
-              {asset.originalName}
-            </h3>
+        <AdminFormSection eyebrow="Média sélectionné" title={asset.originalName}>
+          <div className="flex justify-end">
+            <Button asChild variant="ghost" size="sm">
+              <Link href={buildMediaLibraryHref({ page: currentPage })}>Fermer</Link>
+            </Button>
           </div>
 
-          <Button asChild variant="ghost" size="sm">
-            <Link href={buildMediaLibraryHref({ page: currentPage })}>Fermer</Link>
-          </Button>
-        </div>
-
-        <dl className="grid gap-3 text-sm">
-          <InfoRow label="Format" value={asset.mimeType} />
-          <InfoRow label="Dimensions" value={formatDimensions(asset)} />
-          <InfoRow label="Poids" value={formatByteSize(asset.byteSize)} />
-          <InfoRow label="Ajout" value={mediaDateFormatter.format(new Date(asset.createdAt))} />
-          <InfoRow label="Chemin" value={asset.filePath} mono />
-        </dl>
+          <dl className="grid gap-3 text-sm">
+            <InfoRow label="Format" value={asset.mimeType} />
+            <InfoRow label="Dimensions" value={formatDimensions(asset)} />
+            <InfoRow label="Poids" value={formatByteSize(asset.byteSize)} />
+            <InfoRow label="Ajout" value={mediaDateFormatter.format(new Date(asset.createdAt))} />
+            <InfoRow label="Chemin" value={asset.filePath} mono />
+          </dl>
+        </AdminFormSection>
 
         <div className="grid gap-3 border-t border-surface-border/60 pt-5">
-          <div className="grid gap-1.5">
-            <p className="text-sm font-medium text-foreground">Actions</p>
-            <p className="text-sm leading-6 text-muted-foreground">
+          <AdminFormSection
+            title="Actions"
+            description={
+              <>
               Le recadrage remplace le fichier existant. L&apos;archivage retire le média de la
               bibliothèque active sans suppression définitive.
-            </p>
-          </div>
+              </>
+            }
+          >
 
-          {asset.previewUrl ? (
-            <div>
-              <MediaCropButton
-                assetId={asset.id}
-                imageUrl={asset.previewUrl}
-                imageLabel={asset.originalName}
-              />
-            </div>
-          ) : null}
+            {asset.previewUrl ? (
+              <div>
+                <MediaCropButton
+                  assetId={asset.id}
+                  imageUrl={asset.previewUrl}
+                  imageLabel={asset.originalName}
+                />
+              </div>
+            ) : null}
 
-          <form action={archiveMediaAction} className="grid">
-            <input type="hidden" name="assetId" value={asset.id} />
-            <input type="hidden" name="page" value={String(currentPage)} />
-            <Button type="submit" variant="destructive" className="w-full">
-              <Archive className="size-4" />
-              Archiver le média
-            </Button>
-          </form>
+            <form action={archiveMediaAction} className="grid">
+              <input type="hidden" name="assetId" value={asset.id} />
+              <input type="hidden" name="page" value={String(currentPage)} />
+              <Button type="submit" variant="destructive" className="w-full">
+                <Archive className="size-4" />
+                Archiver le média
+              </Button>
+            </form>
+          </AdminFormSection>
         </div>
       </div>
     </div>
@@ -109,7 +106,7 @@ function InfoRow({
   mono?: boolean;
 }>) {
   return (
-    <div className="grid gap-1.5 rounded-2xl border border-surface-border/60 bg-surface-panel/25 px-4 py-3">
+    <div className="grid gap-1.5 rounded-2xl border border-surface-border/60 bg-surface-subtle/20 px-4 py-3">
       <dt className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
         {label}
       </dt>
