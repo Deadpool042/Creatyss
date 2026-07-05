@@ -29,17 +29,19 @@ Il n'existe pas de règle rigide de séquencement interne à chaque horizon. Des
 
 Chantiers hors séquence H1-H4 de valeur métier, pouvant avancer en parallèle sans dépendre de l'ordre de priorisation ci-dessus.
 
-| Chantier                          | Titre                                                                         | Statut                                                                                                                                                                                              |
-| --------------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| UX admin/storefront               | Navigation admin et complétude storefront                                     | Terminé — navigation admin fusionnée, audit storefront livré (1 bug corrigé)                                                                                                                        |
-| Gouvernance & réglages admin      | Lisibilité gouvernance fonctionnalités, réglages métier manquants             | Terminé — 4 lots livrés (lisibilité niveaux, clarification nav, livraison zones/méthodes, statut paiement carte)                                                                                    |
-| Audit design admin                | Lisibilité et responsive du layout admin (dashboard, listes, détail commande) | Terminé — 5 micro-lots livrés (dashboard aplati, duplication liste/overview corrigée, réglages vérifiés conformes, détail commande en onglets, grilles non responsive corrigées)                    |
-| Refonte composition admin (macOS) | Toolbar unifiée, patterns de liste, navigation réglages — parité WooCommerce  | Terminé — 11 lots livrés (2026-07-05) : toolbar unifiée, listes commandes/catégories, hub settings, dashboard, reflows mobiles, discounts et blog outillés, breadcrumbs généralisés + hub catalogue |
+| Chantier                          | Titre                                                                                               | Statut                                                                                                                                                                                              |
+| --------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UX admin/storefront               | Navigation admin et complétude storefront                                                           | Terminé — navigation admin fusionnée, audit storefront livré (1 bug corrigé)                                                                                                                        |
+| Gouvernance & réglages admin      | Lisibilité gouvernance fonctionnalités, réglages métier manquants                                   | Terminé — 4 lots livrés (lisibilité niveaux, clarification nav, livraison zones/méthodes, statut paiement carte)                                                                                    |
+| Audit design admin                | Lisibilité et responsive du layout admin (dashboard, listes, détail commande)                       | Terminé — 5 micro-lots livrés (dashboard aplati, duplication liste/overview corrigée, réglages vérifiés conformes, détail commande en onglets, grilles non responsive corrigées)                    |
+| Refonte composition admin (macOS) | Toolbar unifiée, patterns de liste, navigation réglages — parité WooCommerce                        | Terminé — 11 lots livrés (2026-07-05) : toolbar unifiée, listes commandes/catégories, hub settings, dashboard, reflows mobiles, discounts et blog outillés, breadcrumbs généralisés + hub catalogue |
+| Doctrine domaines admin           | Étendre la doctrine UI/UX catalog (nav, hubs configuration, statuts par niveau) aux autres domaines | Cadré — audit livré (2026-07-05), 8 lots A-H définis, 4 décisions à trancher, aucun lot démarré                                                                                                     |
 
 - [UX — Navigation admin et complétude storefront](./ux-admin-storefront/README.md)
 - [Gouvernance des fonctionnalités et complétude des réglages admin](./gouvernance-reglages-admin/README.md)
 - [Audit design admin — 2026-07-03](../audit/2026-07-03-audit-design-admin.md)
 - [Refonte composition admin — style macOS](./admin-design-macos/README.md)
+- [Doctrine domaines admin — extension de la doctrine catalog](./doctrine-domaines-admin/README.md)
 
 ---
 
