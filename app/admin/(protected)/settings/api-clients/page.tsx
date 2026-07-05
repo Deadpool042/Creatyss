@@ -63,7 +63,6 @@ export default async function AdminSettingsApiClientsPage() {
         { label: "Réglages" },
         { label: "Clés API" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="form"
     >

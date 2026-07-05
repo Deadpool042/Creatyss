@@ -76,7 +76,6 @@ export default async function AdminSettingsTeamPage() {
       scrollBehavior="page"
       title="Équipe"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Équipe" }]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="form"
     >

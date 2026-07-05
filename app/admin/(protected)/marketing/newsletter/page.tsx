@@ -121,7 +121,6 @@ export default async function AdminMarketingNewsletterPage({
           { label: "Marketing", href: "/admin/marketing/overview" },
           { label: "Newsletter" },
         ]}
-        showBreadcrumbsInContent={false}
         showTitleInContent={false}
       >
         <AdminComingSoon
@@ -155,7 +154,6 @@ export default async function AdminMarketingNewsletterPage({
         { label: "Marketing", href: "/admin/marketing/overview" },
         { label: "Newsletter" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
       topbarAction={

@@ -150,7 +150,6 @@ export default async function AdminSettingsPage() {
       scrollBehavior="page"
       title="Réglages"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="overview"
     >

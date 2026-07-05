@@ -43,7 +43,6 @@ export default async function AdminCommerceTaxationPage({
         { label: "Commerce", href: "/admin/commerce/overview" },
         { label: "TVA" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >

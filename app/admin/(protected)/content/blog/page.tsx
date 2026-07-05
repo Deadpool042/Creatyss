@@ -59,7 +59,6 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
         { label: "Contenu", href: "/admin/content/overview" },
         { label: "Blog" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
       topbarAction={

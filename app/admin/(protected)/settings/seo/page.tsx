@@ -30,7 +30,6 @@ export default async function AdminSettingsSeoPage() {
         { label: "Réglages" },
         { label: "SEO" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="form"
     >

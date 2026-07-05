@@ -48,7 +48,6 @@ export default async function AdminNewsletterCampaignsPage({
           { label: "Newsletter", href: "/admin/marketing/newsletter" },
           { label: "Campagnes" },
         ]}
-        showBreadcrumbsInContent={false}
         showTitleInContent={false}
       >
         <AdminComingSoon
@@ -77,7 +76,6 @@ export default async function AdminNewsletterCampaignsPage({
         { label: "Newsletter", href: "/admin/marketing/newsletter" },
         { label: "Campagnes" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >

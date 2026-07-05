@@ -30,7 +30,6 @@ export default async function AdminSettingsChannelsPage() {
         { label: "Avance", href: "/admin/settings/advanced/overview" },
         { label: "Canaux de diffusion" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >

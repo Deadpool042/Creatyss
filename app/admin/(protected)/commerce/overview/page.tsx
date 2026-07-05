@@ -14,7 +14,6 @@ export default async function AdminCommerceOverviewPage() {
         { label: "Admin", href: "/admin" },
         { label: "Commerce" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
     >
       <CommerceOverviewSections stats={stats} />

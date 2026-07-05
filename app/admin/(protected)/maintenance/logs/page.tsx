@@ -64,7 +64,6 @@ export default async function AdminMaintenanceLogsPage() {
         { label: "Maintenance" },
         { label: "Jobs" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >

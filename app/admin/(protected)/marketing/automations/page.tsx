@@ -179,7 +179,6 @@ export default async function AdminMarketingAutomationsPage({
         { label: "Marketing", href: "/admin/marketing/overview" },
         { label: "Automations" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >
