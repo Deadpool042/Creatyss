@@ -40,7 +40,6 @@ import {
   ADMIN_PRODUCTS_LIST_PATH,
   ADMIN_PRODUCTS_TRASH_PATH,
   buildAdminProductBreadcrumbs,
-  buildAdminProductMediaPath,
 } from "@/features/admin/products/navigation";
 
 export const dynamic = "force-dynamic";
@@ -152,8 +151,6 @@ export default async function ProductDetailMediaPage({
         pageTitle: "Medias produit",
         pageDescription:
           "Gerez la galerie, l'image principale, l'ordre, le texte alternatif et l'association depuis la bibliotheque.",
-        currentLabel: "Medias",
-        currentHref: buildAdminProductMediaPath(product.slug),
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={product.id}

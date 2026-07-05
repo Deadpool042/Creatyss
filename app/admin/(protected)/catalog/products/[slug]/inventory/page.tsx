@@ -14,7 +14,6 @@ import {
 import { ProductInventoryTab } from "@/features/admin/products/components/editor/product-inventory-tab";
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
-import { buildAdminProductInventoryPath } from "@/features/admin/products/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -53,8 +52,6 @@ export default async function ProductDetailInventoryPage({
         pageTitle: "Stock produit",
         pageDescription:
           "Gerez les quantites physiques et l'etat de stock sans modifier ici la disponibilite vendable.",
-        currentLabel: "Stock",
-        currentHref: buildAdminProductInventoryPath(product.slug),
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={product.id}

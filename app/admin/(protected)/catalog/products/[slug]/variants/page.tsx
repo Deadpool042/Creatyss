@@ -20,7 +20,6 @@ import {
 import { ProductVariantsTab } from "@/features/admin/products/components/editor/product-variants-tab";
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
-import { buildAdminProductVariantsPath } from "@/features/admin/products/navigation";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export const dynamic = "force-dynamic";
@@ -56,8 +55,6 @@ export default async function ProductDetailVariantsPage({
         pageTitle: "Structure et variantes",
         pageDescription:
           "Gerez les declinaisons, la variante par defaut et les valeurs d'options structurelles sans recharger la page coeur produit.",
-        currentLabel: "Variantes",
-        currentHref: buildAdminProductVariantsPath(product.slug),
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={product.id}

@@ -10,7 +10,6 @@ import {
 import { ProductPricingTab } from "@/features/admin/products/components/editor/product-pricing-tab";
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
-import { buildAdminProductPricingPath } from "@/features/admin/products/navigation";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export const dynamic = "force-dynamic";
@@ -44,8 +43,6 @@ export default async function ProductDetailPricingPage({
         pageTitle: "Prix produit",
         pageDescription:
           "Gerez le prix boutique, les listes de prix et les fenetres tarifaires sans melanger cette responsabilite avec le coeur produit.",
-        currentLabel: "Prix",
-        currentHref: buildAdminProductPricingPath(product.slug),
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={product.id}
