@@ -10,6 +10,7 @@ import {
   Package,
   ScanSearch,
   Sparkles,
+  Tag,
   TrendingUp,
 } from "lucide-react";
 
@@ -18,6 +19,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { cn } from "@/lib/utils";
 import { ADMIN_CATEGORIES_LIST_PATH } from "@/features/admin/categories";
 import { ADMIN_PRODUCTS_LIST_PATH } from "@/features/admin/products/navigation";
+import {
+  ADMIN_CATALOG_PRICING_PATH,
+  ADMIN_CATALOG_SETTINGS_PATH,
+} from "@/features/admin/catalog/shared/admin-catalog-routes";
 import type { CatalogOverviewStats } from "@/features/admin/catalog/types/catalog-overview.types";
 
 type CatalogOverviewSectionsProps = {
@@ -66,6 +71,18 @@ const quickLinks: ReadonlyArray<CatalogQuickLink> = [
     title: "Médias",
     description: "Consolider les visuels, couvertures, miniatures et ressources éditoriales.",
     icon: ImageIcon,
+  },
+  {
+    href: ADMIN_CATALOG_PRICING_PATH,
+    title: "Tarification",
+    description: "Piloter les listes de prix, le défaut boutique et les règles tarifaires avancées.",
+    icon: Tag,
+  },
+  {
+    href: ADMIN_CATALOG_SETTINGS_PATH,
+    title: "Configuration",
+    description: "Comprendre les leviers admin, les niveaux ouverts et les dépendances infra.",
+    icon: Layers3,
   },
 ];
 
@@ -408,16 +425,16 @@ export function CatalogOverviewSections({ stats }: CatalogOverviewSectionsProps)
               Accès rapides
             </p>
             <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-              Les trois zones qui tiennent le catalogue
+              Les zones qui structurent vraiment le catalogue
             </h2>
           </div>
 
           <span className="hidden rounded-full border border-shell-border/70 bg-surface-panel/80 px-3 py-1 text-xs text-text-muted-strong sm:inline-flex">
-            Socle catalogue V1
+            Pilotage + exploitation
           </span>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
           {quickLinks.map((item) => {
             const Icon = item.icon;
 

@@ -2,7 +2,7 @@
 
 ## Statut
 
-En cours — pilotes `product-page`, `boutique-page` et pages de contenu observés, généralisation métier produit/blog restante
+En cours — pilotes `product-page`, `boutique-page`, pages de contenu et blog observés, généralisation métier produit restante
 
 ## Objectif
 
@@ -10,7 +10,7 @@ Poursuivre la généralisation de la convention `LocalizedValue` au-delà des pi
 
 ## Périmètre
 
-État observé au 2026-06-25 :
+État observé au 2026-07-05 :
 
 - `entities/languages/resolve-locale-content.ts` — convention existante observée et déjà réutilisée
 - Pilotes déjà livrés :
@@ -21,15 +21,16 @@ Poursuivre la généralisation de la convention `LocalizedValue` au-delà des pi
   - `contact` : lecture storefront localisée + édition admin
   - `a-propos` : lecture storefront localisée + édition admin
   - `les-marches` : lecture storefront localisée + édition admin
+- Pilote blog livré côté code :
+  - admin `/admin/content/blog/[id]` : édition des traductions `title` / `excerpt` / `content`
+  - storefront `app/(public)/blog/**` : listing + détail localisés avec fallback
 - Cibles restantes non observées :
   - contenus métier produit au sens large (`name`, `description`, `shortDescription`)
-  - blog (`title`, `excerpt`, `content`)
 
 Poursuite proposée :
 
 - réutiliser le pattern existant sans le redessiner
-- choisir un prochain pilote explicite parmi le blog ou les vrais champs produit
-- ne lancer la migration des vrais champs métier produit qu'avec un cadrage de migration dédié
+- poursuivre sur les vrais champs produit avec un cadrage de migration dédié
 
 ## Hors périmètre
 
@@ -42,7 +43,7 @@ Poursuite proposée :
 
 - `platform.localization` L3 complet et routing localisé observés comme prérequis (déjà satisfaits)
 - Convention `LocalizedValue` et `resolve-locale-content.ts` observées (base existante à ne pas modifier)
-- Décision produit : prochaine cible prioritaire entre blog ou vrais champs produit
+- Décision produit : prioriser ou non la migration des vrais champs produit
 
 ## Invariants
 
@@ -52,7 +53,7 @@ Poursuite proposée :
 
 ## Risques
 
-- Migration de données : les vrais champs produit et blog restent en `string` — leur passage à `LocalizedValue` demandera un backfill sans perte
+- Migration de données : les vrais champs produit restent en `string` — leur passage à `LocalizedValue` demandera un backfill sans perte
 - Impact SEO : la généralisation à des contenus indexés doit rester cohérente avec le routing localisé et les `hreflang` déjà observés
 - Formulaires admin : l'édition multilingue complexifie l'UX — le pattern existant doit être prolongé, pas réinventé
 
@@ -61,11 +62,11 @@ Poursuite proposée :
 - `pnpm run typecheck`
 - `pnpm run lint`
 - `pnpm run test` — vérifier que les tests existants sur les produits et le blog restent verts
-- Test manuel : fiche produit affichée dans chaque locale gérée, fallback vérifié si traduction absente
+- Test manuel : blog et fiche produit affichés dans chaque locale gérée, fallback vérifié si traduction absente
 
 ## Critères de fin
 
-- Une nouvelle cible de contenu au-delà des pilotes actuels est branchée sur `LocalizedValue`
+- Une nouvelle cible de contenu au-delà des pilotes actuels est branchée sur `LocalizedValue`, ou le lot est explicitement clos après le pilote blog
 - Le storefront ou la surface concernée affiche la traduction correcte selon la locale active, avec fallback
 - Les formulaires admin permettent la saisie des traductions pour cette cible
 - Les données existantes sont préservées après migration si des champs métier sont touchés

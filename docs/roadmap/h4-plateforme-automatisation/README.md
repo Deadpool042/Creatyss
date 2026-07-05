@@ -6,7 +6,7 @@
 
 ---
 
-## État au 2026-07-02
+## État au 2026-07-05
 
 ### Observé comme terminé (base)
 
@@ -19,11 +19,10 @@
 
 ### Observé comme non terminé
 
-- `platform.webhooks` : livraison webhook sortante avec signature HMAC et retry manuel gradué `retry` — observé ; sémantique entrants vs sortants à clarifier — documenté dans `docs/lots/2026-06-14-platform-webhooks-cadrage.md`
 - `platform.integrations` : aucun adaptateur provider concret — observé
 - `satellite.channels` : aucune synchronisation vers Google/Meta — observé
 - `satellite.search` : aucun moteur de recherche storefront — observé
-- `platform.localization` : généralisation `LocalizedValue` observée sur `homepage`, `product-page-copy`, `boutique-page-copy` et pages de contenu (`contact`, `a-propos`, `les-marches`) ; restent hors pilote les vrais champs métier produit/blog
+- `platform.localization` : généralisation `LocalizedValue` observée sur `homepage`, `product-page-copy`, `boutique-page-copy`, pages de contenu (`contact`, `a-propos`, `les-marches`) et blog (`title`, `excerpt`, `content`) ; restent hors pilote les vrais champs métier produit
 - `ai.core` : aucun provider SDK réel branché — observé
 
 ---
@@ -46,7 +45,7 @@
 | [lot-integrations-providers.md](./lot-integrations-providers.md) | Brancher un premier adaptateur concret sur le modèle Integration          | A faire                                                                         |
 | [lot-channels-google-meta.md](./lot-channels-google-meta.md)     | Synchroniser le catalogue vers Google Merchant Center ou Meta Catalog     | A faire                                                                         |
 | [lot-search-storefront.md](./lot-search-storefront.md)           | Recherche full-text dans le storefront                                    | A faire                                                                         |
-| [lot-multilangue-generalise.md](./lot-multilangue-generalise.md) | Étendre la généralisation `LocalizedValue` au-delà des pilotes déjà faits | En cours — pilote pages de contenu branché, champs métier produit/blog restants |
+| [lot-multilangue-generalise.md](./lot-multilangue-generalise.md) | Étendre la généralisation `LocalizedValue` au-delà des pilotes déjà faits | En cours — blog branché, champs métier produit restants                                |
 | [lot-ai-sdk-provider.md](./lot-ai-sdk-provider.md)               | Brancher un SDK AI réel sur le modèle AiProvider                          | A faire                                                                         |
 
 Tous ces lots sont relativement indépendants entre eux et peuvent être priorisés selon la valeur métier perçue. `lot-multilangue-generalise` dispose déjà de pilotes observés et peut se poursuivre dès que la prochaine cible de contenu est tranchée. `lot-webhooks-sortants` bénéficie d'un catalogue stable (H2 recommandé).

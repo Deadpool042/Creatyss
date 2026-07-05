@@ -7,6 +7,7 @@ import {
   ADMIN_CATEGORIES_DETAIL_CONTENT_CLASS,
   ADMIN_CATEGORIES_DETAIL_CONSTRAIN_CONTENT,
   CategoryArchivedPanel,
+  CategoryDetailSummary,
   CategoryEditorPanel,
   getAdminCategoryDetail,
   listCategoriesForPicker,
@@ -70,6 +71,8 @@ export default async function EditAdminCategoryPage({
           {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
         </div>
 
+        <CategoryDetailSummary category={category} archived />
+
         <CategoryArchivedPanel category={category} />
       </AdminSplitDetailPaneShell>
     );
@@ -100,6 +103,8 @@ export default async function EditAdminCategoryPage({
         {successMessage ? <Notice tone="success">{successMessage}</Notice> : null}
         {errorMessage ? <Notice tone="alert">{errorMessage}</Notice> : null}
       </div>
+
+      <CategoryDetailSummary category={category} />
 
       <CategoryEditorPanel
         category={category}

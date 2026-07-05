@@ -4,6 +4,7 @@ import "server-only";
 export { CategoriesPanelList } from "./components/list/categories-panel-list";
 export { CategoryCreateTopbarMenu } from "./components/create/category-create-topbar-menu";
 export { CategoryArchivedPanel } from "./components/edit/category-archived-panel";
+export { CategoryDetailSummary } from "./components/edit/category-detail-summary";
 export { CategoryEditorPanel } from "./components/edit/category-editor-panel";
 export { CategorySeoForm } from "./components/edit/category-seo-form";
 export { CategoryImageForm } from "./components/edit/category-image-form";

@@ -50,7 +50,7 @@ export function AdminConfigDataTableToolbar({
       {feedback}
 
       <div className="lg:hidden">
-        <div className="flex w-full items-center gap-2 [@media(max-height:480px)]:gap-1.5">
+        <div className="flex w-full flex-col gap-2 [@media(max-height:480px)]:gap-1.5">
           <div className="flex min-w-0 flex-1 items-center gap-2 [@media(max-height:480px)]:gap-1.5">
             <AdminSearchInput
               value={search}
@@ -60,7 +60,7 @@ export function AdminConfigDataTableToolbar({
             />
             {mobileControls}
           </div>
-          {mobileTrailing}
+          {mobileTrailing ? <div className="min-w-0">{mobileTrailing}</div> : null}
         </div>
       </div>
 

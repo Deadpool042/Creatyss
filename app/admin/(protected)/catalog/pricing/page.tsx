@@ -3,12 +3,14 @@ import { CheckCircle2, Clock, Euro, Star, Tag } from "lucide-react";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
+import { CatalogRouteNav } from "@/features/admin/catalog/components/catalog-route-nav";
 import {
   listAdminPriceLists,
   type AdminPriceListSummary,
 } from "@/features/admin/catalog/queries/list-admin-price-lists.query";
 import { PriceListCreateDialog } from "@/features/admin/catalog/components/price-list-create-dialog";
 import { PriceListRowActions } from "@/features/admin/catalog/components/price-list-row-actions";
+import { ADMIN_CATALOG_PRICING_PATH } from "@/features/admin/catalog/shared/admin-catalog-routes";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export const dynamic = "force-dynamic";
@@ -75,11 +77,11 @@ export default async function AdminCatalogPricingPage({
         { label: "Catalogue", href: "/admin/catalog/overview" },
         { label: "Tarification" },
       ]}
-      showBreadcrumbsInContent={false}
-      showTitleInContent={false}
-      contentPreset="overview"
+      contentPreset="table"
       topbarAction={canManagePriceLists ? <PriceListCreateDialog /> : undefined}
     >
+      <CatalogRouteNav />
+
       {/* Feedback */}
       {resolvedSearchParams.pl_created ? (
         <div className="rounded-xl border border-feedback-success-border bg-feedback-success-surface/60 px-4 py-2.5 text-sm text-feedback-success-foreground">
@@ -227,10 +229,10 @@ export default async function AdminCatalogPricingPage({
           </div>
 
           {!canManagePriceLists ? (
-            <p className="text-xs text-muted-foreground/70">
+            <div className="rounded-2xl border border-amber-500/20 bg-amber-500/8 px-4 py-3 text-sm text-amber-900 dark:text-amber-100">
               Le niveau <code>price-lists</code> est requis pour créer, activer ou changer les
-              listes.
-            </p>
+              listes depuis <code>{ADMIN_CATALOG_PRICING_PATH}</code>.
+            </div>
           ) : null}
 
           <p className="text-xs text-muted-foreground/50">
