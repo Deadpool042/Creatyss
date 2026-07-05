@@ -31,18 +31,21 @@ Les lots pilotes 2 et 3 dépendent de la validation visuelle du lot pilote 1 (r�
 
 ## Lots
 
-| Fichier                                                                                      | Description                                                              | Statut             |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------ |
-| [lot-1-toolbar-produits.md](./lot-1-toolbar-produits.md)                                     | Toolbar unifiée + liste produits (référence du nouveau pattern de liste) | Livré — 2026-07-04 |
-| [lot-2-liste-commandes.md](./lot-2-liste-commandes.md)                                       | Aligner `OrdersPanelList` sur le pattern validé au lot 1                 | Livré — 2026-07-04 |
-| [lot-3-navigation-settings.md](./lot-3-navigation-settings.md)                               | Navigation groupée style System Settings pour `settings/*`               | Livré — 2026-07-04 |
-| [lot-4-dashboard.md](./lot-4-dashboard.md)                                                   | Aplatir le dashboard en cockpit macOS plus dense                         | Livré — 2026-07-04 |
-| [lot-5-categories-list-sort.md](./lot-5-categories-list-sort.md)                             | Exposer le tri existant dans la split-list catégories                    | Livré — 2026-07-04 |
-| [lot-6-settings-advanced-overview.md](./lot-6-settings-advanced-overview.md)                 | Reflow mobile des stats `settings/advanced`                              | Livré — 2026-07-04 |
-| [lot-7-settings-advanced-governance-grids.md](./lot-7-settings-advanced-governance-grids.md) | Rendre responsives les grilles de gouvernance avancée                    | Livré — 2026-07-04 |
-| [lot-8-maintenance-stats-mobile.md](./lot-8-maintenance-stats-mobile.md)                     | Reflow mobile des stats maintenance                                      | Livré — 2026-07-04 |
-| [lot-9-discounts-toolbar-sheet.md](./lot-9-discounts-toolbar-sheet.md)                       | Codes promo : toolbar unifiée + création en Sheet                        | Livré — 2026-07-05 |
-| [lot-10-blog-list-toolbar.md](./lot-10-blog-list-toolbar.md)                                 | Blog : recherche et filtre statut sur la liste d'articles                | Livré — 2026-07-05 |
+| Fichier                                                                                      | Description                                                                                           | Statut             |
+| -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------ |
+| [lot-1-toolbar-produits.md](./lot-1-toolbar-produits.md)                                     | Toolbar unifiée + liste produits (référence du nouveau pattern de liste)                              | Livré — 2026-07-04 |
+| [lot-2-liste-commandes.md](./lot-2-liste-commandes.md)                                       | Aligner `OrdersPanelList` sur le pattern validé au lot 1                                              | Livré — 2026-07-04 |
+| [lot-3-navigation-settings.md](./lot-3-navigation-settings.md)                               | Navigation groupée style System Settings pour `settings/*`                                            | Livré — 2026-07-04 |
+| [lot-4-dashboard.md](./lot-4-dashboard.md)                                                   | Aplatir le dashboard en cockpit macOS plus dense                                                      | Livré — 2026-07-04 |
+| [lot-5-categories-list-sort.md](./lot-5-categories-list-sort.md)                             | Exposer le tri existant dans la split-list catégories                                                 | Livré — 2026-07-04 |
+| [lot-6-settings-advanced-overview.md](./lot-6-settings-advanced-overview.md)                 | Reflow mobile des stats `settings/advanced`                                                           | Livré — 2026-07-04 |
+| [lot-7-settings-advanced-governance-grids.md](./lot-7-settings-advanced-governance-grids.md) | Rendre responsives les grilles de gouvernance avancée                                                 | Livré — 2026-07-04 |
+| [lot-8-maintenance-stats-mobile.md](./lot-8-maintenance-stats-mobile.md)                     | Reflow mobile des stats maintenance                                                                   | Livré — 2026-07-04 |
+| [lot-9-discounts-toolbar-sheet.md](./lot-9-discounts-toolbar-sheet.md)                       | Codes promo : toolbar unifiée + création en Sheet                                                     | Livré — 2026-07-05 |
+| [lot-10-blog-list-toolbar.md](./lot-10-blog-list-toolbar.md)                                 | Blog : recherche et filtre statut sur la liste d'articles                                             | Livré — 2026-07-05 |
+| [lot-11-breadcrumbs-hub-catalogue.md](./lot-11-breadcrumbs-hub-catalogue.md)                 | Breadcrumbs généralisés, hub configuration catalogue, nav secondaire partagée (synthèse de 6 commits) | Livré — 2026-07-05 |
+
+Prolongement (lot 11) : après la clôture des 10 lots initiaux, une vague de micro-lots du 2026-07-05 a généralisé les breadcrumbs à tout l'admin, unifié la navigation secondaire des sections (`components/admin/layout/admin-section-route-nav.tsx`) et fait de `/admin/catalog/settings` le hub unique de configuration du catalogue.
 
 Généralisation : au 2026-07-05, les candidats identifiés sont traités ou écartés — `commerce/customers`, `catalog/pricing`, `settings/team`, `settings/api-clients` déjà alignés (toolbar ou Dialog/Drawer en topbar) ; `marketing/discounts` (lot 9) et `content/blog` (lot 10) livrés. Les domaines restants (`commerce/{documents,payments,shipping,taxation}`, `insights/*`) sont des overviews/écrans de réglages déjà responsives, sans liste dense à outiller — à réévaluer si un besoin apparaît.
 
