@@ -98,7 +98,6 @@ export default async function AdminCustomerDetailPage({ params }: AdminCustomerD
         { label: "Clients", href: "/admin/commerce/customers" },
         { label: fullName },
       ]}
-      showBreadcrumbsInContent={false}
       contentPreset="detail"
     >
       <div className="space-y-6">

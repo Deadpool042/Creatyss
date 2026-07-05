@@ -62,7 +62,6 @@ export default async function AdminCommerceShippingPage({ searchParams }: AdminC
         { label: "Commerce", href: "/admin/commerce/overview" },
         { label: "Livraisons" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >

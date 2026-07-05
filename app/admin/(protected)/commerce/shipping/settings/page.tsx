@@ -56,7 +56,6 @@ export default async function AdminCommerceShippingSettingsPage({
           { label: "Livraisons", href: "/admin/commerce/shipping" },
           { label: "Configuration" },
         ]}
-        showBreadcrumbsInContent={false}
         showTitleInContent={false}
         contentPreset="form"
       >
@@ -81,7 +80,6 @@ export default async function AdminCommerceShippingSettingsPage({
         { label: "Livraisons", href: "/admin/commerce/shipping" },
         { label: "Configuration" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="form"
     >

@@ -108,7 +108,6 @@ export async function CustomersListPage({ searchParams = {} }: CustomersListPage
         { label: "Commerce", href: "/admin/commerce/overview" },
         { label: "Clients" },
       ]}
-      showBreadcrumbsInContent={false}
       contentPreset="table"
     >
       <CustomerRouteNav />

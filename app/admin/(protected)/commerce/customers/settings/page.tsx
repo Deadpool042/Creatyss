@@ -18,7 +18,6 @@ export default async function AdminCommerceCustomersSettingsPage() {
         { label: "Clients", href: ADMIN_CUSTOMERS_LIST_PATH },
         { label: "Configuration" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="form"
     >

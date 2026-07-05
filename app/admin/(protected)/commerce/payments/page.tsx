@@ -34,7 +34,6 @@ export default async function AdminCommercePaymentsPage() {
         { label: "Commerce", href: "/admin/commerce/overview" },
         { label: "Paiements" },
       ]}
-      showBreadcrumbsInContent={false}
       showTitleInContent={false}
       contentPreset="table"
     >
