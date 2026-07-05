@@ -2,6 +2,9 @@ import type { CatalogAvailabilityFilterValue } from "@/entities/catalog/catalog-
 
 type BuildPublishedProductWhereInput = {
   searchQuery: string | null;
+  // Ids résolus par le FTS (satellite.search actif) : remplace le fallback
+  // ILIKE sur searchQuery. Null ou absent = fallback ILIKE inchangé.
+  searchProductIds?: string[] | null;
   categorySlugs: string[];
   minPriceCents: number | null;
   maxPriceCents: number | null;
@@ -19,7 +22,11 @@ export function buildPublishedProductWhereInput(input: BuildPublishedProductWher
   return {
     status: "ACTIVE" as const,
     archivedAt: null,
-    ...(input.searchQuery
+    ...(input.searchProductIds !== null && input.searchProductIds !== undefined
+      ? { id: { in: input.searchProductIds } }
+      : {}),
+    ...(input.searchQuery &&
+    (input.searchProductIds === null || input.searchProductIds === undefined)
       ? {
           OR: [
             { name: { contains: input.searchQuery, mode: "insensitive" as const } },
@@ -34,10 +41,7 @@ export function buildPublishedProductWhereInput(input: BuildPublishedProductWher
           productCategories: {
             some: {
               category: {
-                OR: input.categorySlugs.flatMap((slug) => [
-                  { slug },
-                  { parent: { slug } },
-                ]),
+                OR: input.categorySlugs.flatMap((slug) => [{ slug }, { parent: { slug } }]),
               },
             },
           },
@@ -54,10 +58,9 @@ export function buildPublishedProductWhereInput(input: BuildPublishedProductWher
   };
 }
 
-export function filterProductsByStorefrontAvailability<T extends { availabilityStatus: CatalogAvailabilityFilterValue }>(
-  products: T[],
-  availabilityStatus: CatalogAvailabilityFilterValue | null
-): T[] {
+export function filterProductsByStorefrontAvailability<
+  T extends { availabilityStatus: CatalogAvailabilityFilterValue },
+>(products: T[], availabilityStatus: CatalogAvailabilityFilterValue | null): T[] {
   if (availabilityStatus === null) {
     return products;
   }

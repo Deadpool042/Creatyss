@@ -13,17 +13,17 @@ import {
 
 type CountPublishedProductsInput = {
   searchQuery: string | null;
+  searchProductIds?: string[] | null;
   categorySlugs: string[];
   availabilityStatus: CatalogAvailabilityFilterValue | null;
   minPriceCents: number | null;
   maxPriceCents: number | null;
 };
 
-export async function countPublishedProducts(
-  input: CountPublishedProductsInput
-): Promise<number> {
+export async function countPublishedProducts(input: CountPublishedProductsInput): Promise<number> {
   const where = buildPublishedProductWhereInput({
     searchQuery: input.searchQuery,
+    searchProductIds: input.searchProductIds ?? null,
     categorySlugs: input.categorySlugs,
     minPriceCents: input.minPriceCents,
     maxPriceCents: input.maxPriceCents,

@@ -17,6 +17,7 @@ import type { CatalogProductListPage } from "@/features/storefront/catalog/types
 
 type ListPublishedProductsPageInput = {
   searchQuery: string | null;
+  searchProductIds?: string[] | null;
   categorySlugs: string[];
   availabilityStatus: CatalogAvailabilityFilterValue | null;
   minPriceCents: number | null;
@@ -53,6 +54,7 @@ export async function listPublishedProductsPage(
 
   const baseWhere = buildPublishedProductWhereInput({
     searchQuery: input.searchQuery,
+    searchProductIds: input.searchProductIds ?? null,
     categorySlugs: input.categorySlugs,
     minPriceCents: input.minPriceCents,
     maxPriceCents: input.maxPriceCents,
