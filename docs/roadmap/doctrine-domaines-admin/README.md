@@ -1,6 +1,6 @@
 # Doctrine domaines admin — extension de la doctrine UI/UX catalog
 
-> Chantier transverse · Ouvert le 2026-07-05 · Statut : lots A–F et H livrés, reste G
+> Chantier transverse · Ouvert le 2026-07-05 · Statut : lots A–H tous livrés (clos le 2026-07-05)
 > Audit source : [2026-07-05-audit-doctrine-domaines-admin.md](../../audit/2026-07-05-audit-doctrine-domaines-admin.md)
 > Référence doctrinale : [admin-design-macos / lot 11](../admin-design-macos/lot-11-breadcrumbs-hub-catalogue.md)
 
@@ -31,10 +31,16 @@
 | D   | `MaintenanceRouteNav` (logs, monitoring, observability)                                                                                                                | S      | —           | Livré (295d922f)                 |
 | E   | Hub configuration commerce (modèle catalog : paiements, livraison, TVA, clients, statuts par niveau ; remplace l'`AdminComingSoon` customers)                          | M      | Décision D1 | Livré (f2e807fb)                 |
 | F   | Hub configuration marketing (niveaux discounts simple/rules/automation et newsletter basic/segmentation ; factoriser la logique de statut de discounts/page.tsx)       | M      | Décision D3 | Livré (ce lot)                   |
-| G   | Hub configuration content + route nav (Blog, Pages, Accueil, SEO ; niveau blog visible)                                                                                | M      | Décision D2 | À faire                          |
+| G   | Hub configuration content + route nav (Blog, Pages, Accueil, SEO ; niveau blog visible)                                                                                | M      | Décision D2 | Livré                            |
 | H   | Doctrine « flag inactif ≠ notFound » (settings/{ai,integrations,search,channels,webhooks}, insights, marketing/\*, taxation → écran de statut « Capacité désactivée ») | S/M    | Décision D3 | Livré (7fcf3279, merge 574f33d3) |
 
 Ordre recommandé : A → B → D (indépendants, risque nul) puis D1 → C + E, D3 → H + F, D2 → G.
+
+### Lots d'alignement complémentaires (hors grille initiale, livrés le 2026-07-05)
+
+- **Nav de domaine content** (`ContentRouteNav` : Pilotage | Blog | Pages | Accueil | SEO | Configuration) + hub content branché sur les vraies queries — merge e793ae84.
+- **Nav de domaine commerce** (`CommerceRouteNav` : Pilotage | TVA | Configuration) — merge c6020b51. Les modules orders/payments/shipping/customers gardent leur nav locale.
+- **Nav de domaine marketing** (`MarketingRouteNav` : Pilotage | Codes promo | Newsletter | Automations | Configuration) — merge c2f2f0a9.
 
 ## Décisions (tranchées le 2026-07-05)
 
