@@ -19,6 +19,9 @@ import {
 } from "@/features/commerce/checkout/types/checkout-payment-method.types";
 import { resolveApplicableOrderDiscount } from "@/features/commerce/discounts/lib/resolve-order-discount";
 import { queueOrderPlacedAutomationJobs } from "@/features/automations/services/queue-order-placed-automation-jobs.service";
+import { queueWebhookDeliveryJobs } from "@/features/webhooks/services/queue-webhook-delivery-jobs.service";
+import { buildOrderCreatedWebhookBody } from "@/features/webhooks/shared/webhook-event-payloads";
+import { WEBHOOK_ORDER_CREATED_EVENT_TYPE } from "@/features/webhooks/shared/webhook-job.constants";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import {
   OrderRepositoryError,
@@ -572,6 +575,25 @@ export async function createOrderFromGuestCartToken(
         "[order] queueOrderPlacedAutomationJobs failed — order unaffected",
         automationError
       );
+    }
+
+    // Webhook enqueue failure must not rollback the order either.
+    try {
+      const occurredAt = new Date();
+      await queueWebhookDeliveryJobs(tx, {
+        storeId: cart.storeId,
+        eventType: WEBHOOK_ORDER_CREATED_EVENT_TYPE,
+        eventId: createdOrder.id,
+        occurredAt,
+        eventBody: buildOrderCreatedWebhookBody({
+          orderId: createdOrder.id,
+          orderReference: createdOrder.reference,
+          storeId: cart.storeId,
+          occurredAt,
+        }),
+      });
+    } catch (webhookError) {
+      console.error("[order] queueWebhookDeliveryJobs failed — order unaffected", webhookError);
     }
 
     return createdOrder;
