@@ -73,6 +73,7 @@ export function buildProductsCreateHref(params: ProductsPageParams): string {
 export {
   buildAdminProductAvailabilityPath,
   ADMIN_PRODUCTS_CREATE_PATH,
+  buildAdminProductBreadcrumbs,
   buildAdminProductCategoriesPath,
   buildAdminProductCharacteristicsPath,
   ADMIN_PRODUCTS_LIST_PATH,

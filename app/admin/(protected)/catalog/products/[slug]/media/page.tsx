@@ -39,6 +39,7 @@ import {
   ADMIN_PRODUCTS_CREATE_PATH,
   ADMIN_PRODUCTS_LIST_PATH,
   ADMIN_PRODUCTS_TRASH_PATH,
+  buildAdminProductBreadcrumbs,
   buildAdminProductMediaPath,
 } from "@/features/admin/products/navigation";
 
@@ -66,6 +67,7 @@ export default async function ProductDetailMediaPage({
         }
         scrollBehavior="page"
         contentPreset="detail"
+        breadcrumbs={buildAdminProductBreadcrumbs(product.name)}
         header={
           <AdminPageHeader
             className="hidden lg:block"

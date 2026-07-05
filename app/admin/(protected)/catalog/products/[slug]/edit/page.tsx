@@ -30,6 +30,7 @@ import {
 } from "@/features/admin/products/config";
 import {
   ADMIN_PRODUCTS_CREATE_PATH,
+  buildAdminProductBreadcrumbs,
   buildAdminProductEditPath,
   ADMIN_PRODUCTS_LIST_PATH,
   ADMIN_PRODUCTS_TRASH_PATH,
@@ -104,12 +105,7 @@ function ProductArchivedState({ product }: ProductArchivedStateProps) {
       scrollBehavior="page"
       contentPreset="detail"
       contentClassName="lg:pb-6"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Catalogue", href: "/admin/catalog/overview" },
-        { label: "Produits", href: ADMIN_PRODUCTS_LIST_PATH },
-        { label: product.name },
-      ]}
+      breadcrumbs={buildAdminProductBreadcrumbs(product.name)}
       header={
         <AdminPageHeader
           className="hidden lg:block"
