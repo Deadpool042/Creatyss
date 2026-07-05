@@ -42,8 +42,9 @@ Les lots pilotes 2 et 3 dépendent de la validation visuelle du lot pilote 1 (r�
 | [lot-7-settings-advanced-governance-grids.md](./lot-7-settings-advanced-governance-grids.md) | Rendre responsives les grilles de gouvernance avancée                    | Livré — 2026-07-04 |
 | [lot-8-maintenance-stats-mobile.md](./lot-8-maintenance-stats-mobile.md)                     | Reflow mobile des stats maintenance                                      | Livré — 2026-07-04 |
 | [lot-9-discounts-toolbar-sheet.md](./lot-9-discounts-toolbar-sheet.md)                       | Codes promo : toolbar unifiée + création en Sheet                        | Livré — 2026-07-05 |
+| [lot-10-blog-list-toolbar.md](./lot-10-blog-list-toolbar.md)                                 | Blog : recherche et filtre statut sur la liste d'articles                | Livré — 2026-07-05 |
 
-Généralisation aux autres domaines (`content/*`, `commerce/{customers,documents,payments,shipping,taxation}`, `insights/*`, `maintenance/*`, `marketing/*`) : non planifiée en détail, dépend du retour visuel sur les 3 lots pilotes.
+Généralisation : au 2026-07-05, les candidats identifiés sont traités ou écartés — `commerce/customers`, `catalog/pricing`, `settings/team`, `settings/api-clients` déjà alignés (toolbar ou Dialog/Drawer en topbar) ; `marketing/discounts` (lot 9) et `content/blog` (lot 10) livrés. Les domaines restants (`commerce/{documents,payments,shipping,taxation}`, `insights/*`) sont des overviews/écrans de réglages déjà responsives, sans liste dense à outiller — à réévaluer si un besoin apparaît.
 
 ## Risques
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Edit3, Eye, EyeOff, FileText, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/shared/feedback";
@@ -7,7 +7,8 @@ import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { cn } from "@/lib/utils";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
-import { listAdminBlogPosts, toggleBlogPostStatusAction } from "@/features/admin/blog";
+import { listAdminBlogPosts } from "@/features/admin/blog";
+import { BlogPostsPanel } from "@/features/admin/blog/components/blog-posts-panel";
 
 export const dynamic = "force-dynamic";
 
@@ -30,8 +31,6 @@ function getErrorMessage(error: string | undefined): string | null {
   }
   return null;
 }
-
-const dateFormatter = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
 
 export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps) {
   const resolvedSearchParams = await searchParams;
@@ -111,81 +110,7 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogPageProps
             ))}
           </div>
 
-          {/* Liste articles */}
-          <div className="divide-y divide-surface-border/40">
-            {blogPosts.map((post) => (
-              <div key={post.id} className="flex items-start gap-4 py-4 first:pt-0 last:pb-0">
-                {/* Icône statut */}
-                <div
-                  className={cn(
-                    "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-xl border",
-                    post.status === "published"
-                      ? "border-feedback-success-border bg-feedback-success-surface/40 text-feedback-success-foreground"
-                      : "border-surface-border/60 bg-surface-subtle text-muted-foreground/50"
-                  )}
-                >
-                  <FileText className="size-4" />
-                </div>
-
-                {/* Titre + meta */}
-                <div className="min-w-0 flex-1">
-                  <Link
-                    href={`/admin/content/blog/${post.id}`}
-                    className="text-[13px] font-medium text-foreground hover:underline underline-offset-4"
-                  >
-                    {post.title}
-                  </Link>
-                  <p className="mt-0.5 text-xs text-muted-foreground">
-                    {post.status === "published" && post.publishedAt
-                      ? `Publié le ${dateFormatter.format(new Date(post.publishedAt))}`
-                      : post.hasContent
-                        ? "Brouillon — prêt à publier"
-                        : "Brouillon — contenu à compléter"}
-                  </p>
-                </div>
-
-                {/* Badge statut */}
-                <span
-                  className={cn(
-                    "shrink-0 inline-flex h-6 items-center rounded-md px-2 text-[11px] font-medium",
-                    post.status === "published"
-                      ? "bg-feedback-success-surface/75 text-feedback-success-foreground"
-                      : "bg-surface-subtle text-muted-foreground"
-                  )}
-                >
-                  {post.status === "published" ? "Publié" : "Brouillon"}
-                </span>
-
-                {/* Actions */}
-                <div className="flex shrink-0 items-center gap-1">
-                  <Link
-                    href={`/admin/content/blog/${post.id}`}
-                    className="flex size-8 items-center justify-center rounded-xl text-muted-foreground/60 transition-colors hover:bg-surface-subtle hover:text-foreground"
-                    title="Modifier"
-                  >
-                    <Edit3 className="size-3.5" />
-                  </Link>
-                  {(post.status === "published" || canPublishBlog) && (
-                    <form action={toggleBlogPostStatusAction}>
-                      <input type="hidden" name="postId" value={post.id} />
-                      <button
-                        type="submit"
-                        disabled={post.status === "draft" && !post.hasContent}
-                        title={post.status === "published" ? "Passer en brouillon" : "Publier"}
-                        className="flex size-8 items-center justify-center rounded-xl text-muted-foreground/60 transition-colors hover:bg-surface-subtle hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
-                      >
-                        {post.status === "published" ? (
-                          <EyeOff className="size-3.5" />
-                        ) : (
-                          <Eye className="size-3.5" />
-                        )}
-                      </button>
-                    </form>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+          <BlogPostsPanel posts={blogPosts} canPublishBlog={canPublishBlog} />
         </>
       ) : (
         <AdminEmptyState
