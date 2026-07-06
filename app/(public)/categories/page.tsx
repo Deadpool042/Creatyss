@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { StorefrontEmptyState } from "@/components/storefront/storefront-empty-state";
 import { brandConfig } from "@/core/config/brand";
 import { listCatalogFilterCategories } from "@/features/storefront/catalog";
 
@@ -38,9 +39,7 @@ export default async function CategoriesPage() {
       </div>
 
       {rootCategories.length === 0 ? (
-        <div className="py-16 text-center">
-          <p className="text-muted-foreground">Aucune catégorie disponible.</p>
-        </div>
+        <StorefrontEmptyState title="Aucune catégorie disponible" />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {rootCategories.map((category) => (

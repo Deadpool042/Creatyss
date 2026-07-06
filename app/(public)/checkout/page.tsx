@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/feedback";
+import { StorefrontEmptyState } from "@/components/storefront/storefront-empty-state";
 import { moneyStringToCents } from "@/core/money";
 import { readCartSessionToken } from "@/core/sessions/cart";
 import { readCheckoutPaymentMethod } from "@/core/sessions/checkout-payment";
@@ -628,15 +629,11 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   ))}
                 </div>
               ) : (
-                <div className="grid gap-4 rounded-lg border border-surface-border-subtle/70 bg-surface-panel/30 p-6">
-                  <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
-                    Panier vide
-                  </p>
-                  <h2>Aucune ligne à valider</h2>
-                  <p className="text-sm text-muted-foreground">
-                    Revenez à la boutique pour ajouter un article au panier.
-                  </p>
-                </div>
+                <StorefrontEmptyState
+                  eyebrow="Panier vide"
+                  title="Aucune ligne à valider"
+                  description="Revenez à la boutique pour ajouter un article au panier."
+                />
               )}
 
               <div className="grid gap-1">
@@ -690,26 +687,24 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
             </aside>
           </div>
         ) : (
-          <div className="grid gap-4 rounded-lg border border-surface-border-subtle/70 bg-surface-panel/30 p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
-              Commande indisponible
-            </p>
-            <h2>Ajoutez d&apos;abord un article au panier</h2>
-            <p className="text-sm text-muted-foreground">
-              Ajoutez d&apos;abord un article disponible au panier pour finaliser la commande.
-            </p>
-            <div className="flex flex-wrap items-center gap-3">
-              <Button asChild>
-                <Link href="/boutique">Voir la boutique</Link>
-              </Button>
-              <Link
-                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                href="/panier"
-              >
-                Retour au panier
-              </Link>
-            </div>
-          </div>
+          <StorefrontEmptyState
+            eyebrow="Commande indisponible"
+            title="Ajoutez d'abord un article au panier"
+            description="Ajoutez d'abord un article disponible au panier pour finaliser la commande."
+            action={
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <Button asChild>
+                  <Link href="/boutique">Voir la boutique</Link>
+                </Button>
+                <Link
+                  className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                  href="/panier"
+                >
+                  Retour au panier
+                </Link>
+              </div>
+            }
+          />
         )}
       </section>
     </div>

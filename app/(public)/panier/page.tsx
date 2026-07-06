@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Notice } from "@/components/shared/feedback";
+import { StorefrontEmptyState } from "@/components/storefront/storefront-empty-state";
 import { readCartSessionToken } from "@/core/sessions/cart";
 import { readGuestCartByToken } from "@/features/commerce/cart/lib/guest-cart.repository";
 import type { GuestCart } from "@/features/commerce/cart/lib/guest-cart.types";
@@ -217,16 +218,16 @@ export default async function CartPage({ searchParams }: CartPageProps) {
             </aside>
           </div>
         ) : (
-          <div className="grid gap-4 rounded-lg border border-surface-border-subtle/70 bg-surface-panel/30 p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Panier vide</p>
-            <h2>Aucun article n&apos;a encore été ajouté au panier</h2>
-            <p className="text-sm text-muted-foreground">
-              Ajoutez un article disponible depuis une fiche produit.
-            </p>
-            <Button asChild>
-              <Link href="/boutique">Voir la boutique</Link>
-            </Button>
-          </div>
+          <StorefrontEmptyState
+            eyebrow="Panier vide"
+            title="Aucun article n'a encore été ajouté au panier"
+            description="Ajoutez un article disponible depuis une fiche produit."
+            action={
+              <Button asChild>
+                <Link href="/boutique">Voir la boutique</Link>
+              </Button>
+            }
+          />
         )}
       </section>
     </div>

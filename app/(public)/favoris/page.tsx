@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { StorefrontEmptyState } from "@/components/storefront/storefront-empty-state";
 import { readFavoriteProductIds } from "@/core/sessions/favorites";
 import { findFavoriteProductsByIds } from "@/features/storefront/catalog/queries/find-favorite-products-by-ids";
 import { getUploadsPublicPath } from "@/core/uploads";
@@ -33,17 +34,17 @@ export default async function FavoritesPage() {
       </div>
 
       {products.length === 0 ? (
-        <div className="grid gap-4 py-16 text-center">
-          <p className="text-text-muted-strong">
-            Vous n&apos;avez pas encore ajouté de pièces à vos favoris.
-          </p>
-          <Link
-            href="/boutique"
-            className="mx-auto inline-flex items-center gap-2 rounded-lg border border-control-border px-5 py-2.5 text-sm font-medium transition-colors hover:border-control-border-strong hover:bg-surface-panel/60"
-          >
-            Découvrir la boutique
-          </Link>
-        </div>
+        <StorefrontEmptyState
+          title="Vous n'avez pas encore ajouté de pièces à vos favoris"
+          action={
+            <Link
+              href="/boutique"
+              className="mx-auto inline-flex items-center gap-2 rounded-lg border border-control-border px-5 py-2.5 text-sm font-medium transition-colors hover:border-control-border-strong hover:bg-surface-panel/60"
+            >
+              Découvrir la boutique
+            </Link>
+          }
+        />
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4">
           {products.map((product) => (
