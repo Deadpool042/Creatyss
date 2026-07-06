@@ -11,8 +11,10 @@ import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-
  *   aucune IP, aucun cookie → pas de consentement RGPD requis) ;
  * - un `AnalyticsSnapshot` par jour UTC et par métrique, incrémenté par
  *   upsert (pas d'écriture brute par événement) ;
- * - collecte gatée par le flag `engagement.analytics` : flag inactif →
- *   aucune écriture.
+ * - collecte gatée par le flag `engagement.tracking` (domaine `tracking`,
+ *   séparé de `engagement.analytics` qui gouverne l'exposition admin des
+ *   lectures — cf. `docs/roadmap/analyses-cockpit-analytique/lot-6-tracking-dashboarding-cadrage.md`) :
+ *   flag inactif → aucune écriture.
  *
  * Les sessions et visiteurs uniques ne sont pas approximables sans
  * identifiant : ils ne sont volontairement pas collectés.
@@ -50,7 +52,7 @@ export const STOREFRONT_ANALYTICS_DIMENSION_TYPE = "total";
 export const STOREFRONT_ANALYTICS_DIMENSION_KEY = "all";
 export const STOREFRONT_ANALYTICS_SOURCE_REF = "storefront.tracking";
 
-const ANALYTICS_FEATURE_CODE = "engagement.analytics";
+const TRACKING_FEATURE_CODE = "engagement.tracking";
 
 export function getUtcDayRange(now: Date): { periodStart: Date; periodEnd: Date } {
   const periodStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
@@ -98,7 +100,7 @@ export async function recordStorefrontAnalyticsEvent(
     return;
   }
 
-  const featureActive = await meetsFeatureLevel(ANALYTICS_FEATURE_CODE, "read", { storeId });
+  const featureActive = await meetsFeatureLevel(TRACKING_FEATURE_CODE, "active", { storeId });
 
   if (!featureActive) {
     return;

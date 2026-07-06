@@ -10,6 +10,7 @@ export const FEATURE_LEVELS = {
   localization: ["managed", "multilingual", "localized-routing"],
   fulfillment: ["manual", "partial"],
   automations: ["basic"],
+  tracking: ["active"],
   returns: ["manual", "partial"],
   taxation: ["store"],
   documents: ["basic", "fiscal"],
@@ -305,6 +306,24 @@ export const FEATURE_CATALOG = [
         "Insights actionnables dérivés d'Order/OrderLine : produits en repli (0 vente sur 30 jours après une période active) et produits en forte croissance (vs mois précédent).",
     },
     levels: FEATURE_LEVELS.analytics,
+  },
+  {
+    key: "engagement.tracking",
+    label: "Tracking storefront",
+    description:
+      "Collecte anonyme des signaux de comportement storefront (vues produit, ajouts panier, recherches), sans cookie ni identifiant.",
+    family: "optional",
+    module: "engagement",
+    defaultState: "active",
+    mutability: "level_selectable",
+    scopes: ["store"],
+    levels: FEATURE_LEVELS.tracking,
+    levelLabels: {
+      active: "Actif",
+    },
+    levelDescriptions: {
+      active: "Collecte des agrégats quotidiens consommés par le module Analytics.",
+    },
   },
   {
     key: "engagement.automations",

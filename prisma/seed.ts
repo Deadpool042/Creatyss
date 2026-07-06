@@ -26,6 +26,7 @@ import { seedReturnsFeatureFlag } from "./seed/returns-feature-flag.seed";
 import { seedSearchFeatureFlag } from "./seed/search-feature-flag.seed";
 import { seedTaxationFeatureFlag } from "./seed/taxation-feature-flag.seed";
 import { seedTaxRules } from "./seed/tax-rules.seed";
+import { seedTrackingFeatureFlag } from "./seed/tracking-feature-flag.seed";
 import { seedWebhooksFeatureFlag } from "./seed/webhooks-feature-flag.seed";
 import { seedCustomers } from "./seed/customers.seed";
 
@@ -46,6 +47,7 @@ async function main(): Promise<void> {
   await seedAiFeatureFlag(prisma);
   await seedAnalyticsFeatureFlag(prisma);
   await seedAutomationsFeatureFlag(prisma);
+  await seedTrackingFeatureFlag(prisma);
   await seedChannelsFeatureFlag(prisma);
   await seedDiscountsFeatureFlag(prisma);
   await seedDocumentsFeatureFlag(prisma);
