@@ -403,38 +403,6 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
       capabilitiesAll: [adminNavigationCapabilities.system.logsRead],
     },
   },
-  {
-    key: "maintenance-monitoring",
-    label: "Monitoring",
-    href: "/admin/maintenance/monitoring",
-    iconKey: "heartPulse",
-    group: "maintenance",
-    order: 30,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-    },
-    access: {
-      internalOnly: true,
-      capabilitiesAll: [adminNavigationCapabilities.system.monitoringRead],
-    },
-  },
-  {
-    key: "maintenance-observability",
-    label: "Observabilité",
-    href: "/admin/maintenance/observability",
-    iconKey: "activity",
-    group: "maintenance",
-    order: 40,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-    },
-    access: {
-      internalOnly: true,
-      capabilitiesAll: [adminNavigationCapabilities.system.observabilityRead],
-    },
-  },
 
   {
     key: "settings-overview",

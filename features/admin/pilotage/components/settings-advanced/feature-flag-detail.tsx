@@ -174,7 +174,7 @@ function resolveContextualLinks(key: string, _level: string | null): ContextualL
       return [{ label: "SEO", href: "/admin/content/seo" }];
     // Maintenance
     case "maintenance.observability":
-      return [{ label: "Observabilité", href: "/admin/maintenance/observability" }];
+      return [{ label: "Vue d'ensemble", href: "/admin/maintenance/overview" }];
     case "maintenance.logs":
       return [{ label: "Journaux", href: "/admin/maintenance/logs" }];
     // Insights

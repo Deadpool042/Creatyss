@@ -29,7 +29,7 @@ export async function ObservabilityGovernancePanel() {
         Ce flag gouverne la collecte de{" "}
         <span className="font-medium text-foreground">signaux d'observabilité</span> — métriques,
         alertes de santé. Accès admin via{" "}
-        <code className="font-mono text-[10px]">/admin/maintenance/observability</code>.
+        <code className="font-mono text-[10px]">/admin/maintenance/overview</code>.
       </GovernanceDomainContext>
       {data.totalSignals > 0 ? (
         <GovernanceStatGrid stats={stats} columns={2} />
