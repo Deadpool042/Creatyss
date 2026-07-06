@@ -31,7 +31,7 @@ export default function ComptePage() {
             <SearchIcon className="size-4 text-muted-foreground/60" />
           </div>
           <div>
-            <p className="text-[13px] font-semibold text-foreground">Suivre une commande</p>
+            <p className="text-sm font-semibold text-foreground">Suivre une commande</p>
             <p className="text-xs text-muted-foreground">Référence au format CRY-XXXXXXXXXX</p>
           </div>
         </div>
@@ -44,9 +44,9 @@ export default function ComptePage() {
         <div className="flex items-start gap-3">
           <PackageIcon className="mt-0.5 size-5 shrink-0 text-muted-foreground/30" />
           <div>
-            <p className="text-[13px] font-medium text-foreground">
+            <p className="text-sm font-medium text-foreground">
               Espace client complet
-              <span className="ml-2 rounded-full bg-surface-subtle px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground/70">
+              <span className="ml-2 rounded-full bg-surface-subtle px-2 py-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground/70">
                 À venir
               </span>
             </p>

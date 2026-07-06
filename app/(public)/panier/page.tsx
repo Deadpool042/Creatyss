@@ -104,34 +104,34 @@ export default async function CartPage({ searchParams }: CartPageProps) {
               {cart.lines.map((line) => (
                 <article className="store-card grid gap-4" key={line.id}>
                   <div className="grid gap-1">
-                    <p className="text-[0.95rem] text-foreground/68">Produit</p>
+                    <p className="text-sm text-muted-foreground">Produit</p>
                     <h2>{line.productName}</h2>
-                    <p className="text-[0.95rem] text-foreground/68">{line.variantName}</p>
+                    <p className="text-sm text-muted-foreground">{line.variantName}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       SKU
                     </p>
                     <p className="text-sm text-muted-foreground">{line.sku}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Prix unitaire actuel
                     </p>
                     <p className="text-sm text-muted-foreground">{line.unitPriceAmount}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Sous-total
                     </p>
                     <p className="text-sm text-muted-foreground">{line.lineTotalAmount}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Disponibilité
                     </p>
                     <p className="text-sm text-muted-foreground">
@@ -192,21 +192,21 @@ export default async function CartPage({ searchParams }: CartPageProps) {
               ) : null}
 
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Lignes
                 </p>
                 <p className="text-sm text-muted-foreground">{cart.lines.length}</p>
               </div>
 
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Quantité totale
                 </p>
                 <p className="text-sm text-muted-foreground">{cart.itemCount}</p>
               </div>
 
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Sous-total panier
                 </p>
                 <p className="text-sm text-muted-foreground">{cart.subtotal}</p>

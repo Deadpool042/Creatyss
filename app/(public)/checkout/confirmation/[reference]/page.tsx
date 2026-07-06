@@ -98,28 +98,28 @@ export default async function OrderConfirmationPage({
 
             <article className="store-card grid gap-4">
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Référence
                 </p>
                 <p className="text-sm text-muted-foreground">{order.reference}</p>
               </div>
 
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Statut
                 </p>
                 <p className="text-sm text-muted-foreground">{getOrderStatusLabel(order.status)}</p>
               </div>
 
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Paiement
                 </p>
                 <p className="text-sm text-muted-foreground">{getPaymentStatusLabel(order.payment.status)}</p>
               </div>
 
               <div className="grid gap-1">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Créée le
                 </p>
                 <p className="text-sm text-muted-foreground">
@@ -136,7 +136,7 @@ export default async function OrderConfirmationPage({
                 </h2>
                 <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
                 {order.customerPhone ? (
-                  <p className="text-[0.95rem] text-foreground/68">{order.customerPhone}</p>
+                  <p className="text-sm text-muted-foreground">{order.customerPhone}</p>
                 ) : null}
               </div>
             </article>
@@ -154,15 +154,15 @@ export default async function OrderConfirmationPage({
                 <p className="text-sm text-muted-foreground">
                   {order.shippingPostalCode} {order.shippingCity}
                 </p>
-                <p className="text-[0.95rem] text-foreground/68">{order.shippingCountryCode}</p>
+                <p className="text-sm text-muted-foreground">{order.shippingCountryCode}</p>
                 {order.shippedAt ? (
-                  <p className="text-[0.95rem] text-foreground/68">
+                  <p className="text-sm text-muted-foreground">
                     Date d&apos;expédition :{" "}
                     {orderDateTimeFormatter.format(new Date(order.shippedAt))}
                   </p>
                 ) : null}
                 {order.trackingReference ? (
-                  <p className="text-[0.95rem] text-foreground/68">
+                  <p className="text-sm text-muted-foreground">
                     Référence de suivi : {order.trackingReference}
                   </p>
                 ) : null}
@@ -183,7 +183,7 @@ export default async function OrderConfirmationPage({
                       {order.billingFirstName} {order.billingLastName}
                     </p>
                     {order.billingPhone ? (
-                      <p className="text-[0.95rem] text-foreground/68">{order.billingPhone}</p>
+                      <p className="text-sm text-muted-foreground">{order.billingPhone}</p>
                     ) : null}
                     <p className="text-sm text-muted-foreground">{order.billingAddressLine1}</p>
                     {order.billingAddressLine2 ? (
@@ -192,7 +192,7 @@ export default async function OrderConfirmationPage({
                     <p className="text-sm text-muted-foreground">
                       {order.billingPostalCode} {order.billingCity}
                     </p>
-                    <p className="text-[0.95rem] text-foreground/68">{order.billingCountryCode}</p>
+                    <p className="text-sm text-muted-foreground">{order.billingCountryCode}</p>
                   </>
                 )}
               </div>
@@ -212,32 +212,32 @@ export default async function OrderConfirmationPage({
                 <article className="store-card grid gap-4" key={line.id}>
                   <div className="grid gap-1">
                     <h3>{line.productName}</h3>
-                    <p className="text-[0.95rem] text-foreground/68">{formatLinePresentation(line)}</p>
+                    <p className="text-sm text-muted-foreground">{formatLinePresentation(line)}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       SKU
                     </p>
                     <p className="text-sm text-muted-foreground">{line.sku ?? "Non renseigné"}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Quantité
                     </p>
                     <p className="text-sm text-muted-foreground">{line.quantity}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Prix unitaire figé
                     </p>
                     <p className="text-sm text-muted-foreground">{line.unitPrice}</p>
                   </div>
 
                   <div className="grid gap-1">
-                    <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Sous-total
                     </p>
                     <p className="text-sm text-muted-foreground">{line.lineTotal}</p>
@@ -247,28 +247,28 @@ export default async function OrderConfirmationPage({
             </div>
 
             <div className="grid gap-1">
-              <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                 Sous-total
               </p>
               <p className="text-sm text-muted-foreground">{order.subtotalAmount}</p>
             </div>
 
             <div className="grid gap-1">
-              <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                 Livraison
               </p>
               <p className="text-sm text-muted-foreground">{order.shippingAmount}</p>
             </div>
 
             <div className="grid gap-1">
-              <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                 Total commande
               </p>
               <p className="text-sm text-muted-foreground">{order.totalAmount}</p>
             </div>
 
             <div className="grid gap-1">
-              <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                 Mode de paiement
               </p>
               <p className="text-sm text-muted-foreground">
