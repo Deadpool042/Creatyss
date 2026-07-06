@@ -14,6 +14,7 @@ import {
   Zap,
 } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { db } from "@/core/db";
@@ -152,19 +153,15 @@ export default async function AdminSettingsPage() {
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }]}
       showTitleInContent={false}
       contentPreset="overview"
+      header={
+        <AdminPageHeader
+          eyebrow="Administration"
+          title="Réglages"
+          description="Configurez votre boutique, les intégrations et les accès."
+        />
+      }
     >
       <div className="space-y-6">
-        {/* En-tête */}
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
-            Administration
-          </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">Réglages</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Configurez votre boutique, les intégrations et les accès.
-          </p>
-        </div>
-
         {/* Navigation groupée façon System Settings */}
         <div className="mx-auto grid w-full max-w-3xl gap-6">
           {groupSettingsCards(cards).map((group) => (

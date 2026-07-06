@@ -1,5 +1,6 @@
 import { AlertTriangle, CheckCircle2, Info, Shield } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { MaintenanceRouteNav } from "@/features/admin/maintenance/components/maintenance-route-nav";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
@@ -46,6 +47,13 @@ export default async function AdminMaintenanceObservabilityPage() {
       ]}
       showTitleInContent={false}
       contentPreset="detail"
+      header={
+        <AdminPageHeader
+          eyebrow="Maintenance"
+          title="Observabilité"
+          description="Audit récent, événements techniques et alertes critiques de la plateforme."
+        />
+      }
     >
       <MaintenanceRouteNav />
       {!health ? (

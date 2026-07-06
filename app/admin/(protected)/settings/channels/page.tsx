@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Radio } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { requireInternalAdminCapability } from "@/core/auth/admin/require-internal-admin-capability";
@@ -14,6 +15,13 @@ export default async function AdminSettingsChannelsPage() {
   await requireInternalAdminCapability("admin.settings.advanced.read");
 
   const featureActive = await isChannelsFeatureActive();
+  const channelsHeader = (
+    <AdminPageHeader
+      eyebrow="Réglages avancés"
+      title="Canaux de diffusion"
+      description="Statuts de publication produit et variante par canal de vente, selon le niveau activé sur satellite.channels."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -28,6 +36,7 @@ export default async function AdminSettingsChannelsPage() {
         ]}
         showTitleInContent={false}
         contentPreset="table"
+        header={channelsHeader}
       >
         <AdminFeatureDisabledState
           capabilityName="Canaux de diffusion"
@@ -52,6 +61,7 @@ export default async function AdminSettingsChannelsPage() {
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={channelsHeader}
     >
       <div className="grid gap-6">
         <ChannelsPanel snapshot={snapshot} />

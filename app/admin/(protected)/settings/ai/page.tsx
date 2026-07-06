@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { requireInternalAdminCapability } from "@/core/auth/admin/require-internal-admin-capability";
@@ -14,6 +15,13 @@ export default async function AdminSettingsAiPage() {
   await requireInternalAdminCapability("admin.settings.advanced.read");
 
   const featureActive = await isAiFeatureActive();
+  const aiHeader = (
+    <AdminPageHeader
+      eyebrow="Réglages avancés"
+      title="Assistance IA"
+      description="Suivi des providers et tâches de génération assistée, activés au cas par cas selon le niveau du module ai.core."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -28,6 +36,7 @@ export default async function AdminSettingsAiPage() {
         ]}
         showTitleInContent={false}
         contentPreset="table"
+        header={aiHeader}
       >
         <AdminFeatureDisabledState
           capabilityName="Assistance IA"
@@ -52,6 +61,7 @@ export default async function AdminSettingsAiPage() {
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={aiHeader}
     >
       <div className="grid gap-6">
         <AiPanel snapshot={snapshot} />

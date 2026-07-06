@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { AlertTriangle, CheckCircle2, Clock, Database, GitBranch, Package, Zap } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { MaintenanceRouteNav } from "@/features/admin/maintenance/components/maintenance-route-nav";
 import { cn } from "@/lib/utils";
@@ -137,6 +138,13 @@ export default async function AdminMaintenanceMonitoringPage() {
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={
+        <AdminPageHeader
+          eyebrow="Maintenance"
+          title="Monitoring"
+          description="Surveillance de l'état plateforme, de la file de jobs et des signaux système critiques."
+        />
+      }
     >
       <MaintenanceRouteNav />
       {/* État global */}

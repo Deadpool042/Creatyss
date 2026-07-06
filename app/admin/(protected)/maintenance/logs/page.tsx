@@ -1,5 +1,6 @@
 import { AlertCircle, CheckCircle2, Clock, Loader2, XCircle } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { MaintenanceRouteNav } from "@/features/admin/maintenance/components/maintenance-route-nav";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
@@ -67,6 +68,13 @@ export default async function AdminMaintenanceLogsPage() {
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={
+        <AdminPageHeader
+          eyebrow="Maintenance"
+          title="Jobs"
+          description="Lecture opérationnelle des tâches en arrière-plan, priorités et statuts d'exécution."
+        />
+      }
     >
       <MaintenanceRouteNav />
       {/* Stats */}

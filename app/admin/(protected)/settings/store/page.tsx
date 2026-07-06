@@ -1,7 +1,16 @@
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { StoreConfigForm } from "@/features/admin/settings/components/store-config-form";
 import { getAdminStoreConfig } from "@/features/admin/settings/queries/get-admin-store-config.query";
+
+const storeHeader = (
+  <AdminPageHeader
+    eyebrow="Réglages"
+    title="Configuration boutique"
+    description="Statut opérationnel, mode production et domaines d'accès."
+  />
+);
 
 export default async function AdminSettingsStorePage() {
   await requireAdminCapability("admin.settings.store.read");
@@ -19,6 +28,7 @@ export default async function AdminSettingsStorePage() {
         ]}
         showTitleInContent={false}
         contentPreset="form"
+        header={storeHeader}
       >
         <div className="py-16 text-center">
           <p className="text-sm text-muted-foreground">Boutique introuvable.</p>
@@ -38,20 +48,9 @@ export default async function AdminSettingsStorePage() {
       ]}
       showTitleInContent={false}
       contentPreset="form"
+      header={storeHeader}
     >
       <div className="space-y-8">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
-            Réglages
-          </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-            Configuration boutique
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Statut opérationnel, mode production et domaines d'accès.
-          </p>
-        </div>
-
         <StoreConfigForm store={store} />
       </div>
     </AdminPageShell>

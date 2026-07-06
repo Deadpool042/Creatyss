@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { requireInternalAdminCapability } from "@/core/auth/admin/require-internal-admin-capability";
@@ -14,6 +15,13 @@ export default async function AdminSettingsSearchPage() {
   await requireInternalAdminCapability("admin.settings.advanced.read");
 
   const featureActive = await isSearchFeatureActive();
+  const searchHeader = (
+    <AdminPageHeader
+      eyebrow="Réglages avancés"
+      title="Recherche indexée"
+      description="État de l'index plein texte alimenté par les mutations produit, selon le niveau activé sur satellite.search."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -28,6 +36,7 @@ export default async function AdminSettingsSearchPage() {
         ]}
         showTitleInContent={false}
         contentPreset="table"
+        header={searchHeader}
       >
         <AdminFeatureDisabledState
           capabilityName="Recherche indexée"
@@ -52,6 +61,7 @@ export default async function AdminSettingsSearchPage() {
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={searchHeader}
     >
       <div className="grid gap-6">
         <SearchDocumentsPanel snapshot={snapshot} />

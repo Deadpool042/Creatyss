@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { NotificationSettingsForm } from "@/features/admin/settings/components/notification-settings-form";
 import { PlatformNotificationsPanel } from "@/features/admin/settings/components/platform-notifications-panel";
@@ -30,22 +31,16 @@ export default async function AdminSettingsNotificationsPage() {
       ]}
       showTitleInContent={false}
       contentPreset="form"
+      header={
+        <AdminPageHeader
+          eyebrow="Réglages"
+          title="Notifications"
+          description="Emails transactionnels envoyés à vos clientes, adresse de réponse de la boutique et, si activée, lecture admin du référentiel de notifications."
+        />
+      }
     >
       <div className="space-y-8">
         <section className="space-y-8 rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
-              Reglages
-            </p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-              Notifications
-            </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Emails transactionnels envoyes a vos clientes, adresse de reponse de la
-              boutique et, si active, lecture admin du referentiel de notifications.
-            </p>
-          </div>
-
           <NotificationSettingsForm settings={settings} />
         </section>
 
@@ -60,8 +55,8 @@ export default async function AdminSettingsNotificationsPage() {
               Notifications gouvernees inactives
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Le module <code>platform.notifications</code> n&apos;est pas actif. Cette page
-              couvre donc seulement les emails transactionnels de la boutique.
+              Le module <code>platform.notifications</code> n&apos;est pas actif. Cette page couvre
+              donc seulement les emails transactionnels de la boutique.
             </p>
             <Link
               href="/admin/settings/advanced/overview"

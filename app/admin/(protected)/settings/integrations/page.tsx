@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Plug } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { requireInternalAdminCapability } from "@/core/auth/admin/require-internal-admin-capability";
@@ -14,6 +15,13 @@ export default async function AdminSettingsIntegrationsPage() {
   await requireInternalAdminCapability("admin.settings.advanced.read");
 
   const featureActive = await isIntegrationsFeatureActive();
+  const integrationsHeader = (
+    <AdminPageHeader
+      eyebrow="Réglages avancés"
+      title="Intégrations externes"
+      description="Vue des connecteurs, identifiants et états de synchronisation, selon le niveau activé sur platform.integrations."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -28,6 +36,7 @@ export default async function AdminSettingsIntegrationsPage() {
         ]}
         showTitleInContent={false}
         contentPreset="table"
+        header={integrationsHeader}
       >
         <AdminFeatureDisabledState
           capabilityName="Intégrations externes"
@@ -52,6 +61,7 @@ export default async function AdminSettingsIntegrationsPage() {
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={integrationsHeader}
     >
       <div className="grid gap-6">
         <IntegrationsPanel snapshot={snapshot} />

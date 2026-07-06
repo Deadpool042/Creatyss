@@ -1,5 +1,6 @@
 import { BarChart3 } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { AnalyticsOverviewSections } from "@/features/admin/insights/components/analytics-overview-sections";
@@ -12,6 +13,13 @@ import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-
 
 export default async function AdminInsightsAnalyticsPage() {
   const featureActive = await isAnalyticsFeatureActive();
+  const analyticsHeader = (
+    <AdminPageHeader
+      eyebrow="Insights"
+      title="Analytics"
+      description="Lecture des métriques commerce et trafic, selon le niveau activé sur le module analytics."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -25,6 +33,7 @@ export default async function AdminInsightsAnalyticsPage() {
           { label: "Analytics" },
         ]}
         showTitleInContent={false}
+        header={analyticsHeader}
       >
         <AdminFeatureDisabledState
           capabilityName="Analytics"
@@ -64,6 +73,7 @@ export default async function AdminInsightsAnalyticsPage() {
         { label: "Analytics" },
       ]}
       showTitleInContent={false}
+      header={analyticsHeader}
     >
       <AnalyticsOverviewSections
         monthly={monthlyLevelMet ? monthlyCommerceAnalytics : null}
