@@ -399,11 +399,11 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
-## Décision — Analytics web externe (2026-06-26)
+## Décision — Analytics web externe (2026-06-26, révisée 2026-07-06)
 
 Cf. `../../architecture/40-exploitation/43-infrastructure-observabilite-automatisation.md`.
 
-**Plausible Community Edition** (self-hosted, VPS personnel) est retenu pour l'analytics web de trafic.
+**Umami** (self-hosted, VPS personnel) est retenu pour l'analytics web de trafic — remplace Plausible Community Edition (retenu le 2026-06-26, écarté le 2026-07-06 : lecture des statistiques via API payante chez Plausible, gratuite en self-hosted chez Umami).
 
 Périmètre :
 
@@ -412,9 +412,10 @@ Périmètre :
 
 Frontière avec ce domaine :
 
-- les vues cockpit admin (`engagement.analytics`) restent des lectures SQL internes depuis les domaines métier (`orders`, `customers`) ;
-- Plausible ne fournit pas de données injectées dans les domaines métier ;
-- l'application fonctionne intégralement sans Plausible.
+- les vues cockpit admin (`engagement.analytics`) restent essentiellement des lectures SQL internes depuis les domaines métier (`orders`, `customers`) ;
+- exception : le bloc "Pages les plus visitées" (cockpit `/admin/insights/analytics`) lit via une abstraction interne, `getAnalyticsClient()` (`features/analytics/providers/resolve-analytics-provider.ts`), jamais Umami directement — seule lecture du cockpit qui ne vient pas de Postgres. Umami est le premier provider (`UmamiAnalyticsProvider`), avec un provider `none` par défaut (`NoneAnalyticsProvider`) si aucun n'est configuré — cf. `../../architecture/30-execution/32-integrations-et-adaptateurs-fournisseurs.md` ;
+- le fournisseur de données de trafic externe n'est donc pas un couplage conceptuel du domaine `analytics` : le changer (Umami → un autre provider) n'affecte que `features/analytics/providers/` ;
+- l'application fonctionne intégralement sans provider externe configuré.
 
 ---
 

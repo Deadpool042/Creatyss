@@ -32,7 +32,7 @@ Le bloc "Pages les plus visitées" affiche des chiffres inventés, dans un écra
 
 ## Proposition de découpage en lots (aucun engagement de calendrier)
 
-1. **Assainir le mock** — traiter le bloc "Pages les plus visitées" (retrait ou vraie source).
+1. **Assainir le mock** — traiter le bloc "Pages les plus visitées" (retrait ou vraie source). **Livré (2026-07-06)** : branché sur un provider analytics interne (`features/analytics/providers/`, `getAnalyticsClient()`), Umami self-hosted comme premier provider, fallback `none` → mock. Cf. commits `421d283b` (branchement Umami) et `d6076b1c` (abstraction provider, suite à revue de doctrine).
 2. **Recherche** — cadrer un tracking minimal des requêtes (terme, nombre de résultats, clic sur résultat) + taux de conversion recherche→achat. À trancher : nouveau domaine ou extension du domaine `search` existant.
 3. **Conversion** — activer une première tranche de `conversion.md` (ex. relance panier abandonné) si le besoin business est confirmé.
 4. **Attribution marketing** — activer `attribution.md` (source/canal/campagne) si le besoin de mesure est confirmé ; dépend en partie des lots 2 et 3 pour avoir des événements à attribuer.

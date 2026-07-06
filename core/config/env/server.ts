@@ -39,6 +39,11 @@ const serverEnvSchema = z.object({
   BREVO_FROM_ADDRESS: nonEmptyStringSchema,
   BREVO_FROM_NAME: nonEmptyStringSchema,
 
+  UMAMI_API_HOST: z.url().trim().optional(),
+  UMAMI_USERNAME: nonEmptyStringSchema.optional(),
+  UMAMI_PASSWORD: nonEmptyStringSchema.optional(),
+  UMAMI_WEBSITE_ID: nonEmptyStringSchema.optional(),
+
   UPLOADS_DIR: nonEmptyStringSchema.default("public/uploads"),
   MEDIA_IMAGE_PLACEHOLDER: nonEmptyStringSchema.default("creatyss.webp"),
 
@@ -104,6 +109,10 @@ const validatedEnv = data
       brevoApiKey: data.BREVO_API_KEY,
       brevoFromAddress: data.BREVO_FROM_ADDRESS,
       brevoFromName: data.BREVO_FROM_NAME,
+      umamiApiHost: data.UMAMI_API_HOST ?? null,
+      umamiUsername: data.UMAMI_USERNAME ?? null,
+      umamiPassword: data.UMAMI_PASSWORD ?? null,
+      umamiWebsiteId: data.UMAMI_WEBSITE_ID ?? null,
       uploadsDir: data.UPLOADS_DIR,
       mediaImagePlaceholder: data.MEDIA_IMAGE_PLACEHOLDER,
       cronSecret: data.CRON_SECRET ?? null,
@@ -123,6 +132,10 @@ export const serverEnv: ServerEnv =
         const nullableKeys: (keyof ServerEnv)[] = [
           "stripeSecretKey",
           "stripeWebhookSecret",
+          "umamiApiHost",
+          "umamiUsername",
+          "umamiPassword",
+          "umamiWebsiteId",
           "cronSecret",
         ];
         if (nullableKeys.includes(key as keyof ServerEnv)) return null;
