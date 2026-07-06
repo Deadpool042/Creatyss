@@ -9,6 +9,7 @@ import { getCommerceAnalyticsRecommendations } from "@/features/admin/insights/q
 import { getDailyTrafficAnalytics } from "@/features/admin/insights/queries/get-daily-traffic-analytics.query";
 import { isAnalyticsFeatureActive } from "@/features/admin/insights/queries/is-analytics-feature-active.query";
 import { getMonthlyCommerceAnalytics } from "@/features/admin/insights/queries/get-monthly-commerce-analytics.query";
+import { getUmamiTopPagesData } from "@/features/admin/insights/queries/get-umami-top-pages.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export default async function AdminInsightsAnalyticsPage() {
@@ -48,6 +49,7 @@ export default async function AdminInsightsAnalyticsPage() {
     commerceInsights,
     commerceRecommendations,
     dailyTrafficAnalytics,
+    umamiTopPages,
   ] = await Promise.all([
     meetsFeatureLevel("engagement.analytics", "read"),
     meetsFeatureLevel("engagement.analytics", "insights"),
@@ -56,6 +58,7 @@ export default async function AdminInsightsAnalyticsPage() {
     getCommerceAnalyticsInsights(),
     getCommerceAnalyticsRecommendations(),
     getDailyTrafficAnalytics(),
+    getUmamiTopPagesData(),
   ]);
 
   return (
@@ -72,6 +75,7 @@ export default async function AdminInsightsAnalyticsPage() {
         insights={insightsLevelMet ? commerceInsights : null}
         recommendations={recommendationsLevelMet ? commerceRecommendations : null}
         daily={monthlyLevelMet ? dailyTrafficAnalytics : null}
+        topPages={umamiTopPages}
       />
     </AdminPageShell>
   );

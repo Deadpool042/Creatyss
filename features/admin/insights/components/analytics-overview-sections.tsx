@@ -8,8 +8,9 @@
  *   quotidiens, tracking anonyme sans cookie — cf.
  *   `features/analytics/tracking/record-storefront-analytics-event.service.ts`)
  *   si `daily` est fourni ; mock sinon (comportement antérieur).
- * - Bloc "Pages les plus visitées" : mock assumé, nécessite un tracking par
- *   page absent du repo (hors périmètre, "Analytics complexes").
+ * - Bloc "Pages les plus visitées" : données réelles (Umami self-hosted,
+ *   `core/analytics/umami/umami-client.ts`) si `topPages` est fourni ; mock
+ *   sinon (Umami non configuré, ou échec de l'appel).
  * Domaine : analytics (prisma/optional/engagement/analytics.prisma)
  * Modèles : AnalyticsMetric, AnalyticsSnapshot (alimentés par le tracking
  * storefront pour les vues produit et ajouts panier uniquement)
@@ -21,6 +22,7 @@ import type { CommerceAnalyticsInsights } from "@/features/admin/insights/querie
 import type { CommerceAnalyticsRecommendations } from "@/features/admin/insights/queries/get-commerce-analytics-recommendations.query";
 import type { DailyTrafficAnalytics } from "@/features/admin/insights/queries/get-daily-traffic-analytics.query";
 import type { MonthlyCommerceAnalytics } from "@/features/admin/insights/queries/get-monthly-commerce-analytics.query";
+import type { UmamiTopPagesData } from "@/features/admin/insights/queries/get-umami-top-pages.query";
 
 // ── Mock data ─────────────────────────────────────────────────────────────
 
@@ -135,6 +137,12 @@ type AnalyticsOverviewSectionsProps = {
    * n'est pas atteint — le bloc reste alors un mock (comportement antérieur).
    */
   daily?: DailyTrafficAnalytics | null;
+  /**
+   * Top pages Umami. `null` si Umami n'est pas configuré, si le niveau
+   * `read` n'est pas atteint, ou si l'appel a échoué — le bloc retombe
+   * alors sur le mock `TOP_PAGES`.
+   */
+  topPages?: UmamiTopPagesData | null;
 };
 
 export function AnalyticsOverviewSections({
@@ -142,7 +150,9 @@ export function AnalyticsOverviewSections({
   insights = null,
   recommendations = null,
   daily = null,
+  topPages = null,
 }: AnalyticsOverviewSectionsProps) {
+  const displayedTopPages = topPages ?? TOP_PAGES;
   return (
     <div>
       {/* KPI Hero — aujourd'hui */}
@@ -231,12 +241,15 @@ export function AnalyticsOverviewSections({
           <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
             <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
               Trafic
+              {topPages === null ? (
+                <span className="ml-1.5 font-normal text-muted-foreground/40">(mock)</span>
+              ) : null}
             </p>
             <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
               Pages les plus visitées
             </h2>
             <div className="divide-y divide-surface-border/30">
-              {TOP_PAGES.map((page) => {
+              {displayedTopPages.map((page) => {
                 const isPositive = page.delta >= 0;
                 const DeltaIcon = isPositive ? TrendingUp : TrendingDown;
                 return (
