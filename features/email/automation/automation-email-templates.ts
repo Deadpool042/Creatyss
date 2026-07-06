@@ -9,6 +9,9 @@ type BuildAutomationEmailTemplateInput = {
     orderNumber: string;
     totalFormatted: string;
   };
+  cart?: {
+    restoreUrl: string;
+  };
 };
 
 export type AutomationEmailTemplate = {
@@ -98,6 +101,7 @@ export function buildAutomationEmailTemplate(
         "Elles sont toujours disponibles — n'hésitez pas à finaliser votre commande.",
         "Chaque création est préparée avec soin dans notre atelier.",
       ];
+      const ctaUrl = input.cart?.restoreUrl ?? input.boutiqueUrl;
 
       return {
         subject,
@@ -106,8 +110,8 @@ export function buildAutomationEmailTemplate(
           title: "Votre panier vous attend",
           greeting: customerName,
           body,
-          ctaLabel: "Retourner à la boutique",
-          ctaUrl: input.boutiqueUrl,
+          ctaLabel: "Retrouver mon panier",
+          ctaUrl,
         }),
       };
     }

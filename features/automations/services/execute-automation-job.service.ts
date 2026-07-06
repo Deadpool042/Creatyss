@@ -40,6 +40,9 @@ type EmailRecipient = {
     orderNumber: string;
     totalFormatted: string;
   };
+  cart?: {
+    restoreUrl: string;
+  };
 };
 
 export class ExecuteAutomationJobError extends Error {
@@ -211,7 +214,17 @@ async function resolveEmailRecipient(input: {
       );
     }
 
-    return { email, firstName: cart.customer?.firstName ?? null };
+    const restoreToken = Buffer.from(input.subjectId, "utf-8").toString("base64url");
+    const restoreUrl = new URL(
+      `/api/cart/restore?token=${restoreToken}`,
+      serverEnv.appUrl
+    ).toString();
+
+    return {
+      email,
+      firstName: cart.customer?.firstName ?? null,
+      cart: { restoreUrl },
+    };
   }
 
   throw new ExecuteAutomationJobError(
