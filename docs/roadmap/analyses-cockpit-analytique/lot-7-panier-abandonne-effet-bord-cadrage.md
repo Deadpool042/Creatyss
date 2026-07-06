@@ -1,6 +1,8 @@
 # Lot 7 — Effet de bord storefront du scan panier abandonné : cadrage
 
-Suite du lot 3 (`c4155483`, relance panier abandonné via `engagement.automations`). Déclenché par un audit storefront post-lot 6 (2026-07-06). Ce document cadre le problème et les options avant tout code — aucune implémentation ici.
+Suite du lot 3 (`c4155483`, relance panier abandonné via `engagement.automations`). Déclenché par un audit storefront post-lot 6 (2026-07-06).
+
+**Livré (2026-07-06)** : lien de reprise explicite dans l'email `cart-abandoned-reminder` (correction du 3e point ci-dessous : le worker de traitement du job existait déjà — `run-automation-jobs`/`executeAutomationJob` —, contrairement à ce que l'audit initial affirmait ; seule l'URL du CTA manquait). Nouvelle route `GET /api/cart/restore?token=<base64url(cartId)>` (`app/api/cart/restore/route.ts`, pattern repris de `app/api/newsletter/unsubscribe`) qui réactive le panier (`reactivateAbandonedCart`, `features/commerce/cart/lib/guest-cart.repository.ts`) et pose le cookie de session avant de rediriger vers `/panier?status=restored`. Option retenue : lien de reprise explicite (ni réactivation transparente au simple retour storefront, ni report). Vérifié : template email génère bien l'URL de reprise (test manuel `tsx`), round-trip d'encodage du token confirmé, 443 tests unitaires + typecheck + lint verts. Non vérifié : parcours complet navigateur via Mailpit (email réel cliqué).
 
 ## Observé (2026-07-06)
 
