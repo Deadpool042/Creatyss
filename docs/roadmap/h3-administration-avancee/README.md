@@ -25,7 +25,7 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 
 ### Restant hors H3 code
 
-- Activation production automations : définir `CRON_SECRET` et configurer un cron externe sur le VPS pour appeler `POST /api/cron/run-automation-jobs`
+- Activation production des trois crons internes (automations, webhooks sortants, scan panier abandonné) : définir `CRON_SECRET` et configurer les crons externes sur le VPS — runbook à jour dans `docs/exploitation/07-cron-automations.md` (2026-07-06, couvre désormais les trois routes)
 - Retry automatique `ORDER_PLACED` : décision produit préalable requise avant toute hausse de `maxAttempts`
 
 ---
@@ -39,14 +39,14 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 
 ## Lots
 
-| Fichier                                                                    | Description                                                                    | Statut                                                                                                              |
-| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| [lot-clients-historique-crm.md](./lot-clients-historique-crm.md)           | Base clients admin — historique commandes, consentements et export RGPD        | Livré — 2026-06-25                                                                                                  |
-| [lot-discounts-backoffice-avance.md](./lot-discounts-backoffice-avance.md) | Back-office DiscountCode dédié, édition de priorité, visualisation redemptions | Livré — 2026-06-25                                                                                                  |
-| [lot-newsletter-campagnes.md](./lot-newsletter-campagnes.md)               | Créer et envoyer des campagnes newsletter réelles                              | Livré — 2026-07-02 (code + revue + recette Mailpit locale)                                                          |
-| [lot-automations-worker-general.md](./lot-automations-worker-general.md)   | Worker/scheduler général pour exécuter les jobs automatiquement                | Livré côté code — activation prod VPS + retry ORDER_PLACED conditionnels                                            |
-| [lot-analytics-tracking-reel.md](./lot-analytics-tracking-reel.md)         | Brancher le bloc "Aujourd'hui vs hier" sur un pipeline tracking minimal        | Livré — 2026-07-02 (anonyme sans cookie, recette locale)                                                                                                             |
-| [lot-settings-manquants.md](./lot-settings-manquants.md)                   | Ouvrir et relocaliser les réglages domaine, resynchroniser le hub settings     | Terminé — routes domaine + redirects de compatibilité + hub settings resynchronisé (2026-07-02)                     |
+| Fichier                                                                    | Description                                                                    | Statut                                                                                          |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| [lot-clients-historique-crm.md](./lot-clients-historique-crm.md)           | Base clients admin — historique commandes, consentements et export RGPD        | Livré — 2026-06-25                                                                              |
+| [lot-discounts-backoffice-avance.md](./lot-discounts-backoffice-avance.md) | Back-office DiscountCode dédié, édition de priorité, visualisation redemptions | Livré — 2026-06-25                                                                              |
+| [lot-newsletter-campagnes.md](./lot-newsletter-campagnes.md)               | Créer et envoyer des campagnes newsletter réelles                              | Livré — 2026-07-02 (code + revue + recette Mailpit locale)                                      |
+| [lot-automations-worker-general.md](./lot-automations-worker-general.md)   | Worker/scheduler général pour exécuter les jobs automatiquement                | Livré côté code — activation prod VPS + retry ORDER_PLACED conditionnels                        |
+| [lot-analytics-tracking-reel.md](./lot-analytics-tracking-reel.md)         | Brancher le bloc "Aujourd'hui vs hier" sur un pipeline tracking minimal        | Livré — 2026-07-02 (anonyme sans cookie, recette locale)                                        |
+| [lot-settings-manquants.md](./lot-settings-manquants.md)                   | Ouvrir et relocaliser les réglages domaine, resynchroniser le hub settings     | Terminé — routes domaine + redirects de compatibilité + hub settings resynchronisé (2026-07-02) |
 
 `lot-newsletter-campagnes` nécessite un provider email en production. `lot-automations-worker-general` nécessite une activation VPS explicite (`CRON_SECRET` + cron externe). Le retry automatique `ORDER_PLACED` reste conditionnel à une décision produit.
 
