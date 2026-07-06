@@ -8,9 +8,9 @@
  *   quotidiens, tracking anonyme sans cookie — cf.
  *   `features/analytics/tracking/record-storefront-analytics-event.service.ts`)
  *   si `daily` est fourni ; mock sinon (comportement antérieur).
- * - Bloc "Pages les plus visitées" : données réelles (Umami self-hosted,
- *   `core/analytics/umami/umami-client.ts`) si `topPages` est fourni ; mock
- *   sinon (Umami non configuré, ou échec de l'appel).
+ * - Bloc "Pages les plus visitées" : données réelles via le provider
+ *   analytics actif (`features/analytics/providers/`, Umami aujourd'hui)
+ *   si `topPages` est fourni ; mock sinon (provider `none`, ou échec).
  * Domaine : analytics (prisma/optional/engagement/analytics.prisma)
  * Modèles : AnalyticsMetric, AnalyticsSnapshot (alimentés par le tracking
  * storefront pour les vues produit et ajouts panier uniquement)
@@ -22,7 +22,7 @@ import type { CommerceAnalyticsInsights } from "@/features/admin/insights/querie
 import type { CommerceAnalyticsRecommendations } from "@/features/admin/insights/queries/get-commerce-analytics-recommendations.query";
 import type { DailyTrafficAnalytics } from "@/features/admin/insights/queries/get-daily-traffic-analytics.query";
 import type { MonthlyCommerceAnalytics } from "@/features/admin/insights/queries/get-monthly-commerce-analytics.query";
-import type { UmamiTopPagesData } from "@/features/admin/insights/queries/get-umami-top-pages.query";
+import type { AnalyticsTopPagesData } from "@/features/admin/insights/queries/get-analytics-top-pages.query";
 
 // ── Mock data ─────────────────────────────────────────────────────────────
 
@@ -138,11 +138,11 @@ type AnalyticsOverviewSectionsProps = {
    */
   daily?: DailyTrafficAnalytics | null;
   /**
-   * Top pages Umami. `null` si Umami n'est pas configuré, si le niveau
-   * `read` n'est pas atteint, ou si l'appel a échoué — le bloc retombe
-   * alors sur le mock `TOP_PAGES`.
+   * Top pages du provider analytics actif. `null` si le niveau `read`
+   * n'est pas atteint, si le provider est `none`, ou si l'appel a échoué —
+   * le bloc retombe alors sur le mock `TOP_PAGES`.
    */
-  topPages?: UmamiTopPagesData | null;
+  topPages?: AnalyticsTopPagesData | null;
 };
 
 export function AnalyticsOverviewSections({

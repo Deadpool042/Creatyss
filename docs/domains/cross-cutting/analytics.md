@@ -413,9 +413,9 @@ Périmètre :
 Frontière avec ce domaine :
 
 - les vues cockpit admin (`engagement.analytics`) restent essentiellement des lectures SQL internes depuis les domaines métier (`orders`, `customers`) ;
-- exception : le bloc "Pages les plus visitées" (cockpit `/admin/insights/analytics`) lit désormais directement la REST API Umami côté serveur (`core/analytics/umami/umami-client.ts`, `getUmamiTopPagesData`) — seule lecture du cockpit qui interroge Umami plutôt que Postgres ; il retombe sur un mock si Umami n'est pas configuré ;
-- Umami ne fournit pas de données injectées dans les domaines métier ;
-- l'application fonctionne intégralement sans Umami.
+- exception : le bloc "Pages les plus visitées" (cockpit `/admin/insights/analytics`) lit via une abstraction interne, `getAnalyticsClient()` (`features/analytics/providers/resolve-analytics-provider.ts`), jamais Umami directement — seule lecture du cockpit qui ne vient pas de Postgres. Umami est le premier provider (`UmamiAnalyticsProvider`), avec un provider `none` par défaut (`NoneAnalyticsProvider`) si aucun n'est configuré — cf. `../../architecture/30-execution/32-integrations-et-adaptateurs-fournisseurs.md` ;
+- le fournisseur de données de trafic externe n'est donc pas un couplage conceptuel du domaine `analytics` : le changer (Umami → un autre provider) n'affecte que `features/analytics/providers/` ;
+- l'application fonctionne intégralement sans provider externe configuré.
 
 ---
 

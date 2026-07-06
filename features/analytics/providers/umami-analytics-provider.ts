@@ -1,13 +1,11 @@
-//core/analytics/umami/umami-client.ts
 import "server-only";
 
 import { serverEnv } from "@/core/config/env/server";
 
-export type UmamiTopPage = Readonly<{
-  path: string;
-  views: number;
-  delta: number;
-}>;
+import type { AnalyticsProvider, AnalyticsTopPage } from "./analytics-provider.types";
+
+const REQUEST_TIMEOUT_MS = 5000;
+const CACHE_REVALIDATE_SECONDS = 300;
 
 type UmamiLoginResponse = Readonly<{ token: string }>;
 type UmamiMetric = Readonly<{ x: string; y: number }>;
@@ -20,6 +18,7 @@ async function loginToUmami(): Promise<string> {
       username: serverEnv.umamiUsername,
       password: serverEnv.umamiPassword,
     }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
 
   if (!response.ok) {
@@ -44,7 +43,8 @@ async function queryUmamiVisitorsByPage(
 
   const response = await fetch(url, {
     headers: { Authorization: `Bearer ${token}` },
-    next: { revalidate: 300 },
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    next: { revalidate: CACHE_REVALIDATE_SECONDS },
   });
 
   if (!response.ok) {
@@ -57,30 +57,32 @@ async function queryUmamiVisitorsByPage(
 }
 
 /**
- * Top 5 pages par visiteurs sur les 7 derniers jours, avec variation vs les
- * 7 jours précédents. Retourne `null` en cas d'échec réseau/API — jamais de
- * throw, l'appelant retombe sur le mock existant.
+ * Traduit la réponse Umami (self-hosted, REST API, login username/password)
+ * vers le vocabulaire interne `AnalyticsTopPage`. Aucun type ou champ Umami
+ * ne doit s'échapper de ce fichier.
  */
-export async function fetchUmamiTopPages(): Promise<UmamiTopPage[] | null> {
-  try {
-    const token = await loginToUmami();
-    const now = Date.now();
-    const oneDayMs = 24 * 60 * 60 * 1000;
+export class UmamiAnalyticsProvider implements AnalyticsProvider {
+  async getTopPages(): Promise<AnalyticsTopPage[] | null> {
+    try {
+      const token = await loginToUmami();
+      const now = Date.now();
+      const oneDayMs = 24 * 60 * 60 * 1000;
 
-    const [current, previous] = await Promise.all([
-      queryUmamiVisitorsByPage(token, now - 7 * oneDayMs, now),
-      queryUmamiVisitorsByPage(token, now - 14 * oneDayMs, now - 7 * oneDayMs),
-    ]);
+      const [current, previous] = await Promise.all([
+        queryUmamiVisitorsByPage(token, now - 7 * oneDayMs, now),
+        queryUmamiVisitorsByPage(token, now - 14 * oneDayMs, now - 7 * oneDayMs),
+      ]);
 
-    return Array.from(current.entries())
-      .slice(0, 5)
-      .map(([path, views]) => {
-        const previousViews = previous.get(path) ?? 0;
-        const delta = previousViews > 0 ? ((views - previousViews) / previousViews) * 100 : 0;
-        return { path, views, delta };
-      });
-  } catch (error) {
-    console.error("[umami] échec de récupération des pages les plus visitées", error);
-    return null;
+      return Array.from(current.entries())
+        .slice(0, 5)
+        .map(([path, views]) => {
+          const previousViews = previous.get(path) ?? 0;
+          const delta = previousViews > 0 ? ((views - previousViews) / previousViews) * 100 : 0;
+          return { path, views, delta };
+        });
+    } catch (error) {
+      console.error("[analytics:umami] échec de récupération des pages les plus visitées", error);
+      return null;
+    }
   }
 }
