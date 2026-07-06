@@ -24,9 +24,19 @@ Trois options, par ordre croissant d'intrusion :
 - **B — Paramètres portés dans l'URL jusqu'au checkout** (pas de cookie : les UTM sont propagés de page en page via un paramètre de requête ou un champ caché de formulaire). Zéro persistance serveur ou cookie, mais fragile (perdu si le visiteur ouvre un nouvel onglet, ferme puis revient plus tard, ou partage un lien sans les paramètres) — capte uniquement les conversions dans la même visite continue.
 - **C — Rien côté Creatyss, lecture externe via Plausible/Umami** : les providers analytics externes déjà en place (`features/analytics/providers/`, lot 1) peuvent nativement rapprocher trafic entrant et objectifs (Umami a une notion de referrer/UTM par défaut). Aucune attribution _interne_ : le cockpit renverrait vers l'outil externe pour ces lectures, cohérent avec la frontière déjà actée dans `docs/domains/cross-cutting/analytics.md` ("providers externes analytics, qui relèvent de `integrations`").
 
-## Recommandation (à valider, pas tranchée par ce document)
+## Décision (2026-07-06)
 
-L'option C est la plus cohérente avec la trajectoire déjà suivie par ce chantier (lot 1 : ne pas dupliquer ce qu'un provider externe fait déjà — cf. la décision Umami). Elle évite d'introduire un nouveau cookie marketing et une nouvelle mémorisation de session, qui serait la première dérogation au principe d'anonymat strict du tracking interne. Les options A/B ne devraient être envisagées que si un besoin précis n'est pas couvert par Umami (ex: attribution fine par commande individuelle, pas seulement par agrégat de trafic).
+Option C retenue. Aucune attribution marketing interne dans Creatyss :
+
+- pas de cookie d'attribution ;
+- pas de propagation UTM dans les URLs internes ;
+- pas de corrélation UTM/referrer → panier → commande ;
+- pas de stockage attribution côté Prisma ;
+- pas de rupture avec l'anonymat strict du tracking interne (`features/analytics/tracking/`).
+
+Le cockpit Creatyss pourra afficher un lien ou une note de renvoi vers Umami/Plausible pour les lectures referrer/UTM, ces outils couvrant déjà ce besoin nativement.
+
+Les options A et B sont exclues pour ce lot. Elles ne pourront être rouvertes que si un besoin métier explicite justifie une revue RGPD/architecture dédiée.
 
 ## Dépendance réelle avec les lots 2/3
 
