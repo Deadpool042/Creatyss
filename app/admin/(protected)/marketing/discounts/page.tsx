@@ -1,5 +1,6 @@
 import { Percent } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
@@ -41,6 +42,13 @@ export default async function AdminMarketingDiscountsPage({
   searchParams,
 }: AdminMarketingDiscountsPageProps) {
   const featureActive = await isDiscountsFeatureActive();
+  const discountsHeader = (
+    <AdminPageHeader
+      eyebrow="Marketing"
+      title="Codes promo"
+      description="Remises et codes promotionnels appliqués au catalogue ou au panier, selon le niveau activé sur commerce.discounts."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -53,6 +61,7 @@ export default async function AdminMarketingDiscountsPage({
           { label: "Réductions" },
         ]}
         showTitleInContent={false}
+        header={discountsHeader}
       >
         <MarketingRouteNav />
         <AdminFeatureDisabledState
@@ -79,6 +88,7 @@ export default async function AdminMarketingDiscountsPage({
           { label: "Réductions" },
         ]}
         showTitleInContent={false}
+        header={discountsHeader}
       >
         <MarketingRouteNav />
         <AdminComingSoon
@@ -109,6 +119,7 @@ export default async function AdminMarketingDiscountsPage({
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={discountsHeader}
     >
       <MarketingRouteNav />
       <div className="grid gap-6">
