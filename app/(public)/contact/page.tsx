@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { MailIcon, MapPinIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/shared/feedback";
 import { getStorefrontStoreContact } from "@/features/storefront/store/queries/get-storefront-store-contact.query";
 import { getLocalizedContactCopy } from "@/features/storefront/content/queries/get-localized-contact-copy.query";
@@ -121,67 +124,35 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
 
           <form className="space-y-5" action={sendContactMessageAction}>
             <div className="grid gap-5 sm:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="firstName"
-                  className="mb-1.5 block text-[13px] font-medium text-foreground"
-                >
-                  Prénom
-                </label>
-                <input
+              <div className="grid gap-2">
+                <Label htmlFor="firstName">Prénom</Label>
+                <Input
                   id="firstName"
                   name="firstName"
                   type="text"
                   required
-                  className="w-full rounded-xl border border-surface-border/60 bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-brand/50 focus:outline-none focus:ring-2 focus:ring-brand/20"
                   placeholder="Votre prénom"
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="lastName"
-                  className="mb-1.5 block text-[13px] font-medium text-foreground"
-                >
-                  Nom
-                </label>
-                <input
-                  id="lastName"
-                  name="lastName"
-                  type="text"
-                  className="w-full rounded-xl border border-surface-border/60 bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-brand/50 focus:outline-none focus:ring-2 focus:ring-brand/20"
-                  placeholder="Votre nom"
-                />
+              <div className="grid gap-2">
+                <Label htmlFor="lastName">Nom</Label>
+                <Input id="lastName" name="lastName" type="text" placeholder="Votre nom" />
               </div>
             </div>
 
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-1.5 block text-[13px] font-medium text-foreground"
-              >
+            <div className="grid gap-2">
+              <Label htmlFor="email">
                 Email <span className="text-feedback-error-foreground">*</span>
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="w-full rounded-xl border border-surface-border/60 bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-brand/50 focus:outline-none focus:ring-2 focus:ring-brand/20"
-                placeholder="votre@email.fr"
-              />
+              </Label>
+              <Input id="email" name="email" type="email" required placeholder="votre@email.fr" />
             </div>
 
-            <div>
-              <label
-                htmlFor="subject"
-                className="mb-1.5 block text-[13px] font-medium text-foreground"
-              >
-                Sujet
-              </label>
+            <div className="grid gap-2">
+              <Label htmlFor="subject">Sujet</Label>
               <select
                 id="subject"
                 name="subject"
-                className="w-full rounded-xl border border-surface-border/60 bg-background px-4 py-2.5 text-sm text-foreground focus:border-brand/50 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                className="h-8 w-full min-w-0 rounded-lg border border-control-border bg-control-surface px-2.5 py-1 text-base shadow-control transition-all outline-none hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50 md:text-sm"
               >
                 <option value="">Choisir un sujet…</option>
                 <option value="question_produit">Question sur un produit</option>
@@ -192,19 +163,16 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
               </select>
             </div>
 
-            <div>
-              <label
-                htmlFor="message"
-                className="mb-1.5 block text-[13px] font-medium text-foreground"
-              >
+            <div className="grid gap-2">
+              <Label htmlFor="message">
                 Message <span className="text-feedback-error-foreground">*</span>
-              </label>
-              <textarea
+              </Label>
+              <Textarea
                 id="message"
                 name="message"
                 required
                 rows={5}
-                className="w-full resize-none rounded-xl border border-surface-border/60 bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-brand/50 focus:outline-none focus:ring-2 focus:ring-brand/20"
+                className="resize-none"
                 placeholder="Votre message…"
               />
             </div>
@@ -212,7 +180,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
             {storeContact.supportEmail !== null ? (
               <Button type="submit">Envoyer le message</Button>
             ) : (
-              <p className="text-[11px] text-muted-foreground/60">
+              <p className="text-xs text-muted-foreground/60">
                 Le formulaire de contact n&apos;est pas encore configuré pour cette boutique.
               </p>
             )}
