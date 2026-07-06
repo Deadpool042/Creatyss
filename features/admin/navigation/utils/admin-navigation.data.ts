@@ -351,28 +351,12 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   },
 
   {
-    key: "insights-overview",
-    label: "Vue d’ensemble — Pilotage",
-    href: "/admin/insights/overview",
-    iconKey: "search",
-    group: "insights",
-    order: 10,
-    visibility: {
-      sidebar: true,
-      mobileMore: true,
-    },
-    access: {
-      featureFlagsAll: [adminNavigationFeatureFlags.engagement.analytics],
-      capabilitiesAll: [adminNavigationCapabilities.insights.analyticsRead],
-    },
-  },
-  {
     key: "analytics",
-    label: "Analyses",
+    label: "Pilotage",
     href: "/admin/insights/analytics",
     iconKey: "barChart3",
     group: "insights",
-    order: 20,
+    order: 10,
     visibility: {
       sidebar: true,
       mobileMore: true,
