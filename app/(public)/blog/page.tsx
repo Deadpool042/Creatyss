@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { StorefrontEmptyState } from "@/components/storefront/storefront-empty-state";
 import { listPublishedBlogPosts } from "@/features/storefront/content/blog";
 
 export const dynamic = "force-dynamic";
@@ -64,24 +65,20 @@ export default async function BlogPage() {
           ))}
         </div>
       ) : (
-        /* Empty state */
-        <div className="mx-auto flex max-w-sm flex-col items-center gap-4 py-20 text-center">
-          <p className="text-[0.62rem] font-medium uppercase tracking-[0.32em] text-brand">
-            Journal de l&apos;atelier
-          </p>
-          <h2 className="font-serif text-2xl font-normal tracking-tight text-foreground">
-            Aucun article pour l&apos;instant
-          </h2>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            Les prochaines actualités de l&apos;atelier apparaîtront ici.
-          </p>
-          <Link
-            href="/boutique"
-            className="mt-2 text-[0.72rem] font-medium uppercase tracking-widest text-brand underline-offset-4 hover:underline"
-          >
-            Découvrir la boutique →
-          </Link>
-        </div>
+        <StorefrontEmptyState
+          className="mx-auto max-w-sm"
+          eyebrow="Journal de l'atelier"
+          title="Aucun article pour l'instant"
+          description="Les prochaines actualités de l'atelier apparaîtront ici."
+          action={
+            <Link
+              href="/boutique"
+              className="text-sm font-medium uppercase tracking-widest text-brand underline-offset-4 hover:underline"
+            >
+              Découvrir la boutique →
+            </Link>
+          }
+        />
       )}
     </div>
   );
