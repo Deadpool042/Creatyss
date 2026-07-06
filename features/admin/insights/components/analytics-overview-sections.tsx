@@ -19,6 +19,8 @@ import Link from "next/link";
 import { Activity, Eye, Search, ShoppingCart, TrendingDown, TrendingUp, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { DashboardSection } from "@/components/admin/dashboard-widgets/dashboard-section";
+import { KpiCard } from "@/components/admin/dashboard-widgets/kpi-card";
 import type { CommerceAnalyticsInsights } from "@/features/admin/insights/queries/get-commerce-analytics-insights.query";
 import type { CommerceAnalyticsRecommendations } from "@/features/admin/insights/queries/get-commerce-analytics-recommendations.query";
 import type { DailyTrafficAnalytics } from "@/features/admin/insights/queries/get-daily-traffic-analytics.query";
@@ -57,65 +59,6 @@ const TOP_PAGES = [
   { path: "/boutique/pochette-nocturne", views: 389, delta: +33.1 },
   { path: "/", views: 312, delta: +1.9 },
 ];
-
-// ── Sub-components ────────────────────────────────────────────────────────
-
-function KpiCard({
-  label,
-  value,
-  delta,
-  hint,
-  icon: Icon,
-  accent,
-  isMock = true,
-}: {
-  label: string;
-  value: string;
-  /** `null` : variation non calculable (référence à zéro). */
-  delta: number | null;
-  hint: string;
-  icon: React.ComponentType<{ className?: string }>;
-  accent?: string;
-  isMock?: boolean;
-}) {
-  const isPositive = delta !== null && delta >= 0;
-  const DeltaIcon = isPositive ? TrendingUp : TrendingDown;
-  return (
-    <div
-      className={cn(
-        "flex flex-col gap-2 rounded-2xl border border-surface-border/60 bg-surface-panel/60 px-5 py-4 shadow-sm backdrop-blur-sm",
-        accent
-      )}
-    >
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-          {label}
-          {isMock ? (
-            <span className="ml-1.5 font-normal text-muted-foreground/40">(mock)</span>
-          ) : null}
-        </p>
-        <Icon className="size-4 shrink-0 text-muted-foreground/40" />
-      </div>
-      <p className="text-3xl font-semibold tracking-tight text-foreground">{value}</p>
-      <div className="flex items-center gap-1.5">
-        {delta === null ? (
-          <span className="text-xs font-medium text-muted-foreground/60">—</span>
-        ) : (
-          <span
-            className={cn(
-              "inline-flex items-center gap-0.5 text-xs font-medium",
-              isPositive ? "text-feedback-success-foreground" : "text-feedback-error-foreground"
-            )}
-          >
-            <DeltaIcon className="size-3" />
-            {Math.abs(delta).toFixed(1)}%
-          </span>
-        )}
-        <span className="text-xs text-muted-foreground">{hint}</span>
-      </div>
-    </div>
-  );
-}
 
 // ── Main ──────────────────────────────────────────────────────────────────
 
@@ -247,16 +190,11 @@ export function AnalyticsOverviewSections({
       <div className="mt-6 grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.8fr)]">
         {/* Pages les plus visitées */}
         <div className="grid gap-4">
-          <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
-            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
-              Trafic
-              {topPages === null ? (
-                <span className="ml-1.5 font-normal text-muted-foreground/40">(mock)</span>
-              ) : null}
-            </p>
-            <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
-              Pages les plus visitées
-            </h2>
+          <DashboardSection
+            eyebrow="Trafic"
+            isMock={topPages === null}
+            title="Pages les plus visitées"
+          >
             <div className="divide-y divide-surface-border/30">
               {displayedTopPages.map((page) => {
                 const isPositive = page.delta >= 0;
@@ -289,16 +227,10 @@ export function AnalyticsOverviewSections({
                 );
               })}
             </div>
-          </section>
+          </DashboardSection>
 
           {search !== null ? (
-            <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
-                Recherche
-              </p>
-              <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
-                Recherches storefront
-              </h2>
+            <DashboardSection eyebrow="Recherche" title="Recherches storefront">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/70">
@@ -356,17 +288,11 @@ export function AnalyticsOverviewSections({
                   </div>
                 </div>
               </div>
-            </section>
+            </DashboardSection>
           ) : null}
 
           {insights !== null ? (
-            <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
-                Insights
-              </p>
-              <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
-                Top produits du mois
-              </h2>
+            <DashboardSection eyebrow="Insights" title="Top produits du mois">
               {insights.topProducts.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
                   Aucune vente confirmée sur la période courante.
@@ -397,17 +323,11 @@ export function AnalyticsOverviewSections({
                   ))}
                 </div>
               )}
-            </section>
+            </DashboardSection>
           ) : null}
 
           {recommendations !== null ? (
-            <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
-                Recommandations
-              </p>
-              <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
-                Produits à surveiller
-              </h2>
+            <DashboardSection eyebrow="Recommandations" title="Produits à surveiller">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/70">
@@ -463,22 +383,13 @@ export function AnalyticsOverviewSections({
                   )}
                 </div>
               </div>
-            </section>
+            </DashboardSection>
           ) : null}
         </div>
 
         {/* Résumé du mois */}
         <div className="flex flex-col gap-4">
-          <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
-            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
-              Ce mois
-              {monthly === null ? (
-                <span className="ml-1.5 font-normal text-muted-foreground/40">(mock)</span>
-              ) : null}
-            </p>
-            <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
-              Vue mensuelle
-            </h2>
+          <DashboardSection eyebrow="Ce mois" isMock={monthly === null} title="Vue mensuelle">
             <div className="space-y-3">
               {(monthly === null
                 ? [
@@ -503,16 +414,10 @@ export function AnalyticsOverviewSections({
                 </div>
               ))}
             </div>
-          </section>
+          </DashboardSection>
 
           {insights !== null ? (
-            <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
-                Insights
-              </p>
-              <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
-                Lecture commerce additionnelle
-              </h2>
+            <DashboardSection eyebrow="Insights" title="Lecture commerce additionnelle">
               <div className="space-y-3">
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-xs text-muted-foreground">Panier moyen confirmé</p>
@@ -553,7 +458,7 @@ export function AnalyticsOverviewSections({
                   </div>
                 )}
               </div>
-            </section>
+            </DashboardSection>
           ) : null}
 
           <section className="rounded-2xl border border-surface-border/40 bg-surface-panel/30 p-4">
