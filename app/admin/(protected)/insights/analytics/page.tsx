@@ -10,6 +10,7 @@ import { getDailyTrafficAnalytics } from "@/features/admin/insights/queries/get-
 import { isAnalyticsFeatureActive } from "@/features/admin/insights/queries/is-analytics-feature-active.query";
 import { getMonthlyCommerceAnalytics } from "@/features/admin/insights/queries/get-monthly-commerce-analytics.query";
 import { getAnalyticsTopPagesData } from "@/features/admin/insights/queries/get-analytics-top-pages.query";
+import { getSearchAnalytics } from "@/features/admin/insights/queries/get-search-analytics.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export default async function AdminInsightsAnalyticsPage() {
@@ -50,6 +51,7 @@ export default async function AdminInsightsAnalyticsPage() {
     commerceRecommendations,
     dailyTrafficAnalytics,
     analyticsTopPages,
+    searchAnalytics,
   ] = await Promise.all([
     meetsFeatureLevel("engagement.analytics", "read"),
     meetsFeatureLevel("engagement.analytics", "insights"),
@@ -59,6 +61,7 @@ export default async function AdminInsightsAnalyticsPage() {
     getCommerceAnalyticsRecommendations(),
     getDailyTrafficAnalytics(),
     getAnalyticsTopPagesData(),
+    getSearchAnalytics(),
   ]);
 
   return (
@@ -76,6 +79,7 @@ export default async function AdminInsightsAnalyticsPage() {
         recommendations={recommendationsLevelMet ? commerceRecommendations : null}
         daily={monthlyLevelMet ? dailyTrafficAnalytics : null}
         topPages={analyticsTopPages}
+        search={monthlyLevelMet ? searchAnalytics : null}
       />
     </AdminPageShell>
   );
