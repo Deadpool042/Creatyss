@@ -148,9 +148,6 @@ export default async function ProductDetailMediaPage({
     <AdminPageShell
       {...getProductModulePageShellProps({
         product,
-        pageTitle: "Medias produit",
-        pageDescription:
-          "Gerez la galerie, l'image principale, l'ordre, le texte alternatif et l'association depuis la bibliotheque.",
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={product.id}

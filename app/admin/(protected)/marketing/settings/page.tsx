@@ -1,3 +1,4 @@
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { MarketingRouteNav } from "@/features/admin/marketing/components/marketing-route-nav";
 import { MarketingSettingsHub } from "@/features/admin/settings/components/marketing-settings-hub";
@@ -32,6 +33,14 @@ export default async function AdminMarketingSettingsPage() {
         { label: "Marketing", href: "/admin/marketing/overview" },
         { label: "Configuration" },
       ]}
+      showTitleInContent={false}
+      header={
+        <AdminPageHeader
+          eyebrow="Marketing"
+          title="Configuration marketing"
+          description="Niveaux activés sur les remises, la newsletter et les automatisations."
+        />
+      }
     >
       <MarketingRouteNav />
       <MarketingSettingsHub

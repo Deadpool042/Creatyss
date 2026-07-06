@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import {
   AdminStatusBadge,
@@ -49,6 +50,18 @@ export default async function AdminContentPageDetailPage({
         { label: page.title },
       ]}
       contentPreset="detail"
+      showTitleInContent={false}
+      header={
+        <AdminPageHeader
+          eyebrow="Contenu"
+          title={page.title}
+          description={
+            page.isSystemPage
+              ? "Page système : titre, slug et code non modifiables."
+              : "Page éditoriale personnalisée."
+          }
+        />
+      }
     >
       <ContentRouteNav />
       <div className="flex flex-wrap items-start justify-between gap-3">

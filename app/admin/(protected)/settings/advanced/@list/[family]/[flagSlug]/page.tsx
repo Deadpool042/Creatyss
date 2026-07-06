@@ -34,13 +34,11 @@ export default async function AdvancedSettingsListFlagSlugPage({ params }: PageP
 
   try {
     flags = await listAdminFeatureFlags();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/advanced] listAdminFeatureFlags failed", error);
   }
 
   const navItems = buildFamilyNavItems(flags, ROOT_PATH, validatedFamily);
 
-  return (
-    <FeatureFlagsFamiliesList items={navItems} activeSlug={validatedFamily} />
-  );
+  return <FeatureFlagsFamiliesList items={navItems} activeSlug={validatedFamily} />;
 }

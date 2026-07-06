@@ -1,5 +1,6 @@
 import { Mail } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
@@ -34,6 +35,13 @@ export default async function AdminNewsletterCampaignsPage({
   searchParams,
 }: AdminNewsletterCampaignsPageProps) {
   const featureActive = await isNewsletterFeatureActive();
+  const campaignsHeader = (
+    <AdminPageHeader
+      eyebrow="Marketing"
+      title="Campagnes"
+      description="Création et suivi des campagnes email envoyées aux abonnés newsletter."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -47,6 +55,7 @@ export default async function AdminNewsletterCampaignsPage({
           { label: "Campagnes" },
         ]}
         showTitleInContent={false}
+        header={campaignsHeader}
       >
         <MarketingRouteNav />
         <AdminFeatureDisabledState
@@ -72,6 +81,7 @@ export default async function AdminNewsletterCampaignsPage({
           { label: "Campagnes" },
         ]}
         showTitleInContent={false}
+        header={campaignsHeader}
       >
         <MarketingRouteNav />
         <AdminComingSoon
@@ -102,6 +112,7 @@ export default async function AdminNewsletterCampaignsPage({
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={campaignsHeader}
     >
       <MarketingRouteNav />
       <div className="grid gap-6">

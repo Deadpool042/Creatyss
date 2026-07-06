@@ -1,6 +1,7 @@
 import { Mail } from "lucide-react";
 import Link from "next/link";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminComingSoon } from "@/components/admin/shared/admin-coming-soon";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
@@ -104,6 +105,13 @@ export default async function AdminMarketingNewsletterPage({
   searchParams,
 }: AdminMarketingNewsletterPageProps) {
   const featureActive = await isNewsletterFeatureActive();
+  const newsletterHeader = (
+    <AdminPageHeader
+      eyebrow="Marketing"
+      title="Newsletter"
+      description="Abonnés, segmentation et automatisations email, selon le niveau activé sur engagement.newsletter."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -116,6 +124,7 @@ export default async function AdminMarketingNewsletterPage({
           { label: "Newsletter" },
         ]}
         showTitleInContent={false}
+        header={newsletterHeader}
       >
         <MarketingRouteNav />
         <AdminFeatureDisabledState
@@ -144,6 +153,7 @@ export default async function AdminMarketingNewsletterPage({
           { label: "Newsletter" },
         ]}
         showTitleInContent={false}
+        header={newsletterHeader}
       >
         <MarketingRouteNav />
         <AdminComingSoon
@@ -179,6 +189,7 @@ export default async function AdminMarketingNewsletterPage({
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={newsletterHeader}
       topbarAction={
         <Button asChild variant="outline" size="sm">
           <Link href={ADMIN_NEWSLETTER_CAMPAIGNS_PATH}>Campagnes</Link>

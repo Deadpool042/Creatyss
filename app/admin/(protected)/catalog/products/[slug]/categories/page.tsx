@@ -15,9 +15,7 @@ import { ProductCategoriesTab } from "@/features/admin/products/components/edito
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { getProductModulePageShellProps } from "@/features/admin/products/components/shared/product-module-page-shell";
 import { PRODUCT_CREATE_PAGE_COPY } from "@/features/admin/products/config";
-import {
-  ADMIN_PRODUCTS_CREATE_PATH,
-} from "@/features/admin/products/navigation";
+import { ADMIN_PRODUCTS_CREATE_PATH } from "@/features/admin/products/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -39,9 +37,6 @@ export default async function ProductDetailCategoriesPage({
     <AdminPageShell
       {...getProductModulePageShellProps({
         product: editor.product,
-        pageTitle: "Rattachements categories",
-        pageDescription:
-          "Gerez la categorie principale et les rattachements taxonomiques du produit sans replier cette responsabilite dans le coeur produit.",
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={editor.product.id}

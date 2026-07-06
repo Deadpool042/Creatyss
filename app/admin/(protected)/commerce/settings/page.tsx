@@ -1,4 +1,5 @@
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { CommerceRouteNav } from "@/features/admin/commerce/components/commerce-route-nav";
 import { CommerceSettingsHub } from "@/features/admin/settings/components/commerce-settings-hub";
@@ -25,6 +26,14 @@ export default async function AdminCommerceSettingsPage() {
         { label: "Commerce", href: "/admin/commerce/overview" },
         { label: "Configuration" },
       ]}
+      showTitleInContent={false}
+      header={
+        <AdminPageHeader
+          eyebrow="Commerce"
+          title="Configuration commerce"
+          description="Statut des moyens de paiement et de la taxation, pilotés depuis les Réglages avancés."
+        />
+      }
     >
       <CommerceRouteNav />
       <CommerceSettingsHub cardPaymentStatus={cardPaymentStatus} taxationActive={taxationActive} />

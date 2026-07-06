@@ -9,8 +9,8 @@ export default async function AdvancedSettingsDetailDefaultSlot() {
 
   try {
     flags = await listAdminFeatureFlags();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/advanced] listAdminFeatureFlags failed", error);
   }
 
   const stats = buildOverviewStats(flags);

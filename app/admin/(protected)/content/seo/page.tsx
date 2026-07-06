@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, FileText, Globe, Package, Tag } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { ADMIN_PRODUCTS_LIST_PATH } from "@/features/admin/products/navigation";
 import { listAdminBlogPosts } from "@/features/admin/blog";
@@ -27,8 +28,8 @@ export default async function AdminContentSeoPage() {
       total: blogPosts.length,
       totalMissing: blogPosts.filter((p) => !p.hasContent || p.status === "draft").length,
     };
-  } catch {
-    // Degradation gracieuse
+  } catch (error) {
+    console.error("[content/seo] countProductsMissingSeo/listAdminBlogPosts failed", error);
   }
 
   const checks = [
@@ -73,17 +74,18 @@ export default async function AdminContentSeoPage() {
       ]}
       contentPreset="detail"
       showTitleInContent={false}
+      header={
+        <AdminPageHeader
+          eyebrow="Référencement"
+          title="SEO"
+          description="Points de contrôle d'indexation sur les produits, articles et le sitemap."
+        />
+      }
     >
       <div className="mx-auto w-full max-w-4xl">
         <ContentRouteNav className="mb-6" />
         {/* ── Hero score ─────────────────────────────────────────────── */}
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
-              Référencement
-            </p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">SEO</h1>
-          </div>
+        <div className="mb-6 flex justify-end">
           <div className="flex items-center gap-3 rounded-2xl border border-surface-border/60 bg-surface-panel/60 px-5 py-3 shadow-sm backdrop-blur-sm">
             <div className="text-center">
               <p className="text-2xl font-semibold tracking-tight text-foreground">{score}%</p>

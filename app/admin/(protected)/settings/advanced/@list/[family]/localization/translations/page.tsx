@@ -25,8 +25,8 @@ export default async function AdvancedSettingsListLocalizationTranslationsPage({
 
   try {
     flags = await listAdminFeatureFlags();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/advanced] listAdminFeatureFlags failed", error);
   }
 
   const navItems = buildFamilyNavItems(flags, ROOT_PATH, "optional");

@@ -16,8 +16,8 @@ export default async function CategoriesPage() {
 
   try {
     categories = await listCatalogFilterCategories();
-  } catch {
-    // Dégradation gracieuse
+  } catch (error) {
+    console.error("[public/categories] listCatalogFilterCategories failed", error);
   }
 
   const rootCategories = categories.filter((c) => !c.parentId);
@@ -56,9 +56,7 @@ export default async function CategoriesPage() {
                 <h2 className="font-serif text-xl font-medium tracking-tight text-foreground group-hover:text-brand transition-colors">
                   {category.name}
                 </h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Voir la collection →
-                </p>
+                <p className="mt-1 text-sm text-muted-foreground">Voir la collection →</p>
               </div>
             </Link>
           ))}

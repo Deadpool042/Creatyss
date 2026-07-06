@@ -34,8 +34,8 @@ export default async function AdvancedSettingsDetailFamilyPage({ params }: PageP
 
   try {
     flags = await listAdminFeatureFlags();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/advanced] listAdminFeatureFlags failed", error);
   }
 
   const viewModel = buildFamilyDetailViewModel(flags, validatedFamily);

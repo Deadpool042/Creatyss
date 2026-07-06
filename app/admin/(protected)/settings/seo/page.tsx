@@ -1,4 +1,5 @@
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { getUploadsPublicPath } from "@/core/uploads";
 import { listAdminMediaAssets, type AdminMediaListItem } from "@/features/admin/media";
@@ -15,8 +16,8 @@ export default async function AdminSettingsSeoPage() {
 
   try {
     [seo, assets] = await Promise.all([getAdminSeoSettings(), listAdminMediaAssets()]);
-  } catch {
-    // DB non disponible ou table absente — état vide
+  } catch (error) {
+    console.error("[settings/seo] getAdminSeoSettings/listAdminMediaAssets failed", error);
   }
 
   const uploadsPublicPath = getUploadsPublicPath();
@@ -25,27 +26,18 @@ export default async function AdminSettingsSeoPage() {
     <AdminPageShell
       scrollBehavior="page"
       title="SEO"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Réglages" },
-        { label: "SEO" },
-      ]}
+      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "SEO" }]}
       showTitleInContent={false}
       contentPreset="form"
+      header={
+        <AdminPageHeader
+          eyebrow="Réglages"
+          title="SEO global"
+          description="Métadonnées et paramètres d'indexation appliqués à la page d'accueil de la boutique."
+        />
+      }
     >
       <div className="space-y-8">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
-            Réglages
-          </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-            SEO global
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Métadonnées et paramètres d'indexation appliqués à la page d'accueil de la boutique.
-          </p>
-        </div>
-
         <SeoSettingsForm seo={seo} assets={assets} uploadsPublicPath={uploadsPublicPath} />
       </div>
     </AdminPageShell>

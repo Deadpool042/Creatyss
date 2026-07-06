@@ -3,6 +3,7 @@ import type { AdminTaxRuleSummary } from "@/features/admin/commerce/taxation/typ
 
 type AdminTaxRulesListProps = {
   rules: ReadonlyArray<AdminTaxRuleSummary>;
+  emptyMessage?: string;
 };
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
@@ -48,11 +49,11 @@ function statusVariant(
   }
 }
 
-export function AdminTaxRulesList({ rules }: AdminTaxRulesListProps) {
+export function AdminTaxRulesList({ rules, emptyMessage }: AdminTaxRulesListProps) {
   if (rules.length === 0) {
     return (
       <p className="py-10 text-center text-sm text-muted-foreground">
-        Aucune règle de TVA pour le moment.
+        {emptyMessage ?? "Aucune règle de TVA pour le moment."}
       </p>
     );
   }

@@ -1,3 +1,5 @@
+"use client";
+
 import { AdminSectionRouteNav } from "@/components/admin/layout/admin-section-route-nav";
 import {
   ADMIN_ORDERS_LIST_PATH,

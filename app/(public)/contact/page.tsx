@@ -20,7 +20,8 @@ export default async function ContactPage() {
   let storeContact: Awaited<ReturnType<typeof getStorefrontStoreContact>>;
   try {
     storeContact = await getStorefrontStoreContact();
-  } catch {
+  } catch (error) {
+    console.error("[public/contact] getStorefrontStoreContact failed", error);
     storeContact = {
       supportEmail: null,
       supportPhone: null,

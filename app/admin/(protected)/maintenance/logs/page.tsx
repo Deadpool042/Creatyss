@@ -1,10 +1,14 @@
 import { AlertCircle, CheckCircle2, Clock, Loader2, XCircle } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { MaintenanceRouteNav } from "@/features/admin/maintenance/components/maintenance-route-nav";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
-import { listAdminJobs, type AdminJobSummary } from "@/features/admin/maintenance/queries/list-admin-jobs.query";
+import {
+  listAdminJobs,
+  type AdminJobSummary,
+} from "@/features/admin/maintenance/queries/list-admin-jobs.query";
 
 export const dynamic = "force-dynamic";
 
@@ -16,16 +20,31 @@ const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
   second: "2-digit",
 });
 
-const STATUS_CONFIG: Record<AdminJobSummary["status"], {
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  badge: string;
-}> = {
+const STATUS_CONFIG: Record<
+  AdminJobSummary["status"],
+  {
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    badge: string;
+  }
+> = {
   PENDING: { label: "En attente", icon: Clock, badge: "bg-surface-subtle text-muted-foreground" },
   RUNNING: { label: "En cours", icon: Loader2, badge: "bg-sky-50/80 text-sky-700" },
-  SUCCEEDED: { label: "Réussi", icon: CheckCircle2, badge: "bg-feedback-success-surface/75 text-feedback-success-foreground" },
-  FAILED: { label: "Échoué", icon: XCircle, badge: "bg-feedback-error-surface/75 text-feedback-error-foreground" },
-  CANCELLED: { label: "Annulé", icon: AlertCircle, badge: "bg-surface-subtle text-muted-foreground/70" },
+  SUCCEEDED: {
+    label: "Réussi",
+    icon: CheckCircle2,
+    badge: "bg-feedback-success-surface/75 text-feedback-success-foreground",
+  },
+  FAILED: {
+    label: "Échoué",
+    icon: XCircle,
+    badge: "bg-feedback-error-surface/75 text-feedback-error-foreground",
+  },
+  CANCELLED: {
+    label: "Annulé",
+    icon: AlertCircle,
+    badge: "bg-surface-subtle text-muted-foreground/70",
+  },
 };
 
 const PRIORITY_LABELS: Record<AdminJobSummary["priority"], string> = {
@@ -43,8 +62,8 @@ export default async function AdminMaintenanceLogsPage() {
 
   try {
     result = await listAdminJobs(100);
-  } catch {
-    // Job model non disponible
+  } catch (error) {
+    console.error("[maintenance/logs] listAdminJobs failed", error);
   }
 
   const { jobs, stats } = result;
@@ -67,6 +86,13 @@ export default async function AdminMaintenanceLogsPage() {
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={
+        <AdminPageHeader
+          eyebrow="Maintenance"
+          title="Jobs"
+          description="Lecture opérationnelle des tâches en arrière-plan, priorités et statuts d'exécution."
+        />
+      }
     >
       <MaintenanceRouteNav />
       {/* Stats */}
@@ -83,10 +109,12 @@ export default async function AdminMaintenanceLogsPage() {
                   : "bg-surface-panel/60"
             )}
           >
-            <p className={cn(
-              "text-2xl font-semibold tracking-tight",
-              s.alert && s.value > 0 ? "text-feedback-error-foreground" : "text-foreground"
-            )}>
+            <p
+              className={cn(
+                "text-2xl font-semibold tracking-tight",
+                s.alert && s.value > 0 ? "text-feedback-error-foreground" : "text-foreground"
+              )}
+            >
               {s.value}
             </p>
             <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
@@ -108,7 +136,10 @@ export default async function AdminMaintenanceLogsPage() {
           {/* Header */}
           <div className="grid grid-cols-[1fr_auto_auto_auto] gap-3 border-b border-surface-border/40 px-4 py-2.5">
             {["Job / Type", "Priorité", "Statut", "Date"].map((h) => (
-              <p key={h} className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
+              <p
+                key={h}
+                className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60"
+              >
                 {h}
               </p>
             ))}
@@ -121,7 +152,10 @@ export default async function AdminMaintenanceLogsPage() {
               const ts = job.finishedAt ?? job.startedAt ?? job.scheduledAt ?? job.createdAt;
 
               return (
-                <div key={job.id} className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-3 px-4 py-3 hover:bg-surface-subtle/20 transition-colors">
+                <div
+                  key={job.id}
+                  className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-3 px-4 py-3 hover:bg-surface-subtle/20 transition-colors"
+                >
                   {/* Type */}
                   <div className="min-w-0">
                     <p className="truncate font-mono text-[12px] font-medium text-foreground">
@@ -133,7 +167,8 @@ export default async function AdminMaintenanceLogsPage() {
                       </p>
                     ) : job.subjectType ? (
                       <p className="mt-0.5 text-[11px] text-muted-foreground/60">
-                        {job.subjectType}{job.subjectId ? ` · ${job.subjectId.slice(-8)}` : ""}
+                        {job.subjectType}
+                        {job.subjectId ? ` · ${job.subjectId.slice(-8)}` : ""}
                       </p>
                     ) : null}
                   </div>
@@ -144,7 +179,12 @@ export default async function AdminMaintenanceLogsPage() {
                   </span>
 
                   {/* Statut */}
-                  <span className={cn("inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium", cfg.badge)}>
+                  <span
+                    className={cn(
+                      "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium",
+                      cfg.badge
+                    )}
+                  >
                     <StatusIcon className="size-3 shrink-0" />
                     {cfg.label}
                   </span>

@@ -1,13 +1,13 @@
 import { Percent } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
+import { AdminDataTableFeedbackBanner } from "@/components/admin/tables/layout/admin-data-table-feedback-banner";
 import { CommerceRouteNav } from "@/features/admin/commerce/components/commerce-route-nav";
 import { isTaxationFeatureActive } from "@/features/admin/commerce/taxation/queries/is-taxation-feature-active.query";
 import { listAdminTaxRules } from "@/features/admin/commerce/taxation/queries/list-admin-tax-rules.query";
-import { AdminTaxRulesList } from "@/features/admin/commerce/taxation/components/admin-tax-rules-list";
-import { AdminTaxRuleCreateForm } from "@/features/admin/commerce/taxation/components/admin-tax-rule-create-form";
-import { AdminTaxRulesImport } from "@/features/admin/commerce/taxation/components/admin-tax-rules-import";
+import { AdminTaxRulesPanel } from "@/features/admin/commerce/taxation/components/admin-tax-rules-panel";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +32,13 @@ export default async function AdminCommerceTaxationPage({
   searchParams,
 }: AdminCommerceTaxationPageProps) {
   const featureActive = await isTaxationFeatureActive();
+  const taxationHeader = (
+    <AdminPageHeader
+      eyebrow="Commerce"
+      title="TVA"
+      description="Règles de taux par territoire de livraison, selon le niveau activé sur commerce.taxation."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -45,6 +52,7 @@ export default async function AdminCommerceTaxationPage({
         ]}
         showTitleInContent={false}
         contentPreset="table"
+        header={taxationHeader}
       >
         <CommerceRouteNav />
         <AdminFeatureDisabledState
@@ -69,46 +77,30 @@ export default async function AdminCommerceTaxationPage({
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={taxationHeader}
     >
       <CommerceRouteNav />
       <div className="grid gap-6">
-        {resolvedSearchParams.tax_created ? (
-          <p className="rounded-lg border border-feedback-success-border bg-feedback-success-surface px-3 py-2 text-sm text-feedback-success-foreground">
-            Règle de TVA créée.
-          </p>
-        ) : null}
-        {resolvedSearchParams.tax_error ? (
-          <p className="rounded-lg border border-feedback-error-border bg-feedback-error-surface px-3 py-2 text-sm text-feedback-error-foreground">
-            {getTaxErrorMessage(resolvedSearchParams.tax_error)}
-          </p>
-        ) : null}
+        <AdminDataTableFeedbackBanner
+          message={resolvedSearchParams.tax_created ? "Règle de TVA créée." : null}
+        />
+        <AdminDataTableFeedbackBanner
+          message={
+            resolvedSearchParams.tax_error
+              ? getTaxErrorMessage(resolvedSearchParams.tax_error)
+              : null
+          }
+          tone="error"
+        />
 
-        <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
-          <h2 className="mb-1 text-lg font-semibold tracking-tight text-foreground">
-            Nouvelle règle
-          </h2>
-          <p className="mb-4 text-xs text-muted-foreground">
-            Taux standard par territoire (scope boutique, prix TTC). Les taux réduits par catégorie
-            viendront ultérieurement.
-          </p>
-          <AdminTaxRuleCreateForm />
-        </section>
-
-        <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
-          <h2 className="mb-1 text-lg font-semibold tracking-tight text-foreground">Import CSV</h2>
-          <AdminTaxRulesImport />
-        </section>
-
-        <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
-          <h2 className="mb-1 text-lg font-semibold tracking-tight text-foreground">
-            Règles de TVA
-          </h2>
-          <p className="mb-4 text-xs text-muted-foreground">
-            Taux appliqués par territoire de livraison. Guyane et Mayotte sont exonérées (traitées
-            automatiquement). Les taux doivent être validés par votre expert-comptable.
-          </p>
-          <AdminTaxRulesList rules={rules} />
-        </section>
+        <AdminTaxRulesPanel
+          rules={rules}
+          errorMessage={
+            resolvedSearchParams.tax_error
+              ? getTaxErrorMessage(resolvedSearchParams.tax_error)
+              : null
+          }
+        />
       </div>
     </AdminPageShell>
   );

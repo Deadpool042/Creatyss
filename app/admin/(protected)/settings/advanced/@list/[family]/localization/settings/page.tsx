@@ -12,9 +12,7 @@ type PageProps = {
   params: Promise<{ family: string }>;
 };
 
-export default async function AdvancedSettingsListLocalizationSettingsPage({
-  params,
-}: PageProps) {
+export default async function AdvancedSettingsListLocalizationSettingsPage({ params }: PageProps) {
   const { family } = await params;
 
   if (family !== "optional") {
@@ -25,8 +23,8 @@ export default async function AdvancedSettingsListLocalizationSettingsPage({
 
   try {
     flags = await listAdminFeatureFlags();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/advanced] listAdminFeatureFlags failed", error);
   }
 
   const navItems = buildFamilyNavItems(flags, ROOT_PATH, "optional");

@@ -1,3 +1,4 @@
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFormMessage } from "@/components/admin/forms/admin-form-message";
 import {
@@ -50,7 +51,9 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
   const usage = parseAdminMediaUsageFilter(getSingleSearchParam(resolvedSearchParams.usage));
   const view = parseAdminMediaLibraryView(getSingleSearchParam(resolvedSearchParams.view));
   const requestedPage = parsePositiveInt(getSingleSearchParam(resolvedSearchParams.page));
-  const requestedPerPage = parseOptionalPositiveInt(getSingleSearchParam(resolvedSearchParams.perPage));
+  const requestedPerPage = parseOptionalPositiveInt(
+    getSingleSearchParam(resolvedSearchParams.perPage)
+  );
   const perPage =
     requestedPerPage &&
     ADMIN_MEDIA_PER_PAGE_OPTIONS.includes(
@@ -70,7 +73,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
             ? "Média supprimé définitivement."
             : statusParam === "saved"
               ? "Métadonnées du média enregistrées."
-        : null;
+              : null;
 
   const [assetsPage, mediaStats, selectedMedia, selectedMediaUsage] = await Promise.all([
     listAdminMediaAssets({
@@ -111,6 +114,14 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
         { label: "Catalogue", href: "/admin/catalog/overview" },
         { label: "Médias" },
       ]}
+      showTitleInContent={false}
+      header={
+        <AdminPageHeader
+          eyebrow="Catalogue"
+          title="Bibliothèque médias"
+          description="Import, organisation et usages des images et fichiers du catalogue."
+        />
+      }
       topbarAction={
         view === "active" ? (
           <AdminMediaDesktopUploadDialog
@@ -128,11 +139,7 @@ export default async function AdminMediaPage({ searchParams }: MediaPageProps) {
     >
       <MediaRouteNav />
       <AdminFormMessage tone="success" message={successMessage} className="shrink-0" />
-      <AdminFormMessage
-        tone="error"
-        message={getErrorMessage(errorParam)}
-        className="shrink-0"
-      />
+      <AdminFormMessage tone="error" message={getErrorMessage(errorParam)} className="shrink-0" />
       <AdminFormMessage
         tone="error"
         message={selectedAssetMissing ? "Le média sélectionné n'est plus disponible." : null}

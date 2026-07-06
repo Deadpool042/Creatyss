@@ -13,8 +13,6 @@ type ProductModulePageShellConfig = {
     slug: string;
     name: string;
   };
-  pageTitle: string;
-  pageDescription: string;
   topbarAction?: ReactNode;
   headerActions?: ReactNode;
 };
@@ -45,8 +43,6 @@ export const PRODUCT_EDITOR_TAB_LAYOUT_CLASSNAME =
 
 export function getProductModulePageShellProps({
   product,
-  pageTitle: _pageTitle,
-  pageDescription: _pageDescription,
   topbarAction,
   headerActions,
 }: ProductModulePageShellConfig): ProductModulePageShellProps {

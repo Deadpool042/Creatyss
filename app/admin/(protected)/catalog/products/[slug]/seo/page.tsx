@@ -44,9 +44,6 @@ export default async function ProductDetailSeoPage({
     <AdminPageShell
       {...getProductModulePageShellProps({
         product: editor.product,
-        pageTitle: "SEO produit",
-        pageDescription:
-          "Gerez le referencement, l'indexation, l'URL canonique et les apercus de partage du produit.",
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={editor.product.id}

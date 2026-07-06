@@ -23,8 +23,8 @@ export default async function AdvancedSettingsDetailLocalizationPage({ params }:
 
   try {
     flags = await listAdminFeatureFlags();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/advanced] listAdminFeatureFlags failed", error);
   }
 
   const flag = findFlagBySlug(flags, "optional", "localization");

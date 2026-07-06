@@ -1,4 +1,5 @@
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { ShippingRouteNav } from "@/features/admin/commerce/shipping/shared/components/shipping-route-nav";
 import { ShippingSettingsForm } from "@/features/admin/settings/components/shipping-settings-form";
@@ -45,6 +46,13 @@ export default async function AdminCommerceShippingSettingsPage({
     listAdminShippingZones(),
     searchParams,
   ]);
+  const shippingSettingsHeader = (
+    <AdminPageHeader
+      eyebrow="Réglages"
+      title="Réglages de livraison"
+      description="Frais de livraison standard et seuil de livraison offerte."
+    />
+  );
 
   if (!settings) {
     return (
@@ -59,6 +67,7 @@ export default async function AdminCommerceShippingSettingsPage({
         ]}
         showTitleInContent={false}
         contentPreset="form"
+        header={shippingSettingsHeader}
       >
         <ShippingRouteNav />
         <div className="py-16 text-center">
@@ -84,21 +93,10 @@ export default async function AdminCommerceShippingSettingsPage({
       ]}
       showTitleInContent={false}
       contentPreset="form"
+      header={shippingSettingsHeader}
     >
       <ShippingRouteNav />
       <div className="space-y-8">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
-            Réglages
-          </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-            Réglages de livraison
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Frais de livraison standard et seuil de livraison offerte.
-          </p>
-        </div>
-
         {zoneOrMethodCreated ? (
           <div className="rounded-xl border border-feedback-success-border bg-feedback-success-surface/60 px-4 py-2.5 text-sm text-feedback-success-foreground">
             Créé avec succès.

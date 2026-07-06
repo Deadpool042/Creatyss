@@ -3,6 +3,7 @@ import { Key, ShieldOff } from "lucide-react";
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { revokeApiClientAction } from "@/features/admin/settings/actions/revoke-api-client.action";
 import { CreateApiClientDrawer } from "@/features/admin/settings/components/create-api-client-drawer";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
@@ -47,8 +48,8 @@ export default async function AdminSettingsApiClientsPage() {
 
   try {
     clients = await listAdminApiClients();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/api-clients] listAdminApiClients failed", error);
   }
 
   const active = clients.filter((c) => c.status === "ACTIVE").length;
@@ -65,21 +66,16 @@ export default async function AdminSettingsApiClientsPage() {
       ]}
       showTitleInContent={false}
       contentPreset="form"
+      topbarAction={<CreateApiClientDrawer />}
+      header={
+        <AdminPageHeader
+          eyebrow="Sécurité"
+          title="Clés API"
+          description="Clients API autorisés à interagir avec l'API admin."
+        />
+      }
     >
       <div className="space-y-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
-              Sécurité
-            </p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">Clés API</h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Clients API autorisés à interagir avec l&apos;API admin.
-            </p>
-          </div>
-          <CreateApiClientDrawer />
-        </div>
-
         {clients.length === 0 ? (
           <AdminEmptyState
             eyebrow="Aucune clé"

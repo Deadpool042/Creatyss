@@ -1,4 +1,5 @@
 //app/admin/(protected)/page.tsx
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminDashboardSections } from "@/components/admin/dashboard";
 import { getAdminDashboardStats } from "@/features/admin/dashboard";
@@ -15,6 +16,12 @@ export default async function AdminDashboardPage() {
       contentPreset="dashboard"
       showBreadcrumbsInContent={false}
       showTitleInContent={false}
+      header={
+        <AdminPageHeader
+          title={DASHBOARD_PAGE_COPY.title}
+          description="Vue d'ensemble de l'activité de la boutique : ventes, commandes et alertes récentes."
+        />
+      }
     >
       <AdminDashboardSections stats={stats} />
     </AdminPageShell>

@@ -5,6 +5,7 @@ import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import { suspendAdminUserAction } from "@/features/admin/settings/actions/suspend-admin-user.action";
 import { reactivateAdminUserAction } from "@/features/admin/settings/actions/reactivate-admin-user.action";
 import { CreateAdminUserDrawer } from "@/features/admin/settings/components/create-admin-user-drawer";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
@@ -64,8 +65,8 @@ export default async function AdminSettingsTeamPage() {
 
   try {
     users = await listAdminUsers();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/team] listAdminUsers failed", error);
   }
 
   const active = users.filter((u) => u.status === "ACTIVE").length;
@@ -78,22 +79,16 @@ export default async function AdminSettingsTeamPage() {
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Réglages" }, { label: "Équipe" }]}
       showTitleInContent={false}
       contentPreset="form"
+      topbarAction={<CreateAdminUserDrawer />}
+      header={
+        <AdminPageHeader
+          eyebrow="Accès admin"
+          title="Équipe"
+          description="Membres ayant accès à l'espace d'administration. Rôles et permissions gérés via le schéma d'identité."
+        />
+      }
     >
       <div className="space-y-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
-              Accès admin
-            </p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">Équipe</h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Membres ayant accès à l'espace d'administration. Rôles et permissions gérés via le
-              schéma d'identité.
-            </p>
-          </div>
-          <CreateAdminUserDrawer />
-        </div>
-
         {users.length === 0 ? (
           <AdminEmptyState
             eyebrow="Aucun membre"

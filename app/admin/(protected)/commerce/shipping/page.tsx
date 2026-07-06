@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
@@ -39,7 +40,9 @@ type AdminCommerceShippingPageProps = Readonly<{
   }>;
 }>;
 
-export default async function AdminCommerceShippingPage({ searchParams }: AdminCommerceShippingPageProps) {
+export default async function AdminCommerceShippingPage({
+  searchParams,
+}: AdminCommerceShippingPageProps) {
   const featureActive = await isShippingFeatureActive();
   if (!featureActive) notFound();
 
@@ -64,6 +67,13 @@ export default async function AdminCommerceShippingPage({ searchParams }: AdminC
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={
+        <AdminPageHeader
+          eyebrow="Commerce"
+          title="Livraisons"
+          description="Suivi des expéditions, statuts de traitement et retours."
+        />
+      }
     >
       <div className="grid gap-4">
         <ShippingRouteNav />

@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
-import { deleteProductAction, updateProductPricesAction } from "@/features/admin/products/editor/actions";
+import {
+  deleteProductAction,
+  updateProductPricesAction,
+} from "@/features/admin/products/editor/actions";
 import {
   readAdminPriceLists,
   readAdminProductPageContextBySlug,
@@ -26,12 +29,13 @@ export default async function ProductDetailPricingPage({
     notFound();
   }
 
-  const [pricingData, priceLists, canManagePriceLists, canManageScheduledPricing] = await Promise.all([
-    readAdminProductPrices({ productId: product.id }),
-    readAdminPriceLists(),
-    meetsFeatureLevel("catalog.products.pricing", "price-lists"),
-    meetsFeatureLevel("catalog.products.pricing", "scheduled-pricing"),
-  ]);
+  const [pricingData, priceLists, canManagePriceLists, canManageScheduledPricing] =
+    await Promise.all([
+      readAdminProductPrices({ productId: product.id }),
+      readAdminPriceLists(),
+      meetsFeatureLevel("catalog.products.pricing", "price-lists"),
+      meetsFeatureLevel("catalog.products.pricing", "scheduled-pricing"),
+    ]);
   const visiblePriceLists = canManagePriceLists
     ? priceLists
     : priceLists.filter((priceList) => priceList.isDefault);
@@ -40,9 +44,6 @@ export default async function ProductDetailPricingPage({
     <AdminPageShell
       {...getProductModulePageShellProps({
         product,
-        pageTitle: "Prix produit",
-        pageDescription:
-          "Gerez le prix boutique, les listes de prix et les fenetres tarifaires sans melanger cette responsabilite avec le coeur produit.",
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={product.id}

@@ -1,4 +1,5 @@
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { StoreSettingsForm } from "@/features/admin/settings/components/store-settings-form";
 import { StoreLogoSection } from "@/features/admin/settings/components/store-logo-section";
@@ -20,6 +21,13 @@ export default async function AdminSettingsGeneralPage() {
         ]}
         showTitleInContent={false}
         contentPreset="form"
+        header={
+          <AdminPageHeader
+            eyebrow="Réglages"
+            title="Réglages généraux"
+            description="Identité, support et paramètres régionaux de la boutique."
+          />
+        }
       >
         <div className="py-16 text-center">
           <p className="text-sm text-muted-foreground">
@@ -41,20 +49,15 @@ export default async function AdminSettingsGeneralPage() {
       ]}
       showTitleInContent={false}
       contentPreset="form"
+      header={
+        <AdminPageHeader
+          eyebrow="Réglages"
+          title={store.name}
+          description="Identité, support et paramètres régionaux de la boutique."
+        />
+      }
     >
       <div className="space-y-8">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
-            Réglages
-          </p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-            {store.name}
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Identité, support et paramètres régionaux de la boutique.
-          </p>
-        </div>
-
         <div className="divide-y divide-surface-border/40">
           <StoreLogoSection logoUrl={store.logoUrl} storeName={store.name} />
         </div>

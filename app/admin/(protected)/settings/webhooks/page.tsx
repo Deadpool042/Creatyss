@@ -1,5 +1,6 @@
 import { Webhook } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { requireInternalAdminCapability } from "@/core/auth/admin/require-internal-admin-capability";
@@ -34,6 +35,13 @@ export default async function AdminSettingsWebhooksPage({
   await requireInternalAdminCapability("admin.settings.advanced.read");
 
   const featureActive = await isWebhooksFeatureActive();
+  const webhooksHeader = (
+    <AdminPageHeader
+      eyebrow="Réglages avancés"
+      title="Webhooks"
+      description="Endpoints, deliveries et relances manuelles, selon le niveau activé sur platform.webhooks."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -48,6 +56,7 @@ export default async function AdminSettingsWebhooksPage({
         ]}
         showTitleInContent={false}
         contentPreset="table"
+        header={webhooksHeader}
       >
         <AdminFeatureDisabledState
           capabilityName="Webhooks"
@@ -81,6 +90,7 @@ export default async function AdminSettingsWebhooksPage({
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={webhooksHeader}
     >
       <div className="grid gap-6">
         {canManageWebhooks ? (

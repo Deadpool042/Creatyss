@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Zap } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { MarketingRouteNav } from "@/features/admin/marketing/components/marketing-route-nav";
@@ -60,6 +61,13 @@ export default async function AdminMarketingAutomationsPage({
   searchParams,
 }: AdminMarketingAutomationsPageProps) {
   const featureActive = await isAutomationsFeatureActive();
+  const automationsHeader = (
+    <AdminPageHeader
+      eyebrow="Marketing"
+      title="Automations"
+      description="Définitions, jobs et archives des automatisations marketing, selon le niveau activé sur engagement.automations."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -72,6 +80,7 @@ export default async function AdminMarketingAutomationsPage({
           { label: "Automations" },
         ]}
         showTitleInContent={false}
+        header={automationsHeader}
       >
         <MarketingRouteNav />
         <AdminFeatureDisabledState
@@ -205,6 +214,7 @@ export default async function AdminMarketingAutomationsPage({
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={automationsHeader}
     >
       <MarketingRouteNav />
       <div className="grid gap-6">
