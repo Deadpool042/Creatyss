@@ -27,6 +27,8 @@ function getStatusMessage(status: string | undefined): string | null {
       return "Quantité du panier mise à jour.";
     case "removed":
       return "Ligne retirée du panier.";
+    case "restored":
+      return "Votre panier a été restauré.";
     default:
       return null;
   }
@@ -103,9 +105,7 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                   <div className="grid gap-1">
                     <p className="text-[0.95rem] text-foreground/68">Produit</p>
                     <h2>{line.productName}</h2>
-                    <p className="text-[0.95rem] text-foreground/68">
-                      {line.variantName}
-                    </p>
+                    <p className="text-[0.95rem] text-foreground/68">{line.variantName}</p>
                   </div>
 
                   <div className="grid gap-1">
@@ -133,7 +133,9 @@ export default async function CartPage({ searchParams }: CartPageProps) {
                     <p className="text-[0.72rem] font-bold uppercase tracking-[0.08em] text-muted-foreground">
                       Disponibilité
                     </p>
-                    <p className="text-sm text-muted-foreground">{getAvailabilityLabel(line.isAvailable)}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {getAvailabilityLabel(line.isAvailable)}
+                    </p>
                     {!line.isAvailable ? (
                       <Notice tone="alert">
                         Cette ligne bloque la commande. Revenez à la fiche produit ou supprimez-la
@@ -218,7 +220,9 @@ export default async function CartPage({ searchParams }: CartPageProps) {
           <div className="empty-state">
             <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">Panier vide</p>
             <h2>Aucun article n&apos;a encore été ajouté au panier</h2>
-            <p className="text-sm text-muted-foreground">Ajoutez un article disponible depuis une fiche produit.</p>
+            <p className="text-sm text-muted-foreground">
+              Ajoutez un article disponible depuis une fiche produit.
+            </p>
             <Button asChild>
               <Link href="/boutique">Voir la boutique</Link>
             </Button>

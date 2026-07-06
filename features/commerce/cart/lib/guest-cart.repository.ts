@@ -1,9 +1,5 @@
 import { db } from "@/core/db";
-import {
-  normalizeMoneyString,
-  moneyStringToCents,
-  centsToMoneyString,
-} from "@/core/money";
+import { normalizeMoneyString, moneyStringToCents, centsToMoneyString } from "@/core/money";
 import type { AvailabilityStatus, CurrencyCode } from "@/prisma-generated/client";
 import type {
   GuestCartVariant,
@@ -81,13 +77,9 @@ type CheckoutWithAddresses = {
   } | null;
 };
 
-function mapGuestCheckoutDetails(
-  checkout: CheckoutWithAddresses
-): GuestCheckoutDetails {
-  const shipping =
-    checkout.addresses.find((a) => a.type === "SHIPPING") ?? null;
-  const billing =
-    checkout.addresses.find((a) => a.type === "BILLING") ?? null;
+function mapGuestCheckoutDetails(checkout: CheckoutWithAddresses): GuestCheckoutDetails {
+  const shipping = checkout.addresses.find((a) => a.type === "SHIPPING") ?? null;
+  const billing = checkout.addresses.find((a) => a.type === "BILLING") ?? null;
   return {
     id: checkout.id,
     cartId: checkout.cartId ?? "",
@@ -113,9 +105,7 @@ function mapGuestCheckoutDetails(
       ? {
           methodCode: checkout.shippingSelection.methodCode,
           methodName: checkout.shippingSelection.methodName,
-          amountCents: Math.round(
-            checkout.shippingSelection.amount.toNumber() * 100
-          ),
+          amountCents: Math.round(checkout.shippingSelection.amount.toNumber() * 100),
           currencyCode: checkout.shippingSelection.currencyCode,
         }
       : null,
@@ -134,9 +124,7 @@ function getGuestCheckoutIssues(cart: GuestCart | null): GuestCheckoutIssueCode[
 // Cart lookup / creation
 // ---------------------------------------------------------------------------
 
-export async function findGuestCartById(
-  cartId: string
-): Promise<string | null> {
+export async function findGuestCartById(cartId: string): Promise<string | null> {
   if (!cartId || cartId.trim().length === 0) return null;
   const cart = await db.cart.findUnique({
     where: { id: cartId },
@@ -147,6 +135,23 @@ export async function findGuestCartById(
 
 // Alias for backward compatibility with callers that still use the token name
 export const findGuestCartIdByToken = findGuestCartById;
+
+/**
+ * Réactivation explicite d'un panier `ABANDONED` (lien de reprise email —
+ * lot 7, cf. `docs/roadmap/analyses-cockpit-analytique/lot-7-panier-abandonne-effet-bord-cadrage.md`).
+ * Ne réactive que si le panier est bien `ABANDONED` : un panier déjà
+ * `ACTIVE`/`CONVERTED`/`EXPIRED`/`ARCHIVED` n'est pas touché.
+ */
+export async function reactivateAbandonedCart(cartId: string): Promise<boolean> {
+  if (!cartId || cartId.trim().length === 0) return false;
+
+  const { count } = await db.cart.updateMany({
+    where: { id: cartId, status: "ABANDONED", archivedAt: null },
+    data: { status: "ACTIVE", abandonedAt: null },
+  });
+
+  return count === 1;
+}
 
 export async function createGuestCart(): Promise<string> {
   const store = await db.store.findFirst({
@@ -205,10 +210,7 @@ export async function findGuestCartVariantById(
   if (!variant.product.catalogPriceCents) return null;
 
   const inv = variant.inventoryItems[0];
-  const stockQuantity = Math.max(
-    0,
-    (inv?.onHandQuantity ?? 0) - (inv?.reservedQuantity ?? 0)
-  );
+  const stockQuantity = Math.max(0, (inv?.onHandQuantity ?? 0) - (inv?.reservedQuantity ?? 0));
   const isSellable = isVariantSellable(variant.availabilityRecords);
   const isAvailable =
     variant.product.status === "ACTIVE" &&
@@ -245,9 +247,7 @@ export async function findGuestCartItemByVariant(
     where: { cartId_variantId: { cartId, variantId } },
     select: { id: true, variantId: true, quantity: true },
   });
-  return line
-    ? { id: line.id, variantId: line.variantId, quantity: line.quantity }
-    : null;
+  return line ? { id: line.id, variantId: line.variantId, quantity: line.quantity } : null;
 }
 
 export async function findGuestCartItemById(
@@ -259,9 +259,7 @@ export async function findGuestCartItemById(
     where: { id: itemId, cartId },
     select: { id: true, variantId: true, quantity: true },
   });
-  return line
-    ? { id: line.id, variantId: line.variantId, quantity: line.quantity }
-    : null;
+  return line ? { id: line.id, variantId: line.variantId, quantity: line.quantity } : null;
 }
 
 // ---------------------------------------------------------------------------
@@ -338,9 +336,7 @@ export async function removeGuestCartItem(input: {
 // Full cart read
 // ---------------------------------------------------------------------------
 
-export async function readGuestCartById(
-  cartId: string
-): Promise<GuestCart | null> {
+export async function readGuestCartById(cartId: string): Promise<GuestCart | null> {
   if (!cartId || cartId.trim().length === 0) return null;
   const cart = await db.cart.findUnique({
     where: { id: cartId, status: "ACTIVE" },
@@ -376,19 +372,14 @@ export async function readGuestCartById(
 
   const lines: GuestCartLine[] = cart.lines.map((line) => {
     const inv = line.variant.inventoryItems[0];
-    const availableQty = Math.max(
-      0,
-      (inv?.onHandQuantity ?? 0) - (inv?.reservedQuantity ?? 0)
-    );
+    const availableQty = Math.max(0, (inv?.onHandQuantity ?? 0) - (inv?.reservedQuantity ?? 0));
     const isAvailable =
       line.product.status === "ACTIVE" &&
       line.variant.status === "ACTIVE" &&
       isVariantSellable(line.variant.availabilityRecords) &&
       availableQty >= line.quantity;
     const unitPriceStr = normalizeMoneyString(String(line.unitPriceAmount));
-    const lineTotalStr = centsToMoneyString(
-      moneyStringToCents(unitPriceStr) * line.quantity
-    );
+    const lineTotalStr = centsToMoneyString(moneyStringToCents(unitPriceStr) * line.quantity);
     return {
       id: line.id,
       variantId: line.variantId,
@@ -407,10 +398,7 @@ export async function readGuestCartById(
   });
 
   const itemCount = lines.reduce((sum, l) => sum + l.quantity, 0);
-  const subtotalCents = lines.reduce(
-    (sum, l) => sum + moneyStringToCents(l.lineTotalAmount),
-    0
-  );
+  const subtotalCents = lines.reduce((sum, l) => sum + moneyStringToCents(l.lineTotalAmount), 0);
   return {
     id: cart.id,
     itemCount,
