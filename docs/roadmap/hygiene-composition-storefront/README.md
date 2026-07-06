@@ -1,0 +1,48 @@
+# Hygiène de composition storefront
+
+Chantier cross-cutting, hors séquence H1-H4 de valeur métier. Déclenché par une demande initiale de traiter le storefront public "façon macOS", sur le modèle du chantier admin `docs/roadmap/admin-design-macos/README.md`. Un audit préalable (2026-07-07) a écarté ce vocabulaire : le storefront n'a pas d'écrans comparables (listes avec tri/sélection/bulk actions, navigation de réglages) à ceux que le pattern macOS traite. Il a en revanche révélé de vrais écarts de composition et de discipline design-system, indépendants de toute question d'esthétique "macOS" — ce chantier les cadre sous son propre nom.
+
+## Ce que ce chantier touche — et ce qu'il ne touche pas
+
+- **Touche** : composition et hygiène des classes utilitaires déjà couvertes par le design system (empty states, formulaires, remplacement de valeurs Tailwind arbitraires par les tokens/scales existants).
+- **Ne touche pas** : l'identité visuelle storefront elle-même (typographie serif des titres, ton "atelier", ambiance chaleureuse — observée cohérente sur `a-propos`, `les-marches`, `compte`, `categories`, `contact`) ni le système de tokens (`app/styles/theme.css`, `themes/creatyss.*.css`). Aucune modification prévue de ces fichiers dans ce chantier — cf. garde-fou V2, `docs/architecture/90-reference/design-system.md`, section "Règle de maintenance" ("ne plus lancer de lot design system large sans problème transversal démontré").
+
+## État observé (2026-07-07, audit `architect-review`)
+
+Deux registres distincts coexistent sur `app/(public)/**` :
+
+**Déjà cohérent** :
+
+- Header serif partagé (`font-serif text-4xl font-light tracking-tight text-foreground md:text-5xl`) sur les pages éditoriales (`a-propos/page.tsx:27`, `les-marches/page.tsx:28`, `compte/page.tsx:19`, `contact/page.tsx`).
+- Pages légales (mentions légales, CGV, confidentialité, politique de retour) : composant partagé `LegalPageTemplate` (`components/storefront/legal/legal-page-template.tsx`).
+- Liens "Retour" du tunnel panier/checkout : classe strictement identique sur les 3 occurrences (`panier/page.tsx:175-179`, `checkout/page.tsx:495-499`, `:706-710`).
+
+**Écarts réels** :
+
+- **Empty states** : au moins 5 implémentations différentes, aucun composant partagé. `panier`/`checkout` utilisent une classe `.empty-state` **introuvable dans tout fichier CSS du repo** — probablement un vestige de l'ancien `boutique.css` supprimé lors de la migration Tailwind (`design-system.md:59-62`). `favoris`, `categories`, `blog` ont chacun leur markup ad hoc. `boutique` a un composant dédié (`BoutiqueEmptyState`) non réutilisé ailleurs. À comparer à l'admin, qui a un `AdminEmptyState` unique réutilisé sur 9+ écrans.
+- **Formulaires** : le formulaire de contact (`contact/page.tsx`) construit ses champs en `<label>`/`<input>` HTML brut ; `panier`/`checkout` sont les seuls écrans storefront à utiliser le composant `<Label>` du design system. Deux structures différentes pour un même besoin.
+- **Valeurs Tailwind arbitraires** (interdit explicite, `design-system.md` "Interdits absolus" et tableau "Alias dépréciés/à éviter") : `text-[0.72rem]`, `text-[13px]`, `text-[11px]`, `text-[0.95rem]`, `text-[0.62rem]`, `text-[0.68rem]` — dizaine d'occurrences sur `panier`, `checkout`, `checkout/confirmation`, `contact`, `compte`, `blog`, `blog/[slug]`.
+- **`bg-white/80`** en dur dans `checkout/page.tsx:236,292,356,516` — violation directe de l'alias déprécié documenté (`bg-white`/`bg-gray-*` → tokens `shell-surface`/`surface-panel`).
+
+## Ce qui distingue ce chantier de la remédiation admin (macOS)
+
+Contrairement à l'admin, le storefront a une identité typographique volontaire et déjà cohérente sur ses pages éditoriales — ce chantier ne cherche pas à imposer une signature de composition unique comme le "toolbar unifiée" macOS, mais à faire respecter des règles déjà documentées (tokens, scales) là où elles sont contournées, sans toucher au ton ni à la mise en page éditoriale.
+
+## Proposition de découpage en lots (aucun engagement de calendrier, aucune implémentation dans ce document)
+
+1. **Nettoyer la classe morte `.empty-state`** — supprimer la référence orpheline sur `panier`/`checkout`, vérifier qu'aucun style n'en dépendait réellement (probable no-op visuel, à confirmer en navigateur avant/après).
+2. **Unifier les empty states** — un composant partagé équivalent à `AdminEmptyState`, adopté par `panier`, `checkout`, `favoris`, `categories`, `blog` (et `boutique` si `BoutiqueEmptyState` s'y prête sans régression).
+3. **Unifier les formulaires** — aligner `contact/page.tsx` sur les composants `<Label>`/`<Input>` déjà utilisés par `checkout`.
+4. **Remplacer les valeurs Tailwind arbitraires** par les scales/tokens standard (`text-xs`/`text-sm` etc.) sur les fichiers listés ci-dessus.
+5. **Remplacer `bg-white/80`** par le token `surface-panel` (ou équivalent) dans `checkout/page.tsx`.
+
+Aucun ordre imposé entre les lots 1-5 : aucune dépendance croisée identifiée. Le lot 1 est le plus isolé et le plus sûr pour démarrer.
+
+## Risques
+
+- Toute correction visuelle sur un tunnel de conversion (panier/checkout) doit être vérifiée en navigateur avant/après — pas seulement typecheck/lint, cf. `docs/roadmap/h1-boutique-vendable/lot-recette-complete.md` pour le niveau d'exigence attendu sur ce tunnel.
+- Le remplacement de `bg-white/80` doit être vérifié en light **et** dark mode (le token cible doit couvrir les deux, cf. garde-fou V2).
+
+## Hors périmètre de ce document
+
+Toute implémentation. Chaque lot listé doit être vérifié et livré séparément.

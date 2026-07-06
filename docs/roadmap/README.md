@@ -37,12 +37,14 @@ Chantiers hors séquence H1-H4 de valeur métier, pouvant avancer en parallèle 
 | Refonte composition admin (macOS) | Toolbar unifiée, patterns de liste, navigation réglages — parité WooCommerce                        | Terminé — 11 lots livrés (2026-07-05) : toolbar unifiée, listes commandes/catégories, hub settings, dashboard, reflows mobiles, discounts et blog outillés, breadcrumbs généralisés + hub catalogue |
 | Doctrine domaines admin           | Étendre la doctrine UI/UX catalog (nav, hubs configuration, statuts par niveau) aux autres domaines | Terminé — lots A-H livrés + navs de domaine commerce/content/marketing, 5 décisions actées, écarts consignés soldés (clos le 2026-07-05)                                                            |
 | Analyses — cockpit analytique     | Étendre le cockpit `/admin/insights/analytics` (ventes, comportement, conversion, recherche)        | Terminé — 7 lots livrés, mergé dans main (2026-07-06)                                                                                                                                               |
+| Hygiène composition storefront    | Empty states, formulaires, valeurs Tailwind arbitraires sur `app/(public)/**`                       | Cadré (2026-07-07) — audit livré, 5 lots proposés, aucun livré                                                                                                                                      |
 
 - [UX — Navigation admin et complétude storefront](./ux-admin-storefront/README.md)
 - [Gouvernance des fonctionnalités et complétude des réglages admin](./gouvernance-reglages-admin/README.md)
 - [Audit design admin — 2026-07-03](../audit/2026-07-03-audit-design-admin.md)
 - [Refonte composition admin — style macOS](./admin-design-macos/README.md)
 - [Doctrine domaines admin — extension de la doctrine catalog](./doctrine-domaines-admin/README.md)
+- [Hygiène de composition storefront](./hygiene-composition-storefront/README.md)
 - [Analyses — cockpit analytique étendu](./analyses-cockpit-analytique/README.md)
 
 ---
