@@ -1,4 +1,5 @@
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { CatalogRouteNav } from "@/features/admin/catalog/components/catalog-route-nav";
 import { listAdminFeatureFlags } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
@@ -22,7 +23,9 @@ export default async function AdminCatalogSettingsPage() {
     relatedStorefront,
     relatedManage,
   ] = await Promise.all([
-    listAdminFeatureFlags().catch((): Awaited<ReturnType<typeof listAdminFeatureFlags>> => [] as const),
+    listAdminFeatureFlags().catch(
+      (): Awaited<ReturnType<typeof listAdminFeatureFlags>> => [] as const
+    ),
     meetsFeatureLevel("catalog.products.pricing", "price-lists").catch(() => false),
     meetsFeatureLevel("catalog.products.pricing", "scheduled-pricing").catch(() => false),
     meetsFeatureLevel("catalog.products.media", "optimization").catch(() => false),
@@ -44,6 +47,14 @@ export default async function AdminCatalogSettingsPage() {
         { label: "Catalogue", href: "/admin/catalog/overview" },
         { label: "Configuration" },
       ]}
+      showTitleInContent={false}
+      header={
+        <AdminPageHeader
+          eyebrow="Catalogue"
+          title="Configuration catalogue"
+          description="Niveaux activés sur la tarification, les médias et les produits liés du catalogue."
+        />
+      }
     >
       <CatalogRouteNav />
       <CatalogSettingsHub

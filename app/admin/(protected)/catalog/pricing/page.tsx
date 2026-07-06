@@ -1,5 +1,6 @@
 import { CheckCircle2, Clock, Euro, Star, Tag } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { cn } from "@/lib/utils";
@@ -78,6 +79,14 @@ export default async function AdminCatalogPricingPage({
         { label: "Tarification" },
       ]}
       contentPreset="table"
+      showTitleInContent={false}
+      header={
+        <AdminPageHeader
+          eyebrow="Catalogue"
+          title="Listes de prix"
+          description="Tarifs par devise, canal ou période promotionnelle, appliqués aux produits et variantes."
+        />
+      }
       topbarAction={canManagePriceLists ? <PriceListCreateDialog /> : undefined}
     >
       <CatalogRouteNav />

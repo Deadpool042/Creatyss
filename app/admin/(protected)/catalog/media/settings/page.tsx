@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { Badge } from "@/components/ui/badge";
 import { serverEnv } from "@/core/config/env/server";
@@ -54,20 +55,27 @@ export default async function AdminCatalogMediaSettingsPage() {
         { label: "Configuration" },
       ]}
       contentPreset="table"
+      showTitleInContent={false}
+      header={
+        <AdminPageHeader
+          eyebrow="Catalogue"
+          title="Médias"
+          description="Configuration du stockage et du traitement des images. Ces paramètres sont définis dans l'environnement et ne sont pas modifiables ici."
+        />
+      }
     >
       <MediaRouteNav />
       <div className="space-y-8">
         <div className="space-y-4">
-          <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-            Configuration du stockage et du traitement des images. Ces paramètres sont définis dans
-            l&apos;environnement et ne sont pas modifiables ici.
-          </p>
-
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <MediaStatCard
               label="Stockage"
               value={storageHealthLabel}
-              hint={uploadsDir ? "Répertoire local résolu côté serveur." : "Variable uploadsDir absente."}
+              hint={
+                uploadsDir
+                  ? "Répertoire local résolu côté serveur."
+                  : "Variable uploadsDir absente."
+              }
             />
             <MediaStatCard
               label="URL publique"
@@ -150,7 +158,11 @@ export default async function AdminCatalogMediaSettingsPage() {
             title="Traitement des images"
             description="Contraintes appliquées lors de l’import et de la génération des assets."
           >
-            <MediaInfoRow label="Format de sortie" value={IMAGE_OUTPUT_FORMAT.toUpperCase()} readOnly />
+            <MediaInfoRow
+              label="Format de sortie"
+              value={IMAGE_OUTPUT_FORMAT.toUpperCase()}
+              readOnly
+            />
             <MediaInfoRow label="Taille maximale acceptée" value={`${maxFileSizeMb} Mo`} readOnly />
             <MediaInfoRow
               label="Dimensions maximales"
@@ -232,7 +244,13 @@ function MediaStatCard({
       <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
         {label}
       </p>
-      <p className={mono ? "mt-2 break-all font-mono text-sm text-foreground" : "mt-2 text-lg font-semibold text-foreground"}>
+      <p
+        className={
+          mono
+            ? "mt-2 break-all font-mono text-sm text-foreground"
+            : "mt-2 text-lg font-semibold text-foreground"
+        }
+      >
         {value}
       </p>
       <p className="mt-2 text-sm leading-6 text-muted-foreground">{hint}</p>
