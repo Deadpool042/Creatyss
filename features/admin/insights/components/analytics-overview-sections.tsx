@@ -15,7 +15,8 @@
  * Modèles : AnalyticsMetric, AnalyticsSnapshot (alimentés par le tracking
  * storefront pour les vues produit et ajouts panier uniquement)
  */
-import { Activity, Eye, ShoppingCart, TrendingDown, TrendingUp, Users } from "lucide-react";
+import Link from "next/link";
+import { Activity, Eye, Search, ShoppingCart, TrendingDown, TrendingUp, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { CommerceAnalyticsInsights } from "@/features/admin/insights/queries/get-commerce-analytics-insights.query";
@@ -23,6 +24,7 @@ import type { CommerceAnalyticsRecommendations } from "@/features/admin/insights
 import type { DailyTrafficAnalytics } from "@/features/admin/insights/queries/get-daily-traffic-analytics.query";
 import type { MonthlyCommerceAnalytics } from "@/features/admin/insights/queries/get-monthly-commerce-analytics.query";
 import type { AnalyticsTopPagesData } from "@/features/admin/insights/queries/get-analytics-top-pages.query";
+import type { SearchAnalytics } from "@/features/admin/insights/queries/get-search-analytics.query";
 
 // ── Mock data ─────────────────────────────────────────────────────────────
 
@@ -143,6 +145,12 @@ type AnalyticsOverviewSectionsProps = {
    * le bloc retombe alors sur le mock `TOP_PAGES`.
    */
   topPages?: AnalyticsTopPagesData | null;
+  /**
+   * Métriques de recherche storefront (top termes 30 jours, recherches sans
+   * résultat aujourd'hui vs hier). `null` si le niveau `read` n'est pas
+   * atteint — la section n'est alors pas affichée.
+   */
+  search?: SearchAnalytics | null;
 };
 
 export function AnalyticsOverviewSections({
@@ -151,6 +159,7 @@ export function AnalyticsOverviewSections({
   recommendations = null,
   daily = null,
   topPages = null,
+  search = null,
 }: AnalyticsOverviewSectionsProps) {
   const displayedTopPages = topPages ?? TOP_PAGES;
   return (
@@ -281,6 +290,74 @@ export function AnalyticsOverviewSections({
               })}
             </div>
           </section>
+
+          {search !== null ? (
+            <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+                Recherche
+              </p>
+              <h2 className="mb-4 text-xl font-semibold tracking-tight text-foreground">
+                Recherches storefront
+              </h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/70">
+                    Top termes (30 jours)
+                  </p>
+                  {search.topTerms.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">Aucune recherche enregistrée.</p>
+                  ) : (
+                    <div className="divide-y divide-surface-border/30">
+                      {search.topTerms.map((entry) => (
+                        <div
+                          key={entry.term}
+                          className="flex items-center justify-between gap-3 py-2 first:pt-0 last:pb-0"
+                        >
+                          <p className="min-w-0 truncate text-sm text-foreground">{entry.term}</p>
+                          <span className="text-sm font-semibold tabular-nums text-foreground">
+                            {entry.count}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/70">
+                    Sans résultat
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Search className="size-4 shrink-0 text-muted-foreground/40" />
+                    <p className="text-3xl font-semibold tracking-tight text-foreground">
+                      {search.zeroResults.today}
+                    </p>
+                  </div>
+                  <div className="mt-1.5 flex items-center gap-1.5">
+                    {search.zeroResults.deltaPercent === null ? (
+                      <span className="text-xs font-medium text-muted-foreground/60">—</span>
+                    ) : (
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-0.5 text-xs font-medium",
+                          search.zeroResults.deltaPercent >= 0
+                            ? "text-feedback-error-foreground"
+                            : "text-feedback-success-foreground"
+                        )}
+                      >
+                        {search.zeroResults.deltaPercent >= 0 ? (
+                          <TrendingUp className="size-3" />
+                        ) : (
+                          <TrendingDown className="size-3" />
+                        )}
+                        {Math.abs(search.zeroResults.deltaPercent).toFixed(1)}%
+                      </span>
+                    )}
+                    <span className="text-xs text-muted-foreground">vs hier</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          ) : null}
 
           {insights !== null ? (
             <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm backdrop-blur-sm">
@@ -522,6 +599,19 @@ export function AnalyticsOverviewSections({
                 </code>
               </p>
             )}
+            <p className="mt-3 text-[11px] leading-5 text-muted-foreground/70">
+              Relance panier abandonné : suivi des jobs dans{" "}
+              <Link href="/admin/marketing/automations" className="underline hover:text-foreground">
+                Marketing → Automations
+              </Link>
+              .
+              <br />
+              Attribution (source/canal/campagne) : aucune lecture interne (choix assumé, cf.{" "}
+              <code className="rounded bg-surface-subtle px-1 font-mono text-[10px]">
+                docs/roadmap/analyses-cockpit-analytique/lot-4-attribution-cadrage.md
+              </code>
+              ) — se référer au tableau de bord Umami/Plausible.
+            </p>
           </section>
         </div>
       </div>
