@@ -43,7 +43,7 @@ export function AdminConfigDataTableToolbar({
   resultsFullLabel,
   resultsShortLabel,
 }: AdminConfigDataTableToolbarProps) {
-  const hasDesktopControls = Boolean(desktopFilters);
+  const hasDesktopControls = Boolean(desktopFilters) || Boolean(desktopTrailing);
 
   return (
     <div className="flex flex-col gap-2">
@@ -91,7 +91,9 @@ export function AdminConfigDataTableToolbar({
 
       {typeof resultsCount === "number" && resultsFullLabel && resultsShortLabel ? (
         <span className="inline-flex items-center text-xs not-italic text-muted-foreground sm:text-[11px]">
-          <span className="[@media(max-height:480px)]:hidden">{resultsFullLabel(resultsCount)}</span>
+          <span className="[@media(max-height:480px)]:hidden">
+            {resultsFullLabel(resultsCount)}
+          </span>
           <span className="hidden [@media(max-height:480px)]:inline">
             {resultsShortLabel(resultsCount)}
           </span>

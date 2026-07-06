@@ -44,10 +44,13 @@ Les lots pilotes 2 et 3 dépendent de la validation visuelle du lot pilote 1 (r�
 | [lot-9-discounts-toolbar-sheet.md](./lot-9-discounts-toolbar-sheet.md)                       | Codes promo : toolbar unifiée + création en Sheet                                                     | Livré — 2026-07-05 |
 | [lot-10-blog-list-toolbar.md](./lot-10-blog-list-toolbar.md)                                 | Blog : recherche et filtre statut sur la liste d'articles                                             | Livré — 2026-07-05 |
 | [lot-11-breadcrumbs-hub-catalogue.md](./lot-11-breadcrumbs-hub-catalogue.md)                 | Breadcrumbs généralisés, hub configuration catalogue, nav secondaire partagée (synthèse de 6 commits) | Livré — 2026-07-05 |
+| [lot-12-taxation-toolbar-sheet.md](./lot-12-taxation-toolbar-sheet.md)                       | TVA : toolbar unifiée + création/import en Sheet (dernier écran avec cartes permanentes)              | Livré — 2026-07-06 |
 
 Prolongement (lot 11) : après la clôture des 10 lots initiaux, une vague de micro-lots du 2026-07-05 a généralisé les breadcrumbs à tout l'admin, unifié la navigation secondaire des sections (`components/admin/layout/admin-section-route-nav.tsx`) et fait de `/admin/catalog/settings` le hub unique de configuration du catalogue.
 
 Généralisation : au 2026-07-05, les candidats identifiés sont traités ou écartés — `commerce/customers`, `catalog/pricing`, `settings/team`, `settings/api-clients` déjà alignés (toolbar ou Dialog/Drawer en topbar) ; `marketing/discounts` (lot 9) et `content/blog` (lot 10) livrés. Les domaines restants (`commerce/{documents,payments,shipping,taxation}`, `insights/*`) sont des overviews/écrans de réglages déjà responsives, sans liste dense à outiller — à réévaluer si un besoin apparaît.
+
+Réévaluation (lot 12, 2026-07-06) : `insights/*` et `commerce/{payments,shipping}` confirmés déjà alignés (rien à faire, recherche manquante sur payments/shipping laissée pour un lot séparé). `commerce/taxation` était le seul écran avec un vrai écart (cartes permanentes) — traité au lot 12, même pattern que le lot 9.
 
 ## Risques
 
