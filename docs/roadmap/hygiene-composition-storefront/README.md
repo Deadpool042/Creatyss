@@ -30,7 +30,7 @@ Contrairement à l'admin, le storefront a une identité typographique volontaire
 
 ## Proposition de découpage en lots (aucun engagement de calendrier, aucune implémentation dans ce document)
 
-1. **Nettoyer la classe morte `.empty-state`** — supprimer la référence orpheline sur `panier`/`checkout`, vérifier qu'aucun style n'en dépendait réellement (probable no-op visuel, à confirmer en navigateur avant/après).
+1. **Nettoyer la classe morte `.empty-state`** — supprimer la référence orpheline sur `panier`/`checkout`, vérifier qu'aucun style n'en dépendait réellement (probable no-op visuel, à confirmer en navigateur avant/après). **Livré (2026-07-07)** : ce n'était pas un no-op — les 3 empty states (panier vide, checkout vide, commande indisponible) rendaient en HTML non stylé (classe inexistante). Remplacés par le même habillage que `BoutiqueEmptyState` (`rounded-lg border border-surface-border-subtle/70 bg-surface-panel/30 p-6`, tokens existants, aucune valeur arbitraire). Vérifié en navigateur avant/après sur `/panier` et `/checkout`.
 2. **Unifier les empty states** — un composant partagé équivalent à `AdminEmptyState`, adopté par `panier`, `checkout`, `favoris`, `categories`, `blog` (et `boutique` si `BoutiqueEmptyState` s'y prête sans régression).
 3. **Unifier les formulaires** — aligner `contact/page.tsx` sur les composants `<Label>`/`<Input>` déjà utilisés par `checkout`.
 4. **Remplacer les valeurs Tailwind arbitraires** par les scales/tokens standard (`text-xs`/`text-sm` etc.) sur les fichiers listés ci-dessus.
