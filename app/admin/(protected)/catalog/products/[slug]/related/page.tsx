@@ -43,9 +43,6 @@ export default async function ProductDetailRelatedPage({
     <AdminPageShell
       {...getProductModulePageShellProps({
         product: editor.product,
-        pageTitle: "Produits lies",
-        pageDescription:
-          "Gerez les relations merchandising bornees : related, cross-sell, up-sell, accessory et similar.",
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={editor.product.id}

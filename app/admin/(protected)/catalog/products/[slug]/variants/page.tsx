@@ -52,9 +52,6 @@ export default async function ProductDetailVariantsPage({
     <AdminPageShell
       {...getProductModulePageShellProps({
         product,
-        pageTitle: "Structure et variantes",
-        pageDescription:
-          "Gerez les declinaisons, la variante par defaut et les valeurs d'options structurelles sans recharger la page coeur produit.",
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={product.id}

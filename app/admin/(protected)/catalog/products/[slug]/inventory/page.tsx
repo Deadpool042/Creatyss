@@ -49,9 +49,6 @@ export default async function ProductDetailInventoryPage({
     <AdminPageShell
       {...getProductModulePageShellProps({
         product,
-        pageTitle: "Stock produit",
-        pageDescription:
-          "Gerez les quantites physiques et l'etat de stock sans modifier ici la disponibilite vendable.",
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={product.id}

@@ -80,8 +80,6 @@ export default async function ProductDetailPreviewPage({ params }: PreviewPagePr
     <AdminPageShell
       {...getProductModulePageShellProps({
         product,
-        pageTitle: "Aperçu produit",
-        pageDescription: "Affiche la fiche produit telle qu'elle apparaîtrait en vitrine publique.",
       })}
       header={
         <AdminPageHeader

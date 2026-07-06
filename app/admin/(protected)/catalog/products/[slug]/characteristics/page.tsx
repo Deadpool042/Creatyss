@@ -28,9 +28,6 @@ export default async function ProductDetailCharacteristicsPage({
     <AdminPageShell
       {...getProductModulePageShellProps({
         product: editor.product,
-        pageTitle: "Caractéristiques",
-        pageDescription:
-          "Renseignez les attributs factuels du produit : matière, dimensions, composition, fermeture…",
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={editor.product.id}

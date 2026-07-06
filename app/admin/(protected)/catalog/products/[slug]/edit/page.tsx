@@ -190,8 +190,6 @@ export default async function ProductDetailEditPage({
     <AdminPageShell
       {...getProductModulePageShellProps({
         product: editor.product,
-        pageTitle: editor.product.name,
-        pageDescription: PRODUCT_EDITOR_PAGE_COPY.description,
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={editor.product.id}

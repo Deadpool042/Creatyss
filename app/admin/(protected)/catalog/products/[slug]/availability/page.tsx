@@ -38,9 +38,6 @@ export default async function ProductDetailAvailabilityPage({
     <AdminPageShell
       {...getProductModulePageShellProps({
         product,
-        pageTitle: "Disponibilite vendable",
-        pageDescription:
-          "Gerez l'etat vendable, les fenetres de vente, la precommande et la rupture sans melanger cette logique avec le stock.",
         topbarAction: (
           <ProductEditorTopbarMenu
             productId={product.id}
