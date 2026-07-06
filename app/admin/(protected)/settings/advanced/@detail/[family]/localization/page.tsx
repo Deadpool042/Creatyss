@@ -2,9 +2,9 @@ import { notFound } from "next/navigation";
 
 import { AdminSplitDetailPaneShell } from "@/components/admin/layout/admin-split-detail-pane-shell";
 import { AdminSplitDetailSectionCard } from "@/components/admin/layout/admin-split-detail-section-card";
-import { FeatureFlagDetail } from "@/features/admin/pilotage/components/settings-advanced";
-import { listAdminFeatureFlags } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
-import { findFlagBySlug } from "@/features/admin/pilotage/view-models/settings-advanced";
+import { FeatureFlagDetail } from "@/features/admin/feature-governance/components/settings-advanced";
+import { listAdminFeatureFlags } from "@/features/admin/feature-governance/queries/list-admin-feature-flags.query";
+import { findFlagBySlug } from "@/features/admin/feature-governance/view-models/settings-advanced";
 
 export const dynamic = "force-dynamic";
 

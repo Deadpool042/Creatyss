@@ -2,7 +2,7 @@ import { requireAdminCapability } from "@/core/auth/admin/require-admin-capabili
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { CatalogRouteNav } from "@/features/admin/catalog/components/catalog-route-nav";
-import { listAdminFeatureFlags } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
+import { listAdminFeatureFlags } from "@/features/admin/feature-governance/queries/list-admin-feature-flags.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { CatalogSettingsHub } from "@/features/admin/settings/components/catalog-settings-hub";
 

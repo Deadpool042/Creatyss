@@ -1,7 +1,7 @@
 "use client";
 
-import type { AdminFeatureFlagView } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
-import { useFeatureFlagToggle } from "@/features/admin/pilotage/hooks/use-feature-flag-toggle";
+import type { AdminFeatureFlagView } from "@/features/admin/feature-governance/queries/list-admin-feature-flags.query";
+import { useFeatureFlagToggle } from "@/features/admin/feature-governance/hooks/use-feature-flag-toggle";
 import { cn } from "@/lib/utils";
 
 // ─── Toggle button ────────────────────────────────────────────────────────────

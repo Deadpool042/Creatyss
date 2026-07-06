@@ -12,12 +12,12 @@ Pour toute fonctionnalité graduée (`mutability: "level_selectable"` dans `FEAT
 2. Le niveau actuellement sélectionné (existe déjà).
 3. **Pour chaque niveau autorisé, pas seulement le niveau courant** : son libellé traduit et une description de ce qu'il fait et ce qu'il apporte par rapport au niveau précédent.
 
-Le contenu (descriptions par niveau) existe déjà dans `FEATURE_CATALOG` (`features/admin/pilotage/catalog/feature-catalog.ts`, champ `levelDescriptions`) — c'est un problème d'affichage, pas de données manquantes.
+Le contenu (descriptions par niveau) existe déjà dans `FEATURE_CATALOG` (`features/admin/feature-governance/catalog/feature-catalog.ts`, champ `levelDescriptions`) — c'est un problème d'affichage, pas de données manquantes.
 
 ## Contexte technique observé
 
-- `features/admin/pilotage/components/settings-advanced/feature-flag-level-select.tsx` : le composant actuel affiche un `<Select>` dont chaque `<SelectItem>` porte le code brut passé dans `humanizeLevel()` (simple capitalisation, pas de traduction), et n'affiche `currentLevelDescription` que pour le niveau sélectionné (lignes 38-39 et 58-60 du fichier).
-- `features/admin/pilotage/catalog/feature-catalog.ts` : chaque fonctionnalité graduée porte déjà un objet `levelDescriptions: Record<string, string>` complet et en français correct (vérifié sur `catalog.products.pricing`, `catalog.products.availability`, et une dizaine d'autres entrées).
+- `features/admin/feature-governance/components/settings-advanced/feature-flag-level-select.tsx` : le composant actuel affiche un `<Select>` dont chaque `<SelectItem>` porte le code brut passé dans `humanizeLevel()` (simple capitalisation, pas de traduction), et n'affiche `currentLevelDescription` que pour le niveau sélectionné (lignes 38-39 et 58-60 du fichier).
+- `features/admin/feature-governance/catalog/feature-catalog.ts` : chaque fonctionnalité graduée porte déjà un objet `levelDescriptions: Record<string, string>` complet et en français correct (vérifié sur `catalog.products.pricing`, `catalog.products.availability`, et une dizaine d'autres entrées).
 - Aucun champ `levelLabels` (libellé court traduit, distinct de la description longue) n'existe actuellement dans `FEATURE_CATALOG` — à ajouter.
 - `prisma/seed/feature-flags-catalog.seed.ts` consomme `description` (au niveau fonctionnalité) mais ne référence pas les niveaux eux-mêmes — les codes de niveau (`base-price`, etc.) restent des clés techniques stables, ne pas les renommer.
 

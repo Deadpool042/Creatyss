@@ -98,7 +98,7 @@ features ; seul l'ensemble des niveaux varie. L'IA n'est qu'un exemple parmi
 d'autres.
 
 Paliers stabilisés dans `FEATURE_LEVELS`
-(`features/admin/pilotage/catalog/feature-catalog.ts`) :
+(`features/admin/feature-governance/catalog/feature-catalog.ts`) :
 
 | Feature                         | Paliers                                            |
 | ------------------------------- | -------------------------------------------------- |

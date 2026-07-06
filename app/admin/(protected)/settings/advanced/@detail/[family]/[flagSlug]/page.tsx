@@ -5,13 +5,13 @@ import { AdminSplitDetailSectionCard } from "@/components/admin/layout/admin-spl
 import {
   FeatureFlagDetail,
   FlagGovernancePanel,
-} from "@/features/admin/pilotage/components/settings-advanced";
-import { listAdminFeatureFlags } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
+} from "@/features/admin/feature-governance/components/settings-advanced";
+import { listAdminFeatureFlags } from "@/features/admin/feature-governance/queries/list-admin-feature-flags.query";
 import {
   FAMILY_SLUGS,
   findFlagBySlug,
   type FeatureFamilySlug,
-} from "@/features/admin/pilotage/view-models/settings-advanced";
+} from "@/features/admin/feature-governance/view-models/settings-advanced";
 
 export const dynamic = "force-dynamic";
 

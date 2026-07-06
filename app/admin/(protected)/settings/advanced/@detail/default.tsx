@@ -1,6 +1,6 @@
-import { listAdminFeatureFlags } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
-import { buildOverviewStats } from "@/features/admin/pilotage/view-models/settings-advanced/feature-flags-split-view.utils";
-import { FeatureFlagsOverview } from "@/features/admin/pilotage/components/settings-advanced/feature-flags-overview";
+import { listAdminFeatureFlags } from "@/features/admin/feature-governance/queries/list-admin-feature-flags.query";
+import { buildOverviewStats } from "@/features/admin/feature-governance/view-models/settings-advanced/feature-flags-split-view.utils";
+import { FeatureFlagsOverview } from "@/features/admin/feature-governance/components/settings-advanced/feature-flags-overview";
 
 export const dynamic = "force-dynamic";
 

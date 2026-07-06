@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
 
-import { FeatureFlagsFamiliesList } from "@/features/admin/pilotage/components/settings-advanced/feature-flags-families-list";
-import { listAdminFeatureFlags } from "@/features/admin/pilotage/queries/list-admin-feature-flags.query";
+import { FeatureFlagsFamiliesList } from "@/features/admin/feature-governance/components/settings-advanced/feature-flags-families-list";
+import { listAdminFeatureFlags } from "@/features/admin/feature-governance/queries/list-admin-feature-flags.query";
 import {
   buildFamilyNavItems,
   FAMILY_SLUGS,
-} from "@/features/admin/pilotage/view-models/settings-advanced/feature-flags-split-view.utils";
-import type { FeatureFamilySlug } from "@/features/admin/pilotage/view-models/settings-advanced/feature-flags-split-view.types";
+} from "@/features/admin/feature-governance/view-models/settings-advanced/feature-flags-split-view.utils";
+import type { FeatureFamilySlug } from "@/features/admin/feature-governance/view-models/settings-advanced/feature-flags-split-view.types";
 
 export const dynamic = "force-dynamic";
 

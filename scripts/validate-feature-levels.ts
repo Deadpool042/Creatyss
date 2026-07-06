@@ -9,7 +9,7 @@
  * design — cf. feature-governance.md, « Propositions sans gradation runtime
  * observée »).
  */
-import { FEATURE_CATALOG } from "../features/admin/pilotage/catalog/feature-catalog";
+import { FEATURE_CATALOG } from "../features/admin/feature-governance/catalog/feature-catalog";
 import { createScriptPrismaClient } from "./helpers/prisma-client";
 
 const db = createScriptPrismaClient();

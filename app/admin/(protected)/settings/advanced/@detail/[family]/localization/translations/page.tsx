@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
-import { LocalizationModuleShell } from "@/features/admin/pilotage/components/settings-advanced";
+import { LocalizationModuleShell } from "@/features/admin/feature-governance/components/settings-advanced";
 import { HomepageTranslationsForm } from "@/features/admin/settings/components/homepage-translations-form";
 import { ProductPageTranslationsForm } from "@/features/admin/settings/components/product-page-translations-form";
 import { BoutiquePageTranslationsForm } from "@/features/admin/settings/components/boutique-page-translations-form";
