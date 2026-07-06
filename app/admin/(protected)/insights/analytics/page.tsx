@@ -4,6 +4,7 @@ import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { AnalyticsOverviewSections } from "@/features/admin/insights/components/analytics-overview-sections";
+import { InsightsRouteNav } from "@/features/admin/insights/components/insights-route-nav";
 import { getCommerceAnalyticsInsights } from "@/features/admin/insights/queries/get-commerce-analytics-insights.query";
 import { getCommerceAnalyticsRecommendations } from "@/features/admin/insights/queries/get-commerce-analytics-recommendations.query";
 import { getDailyTrafficAnalytics } from "@/features/admin/insights/queries/get-daily-traffic-analytics.query";
@@ -15,7 +16,7 @@ export default async function AdminInsightsAnalyticsPage() {
   const featureActive = await isAnalyticsFeatureActive();
   const analyticsHeader = (
     <AdminPageHeader
-      eyebrow="Insights"
+      eyebrow="Pilotage"
       title="Analytics"
       description="Lecture des métriques commerce et trafic, selon le niveau activé sur le module analytics."
     />
@@ -29,12 +30,13 @@ export default async function AdminInsightsAnalyticsPage() {
         contentPreset="overview"
         breadcrumbs={[
           { label: "Admin", href: "/admin" },
-          { label: "Insights" },
+          { label: "Pilotage" },
           { label: "Analytics" },
         ]}
         showTitleInContent={false}
         header={analyticsHeader}
       >
+        <InsightsRouteNav />
         <AdminFeatureDisabledState
           capabilityName="Analytics"
           description="Cette capacité est pilotée dans les Réglages avancés. Activez le niveau requis sur engagement.analytics pour ouvrir les statistiques."
@@ -69,12 +71,13 @@ export default async function AdminInsightsAnalyticsPage() {
       contentPreset="overview"
       breadcrumbs={[
         { label: "Admin", href: "/admin" },
-        { label: "Insights" },
+        { label: "Pilotage" },
         { label: "Analytics" },
       ]}
       showTitleInContent={false}
       header={analyticsHeader}
     >
+      <InsightsRouteNav />
       <AnalyticsOverviewSections
         monthly={monthlyLevelMet ? monthlyCommerceAnalytics : null}
         insights={insightsLevelMet ? commerceInsights : null}

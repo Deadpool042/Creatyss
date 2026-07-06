@@ -351,10 +351,10 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
   },
 
   {
-    key: "analytics",
-    label: "Analyses",
-    href: "/admin/insights/analytics",
-    iconKey: "barChart3",
+    key: "insights-overview",
+    label: "Vue d’ensemble — Pilotage",
+    href: "/admin/insights/overview",
+    iconKey: "search",
     group: "insights",
     order: 10,
     visibility: {
@@ -366,14 +366,50 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
       capabilitiesAll: [adminNavigationCapabilities.insights.analyticsRead],
     },
   },
+  {
+    key: "analytics",
+    label: "Analyses",
+    href: "/admin/insights/analytics",
+    iconKey: "barChart3",
+    group: "insights",
+    order: 20,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      featureFlagsAll: [adminNavigationFeatureFlags.engagement.analytics],
+      capabilitiesAll: [adminNavigationCapabilities.insights.analyticsRead],
+    },
+  },
 
+  {
+    key: "maintenance-overview",
+    label: "Vue d’ensemble — Maintenance",
+    href: "/admin/maintenance/overview",
+    iconKey: "search",
+    group: "maintenance",
+    order: 10,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      internalOnly: true,
+      capabilitiesAny: [
+        adminNavigationCapabilities.system.logsRead,
+        adminNavigationCapabilities.system.monitoringRead,
+        adminNavigationCapabilities.system.observabilityRead,
+      ],
+    },
+  },
   {
     key: "maintenance-logs",
     label: "Logs",
     href: "/admin/maintenance/logs",
     iconKey: "wrench",
     group: "maintenance",
-    order: 10,
+    order: 20,
     visibility: {
       sidebar: true,
       mobileMore: true,
@@ -389,7 +425,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     href: "/admin/maintenance/monitoring",
     iconKey: "heartPulse",
     group: "maintenance",
-    order: 20,
+    order: 30,
     visibility: {
       sidebar: true,
       mobileMore: true,
@@ -405,7 +441,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     href: "/admin/maintenance/observability",
     iconKey: "activity",
     group: "maintenance",
-    order: 30,
+    order: 40,
     visibility: {
       sidebar: true,
       mobileMore: true,
