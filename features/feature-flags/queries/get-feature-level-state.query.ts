@@ -11,7 +11,7 @@ import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-st
  *
  * Le runtime de résolution vit dans le domaine transverse `feature-flags` :
  * il peut être consommé par l'admin, le storefront ou les routes API sans
- * dépendre de `features/admin/pilotage`.
+ * dépendre de `features/admin/feature-governance`.
  *
  * Même schéma de résolution que `queryFeatureFlagActive` : mono-store
  * canonique, override `STORE` actif prioritaire sur le défaut.

@@ -7,7 +7,7 @@ import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { isPaymentsFeatureActive } from "@/features/admin/commerce/queries/is-payments-feature-active.query";
 import { listAdminPayments } from "@/features/admin/commerce/payments/list/queries/list-admin-payments.query";
-import { AdminPaymentsList } from "@/features/admin/commerce/payments/list/components/admin-payments-list";
+import { AdminPaymentsPanel } from "@/features/admin/commerce/payments/list/components/admin-payments-panel";
 import { PaymentRouteNav } from "@/features/admin/commerce/payments/shared/components/payment-route-nav";
 
 export const dynamic = "force-dynamic";
@@ -46,7 +46,7 @@ export default async function AdminCommercePaymentsPage() {
       }
     >
       <PaymentRouteNav />
-      <AdminPaymentsList
+      <AdminPaymentsPanel
         payments={result.items}
         canManageManualPayments={canManageManualPayments}
       />

@@ -45,6 +45,9 @@ Les lots pilotes 2 et 3 dépendent de la validation visuelle du lot pilote 1 (r�
 | [lot-10-blog-list-toolbar.md](./lot-10-blog-list-toolbar.md)                                 | Blog : recherche et filtre statut sur la liste d'articles                                             | Livré — 2026-07-05 |
 | [lot-11-breadcrumbs-hub-catalogue.md](./lot-11-breadcrumbs-hub-catalogue.md)                 | Breadcrumbs généralisés, hub configuration catalogue, nav secondaire partagée (synthèse de 6 commits) | Livré — 2026-07-05 |
 | [lot-12-taxation-toolbar-sheet.md](./lot-12-taxation-toolbar-sheet.md)                       | TVA : toolbar unifiée + création/import en Sheet (dernier écran avec cartes permanentes)              | Livré — 2026-07-06 |
+| [lot-13-payments-shipping-search.md](./lot-13-payments-shipping-search.md)                   | Paiements & Livraisons : recherche (dernier écart noté au lot 12)                                     | Livré — 2026-07-06 |
+| [lot-14-pilotage-activation.md](./lot-14-pilotage-activation.md)                             | Pilotage : activation du flag analytics + fusion overview/analytics                                   | Livré — 2026-07-06 |
+| [lot-15-maintenance-fusion.md](./lot-15-maintenance-fusion.md)                               | Maintenance : fusion overview/monitoring/observability en une vue                                     | Livré — 2026-07-06 |
 
 Prolongement (lot 11) : après la clôture des 10 lots initiaux, une vague de micro-lots du 2026-07-05 a généralisé les breadcrumbs à tout l'admin, unifié la navigation secondaire des sections (`components/admin/layout/admin-section-route-nav.tsx`) et fait de `/admin/catalog/settings` le hub unique de configuration du catalogue.
 

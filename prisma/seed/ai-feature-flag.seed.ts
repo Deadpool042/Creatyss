@@ -2,7 +2,7 @@ import type { PrismaClient } from "@/prisma-generated/client";
 
 /**
  * `ai.core` est `level_selectable` dans le catalogue
- * (features/admin/pilotage/catalog/feature-catalog.ts, FEATURE_LEVELS.ai) mais
+ * (features/admin/feature-governance/catalog/feature-catalog.ts, FEATURE_LEVELS.ai) mais
  * n'avait aucune ligne en base, contrairement aux autres features graduées
  * (discounts, newsletter, analytics, localization). Seedé en DRAFT pour
  * permettre le pilotage du niveau depuis /admin/settings/advanced sans

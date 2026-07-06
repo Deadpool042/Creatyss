@@ -11,7 +11,7 @@ import type { PrismaClient } from "@/prisma-generated/client";
  * décision produit ultérieure (lot 2 — L1 managed).
  *
  * Les niveaux doivent rester synchronisés avec
- * FEATURE_LEVELS.localization (features/admin/pilotage/catalog/feature-catalog.ts).
+ * FEATURE_LEVELS.localization (features/admin/feature-governance/catalog/feature-catalog.ts).
  */
 export const LOCALIZATION_FEATURE_CODE = "platform.localization";
 

@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { AdminEmptyState } from "@/components/admin/shared/admin-empty-state";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { LocalizationModuleShell } from "@/features/admin/pilotage/components/settings-advanced";
+import { LocalizationModuleShell } from "@/features/admin/feature-governance/components/settings-advanced";
 import { setDefaultLocalizationLocaleAction } from "@/features/admin/settings/actions/set-default-localization-locale.action";
 import {
   listAdminLocalizationLocales,
