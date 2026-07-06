@@ -6,10 +6,7 @@ import { requireAdminCapability } from "@/core/auth/admin/require-admin-capabili
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { isShippingFeatureActive } from "@/features/admin/commerce/queries/is-shipping-feature-active.query";
 import { listAdminShipments } from "@/features/admin/commerce/shipping/list/queries/list-admin-shipments.query";
-import {
-  AdminShipmentsList,
-  AdminShipmentsListFilters,
-} from "@/features/admin/commerce/shipping/list/components/admin-shipments-list";
+import { AdminShipmentsPanel } from "@/features/admin/commerce/shipping/list/components/admin-shipments-panel";
 import { ShippingRouteNav } from "@/features/admin/commerce/shipping/shared/components/shipping-route-nav";
 import type { AdminShipmentStatus } from "@/features/admin/commerce/shipping/list/types/admin-shipment-list.types";
 
@@ -77,8 +74,7 @@ export default async function AdminCommerceShippingPage({
     >
       <div className="grid gap-4">
         <ShippingRouteNav />
-        <AdminShipmentsListFilters activeStatus={status} />
-        <AdminShipmentsList shipments={result.items} />
+        <AdminShipmentsPanel shipments={result.items} activeStatus={status} />
       </div>
     </AdminPageShell>
   );

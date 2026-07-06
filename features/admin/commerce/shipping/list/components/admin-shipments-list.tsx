@@ -5,6 +5,7 @@ import type { AdminShipmentStatus, AdminShipmentSummary } from "../types/admin-s
 
 type AdminShipmentsListProps = {
   shipments: ReadonlyArray<AdminShipmentSummary>;
+  emptyMessage?: string;
 };
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
@@ -55,12 +56,19 @@ function getShipmentStatusBadgeVariant(status: AdminShipmentStatus): ShipmentBad
   }
 }
 
-export function AdminShipmentsListFilters({ activeStatus }: { activeStatus: AdminShipmentStatus | null }) {
+export function AdminShipmentsListFilters({
+  activeStatus,
+}: {
+  activeStatus: AdminShipmentStatus | null;
+}) {
   return (
     <div className="flex flex-wrap gap-2">
       {STATUS_FILTERS.map((filter) => {
         const isActive = filter.value === activeStatus;
-        const href = filter.value === null ? "/admin/commerce/shipping" : `/admin/commerce/shipping?status=${filter.value}`;
+        const href =
+          filter.value === null
+            ? "/admin/commerce/shipping"
+            : `/admin/commerce/shipping?status=${filter.value}`;
 
         return (
           <Link
@@ -80,11 +88,11 @@ export function AdminShipmentsListFilters({ activeStatus }: { activeStatus: Admi
   );
 }
 
-export function AdminShipmentsList({ shipments }: AdminShipmentsListProps) {
+export function AdminShipmentsList({ shipments, emptyMessage }: AdminShipmentsListProps) {
   if (shipments.length === 0) {
     return (
       <p className="py-10 text-center text-sm text-muted-foreground">
-        Aucune expédition pour le moment.
+        {emptyMessage ?? "Aucune expédition pour le moment."}
       </p>
     );
   }

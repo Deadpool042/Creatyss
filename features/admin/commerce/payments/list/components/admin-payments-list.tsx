@@ -12,6 +12,7 @@ import type {
 type AdminPaymentsListProps = {
   payments: ReadonlyArray<AdminPaymentSummary>;
   canManageManualPayments: boolean;
+  emptyMessage?: string;
 };
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
@@ -67,11 +68,15 @@ async function cancelFormAction(formData: FormData): Promise<void> {
   await cancelAdminPaymentAction(formData);
 }
 
-export function AdminPaymentsList({ payments, canManageManualPayments }: AdminPaymentsListProps) {
+export function AdminPaymentsList({
+  payments,
+  canManageManualPayments,
+  emptyMessage,
+}: AdminPaymentsListProps) {
   if (payments.length === 0) {
     return (
       <p className="py-10 text-center text-sm text-muted-foreground">
-        Aucun paiement à traiter pour le moment.
+        {emptyMessage ?? "Aucun paiement à traiter pour le moment."}
       </p>
     );
   }
