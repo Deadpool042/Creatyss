@@ -2,7 +2,11 @@
 
 ## Statut
 
-Livré — 2026-07-06. `typecheck`, `lint` passent. Vérification navigateur non faite dans cette session (extension Chrome déconnectée + dev server arrêté pendant la vérification) — à confirmer manuellement.
+Livré — 2026-07-06. `typecheck`, `lint` passent. Vérification navigateur faite (Playwright, session suivante) : bug de build trouvé et corrigé (voir ci-dessous), `/admin/commerce/payments` et `/admin/commerce/shipping` chargent sans erreur, recherche fonctionnelle des deux côtés.
+
+### Correctif post-livraison
+
+`admin-payments-panel.tsx` (Client Component) importe `admin-payments-list.tsx`, qui définissait `captureFormAction`/`cancelFormAction` avec `"use server"` inline dans le corps de fonction — interdit par Next.js dans le graphe d'un Client Component ("Ecmascript file had an error"). Extraits vers `features/admin/commerce/payments/list/actions/payment-list-form-actions.ts` (fichier avec `"use server"` en tête). `admin-shipments-list.tsx` n'avait pas ce pattern, aucun correctif nécessaire côté shipping.
 
 ## Objectif
 
