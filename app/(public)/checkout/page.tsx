@@ -628,7 +628,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                   ))}
                 </div>
               ) : (
-                <div className="empty-state">
+                <div className="grid gap-4 rounded-lg border border-surface-border-subtle/70 bg-surface-panel/30 p-6">
                   <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                     Panier vide
                   </p>
@@ -690,7 +690,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
             </aside>
           </div>
         ) : (
-          <div className="empty-state">
+          <div className="grid gap-4 rounded-lg border border-surface-border-subtle/70 bg-surface-panel/30 p-6">
             <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
               Commande indisponible
             </p>
