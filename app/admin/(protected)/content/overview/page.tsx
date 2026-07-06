@@ -1,3 +1,4 @@
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { ContentRouteNav } from "@/features/admin/content/components/content-route-nav";
 import { ContentOverviewSections } from "@/features/admin/content/components/content-overview-sections";
@@ -15,11 +16,14 @@ export default async function AdminContentOverviewPage() {
       scrollBehavior="page"
       title="Contenu"
       contentPreset="overview"
-      breadcrumbs={[
-        { label: "Admin", href: "/admin" },
-        { label: "Contenu" },
-      ]}
+      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Contenu" }]}
       showTitleInContent={false}
+      header={
+        <AdminPageHeader
+          title="Contenu"
+          description="Vue d'ensemble du blog, des pages statiques et du référencement."
+        />
+      }
     >
       <ContentRouteNav />
       <ContentOverviewSections stats={stats} canPublishBlog={canPublishBlog} />
