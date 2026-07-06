@@ -1,3 +1,4 @@
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { CommerceOverviewSections } from "@/features/admin/commerce/components/commerce-overview-sections";
 import { CommerceRouteNav } from "@/features/admin/commerce/components/commerce-route-nav";
@@ -13,6 +14,13 @@ export default async function AdminCommerceOverviewPage() {
       contentPreset="overview"
       breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Commerce" }]}
       showTitleInContent={false}
+      header={
+        <AdminPageHeader
+          eyebrow="Commerce"
+          title="Vue d'ensemble"
+          description="Statistiques agrégées sur les commandes, paiements et livraisons du commerce."
+        />
+      }
     >
       <CommerceRouteNav />
       <CommerceOverviewSections stats={stats} />

@@ -1,5 +1,6 @@
 import { Percent } from "lucide-react";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { AdminFeatureDisabledState } from "@/components/admin/shared/admin-feature-disabled-state";
 import { CommerceRouteNav } from "@/features/admin/commerce/components/commerce-route-nav";
@@ -32,6 +33,13 @@ export default async function AdminCommerceTaxationPage({
   searchParams,
 }: AdminCommerceTaxationPageProps) {
   const featureActive = await isTaxationFeatureActive();
+  const taxationHeader = (
+    <AdminPageHeader
+      eyebrow="Commerce"
+      title="TVA"
+      description="Règles de taux par territoire de livraison, selon le niveau activé sur commerce.taxation."
+    />
+  );
 
   if (!featureActive) {
     return (
@@ -45,6 +53,7 @@ export default async function AdminCommerceTaxationPage({
         ]}
         showTitleInContent={false}
         contentPreset="table"
+        header={taxationHeader}
       >
         <CommerceRouteNav />
         <AdminFeatureDisabledState
@@ -69,6 +78,7 @@ export default async function AdminCommerceTaxationPage({
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={taxationHeader}
     >
       <CommerceRouteNav />
       <div className="grid gap-6">

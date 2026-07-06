@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
@@ -36,9 +37,19 @@ export default async function AdminCommercePaymentsPage() {
       ]}
       showTitleInContent={false}
       contentPreset="table"
+      header={
+        <AdminPageHeader
+          eyebrow="Commerce"
+          title="Paiements"
+          description="Suivi des paiements reçus, statuts et capture manuelle par virement."
+        />
+      }
     >
       <PaymentRouteNav />
-      <AdminPaymentsList payments={result.items} canManageManualPayments={canManageManualPayments} />
+      <AdminPaymentsList
+        payments={result.items}
+        canManageManualPayments={canManageManualPayments}
+      />
     </AdminPageShell>
   );
 }
