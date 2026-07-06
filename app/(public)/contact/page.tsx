@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { MailIcon, MapPinIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Notice } from "@/components/shared/feedback";
 import { getStorefrontStoreContact } from "@/features/storefront/store/queries/get-storefront-store-contact.query";
 import { getLocalizedContactCopy } from "@/features/storefront/content/queries/get-localized-contact-copy.query";
+import { sendContactMessageAction } from "@/features/storefront/contact/actions/send-contact-message-action";
 
 export const dynamic = "force-dynamic";
 
@@ -14,9 +17,47 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function ContactPage() {
-  const copy = await getLocalizedContactCopy();
+function getContactStatusMessage(status: string | undefined): string | null {
+  return status === "sent" ? "Message envoyé — nous vous répondons sous 2 à 3 jours ouvrés." : null;
+}
 
+function getContactErrorMessage(error: string | undefined): string | null {
+  switch (error) {
+    case "missing_first_name":
+      return "Renseignez votre prénom.";
+    case "missing_email":
+    case "invalid_email":
+      return "Renseignez une adresse email valide.";
+    case "missing_message":
+      return "Renseignez votre message.";
+    case "not_configured":
+      return "Le formulaire de contact n'est pas encore configuré pour cette boutique.";
+    case "send_failed":
+      return "Le message n'a pas pu être envoyé. Réessayez dans quelques instants.";
+    default:
+      return null;
+  }
+}
+
+type ContactPageProps = Readonly<{
+  searchParams: Promise<{
+    contact_status?: string | string[];
+    contact_error?: string | string[];
+  }>;
+}>;
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const statusMessage = getContactStatusMessage(
+    typeof resolvedSearchParams.contact_status === "string"
+      ? resolvedSearchParams.contact_status
+      : undefined
+  );
+  const errorMessage = getContactErrorMessage(
+    typeof resolvedSearchParams.contact_error === "string"
+      ? resolvedSearchParams.contact_error
+      : undefined
+  );
   let storeContact: Awaited<ReturnType<typeof getStorefrontStoreContact>>;
   try {
     storeContact = await getStorefrontStoreContact();
@@ -60,6 +101,17 @@ export default async function ContactPage() {
         </p>
       </header>
 
+      {statusMessage ? (
+        <div className="mb-6">
+          <Notice tone="success">{statusMessage}</Notice>
+        </div>
+      ) : null}
+      {errorMessage ? (
+        <div className="mb-6">
+          <Notice tone="alert">{errorMessage}</Notice>
+        </div>
+      ) : null}
+
       <div className="grid gap-8 md:grid-cols-[1fr_auto]">
         {/* Formulaire */}
         <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-6 md:p-8">
@@ -67,7 +119,7 @@ export default async function ContactPage() {
             Envoyer un message
           </h2>
 
-          <form className="space-y-5" action={copy.mailtoPlaceholder} method="dialog">
+          <form className="space-y-5" action={sendContactMessageAction}>
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <label
@@ -158,17 +210,12 @@ export default async function ContactPage() {
             </div>
 
             {storeContact.supportEmail !== null ? (
+              <Button type="submit">Envoyer le message</Button>
+            ) : (
               <p className="text-[11px] text-muted-foreground/60">
-                Formulaire de contact en cours d&apos;activation. En attendant, écrivez-nous
-                directement à{" "}
-                <a
-                  href={`mailto:${storeContact.supportEmail}`}
-                  className="underline underline-offset-2 hover:text-foreground"
-                >
-                  {storeContact.supportEmail}
-                </a>
+                Le formulaire de contact n&apos;est pas encore configuré pour cette boutique.
               </p>
-            ) : null}
+            )}
           </form>
         </div>
 

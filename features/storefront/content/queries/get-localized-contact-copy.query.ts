@@ -24,9 +24,6 @@ import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-l
  * ACTIVE de la locale visiteur pour les champs de `CONTACT_PAGE_COPY_FIELDS`
  * (`metadata.title`, `metadata.description`).
  *
- * `mailtoPlaceholder` n'est pas dans le catalogue — il n'est jamais traduit
- * et conserve toujours la valeur technique de `contentPagesCopyConfig.contact`.
- *
  * Retourne `contentPagesCopyConfig.contact` inchangé si :
  * - le niveau `multilingual` de `platform.localization` n'est pas atteint ;
  * - le store n'a pas de locale par défaut ou moins de deux locales `ACTIVE` ;
