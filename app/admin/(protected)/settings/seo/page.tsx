@@ -16,8 +16,8 @@ export default async function AdminSettingsSeoPage() {
 
   try {
     [seo, assets] = await Promise.all([getAdminSeoSettings(), listAdminMediaAssets()]);
-  } catch {
-    // DB non disponible ou table absente — état vide
+  } catch (error) {
+    console.error("[settings/seo] getAdminSeoSettings/listAdminMediaAssets failed", error);
   }
 
   const uploadsPublicPath = getUploadsPublicPath();

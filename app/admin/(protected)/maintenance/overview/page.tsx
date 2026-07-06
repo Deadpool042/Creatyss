@@ -37,8 +37,8 @@ export default async function AdminMaintenanceOverviewPage() {
 
   try {
     health = await getAdminSystemHealth();
-  } catch {
-    // Tables non disponibles — état par défaut
+  } catch (error) {
+    console.error("[maintenance/overview] getAdminSystemHealth failed", error);
   }
 
   return (

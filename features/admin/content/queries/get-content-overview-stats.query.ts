@@ -92,8 +92,8 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
   let posts: Awaited<ReturnType<typeof listAdminBlogPosts>> = [];
   try {
     posts = await listAdminBlogPosts();
-  } catch {
-    // Blog non activé ou DB non disponible — degradation gracieuse
+  } catch (error) {
+    console.error("[content-overview-stats] listAdminBlogPosts failed", error);
   }
 
   const publishedPosts = posts.filter((p) => p.status === "published").length;
@@ -134,8 +134,8 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
         return Boolean(value);
       }).length;
     }
-  } catch {
-    // degradation gracieuse
+  } catch (error) {
+    console.error("[content-overview-stats] getAdminHomepageEditorData failed", error);
   }
 
   // ── Pages réelles ────────────────────────────────────────────────────────
@@ -146,8 +146,8 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
     const pages = await getAdminPagesList();
     totalPages = pages.length;
     publishedPages = pages.filter((page) => page.status === "ACTIVE").length;
-  } catch {
-    // degradation gracieuse
+  } catch (error) {
+    console.error("[content-overview-stats] getAdminPagesList failed", error);
   }
 
   // ── SEO réel : couverture des titres SEO produits (SeoMetadata) ─────────
@@ -158,8 +158,8 @@ export async function getContentOverviewStats(): Promise<ContentOverviewStats> {
       seoCoverage.total === 0
         ? 0
         : Math.round(((seoCoverage.total - seoCoverage.totalSeoMissing) / seoCoverage.total) * 100);
-  } catch {
-    // degradation gracieuse
+  } catch (error) {
+    console.error("[content-overview-stats] countProductsMissingSeo failed", error);
   }
 
   // ── Readiness ────────────────────────────────────────────────────────────

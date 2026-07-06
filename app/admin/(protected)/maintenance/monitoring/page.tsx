@@ -1,6 +1,14 @@
 import Link from "next/link";
 
-import { AlertTriangle, CheckCircle2, Clock, Database, GitBranch, Package, Zap } from "lucide-react";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Clock,
+  Database,
+  GitBranch,
+  Package,
+  Zap,
+} from "lucide-react";
 
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
@@ -53,7 +61,8 @@ export default async function AdminMaintenanceMonitoringPage() {
 
   try {
     health = await getAdminSystemHealth();
-  } catch {
+  } catch (error) {
+    console.error("[maintenance/monitoring] getAdminSystemHealth failed", error);
     dbOk = false;
   }
 
@@ -109,14 +118,13 @@ export default async function AdminMaintenanceMonitoringPage() {
     },
   ];
 
-  const overallStatus: ServiceStatus =
-    services.some((s) => s.status === "error")
-      ? "error"
-      : services.some((s) => s.status === "warn")
-        ? "warn"
-        : services.every((s) => s.status === "ok")
-          ? "ok"
-          : "unknown";
+  const overallStatus: ServiceStatus = services.some((s) => s.status === "error")
+    ? "error"
+    : services.some((s) => s.status === "warn")
+      ? "warn"
+      : services.every((s) => s.status === "ok")
+        ? "ok"
+        : "unknown";
 
   const overallLabel =
     overallStatus === "ok"
@@ -169,9 +177,7 @@ export default async function AdminMaintenanceMonitoringPage() {
         )}
         <div>
           <p className="text-sm font-semibold text-foreground">{overallLabel}</p>
-          <p className="text-xs text-muted-foreground">
-            Dernière vérification : maintenant
-          </p>
+          <p className="text-xs text-muted-foreground">Dernière vérification : maintenant</p>
         </div>
       </div>
 

@@ -27,8 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
   let seo: Awaited<ReturnType<typeof getAdminSeoSettings>> = null;
   try {
     seo = await getAdminSeoSettings();
-  } catch {
-    // DB non disponible — fallback aux valeurs statiques
+  } catch (error) {
+    console.error("[app/page] getAdminSeoSettings failed", error);
   }
 
   const robots = getSeoRobotsFlags(seo?.indexingMode);

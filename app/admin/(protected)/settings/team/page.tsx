@@ -65,8 +65,8 @@ export default async function AdminSettingsTeamPage() {
 
   try {
     users = await listAdminUsers();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/team] listAdminUsers failed", error);
   }
 
   const active = users.filter((u) => u.status === "ACTIVE").length;

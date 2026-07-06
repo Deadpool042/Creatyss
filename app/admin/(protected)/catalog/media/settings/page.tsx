@@ -27,8 +27,8 @@ export default async function AdminCatalogMediaSettingsPage() {
 
   try {
     stats = await getAdminMediaStats();
-  } catch {
-    // DB non disponible — valeur par défaut
+  } catch (error) {
+    console.error("[catalog/media/settings] getAdminMediaStats failed", error);
   }
 
   const uploadsDir = serverEnv.uploadsDir || null;

@@ -28,8 +28,8 @@ export default async function AdminContentSeoPage() {
       total: blogPosts.length,
       totalMissing: blogPosts.filter((p) => !p.hasContent || p.status === "draft").length,
     };
-  } catch {
-    // Degradation gracieuse
+  } catch (error) {
+    console.error("[content/seo] countProductsMissingSeo/listAdminBlogPosts failed", error);
   }
 
   const checks = [

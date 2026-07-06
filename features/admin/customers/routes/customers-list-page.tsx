@@ -52,7 +52,8 @@ export async function CustomersListPage({ searchParams = {} }: CustomersListPage
 
   try {
     customersResult = await listAdminCustomers(filters);
-  } catch {
+  } catch (error) {
+    console.error("[customers-list-page] listAdminCustomers failed", error);
     moduleUnavailable = true;
   }
 

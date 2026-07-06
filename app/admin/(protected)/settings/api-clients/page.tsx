@@ -48,8 +48,8 @@ export default async function AdminSettingsApiClientsPage() {
 
   try {
     clients = await listAdminApiClients();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/api-clients] listAdminApiClients failed", error);
   }
 
   const active = clients.filter((c) => c.status === "ACTIVE").length;

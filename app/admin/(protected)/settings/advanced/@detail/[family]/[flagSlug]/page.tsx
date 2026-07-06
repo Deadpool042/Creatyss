@@ -31,8 +31,8 @@ export default async function AdvancedSettingsDetailFlagPage({ params }: PagePro
 
   try {
     flags = await listAdminFeatureFlags();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/advanced] listAdminFeatureFlags failed", error);
   }
 
   const flag = findFlagBySlug(flags, family as FeatureFamilySlug, flagSlug);
@@ -49,9 +49,7 @@ export default async function AdvancedSettingsDetailFlagPage({ params }: PagePro
         <FeatureFlagDetail flag={flag} />
       </AdminSplitDetailSectionCard>
       {governancePanel !== null && (
-        <AdminSplitDetailSectionCard>
-          {governancePanel}
-        </AdminSplitDetailSectionCard>
+        <AdminSplitDetailSectionCard>{governancePanel}</AdminSplitDetailSectionCard>
       )}
     </AdminSplitDetailPaneShell>
   );

@@ -16,9 +16,7 @@ type PageProps = {
   params: Promise<{ family: string }>;
 };
 
-export default async function AdvancedSettingsListFamilyPage({
-  params,
-}: PageProps) {
+export default async function AdvancedSettingsListFamilyPage({ params }: PageProps) {
   const { family } = await params;
 
   const validSlugs: readonly string[] = FAMILY_SLUGS;
@@ -32,13 +30,11 @@ export default async function AdvancedSettingsListFamilyPage({
 
   try {
     flags = await listAdminFeatureFlags();
-  } catch {
-    // Table non disponible
+  } catch (error) {
+    console.error("[settings/advanced] listAdminFeatureFlags failed", error);
   }
 
   const navItems = buildFamilyNavItems(flags, ROOT_PATH, validatedFamily);
 
-  return (
-    <FeatureFlagsFamiliesList items={navItems} activeSlug={validatedFamily} />
-  );
+  return <FeatureFlagsFamiliesList items={navItems} activeSlug={validatedFamily} />;
 }
