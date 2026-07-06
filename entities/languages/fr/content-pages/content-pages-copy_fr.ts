@@ -61,7 +61,5 @@ export const CONTENT_PAGES_COPY_FR = {
       description:
         "Contactez l'atelier Creatyss pour toute question sur les créations, le sur-mesure ou une commande.",
     },
-    /** Donnée technique, non destinée à la traduction. */
-    mailtoPlaceholder: "mailto:contact@creatyss.local",
   },
 } as const;
