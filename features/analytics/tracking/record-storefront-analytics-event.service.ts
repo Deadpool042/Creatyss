@@ -29,6 +29,18 @@ export const STOREFRONT_ANALYTICS_METRICS = {
     name: "Ajouts panier",
     description: "Nombre d'ajouts au panier réussis sur le storefront (agrégat quotidien anonyme).",
   },
+  searchTermQuery: {
+    code: "storefront.search_term_queries",
+    name: "Recherches par terme",
+    description:
+      "Nombre de recherches storefront par terme normalisé (agrégat quotidien anonyme, sans identifiant de session).",
+  },
+  searchZeroResults: {
+    code: "storefront.search_zero_results",
+    name: "Recherches sans résultat",
+    description:
+      "Nombre de recherches storefront n'ayant retourné aucun résultat (agrégat quotidien anonyme).",
+  },
 } as const;
 
 export type StorefrontAnalyticsEventType = keyof typeof STOREFRONT_ANALYTICS_METRICS;
@@ -58,8 +70,18 @@ function isUniqueConstraintError(error: unknown): boolean {
   );
 }
 
+export type StorefrontAnalyticsDimension = Readonly<{ type: string; key: string }>;
+
+const DEFAULT_DIMENSION: StorefrontAnalyticsDimension = {
+  type: STOREFRONT_ANALYTICS_DIMENSION_TYPE,
+  key: STOREFRONT_ANALYTICS_DIMENSION_KEY,
+};
+
 /**
  * Incrémente le compteur quotidien agrégé pour l'événement storefront donné.
+ * `dimension` par défaut `("total", "all")` — inchangé pour `productView` et
+ * `cartAddition`. Une dimension explicite (ex. `("term", "<terme>")`) permet
+ * d'agréger par sous-clé sans introduire d'identifiant de session.
  *
  * Peut lancer une erreur (DB indisponible, etc.) : les points d'accroche
  * storefront doivent passer par `trackStorefrontAnalyticsEvent`, qui ne
@@ -67,7 +89,8 @@ function isUniqueConstraintError(error: unknown): boolean {
  */
 export async function recordStorefrontAnalyticsEvent(
   eventType: StorefrontAnalyticsEventType,
-  now: Date = new Date()
+  now: Date = new Date(),
+  dimension: StorefrontAnalyticsDimension = DEFAULT_DIMENSION
 ): Promise<void> {
   const storeId = await getCurrentStoreId();
 
@@ -108,8 +131,8 @@ export async function recordStorefrontAnalyticsEvent(
       where: {
         analyticsMetricId_dimensionType_dimensionKey_periodStart_periodEnd: {
           analyticsMetricId: metric.id,
-          dimensionType: STOREFRONT_ANALYTICS_DIMENSION_TYPE,
-          dimensionKey: STOREFRONT_ANALYTICS_DIMENSION_KEY,
+          dimensionType: dimension.type,
+          dimensionKey: dimension.key,
           periodStart,
           periodEnd,
         },
@@ -120,8 +143,8 @@ export async function recordStorefrontAnalyticsEvent(
       },
       create: {
         analyticsMetricId: metric.id,
-        dimensionType: STOREFRONT_ANALYTICS_DIMENSION_TYPE,
-        dimensionKey: STOREFRONT_ANALYTICS_DIMENSION_KEY,
+        dimensionType: dimension.type,
+        dimensionKey: dimension.key,
         periodStart,
         periodEnd,
         valueInteger: 1,
@@ -153,4 +176,41 @@ export function trackStorefrontAnalyticsEvent(eventType: StorefrontAnalyticsEven
   void recordStorefrontAnalyticsEvent(eventType).catch((error) => {
     console.error(`[analytics] tracking "${eventType}" failed`, error);
   });
+}
+
+const SEARCH_TERM_DIMENSION_TYPE = "term";
+const SEARCH_TERM_MAX_LENGTH = 100;
+
+/**
+ * Normalise un terme de recherche pour usage comme `dimensionKey` : trim,
+ * minuscule, troncature — évite d'exploser l'index avec des variantes
+ * triviales (casse, espaces) ou du texte anormalement long.
+ */
+export function normalizeSearchTerm(rawTerm: string): string {
+  return rawTerm.trim().toLowerCase().slice(0, SEARCH_TERM_MAX_LENGTH);
+}
+
+/**
+ * Variante fire-and-forget pour une recherche storefront exécutée : compte
+ * la recherche par terme normalisé, et incrémente le compteur "sans
+ * résultat" si `resultCount` est nul. N'effectue aucune écriture si le terme
+ * est vide après normalisation.
+ */
+export function trackStorefrontSearchEvent(searchTerm: string, resultCount: number): void {
+  const normalizedTerm = normalizeSearchTerm(searchTerm);
+
+  if (normalizedTerm.length === 0) {
+    return;
+  }
+
+  void recordStorefrontAnalyticsEvent("searchTermQuery", new Date(), {
+    type: SEARCH_TERM_DIMENSION_TYPE,
+    key: normalizedTerm,
+  }).catch((error) => {
+    console.error('[analytics] tracking "searchTermQuery" failed', error);
+  });
+
+  if (resultCount === 0) {
+    trackStorefrontAnalyticsEvent("searchZeroResults");
+  }
 }

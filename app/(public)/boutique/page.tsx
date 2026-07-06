@@ -18,6 +18,7 @@ import { buildBoutiquePageViewModel } from "@/features/storefront/catalog/boutiq
 import { getLocalizedBoutiquePageCopy } from "@/features/storefront/catalog/boutique-page/queries/get-localized-boutique-page-copy.query";
 import { catalogSearchParamsSchema } from "@/features/storefront/catalog/schemas/catalog-search-params.schema";
 import { searchPublishedProductIds } from "@/features/search/queries/search-published-product-ids.query";
+import { trackStorefrontSearchEvent } from "@/features/analytics/tracking/record-storefront-analytics-event.service";
 
 export const dynamic = "force-dynamic";
 const BOUTIQUE_PRODUCTS_PAGE_SIZE = 12;
@@ -194,6 +195,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     minPriceCents: filters.minPriceCents,
     maxPriceCents: filters.maxPriceCents,
   });
+
+  if (searchQuery !== null) {
+    trackStorefrontSearchEvent(searchQuery, totalProductCount);
+  }
+
   const totalPages = Math.max(1, Math.ceil(totalProductCount / BOUTIQUE_PRODUCTS_PAGE_SIZE));
   const requestedPage = catalogSearchParams.page;
   const currentPage = Math.min(Math.max(1, requestedPage), totalPages);
