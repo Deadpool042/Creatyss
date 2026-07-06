@@ -60,12 +60,12 @@ describe("recordStorefrontAnalyticsEvent", () => {
     expect(mockDb.analyticsSnapshot.upsert).not.toHaveBeenCalled();
   });
 
-  it("n'écrit rien si le flag engagement.analytics est inactif", async () => {
+  it("n'écrit rien si le flag engagement.tracking est inactif", async () => {
     mockMeetsFeatureLevel.mockResolvedValue(false);
 
     await recordStorefrontAnalyticsEvent("productView", NOW);
 
-    expect(mockMeetsFeatureLevel).toHaveBeenCalledWith("engagement.analytics", "read", {
+    expect(mockMeetsFeatureLevel).toHaveBeenCalledWith("engagement.tracking", "active", {
       storeId: STORE_ID,
     });
     expect(mockDb.analyticsMetric.upsert).not.toHaveBeenCalled();
