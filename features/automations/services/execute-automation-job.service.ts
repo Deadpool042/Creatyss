@@ -14,6 +14,7 @@ import {
 } from "@/features/email/automation/automation-email.repository";
 import { resolveEmailProvider } from "@/features/email/providers/resolve-email-provider";
 import {
+  AUTOMATION_CART_SUBJECT_TYPE,
   AUTOMATION_JOB_TYPE_CODES,
   AUTOMATION_NEWSLETTER_SUBSCRIBER_SUBJECT_TYPE,
   AUTOMATION_ORDER_SUBJECT_TYPE,
@@ -181,6 +182,36 @@ async function resolveEmailRecipient(input: {
         totalFormatted: `${order.totalAmount.toFixed(2)} ${order.currencyCode}`,
       },
     };
+  }
+
+  if (input.subjectType === AUTOMATION_CART_SUBJECT_TYPE) {
+    const cart = await db.cart.findFirst({
+      where: {
+        id: input.subjectId,
+        storeId: input.storeId,
+        archivedAt: null,
+      },
+      select: {
+        customer: { select: { firstName: true } },
+        checkouts: {
+          where: { email: { not: null } },
+          orderBy: { updatedAt: "desc" },
+          take: 1,
+          select: { email: true },
+        },
+      },
+    });
+
+    const email = cart?.checkouts[0]?.email ?? null;
+
+    if (!cart || !email) {
+      throw new ExecuteAutomationJobError(
+        "cart_missing_email",
+        "Le panier est introuvable ou n'a pas d'email associé."
+      );
+    }
+
+    return { email, firstName: cart.customer?.firstName ?? null };
   }
 
   throw new ExecuteAutomationJobError(
