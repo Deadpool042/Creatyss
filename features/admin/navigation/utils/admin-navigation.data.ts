@@ -32,7 +32,7 @@ export const adminNavigationGroupDefinitions: ReadonlyArray<AdminNavigationGroup
   },
   {
     key: "insights",
-    label: "Pilotage",
+    label: "Analyses",
     defaultOpen: false,
   },
   {
@@ -352,7 +352,7 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
 
   {
     key: "analytics",
-    label: "Pilotage",
+    label: "Analyses",
     href: "/admin/insights/analytics",
     iconKey: "barChart3",
     group: "insights",

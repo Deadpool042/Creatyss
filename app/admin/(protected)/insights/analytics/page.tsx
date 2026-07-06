@@ -16,7 +16,7 @@ export default async function AdminInsightsAnalyticsPage() {
   const analyticsHeader = (
     <AdminPageHeader
       eyebrow="Commerce"
-      title="Pilotage"
+      title="Analyses"
       description="Métriques commerce et trafic, selon le niveau activé sur le module analytics."
     />
   );
@@ -25,9 +25,9 @@ export default async function AdminInsightsAnalyticsPage() {
     return (
       <AdminPageShell
         scrollBehavior="page"
-        title="Pilotage"
+        title="Analyses"
         contentPreset="overview"
-        breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Pilotage" }]}
+        breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Analyses" }]}
         showTitleInContent={false}
         header={analyticsHeader}
       >
@@ -61,9 +61,9 @@ export default async function AdminInsightsAnalyticsPage() {
   return (
     <AdminPageShell
       scrollBehavior="page"
-      title="Pilotage"
+      title="Analyses"
       contentPreset="overview"
-      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Pilotage" }]}
+      breadcrumbs={[{ label: "Admin", href: "/admin" }, { label: "Analyses" }]}
       showTitleInContent={false}
       header={analyticsHeader}
     >
