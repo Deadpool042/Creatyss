@@ -1,8 +1,10 @@
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
-import { captureAdminPaymentAction } from "@/features/admin/commerce/payments/actions/capture-admin-payment.action";
-import { cancelAdminPaymentAction } from "@/features/admin/commerce/payments/actions/cancel-admin-payment.action";
+import {
+  captureFormAction,
+  cancelFormAction,
+} from "@/features/admin/commerce/payments/list/actions/payment-list-form-actions";
 import type {
   AdminPaymentMethodType,
   AdminPaymentStatus,
@@ -56,16 +58,6 @@ function getPaymentMethodLabel(method: AdminPaymentMethodType): string {
     case "other":
       return "Autre";
   }
-}
-
-async function captureFormAction(formData: FormData): Promise<void> {
-  "use server";
-  await captureAdminPaymentAction(formData);
-}
-
-async function cancelFormAction(formData: FormData): Promise<void> {
-  "use server";
-  await cancelAdminPaymentAction(formData);
 }
 
 export function AdminPaymentsList({
