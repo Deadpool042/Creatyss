@@ -1,8 +1,7 @@
-import { execFileSync } from "node:child_process";
+import { BlogPostStatus } from "@/prisma-generated/client";
+import { createScriptPrismaClient } from "../../scripts/helpers/prisma-client";
 
-function escapeSqlLiteral(value: string): string {
-  return value.replace(/'/g, "''");
-}
+const prisma = createScriptPrismaClient();
 
 function assertValidBlogPostSlug(slug: string): void {
   if (!/^[a-z0-9-]+$/.test(slug)) {
@@ -10,43 +9,58 @@ function assertValidBlogPostSlug(slug: string): void {
   }
 }
 
-function runBlogDatabaseSql(sql: string): void {
-  execFileSync("docker", [
-    "compose",
-    "--env-file",
-    ".env.local",
-    "exec",
-    "-T",
-    "db",
-    "psql",
-    "-U",
-    "creatyss",
-    "-d",
-    "creatyss",
-    "-c",
-    sql,
-  ]);
+async function readDefaultStore(): Promise<{ id: string }> {
+  const store = await prisma.store.findFirst({
+    orderBy: { createdAt: "asc" },
+    select: { id: true },
+  });
+
+  if (store === null) {
+    throw new Error("No store available for blog E2E fixture setup.");
+  }
+
+  return store;
 }
 
-export function createBlogPostDraftWithoutContent(input: { slug: string; title: string }): void {
+export async function createBlogPostDraftWithoutContent(input: {
+  slug: string;
+  title: string;
+}): Promise<void> {
   assertValidBlogPostSlug(input.slug);
+  const store = await readDefaultStore();
 
-  runBlogDatabaseSql(`
-      insert into blog_posts (title, slug, content, status)
-      values (
-        '${escapeSqlLiteral(input.title)}',
-        '${escapeSqlLiteral(input.slug)}',
-        null,
-        'draft'
-      )
-      on conflict (slug) do nothing;
-    `);
+  await prisma.blogPost.upsert({
+    where: {
+      storeId_slug: {
+        storeId: store.id,
+        slug: input.slug,
+      },
+    },
+    update: {
+      title: input.title,
+      body: null,
+      status: BlogPostStatus.DRAFT,
+      publishedAt: null,
+      archivedAt: null,
+    },
+    create: {
+      storeId: store.id,
+      slug: input.slug,
+      title: input.title,
+      body: null,
+      status: BlogPostStatus.DRAFT,
+    },
+  });
 }
 
-export function deleteBlogPostBySlug(slug: string): void {
+export async function deleteBlogPostBySlug(slug: string): Promise<void> {
   assertValidBlogPostSlug(slug);
+  const store = await readDefaultStore();
 
-  runBlogDatabaseSql(`
-      delete from blog_posts where slug = '${escapeSqlLiteral(slug)}';
-    `);
+  await prisma.blogPost.deleteMany({
+    where: {
+      storeId: store.id,
+      slug,
+    },
+  });
 }
