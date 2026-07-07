@@ -2,7 +2,6 @@ export {
   EditorialPageForm,
   PageBodyForm,
   PageStatusToggle,
-  PagesEmptyState,
   PagesList,
 } from "./components";
 export { toggleAdminPageStatusAction } from "./actions/toggle-admin-page-status.action";
