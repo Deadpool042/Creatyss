@@ -234,7 +234,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
               {discountRulesEnabled && manualDiscountCode.length > 0 ? (
                 <input name="discountCode" type="hidden" value={manualDiscountCode} />
               ) : null}
-              <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
+              <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-surface-panel p-5">
                 <div className="grid gap-1">
                   <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                     Contact
@@ -290,7 +290,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </div>
               </section>
 
-              <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
+              <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-surface-panel p-5">
                 <div className="grid gap-1">
                   <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                     Livraison
@@ -354,7 +354,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
                 </div>
               </section>
 
-              <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
+              <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-surface-panel p-5">
                 <div className="grid gap-1">
                   <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                     Facturation
@@ -514,7 +514,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
             <aside className="product-panel grid gap-4">
               {discountRulesEnabled ? (
-                <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-white/80 p-5">
+                <section className="grid gap-4 rounded-xl border border-surface-border/60 bg-surface-panel p-5">
                   <div className="grid gap-1">
                     <p className="text-sm font-bold uppercase tracking-[0.08em] text-brand">
                       Remise
