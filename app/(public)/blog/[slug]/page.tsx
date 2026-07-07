@@ -79,21 +79,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <div className="mx-auto flex max-w-3xl flex-col gap-8 px-4 py-12 md:px-6 md:py-16 xl:px-12">
       <Link
         href="/blog"
-        className="text-[0.72rem] font-medium uppercase tracking-[0.1em] text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+        className="text-xs font-medium uppercase tracking-[0.1em] text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
       >
         ← Journal de l&apos;atelier
       </Link>
 
       <article className="flex flex-col gap-6">
         <header className="flex flex-col gap-3">
-          <p className="text-[0.62rem] font-medium uppercase tracking-[0.32em] text-brand">
+          <p className="text-xs font-medium uppercase tracking-[0.32em] text-brand">
             Blog
           </p>
           <h1 className="font-serif text-3xl font-normal tracking-tight text-foreground min-[700px]:text-[2.4rem]">
             {post.title}
           </h1>
           {post.publishedAt ? (
-            <p className="text-[0.68rem] font-medium uppercase tracking-[0.08em] text-muted-foreground">
+            <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">
               {blogDateFormatter.format(new Date(post.publishedAt))}
             </p>
           ) : null}

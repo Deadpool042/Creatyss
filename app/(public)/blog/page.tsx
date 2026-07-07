@@ -21,7 +21,7 @@ export default async function BlogPage() {
     <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-12 md:px-6 md:py-16 xl:px-12">
       {/* Page header */}
       <header className="flex flex-col gap-2">
-        <p className="text-[0.62rem] font-medium uppercase tracking-[0.32em] text-brand">
+        <p className="text-xs font-medium uppercase tracking-[0.32em] text-brand">
           Journal de l&apos;atelier
         </p>
         <h1 className="font-serif text-3xl font-normal tracking-tight text-foreground min-[700px]:text-[2.6rem]">
@@ -38,7 +38,7 @@ export default async function BlogPage() {
             <article key={post.id} className="group flex flex-col gap-3">
               {/* Date */}
               {post.publishedAt !== null ? (
-                <p className="text-[0.68rem] font-medium uppercase tracking-[0.08em] text-muted-foreground">
+                <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">
                   {blogDateFormatter.format(new Date(post.publishedAt))}
                 </p>
               ) : null}
@@ -58,7 +58,7 @@ export default async function BlogPage() {
               ) : null}
 
               {/* CTA */}
-              <p className="mt-1 text-[0.72rem] font-medium uppercase tracking-widest text-brand">
+              <p className="mt-1 text-xs font-medium uppercase tracking-widest text-brand">
                 Lire l&apos;article →
               </p>
             </article>

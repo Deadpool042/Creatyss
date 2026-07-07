@@ -194,7 +194,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
               <div className="flex items-start gap-3">
                 <MailIcon className="mt-0.5 size-4 shrink-0 text-muted-foreground/60" />
                 <div>
-                  <p className="text-[13px] font-medium text-foreground">Email</p>
+                  <p className="text-sm font-medium text-foreground">Email</p>
                   <a
                     href={`mailto:${storeContact.supportEmail}`}
                     className="mt-0.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
@@ -211,7 +211,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
               <div className="flex items-start gap-3">
                 <MapPinIcon className="mt-0.5 size-4 shrink-0 text-muted-foreground/60" />
                 <div>
-                  <p className="text-[13px] font-medium text-foreground">Atelier</p>
+                  <p className="text-sm font-medium text-foreground">Atelier</p>
                   <p className="mt-0.5 text-xs text-muted-foreground">
                     {addressParts.map((part, index) => (
                       <span key={index}>
@@ -226,7 +226,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
           ) : null}
 
           <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-5">
-            <p className="text-[13px] font-medium text-foreground">Délai de réponse</p>
+            <p className="text-sm font-medium text-foreground">Délai de réponse</p>
             <p className="mt-1 text-xs text-muted-foreground">Sous 2–3 jours ouvrés.</p>
           </div>
         </div>
