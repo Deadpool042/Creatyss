@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
 import {
   getAdminHomepageCurrentHeroImagePath,
   updateAdminHomepage,
@@ -52,6 +53,8 @@ function mapHomepageTextError(field: PropertyKey | undefined): string {
 }
 
 export async function updateHomepageAction(formData: FormData): Promise<void> {
+  await requireAuthenticatedAdmin();
+
   const textParsed = HomepageFormSchema.safeParse({
     shippingReturnsPolicy: formData.get("shippingReturnsPolicy"),
     heroTitle: formData.get("heroTitle"),
