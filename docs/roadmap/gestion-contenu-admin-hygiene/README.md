@@ -60,7 +60,14 @@ Chantier de robustesse et d’hygiène sur le périmètre admin éditorial : pag
 
 - Un audit authz ciblé sur lecture/écriture admin content reste prioritaire avant tout lot plus transversal.
 - Les prochains micro-lots utiles doivent rester séparés par domaine ou par contrat UI précis, sans refactor transverse “éditeur de contenu”.
-- Le passage éventuel vers des `FormState` discriminés pour `blog` et `homepage` doit être audité domaine par domaine ; rien n’indique qu’un lot unique transversal soit souhaitable.
+- La convention formulaire admin actuellement observée reste distincte par domaine :
+  - `pages` : `FormState` discriminé sur les actions d’écriture principales
+  - `blog` : `redirect(...?error=...)` / `redirect(...?status=...)` sur les flux principaux, avec quelques composants adjacents déjà en `useActionState`
+  - `homepage` : `redirect(...?error=...)` / `redirect(...?status=...)` sur une page server avec formulaires simples
+- La migration des flux principaux `blog` / `homepage` vers un `FormState` discriminé n’est pas retenue maintenant :
+  - le gain UX et de lisibilité des erreurs existe ;
+  - il n’est pas prioritaire au regard du risque de refactor UI plus large, surtout sur `homepage` ;
+  - si le sujet est rouvert plus tard, `blog` doit être audité et traité avant `homepage`, en lots séparés.
 - Une harmonisation future des image pickers peut être étudiée en commençant par `blog`, puis `homepage`, si le contrat UI réel reste proche.
 - L’introduction de `admin.content.blog.write` et `admin.content.homepage.write` n’est pas retenue maintenant :
   - aucun besoin produit confirmé n’impose des rôles d’écriture séparés ;
@@ -75,7 +82,7 @@ Chantier de robustesse et d’hygiène sur le périmètre admin éditorial : pag
 ### Inconnu
 
 - Les écarts exacts d’authz admin content en lecture/écriture sur `pages`, `blog`, `homepage` n’ont pas encore été audités bout à bout.
-- L’intérêt réel d’un passage `FormState` discriminé sur `blog` et `homepage` n’est pas confirmé.
+- Le moment où une migration `FormState` sur les flux principaux `blog` ou `homepage` deviendrait prioritaire reste inconnu.
 - La frontière précise entre `content/seo` et `settings/seo` n’a pas encore été auditée fonctionnellement.
 - La consommation de `MediaReference` hors périmètre éditorial admin courant n’est pas traitée par ce chantier.
 - L’utilité future de capabilities `write` dédiées pour `blog` et `homepage` reste inconnue tant qu’un besoin explicite de rôles admin plus fins n’est pas confirmé.
@@ -86,7 +93,10 @@ Chantier de robustesse et d’hygiène sur le périmètre admin éditorial : pag
   - `pages` : capability `write`
   - `blog` : `requireAuthenticatedAdmin()` + règles métier / niveau de publication
   - `homepage` : `requireAuthenticatedAdmin()`
-- `FormState` sur `blog` puis `homepage`, uniquement si l’audit confirme un gain réel.
+- Convention `FormState` / redirects sur l’éditorial admin :
+  - `pages` conserve son `FormState` discriminé actuel
+  - aucune migration `blog` / `homepage` n’est retenue maintenant
+  - si le sujet est rouvert plus tard, il devra rester séparé par domaine, avec `blog` audité avant `homepage`
 - Contrat image picker blog :
   - statu quo conservé entre `BlogImagePickerField` et le contrat formulaire `...ImagePath`
   - si un changement de contrat était un jour discuté, il relèverait d’un lot dédié
