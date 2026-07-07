@@ -43,6 +43,10 @@ Chantier de robustesse et d’hygiène sur le périmètre admin éditorial : pag
   - `blog` : écriture protégée par `requireAuthenticatedAdmin()`, avec garde métier séparée sur le niveau `content.blog` pour la publication storefront
   - `homepage` : création, publication et mise à jour protégées par `requireAuthenticatedAdmin()`
 - Les capabilities `read` du périmètre admin content servent principalement au filtrage de navigation observé ; aucun guard serveur dédié n’est observé ici sur les routes de lecture `pages`, `blog` et `homepage`.
+- Le contrat formulaire admin blog pour les images reste actuellement fondé sur `primaryImagePath` et `coverImagePath` :
+  - `BlogImagePickerField` soumet un `filePath`
+  - `MediaAssetPickerField` soumet un `mediaAssetId`
+- Le modèle Prisma blog porte bien `primaryImageId` et `coverImageId`, mais le runtime admin blog observé reste câblé sur un contrat `...ImagePath` dans les pages, schémas, actions, types et services.
 
 ### Documenté
 
@@ -63,6 +67,10 @@ Chantier de robustesse et d’hygiène sur le périmètre admin éditorial : pag
   - `blog.write` serait distinct du niveau `content.blog` `draft/publish` ;
   - `homepage.write` serait distinct du caractère `readonly` de `content.homepage` dans le feature catalog ;
   - une telle évolution impliquerait un vrai changement de policy sur seeds, permissions et actions.
+- Le remplacement de `BlogImagePickerField` par `MediaAssetPickerField` n’est pas retenu maintenant :
+  - le contrat `filePath` du blog n’est pas directement compatible avec le contrat `mediaAssetId` du picker media ;
+  - un remplacement direct casserait la soumission formulaire blog ;
+  - une éventuelle migration du blog vers un contrat `...ImageId` devrait rester un lot dédié si elle était retenue plus tard.
 
 ### Inconnu
 
@@ -79,7 +87,9 @@ Chantier de robustesse et d’hygiène sur le périmètre admin éditorial : pag
   - `blog` : `requireAuthenticatedAdmin()` + règles métier / niveau de publication
   - `homepage` : `requireAuthenticatedAdmin()`
 - `FormState` sur `blog` puis `homepage`, uniquement si l’audit confirme un gain réel.
-- Image picker `blog`, puis `homepage`, sans abstraction transverse prématurée.
+- Contrat image picker blog :
+  - statu quo conservé entre `BlogImagePickerField` et le contrat formulaire `...ImagePath`
+  - si un changement de contrat était un jour discuté, il relèverait d’un lot dédié
 - Classification `pages` : `optional` documentaire vs `core` technique.
 - `PageSection` / `PageBlock` modélisés mais non branchés sur le runtime admin/pages actuellement observé.
 - `MediaReference` consommé ailleurs, mais non central dans l’éditorial admin courant.
