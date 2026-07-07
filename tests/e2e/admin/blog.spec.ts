@@ -10,8 +10,8 @@ test("affiche la page liste du blog admin avec le heading, le lien d'action et l
 }) => {
   await loginAsSeedAdmin(page);
 
-  await page.goto("/admin/blog", { waitUntil: "domcontentloaded" });
-  await expect(page).toHaveURL(/\/admin\/blog$/);
+  await page.goto("/admin/content/blog", { waitUntil: "domcontentloaded" });
+  await expect(page).toHaveURL(/\/admin\/content\/blog$/);
 
   await expect(page.getByRole("heading", { name: "Articles" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Nouvel article" })).toBeVisible();
@@ -31,7 +31,7 @@ test("refuse la publication d'un article sans contenu", async ({ page }) => {
 
   try {
     await loginAsSeedAdmin(page);
-    await page.goto("/admin/blog", { waitUntil: "domcontentloaded" });
+    await page.goto("/admin/content/blog", { waitUntil: "domcontentloaded" });
 
     // The test post row should be visible in the table
     const row = page.locator("tr").filter({ hasText: TEST_POST_TITLE });
@@ -43,7 +43,7 @@ test("refuse la publication d'un article sans contenu", async ({ page }) => {
     // Navigate to the detail page
     await row.getByRole("link", { name: "Modifier l'article" }).click();
 
-    await expect(page).toHaveURL(/\/admin\/blog\/\d+$/);
+    await expect(page).toHaveURL(/\/admin\/content\/blog\/[^/]+$/);
 
     // The non-publishable notice should be visible on the detail page
     await expect(page.getByText("Le contenu de l'article est vide")).toBeVisible();

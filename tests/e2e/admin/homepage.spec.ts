@@ -5,9 +5,9 @@ test("affiche la page homepage admin avec ses sections et le bouton d'enregistre
   page,
 }) => {
   await loginAsSeedAdmin(page);
-  await page.goto("/admin/homepage");
+  await page.goto("/admin/content/homepage");
 
-  await expect(page).toHaveURL(/\/admin\/homepage$/);
+  await expect(page).toHaveURL(/\/admin\/content\/homepage$/);
 
   await expect(page.getByRole("heading", { name: "Bannière principale" })).toBeVisible();
 

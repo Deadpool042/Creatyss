@@ -3,7 +3,7 @@ import { loginAsSeedAdmin } from "./admin-auth";
 
 test("affiche la page médias avec le formulaire d'import et la bibliothèque", async ({ page }) => {
   await loginAsSeedAdmin(page);
-  await page.goto("/admin/media");
+  await page.goto("/admin/catalog/media");
 
   await expect(page.getByRole("heading", { name: "Bibliothèque médias" })).toBeVisible();
 
