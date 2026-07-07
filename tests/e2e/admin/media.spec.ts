@@ -7,18 +7,17 @@ test("affiche la page médias avec le formulaire d'import et la bibliothèque", 
 
   await expect(page.getByRole("heading", { name: "Bibliothèque médias" })).toBeVisible();
 
-  await expect(page.getByRole("heading", { name: "Importer une image" })).toBeVisible();
+  const importButton = page.getByRole("button", { name: "Importer", exact: true });
+  await expect(importButton).toBeVisible();
+  await importButton.click();
 
-  await expect(page.locator('input[type="file"][name="file"]')).toBeVisible();
+  const importDialog = page.getByRole("dialog");
+  await expect(importDialog).toBeVisible();
+  await expect(importDialog.getByRole("heading", { name: "Importer un média" })).toBeVisible();
 
-  await expect(page.getByRole("button", { name: "Importer le média" })).toBeVisible();
+  await expect(importDialog.locator('input[type="file"][name="file"]')).toBeVisible();
 
-  const bibliothequeLocale = page.getByRole("heading", {
-    name: "Bibliothèque locale",
-  });
-  await expect(bibliothequeLocale).toBeVisible();
+  await expect(importDialog.getByRole("button", { name: "Importer le média" })).toBeVisible();
 
-  const grille = page.locator(".admin-media-grid");
-  const emptyState = page.getByText("La bibliothèque est encore vide");
-  await expect(grille.or(emptyState)).toBeVisible();
+  await expect(page.getByText("Images actives").first()).toBeVisible();
 });
