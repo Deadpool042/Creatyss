@@ -23,6 +23,10 @@ Chantier de robustesse et d’hygiène sur le périmètre admin éditorial : pag
 - `test(admin): migrate blog e2e fixture to prisma`
 - `test(blog): cover post publishability`
 - `test(admin): rebuild blog publishability e2e`
+- `fix(admin): guard homepage update action`
+- `docs(content): document admin content authz convention`
+- `docs(content): document blog media picker boundary`
+- `docs(content): document form state decision`
 
 ## Observé / Documenté / Déduit / Inconnu
 
