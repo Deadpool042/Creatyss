@@ -471,11 +471,15 @@ make db-reset-dev  # reset complet + seed dans les conteneurs
 
 ### Fonctionnalités admin disponibles
 
-- `/admin/media`
+- `/admin/catalog/media`
+- `/admin/settings/media`
 - `/admin/categories`
 - `/admin/products`
-- `/admin/homepage`
-- `/admin/blog`
+- `/admin/content/homepage`
+- `/admin/content/pages`
+- `/admin/content/blog`
+- `/admin/content/seo`
+- `/admin/settings/seo`
 
 ### Pages publiques disponibles
 
@@ -560,7 +564,7 @@ curl -I http://localhost:3000/admin
 
 ## Media admin
 
-La bibliothèque media admin repose sur la table `media_assets`, un stockage local sous `public/uploads`, et une page protégée `/admin/media`.
+La bibliothèque media admin repose sur la table `media_assets`, un stockage local sous `public/uploads`, et une page protégée `/admin/catalog/media`.
 
 Le système media admin accepte actuellement uniquement :
 
@@ -582,7 +586,7 @@ pnpm dev
 Puis :
 
 1. connectez-vous sur `http://localhost:3000/admin/login`
-2. ouvrez `http://localhost:3000/admin/media`
+2. ouvrez `http://localhost:3000/admin/catalog/media`
 3. importez une image JPEG, PNG, AVIF ou WebP valide
 4. vérifiez la ligne créée en base :
 
@@ -603,7 +607,7 @@ docker compose --env-file .env.local exec app pnpm run build
 docker compose --env-file .env.local exec -T db psql -U creatyss -d creatyss -c "select table_name from information_schema.tables where table_schema = 'public' and table_name = 'media_assets';"
 ```
 
-Pour vérifier le fallback listing, supprimez un fichier local déjà importé puis rechargez `/admin/media` :
+Pour vérifier le fallback listing, supprimez un fichier local déjà importé puis rechargez `/admin/catalog/media` :
 
 ```bash
 find public/uploads -type f | head -n 1

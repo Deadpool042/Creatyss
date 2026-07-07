@@ -332,12 +332,22 @@ L’observabilité doit distinguer :
 
 Les principaux objets métier conceptuels du domaine sont :
 
-- `SeoMetadata` : métadonnées SEO structurées ;
-- `SeoIndexingRule` : règle d’indexation ou de non-indexation ;
-- `SeoCanonicalRef` : référence ou URL canonique ;
-- `SeoPolicy` : règle globale de cohérence ou d’exposition référentielle ;
+- `SeoMetadata` : modèle Prisma observé portant les métadonnées SEO structurées ;
 - `SeoStatus` : état SEO applicable à un objet donné ;
 - `SeoSubjectRef` : référence vers l’objet source concerné.
+
+État du schéma observé :
+
+- `Observé` : le schéma Prisma actuellement matérialisé expose un modèle unique `SeoMetadata` dans `prisma/cross-cutting/seo.prisma` ;
+- `Observé` : les champs d'indexation, de canonicalisation et d'images sociales y sont portés à plat (`indexingMode`, `canonicalUrl`, `canonicalPath`, `sitemapIncluded`, `openGraph*`, `twitter*`) ;
+- `Observé` : aucun modèle distinct `SeoIndexingRule`, `SeoCanonicalRef` ou `SeoPolicy` n'est matérialisé dans le Prisma observé ;
+- `Déduit` : ces notions relèvent ici de responsabilités conceptuelles du domaine SEO, pas de modèles physiques séparés dans l'état actuel du schéma.
+
+Frontière admin observée :
+
+- `Observé` : `/admin/settings/seo` porte les réglages SEO globaux de la boutique ;
+- `Observé` : `/admin/content/seo` porte un tableau de bord éditorial de suivi SEO sur le contenu ;
+- `Déduit` : cette séparation distingue un plan de configuration globale et un plan de pilotage éditorial, sans fusionner SEO avec `pages`, `blog`, `homepage` ou `media`.
 
 ---
 

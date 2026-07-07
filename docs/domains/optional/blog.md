@@ -348,11 +348,18 @@ Les principaux objets métier conceptuels du domaine sont :
 
 - `BlogPost` : article de blog structuré ;
 - `BlogPostStatus` : état éditorial de l’article ;
-- `BlogCategory` : catégorie de blog lorsque cette capability est activée ;
-- `BlogTag` : tag de blog lorsque cette capability est activée ;
-- `BlogAuthor` : auteur ou contributeur lorsque ce modèle est explicitement porté ;
-- `BlogSeoMetadata` : métadonnées SEO propres au blog si le modèle final l’expose ;
+- `BlogCategory` : catégorie de blog matérialisée dans le Prisma observé ;
+- `authorName` : champ plat porté directement par `BlogPost` dans le Prisma observé ;
+- `SeoMetadata` : métadonnées SEO du blog portées par le domaine transverse `seo` dans le Prisma observé ;
 - `BlogRelation` : relation de contenu ou contenu lié si le modèle final l’expose.
+
+Écart doc / schéma observé :
+
+- `Observé` : `BlogCategory` est matérialisé dans `prisma/optional/engagement/blog.prisma` ;
+- `Observé` : aucun modèle `BlogTag`, `BlogAuthor` ou `BlogSeoMetadata` n'est matérialisé dans le Prisma actuellement observé ;
+- `Observé` : l'auteur est aujourd'hui porté par `BlogPost.authorName` ;
+- `Observé` : le SEO du blog s'appuie sur `SeoMetadata` dans `prisma/cross-cutting/seo.prisma` ;
+- `Déduit` : les notions de tags, auteur riche ou métadonnées SEO propres au blog relèvent ici d'un modèle conceptuel possible, pas d'un schéma actuellement matérialisé.
 
 ---
 

@@ -379,7 +379,11 @@ Il ne doit pas devenir un CMS universel ni un doublon des autres domaines édito
 
 Ce qui existe réellement dans le code, par opposition à la cible décrite ci-dessus :
 
-- modèle Prisma complet (`Page`, `PageSection`, `PageBlock`) — seuls les champs plats de `Page` sont exploités à ce stade ;
+- `Observé` : le domaine fonctionnel `pages` reste documenté ici comme `optional` ;
+- `Observé` : le fichier Prisma matérialisant ce domaine est actuellement `prisma/core/content/pages.prisma` avec l'en-tête `Category: core` ;
+- `Déduit` : cet écart correspond à un point de classification historique ou technique encore à clarifier ;
+- `Inconnu` : la décision finale de réalignement documentaire et technique ; aucun déplacement de fichier Prisma n'est justifié dans ce lot documentaire ;
+- `Observé` : `PageSection` et `PageBlock` sont modélisés dans Prisma, mais non exploités par le runtime `admin/pages` actuel observé ;
 - **pages système légales** (`isSystemPage=true`, codes `legal-notice`, `terms-of-sale`, `privacy-policy`, `returns-policy`) : seedées depuis l'ancien site, éditables (corps uniquement) et publiables/dépubliables depuis `/admin/content/pages`, servies par 4 routes publiques statiques FR ;
 - publication gouvernée : un corps vide ou contenant un marqueur `[TODO …]` n'est pas publiable ;
 - liste admin en lecture gouvernée de toutes les pages, tous statuts ;
