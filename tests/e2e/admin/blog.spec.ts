@@ -15,8 +15,19 @@ test("affiche la page liste du blog admin avec le heading, le lien d'action et l
 
   await expect(page.getByRole("heading", { name: "Articles" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Nouvel article" })).toBeVisible();
+  await expect(page.getByText("Niveau blog")).toBeVisible();
 
-  await expect(page.locator("table, .empty-state").first()).toBeVisible();
+  const emptyState = page.getByRole("heading", {
+    name: "Le blog ne contient pas encore d'article",
+  });
+
+  if (await emptyState.isVisible()) {
+    await expect(emptyState).toBeVisible();
+    return;
+  }
+
+  await expect(page.getByText("Total", { exact: true })).toBeVisible();
+  await expect(page.getByText("Brouillons", { exact: true })).toBeVisible();
 });
 
 test("refuse la publication d'un article sans contenu", async ({ page }) => {
