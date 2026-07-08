@@ -1,6 +1,7 @@
 import { BlogPostStatus } from "@/prisma-generated/client";
 import { withTransaction } from "@/core/db";
 import type { AdminBlogPostStatus } from "../types";
+import { recordBlogPostPublicationDomainEvent } from "./record-blog-post-publication-domain-event";
 
 function toAdminStatus(status: BlogPostStatus): AdminBlogPostStatus {
   return status === BlogPostStatus.ACTIVE ? "published" : "draft";
@@ -17,6 +18,9 @@ export async function toggleAdminBlogPostStatus(
       },
       select: {
         id: true,
+        storeId: true,
+        slug: true,
+        title: true,
         status: true,
         publishedAt: true,
       },
@@ -43,8 +47,24 @@ export async function toggleAdminBlogPostStatus(
             : null,
       },
       select: {
+        id: true,
+        slug: true,
+        title: true,
         status: true,
+        publishedAt: true,
       },
+    });
+
+    await recordBlogPostPublicationDomainEvent({
+      executor: tx,
+      storeId: existing.storeId,
+      postId: existing.id,
+      slug: updated.slug,
+      title: updated.title,
+      previousStatus: existing.status,
+      nextStatus: updated.status,
+      previousPublishedAt: existing.publishedAt,
+      nextPublishedAt: updated.publishedAt,
     });
 
     return toAdminStatus(updated.status);

@@ -1,10 +1,11 @@
-import { Prisma, SeoSubjectType } from "@/prisma-generated/client";
+import { Prisma, SeoSubjectType, type BlogPostStatus } from "@/prisma-generated/client";
 import { withTransaction } from "@/core/db";
 import { toPrismaBlogPostStatus } from "../mappers";
 import {
   AdminBlogServiceError,
   type UpdateAdminBlogPostInput,
 } from "../types";
+import { recordBlogPostPublicationDomainEvent } from "./record-blog-post-publication-domain-event";
 
 export async function updateAdminBlogPost(
   input: UpdateAdminBlogPostInput,
@@ -18,6 +19,9 @@ export async function updateAdminBlogPost(
       select: {
         id: true,
         storeId: true,
+        slug: true,
+        title: true,
+        status: true,
         publishedAt: true,
       },
     });
@@ -52,7 +56,13 @@ export async function updateAdminBlogPost(
             },
           });
 
-    let updatedPost: { id: string };
+    let updatedPost: {
+      id: string;
+      slug: string;
+      title: string;
+      status: BlogPostStatus;
+      publishedAt: Date | null;
+    };
 
     try {
       updatedPost = await tx.blogPost.update({
@@ -72,6 +82,10 @@ export async function updateAdminBlogPost(
         },
         select: {
           id: true,
+          slug: true,
+          title: true,
+          status: true,
+          publishedAt: true,
         },
       });
     } catch (error: unknown) {
@@ -101,6 +115,18 @@ export async function updateAdminBlogPost(
         metaTitle: input.seoTitle ?? null,
         metaDescription: input.seoDescription ?? null,
       },
+    });
+
+    await recordBlogPostPublicationDomainEvent({
+      executor: tx,
+      storeId: existing.storeId,
+      postId: existing.id,
+      slug: updatedPost.slug,
+      title: updatedPost.title,
+      previousStatus: existing.status,
+      nextStatus: updatedPost.status,
+      previousPublishedAt: existing.publishedAt,
+      nextPublishedAt: updatedPost.publishedAt,
     });
 
     return updatedPost;
