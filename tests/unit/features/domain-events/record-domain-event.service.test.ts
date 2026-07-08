@@ -11,7 +11,10 @@ vi.mock("@/core/db", () => ({
 }));
 
 import { db } from "@/core/db";
-import { recordDomainEvent } from "@/features/domain-events";
+import {
+  DomainEventIdempotencyCollisionError,
+  recordDomainEvent,
+} from "@/features/domain-events";
 
 const mockDb = db as unknown as {
   domainEvent: {
@@ -114,6 +117,7 @@ describe("recordDomainEvent", () => {
       idempotencyKey: "content:blog-post:post_1:published",
       payload: {
         postId: "post_1",
+        title: "Article",
       },
     });
 
@@ -139,6 +143,7 @@ describe("recordDomainEvent", () => {
       idempotencyKey: "content:blog-post:post_1:published",
       payload: {
         postId: "post_1",
+        title: "Article",
       },
     });
 
@@ -148,6 +153,200 @@ describe("recordDomainEvent", () => {
     });
     expect(mockDb.domainEvent.create).toHaveBeenCalledTimes(1);
     expect(mockDb.domainEvent.findUnique).toHaveBeenCalledTimes(2);
+  });
+
+  it("rejette une collision d'idempotence si eventType diverge", async () => {
+    mockDb.domainEvent.findUnique.mockResolvedValue(buildDomainEvent());
+
+    await expect(
+      recordDomainEvent({
+        storeId: "store_1",
+        eventType: "content.blog_post.unpublished",
+        aggregateType: "BLOG_POST",
+        aggregateId: "post_1",
+        idempotencyKey: "content:blog-post:post_1:published",
+        payload: {
+          postId: "post_1",
+          title: "Article",
+        },
+      }),
+    ).rejects.toThrowError(DomainEventIdempotencyCollisionError);
+
+    await expect(
+      recordDomainEvent({
+        storeId: "store_1",
+        eventType: "content.blog_post.unpublished",
+        aggregateType: "BLOG_POST",
+        aggregateId: "post_1",
+        idempotencyKey: "content:blog-post:post_1:published",
+        payload: {
+          postId: "post_1",
+          title: "Article",
+        },
+      }),
+    ).rejects.toThrow("eventType mismatch");
+  });
+
+  it("rejette une collision d'idempotence si aggregateType diverge", async () => {
+    mockDb.domainEvent.findUnique.mockResolvedValue(buildDomainEvent());
+
+    await expect(
+      recordDomainEvent({
+        storeId: "store_1",
+        eventType: "content.blog_post.published",
+        aggregateType: "HOMEPAGE",
+        aggregateId: "post_1",
+        idempotencyKey: "content:blog-post:post_1:published",
+        payload: {
+          postId: "post_1",
+          title: "Article",
+        },
+      }),
+    ).rejects.toThrow("aggregateType mismatch");
+  });
+
+  it("rejette une collision d'idempotence si aggregateId diverge", async () => {
+    mockDb.domainEvent.findUnique.mockResolvedValue(buildDomainEvent());
+
+    await expect(
+      recordDomainEvent({
+        storeId: "store_1",
+        eventType: "content.blog_post.published",
+        aggregateType: "BLOG_POST",
+        aggregateId: "post_2",
+        idempotencyKey: "content:blog-post:post_1:published",
+        payload: {
+          postId: "post_1",
+          title: "Article",
+        },
+      }),
+    ).rejects.toThrow("aggregateId mismatch");
+  });
+
+  it("rejette une collision d'idempotence si payload diverge", async () => {
+    mockDb.domainEvent.findUnique.mockResolvedValue(buildDomainEvent());
+
+    await expect(
+      recordDomainEvent({
+        storeId: "store_1",
+        eventType: "content.blog_post.published",
+        aggregateType: "BLOG_POST",
+        aggregateId: "post_1",
+        idempotencyKey: "content:blog-post:post_1:published",
+        payload: {
+          postId: "post_1",
+        },
+      }),
+    ).rejects.toThrow("payloadJson mismatch");
+  });
+
+  it("rejette une collision d'idempotence après P2002 si l'événement diverge", async () => {
+    mockDb.domainEvent.create.mockRejectedValueOnce({ code: "P2002" });
+    mockDb.domainEvent.findUnique
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(buildDomainEvent());
+
+    await expect(
+      recordDomainEvent({
+        storeId: "store_1",
+        eventType: "content.blog_post.unpublished",
+        aggregateType: "BLOG_POST",
+        aggregateId: "post_1",
+        idempotencyKey: "content:blog-post:post_1:published",
+        payload: {
+          postId: "post_1",
+          title: "Article",
+        },
+      }),
+    ).rejects.toThrow("eventType mismatch");
+  });
+
+  it("propage une erreur create non P2002", async () => {
+    const expectedError = new Error("db unavailable");
+    mockDb.domainEvent.create.mockRejectedValueOnce(expectedError);
+
+    await expect(
+      recordDomainEvent({
+        storeId: "store_1",
+        eventType: "content.blog_post.published",
+        aggregateType: "BLOG_POST",
+        aggregateId: "post_1",
+        idempotencyKey: "content:blog-post:post_1:published",
+        payload: {
+          postId: "post_1",
+          title: "Article",
+        },
+      }),
+    ).rejects.toBe(expectedError);
+  });
+
+  it("crée normalement sans idempotencyKey", async () => {
+    const createdEvent = buildDomainEvent({ idempotencyKey: null });
+    mockDb.domainEvent.create.mockResolvedValue(createdEvent);
+
+    const result = await recordDomainEvent({
+      storeId: "store_1",
+      eventType: "content.blog_post.published",
+      aggregateType: "BLOG_POST",
+      aggregateId: "post_1",
+      payload: {
+        postId: "post_1",
+        title: "Article",
+      },
+    });
+
+    expect(result).toEqual({
+      event: createdEvent,
+      created: true,
+    });
+    expect(mockDb.domainEvent.findUnique).not.toHaveBeenCalled();
+    expect(mockDb.domainEvent.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        idempotencyKey: null,
+      }),
+    });
+  });
+
+  it("sérialise metadata undefined et null en null", async () => {
+    const createdEvent = buildDomainEvent({ metadataJson: null });
+    mockDb.domainEvent.create.mockResolvedValue(createdEvent);
+
+    await recordDomainEvent({
+      storeId: "store_1",
+      eventType: "content.blog_post.published",
+      aggregateType: "BLOG_POST",
+      aggregateId: "post_1",
+      payload: {
+        postId: "post_1",
+        title: "Article",
+      },
+    });
+
+    expect(mockDb.domainEvent.create).toHaveBeenLastCalledWith({
+      data: expect.objectContaining({
+        metadataJson: null,
+      }),
+    });
+
+    mockDb.domainEvent.create.mockResolvedValue(createdEvent);
+
+    await recordDomainEvent({
+      storeId: "store_1",
+      eventType: "content.blog_post.published",
+      aggregateType: "BLOG_POST",
+      aggregateId: "post_1",
+      payload: {
+        postId: "post_1",
+        title: "Article",
+      },
+      metadata: null,
+    });
+
+    expect(mockDb.domainEvent.create).toHaveBeenLastCalledWith({
+      data: expect.objectContaining({
+        metadataJson: null,
+      }),
+    });
   });
 
   it("supporte un executor transactionnel explicite", async () => {

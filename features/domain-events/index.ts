@@ -1,4 +1,5 @@
 export {
+  DomainEventIdempotencyCollisionError,
   recordDomainEvent,
   type RecordDomainEventInput,
   type RecordDomainEventResult,
