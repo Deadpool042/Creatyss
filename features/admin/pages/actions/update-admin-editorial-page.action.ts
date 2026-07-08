@@ -9,6 +9,7 @@ import {
   adminEditorialPageSchema,
   type AdminEditorialPageFormState,
 } from "../schemas/admin-editorial-page.schema";
+import { recordPageUpdatedDomainEvent } from "../services/record-page-domain-events";
 
 /**
  * Met à jour les champs éditables d'une page éditoriale (non système) :
@@ -53,7 +54,18 @@ export async function updateAdminEditorialPageAction(
   try {
     const page = await db.page.findUnique({
       where: { id: pageId },
-      select: { id: true, isSystemPage: true, slug: true, storeId: true },
+      select: {
+        id: true,
+        storeId: true,
+        title: true,
+        slug: true,
+        status: true,
+        publishedAt: true,
+        isSystemPage: true,
+        shortDescription: true,
+        body: true,
+        updatedAt: true,
+      },
     });
 
     if (page === null) {
@@ -85,14 +97,34 @@ export async function updateAdminEditorialPageAction(
       }
     }
 
-    await db.page.update({
-      where: { id: page.id },
-      data: {
-        title,
-        slug,
-        shortDescription: excerpt === undefined || excerpt === "" ? null : excerpt,
-        body: body === undefined || body === "" ? null : body,
-      },
+    await db.$transaction(async (tx) => {
+      const updated = await tx.page.update({
+        where: { id: page.id },
+        data: {
+          title,
+          slug,
+          shortDescription: excerpt === undefined || excerpt === "" ? null : excerpt,
+          body: body === undefined || body === "" ? null : body,
+        },
+        select: {
+          id: true,
+          storeId: true,
+          title: true,
+          slug: true,
+          status: true,
+          publishedAt: true,
+          isSystemPage: true,
+          shortDescription: true,
+          body: true,
+          updatedAt: true,
+        },
+      });
+
+      await recordPageUpdatedDomainEvent({
+        executor: tx,
+        previous: page,
+        next: updated,
+      });
     });
 
     revalidatePath("/admin/content/pages");

@@ -10,6 +10,7 @@ import {
 } from "../schemas/admin-page-body.schema";
 
 import { PUBLIC_LEGAL_PATHS } from "../constants/public-legal-paths";
+import { recordPageUpdatedDomainEvent } from "../services/record-page-domain-events";
 
 /**
  * Met à jour uniquement le corps d'une page système.
@@ -33,26 +34,69 @@ export async function updateAdminPageBodyAction(
   }
 
   try {
-    const page = await db.page.findUnique({
-      where: { id: pageId },
-      select: { id: true, code: true, isSystemPage: true },
+    const page = await db.$transaction(async (tx) => {
+      const existing = await tx.page.findUnique({
+        where: { id: pageId },
+        select: {
+          id: true,
+          storeId: true,
+          code: true,
+          title: true,
+          slug: true,
+          status: true,
+          publishedAt: true,
+          isSystemPage: true,
+          shortDescription: true,
+          body: true,
+          updatedAt: true,
+        },
+      });
+
+      if (existing === null) {
+        return null;
+      }
+
+      if (!existing.isSystemPage) {
+        return "editorial_page" as const;
+      }
+
+      const updated = await tx.page.update({
+        where: { id: existing.id },
+        data: { body: parsed.data.body || null },
+        select: {
+          id: true,
+          storeId: true,
+          code: true,
+          title: true,
+          slug: true,
+          status: true,
+          publishedAt: true,
+          isSystemPage: true,
+          shortDescription: true,
+          body: true,
+          updatedAt: true,
+        },
+      });
+
+      await recordPageUpdatedDomainEvent({
+        executor: tx,
+        previous: existing,
+        next: updated,
+      });
+
+      return updated;
     });
 
     if (page === null) {
       return { status: "error", message: "Page introuvable." };
     }
 
-    if (!page.isSystemPage) {
+    if (page === "editorial_page") {
       return {
         status: "error",
         message: "L'édition des pages éditoriales n'est pas encore disponible.",
       };
     }
-
-    await db.page.update({
-      where: { id: page.id },
-      data: { body: parsed.data.body || null },
-    });
 
     revalidatePath("/admin/content/pages");
     revalidatePath(`/admin/content/pages/${page.id}`);

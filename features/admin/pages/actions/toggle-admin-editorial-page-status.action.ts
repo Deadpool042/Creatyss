@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/core/db";
 import { requireAdminCapability } from "@/core/auth/admin/require-admin-capability";
 import type { AdminPageBodyFormState } from "../schemas/admin-page-body.schema";
+import { recordPagePublishedOrUnpublishedDomainEvent } from "../services/record-page-domain-events";
 
 /**
  * Publie (ACTIVE) ou dépublie (DRAFT) une page éditoriale.
@@ -23,7 +24,16 @@ export async function toggleAdminEditorialPageStatusAction(
   try {
     const page = await db.page.findUnique({
       where: { id: pageId },
-      select: { id: true, status: true, isSystemPage: true, body: true },
+      select: {
+        id: true,
+        storeId: true,
+        title: true,
+        slug: true,
+        status: true,
+        publishedAt: true,
+        isSystemPage: true,
+        body: true,
+      },
     });
 
     if (page === null) {
@@ -48,11 +58,28 @@ export async function toggleAdminEditorialPageStatusAction(
       };
     }
 
-    await db.page.update({
-      where: { id: page.id },
-      data: isPublishing
-        ? { status: "ACTIVE", publishedAt: new Date() }
-        : { status: "DRAFT" },
+    await db.$transaction(async (tx) => {
+      const updated = await tx.page.update({
+        where: { id: page.id },
+        data: isPublishing
+          ? { status: "ACTIVE", publishedAt: page.publishedAt ?? new Date() }
+          : { status: "DRAFT", publishedAt: null },
+        select: {
+          id: true,
+          storeId: true,
+          title: true,
+          slug: true,
+          status: true,
+          publishedAt: true,
+          isSystemPage: true,
+        },
+      });
+
+      await recordPagePublishedOrUnpublishedDomainEvent({
+        executor: tx,
+        previous: page,
+        next: updated,
+      });
     });
 
     revalidatePath("/admin/content/pages");
