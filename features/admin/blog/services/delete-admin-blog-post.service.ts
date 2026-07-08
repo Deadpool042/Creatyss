@@ -1,4 +1,5 @@
 import { withTransaction } from "@/core/db";
+import { recordBlogPostArchivedDomainEvent } from "./record-blog-post-editorial-domain-events";
 
 export async function deleteAdminBlogPost(id: string): Promise<boolean> {
   return withTransaction(async (tx) => {
@@ -9,6 +10,12 @@ export async function deleteAdminBlogPost(id: string): Promise<boolean> {
       },
       select: {
         id: true,
+        storeId: true,
+        slug: true,
+        title: true,
+        status: true,
+        publishedAt: true,
+        archivedAt: true,
       },
     });
 
@@ -16,13 +23,30 @@ export async function deleteAdminBlogPost(id: string): Promise<boolean> {
       return false;
     }
 
-    await tx.blogPost.update({
+    const archivedPost = await tx.blogPost.update({
       where: {
         id,
       },
       data: {
         archivedAt: new Date(),
         status: "ARCHIVED",
+      },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        status: true,
+        archivedAt: true,
+      },
+    });
+
+    await recordBlogPostArchivedDomainEvent({
+      executor: tx,
+      storeId: existing.storeId,
+      previous: existing,
+      next: {
+        ...archivedPost,
+        publishedAt: existing.publishedAt,
       },
     });
 

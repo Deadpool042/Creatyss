@@ -5,6 +5,7 @@ import {
   AdminBlogServiceError,
   type UpdateAdminBlogPostInput,
 } from "../types";
+import { recordBlogPostUpdatedVisibleDomainEvent } from "./record-blog-post-editorial-domain-events";
 import { recordBlogPostPublicationDomainEvent } from "./record-blog-post-publication-domain-event";
 
 export async function updateAdminBlogPost(
@@ -21,8 +22,13 @@ export async function updateAdminBlogPost(
         storeId: true,
         slug: true,
         title: true,
+        excerpt: true,
+        body: true,
         status: true,
         publishedAt: true,
+        primaryImageId: true,
+        coverImageId: true,
+        updatedAt: true,
       },
     });
 
@@ -60,8 +66,13 @@ export async function updateAdminBlogPost(
       id: string;
       slug: string;
       title: string;
+      excerpt: string | null;
+      body: string | null;
       status: BlogPostStatus;
       publishedAt: Date | null;
+      primaryImageId: string | null;
+      coverImageId: string | null;
+      updatedAt: Date;
     };
 
     try {
@@ -84,8 +95,13 @@ export async function updateAdminBlogPost(
           id: true,
           slug: true,
           title: true,
+          excerpt: true,
+          body: true,
           status: true,
           publishedAt: true,
+          primaryImageId: true,
+          coverImageId: true,
+          updatedAt: true,
         },
       });
     } catch (error: unknown) {
@@ -127,6 +143,13 @@ export async function updateAdminBlogPost(
       nextStatus: updatedPost.status,
       previousPublishedAt: existing.publishedAt,
       nextPublishedAt: updatedPost.publishedAt,
+    });
+
+    await recordBlogPostUpdatedVisibleDomainEvent({
+      executor: tx,
+      storeId: existing.storeId,
+      previous: existing,
+      next: updatedPost,
     });
 
     return updatedPost;
