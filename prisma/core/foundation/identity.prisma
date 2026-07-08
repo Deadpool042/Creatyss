@@ -75,6 +75,7 @@ model User {
   assignedSupportTickets           SupportTicket[]            @relation("SupportTicketAssignedToUser")
   supportMessagesAsAuthor          SupportMessage[]           @relation("SupportMessageAuthorUser")
   createdSocialPublications        SocialPublication[]        @relation("SocialPublicationCreatedByUser")
+  reviewedMarketingIntents         MarketingIntent[]          @relation("MarketingIntentReviewedByUser")
   returnDecisions                  ReturnDecision[]
   observabilitySignalEventsAsActor ObservabilitySignalEvent[] @relation("ObservabilitySignalEventActorUser")
   requestedAiTasks                 AiTask[]                   @relation("AiTaskRequestedByUser")

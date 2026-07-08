@@ -121,6 +121,7 @@ model Store {
   supportTickets          SupportTicket[]
   crmContacts             CrmContact[]
   crmTags                 CrmTag[]
+  marketingIntents        MarketingIntent[]
   conversionFlows         ConversionFlow[]
   socialPublications      SocialPublication[]
   analyticsMetrics        AnalyticsMetric[]

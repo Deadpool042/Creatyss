@@ -359,6 +359,41 @@ export const JobPriority = {
 export type JobPriority = (typeof JobPriority)[keyof typeof JobPriority]
 
 
+export const MarketingIntentStatus = {
+  PROPOSED: 'PROPOSED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type MarketingIntentStatus = (typeof MarketingIntentStatus)[keyof typeof MarketingIntentStatus]
+
+
+export const MarketingIntentType = {
+  PROMOTE_EDITORIAL_CONTENT: 'PROMOTE_EDITORIAL_CONTENT'
+} as const
+
+export type MarketingIntentType = (typeof MarketingIntentType)[keyof typeof MarketingIntentType]
+
+
+export const MarketingIntentSubjectType = {
+  BLOG_POST: 'BLOG_POST',
+  HOMEPAGE: 'HOMEPAGE',
+  EDITORIAL_PAGE: 'EDITORIAL_PAGE',
+  LEGAL_PAGE: 'LEGAL_PAGE'
+} as const
+
+export type MarketingIntentSubjectType = (typeof MarketingIntentSubjectType)[keyof typeof MarketingIntentSubjectType]
+
+
+export const MarketingIntentChannel = {
+  NEWSLETTER: 'NEWSLETTER',
+  SOCIAL: 'SOCIAL'
+} as const
+
+export type MarketingIntentChannel = (typeof MarketingIntentChannel)[keyof typeof MarketingIntentChannel]
+
+
 export const MonitoringCheckStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',

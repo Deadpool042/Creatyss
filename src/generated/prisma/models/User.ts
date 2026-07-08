@@ -295,6 +295,7 @@ export type UserWhereInput = {
   assignedSupportTickets?: Prisma.SupportTicketListRelationFilter
   supportMessagesAsAuthor?: Prisma.SupportMessageListRelationFilter
   createdSocialPublications?: Prisma.SocialPublicationListRelationFilter
+  reviewedMarketingIntents?: Prisma.MarketingIntentListRelationFilter
   returnDecisions?: Prisma.ReturnDecisionListRelationFilter
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventListRelationFilter
   requestedAiTasks?: Prisma.AiTaskListRelationFilter
@@ -342,6 +343,7 @@ export type UserOrderByWithRelationInput = {
   assignedSupportTickets?: Prisma.SupportTicketOrderByRelationAggregateInput
   supportMessagesAsAuthor?: Prisma.SupportMessageOrderByRelationAggregateInput
   createdSocialPublications?: Prisma.SocialPublicationOrderByRelationAggregateInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentOrderByRelationAggregateInput
   returnDecisions?: Prisma.ReturnDecisionOrderByRelationAggregateInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventOrderByRelationAggregateInput
   requestedAiTasks?: Prisma.AiTaskOrderByRelationAggregateInput
@@ -392,6 +394,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   assignedSupportTickets?: Prisma.SupportTicketListRelationFilter
   supportMessagesAsAuthor?: Prisma.SupportMessageListRelationFilter
   createdSocialPublications?: Prisma.SocialPublicationListRelationFilter
+  reviewedMarketingIntents?: Prisma.MarketingIntentListRelationFilter
   returnDecisions?: Prisma.ReturnDecisionListRelationFilter
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventListRelationFilter
   requestedAiTasks?: Prisma.AiTaskListRelationFilter
@@ -482,6 +485,7 @@ export type UserCreateInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -528,6 +532,7 @@ export type UserUncheckedCreateInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -574,6 +579,7 @@ export type UserUpdateInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -620,6 +626,7 @@ export type UserUncheckedUpdateInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -944,6 +951,22 @@ export type UserUpdateOneWithoutCreatedJobsNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedJobsInput, Prisma.UserUpdateWithoutCreatedJobsInput>, Prisma.UserUncheckedUpdateWithoutCreatedJobsInput>
+}
+
+export type UserCreateNestedOneWithoutReviewedMarketingIntentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedMarketingIntentsInput, Prisma.UserUncheckedCreateWithoutReviewedMarketingIntentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedMarketingIntentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutReviewedMarketingIntentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedMarketingIntentsInput, Prisma.UserUncheckedCreateWithoutReviewedMarketingIntentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedMarketingIntentsInput
+  upsert?: Prisma.UserUpsertWithoutReviewedMarketingIntentsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedMarketingIntentsInput, Prisma.UserUpdateWithoutReviewedMarketingIntentsInput>, Prisma.UserUncheckedUpdateWithoutReviewedMarketingIntentsInput>
 }
 
 export type UserCreateNestedOneWithoutObservabilitySignalEventsAsActorInput = {
@@ -1274,6 +1297,7 @@ export type UserCreateWithoutGrantedApiClientPermissionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -1319,6 +1343,7 @@ export type UserUncheckedCreateWithoutGrantedApiClientPermissionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -1380,6 +1405,7 @@ export type UserUpdateWithoutGrantedApiClientPermissionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -1425,6 +1451,7 @@ export type UserUncheckedUpdateWithoutGrantedApiClientPermissionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -1470,6 +1497,7 @@ export type UserCreateWithoutCredentialsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -1515,6 +1543,7 @@ export type UserUncheckedCreateWithoutCredentialsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -1576,6 +1605,7 @@ export type UserUpdateWithoutCredentialsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -1621,6 +1651,7 @@ export type UserUncheckedUpdateWithoutCredentialsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -1666,6 +1697,7 @@ export type UserCreateWithoutSessionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -1711,6 +1743,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -1772,6 +1805,7 @@ export type UserUpdateWithoutSessionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -1817,6 +1851,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -1862,6 +1897,7 @@ export type UserCreateWithoutUserRolesInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -1907,6 +1943,7 @@ export type UserUncheckedCreateWithoutUserRolesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -1957,6 +1994,7 @@ export type UserCreateWithoutAssignedUserRolesInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -2002,6 +2040,7 @@ export type UserUncheckedCreateWithoutAssignedUserRolesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -2063,6 +2102,7 @@ export type UserUpdateWithoutUserRolesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -2108,6 +2148,7 @@ export type UserUncheckedUpdateWithoutUserRolesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -2164,6 +2205,7 @@ export type UserUpdateWithoutAssignedUserRolesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -2209,6 +2251,7 @@ export type UserUncheckedUpdateWithoutAssignedUserRolesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -2254,6 +2297,7 @@ export type UserCreateWithoutGrantedRolePermissionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -2299,6 +2343,7 @@ export type UserUncheckedCreateWithoutGrantedRolePermissionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -2360,6 +2405,7 @@ export type UserUpdateWithoutGrantedRolePermissionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -2405,6 +2451,7 @@ export type UserUncheckedUpdateWithoutGrantedRolePermissionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -2450,6 +2497,7 @@ export type UserCreateWithoutStoreInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -2495,6 +2543,7 @@ export type UserUncheckedCreateWithoutStoreInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -2588,6 +2637,7 @@ export type UserCreateWithoutAuditLogsAsActorInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -2633,6 +2683,7 @@ export type UserUncheckedCreateWithoutAuditLogsAsActorInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -2694,6 +2745,7 @@ export type UserUpdateWithoutAuditLogsAsActorInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -2739,6 +2791,7 @@ export type UserUncheckedUpdateWithoutAuditLogsAsActorInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -2784,6 +2837,7 @@ export type UserCreateWithoutCreatedFeatureFlagOverridesInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -2829,6 +2883,7 @@ export type UserUncheckedCreateWithoutCreatedFeatureFlagOverridesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -2890,6 +2945,7 @@ export type UserUpdateWithoutCreatedFeatureFlagOverridesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -2935,6 +2991,7 @@ export type UserUncheckedUpdateWithoutCreatedFeatureFlagOverridesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -2980,6 +3037,7 @@ export type UserCreateWithoutCreatedJobsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -3025,6 +3083,7 @@ export type UserUncheckedCreateWithoutCreatedJobsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -3086,6 +3145,7 @@ export type UserUpdateWithoutCreatedJobsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -3115,6 +3175,207 @@ export type UserUncheckedUpdateWithoutCreatedJobsInput = {
   grantedRolePermissions?: Prisma.RolePermissionUncheckedUpdateManyWithoutGrantedByNestedInput
   grantedApiClientPermissions?: Prisma.ApiClientPermissionUncheckedUpdateManyWithoutGrantedByNestedInput
   auditLogsAsActor?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  requestedApprovals?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvalDecisions?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
+  createdSchedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedImportRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  requestedExportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  createdFeatureFlagOverrides?: Prisma.FeatureFlagOverrideUncheckedUpdateManyWithoutCreatedByNestedInput
+  fraudRiskDecisions?: Prisma.FraudRiskDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
+  assignedFraudRiskReviews?: Prisma.FraudRiskReviewUncheckedUpdateManyWithoutAssignedToNestedInput
+  notificationsAsRecipient?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutRecipientUserNestedInput
+  createdNewsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdAutomations?: Prisma.AutomationUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
+  supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
+  createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
+  returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
+  observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
+  requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
+}
+
+export type UserCreateWithoutReviewedMarketingIntentsInput = {
+  id?: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  displayName?: string | null
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  invitedAt?: Date | string | null
+  activatedAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store: Prisma.StoreCreateNestedOneWithoutUsersInput
+  credentials?: Prisma.UserCredentialCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  assignedUserRoles?: Prisma.UserRoleCreateNestedManyWithoutAssignedByInput
+  grantedRolePermissions?: Prisma.RolePermissionCreateNestedManyWithoutGrantedByInput
+  grantedApiClientPermissions?: Prisma.ApiClientPermissionCreateNestedManyWithoutGrantedByInput
+  auditLogsAsActor?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  createdJobs?: Prisma.JobCreateNestedManyWithoutCreatedByInput
+  requestedApprovals?: Prisma.ApprovalRequestCreateNestedManyWithoutRequestedByInput
+  approvalDecisions?: Prisma.ApprovalDecisionCreateNestedManyWithoutDecidedByInput
+  createdSchedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutCreatedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutCreatedByInput
+  requestedImportRequests?: Prisma.ImportRequestCreateNestedManyWithoutRequestedByInput
+  requestedExportRequests?: Prisma.ExportRequestCreateNestedManyWithoutRequestedByInput
+  createdFeatureFlagOverrides?: Prisma.FeatureFlagOverrideCreateNestedManyWithoutCreatedByInput
+  fraudRiskDecisions?: Prisma.FraudRiskDecisionCreateNestedManyWithoutDecidedByInput
+  assignedFraudRiskReviews?: Prisma.FraudRiskReviewCreateNestedManyWithoutAssignedToInput
+  notificationsAsRecipient?: Prisma.NotificationCreateNestedManyWithoutRecipientUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutRecipientUserInput
+  createdNewsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
+  createdAutomations?: Prisma.AutomationCreateNestedManyWithoutCreatedByInput
+  assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
+  supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
+  createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
+  observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
+  requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
+}
+
+export type UserUncheckedCreateWithoutReviewedMarketingIntentsInput = {
+  id?: string
+  storeId: string
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  displayName?: string | null
+  type?: $Enums.UserType
+  status?: $Enums.UserStatus
+  emailVerifiedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  invitedAt?: Date | string | null
+  activatedAt?: Date | string | null
+  suspendedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  credentials?: Prisma.UserCredentialUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  assignedUserRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutAssignedByInput
+  grantedRolePermissions?: Prisma.RolePermissionUncheckedCreateNestedManyWithoutGrantedByInput
+  grantedApiClientPermissions?: Prisma.ApiClientPermissionUncheckedCreateNestedManyWithoutGrantedByInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  createdJobs?: Prisma.JobUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedApprovals?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  approvalDecisions?: Prisma.ApprovalDecisionUncheckedCreateNestedManyWithoutDecidedByInput
+  createdSchedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutCreatedByInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedImportRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  requestedExportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  createdFeatureFlagOverrides?: Prisma.FeatureFlagOverrideUncheckedCreateNestedManyWithoutCreatedByInput
+  fraudRiskDecisions?: Prisma.FraudRiskDecisionUncheckedCreateNestedManyWithoutDecidedByInput
+  assignedFraudRiskReviews?: Prisma.FraudRiskReviewUncheckedCreateNestedManyWithoutAssignedToInput
+  notificationsAsRecipient?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientUserInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutRecipientUserInput
+  createdNewsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  createdAutomations?: Prisma.AutomationUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
+  supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
+  createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
+  observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
+  requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
+}
+
+export type UserCreateOrConnectWithoutReviewedMarketingIntentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedMarketingIntentsInput, Prisma.UserUncheckedCreateWithoutReviewedMarketingIntentsInput>
+}
+
+export type UserUpsertWithoutReviewedMarketingIntentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewedMarketingIntentsInput, Prisma.UserUncheckedUpdateWithoutReviewedMarketingIntentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedMarketingIntentsInput, Prisma.UserUncheckedCreateWithoutReviewedMarketingIntentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReviewedMarketingIntentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewedMarketingIntentsInput, Prisma.UserUncheckedUpdateWithoutReviewedMarketingIntentsInput>
+}
+
+export type UserUpdateWithoutReviewedMarketingIntentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneRequiredWithoutUsersNestedInput
+  credentials?: Prisma.UserCredentialUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  assignedUserRoles?: Prisma.UserRoleUpdateManyWithoutAssignedByNestedInput
+  grantedRolePermissions?: Prisma.RolePermissionUpdateManyWithoutGrantedByNestedInput
+  grantedApiClientPermissions?: Prisma.ApiClientPermissionUpdateManyWithoutGrantedByNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  createdJobs?: Prisma.JobUpdateManyWithoutCreatedByNestedInput
+  requestedApprovals?: Prisma.ApprovalRequestUpdateManyWithoutRequestedByNestedInput
+  approvalDecisions?: Prisma.ApprovalDecisionUpdateManyWithoutDecidedByNestedInput
+  createdSchedulePlans?: Prisma.SchedulePlanUpdateManyWithoutCreatedByNestedInput
+  createdWorkflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutCreatedByNestedInput
+  requestedImportRequests?: Prisma.ImportRequestUpdateManyWithoutRequestedByNestedInput
+  requestedExportRequests?: Prisma.ExportRequestUpdateManyWithoutRequestedByNestedInput
+  createdFeatureFlagOverrides?: Prisma.FeatureFlagOverrideUpdateManyWithoutCreatedByNestedInput
+  fraudRiskDecisions?: Prisma.FraudRiskDecisionUpdateManyWithoutDecidedByNestedInput
+  assignedFraudRiskReviews?: Prisma.FraudRiskReviewUpdateManyWithoutAssignedToNestedInput
+  notificationsAsRecipient?: Prisma.NotificationUpdateManyWithoutRecipientUserNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutRecipientUserNestedInput
+  createdNewsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
+  createdAutomations?: Prisma.AutomationUpdateManyWithoutCreatedByNestedInput
+  assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
+  supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
+  createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
+  observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
+  requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReviewedMarketingIntentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  credentials?: Prisma.UserCredentialUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  assignedUserRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutAssignedByNestedInput
+  grantedRolePermissions?: Prisma.RolePermissionUncheckedUpdateManyWithoutGrantedByNestedInput
+  grantedApiClientPermissions?: Prisma.ApiClientPermissionUncheckedUpdateManyWithoutGrantedByNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  createdJobs?: Prisma.JobUncheckedUpdateManyWithoutCreatedByNestedInput
   requestedApprovals?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutRequestedByNestedInput
   approvalDecisions?: Prisma.ApprovalDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   createdSchedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -3177,6 +3438,7 @@ export type UserCreateWithoutObservabilitySignalEventsAsActorInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
 }
@@ -3222,6 +3484,7 @@ export type UserUncheckedCreateWithoutObservabilitySignalEventsAsActorInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
 }
@@ -3283,6 +3546,7 @@ export type UserUpdateWithoutObservabilitySignalEventsAsActorInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
 }
@@ -3328,6 +3592,7 @@ export type UserUncheckedUpdateWithoutObservabilitySignalEventsAsActorInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
 }
@@ -3373,6 +3638,7 @@ export type UserCreateWithoutRequestedAiTasksInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
 }
@@ -3418,6 +3684,7 @@ export type UserUncheckedCreateWithoutRequestedAiTasksInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
 }
@@ -3479,6 +3746,7 @@ export type UserUpdateWithoutRequestedAiTasksInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
 }
@@ -3524,6 +3792,7 @@ export type UserUncheckedUpdateWithoutRequestedAiTasksInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
 }
@@ -3569,6 +3838,7 @@ export type UserCreateWithoutReturnDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
 }
@@ -3614,6 +3884,7 @@ export type UserUncheckedCreateWithoutReturnDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
 }
@@ -3675,6 +3946,7 @@ export type UserUpdateWithoutReturnDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
 }
@@ -3720,6 +3992,7 @@ export type UserUncheckedUpdateWithoutReturnDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
 }
@@ -3764,6 +4037,7 @@ export type UserCreateWithoutCreatedAutomationsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -3809,6 +4083,7 @@ export type UserUncheckedCreateWithoutCreatedAutomationsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -3870,6 +4145,7 @@ export type UserUpdateWithoutCreatedAutomationsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -3915,6 +4191,7 @@ export type UserUncheckedUpdateWithoutCreatedAutomationsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -3960,6 +4237,7 @@ export type UserCreateWithoutCreatedNewsletterCampaignsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -4005,6 +4283,7 @@ export type UserUncheckedCreateWithoutCreatedNewsletterCampaignsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -4066,6 +4345,7 @@ export type UserUpdateWithoutCreatedNewsletterCampaignsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -4111,6 +4391,7 @@ export type UserUncheckedUpdateWithoutCreatedNewsletterCampaignsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -4156,6 +4437,7 @@ export type UserCreateWithoutCreatedSocialPublicationsInput = {
   createdAutomations?: Prisma.AutomationCreateNestedManyWithoutCreatedByInput
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -4201,6 +4483,7 @@ export type UserUncheckedCreateWithoutCreatedSocialPublicationsInput = {
   createdAutomations?: Prisma.AutomationUncheckedCreateNestedManyWithoutCreatedByInput
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -4262,6 +4545,7 @@ export type UserUpdateWithoutCreatedSocialPublicationsInput = {
   createdAutomations?: Prisma.AutomationUpdateManyWithoutCreatedByNestedInput
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -4307,6 +4591,7 @@ export type UserUncheckedUpdateWithoutCreatedSocialPublicationsInput = {
   createdAutomations?: Prisma.AutomationUncheckedUpdateManyWithoutCreatedByNestedInput
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -4352,6 +4637,7 @@ export type UserCreateWithoutAssignedSupportTicketsInput = {
   createdAutomations?: Prisma.AutomationCreateNestedManyWithoutCreatedByInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -4397,6 +4683,7 @@ export type UserUncheckedCreateWithoutAssignedSupportTicketsInput = {
   createdAutomations?: Prisma.AutomationUncheckedCreateNestedManyWithoutCreatedByInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -4458,6 +4745,7 @@ export type UserUpdateWithoutAssignedSupportTicketsInput = {
   createdAutomations?: Prisma.AutomationUpdateManyWithoutCreatedByNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -4503,6 +4791,7 @@ export type UserUncheckedUpdateWithoutAssignedSupportTicketsInput = {
   createdAutomations?: Prisma.AutomationUncheckedUpdateManyWithoutCreatedByNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -4548,6 +4837,7 @@ export type UserCreateWithoutSupportMessagesAsAuthorInput = {
   createdAutomations?: Prisma.AutomationCreateNestedManyWithoutCreatedByInput
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -4593,6 +4883,7 @@ export type UserUncheckedCreateWithoutSupportMessagesAsAuthorInput = {
   createdAutomations?: Prisma.AutomationUncheckedCreateNestedManyWithoutCreatedByInput
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -4654,6 +4945,7 @@ export type UserUpdateWithoutSupportMessagesAsAuthorInput = {
   createdAutomations?: Prisma.AutomationUpdateManyWithoutCreatedByNestedInput
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -4699,6 +4991,7 @@ export type UserUncheckedUpdateWithoutSupportMessagesAsAuthorInput = {
   createdAutomations?: Prisma.AutomationUncheckedUpdateManyWithoutCreatedByNestedInput
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -4744,6 +5037,7 @@ export type UserCreateWithoutRequestedApprovalsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -4789,6 +5083,7 @@ export type UserUncheckedCreateWithoutRequestedApprovalsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -4850,6 +5145,7 @@ export type UserUpdateWithoutRequestedApprovalsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -4895,6 +5191,7 @@ export type UserUncheckedUpdateWithoutRequestedApprovalsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -4940,6 +5237,7 @@ export type UserCreateWithoutApprovalDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -4985,6 +5283,7 @@ export type UserUncheckedCreateWithoutApprovalDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -5046,6 +5345,7 @@ export type UserUpdateWithoutApprovalDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -5091,6 +5391,7 @@ export type UserUncheckedUpdateWithoutApprovalDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -5136,6 +5437,7 @@ export type UserCreateWithoutRequestedExportRequestsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -5181,6 +5483,7 @@ export type UserUncheckedCreateWithoutRequestedExportRequestsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -5242,6 +5545,7 @@ export type UserUpdateWithoutRequestedExportRequestsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -5287,6 +5591,7 @@ export type UserUncheckedUpdateWithoutRequestedExportRequestsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -5332,6 +5637,7 @@ export type UserCreateWithoutFraudRiskDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -5377,6 +5683,7 @@ export type UserUncheckedCreateWithoutFraudRiskDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -5438,6 +5745,7 @@ export type UserUpdateWithoutFraudRiskDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -5483,6 +5791,7 @@ export type UserUncheckedUpdateWithoutFraudRiskDecisionsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -5528,6 +5837,7 @@ export type UserCreateWithoutAssignedFraudRiskReviewsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -5573,6 +5883,7 @@ export type UserUncheckedCreateWithoutAssignedFraudRiskReviewsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -5634,6 +5945,7 @@ export type UserUpdateWithoutAssignedFraudRiskReviewsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -5679,6 +5991,7 @@ export type UserUncheckedUpdateWithoutAssignedFraudRiskReviewsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -5724,6 +6037,7 @@ export type UserCreateWithoutRequestedImportRequestsInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -5769,6 +6083,7 @@ export type UserUncheckedCreateWithoutRequestedImportRequestsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -5830,6 +6145,7 @@ export type UserUpdateWithoutRequestedImportRequestsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -5875,6 +6191,7 @@ export type UserUncheckedUpdateWithoutRequestedImportRequestsInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -5920,6 +6237,7 @@ export type UserCreateWithoutNotificationsAsRecipientInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -5965,6 +6283,7 @@ export type UserUncheckedCreateWithoutNotificationsAsRecipientInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -6026,6 +6345,7 @@ export type UserUpdateWithoutNotificationsAsRecipientInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -6071,6 +6391,7 @@ export type UserUncheckedUpdateWithoutNotificationsAsRecipientInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -6116,6 +6437,7 @@ export type UserCreateWithoutNotificationPreferencesInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -6161,6 +6483,7 @@ export type UserUncheckedCreateWithoutNotificationPreferencesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -6222,6 +6545,7 @@ export type UserUpdateWithoutNotificationPreferencesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -6267,6 +6591,7 @@ export type UserUncheckedUpdateWithoutNotificationPreferencesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -6312,6 +6637,7 @@ export type UserCreateWithoutCreatedSchedulePlansInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -6357,6 +6683,7 @@ export type UserUncheckedCreateWithoutCreatedSchedulePlansInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -6418,6 +6745,7 @@ export type UserUpdateWithoutCreatedSchedulePlansInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -6463,6 +6791,7 @@ export type UserUncheckedUpdateWithoutCreatedSchedulePlansInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -6508,6 +6837,7 @@ export type UserCreateWithoutCreatedWorkflowInstancesInput = {
   assignedSupportTickets?: Prisma.SupportTicketCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskCreateNestedManyWithoutRequestedByInput
@@ -6553,6 +6883,7 @@ export type UserUncheckedCreateWithoutCreatedWorkflowInstancesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutAssignedToInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedCreateNestedManyWithoutAuthorUserInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutReviewedByInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedCreateNestedManyWithoutDecidedByInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedCreateNestedManyWithoutActorUserInput
   requestedAiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutRequestedByInput
@@ -6614,6 +6945,7 @@ export type UserUpdateWithoutCreatedWorkflowInstancesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -6659,6 +6991,7 @@ export type UserUncheckedUpdateWithoutCreatedWorkflowInstancesInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -6722,6 +7055,7 @@ export type UserUpdateWithoutStoreInput = {
   assignedSupportTickets?: Prisma.SupportTicketUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUpdateManyWithoutRequestedByNestedInput
@@ -6767,6 +7101,7 @@ export type UserUncheckedUpdateWithoutStoreInput = {
   assignedSupportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutAssignedToNestedInput
   supportMessagesAsAuthor?: Prisma.SupportMessageUncheckedUpdateManyWithoutAuthorUserNestedInput
   createdSocialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutReviewedByNestedInput
   returnDecisions?: Prisma.ReturnDecisionUncheckedUpdateManyWithoutDecidedByNestedInput
   observabilitySignalEventsAsActor?: Prisma.ObservabilitySignalEventUncheckedUpdateManyWithoutActorUserNestedInput
   requestedAiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutRequestedByNestedInput
@@ -6820,6 +7155,7 @@ export type UserCountOutputType = {
   assignedSupportTickets: number
   supportMessagesAsAuthor: number
   createdSocialPublications: number
+  reviewedMarketingIntents: number
   returnDecisions: number
   observabilitySignalEventsAsActor: number
   requestedAiTasks: number
@@ -6850,6 +7186,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   assignedSupportTickets?: boolean | UserCountOutputTypeCountAssignedSupportTicketsArgs
   supportMessagesAsAuthor?: boolean | UserCountOutputTypeCountSupportMessagesAsAuthorArgs
   createdSocialPublications?: boolean | UserCountOutputTypeCountCreatedSocialPublicationsArgs
+  reviewedMarketingIntents?: boolean | UserCountOutputTypeCountReviewedMarketingIntentsArgs
   returnDecisions?: boolean | UserCountOutputTypeCountReturnDecisionsArgs
   observabilitySignalEventsAsActor?: boolean | UserCountOutputTypeCountObservabilitySignalEventsAsActorArgs
   requestedAiTasks?: boolean | UserCountOutputTypeCountRequestedAiTasksArgs
@@ -7036,6 +7373,13 @@ export type UserCountOutputTypeCountCreatedSocialPublicationsArgs<ExtArgs extend
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountReviewedMarketingIntentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MarketingIntentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountReturnDecisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ReturnDecisionWhereInput
 }
@@ -7097,6 +7441,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   assignedSupportTickets?: boolean | Prisma.User$assignedSupportTicketsArgs<ExtArgs>
   supportMessagesAsAuthor?: boolean | Prisma.User$supportMessagesAsAuthorArgs<ExtArgs>
   createdSocialPublications?: boolean | Prisma.User$createdSocialPublicationsArgs<ExtArgs>
+  reviewedMarketingIntents?: boolean | Prisma.User$reviewedMarketingIntentsArgs<ExtArgs>
   returnDecisions?: boolean | Prisma.User$returnDecisionsArgs<ExtArgs>
   observabilitySignalEventsAsActor?: boolean | Prisma.User$observabilitySignalEventsAsActorArgs<ExtArgs>
   requestedAiTasks?: boolean | Prisma.User$requestedAiTasksArgs<ExtArgs>
@@ -7189,6 +7534,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   assignedSupportTickets?: boolean | Prisma.User$assignedSupportTicketsArgs<ExtArgs>
   supportMessagesAsAuthor?: boolean | Prisma.User$supportMessagesAsAuthorArgs<ExtArgs>
   createdSocialPublications?: boolean | Prisma.User$createdSocialPublicationsArgs<ExtArgs>
+  reviewedMarketingIntents?: boolean | Prisma.User$reviewedMarketingIntentsArgs<ExtArgs>
   returnDecisions?: boolean | Prisma.User$returnDecisionsArgs<ExtArgs>
   observabilitySignalEventsAsActor?: boolean | Prisma.User$observabilitySignalEventsAsActorArgs<ExtArgs>
   requestedAiTasks?: boolean | Prisma.User$requestedAiTasksArgs<ExtArgs>
@@ -7229,6 +7575,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     assignedSupportTickets: Prisma.$SupportTicketPayload<ExtArgs>[]
     supportMessagesAsAuthor: Prisma.$SupportMessagePayload<ExtArgs>[]
     createdSocialPublications: Prisma.$SocialPublicationPayload<ExtArgs>[]
+    reviewedMarketingIntents: Prisma.$MarketingIntentPayload<ExtArgs>[]
     returnDecisions: Prisma.$ReturnDecisionPayload<ExtArgs>[]
     observabilitySignalEventsAsActor: Prisma.$ObservabilitySignalEventPayload<ExtArgs>[]
     requestedAiTasks: Prisma.$AiTaskPayload<ExtArgs>[]
@@ -7669,6 +8016,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   assignedSupportTickets<T extends Prisma.User$assignedSupportTicketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedSupportTicketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   supportMessagesAsAuthor<T extends Prisma.User$supportMessagesAsAuthorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportMessagesAsAuthorArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdSocialPublications<T extends Prisma.User$createdSocialPublicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdSocialPublicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SocialPublicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviewedMarketingIntents<T extends Prisma.User$reviewedMarketingIntentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedMarketingIntentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MarketingIntentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   returnDecisions<T extends Prisma.User$returnDecisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$returnDecisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReturnDecisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   observabilitySignalEventsAsActor<T extends Prisma.User$observabilitySignalEventsAsActorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$observabilitySignalEventsAsActorArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ObservabilitySignalEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   requestedAiTasks<T extends Prisma.User$requestedAiTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$requestedAiTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8691,6 +9039,30 @@ export type User$createdSocialPublicationsArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.SocialPublicationScalarFieldEnum | Prisma.SocialPublicationScalarFieldEnum[]
+}
+
+/**
+ * User.reviewedMarketingIntents
+ */
+export type User$reviewedMarketingIntentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MarketingIntent
+   */
+  select?: Prisma.MarketingIntentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MarketingIntent
+   */
+  omit?: Prisma.MarketingIntentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MarketingIntentInclude<ExtArgs> | null
+  where?: Prisma.MarketingIntentWhereInput
+  orderBy?: Prisma.MarketingIntentOrderByWithRelationInput | Prisma.MarketingIntentOrderByWithRelationInput[]
+  cursor?: Prisma.MarketingIntentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MarketingIntentScalarFieldEnum | Prisma.MarketingIntentScalarFieldEnum[]
 }
 
 /**

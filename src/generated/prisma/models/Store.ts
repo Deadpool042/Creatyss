@@ -468,6 +468,7 @@ export type StoreWhereInput = {
   supportTickets?: Prisma.SupportTicketListRelationFilter
   crmContacts?: Prisma.CrmContactListRelationFilter
   crmTags?: Prisma.CrmTagListRelationFilter
+  marketingIntents?: Prisma.MarketingIntentListRelationFilter
   conversionFlows?: Prisma.ConversionFlowListRelationFilter
   socialPublications?: Prisma.SocialPublicationListRelationFilter
   analyticsMetrics?: Prisma.AnalyticsMetricListRelationFilter
@@ -584,6 +585,7 @@ export type StoreOrderByWithRelationInput = {
   supportTickets?: Prisma.SupportTicketOrderByRelationAggregateInput
   crmContacts?: Prisma.CrmContactOrderByRelationAggregateInput
   crmTags?: Prisma.CrmTagOrderByRelationAggregateInput
+  marketingIntents?: Prisma.MarketingIntentOrderByRelationAggregateInput
   conversionFlows?: Prisma.ConversionFlowOrderByRelationAggregateInput
   socialPublications?: Prisma.SocialPublicationOrderByRelationAggregateInput
   analyticsMetrics?: Prisma.AnalyticsMetricOrderByRelationAggregateInput
@@ -703,6 +705,7 @@ export type StoreWhereUniqueInput = Prisma.AtLeast<{
   supportTickets?: Prisma.SupportTicketListRelationFilter
   crmContacts?: Prisma.CrmContactListRelationFilter
   crmTags?: Prisma.CrmTagListRelationFilter
+  marketingIntents?: Prisma.MarketingIntentListRelationFilter
   conversionFlows?: Prisma.ConversionFlowListRelationFilter
   socialPublications?: Prisma.SocialPublicationListRelationFilter
   analyticsMetrics?: Prisma.AnalyticsMetricListRelationFilter
@@ -898,6 +901,7 @@ export type StoreCreateInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -1013,6 +1017,7 @@ export type StoreUncheckedCreateInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -1128,6 +1133,7 @@ export type StoreUpdateInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -1243,6 +1249,7 @@ export type StoreUncheckedUpdateInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -1763,6 +1770,22 @@ export type StoreUpdateOneWithoutJobsNestedInput = {
   delete?: Prisma.StoreWhereInput | boolean
   connect?: Prisma.StoreWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutJobsInput, Prisma.StoreUpdateWithoutJobsInput>, Prisma.StoreUncheckedUpdateWithoutJobsInput>
+}
+
+export type StoreCreateNestedOneWithoutMarketingIntentsInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutMarketingIntentsInput, Prisma.StoreUncheckedCreateWithoutMarketingIntentsInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutMarketingIntentsInput
+  connect?: Prisma.StoreWhereUniqueInput
+}
+
+export type StoreUpdateOneWithoutMarketingIntentsNestedInput = {
+  create?: Prisma.XOR<Prisma.StoreCreateWithoutMarketingIntentsInput, Prisma.StoreUncheckedCreateWithoutMarketingIntentsInput>
+  connectOrCreate?: Prisma.StoreCreateOrConnectWithoutMarketingIntentsInput
+  upsert?: Prisma.StoreUpsertWithoutMarketingIntentsInput
+  disconnect?: Prisma.StoreWhereInput | boolean
+  delete?: Prisma.StoreWhereInput | boolean
+  connect?: Prisma.StoreWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StoreUpdateToOneWithWhereWithoutMarketingIntentsInput, Prisma.StoreUpdateWithoutMarketingIntentsInput>, Prisma.StoreUncheckedUpdateWithoutMarketingIntentsInput>
 }
 
 export type StoreCreateNestedOneWithoutMonitoringChecksInput = {
@@ -2810,6 +2833,7 @@ export type StoreCreateWithoutAvailabilityRecordsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -2924,6 +2948,7 @@ export type StoreUncheckedCreateWithoutAvailabilityRecordsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -3054,6 +3079,7 @@ export type StoreUpdateWithoutAvailabilityRecordsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -3168,6 +3194,7 @@ export type StoreUncheckedUpdateWithoutAvailabilityRecordsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -3282,6 +3309,7 @@ export type StoreCreateWithoutCategoriesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -3396,6 +3424,7 @@ export type StoreUncheckedCreateWithoutCategoriesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -3526,6 +3555,7 @@ export type StoreUpdateWithoutCategoriesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -3640,6 +3670,7 @@ export type StoreUncheckedUpdateWithoutCategoriesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -3754,6 +3785,7 @@ export type StoreCreateWithoutPriceListsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -3868,6 +3900,7 @@ export type StoreUncheckedCreateWithoutPriceListsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -3998,6 +4031,7 @@ export type StoreUpdateWithoutPriceListsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -4112,6 +4146,7 @@ export type StoreUncheckedUpdateWithoutPriceListsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -4226,6 +4261,7 @@ export type StoreCreateWithoutProductTypesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -4340,6 +4376,7 @@ export type StoreUncheckedCreateWithoutProductTypesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -4470,6 +4507,7 @@ export type StoreUpdateWithoutProductTypesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -4584,6 +4622,7 @@ export type StoreUncheckedUpdateWithoutProductTypesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -4698,6 +4737,7 @@ export type StoreCreateWithoutProductsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -4812,6 +4852,7 @@ export type StoreUncheckedCreateWithoutProductsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -4942,6 +4983,7 @@ export type StoreUpdateWithoutProductsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -5056,6 +5098,7 @@ export type StoreUncheckedUpdateWithoutProductsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -5170,6 +5213,7 @@ export type StoreCreateWithoutCartsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -5284,6 +5328,7 @@ export type StoreUncheckedCreateWithoutCartsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -5414,6 +5459,7 @@ export type StoreUpdateWithoutCartsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -5528,6 +5574,7 @@ export type StoreUncheckedUpdateWithoutCartsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -5642,6 +5689,7 @@ export type StoreCreateWithoutCheckoutsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -5756,6 +5804,7 @@ export type StoreUncheckedCreateWithoutCheckoutsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -5886,6 +5935,7 @@ export type StoreUpdateWithoutCheckoutsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -6000,6 +6050,7 @@ export type StoreUncheckedUpdateWithoutCheckoutsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -6114,6 +6165,7 @@ export type StoreCreateWithoutCustomersInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -6228,6 +6280,7 @@ export type StoreUncheckedCreateWithoutCustomersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -6358,6 +6411,7 @@ export type StoreUpdateWithoutCustomersInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -6472,6 +6526,7 @@ export type StoreUncheckedUpdateWithoutCustomersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -6586,6 +6641,7 @@ export type StoreCreateWithoutOrdersInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -6700,6 +6756,7 @@ export type StoreUncheckedCreateWithoutOrdersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -6830,6 +6887,7 @@ export type StoreUpdateWithoutOrdersInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -6944,6 +7002,7 @@ export type StoreUncheckedUpdateWithoutOrdersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -7058,6 +7117,7 @@ export type StoreCreateWithoutPagesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -7172,6 +7232,7 @@ export type StoreUncheckedCreateWithoutPagesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -7302,6 +7363,7 @@ export type StoreUpdateWithoutPagesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -7416,6 +7478,7 @@ export type StoreUncheckedUpdateWithoutPagesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -7530,6 +7593,7 @@ export type StoreCreateWithoutApiClientsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -7644,6 +7708,7 @@ export type StoreUncheckedCreateWithoutApiClientsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -7774,6 +7839,7 @@ export type StoreUpdateWithoutApiClientsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -7888,6 +7954,7 @@ export type StoreUncheckedUpdateWithoutApiClientsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -8002,6 +8069,7 @@ export type StoreCreateWithoutUsersInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -8116,6 +8184,7 @@ export type StoreUncheckedCreateWithoutUsersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -8246,6 +8315,7 @@ export type StoreUpdateWithoutUsersInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -8360,6 +8430,7 @@ export type StoreUncheckedUpdateWithoutUsersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -8474,6 +8545,7 @@ export type StoreCreateWithoutDomainsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -8588,6 +8660,7 @@ export type StoreUncheckedCreateWithoutDomainsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -8718,6 +8791,7 @@ export type StoreUpdateWithoutDomainsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -8832,6 +8906,7 @@ export type StoreUncheckedUpdateWithoutDomainsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -8946,6 +9021,7 @@ export type StoreCreateWithoutAuditLogsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -9060,6 +9136,7 @@ export type StoreUncheckedCreateWithoutAuditLogsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -9190,6 +9267,7 @@ export type StoreUpdateWithoutAuditLogsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -9304,6 +9382,7 @@ export type StoreUncheckedUpdateWithoutAuditLogsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -9419,6 +9498,7 @@ export type StoreCreateWithoutDomainEventsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -9533,6 +9613,7 @@ export type StoreUncheckedCreateWithoutDomainEventsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -9663,6 +9744,7 @@ export type StoreUpdateWithoutDomainEventsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -9777,6 +9859,7 @@ export type StoreUncheckedUpdateWithoutDomainEventsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -9890,6 +9973,7 @@ export type StoreCreateWithoutFeatureFlagsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -10004,6 +10088,7 @@ export type StoreUncheckedCreateWithoutFeatureFlagsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -10134,6 +10219,7 @@ export type StoreUpdateWithoutFeatureFlagsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -10248,6 +10334,7 @@ export type StoreUncheckedUpdateWithoutFeatureFlagsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -10362,6 +10449,7 @@ export type StoreCreateWithoutJobsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -10476,6 +10564,7 @@ export type StoreUncheckedCreateWithoutJobsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -10606,6 +10695,7 @@ export type StoreUpdateWithoutJobsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -10696,6 +10786,483 @@ export type StoreUncheckedUpdateWithoutJobsInput = {
   seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
   apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUncheckedUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUncheckedUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUncheckedUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUncheckedUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUncheckedUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUncheckedUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUncheckedUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUncheckedUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUncheckedUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUncheckedUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUncheckedUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUncheckedUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUncheckedUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUncheckedUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreCreateWithoutMarketingIntentsInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  addressLine1?: string | null
+  addressCity?: string | null
+  addressPostalCode?: string | null
+  addressCountry?: string | null
+  instagramUrl?: string | null
+  facebookUrl?: string | null
+  orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  logoImage?: Prisma.MediaAssetCreateNestedOneWithoutStoresAsLogoInput
+  domains?: Prisma.StoreDomainCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentCreateNestedManyWithoutStoreInput
+}
+
+export type StoreUncheckedCreateWithoutMarketingIntentsInput = {
+  id?: string
+  code: string
+  name: string
+  slug: string
+  status?: $Enums.StoreStatus
+  legalName?: string | null
+  siret?: string | null
+  vatNumber?: string | null
+  supportEmail?: string | null
+  supportPhone?: string | null
+  shippingReturnsPolicy?: string | null
+  addressLine1?: string | null
+  addressCity?: string | null
+  addressPostalCode?: string | null
+  addressCountry?: string | null
+  instagramUrl?: string | null
+  facebookUrl?: string | null
+  orderNumberPrefix?: string | null
+  emailConfirmationEnabled?: boolean
+  emailShippingEnabled?: boolean
+  replyToEmail?: string | null
+  bankTransferEnabled?: boolean
+  cashOnDeliveryEnabled?: boolean
+  bankTransferInstructions?: string | null
+  cashOnDeliveryInstructions?: string | null
+  logoImageId?: string | null
+  defaultLocaleCode: string
+  defaultCurrency?: $Enums.CurrencyCode
+  timezone?: string
+  isProduction?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  domains?: Prisma.StoreDomainUncheckedCreateNestedManyWithoutStoreInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutStoreInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutStoreInput
+  productTypes?: Prisma.ProductTypeUncheckedCreateNestedManyWithoutStoreInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutStoreInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutStoreInput
+  mediaAssets?: Prisma.MediaAssetUncheckedCreateNestedManyWithoutStoreInput
+  priceLists?: Prisma.PriceListUncheckedCreateNestedManyWithoutStoreInput
+  inventoryItems?: Prisma.InventoryItemUncheckedCreateNestedManyWithoutStoreInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedCreateNestedManyWithoutStoreInput
+  carts?: Prisma.CartUncheckedCreateNestedManyWithoutStoreInput
+  checkouts?: Prisma.CheckoutUncheckedCreateNestedManyWithoutStoreInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutStoreInput
+  shippingZones?: Prisma.ShippingZoneUncheckedCreateNestedManyWithoutStoreInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedCreateNestedManyWithoutStoreInput
+  shipments?: Prisma.ShipmentUncheckedCreateNestedManyWithoutStoreInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutStoreInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutStoreInput
+  documentCounters?: Prisma.DocumentCounterUncheckedCreateNestedManyWithoutStoreInput
+  returnRequests?: Prisma.ReturnRequestUncheckedCreateNestedManyWithoutStoreInput
+  discounts?: Prisma.DiscountUncheckedCreateNestedManyWithoutStoreInput
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutStoreInput
+  blogCategories?: Prisma.BlogCategoryUncheckedCreateNestedManyWithoutStoreInput
+  blogPosts?: Prisma.BlogPostUncheckedCreateNestedManyWithoutStoreInput
+  homepages?: Prisma.HomepageUncheckedCreateNestedManyWithoutStoreInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedCreateNestedManyWithoutStoreInput
+  apiClients?: Prisma.ApiClientUncheckedCreateNestedManyWithoutStoreInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutStoreInput
+  jobs?: Prisma.JobUncheckedCreateNestedManyWithoutStoreInput
+  integrations?: Prisma.IntegrationUncheckedCreateNestedManyWithoutStoreInput
+  webhookEndpoints?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutStoreInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutStoreInput
+  schedulePlans?: Prisma.SchedulePlanUncheckedCreateNestedManyWithoutStoreInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  workflowInstances?: Prisma.WorkflowInstanceUncheckedCreateNestedManyWithoutStoreInput
+  consentPurposes?: Prisma.ConsentPurposeUncheckedCreateNestedManyWithoutStoreInput
+  consentRecords?: Prisma.ConsentRecordUncheckedCreateNestedManyWithoutStoreInput
+  importDefinitions?: Prisma.ImportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  importRequests?: Prisma.ImportRequestUncheckedCreateNestedManyWithoutStoreInput
+  exportDefinitions?: Prisma.ExportDefinitionUncheckedCreateNestedManyWithoutStoreInput
+  exportRequests?: Prisma.ExportRequestUncheckedCreateNestedManyWithoutStoreInput
+  featureFlags?: Prisma.FeatureFlagUncheckedCreateNestedManyWithoutStoreInput
+  emailMessages?: Prisma.EmailMessageUncheckedCreateNestedManyWithoutStoreInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutStoreInput
+  notificationPreferences?: Prisma.NotificationPreferenceUncheckedCreateNestedManyWithoutStoreInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUncheckedCreateNestedManyWithoutStoreInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUncheckedCreateNestedManyWithoutStoreInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutStoreInput
+  automations?: Prisma.AutomationUncheckedCreateNestedManyWithoutStoreInput
+  publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
+  crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
+  crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
+  socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
+  attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
+  behaviorSegments?: Prisma.BehaviorSegmentUncheckedCreateNestedManyWithoutStoreInput
+  behaviorProfiles?: Prisma.BehaviorProfileUncheckedCreateNestedManyWithoutStoreInput
+  localizationLocales?: Prisma.LocalizationLocaleUncheckedCreateNestedManyWithoutStoreInput
+  localizedValues?: Prisma.LocalizedValueUncheckedCreateNestedManyWithoutStoreInput
+  recommendationRules?: Prisma.RecommendationRuleUncheckedCreateNestedManyWithoutStoreInput
+  searchDocuments?: Prisma.SearchDocumentUncheckedCreateNestedManyWithoutStoreInput
+  monitoringChecks?: Prisma.MonitoringCheckUncheckedCreateNestedManyWithoutStoreInput
+  observabilitySignals?: Prisma.ObservabilitySignalUncheckedCreateNestedManyWithoutStoreInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutStoreInput
+  taxRules?: Prisma.TaxRuleUncheckedCreateNestedManyWithoutStoreInput
+  channels?: Prisma.ChannelUncheckedCreateNestedManyWithoutStoreInput
+  salesPolicies?: Prisma.SalesPolicyUncheckedCreateNestedManyWithoutStoreInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUncheckedCreateNestedManyWithoutStoreInput
+  bundles?: Prisma.BundleUncheckedCreateNestedManyWithoutStoreInput
+  giftCards?: Prisma.GiftCardUncheckedCreateNestedManyWithoutStoreInput
+  giftRequests?: Prisma.GiftRequestUncheckedCreateNestedManyWithoutStoreInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUncheckedCreateNestedManyWithoutStoreInput
+  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutStoreInput
+  aiProviders?: Prisma.AiProviderUncheckedCreateNestedManyWithoutStoreInput
+  aiTasks?: Prisma.AiTaskUncheckedCreateNestedManyWithoutStoreInput
+  fulfillments?: Prisma.FulfillmentUncheckedCreateNestedManyWithoutStoreInput
+}
+
+export type StoreCreateOrConnectWithoutMarketingIntentsInput = {
+  where: Prisma.StoreWhereUniqueInput
+  create: Prisma.XOR<Prisma.StoreCreateWithoutMarketingIntentsInput, Prisma.StoreUncheckedCreateWithoutMarketingIntentsInput>
+}
+
+export type StoreUpsertWithoutMarketingIntentsInput = {
+  update: Prisma.XOR<Prisma.StoreUpdateWithoutMarketingIntentsInput, Prisma.StoreUncheckedUpdateWithoutMarketingIntentsInput>
+  create: Prisma.XOR<Prisma.StoreCreateWithoutMarketingIntentsInput, Prisma.StoreUncheckedCreateWithoutMarketingIntentsInput>
+  where?: Prisma.StoreWhereInput
+}
+
+export type StoreUpdateToOneWithWhereWithoutMarketingIntentsInput = {
+  where?: Prisma.StoreWhereInput
+  data: Prisma.XOR<Prisma.StoreUpdateWithoutMarketingIntentsInput, Prisma.StoreUncheckedUpdateWithoutMarketingIntentsInput>
+}
+
+export type StoreUpdateWithoutMarketingIntentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logoImage?: Prisma.MediaAssetUpdateOneWithoutStoresAsLogoNestedInput
+  domains?: Prisma.StoreDomainUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUpdateManyWithoutStoreNestedInput
+  integrations?: Prisma.IntegrationUpdateManyWithoutStoreNestedInput
+  webhookEndpoints?: Prisma.WebhookEndpointUpdateManyWithoutStoreNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutStoreNestedInput
+  schedulePlans?: Prisma.SchedulePlanUpdateManyWithoutStoreNestedInput
+  workflowDefinitions?: Prisma.WorkflowDefinitionUpdateManyWithoutStoreNestedInput
+  workflowInstances?: Prisma.WorkflowInstanceUpdateManyWithoutStoreNestedInput
+  consentPurposes?: Prisma.ConsentPurposeUpdateManyWithoutStoreNestedInput
+  consentRecords?: Prisma.ConsentRecordUpdateManyWithoutStoreNestedInput
+  importDefinitions?: Prisma.ImportDefinitionUpdateManyWithoutStoreNestedInput
+  importRequests?: Prisma.ImportRequestUpdateManyWithoutStoreNestedInput
+  exportDefinitions?: Prisma.ExportDefinitionUpdateManyWithoutStoreNestedInput
+  exportRequests?: Prisma.ExportRequestUpdateManyWithoutStoreNestedInput
+  featureFlags?: Prisma.FeatureFlagUpdateManyWithoutStoreNestedInput
+  emailMessages?: Prisma.EmailMessageUpdateManyWithoutStoreNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutStoreNestedInput
+  notificationPreferences?: Prisma.NotificationPreferenceUpdateManyWithoutStoreNestedInput
+  fraudRiskAssessments?: Prisma.FraudRiskAssessmentUpdateManyWithoutStoreNestedInput
+  newsletterSubscribers?: Prisma.NewsletterSubscriberUpdateManyWithoutStoreNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutStoreNestedInput
+  automations?: Prisma.AutomationUpdateManyWithoutStoreNestedInput
+  publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
+  crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
+  crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
+  socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
+  analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
+  attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
+  behaviorSegments?: Prisma.BehaviorSegmentUpdateManyWithoutStoreNestedInput
+  behaviorProfiles?: Prisma.BehaviorProfileUpdateManyWithoutStoreNestedInput
+  localizationLocales?: Prisma.LocalizationLocaleUpdateManyWithoutStoreNestedInput
+  localizedValues?: Prisma.LocalizedValueUpdateManyWithoutStoreNestedInput
+  recommendationRules?: Prisma.RecommendationRuleUpdateManyWithoutStoreNestedInput
+  searchDocuments?: Prisma.SearchDocumentUpdateManyWithoutStoreNestedInput
+  monitoringChecks?: Prisma.MonitoringCheckUpdateManyWithoutStoreNestedInput
+  observabilitySignals?: Prisma.ObservabilitySignalUpdateManyWithoutStoreNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutStoreNestedInput
+  taxRules?: Prisma.TaxRuleUpdateManyWithoutStoreNestedInput
+  channels?: Prisma.ChannelUpdateManyWithoutStoreNestedInput
+  salesPolicies?: Prisma.SalesPolicyUpdateManyWithoutStoreNestedInput
+  sellabilityDecisions?: Prisma.SellabilityDecisionUpdateManyWithoutStoreNestedInput
+  bundles?: Prisma.BundleUpdateManyWithoutStoreNestedInput
+  giftCards?: Prisma.GiftCardUpdateManyWithoutStoreNestedInput
+  giftRequests?: Prisma.GiftRequestUpdateManyWithoutStoreNestedInput
+  loyaltyAccounts?: Prisma.LoyaltyAccountUpdateManyWithoutStoreNestedInput
+  subscriptions?: Prisma.SubscriptionUpdateManyWithoutStoreNestedInput
+  aiProviders?: Prisma.AiProviderUpdateManyWithoutStoreNestedInput
+  aiTasks?: Prisma.AiTaskUpdateManyWithoutStoreNestedInput
+  fulfillments?: Prisma.FulfillmentUpdateManyWithoutStoreNestedInput
+}
+
+export type StoreUncheckedUpdateWithoutMarketingIntentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStoreStatusFieldUpdateOperationsInput | $Enums.StoreStatus
+  legalName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  siret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vatNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  shippingReturnsPolicy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressPostalCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressCountry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderNumberPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailConfirmationEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailShippingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  replyToEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankTransferEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  cashOnDeliveryEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bankTransferInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cashOnDeliveryInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultLocaleCode?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultCurrency?: Prisma.EnumCurrencyCodeFieldUpdateOperationsInput | $Enums.CurrencyCode
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  isProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  domains?: Prisma.StoreDomainUncheckedUpdateManyWithoutStoreNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutStoreNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutStoreNestedInput
+  productTypes?: Prisma.ProductTypeUncheckedUpdateManyWithoutStoreNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutStoreNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutStoreNestedInput
+  mediaAssets?: Prisma.MediaAssetUncheckedUpdateManyWithoutStoreNestedInput
+  priceLists?: Prisma.PriceListUncheckedUpdateManyWithoutStoreNestedInput
+  inventoryItems?: Prisma.InventoryItemUncheckedUpdateManyWithoutStoreNestedInput
+  availabilityRecords?: Prisma.AvailabilityRecordUncheckedUpdateManyWithoutStoreNestedInput
+  carts?: Prisma.CartUncheckedUpdateManyWithoutStoreNestedInput
+  checkouts?: Prisma.CheckoutUncheckedUpdateManyWithoutStoreNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutStoreNestedInput
+  shippingZones?: Prisma.ShippingZoneUncheckedUpdateManyWithoutStoreNestedInput
+  shippingMethods?: Prisma.ShippingMethodUncheckedUpdateManyWithoutStoreNestedInput
+  shipments?: Prisma.ShipmentUncheckedUpdateManyWithoutStoreNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutStoreNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutStoreNestedInput
+  documentCounters?: Prisma.DocumentCounterUncheckedUpdateManyWithoutStoreNestedInput
+  returnRequests?: Prisma.ReturnRequestUncheckedUpdateManyWithoutStoreNestedInput
+  discounts?: Prisma.DiscountUncheckedUpdateManyWithoutStoreNestedInput
+  pages?: Prisma.PageUncheckedUpdateManyWithoutStoreNestedInput
+  blogCategories?: Prisma.BlogCategoryUncheckedUpdateManyWithoutStoreNestedInput
+  blogPosts?: Prisma.BlogPostUncheckedUpdateManyWithoutStoreNestedInput
+  homepages?: Prisma.HomepageUncheckedUpdateManyWithoutStoreNestedInput
+  seoMetadata?: Prisma.SeoMetadataUncheckedUpdateManyWithoutStoreNestedInput
+  apiClients?: Prisma.ApiClientUncheckedUpdateManyWithoutStoreNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutStoreNestedInput
+  jobs?: Prisma.JobUncheckedUpdateManyWithoutStoreNestedInput
   integrations?: Prisma.IntegrationUncheckedUpdateManyWithoutStoreNestedInput
   webhookEndpoints?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutStoreNestedInput
   approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutStoreNestedInput
@@ -10835,6 +11402,7 @@ export type StoreCreateWithoutMonitoringChecksInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -10949,6 +11517,7 @@ export type StoreUncheckedCreateWithoutMonitoringChecksInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -11079,6 +11648,7 @@ export type StoreUpdateWithoutMonitoringChecksInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -11193,6 +11763,7 @@ export type StoreUncheckedUpdateWithoutMonitoringChecksInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -11307,6 +11878,7 @@ export type StoreCreateWithoutObservabilitySignalsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -11421,6 +11993,7 @@ export type StoreUncheckedCreateWithoutObservabilitySignalsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -11551,6 +12124,7 @@ export type StoreUpdateWithoutObservabilitySignalsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -11665,6 +12239,7 @@ export type StoreUncheckedUpdateWithoutObservabilitySignalsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -11778,6 +12353,7 @@ export type StoreCreateWithoutSeoMetadataInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -11892,6 +12468,7 @@ export type StoreUncheckedCreateWithoutSeoMetadataInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -12022,6 +12599,7 @@ export type StoreUpdateWithoutSeoMetadataInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -12136,6 +12714,7 @@ export type StoreUncheckedUpdateWithoutSeoMetadataInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -12251,6 +12830,7 @@ export type StoreCreateWithoutAiProvidersInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -12365,6 +12945,7 @@ export type StoreUncheckedCreateWithoutAiProvidersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -12495,6 +13076,7 @@ export type StoreUpdateWithoutAiProvidersInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -12609,6 +13191,7 @@ export type StoreUncheckedUpdateWithoutAiProvidersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -12723,6 +13306,7 @@ export type StoreCreateWithoutAiTasksInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -12837,6 +13421,7 @@ export type StoreUncheckedCreateWithoutAiTasksInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -12967,6 +13552,7 @@ export type StoreUpdateWithoutAiTasksInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -13081,6 +13667,7 @@ export type StoreUncheckedUpdateWithoutAiTasksInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -13195,6 +13782,7 @@ export type StoreCreateWithoutBundlesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -13309,6 +13897,7 @@ export type StoreUncheckedCreateWithoutBundlesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -13439,6 +14028,7 @@ export type StoreUpdateWithoutBundlesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -13553,6 +14143,7 @@ export type StoreUncheckedUpdateWithoutBundlesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -13666,6 +14257,7 @@ export type StoreCreateWithoutDiscountsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -13780,6 +14372,7 @@ export type StoreUncheckedCreateWithoutDiscountsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -13910,6 +14503,7 @@ export type StoreUpdateWithoutDiscountsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -14024,6 +14618,7 @@ export type StoreUncheckedUpdateWithoutDiscountsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -14138,6 +14733,7 @@ export type StoreCreateWithoutDocumentsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -14252,6 +14848,7 @@ export type StoreUncheckedCreateWithoutDocumentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -14382,6 +14979,7 @@ export type StoreUpdateWithoutDocumentsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -14496,6 +15094,7 @@ export type StoreUncheckedUpdateWithoutDocumentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -14610,6 +15209,7 @@ export type StoreCreateWithoutDocumentCountersInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -14724,6 +15324,7 @@ export type StoreUncheckedCreateWithoutDocumentCountersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -14854,6 +15455,7 @@ export type StoreUpdateWithoutDocumentCountersInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -14968,6 +15570,7 @@ export type StoreUncheckedUpdateWithoutDocumentCountersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -15083,6 +15686,7 @@ export type StoreCreateWithoutFulfillmentsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -15197,6 +15801,7 @@ export type StoreUncheckedCreateWithoutFulfillmentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -15327,6 +15932,7 @@ export type StoreUpdateWithoutFulfillmentsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -15441,6 +16047,7 @@ export type StoreUncheckedUpdateWithoutFulfillmentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -15555,6 +16162,7 @@ export type StoreCreateWithoutGiftCardsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -15669,6 +16277,7 @@ export type StoreUncheckedCreateWithoutGiftCardsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -15799,6 +16408,7 @@ export type StoreUpdateWithoutGiftCardsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -15913,6 +16523,7 @@ export type StoreUncheckedUpdateWithoutGiftCardsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -16027,6 +16638,7 @@ export type StoreCreateWithoutGiftRequestsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -16141,6 +16753,7 @@ export type StoreUncheckedCreateWithoutGiftRequestsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -16271,6 +16884,7 @@ export type StoreUpdateWithoutGiftRequestsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -16385,6 +16999,7 @@ export type StoreUncheckedUpdateWithoutGiftRequestsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -16498,6 +17113,7 @@ export type StoreCreateWithoutInventoryItemsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -16612,6 +17228,7 @@ export type StoreUncheckedCreateWithoutInventoryItemsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -16742,6 +17359,7 @@ export type StoreUpdateWithoutInventoryItemsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -16856,6 +17474,7 @@ export type StoreUncheckedUpdateWithoutInventoryItemsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -16971,6 +17590,7 @@ export type StoreCreateWithoutLoyaltyAccountsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -17085,6 +17705,7 @@ export type StoreUncheckedCreateWithoutLoyaltyAccountsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -17215,6 +17836,7 @@ export type StoreUpdateWithoutLoyaltyAccountsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -17329,6 +17951,7 @@ export type StoreUncheckedUpdateWithoutLoyaltyAccountsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -17442,6 +18065,7 @@ export type StoreCreateWithoutPaymentsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -17556,6 +18180,7 @@ export type StoreUncheckedCreateWithoutPaymentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -17686,6 +18311,7 @@ export type StoreUpdateWithoutPaymentsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -17800,6 +18426,7 @@ export type StoreUncheckedUpdateWithoutPaymentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -17914,6 +18541,7 @@ export type StoreCreateWithoutReturnRequestsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -18028,6 +18656,7 @@ export type StoreUncheckedCreateWithoutReturnRequestsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -18158,6 +18787,7 @@ export type StoreUpdateWithoutReturnRequestsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -18272,6 +18902,7 @@ export type StoreUncheckedUpdateWithoutReturnRequestsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -18387,6 +19018,7 @@ export type StoreCreateWithoutSalesPoliciesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -18501,6 +19133,7 @@ export type StoreUncheckedCreateWithoutSalesPoliciesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -18631,6 +19264,7 @@ export type StoreUpdateWithoutSalesPoliciesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -18745,6 +19379,7 @@ export type StoreUncheckedUpdateWithoutSalesPoliciesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -18859,6 +19494,7 @@ export type StoreCreateWithoutSellabilityDecisionsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -18973,6 +19609,7 @@ export type StoreUncheckedCreateWithoutSellabilityDecisionsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -19103,6 +19740,7 @@ export type StoreUpdateWithoutSellabilityDecisionsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -19217,6 +19855,7 @@ export type StoreUncheckedUpdateWithoutSellabilityDecisionsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -19330,6 +19969,7 @@ export type StoreCreateWithoutShippingZonesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -19444,6 +20084,7 @@ export type StoreUncheckedCreateWithoutShippingZonesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -19574,6 +20215,7 @@ export type StoreUpdateWithoutShippingZonesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -19688,6 +20330,7 @@ export type StoreUncheckedUpdateWithoutShippingZonesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -19802,6 +20445,7 @@ export type StoreCreateWithoutShippingMethodsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -19916,6 +20560,7 @@ export type StoreUncheckedCreateWithoutShippingMethodsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -20046,6 +20691,7 @@ export type StoreUpdateWithoutShippingMethodsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -20160,6 +20806,7 @@ export type StoreUncheckedUpdateWithoutShippingMethodsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -20274,6 +20921,7 @@ export type StoreCreateWithoutShipmentsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -20388,6 +21036,7 @@ export type StoreUncheckedCreateWithoutShipmentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -20518,6 +21167,7 @@ export type StoreUpdateWithoutShipmentsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -20632,6 +21282,7 @@ export type StoreUncheckedUpdateWithoutShipmentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -20747,6 +21398,7 @@ export type StoreCreateWithoutSubscriptionsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -20861,6 +21513,7 @@ export type StoreUncheckedCreateWithoutSubscriptionsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -20991,6 +21644,7 @@ export type StoreUpdateWithoutSubscriptionsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -21105,6 +21759,7 @@ export type StoreUncheckedUpdateWithoutSubscriptionsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -21219,6 +21874,7 @@ export type StoreCreateWithoutTaxRulesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -21333,6 +21989,7 @@ export type StoreUncheckedCreateWithoutTaxRulesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -21463,6 +22120,7 @@ export type StoreUpdateWithoutTaxRulesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -21577,6 +22235,7 @@ export type StoreUncheckedUpdateWithoutTaxRulesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -21691,6 +22350,7 @@ export type StoreCreateWithoutAnalyticsMetricsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
@@ -21805,6 +22465,7 @@ export type StoreUncheckedCreateWithoutAnalyticsMetricsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
@@ -21935,6 +22596,7 @@ export type StoreUpdateWithoutAnalyticsMetricsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
@@ -22049,6 +22711,7 @@ export type StoreUncheckedUpdateWithoutAnalyticsMetricsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
@@ -22163,6 +22826,7 @@ export type StoreCreateWithoutAttributionModelsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -22277,6 +22941,7 @@ export type StoreUncheckedCreateWithoutAttributionModelsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -22407,6 +23072,7 @@ export type StoreUpdateWithoutAttributionModelsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -22521,6 +23187,7 @@ export type StoreUncheckedUpdateWithoutAttributionModelsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -22634,6 +23301,7 @@ export type StoreCreateWithoutAutomationsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -22748,6 +23416,7 @@ export type StoreUncheckedCreateWithoutAutomationsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -22878,6 +23547,7 @@ export type StoreUpdateWithoutAutomationsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -22992,6 +23662,7 @@ export type StoreUncheckedUpdateWithoutAutomationsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -23107,6 +23778,7 @@ export type StoreCreateWithoutBehaviorSegmentsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -23221,6 +23893,7 @@ export type StoreUncheckedCreateWithoutBehaviorSegmentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -23351,6 +24024,7 @@ export type StoreUpdateWithoutBehaviorSegmentsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -23465,6 +24139,7 @@ export type StoreUncheckedUpdateWithoutBehaviorSegmentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -23579,6 +24254,7 @@ export type StoreCreateWithoutBehaviorProfilesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -23693,6 +24369,7 @@ export type StoreUncheckedCreateWithoutBehaviorProfilesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -23823,6 +24500,7 @@ export type StoreUpdateWithoutBehaviorProfilesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -23937,6 +24615,7 @@ export type StoreUncheckedUpdateWithoutBehaviorProfilesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -24050,6 +24729,7 @@ export type StoreCreateWithoutBlogCategoriesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -24164,6 +24844,7 @@ export type StoreUncheckedCreateWithoutBlogCategoriesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -24294,6 +24975,7 @@ export type StoreUpdateWithoutBlogCategoriesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -24408,6 +25090,7 @@ export type StoreUncheckedUpdateWithoutBlogCategoriesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -24522,6 +25205,7 @@ export type StoreCreateWithoutBlogPostsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -24636,6 +25320,7 @@ export type StoreUncheckedCreateWithoutBlogPostsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -24766,6 +25451,7 @@ export type StoreUpdateWithoutBlogPostsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -24880,6 +25566,7 @@ export type StoreUncheckedUpdateWithoutBlogPostsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -24995,6 +25682,7 @@ export type StoreCreateWithoutConversionFlowsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
   attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
@@ -25109,6 +25797,7 @@ export type StoreUncheckedCreateWithoutConversionFlowsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
   attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
@@ -25239,6 +25928,7 @@ export type StoreUpdateWithoutConversionFlowsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
   attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
@@ -25353,6 +26043,7 @@ export type StoreUncheckedUpdateWithoutConversionFlowsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
   attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
@@ -25466,6 +26157,7 @@ export type StoreCreateWithoutCrmContactsInput = {
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -25580,6 +26272,7 @@ export type StoreUncheckedCreateWithoutCrmContactsInput = {
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -25710,6 +26403,7 @@ export type StoreUpdateWithoutCrmContactsInput = {
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -25824,6 +26518,7 @@ export type StoreUncheckedUpdateWithoutCrmContactsInput = {
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -25938,6 +26633,7 @@ export type StoreCreateWithoutCrmTagsInput = {
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -26052,6 +26748,7 @@ export type StoreUncheckedCreateWithoutCrmTagsInput = {
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -26182,6 +26879,7 @@ export type StoreUpdateWithoutCrmTagsInput = {
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -26296,6 +26994,7 @@ export type StoreUncheckedUpdateWithoutCrmTagsInput = {
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -26410,6 +27109,7 @@ export type StoreCreateWithoutNewsletterSubscribersInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -26524,6 +27224,7 @@ export type StoreUncheckedCreateWithoutNewsletterSubscribersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -26654,6 +27355,7 @@ export type StoreUpdateWithoutNewsletterSubscribersInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -26768,6 +27470,7 @@ export type StoreUncheckedUpdateWithoutNewsletterSubscribersInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -26882,6 +27585,7 @@ export type StoreCreateWithoutNewsletterCampaignsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -26996,6 +27700,7 @@ export type StoreUncheckedCreateWithoutNewsletterCampaignsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -27126,6 +27831,7 @@ export type StoreUpdateWithoutNewsletterCampaignsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -27240,6 +27946,7 @@ export type StoreUncheckedUpdateWithoutNewsletterCampaignsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -27354,6 +28061,7 @@ export type StoreCreateWithoutPublicEventsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -27468,6 +28176,7 @@ export type StoreUncheckedCreateWithoutPublicEventsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -27598,6 +28307,7 @@ export type StoreUpdateWithoutPublicEventsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -27712,6 +28422,7 @@ export type StoreUncheckedUpdateWithoutPublicEventsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -27827,6 +28538,7 @@ export type StoreCreateWithoutRecommendationRulesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -27941,6 +28653,7 @@ export type StoreUncheckedCreateWithoutRecommendationRulesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -28071,6 +28784,7 @@ export type StoreUpdateWithoutRecommendationRulesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -28185,6 +28899,7 @@ export type StoreUncheckedUpdateWithoutRecommendationRulesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -28299,6 +29014,7 @@ export type StoreCreateWithoutSocialPublicationsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
   attributionModels?: Prisma.AttributionModelCreateNestedManyWithoutStoreInput
@@ -28413,6 +29129,7 @@ export type StoreUncheckedCreateWithoutSocialPublicationsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
   attributionModels?: Prisma.AttributionModelUncheckedCreateNestedManyWithoutStoreInput
@@ -28543,6 +29260,7 @@ export type StoreUpdateWithoutSocialPublicationsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
   attributionModels?: Prisma.AttributionModelUpdateManyWithoutStoreNestedInput
@@ -28657,6 +29375,7 @@ export type StoreUncheckedUpdateWithoutSocialPublicationsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
   attributionModels?: Prisma.AttributionModelUncheckedUpdateManyWithoutStoreNestedInput
@@ -28770,6 +29489,7 @@ export type StoreCreateWithoutSupportTicketsInput = {
   publicEvents?: Prisma.PublicEventCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -28884,6 +29604,7 @@ export type StoreUncheckedCreateWithoutSupportTicketsInput = {
   publicEvents?: Prisma.PublicEventUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -29014,6 +29735,7 @@ export type StoreUpdateWithoutSupportTicketsInput = {
   publicEvents?: Prisma.PublicEventUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -29128,6 +29850,7 @@ export type StoreUncheckedUpdateWithoutSupportTicketsInput = {
   publicEvents?: Prisma.PublicEventUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -29242,6 +29965,7 @@ export type StoreCreateWithoutHomepagesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -29356,6 +30080,7 @@ export type StoreUncheckedCreateWithoutHomepagesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -29486,6 +30211,7 @@ export type StoreUpdateWithoutHomepagesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -29600,6 +30326,7 @@ export type StoreUncheckedUpdateWithoutHomepagesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -29714,6 +30441,7 @@ export type StoreCreateWithoutApprovalRequestsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -29828,6 +30556,7 @@ export type StoreUncheckedCreateWithoutApprovalRequestsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -29958,6 +30687,7 @@ export type StoreUpdateWithoutApprovalRequestsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -30072,6 +30802,7 @@ export type StoreUncheckedUpdateWithoutApprovalRequestsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -30186,6 +30917,7 @@ export type StoreCreateWithoutConsentPurposesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -30300,6 +31032,7 @@ export type StoreUncheckedCreateWithoutConsentPurposesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -30430,6 +31163,7 @@ export type StoreUpdateWithoutConsentPurposesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -30544,6 +31278,7 @@ export type StoreUncheckedUpdateWithoutConsentPurposesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -30658,6 +31393,7 @@ export type StoreCreateWithoutConsentRecordsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -30772,6 +31508,7 @@ export type StoreUncheckedCreateWithoutConsentRecordsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -30902,6 +31639,7 @@ export type StoreUpdateWithoutConsentRecordsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -31016,6 +31754,7 @@ export type StoreUncheckedUpdateWithoutConsentRecordsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -31130,6 +31869,7 @@ export type StoreCreateWithoutEmailMessagesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -31244,6 +31984,7 @@ export type StoreUncheckedCreateWithoutEmailMessagesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -31374,6 +32115,7 @@ export type StoreUpdateWithoutEmailMessagesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -31488,6 +32230,7 @@ export type StoreUncheckedUpdateWithoutEmailMessagesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -31602,6 +32345,7 @@ export type StoreCreateWithoutExportDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -31716,6 +32460,7 @@ export type StoreUncheckedCreateWithoutExportDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -31846,6 +32591,7 @@ export type StoreUpdateWithoutExportDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -31960,6 +32706,7 @@ export type StoreUncheckedUpdateWithoutExportDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -32074,6 +32821,7 @@ export type StoreCreateWithoutExportRequestsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -32188,6 +32936,7 @@ export type StoreUncheckedCreateWithoutExportRequestsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -32318,6 +33067,7 @@ export type StoreUpdateWithoutExportRequestsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -32432,6 +33182,7 @@ export type StoreUncheckedUpdateWithoutExportRequestsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -32546,6 +33297,7 @@ export type StoreCreateWithoutFraudRiskAssessmentsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -32660,6 +33412,7 @@ export type StoreUncheckedCreateWithoutFraudRiskAssessmentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -32790,6 +33543,7 @@ export type StoreUpdateWithoutFraudRiskAssessmentsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -32904,6 +33658,7 @@ export type StoreUncheckedUpdateWithoutFraudRiskAssessmentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -33018,6 +33773,7 @@ export type StoreCreateWithoutImportDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -33132,6 +33888,7 @@ export type StoreUncheckedCreateWithoutImportDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -33262,6 +34019,7 @@ export type StoreUpdateWithoutImportDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -33376,6 +34134,7 @@ export type StoreUncheckedUpdateWithoutImportDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -33490,6 +34249,7 @@ export type StoreCreateWithoutImportRequestsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -33604,6 +34364,7 @@ export type StoreUncheckedCreateWithoutImportRequestsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -33734,6 +34495,7 @@ export type StoreUpdateWithoutImportRequestsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -33848,6 +34610,7 @@ export type StoreUncheckedUpdateWithoutImportRequestsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -33962,6 +34725,7 @@ export type StoreCreateWithoutIntegrationsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -34076,6 +34840,7 @@ export type StoreUncheckedCreateWithoutIntegrationsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -34206,6 +34971,7 @@ export type StoreUpdateWithoutIntegrationsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -34320,6 +35086,7 @@ export type StoreUncheckedUpdateWithoutIntegrationsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -34435,6 +35202,7 @@ export type StoreCreateWithoutLocalizationLocalesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -34549,6 +35317,7 @@ export type StoreUncheckedCreateWithoutLocalizationLocalesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -34679,6 +35448,7 @@ export type StoreUpdateWithoutLocalizationLocalesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -34793,6 +35563,7 @@ export type StoreUncheckedUpdateWithoutLocalizationLocalesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -34907,6 +35678,7 @@ export type StoreCreateWithoutLocalizedValuesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -35021,6 +35793,7 @@ export type StoreUncheckedCreateWithoutLocalizedValuesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -35151,6 +35924,7 @@ export type StoreUpdateWithoutLocalizedValuesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -35265,6 +36039,7 @@ export type StoreUncheckedUpdateWithoutLocalizedValuesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -35378,6 +36153,7 @@ export type StoreCreateWithoutNotificationsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -35492,6 +36268,7 @@ export type StoreUncheckedCreateWithoutNotificationsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -35622,6 +36399,7 @@ export type StoreUpdateWithoutNotificationsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -35736,6 +36514,7 @@ export type StoreUncheckedUpdateWithoutNotificationsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -35850,6 +36629,7 @@ export type StoreCreateWithoutNotificationPreferencesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -35964,6 +36744,7 @@ export type StoreUncheckedCreateWithoutNotificationPreferencesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -36094,6 +36875,7 @@ export type StoreUpdateWithoutNotificationPreferencesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -36208,6 +36990,7 @@ export type StoreUncheckedUpdateWithoutNotificationPreferencesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -36322,6 +37105,7 @@ export type StoreCreateWithoutSchedulePlansInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -36436,6 +37220,7 @@ export type StoreUncheckedCreateWithoutSchedulePlansInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -36566,6 +37351,7 @@ export type StoreUpdateWithoutSchedulePlansInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -36680,6 +37466,7 @@ export type StoreUncheckedUpdateWithoutSchedulePlansInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -36794,6 +37581,7 @@ export type StoreCreateWithoutWebhookEndpointsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -36908,6 +37696,7 @@ export type StoreUncheckedCreateWithoutWebhookEndpointsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -37038,6 +37827,7 @@ export type StoreUpdateWithoutWebhookEndpointsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -37152,6 +37942,7 @@ export type StoreUncheckedUpdateWithoutWebhookEndpointsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -37266,6 +38057,7 @@ export type StoreCreateWithoutWorkflowDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -37380,6 +38172,7 @@ export type StoreUncheckedCreateWithoutWorkflowDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -37510,6 +38303,7 @@ export type StoreUpdateWithoutWorkflowDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -37624,6 +38418,7 @@ export type StoreUncheckedUpdateWithoutWorkflowDefinitionsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -37738,6 +38533,7 @@ export type StoreCreateWithoutWorkflowInstancesInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -37852,6 +38648,7 @@ export type StoreUncheckedCreateWithoutWorkflowInstancesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -37982,6 +38779,7 @@ export type StoreUpdateWithoutWorkflowInstancesInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -38096,6 +38894,7 @@ export type StoreUncheckedUpdateWithoutWorkflowInstancesInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -38211,6 +39010,7 @@ export type StoreCreateWithoutChannelsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -38325,6 +39125,7 @@ export type StoreUncheckedCreateWithoutChannelsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -38455,6 +39256,7 @@ export type StoreUpdateWithoutChannelsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -38569,6 +39371,7 @@ export type StoreUncheckedUpdateWithoutChannelsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -38682,6 +39485,7 @@ export type StoreCreateWithoutMediaAssetsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -38796,6 +39600,7 @@ export type StoreUncheckedCreateWithoutMediaAssetsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -38915,6 +39720,7 @@ export type StoreCreateWithoutLogoImageInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -39029,6 +39835,7 @@ export type StoreUncheckedCreateWithoutLogoImageInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -39164,6 +39971,7 @@ export type StoreUpdateWithoutMediaAssetsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -39278,6 +40086,7 @@ export type StoreUncheckedUpdateWithoutMediaAssetsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -39449,6 +40258,7 @@ export type StoreCreateWithoutSearchDocumentsInput = {
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricCreateNestedManyWithoutStoreInput
@@ -39563,6 +40373,7 @@ export type StoreUncheckedCreateWithoutSearchDocumentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutStoreInput
   crmContacts?: Prisma.CrmContactUncheckedCreateNestedManyWithoutStoreInput
   crmTags?: Prisma.CrmTagUncheckedCreateNestedManyWithoutStoreInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutStoreInput
   conversionFlows?: Prisma.ConversionFlowUncheckedCreateNestedManyWithoutStoreInput
   socialPublications?: Prisma.SocialPublicationUncheckedCreateNestedManyWithoutStoreInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedCreateNestedManyWithoutStoreInput
@@ -39693,6 +40504,7 @@ export type StoreUpdateWithoutSearchDocumentsInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -39807,6 +40619,7 @@ export type StoreUncheckedUpdateWithoutSearchDocumentsInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -39956,6 +40769,7 @@ export type StoreUpdateWithoutLogoImageInput = {
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUpdateManyWithoutStoreNestedInput
@@ -40070,6 +40884,7 @@ export type StoreUncheckedUpdateWithoutLogoImageInput = {
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutStoreNestedInput
   crmContacts?: Prisma.CrmContactUncheckedUpdateManyWithoutStoreNestedInput
   crmTags?: Prisma.CrmTagUncheckedUpdateManyWithoutStoreNestedInput
+  marketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutStoreNestedInput
   conversionFlows?: Prisma.ConversionFlowUncheckedUpdateManyWithoutStoreNestedInput
   socialPublications?: Prisma.SocialPublicationUncheckedUpdateManyWithoutStoreNestedInput
   analyticsMetrics?: Prisma.AnalyticsMetricUncheckedUpdateManyWithoutStoreNestedInput
@@ -40192,6 +41007,7 @@ export type StoreCountOutputType = {
   supportTickets: number
   crmContacts: number
   crmTags: number
+  marketingIntents: number
   conversionFlows: number
   socialPublications: number
   analyticsMetrics: number
@@ -40273,6 +41089,7 @@ export type StoreCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   supportTickets?: boolean | StoreCountOutputTypeCountSupportTicketsArgs
   crmContacts?: boolean | StoreCountOutputTypeCountCrmContactsArgs
   crmTags?: boolean | StoreCountOutputTypeCountCrmTagsArgs
+  marketingIntents?: boolean | StoreCountOutputTypeCountMarketingIntentsArgs
   conversionFlows?: boolean | StoreCountOutputTypeCountConversionFlowsArgs
   socialPublications?: boolean | StoreCountOutputTypeCountSocialPublicationsArgs
   analyticsMetrics?: boolean | StoreCountOutputTypeCountAnalyticsMetricsArgs
@@ -40684,6 +41501,13 @@ export type StoreCountOutputTypeCountCrmTagsArgs<ExtArgs extends runtime.Types.E
 /**
  * StoreCountOutputType without action
  */
+export type StoreCountOutputTypeCountMarketingIntentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MarketingIntentWhereInput
+}
+
+/**
+ * StoreCountOutputType without action
+ */
 export type StoreCountOutputTypeCountConversionFlowsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ConversionFlowWhereInput
 }
@@ -40946,6 +41770,7 @@ export type StoreSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   supportTickets?: boolean | Prisma.Store$supportTicketsArgs<ExtArgs>
   crmContacts?: boolean | Prisma.Store$crmContactsArgs<ExtArgs>
   crmTags?: boolean | Prisma.Store$crmTagsArgs<ExtArgs>
+  marketingIntents?: boolean | Prisma.Store$marketingIntentsArgs<ExtArgs>
   conversionFlows?: boolean | Prisma.Store$conversionFlowsArgs<ExtArgs>
   socialPublications?: boolean | Prisma.Store$socialPublicationsArgs<ExtArgs>
   analyticsMetrics?: boolean | Prisma.Store$analyticsMetricsArgs<ExtArgs>
@@ -41143,6 +41968,7 @@ export type StoreInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   supportTickets?: boolean | Prisma.Store$supportTicketsArgs<ExtArgs>
   crmContacts?: boolean | Prisma.Store$crmContactsArgs<ExtArgs>
   crmTags?: boolean | Prisma.Store$crmTagsArgs<ExtArgs>
+  marketingIntents?: boolean | Prisma.Store$marketingIntentsArgs<ExtArgs>
   conversionFlows?: boolean | Prisma.Store$conversionFlowsArgs<ExtArgs>
   socialPublications?: boolean | Prisma.Store$socialPublicationsArgs<ExtArgs>
   analyticsMetrics?: boolean | Prisma.Store$analyticsMetricsArgs<ExtArgs>
@@ -41234,6 +42060,7 @@ export type $StorePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     supportTickets: Prisma.$SupportTicketPayload<ExtArgs>[]
     crmContacts: Prisma.$CrmContactPayload<ExtArgs>[]
     crmTags: Prisma.$CrmTagPayload<ExtArgs>[]
+    marketingIntents: Prisma.$MarketingIntentPayload<ExtArgs>[]
     conversionFlows: Prisma.$ConversionFlowPayload<ExtArgs>[]
     socialPublications: Prisma.$SocialPublicationPayload<ExtArgs>[]
     analyticsMetrics: Prisma.$AnalyticsMetricPayload<ExtArgs>[]
@@ -41743,6 +42570,7 @@ export interface Prisma__StoreClient<T, Null = never, ExtArgs extends runtime.Ty
   supportTickets<T extends Prisma.Store$supportTicketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$supportTicketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   crmContacts<T extends Prisma.Store$crmContactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$crmContactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CrmContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   crmTags<T extends Prisma.Store$crmTagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$crmTagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CrmTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  marketingIntents<T extends Prisma.Store$marketingIntentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$marketingIntentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MarketingIntentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   conversionFlows<T extends Prisma.Store$conversionFlowsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$conversionFlowsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConversionFlowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   socialPublications<T extends Prisma.Store$socialPublicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$socialPublicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SocialPublicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   analyticsMetrics<T extends Prisma.Store$analyticsMetricsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Store$analyticsMetricsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnalyticsMetricPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -43520,6 +44348,30 @@ export type Store$crmTagsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.CrmTagScalarFieldEnum | Prisma.CrmTagScalarFieldEnum[]
+}
+
+/**
+ * Store.marketingIntents
+ */
+export type Store$marketingIntentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MarketingIntent
+   */
+  select?: Prisma.MarketingIntentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MarketingIntent
+   */
+  omit?: Prisma.MarketingIntentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MarketingIntentInclude<ExtArgs> | null
+  where?: Prisma.MarketingIntentWhereInput
+  orderBy?: Prisma.MarketingIntentOrderByWithRelationInput | Prisma.MarketingIntentOrderByWithRelationInput[]
+  cursor?: Prisma.MarketingIntentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MarketingIntentScalarFieldEnum | Prisma.MarketingIntentScalarFieldEnum[]
 }
 
 /**

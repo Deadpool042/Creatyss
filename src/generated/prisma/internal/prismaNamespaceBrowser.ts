@@ -104,6 +104,7 @@ export const ModelName = {
   FeatureFlagOverride: 'FeatureFlagOverride',
   Job: 'Job',
   JobAttempt: 'JobAttempt',
+  MarketingIntent: 'MarketingIntent',
   MonitoringCheck: 'MonitoringCheck',
   MonitoringCheckResult: 'MonitoringCheckResult',
   ObservabilitySignal: 'ObservabilitySignal',
@@ -1248,6 +1249,27 @@ export const JobAttemptScalarFieldEnum = {
 } as const
 
 export type JobAttemptScalarFieldEnum = (typeof JobAttemptScalarFieldEnum)[keyof typeof JobAttemptScalarFieldEnum]
+
+
+export const MarketingIntentScalarFieldEnum = {
+  id: 'id',
+  storeId: 'storeId',
+  status: 'status',
+  intentType: 'intentType',
+  subjectType: 'subjectType',
+  subjectId: 'subjectId',
+  suggestedChannels: 'suggestedChannels',
+  deduplicationKey: 'deduplicationKey',
+  sourceDomainEventId: 'sourceDomainEventId',
+  lastSourceDomainEventId: 'lastSourceDomainEventId',
+  contextJson: 'contextJson',
+  reviewedAt: 'reviewedAt',
+  reviewedByUserId: 'reviewedByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MarketingIntentScalarFieldEnum = (typeof MarketingIntentScalarFieldEnum)[keyof typeof MarketingIntentScalarFieldEnum]
 
 
 export const MonitoringCheckScalarFieldEnum = {

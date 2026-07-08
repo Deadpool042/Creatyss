@@ -322,6 +322,8 @@ export type DomainEventWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"DomainEvent"> | Date | string
   store?: Prisma.XOR<Prisma.StoreNullableScalarRelationFilter, Prisma.StoreWhereInput> | null
   deliveries?: Prisma.DomainEventDeliveryListRelationFilter
+  sourceMarketingIntents?: Prisma.MarketingIntentListRelationFilter
+  lastMarketingIntents?: Prisma.MarketingIntentListRelationFilter
 }
 
 export type DomainEventOrderByWithRelationInput = {
@@ -345,6 +347,8 @@ export type DomainEventOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   store?: Prisma.StoreOrderByWithRelationInput
   deliveries?: Prisma.DomainEventDeliveryOrderByRelationAggregateInput
+  sourceMarketingIntents?: Prisma.MarketingIntentOrderByRelationAggregateInput
+  lastMarketingIntents?: Prisma.MarketingIntentOrderByRelationAggregateInput
 }
 
 export type DomainEventWhereUniqueInput = Prisma.AtLeast<{
@@ -371,6 +375,8 @@ export type DomainEventWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"DomainEvent"> | Date | string
   store?: Prisma.XOR<Prisma.StoreNullableScalarRelationFilter, Prisma.StoreWhereInput> | null
   deliveries?: Prisma.DomainEventDeliveryListRelationFilter
+  sourceMarketingIntents?: Prisma.MarketingIntentListRelationFilter
+  lastMarketingIntents?: Prisma.MarketingIntentListRelationFilter
 }, "id" | "idempotencyKey">
 
 export type DomainEventOrderByWithAggregationInput = {
@@ -443,6 +449,8 @@ export type DomainEventCreateInput = {
   updatedAt?: Date | string
   store?: Prisma.StoreCreateNestedOneWithoutDomainEventsInput
   deliveries?: Prisma.DomainEventDeliveryCreateNestedManyWithoutDomainEventInput
+  sourceMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutSourceDomainEventInput
+  lastMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutLastSourceDomainEventInput
 }
 
 export type DomainEventUncheckedCreateInput = {
@@ -465,6 +473,8 @@ export type DomainEventUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deliveries?: Prisma.DomainEventDeliveryUncheckedCreateNestedManyWithoutDomainEventInput
+  sourceMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutSourceDomainEventInput
+  lastMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutLastSourceDomainEventInput
 }
 
 export type DomainEventUpdateInput = {
@@ -487,6 +497,8 @@ export type DomainEventUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   store?: Prisma.StoreUpdateOneWithoutDomainEventsNestedInput
   deliveries?: Prisma.DomainEventDeliveryUpdateManyWithoutDomainEventNestedInput
+  sourceMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutSourceDomainEventNestedInput
+  lastMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutLastSourceDomainEventNestedInput
 }
 
 export type DomainEventUncheckedUpdateInput = {
@@ -509,6 +521,8 @@ export type DomainEventUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deliveries?: Prisma.DomainEventDeliveryUncheckedUpdateManyWithoutDomainEventNestedInput
+  sourceMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutSourceDomainEventNestedInput
+  lastMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutLastSourceDomainEventNestedInput
 }
 
 export type DomainEventCreateManyInput = {
@@ -659,6 +673,11 @@ export type DomainEventScalarRelationFilter = {
   isNot?: Prisma.DomainEventWhereInput
 }
 
+export type DomainEventNullableScalarRelationFilter = {
+  is?: Prisma.DomainEventWhereInput | null
+  isNot?: Prisma.DomainEventWhereInput | null
+}
+
 export type DomainEventCreateNestedManyWithoutStoreInput = {
   create?: Prisma.XOR<Prisma.DomainEventCreateWithoutStoreInput, Prisma.DomainEventUncheckedCreateWithoutStoreInput> | Prisma.DomainEventCreateWithoutStoreInput[] | Prisma.DomainEventUncheckedCreateWithoutStoreInput[]
   connectOrCreate?: Prisma.DomainEventCreateOrConnectWithoutStoreInput | Prisma.DomainEventCreateOrConnectWithoutStoreInput[]
@@ -719,6 +738,38 @@ export type DomainEventUpdateOneRequiredWithoutDeliveriesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DomainEventUpdateToOneWithWhereWithoutDeliveriesInput, Prisma.DomainEventUpdateWithoutDeliveriesInput>, Prisma.DomainEventUncheckedUpdateWithoutDeliveriesInput>
 }
 
+export type DomainEventCreateNestedOneWithoutSourceMarketingIntentsInput = {
+  create?: Prisma.XOR<Prisma.DomainEventCreateWithoutSourceMarketingIntentsInput, Prisma.DomainEventUncheckedCreateWithoutSourceMarketingIntentsInput>
+  connectOrCreate?: Prisma.DomainEventCreateOrConnectWithoutSourceMarketingIntentsInput
+  connect?: Prisma.DomainEventWhereUniqueInput
+}
+
+export type DomainEventCreateNestedOneWithoutLastMarketingIntentsInput = {
+  create?: Prisma.XOR<Prisma.DomainEventCreateWithoutLastMarketingIntentsInput, Prisma.DomainEventUncheckedCreateWithoutLastMarketingIntentsInput>
+  connectOrCreate?: Prisma.DomainEventCreateOrConnectWithoutLastMarketingIntentsInput
+  connect?: Prisma.DomainEventWhereUniqueInput
+}
+
+export type DomainEventUpdateOneWithoutSourceMarketingIntentsNestedInput = {
+  create?: Prisma.XOR<Prisma.DomainEventCreateWithoutSourceMarketingIntentsInput, Prisma.DomainEventUncheckedCreateWithoutSourceMarketingIntentsInput>
+  connectOrCreate?: Prisma.DomainEventCreateOrConnectWithoutSourceMarketingIntentsInput
+  upsert?: Prisma.DomainEventUpsertWithoutSourceMarketingIntentsInput
+  disconnect?: Prisma.DomainEventWhereInput | boolean
+  delete?: Prisma.DomainEventWhereInput | boolean
+  connect?: Prisma.DomainEventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DomainEventUpdateToOneWithWhereWithoutSourceMarketingIntentsInput, Prisma.DomainEventUpdateWithoutSourceMarketingIntentsInput>, Prisma.DomainEventUncheckedUpdateWithoutSourceMarketingIntentsInput>
+}
+
+export type DomainEventUpdateOneWithoutLastMarketingIntentsNestedInput = {
+  create?: Prisma.XOR<Prisma.DomainEventCreateWithoutLastMarketingIntentsInput, Prisma.DomainEventUncheckedCreateWithoutLastMarketingIntentsInput>
+  connectOrCreate?: Prisma.DomainEventCreateOrConnectWithoutLastMarketingIntentsInput
+  upsert?: Prisma.DomainEventUpsertWithoutLastMarketingIntentsInput
+  disconnect?: Prisma.DomainEventWhereInput | boolean
+  delete?: Prisma.DomainEventWhereInput | boolean
+  connect?: Prisma.DomainEventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DomainEventUpdateToOneWithWhereWithoutLastMarketingIntentsInput, Prisma.DomainEventUpdateWithoutLastMarketingIntentsInput>, Prisma.DomainEventUncheckedUpdateWithoutLastMarketingIntentsInput>
+}
+
 export type DomainEventCreateWithoutStoreInput = {
   id?: string
   eventType: string
@@ -738,6 +789,8 @@ export type DomainEventCreateWithoutStoreInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deliveries?: Prisma.DomainEventDeliveryCreateNestedManyWithoutDomainEventInput
+  sourceMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutSourceDomainEventInput
+  lastMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutLastSourceDomainEventInput
 }
 
 export type DomainEventUncheckedCreateWithoutStoreInput = {
@@ -759,6 +812,8 @@ export type DomainEventUncheckedCreateWithoutStoreInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deliveries?: Prisma.DomainEventDeliveryUncheckedCreateNestedManyWithoutDomainEventInput
+  sourceMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutSourceDomainEventInput
+  lastMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutLastSourceDomainEventInput
 }
 
 export type DomainEventCreateOrConnectWithoutStoreInput = {
@@ -830,6 +885,8 @@ export type DomainEventCreateWithoutDeliveriesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   store?: Prisma.StoreCreateNestedOneWithoutDomainEventsInput
+  sourceMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutSourceDomainEventInput
+  lastMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutLastSourceDomainEventInput
 }
 
 export type DomainEventUncheckedCreateWithoutDeliveriesInput = {
@@ -851,6 +908,8 @@ export type DomainEventUncheckedCreateWithoutDeliveriesInput = {
   errorMessage?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutSourceDomainEventInput
+  lastMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutLastSourceDomainEventInput
 }
 
 export type DomainEventCreateOrConnectWithoutDeliveriesInput = {
@@ -888,6 +947,8 @@ export type DomainEventUpdateWithoutDeliveriesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   store?: Prisma.StoreUpdateOneWithoutDomainEventsNestedInput
+  sourceMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutSourceDomainEventNestedInput
+  lastMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutLastSourceDomainEventNestedInput
 }
 
 export type DomainEventUncheckedUpdateWithoutDeliveriesInput = {
@@ -909,6 +970,224 @@ export type DomainEventUncheckedUpdateWithoutDeliveriesInput = {
   errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutSourceDomainEventNestedInput
+  lastMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutLastSourceDomainEventNestedInput
+}
+
+export type DomainEventCreateWithoutSourceMarketingIntentsInput = {
+  id?: string
+  eventType: string
+  eventVersion?: number
+  aggregateType: string
+  aggregateId: string
+  status?: $Enums.DomainEventStatus
+  idempotencyKey?: string | null
+  payloadJson: string
+  metadataJson?: string | null
+  occurredAt?: Date | string | null
+  publishedAt?: Date | string | null
+  failedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  errorCode?: string | null
+  errorMessage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store?: Prisma.StoreCreateNestedOneWithoutDomainEventsInput
+  deliveries?: Prisma.DomainEventDeliveryCreateNestedManyWithoutDomainEventInput
+  lastMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutLastSourceDomainEventInput
+}
+
+export type DomainEventUncheckedCreateWithoutSourceMarketingIntentsInput = {
+  id?: string
+  storeId?: string | null
+  eventType: string
+  eventVersion?: number
+  aggregateType: string
+  aggregateId: string
+  status?: $Enums.DomainEventStatus
+  idempotencyKey?: string | null
+  payloadJson: string
+  metadataJson?: string | null
+  occurredAt?: Date | string | null
+  publishedAt?: Date | string | null
+  failedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  errorCode?: string | null
+  errorMessage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deliveries?: Prisma.DomainEventDeliveryUncheckedCreateNestedManyWithoutDomainEventInput
+  lastMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutLastSourceDomainEventInput
+}
+
+export type DomainEventCreateOrConnectWithoutSourceMarketingIntentsInput = {
+  where: Prisma.DomainEventWhereUniqueInput
+  create: Prisma.XOR<Prisma.DomainEventCreateWithoutSourceMarketingIntentsInput, Prisma.DomainEventUncheckedCreateWithoutSourceMarketingIntentsInput>
+}
+
+export type DomainEventCreateWithoutLastMarketingIntentsInput = {
+  id?: string
+  eventType: string
+  eventVersion?: number
+  aggregateType: string
+  aggregateId: string
+  status?: $Enums.DomainEventStatus
+  idempotencyKey?: string | null
+  payloadJson: string
+  metadataJson?: string | null
+  occurredAt?: Date | string | null
+  publishedAt?: Date | string | null
+  failedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  errorCode?: string | null
+  errorMessage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  store?: Prisma.StoreCreateNestedOneWithoutDomainEventsInput
+  deliveries?: Prisma.DomainEventDeliveryCreateNestedManyWithoutDomainEventInput
+  sourceMarketingIntents?: Prisma.MarketingIntentCreateNestedManyWithoutSourceDomainEventInput
+}
+
+export type DomainEventUncheckedCreateWithoutLastMarketingIntentsInput = {
+  id?: string
+  storeId?: string | null
+  eventType: string
+  eventVersion?: number
+  aggregateType: string
+  aggregateId: string
+  status?: $Enums.DomainEventStatus
+  idempotencyKey?: string | null
+  payloadJson: string
+  metadataJson?: string | null
+  occurredAt?: Date | string | null
+  publishedAt?: Date | string | null
+  failedAt?: Date | string | null
+  archivedAt?: Date | string | null
+  errorCode?: string | null
+  errorMessage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deliveries?: Prisma.DomainEventDeliveryUncheckedCreateNestedManyWithoutDomainEventInput
+  sourceMarketingIntents?: Prisma.MarketingIntentUncheckedCreateNestedManyWithoutSourceDomainEventInput
+}
+
+export type DomainEventCreateOrConnectWithoutLastMarketingIntentsInput = {
+  where: Prisma.DomainEventWhereUniqueInput
+  create: Prisma.XOR<Prisma.DomainEventCreateWithoutLastMarketingIntentsInput, Prisma.DomainEventUncheckedCreateWithoutLastMarketingIntentsInput>
+}
+
+export type DomainEventUpsertWithoutSourceMarketingIntentsInput = {
+  update: Prisma.XOR<Prisma.DomainEventUpdateWithoutSourceMarketingIntentsInput, Prisma.DomainEventUncheckedUpdateWithoutSourceMarketingIntentsInput>
+  create: Prisma.XOR<Prisma.DomainEventCreateWithoutSourceMarketingIntentsInput, Prisma.DomainEventUncheckedCreateWithoutSourceMarketingIntentsInput>
+  where?: Prisma.DomainEventWhereInput
+}
+
+export type DomainEventUpdateToOneWithWhereWithoutSourceMarketingIntentsInput = {
+  where?: Prisma.DomainEventWhereInput
+  data: Prisma.XOR<Prisma.DomainEventUpdateWithoutSourceMarketingIntentsInput, Prisma.DomainEventUncheckedUpdateWithoutSourceMarketingIntentsInput>
+}
+
+export type DomainEventUpdateWithoutSourceMarketingIntentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  eventVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  aggregateType?: Prisma.StringFieldUpdateOperationsInput | string
+  aggregateId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDomainEventStatusFieldUpdateOperationsInput | $Enums.DomainEventStatus
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payloadJson?: Prisma.StringFieldUpdateOperationsInput | string
+  metadataJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occurredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneWithoutDomainEventsNestedInput
+  deliveries?: Prisma.DomainEventDeliveryUpdateManyWithoutDomainEventNestedInput
+  lastMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutLastSourceDomainEventNestedInput
+}
+
+export type DomainEventUncheckedUpdateWithoutSourceMarketingIntentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  eventVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  aggregateType?: Prisma.StringFieldUpdateOperationsInput | string
+  aggregateId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDomainEventStatusFieldUpdateOperationsInput | $Enums.DomainEventStatus
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payloadJson?: Prisma.StringFieldUpdateOperationsInput | string
+  metadataJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occurredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deliveries?: Prisma.DomainEventDeliveryUncheckedUpdateManyWithoutDomainEventNestedInput
+  lastMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutLastSourceDomainEventNestedInput
+}
+
+export type DomainEventUpsertWithoutLastMarketingIntentsInput = {
+  update: Prisma.XOR<Prisma.DomainEventUpdateWithoutLastMarketingIntentsInput, Prisma.DomainEventUncheckedUpdateWithoutLastMarketingIntentsInput>
+  create: Prisma.XOR<Prisma.DomainEventCreateWithoutLastMarketingIntentsInput, Prisma.DomainEventUncheckedCreateWithoutLastMarketingIntentsInput>
+  where?: Prisma.DomainEventWhereInput
+}
+
+export type DomainEventUpdateToOneWithWhereWithoutLastMarketingIntentsInput = {
+  where?: Prisma.DomainEventWhereInput
+  data: Prisma.XOR<Prisma.DomainEventUpdateWithoutLastMarketingIntentsInput, Prisma.DomainEventUncheckedUpdateWithoutLastMarketingIntentsInput>
+}
+
+export type DomainEventUpdateWithoutLastMarketingIntentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  eventVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  aggregateType?: Prisma.StringFieldUpdateOperationsInput | string
+  aggregateId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDomainEventStatusFieldUpdateOperationsInput | $Enums.DomainEventStatus
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payloadJson?: Prisma.StringFieldUpdateOperationsInput | string
+  metadataJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occurredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  store?: Prisma.StoreUpdateOneWithoutDomainEventsNestedInput
+  deliveries?: Prisma.DomainEventDeliveryUpdateManyWithoutDomainEventNestedInput
+  sourceMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutSourceDomainEventNestedInput
+}
+
+export type DomainEventUncheckedUpdateWithoutLastMarketingIntentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  eventVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  aggregateType?: Prisma.StringFieldUpdateOperationsInput | string
+  aggregateId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDomainEventStatusFieldUpdateOperationsInput | $Enums.DomainEventStatus
+  idempotencyKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payloadJson?: Prisma.StringFieldUpdateOperationsInput | string
+  metadataJson?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occurredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deliveries?: Prisma.DomainEventDeliveryUncheckedUpdateManyWithoutDomainEventNestedInput
+  sourceMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutSourceDomainEventNestedInput
 }
 
 export type DomainEventCreateManyStoreInput = {
@@ -950,6 +1229,8 @@ export type DomainEventUpdateWithoutStoreInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deliveries?: Prisma.DomainEventDeliveryUpdateManyWithoutDomainEventNestedInput
+  sourceMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutSourceDomainEventNestedInput
+  lastMarketingIntents?: Prisma.MarketingIntentUpdateManyWithoutLastSourceDomainEventNestedInput
 }
 
 export type DomainEventUncheckedUpdateWithoutStoreInput = {
@@ -971,6 +1252,8 @@ export type DomainEventUncheckedUpdateWithoutStoreInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deliveries?: Prisma.DomainEventDeliveryUncheckedUpdateManyWithoutDomainEventNestedInput
+  sourceMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutSourceDomainEventNestedInput
+  lastMarketingIntents?: Prisma.MarketingIntentUncheckedUpdateManyWithoutLastSourceDomainEventNestedInput
 }
 
 export type DomainEventUncheckedUpdateManyWithoutStoreInput = {
@@ -1000,10 +1283,14 @@ export type DomainEventUncheckedUpdateManyWithoutStoreInput = {
 
 export type DomainEventCountOutputType = {
   deliveries: number
+  sourceMarketingIntents: number
+  lastMarketingIntents: number
 }
 
 export type DomainEventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   deliveries?: boolean | DomainEventCountOutputTypeCountDeliveriesArgs
+  sourceMarketingIntents?: boolean | DomainEventCountOutputTypeCountSourceMarketingIntentsArgs
+  lastMarketingIntents?: boolean | DomainEventCountOutputTypeCountLastMarketingIntentsArgs
 }
 
 /**
@@ -1021,6 +1308,20 @@ export type DomainEventCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.
  */
 export type DomainEventCountOutputTypeCountDeliveriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DomainEventDeliveryWhereInput
+}
+
+/**
+ * DomainEventCountOutputType without action
+ */
+export type DomainEventCountOutputTypeCountSourceMarketingIntentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MarketingIntentWhereInput
+}
+
+/**
+ * DomainEventCountOutputType without action
+ */
+export type DomainEventCountOutputTypeCountLastMarketingIntentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MarketingIntentWhereInput
 }
 
 
@@ -1045,6 +1346,8 @@ export type DomainEventSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   updatedAt?: boolean
   store?: boolean | Prisma.DomainEvent$storeArgs<ExtArgs>
   deliveries?: boolean | Prisma.DomainEvent$deliveriesArgs<ExtArgs>
+  sourceMarketingIntents?: boolean | Prisma.DomainEvent$sourceMarketingIntentsArgs<ExtArgs>
+  lastMarketingIntents?: boolean | Prisma.DomainEvent$lastMarketingIntentsArgs<ExtArgs>
   _count?: boolean | Prisma.DomainEventCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["domainEvent"]>
 
@@ -1117,6 +1420,8 @@ export type DomainEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type DomainEventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   store?: boolean | Prisma.DomainEvent$storeArgs<ExtArgs>
   deliveries?: boolean | Prisma.DomainEvent$deliveriesArgs<ExtArgs>
+  sourceMarketingIntents?: boolean | Prisma.DomainEvent$sourceMarketingIntentsArgs<ExtArgs>
+  lastMarketingIntents?: boolean | Prisma.DomainEvent$lastMarketingIntentsArgs<ExtArgs>
   _count?: boolean | Prisma.DomainEventCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DomainEventIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1131,6 +1436,8 @@ export type $DomainEventPayload<ExtArgs extends runtime.Types.Extensions.Interna
   objects: {
     store: Prisma.$StorePayload<ExtArgs> | null
     deliveries: Prisma.$DomainEventDeliveryPayload<ExtArgs>[]
+    sourceMarketingIntents: Prisma.$MarketingIntentPayload<ExtArgs>[]
+    lastMarketingIntents: Prisma.$MarketingIntentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1547,6 +1854,8 @@ export interface Prisma__DomainEventClient<T, Null = never, ExtArgs extends runt
   readonly [Symbol.toStringTag]: "PrismaPromise"
   store<T extends Prisma.DomainEvent$storeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DomainEvent$storeArgs<ExtArgs>>): Prisma.Prisma__StoreClient<runtime.Types.Result.GetResult<Prisma.$StorePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   deliveries<T extends Prisma.DomainEvent$deliveriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DomainEvent$deliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DomainEventDeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sourceMarketingIntents<T extends Prisma.DomainEvent$sourceMarketingIntentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DomainEvent$sourceMarketingIntentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MarketingIntentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  lastMarketingIntents<T extends Prisma.DomainEvent$lastMarketingIntentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DomainEvent$lastMarketingIntentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MarketingIntentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2035,6 +2344,54 @@ export type DomainEvent$deliveriesArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.DomainEventDeliveryScalarFieldEnum | Prisma.DomainEventDeliveryScalarFieldEnum[]
+}
+
+/**
+ * DomainEvent.sourceMarketingIntents
+ */
+export type DomainEvent$sourceMarketingIntentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MarketingIntent
+   */
+  select?: Prisma.MarketingIntentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MarketingIntent
+   */
+  omit?: Prisma.MarketingIntentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MarketingIntentInclude<ExtArgs> | null
+  where?: Prisma.MarketingIntentWhereInput
+  orderBy?: Prisma.MarketingIntentOrderByWithRelationInput | Prisma.MarketingIntentOrderByWithRelationInput[]
+  cursor?: Prisma.MarketingIntentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MarketingIntentScalarFieldEnum | Prisma.MarketingIntentScalarFieldEnum[]
+}
+
+/**
+ * DomainEvent.lastMarketingIntents
+ */
+export type DomainEvent$lastMarketingIntentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MarketingIntent
+   */
+  select?: Prisma.MarketingIntentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MarketingIntent
+   */
+  omit?: Prisma.MarketingIntentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MarketingIntentInclude<ExtArgs> | null
+  where?: Prisma.MarketingIntentWhereInput
+  orderBy?: Prisma.MarketingIntentOrderByWithRelationInput | Prisma.MarketingIntentOrderByWithRelationInput[]
+  cursor?: Prisma.MarketingIntentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MarketingIntentScalarFieldEnum | Prisma.MarketingIntentScalarFieldEnum[]
 }
 
 /**

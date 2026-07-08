@@ -40,7 +40,9 @@ model DomainEvent {
 
   store Store? @relation(fields: [storeId], references: [id], onDelete: SetNull)
 
-  deliveries DomainEventDelivery[]
+  deliveries             DomainEventDelivery[]
+  sourceMarketingIntents MarketingIntent[]     @relation("MarketingIntentSourceDomainEvent")
+  lastMarketingIntents   MarketingIntent[]     @relation("MarketingIntentLastSourceDomainEvent")
 
   @@unique([idempotencyKey])
   @@index([storeId, status])
