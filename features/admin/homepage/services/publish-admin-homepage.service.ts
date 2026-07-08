@@ -1,6 +1,7 @@
 import { HomepageStatus } from "@/prisma-generated/client";
 import { withTransaction } from "@/core/db";
 import { AdminHomepageServiceError } from "../types";
+import { recordHomepagePublishedDomainEvent } from "./record-homepage-editorial-domain-events";
 
 type PublishAdminHomepageInput = {
   id: string;
@@ -31,6 +32,9 @@ export async function publishAdminHomepage(
       },
       select: {
         id: true,
+        storeId: true,
+        title: true,
+        status: true,
         publishedAt: true,
       },
     });
@@ -39,7 +43,7 @@ export async function publishAdminHomepage(
       throw new AdminHomepageServiceError("homepage_missing");
     }
 
-    return tx.homepage.update({
+    const updatedHomepage = await tx.homepage.update({
       where: {
         id: homepage.id,
       },
@@ -49,7 +53,21 @@ export async function publishAdminHomepage(
       },
       select: {
         id: true,
+        title: true,
+        status: true,
+        publishedAt: true,
       },
     });
+
+    await recordHomepagePublishedDomainEvent({
+      executor: tx,
+      storeId: homepage.storeId,
+      previous: homepage,
+      next: updatedHomepage,
+    });
+
+    return {
+      id: updatedHomepage.id,
+    };
   });
 }

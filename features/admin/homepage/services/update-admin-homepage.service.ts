@@ -4,6 +4,7 @@ import {
   AdminHomepageServiceError,
   type UpdateAdminHomepageInput,
 } from "../types";
+import { recordHomepageUpdatedVisibleDomainEvent } from "./record-homepage-editorial-domain-events";
 
 const HERO_SECTION_CODE = "hero";
 const EDITORIAL_SECTION_CODE = "editorial";
@@ -20,6 +21,33 @@ type HomepageSectionRecord = {
   id: string;
   code: string;
   type: HomepageSectionType;
+};
+
+type HomepageEventSnapshot = {
+  id: string;
+  title: string | null;
+  status: "DRAFT" | "ACTIVE" | "INACTIVE" | "ARCHIVED";
+  publishedAt: Date | null;
+  updatedAt: Date;
+  sections: Array<{
+    code: string;
+    type: HomepageSectionType;
+    title: string | null;
+    body: string | null;
+    primaryImagePath: string | null;
+    featuredProducts: Array<{
+      entityId: string;
+      sortOrder: number;
+    }>;
+    featuredCategories: Array<{
+      entityId: string;
+      sortOrder: number;
+    }>;
+    featuredBlogPosts: Array<{
+      entityId: string;
+      sortOrder: number;
+    }>;
+  }>;
 };
 
 async function getHomepageOrThrow(
@@ -214,11 +242,109 @@ async function resolvePrimaryImageId(
   return mediaAsset?.id ?? null;
 }
 
+async function getHomepageEventSnapshot(
+  executor: DbExecutor,
+  homepageId: string,
+): Promise<HomepageEventSnapshot> {
+  const homepage = await executor.homepage.findFirst({
+    where: {
+      id: homepageId,
+      archivedAt: null,
+    },
+    select: {
+      id: true,
+      title: true,
+      status: true,
+      publishedAt: true,
+      updatedAt: true,
+      sections: {
+        where: {
+          archivedAt: null,
+          isActive: true,
+        },
+        orderBy: {
+          sortOrder: "asc",
+        },
+        select: {
+          code: true,
+          type: true,
+          title: true,
+          body: true,
+          primaryImage: {
+            select: {
+              storageKey: true,
+            },
+          },
+          featuredProducts: {
+            orderBy: {
+              sortOrder: "asc",
+            },
+            select: {
+              productId: true,
+              sortOrder: true,
+            },
+          },
+          featuredCategories: {
+            orderBy: {
+              sortOrder: "asc",
+            },
+            select: {
+              categoryId: true,
+              sortOrder: true,
+            },
+          },
+          featuredPosts: {
+            orderBy: {
+              sortOrder: "asc",
+            },
+            select: {
+              blogPostId: true,
+              sortOrder: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (homepage === null) {
+    throw new AdminHomepageServiceError("homepage_missing");
+  }
+
+  return {
+    id: homepage.id,
+    title: homepage.title,
+    status: homepage.status,
+    publishedAt: homepage.publishedAt,
+    updatedAt: homepage.updatedAt,
+    sections: homepage.sections.map((section) => ({
+      code: section.code,
+      type: section.type,
+      title: section.title,
+      body: section.body,
+      primaryImagePath: section.primaryImage?.storageKey ?? null,
+      featuredProducts: section.featuredProducts.map((item) => ({
+        entityId: item.productId,
+        sortOrder: item.sortOrder,
+      })),
+      featuredCategories: section.featuredCategories.map((item) => ({
+        entityId: item.categoryId,
+        sortOrder: item.sortOrder,
+      })),
+      featuredBlogPosts: section.featuredPosts.map((item) => ({
+        entityId: item.blogPostId,
+        sortOrder: item.sortOrder,
+      })),
+    })),
+  };
+}
+
 export async function updateAdminHomepage(
   input: UpdateAdminHomepageInput,
 ): Promise<{ id: string }> {
   return withTransaction(async (tx) => {
     const homepageRecord = await getHomepageOrThrow(tx, input.id);
+    const previousSnapshot = await getHomepageEventSnapshot(tx, input.id);
 
     await assertProductsExist(
       tx,
@@ -341,6 +467,15 @@ export async function updateAdminHomepage(
         })),
       });
     }
+
+    const nextSnapshot = await getHomepageEventSnapshot(tx, input.id);
+
+    await recordHomepageUpdatedVisibleDomainEvent({
+      executor: tx,
+      storeId: homepageRecord.storeId,
+      previous: previousSnapshot,
+      next: nextSnapshot,
+    });
 
     return homepage;
   });
