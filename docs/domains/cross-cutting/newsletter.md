@@ -16,7 +16,7 @@ Le domaine existe pour fournir une vérité interne sur l’abonnement newslette
 
 - du consentement au sens large ;
 - du CRM ;
-- des campagnes marketing ;
+- de l’intention marketing multicanale ;
 - des outils d’emailing ;
 - des préférences UI.
 
@@ -55,12 +55,17 @@ Le domaine `newsletter` n’est pas la source de vérité pour :
 - le consentement général, qui relève de `consent` ;
 - l’identité complète du client, qui relève de `customers` ;
 - l’outil d’emailing externe ;
-- les campagnes marketing ;
+- l’intention marketing multicanale, qui relève de `marketing` quand
+  `MarketingIntent` est utilisé ;
 - les préférences de tracking ou analytics ;
 - la politique juridique générale, qui relève de `legal`.
 
 Un abonnement newsletter n’est pas un consentement générique.
 C’est un objet produit et opérationnel plus spécifique.
+
+`NewsletterCampaign` n’est pas un `MarketingIntent`.
+`NewsletterCampaign` reste un objet de canal newsletter, utilisé pour préparer
+ou exécuter une campagne email bornée à ce canal.
 
 ---
 
@@ -93,7 +98,7 @@ Le domaine `newsletter` n’est pas responsable de :
 
 - définir la politique juridique globale ;
 - gouverner le consentement général ;
-- exécuter les campagnes emailing ;
+- définir l’intention marketing multicanale ;
 - définir la logique CRM complète ;
 - gérer l’authentification ;
 - gérer les rôles et permissions ;
@@ -160,7 +165,7 @@ Le domaine `newsletter` porte la vérité de l’abonnement newsletter.
 Il ne doit pas absorber :
 
 - le consentement générique ;
-- la logique des campagnes ;
+- la logique d’intention marketing multicanale ;
 - la relation client complète ;
 - la politique juridique générale.
 
@@ -355,17 +360,15 @@ Cf.
   `/admin/settings/advanced`, **inactif par défaut**
   (`prisma/seed/newsletter-feature-flag.seed.ts`).
 - `/admin/marketing/newsletter` (gating
-  `meetsFeatureLevel("engagement.newsletter","basic")`) : liste les
-  `NewsletterSubscriber` du store et permet d'en ajouter
-  (`createNewsletterSubscriberAction`, statut initial `SUBSCRIBED`, `source:
-  "admin"`) ou de basculer SUBSCRIBED/UNSUBSCRIBED
-  (`toggleNewsletterSubscriberStatusAction`).
-- **Aucune campagne** : `NewsletterCampaign` et
-  `NewsletterCampaignRecipient` restent non alimentés. Conforme à la
-  doctrine (« Non-responsabilités » : « exécuter les campagnes emailing ») —
-  ce lot ne touche pas à `platform.email`.
+`meetsFeatureLevel("engagement.newsletter","basic")`) : liste les
+`NewsletterSubscriber` du store et permet d'en ajouter
+(`createNewsletterSubscriberAction`, statut initial `SUBSCRIBED`, `source:
+"admin"`) ou de basculer SUBSCRIBED/UNSUBSCRIBED
+(`toggleNewsletterSubscriberStatusAction`).
+- Ce lot ne crée encore aucune campagne : `NewsletterCampaign` et
+`NewsletterCampaignRecipient` restent alors hors périmètre opérationnel.
 - Niveaux `segmentation` (segmentation des abonnés) et `automation`
-  (synchronisation/automatisations) restent hors périmètre.
+(synchronisation/automatisations) restent hors périmètre.
 
 ### Souscription storefront `POST /api/newsletter` (2026-06-14)
 
@@ -403,7 +406,7 @@ Cf.
   synthèse (abonnés, désabonnés, origine admin/storefront, abonnés liés à un
   client, abonnements récents).
 - La page reste bornée au domaine `newsletter` :
-  - aucun `NewsletterCampaign` créé ;
+  - aucun `NewsletterCampaign` créé par ce lot ;
   - aucun envoi email ;
   - aucun branchement `Behavior*` / `Crm*` ;
   - aucune automation nouvelle.
@@ -425,6 +428,25 @@ Cf.
 - `/admin/marketing/newsletter` expose aussi une lecture locale de ce pont :
   compte d'automations actives, jobs en attente, jobs prêts, jobs échoués ;
 - aucun nouveau déclencheur ni aucune campagne n'est ajoutée dans ce lot.
+
+### Campagnes newsletter de canal (état observé actuel)
+
+- `NewsletterCampaign` existe dans Prisma comme brouillon/campagne de canal avec
+  les statuts `DRAFT`, `SCHEDULED`, `SENDING`, `SENT`, `FAILED`, `CANCELLED`
+  et `ARCHIVED`.
+- `NewsletterCampaignRecipient` existe pour tracer les destinataires d'une
+  campagne donnée.
+- L'admin peut créer une `NewsletterCampaign` en `DRAFT`.
+- `NewsletterCampaign` reste distinct de `MarketingIntent` :
+  - `MarketingIntent` porte une proposition de communication révisable ;
+  - `NewsletterCampaign` porte un brouillon ou une exécution bornée au canal
+    newsletter.
+- Lors d'un envoi, les destinataires sont sélectionnés au moment de l'action
+  parmi les `NewsletterSubscriber` du store avec `status = SUBSCRIBED`.
+- Une reprise d'une campagne bloquée en `SENDING` existe côté code. Elle doit
+  rester vigilante vis-à-vis des désinscriptions intervenues avant la reprise,
+  puisque l'éligibilité réelle doit continuer à dépendre de
+  `NewsletterSubscriber.status` au moment de l'envoi ou de la reprise.
 
 ## Documents liés
 

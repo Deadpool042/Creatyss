@@ -3,7 +3,8 @@
 ## Statut
 
 - Cadrage validé.
-- Pas encore implémenté.
+- Lot `modèle + policy pure` implémenté.
+- Projection runtime `DomainEvent -> MarketingIntent` non implémentée.
 - Aucun envoi automatique.
 
 Ce document fixe la frontière entre les faits éditoriaux déjà enregistrés et
@@ -39,8 +40,15 @@ ni newsletter, ni social, ni provider externe.
   initial `DRAFT`.
 - `SocialPublication` existe comme objet de diffusion sociale avec un statut
   initial `DRAFT`.
-- Aucun modèle `MarketingIntent` ni aucune projection
-  `DomainEvent -> MarketingIntent` n'existe actuellement.
+- `MarketingIntent` existe dans le schéma Prisma avec ses statuts, types,
+  canaux suggérés et références vers les `DomainEvent` source.
+- La policy pure `resolveEditorialMarketingIntentPolicy` existe et couvre les
+  événements éditoriaux retenus.
+- Aucune projection runtime `DomainEvent -> MarketingIntent` n'existe
+  actuellement.
+- Aucune UI admin dédiée à la revue de `MarketingIntent` n'existe actuellement.
+- Aucun provider, aucun job et aucun webhook ne sont branchés pour ce flux
+  `MarketingIntent`.
 
 ## Hors périmètre
 
@@ -96,7 +104,14 @@ implicite.
 ## Modèle cible recommandé
 
 Le modèle conceptuel cible est `MarketingIntent`.
-Il n'est pas ajouté au schéma Prisma dans ce lot.
+Il est ajouté au schéma Prisma dans le lot `modèle + policy pure`.
+
+Le runtime associé reste partiel à ce stade :
+
+- le stockage existe ;
+- la policy pure existe ;
+- la projection depuis les `DomainEvent` reste à implémenter ;
+- la revue admin et la matérialisation newsletter/social restent à implémenter.
 
 Champs recommandés :
 
@@ -161,6 +176,8 @@ L'approbation d'un intent ne doit jamais équivaloir implicitement à un envoi o
 - définir les statuts et canaux internes ;
 - implémenter une policy pure couvrant tous les événements éditoriaux ;
 - tester les décisions sans projection runtime.
+
+Statut observé : implémenté.
 
 ### Lot 2 - Projection DomainEvent vers MarketingIntent
 
