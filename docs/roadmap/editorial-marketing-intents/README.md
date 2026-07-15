@@ -4,7 +4,14 @@
 
 - Cadrage validé.
 - Lot `modèle + policy pure` implémenté.
-- Projection runtime `DomainEvent -> MarketingIntent` non implémentée.
+- Projection runtime `DomainEvent -> MarketingIntent` implémentée
+  (idempotente, avec gestion du cycle de vie `DomainEventDelivery`).
+- Rattrapage pull des événements non consommés implémenté, déclenché
+  manuellement depuis l'admin (aucun job, aucun couplage synchrone au
+  flux éditorial).
+- Revue admin (approbation/rejet/archivage) implémentée à
+  `/admin/marketing/intents`.
+- Aucune matérialisation `NewsletterCampaign`/`SocialPublication` (lots 4-5).
 - Aucun envoi automatique.
 
 Ce document fixe la frontière entre les faits éditoriaux déjà enregistrés et
@@ -70,20 +77,20 @@ Ils ne doivent pas devenir des dépendances métier de la production des intents
 
 ## Politique par DomainEvent
 
-| DomainEvent | Politique recommandée |
-| --- | --- |
-| `content.blog_post.published` | Créer par défaut un intent `PROPOSED` avec `NEWSLETTER` et `SOCIAL` comme canaux suggérés. |
-| `content.blog_post.updated_visible` | Fusion optionnelle avec l'intent encore ouvert du cycle de publication. Ne pas créer une suggestion à chaque mise à jour. |
-| `content.blog_post.unpublished` | Ne créer aucun intent marketing. |
-| `content.blog_post.archived` | Ne créer aucun intent marketing. |
-| `content.homepage.published` | Créer au plus une suggestion légère, orientée `SOCIAL`. Ne pas suggérer `NEWSLETTER` par défaut. |
-| `content.homepage.updated_visible` | Traitement optionnel et dédupliqué dans le cycle de publication courant. |
-| `content.editorial_page.published` | Éligible de manière optionnelle à une revue admin, sans canal obligatoire. |
-| `content.editorial_page.updated` | Éligible de manière optionnelle et dédupliquée. |
-| `content.editorial_page.unpublished` | Ne créer aucun intent marketing. |
-| `content.legal_page.published` | Ne créer aucun intent marketing. |
-| `content.legal_page.unpublished` | Ne créer aucun intent marketing. |
-| `content.legal_page.updated` | Ne créer aucun intent marketing. |
+| DomainEvent                          | Politique recommandée                                                                                                     |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `content.blog_post.published`        | Créer par défaut un intent `PROPOSED` avec `NEWSLETTER` et `SOCIAL` comme canaux suggérés.                                |
+| `content.blog_post.updated_visible`  | Fusion optionnelle avec l'intent encore ouvert du cycle de publication. Ne pas créer une suggestion à chaque mise à jour. |
+| `content.blog_post.unpublished`      | Ne créer aucun intent marketing.                                                                                          |
+| `content.blog_post.archived`         | Ne créer aucun intent marketing.                                                                                          |
+| `content.homepage.published`         | Créer au plus une suggestion légère, orientée `SOCIAL`. Ne pas suggérer `NEWSLETTER` par défaut.                          |
+| `content.homepage.updated_visible`   | Traitement optionnel et dédupliqué dans le cycle de publication courant.                                                  |
+| `content.editorial_page.published`   | Éligible de manière optionnelle à une revue admin, sans canal obligatoire.                                                |
+| `content.editorial_page.updated`     | Éligible de manière optionnelle et dédupliquée.                                                                           |
+| `content.editorial_page.unpublished` | Ne créer aucun intent marketing.                                                                                          |
+| `content.legal_page.published`       | Ne créer aucun intent marketing.                                                                                          |
+| `content.legal_page.unpublished`     | Ne créer aucun intent marketing.                                                                                          |
+| `content.legal_page.updated`         | Ne créer aucun intent marketing.                                                                                          |
 
 Une politique optionnelle signifie qu'aucune diffusion ne découle directement
 du `DomainEvent`. Elle peut produire une suggestion révisable uniquement si la
@@ -115,22 +122,22 @@ Le runtime associé reste partiel à ce stade :
 
 Champs recommandés :
 
-| Champ | Rôle |
-| --- | --- |
-| `storeId` | Boutique propriétaire de l'intention. |
-| `status` | `PROPOSED`, `APPROVED`, `REJECTED` ou `ARCHIVED`. |
-| `intentType` | Nature métier de la proposition de communication. |
-| `subjectType` | Type de contenu source, sans vocabulaire de provider. |
-| `subjectId` | Identifiant stable du contenu source. |
-| `suggestedChannels` | Canaux internes suggérés, notamment `NEWSLETTER` et `SOCIAL`. |
-| `deduplicationKey` | Clé stable et unique de déduplication métier. |
-| `sourceDomainEventId` | Premier événement à l'origine de l'intention. |
-| `lastSourceDomainEventId` | Dernier événement fusionné dans l'intention ouverte. |
-| `contextJson` | Contexte borné utile à la revue, sans corps complet ni donnée abonné. |
-| `reviewedAt` | Date de la décision admin. |
-| `reviewedByUserId` | Admin ayant pris la décision. |
-| `createdAt` | Date de création. |
-| `updatedAt` | Date de dernière évolution. |
+| Champ                     | Rôle                                                                  |
+| ------------------------- | --------------------------------------------------------------------- |
+| `storeId`                 | Boutique propriétaire de l'intention.                                 |
+| `status`                  | `PROPOSED`, `APPROVED`, `REJECTED` ou `ARCHIVED`.                     |
+| `intentType`              | Nature métier de la proposition de communication.                     |
+| `subjectType`             | Type de contenu source, sans vocabulaire de provider.                 |
+| `subjectId`               | Identifiant stable du contenu source.                                 |
+| `suggestedChannels`       | Canaux internes suggérés, notamment `NEWSLETTER` et `SOCIAL`.         |
+| `deduplicationKey`        | Clé stable et unique de déduplication métier.                         |
+| `sourceDomainEventId`     | Premier événement à l'origine de l'intention.                         |
+| `lastSourceDomainEventId` | Dernier événement fusionné dans l'intention ouverte.                  |
+| `contextJson`             | Contexte borné utile à la revue, sans corps complet ni donnée abonné. |
+| `reviewedAt`              | Date de la décision admin.                                            |
+| `reviewedByUserId`        | Admin ayant pris la décision.                                         |
+| `createdAt`               | Date de création.                                                     |
+| `updatedAt`               | Date de dernière évolution.                                           |
 
 Le contexte peut contenir des références comme le titre, le slug, le type de
 contenu, les champs visibles modifiés et les dates éditoriales utiles.
@@ -186,12 +193,19 @@ Statut observé : implémenté.
 - utiliser `DomainEventDelivery` et un `consumerCode` stable ;
 - garantir idempotence et déduplication.
 
+Statut observé : implémenté. Déclenchement en pull uniquement (bouton
+admin), pas de job ni de couplage synchrone au flux éditorial.
+
 ### Lot 3 - Revue admin
 
 - lister les intents proposés ;
 - afficher leur origine et leurs canaux suggérés ;
 - permettre approbation, rejet et archivage ;
 - éviter les enregistrements invisibles sans capacité de traitement.
+
+Statut observé : implémenté (`/admin/marketing/intents`). Transitions
+strictes : `PROPOSED` → tout statut ; `APPROVED`/`REJECTED` → `ARCHIVED`
+uniquement ; `ARCHIVED` terminal.
 
 ### Lot 4 - Matérialisation newsletter
 
