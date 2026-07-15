@@ -3,12 +3,14 @@ import { ADMIN_AUTOMATIONS_PATH } from "@/features/admin/marketing/automations/s
 import { ADMIN_DISCOUNTS_PATH } from "@/features/admin/marketing/discounts/shared/admin-discounts-routes";
 import { ADMIN_NEWSLETTER_PATH } from "@/features/admin/marketing/newsletter/shared/admin-newsletter-routes";
 import {
+  ADMIN_MARKETING_INTENTS_PATH,
   ADMIN_MARKETING_OVERVIEW_PATH,
   ADMIN_MARKETING_SETTINGS_PATH,
 } from "@/features/admin/marketing/shared/admin-marketing-routes";
 
 const MARKETING_ROUTE_NAV_ITEMS = [
   { key: "overview", label: "Pilotage", href: ADMIN_MARKETING_OVERVIEW_PATH },
+  { key: "intents", label: "Intentions", href: ADMIN_MARKETING_INTENTS_PATH },
   { key: "discounts", label: "Codes promo", href: ADMIN_DISCOUNTS_PATH },
   { key: "newsletter", label: "Newsletter", href: ADMIN_NEWSLETTER_PATH },
   { key: "automations", label: "Automations", href: ADMIN_AUTOMATIONS_PATH },
