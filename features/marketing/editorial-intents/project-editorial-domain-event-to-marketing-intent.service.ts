@@ -43,8 +43,7 @@ type MergeProjectionPolicy = Readonly<{
   subjectType: MarketingIntentSubjectType;
 }>;
 
-export const EDITORIAL_MARKETING_INTENT_CONSUMER_CODE =
-  "marketing-intents.editorial.v1";
+export const EDITORIAL_MARKETING_INTENT_CONSUMER_CODE = "marketing-intents.editorial.v1";
 
 export type ProjectEditorialDomainEventToMarketingIntentInput = Readonly<{
   domainEvent: DomainEvent;
@@ -53,6 +52,16 @@ export type ProjectEditorialDomainEventToMarketingIntentInput = Readonly<{
 export type ProjectEditorialDomainEventToMarketingIntentResult =
   | Readonly<{
       status: "already_processed";
+      delivery: DomainEventDelivery;
+      marketingIntent: null;
+    }>
+  | Readonly<{
+      status: "pending_delivery";
+      delivery: DomainEventDelivery;
+      marketingIntent: null;
+    }>
+  | Readonly<{
+      status: "skipped_terminal_delivery";
       delivery: DomainEventDelivery;
       marketingIntent: null;
     }>
@@ -81,18 +90,17 @@ export type ProjectEditorialDomainEventToMarketingIntentResult =
     }>;
 
 function isCreateProjectionPolicy(
-  policy: EditorialMarketingIntentPolicyResult,
+  policy: EditorialMarketingIntentPolicyResult
 ): policy is CreateProjectionPolicy {
   return (
-    (policy.action === "CREATE_PROPOSED" ||
-      policy.action === "OPTIONAL_CREATE") &&
+    (policy.action === "CREATE_PROPOSED" || policy.action === "OPTIONAL_CREATE") &&
     policy.intentType !== undefined &&
     policy.subjectType !== undefined
   );
 }
 
 function isMergeProjectionPolicy(
-  policy: EditorialMarketingIntentPolicyResult,
+  policy: EditorialMarketingIntentPolicyResult
 ): policy is MergeProjectionPolicy {
   return (
     policy.action === "MERGE_WITH_OPEN_INTENT" &&
@@ -131,10 +139,7 @@ function parsePayloadJson(payloadJson: string): EditorialEventPayload {
   return parsed as EditorialEventPayload;
 }
 
-function readString(
-  payload: EditorialEventPayload,
-  key: string,
-): string | null {
+function readString(payload: EditorialEventPayload, key: string): string | null {
   const value = payload[key];
 
   if (typeof value !== "string") {
@@ -145,10 +150,7 @@ function readString(
   return trimmed.length > 0 ? trimmed : null;
 }
 
-function readStringArray(
-  payload: EditorialEventPayload,
-  key: string,
-): readonly string[] | null {
+function readStringArray(payload: EditorialEventPayload, key: string): readonly string[] | null {
   const value = payload[key];
 
   if (!Array.isArray(value)) {
@@ -156,15 +158,13 @@ function readStringArray(
   }
 
   const items = value.filter(
-    (item): item is string => typeof item === "string" && item.trim().length > 0,
+    (item): item is string => typeof item === "string" && item.trim().length > 0
   );
 
   return items.length > 0 ? items : null;
 }
 
-function asJsonObject(
-  value: Prisma.JsonValue | null,
-): Prisma.JsonObject | null {
+function asJsonObject(value: Prisma.JsonValue | null): Prisma.JsonObject | null {
   if (value === null || Array.isArray(value) || typeof value !== "object") {
     return null;
   }
@@ -172,10 +172,7 @@ function asJsonObject(
   return value as Prisma.JsonObject;
 }
 
-function readContextString(
-  value: Prisma.JsonValue | null,
-  key: string,
-): string | null {
+function readContextString(value: Prisma.JsonValue | null, key: string): string | null {
   const objectValue = asJsonObject(value);
 
   if (objectValue === null) {
@@ -186,10 +183,7 @@ function readContextString(
   return typeof item === "string" ? item : null;
 }
 
-function getPublicationCycleKey(
-  domainEvent: DomainEvent,
-  payload: EditorialEventPayload,
-): string {
+function getPublicationCycleKey(domainEvent: DomainEvent, payload: EditorialEventPayload): string {
   const payloadPublishedAt = readString(payload, "publishedAt");
 
   if (payloadPublishedAt !== null) {
@@ -224,10 +218,7 @@ function buildDeduplicationKey(input: {
     return `${baseKey}:open`;
   }
 
-  return `${baseKey}:cycle:${getPublicationCycleKey(
-    input.domainEvent,
-    input.payload,
-  )}`;
+  return `${baseKey}:cycle:${getPublicationCycleKey(input.domainEvent, input.payload)}`;
 }
 
 function buildContextJson(input: {
@@ -258,10 +249,7 @@ function buildContextJson(input: {
     context.changedFields = [...changedFields];
   }
 
-  context.publicationCycleKey = getPublicationCycleKey(
-    input.domainEvent,
-    input.payload,
-  );
+  context.publicationCycleKey = getPublicationCycleKey(input.domainEvent, input.payload);
 
   if (input.action === "OPTIONAL_CREATE") {
     context.optional = true;
@@ -305,9 +293,7 @@ function mergeContextJson(input: {
   return merged;
 }
 
-async function findExistingDelivery(
-  domainEventId: string,
-): Promise<DomainEventDelivery | null> {
+async function findExistingDelivery(domainEventId: string): Promise<DomainEventDelivery | null> {
   return db.domainEventDelivery.findUnique({
     where: {
       domainEventId_consumerCode: {
@@ -318,9 +304,23 @@ async function findExistingDelivery(
   });
 }
 
-async function createPendingDelivery(
-  domainEventId: string,
-): Promise<DomainEventDelivery | null> {
+async function retryFailedDelivery(delivery: DomainEventDelivery): Promise<DomainEventDelivery> {
+  return db.domainEventDelivery.update({
+    where: { id: delivery.id },
+    data: {
+      status: "PENDING",
+      deliveredAt: null,
+      failedAt: null,
+      errorCode: null,
+      errorMessage: null,
+      attemptCount: {
+        increment: 1,
+      },
+    },
+  });
+}
+
+async function createPendingDelivery(domainEventId: string): Promise<DomainEventDelivery | null> {
   try {
     return await db.domainEventDelivery.create({
       data: {
@@ -339,10 +339,7 @@ async function createPendingDelivery(
   }
 }
 
-async function markDeliverySuccessful(
-  tx: DbTx,
-  deliveryId: string,
-): Promise<DomainEventDelivery> {
+async function markDeliverySuccessful(tx: DbTx, deliveryId: string): Promise<DomainEventDelivery> {
   return tx.domainEventDelivery.update({
     where: { id: deliveryId },
     data: {
@@ -355,10 +352,7 @@ async function markDeliverySuccessful(
   });
 }
 
-async function markDeliveryFailed(
-  deliveryId: string,
-  error: unknown,
-): Promise<void> {
+async function markDeliveryFailed(deliveryId: string, error: unknown): Promise<void> {
   await db.domainEventDelivery.update({
     where: { id: deliveryId },
     data: {
@@ -370,17 +364,86 @@ async function markDeliveryFailed(
   });
 }
 
+async function resolveExistingDeliveryForProjection(delivery: DomainEventDelivery): Promise<
+  | Readonly<{
+      kind: "already_processed";
+      result: Extract<
+        ProjectEditorialDomainEventToMarketingIntentResult,
+        { status: "already_processed" }
+      >;
+    }>
+  | Readonly<{
+      kind: "pending_delivery";
+      result: Extract<
+        ProjectEditorialDomainEventToMarketingIntentResult,
+        { status: "pending_delivery" }
+      >;
+    }>
+  | Readonly<{
+      kind: "skipped_terminal_delivery";
+      result: Extract<
+        ProjectEditorialDomainEventToMarketingIntentResult,
+        { status: "skipped_terminal_delivery" }
+      >;
+    }>
+  | Readonly<{
+      kind: "retry";
+      delivery: DomainEventDelivery;
+    }>
+> {
+  if (delivery.status === "PUBLISHED") {
+    return {
+      kind: "already_processed",
+      result: {
+        status: "already_processed",
+        delivery,
+        marketingIntent: null,
+      },
+    };
+  }
+
+  if (delivery.status === "FAILED") {
+    return {
+      kind: "retry",
+      delivery: await retryFailedDelivery(delivery),
+    };
+  }
+
+  if (delivery.status === "PENDING") {
+    return {
+      kind: "pending_delivery",
+      result: {
+        status: "pending_delivery",
+        delivery,
+        marketingIntent: null,
+      },
+    };
+  }
+
+  return {
+    kind: "skipped_terminal_delivery",
+    result: {
+      status: "skipped_terminal_delivery",
+      delivery,
+      marketingIntent: null,
+    },
+  };
+}
+
 function getSubjectId(domainEvent: DomainEvent): string {
   return domainEvent.aggregateId;
 }
 
-async function findOpenIntentCandidate(tx: DbTx, input: {
-  domainEvent: DomainEvent;
-  payload: EditorialEventPayload;
-  intentType: MarketingIntentType;
-  subjectType: MarketingIntentSubjectType;
-  subjectId: string;
-}): Promise<MarketingIntent | null> {
+async function findOpenIntentCandidate(
+  tx: DbTx,
+  input: {
+    domainEvent: DomainEvent;
+    payload: EditorialEventPayload;
+    intentType: MarketingIntentType;
+    subjectType: MarketingIntentSubjectType;
+    subjectId: string;
+  }
+): Promise<MarketingIntent | null> {
   const openIntents = await tx.marketingIntent.findMany({
     where: {
       storeId: input.domainEvent.storeId ?? null,
@@ -400,8 +463,7 @@ async function findOpenIntentCandidate(tx: DbTx, input: {
 
   if (cycleKey !== null) {
     const exactMatch = openIntents.find(
-      (intent) =>
-        readContextString(intent.contextJson, "publicationCycleKey") === cycleKey,
+      (intent) => readContextString(intent.contextJson, "publicationCycleKey") === cycleKey
     );
 
     return exactMatch ?? null;
@@ -414,11 +476,14 @@ async function findOpenIntentCandidate(tx: DbTx, input: {
   return null;
 }
 
-async function createIntentFromPolicy(tx: DbTx, input: {
-  domainEvent: DomainEvent;
-  payload: EditorialEventPayload;
-  policy: CreateProjectionPolicy;
-}): Promise<
+async function createIntentFromPolicy(
+  tx: DbTx,
+  input: {
+    domainEvent: DomainEvent;
+    payload: EditorialEventPayload;
+    policy: CreateProjectionPolicy;
+  }
+): Promise<
   Readonly<{
     status: "created" | "deduplicated";
     marketingIntent: MarketingIntent;
@@ -474,11 +539,14 @@ async function createIntentFromPolicy(tx: DbTx, input: {
   };
 }
 
-async function mergeWithOpenIntent(tx: DbTx, input: {
-  domainEvent: DomainEvent;
-  payload: EditorialEventPayload;
-  policy: MergeProjectionPolicy;
-}): Promise<
+async function mergeWithOpenIntent(
+  tx: DbTx,
+  input: {
+    domainEvent: DomainEvent;
+    payload: EditorialEventPayload;
+    policy: MergeProjectionPolicy;
+  }
+): Promise<
   | Readonly<{
       status: "merged";
       marketingIntent: MarketingIntent;
@@ -510,10 +578,7 @@ async function mergeWithOpenIntent(tx: DbTx, input: {
 
     return {
       status: "ignored",
-      reason:
-        candidateCount > 1
-          ? "AMBIGUOUS_OPEN_PROPOSED_INTENT"
-          : "NO_OPEN_PROPOSED_INTENT",
+      reason: candidateCount > 1 ? "AMBIGUOUS_OPEN_PROPOSED_INTENT" : "NO_OPEN_PROPOSED_INTENT",
     };
   }
 
@@ -542,16 +607,18 @@ async function mergeWithOpenIntent(tx: DbTx, input: {
  * est donc marquée `PUBLISHED` côté delivery.
  */
 export async function projectEditorialDomainEventToMarketingIntent(
-  input: ProjectEditorialDomainEventToMarketingIntentInput,
+  input: ProjectEditorialDomainEventToMarketingIntentInput
 ): Promise<ProjectEditorialDomainEventToMarketingIntentResult> {
   const existingDelivery = await findExistingDelivery(input.domainEvent.id);
 
   if (existingDelivery !== null) {
-    return {
-      status: "already_processed",
-      delivery: existingDelivery,
-      marketingIntent: null,
-    };
+    const resolvedDelivery = await resolveExistingDeliveryForProjection(existingDelivery);
+
+    if (resolvedDelivery.kind !== "retry") {
+      return resolvedDelivery.result;
+    }
+
+    return runProjection(input, resolvedDelivery.delivery);
   }
 
   const createdDelivery = await createPendingDelivery(input.domainEvent.id);
@@ -560,16 +627,25 @@ export async function projectEditorialDomainEventToMarketingIntent(
     const concurrentDelivery = await findExistingDelivery(input.domainEvent.id);
 
     if (concurrentDelivery !== null) {
-      return {
-        status: "already_processed",
-        delivery: concurrentDelivery,
-        marketingIntent: null,
-      };
+      const resolvedDelivery = await resolveExistingDeliveryForProjection(concurrentDelivery);
+
+      if (resolvedDelivery.kind !== "retry") {
+        return resolvedDelivery.result;
+      }
+
+      return runProjection(input, resolvedDelivery.delivery);
     }
 
     throw new Error("Unable to acquire DomainEventDelivery lock.");
   }
 
+  return runProjection(input, createdDelivery);
+}
+
+async function runProjection(
+  input: ProjectEditorialDomainEventToMarketingIntentInput,
+  activeDelivery: DomainEventDelivery
+): Promise<ProjectEditorialDomainEventToMarketingIntentResult> {
   try {
     const payload = parsePayloadJson(input.domainEvent.payloadJson);
     const subjectId = getSubjectId(input.domainEvent);
@@ -579,7 +655,7 @@ export async function projectEditorialDomainEventToMarketingIntent(
       storeId: input.domainEvent.storeId ?? null,
     });
 
-    return db.$transaction(async (tx) => {
+    return await db.$transaction(async (tx) => {
       let projectionResult:
         | Omit<
             Extract<
@@ -589,17 +665,11 @@ export async function projectEditorialDomainEventToMarketingIntent(
             "delivery"
           >
         | Omit<
-            Extract<
-              ProjectEditorialDomainEventToMarketingIntentResult,
-              { status: "merged" }
-            >,
+            Extract<ProjectEditorialDomainEventToMarketingIntentResult, { status: "merged" }>,
             "delivery"
           >
         | Omit<
-            Extract<
-              ProjectEditorialDomainEventToMarketingIntentResult,
-              { status: "ignored" }
-            >,
+            Extract<ProjectEditorialDomainEventToMarketingIntentResult, { status: "ignored" }>,
             "delivery" | "marketingIntent"
           >;
 
@@ -627,7 +697,7 @@ export async function projectEditorialDomainEventToMarketingIntent(
         };
       }
 
-      const delivery = await markDeliverySuccessful(tx, createdDelivery.id);
+      const delivery = await markDeliverySuccessful(tx, activeDelivery.id);
 
       if (projectionResult.status === "ignored") {
         return {
@@ -654,7 +724,7 @@ export async function projectEditorialDomainEventToMarketingIntent(
       };
     });
   } catch (error: unknown) {
-    await markDeliveryFailed(createdDelivery.id, error);
+    await markDeliveryFailed(activeDelivery.id, error);
     throw error;
   }
 }

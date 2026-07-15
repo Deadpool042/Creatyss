@@ -423,6 +423,267 @@ describe("projectEditorialDomainEventToMarketingIntent", () => {
     expect(mockDb.marketingIntent.create).not.toHaveBeenCalled();
   });
 
+  it("retourne pending_delivery si une delivery PENDING existe déjà", async () => {
+    const existingDelivery = buildDelivery({
+      status: DomainEventStatus.PENDING,
+      deliveredAt: null,
+    });
+    mockDb.domainEventDelivery.findUnique.mockResolvedValue(existingDelivery);
+
+    const result = await projectEditorialDomainEventToMarketingIntent({
+      domainEvent: buildDomainEvent(),
+    });
+
+    expect(result).toEqual({
+      status: "pending_delivery",
+      delivery: existingDelivery,
+      marketingIntent: null,
+    });
+    expect(mockDb.domainEventDelivery.update).not.toHaveBeenCalled();
+    expect(mockDb.marketingIntent.create).not.toHaveBeenCalled();
+  });
+
+  it("retourne skipped_terminal_delivery si une delivery CANCELLED existe déjà", async () => {
+    const existingDelivery = buildDelivery({
+      status: DomainEventStatus.CANCELLED,
+      deliveredAt: null,
+    });
+    mockDb.domainEventDelivery.findUnique.mockResolvedValue(existingDelivery);
+
+    const result = await projectEditorialDomainEventToMarketingIntent({
+      domainEvent: buildDomainEvent(),
+    });
+
+    expect(result).toEqual({
+      status: "skipped_terminal_delivery",
+      delivery: existingDelivery,
+      marketingIntent: null,
+    });
+    expect(mockDb.domainEventDelivery.update).not.toHaveBeenCalled();
+    expect(mockDb.marketingIntent.create).not.toHaveBeenCalled();
+  });
+
+  it("retourne skipped_terminal_delivery si une delivery ARCHIVED existe déjà", async () => {
+    const existingDelivery = buildDelivery({
+      status: DomainEventStatus.ARCHIVED,
+      deliveredAt: null,
+    });
+    mockDb.domainEventDelivery.findUnique.mockResolvedValue(existingDelivery);
+
+    const result = await projectEditorialDomainEventToMarketingIntent({
+      domainEvent: buildDomainEvent(),
+    });
+
+    expect(result).toEqual({
+      status: "skipped_terminal_delivery",
+      delivery: existingDelivery,
+      marketingIntent: null,
+    });
+    expect(mockDb.domainEventDelivery.update).not.toHaveBeenCalled();
+    expect(mockDb.marketingIntent.create).not.toHaveBeenCalled();
+  });
+
+  it("rejoue une delivery FAILED puis la marque PUBLISHED si la projection réussit", async () => {
+    const failedDelivery = buildDelivery({
+      status: DomainEventStatus.FAILED,
+      deliveredAt: null,
+      failedAt: NOW,
+      errorCode: "OLD_ERROR",
+      errorMessage: "old failure",
+    });
+    const retriedDelivery = buildDelivery({
+      status: DomainEventStatus.PENDING,
+      deliveredAt: null,
+      failedAt: null,
+      errorCode: null,
+      errorMessage: null,
+      attemptCount: 2,
+    });
+    const publishedDelivery = buildDelivery({
+      status: DomainEventStatus.PUBLISHED,
+      attemptCount: 2,
+    });
+    const marketingIntent = buildMarketingIntent();
+
+    mockDb.domainEventDelivery.findUnique.mockResolvedValue(failedDelivery);
+    mockDb.domainEventDelivery.update
+      .mockResolvedValueOnce(retriedDelivery)
+      .mockResolvedValueOnce(publishedDelivery);
+    mockDb.marketingIntent.create.mockResolvedValue(marketingIntent);
+
+    const result = await projectEditorialDomainEventToMarketingIntent({
+      domainEvent: buildDomainEvent(),
+    });
+
+    expect(result).toEqual({
+      status: "created",
+      delivery: publishedDelivery,
+      marketingIntent,
+      optional: false,
+    });
+    expect(mockDb.domainEventDelivery.update).toHaveBeenNthCalledWith(1, {
+      where: { id: failedDelivery.id },
+      data: {
+        status: "PENDING",
+        deliveredAt: null,
+        failedAt: null,
+        errorCode: null,
+        errorMessage: null,
+        attemptCount: {
+          increment: 1,
+        },
+      },
+    });
+  });
+
+  it("laisse une delivery FAILED si la projection rejouée échoue encore", async () => {
+    const failedDelivery = buildDelivery({
+      status: DomainEventStatus.FAILED,
+      deliveredAt: null,
+      failedAt: NOW,
+    });
+    const retriedDelivery = buildDelivery({
+      status: DomainEventStatus.PENDING,
+      deliveredAt: null,
+      failedAt: null,
+      attemptCount: 2,
+    });
+    const finalFailedDelivery = buildDelivery({
+      status: DomainEventStatus.FAILED,
+      deliveredAt: null,
+      failedAt: NOW,
+      errorCode: "MARKETING_INTENT_PROJECTION_FAILED",
+      errorMessage: "projection crash",
+      attemptCount: 2,
+    });
+    const projectionError = new Error("projection crash");
+
+    mockDb.domainEventDelivery.findUnique.mockResolvedValue(failedDelivery);
+    mockDb.domainEventDelivery.update
+      .mockResolvedValueOnce(retriedDelivery)
+      .mockResolvedValueOnce(finalFailedDelivery);
+    mockDb.marketingIntent.create.mockRejectedValue(projectionError);
+
+    await expect(
+      projectEditorialDomainEventToMarketingIntent({
+        domainEvent: buildDomainEvent(),
+      }),
+    ).rejects.toBe(projectionError);
+
+    expect(mockDb.domainEventDelivery.update).toHaveBeenCalled();
+  });
+
+  it("crée une nouvelle delivery PENDING puis la marque PUBLISHED sur projection réussie", async () => {
+    const pendingDelivery = buildDelivery({
+      id: "delivery_pending",
+      status: DomainEventStatus.PENDING,
+      deliveredAt: null,
+    });
+    const publishedDelivery = buildDelivery({
+      id: "delivery_pending",
+      status: DomainEventStatus.PUBLISHED,
+    });
+    const marketingIntent = buildMarketingIntent();
+
+    mockDb.domainEventDelivery.create.mockResolvedValue(pendingDelivery);
+    mockDb.domainEventDelivery.update.mockResolvedValue(publishedDelivery);
+    mockDb.marketingIntent.create.mockResolvedValue(marketingIntent);
+
+    const result = await projectEditorialDomainEventToMarketingIntent({
+      domainEvent: buildDomainEvent(),
+    });
+
+    expect(result).toMatchObject({
+      status: "created",
+      delivery: publishedDelivery,
+      marketingIntent,
+      optional: false,
+    });
+    expect(mockDb.domainEventDelivery.create).toHaveBeenCalledWith({
+      data: {
+        domainEventId: "evt_1",
+        consumerCode: EDITORIAL_MARKETING_INTENT_CONSUMER_CODE,
+        status: "PENDING",
+        attemptCount: 1,
+      },
+    });
+    expect(mockDb.domainEventDelivery.update).toHaveBeenCalledWith({
+      where: { id: "delivery_pending" },
+      data: {
+        status: "PUBLISHED",
+        deliveredAt: expect.any(Date),
+        failedAt: null,
+        errorCode: null,
+        errorMessage: null,
+      },
+    });
+  });
+
+  it("marque la delivery PUBLISHED lors d'une projection IGNORE sans créer d'intent", async () => {
+    const pendingDelivery = buildDelivery({
+      id: "delivery_pending",
+      status: DomainEventStatus.PENDING,
+      deliveredAt: null,
+    });
+    const publishedDelivery = buildDelivery({
+      id: "delivery_pending",
+      status: DomainEventStatus.PUBLISHED,
+    });
+    mockDb.domainEventDelivery.create.mockResolvedValue(pendingDelivery);
+    mockDb.domainEventDelivery.update.mockResolvedValue(publishedDelivery);
+
+    const result = await projectEditorialDomainEventToMarketingIntent({
+      domainEvent: buildDomainEvent({
+        eventType: "content.legal_page.updated",
+        aggregateType: "PAGE",
+        aggregateId: "page_1",
+        payloadJson: JSON.stringify({
+          pageId: "page_1",
+          slug: "mentions-legales",
+          title: "Mentions légales",
+          changedFields: ["title"],
+        }),
+      }),
+    });
+
+    expect(result).toEqual({
+      status: "ignored",
+      delivery: publishedDelivery,
+      marketingIntent: null,
+      reason: "LEGAL_CONTENT",
+    });
+    expect(mockDb.marketingIntent.create).not.toHaveBeenCalled();
+  });
+
+  it("marque la delivery FAILED avec une erreur exploitable si la projection échoue", async () => {
+    const pendingDelivery = buildDelivery({
+      id: "delivery_pending",
+      status: DomainEventStatus.PENDING,
+      deliveredAt: null,
+    });
+    const failedDelivery = buildDelivery({
+      id: "delivery_pending",
+      status: DomainEventStatus.FAILED,
+      deliveredAt: null,
+      failedAt: NOW,
+      errorCode: "MARKETING_INTENT_PROJECTION_FAILED",
+      errorMessage: "projection crash",
+    });
+    const projectionError = new Error("projection crash");
+
+    mockDb.domainEventDelivery.create.mockResolvedValue(pendingDelivery);
+    mockDb.domainEventDelivery.update.mockResolvedValue(failedDelivery);
+    mockDb.marketingIntent.create.mockRejectedValue(projectionError);
+
+    await expect(
+      projectEditorialDomainEventToMarketingIntent({
+        domainEvent: buildDomainEvent(),
+      }),
+    ).rejects.toBe(projectionError);
+
+    expect(mockDb.domainEventDelivery.update).toHaveBeenCalled();
+  });
+
   it("inclut storeId dans deduplicationKey", async () => {
     await projectEditorialDomainEventToMarketingIntent({
       domainEvent: buildDomainEvent({
