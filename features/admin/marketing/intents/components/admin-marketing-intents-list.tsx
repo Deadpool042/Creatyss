@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 
 import {
   AdminTable,
@@ -13,6 +14,7 @@ import {
 } from "@/components/admin/tables/admin-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { materializeNewsletterCampaignAction } from "@/features/admin/marketing/intents/actions/materialize-newsletter-campaign.action";
 import { reviewMarketingIntentAction } from "@/features/admin/marketing/intents/actions/review-marketing-intent.action";
 import type { AdminMarketingIntentSummary } from "@/features/admin/marketing/intents/queries/list-admin-marketing-intents.query";
 import type { MarketingIntentReviewDecision } from "@/features/marketing/editorial-intents/review-marketing-intent.service";
@@ -35,6 +37,11 @@ const CHANNEL_LABELS: Record<AdminMarketingIntentSummary["suggestedChannels"][nu
   SOCIAL: "Social",
 };
 
+const STATUS_LABELS: Partial<Record<AdminMarketingIntentSummary["status"], string>> = {
+  PROPOSED: "Proposée",
+  APPROVED: "Approuvée",
+};
+
 function getContextTitle(intent: AdminMarketingIntentSummary): string | null {
   const context = intent.contextJson;
 
@@ -46,46 +53,123 @@ function getContextTitle(intent: AdminMarketingIntentSummary): string | null {
   return typeof title === "string" ? title : null;
 }
 
-function IntentDecisionButtons({ intentId }: { intentId: string }) {
+function IntentDecisionButtons({
+  intentId,
+  status,
+}: {
+  intentId: string;
+  status: AdminMarketingIntentSummary["status"];
+}) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
 
   function handleDecision(decision: MarketingIntentReviewDecision) {
     startTransition(async () => {
-      await reviewMarketingIntentAction(intentId, decision);
+      setError(null);
+      const result = await reviewMarketingIntentAction(intentId, decision);
+
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
+
       router.refresh();
     });
   }
 
   return (
-    <div className="flex justify-end gap-2">
+    <div className="flex flex-col items-end gap-1">
+      <div className="flex justify-end gap-2">
+        {status === "PROPOSED" ? (
+          <>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              disabled={isPending}
+              onClick={() => handleDecision("APPROVED")}
+            >
+              Approuver
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={isPending}
+              onClick={() => handleDecision("REJECTED")}
+            >
+              Rejeter
+            </Button>
+          </>
+        ) : null}
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          disabled={isPending}
+          onClick={() => handleDecision("ARCHIVED")}
+        >
+          Archiver
+        </Button>
+      </div>
+      {error !== null ? <p className="text-xs text-feedback-error-foreground">{error}</p> : null}
+    </div>
+  );
+}
+
+function MaterializeNewsletterCampaignButton({ intentId }: { intentId: string }) {
+  const [isPending, startTransition] = useTransition();
+  const [feedback, setFeedback] = useState<
+    | Readonly<{ kind: "error"; message: string }>
+    | Readonly<{ kind: "success"; alreadyMaterialized: boolean; campaignDetailPath: string }>
+    | null
+  >(null);
+
+  function handleMaterialize() {
+    startTransition(async () => {
+      const result = await materializeNewsletterCampaignAction(intentId);
+
+      if (!result.ok) {
+        setFeedback({ kind: "error", message: result.error });
+        return;
+      }
+
+      setFeedback({
+        kind: "success",
+        alreadyMaterialized: result.alreadyMaterialized,
+        campaignDetailPath: result.campaignDetailPath,
+      });
+    });
+  }
+
+  if (feedback?.kind === "success") {
+    return (
+      <Link
+        href={feedback.campaignDetailPath}
+        className="text-xs font-medium text-brand underline underline-offset-2"
+      >
+        {feedback.alreadyMaterialized
+          ? "Voir le brouillon newsletter"
+          : "Brouillon newsletter créé"}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="flex flex-col items-end gap-1">
       <Button
         type="button"
         variant="secondary"
         size="sm"
         disabled={isPending}
-        onClick={() => handleDecision("APPROVED")}
+        onClick={handleMaterialize}
       >
-        Approuver
+        Créer le brouillon newsletter
       </Button>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        disabled={isPending}
-        onClick={() => handleDecision("REJECTED")}
-      >
-        Rejeter
-      </Button>
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        disabled={isPending}
-        onClick={() => handleDecision("ARCHIVED")}
-      >
-        Archiver
-      </Button>
+      {feedback?.kind === "error" ? (
+        <p className="text-xs text-feedback-error-foreground">{feedback.message}</p>
+      ) : null}
     </div>
   );
 }
@@ -110,6 +194,7 @@ export function AdminMarketingIntentsList({ intents }: AdminMarketingIntentsList
             <AdminTableHead>Contenu</AdminTableHead>
             <AdminTableHead>Type de sujet</AdminTableHead>
             <AdminTableHead>Canaux suggérés</AdminTableHead>
+            <AdminTableHead>Statut</AdminTableHead>
             <AdminTableHead>Proposée le</AdminTableHead>
             <AdminTableHead className="text-right">Décision</AdminTableHead>
           </AdminTableRow>
@@ -141,11 +226,20 @@ export function AdminMarketingIntentsList({ intents }: AdminMarketingIntentsList
                   )}
                 </div>
               </AdminTableCell>
+              <AdminTableCell>
+                <Badge variant="outline">{STATUS_LABELS[intent.status] ?? intent.status}</Badge>
+              </AdminTableCell>
               <AdminTableCell className="text-muted-foreground">
                 {dateFormatter.format(intent.createdAt)}
               </AdminTableCell>
               <AdminTableCell className="text-right">
-                <IntentDecisionButtons intentId={intent.id} />
+                <div className="flex flex-col items-end gap-2">
+                  {intent.status === "APPROVED" &&
+                  intent.suggestedChannels.includes("NEWSLETTER") ? (
+                    <MaterializeNewsletterCampaignButton intentId={intent.id} />
+                  ) : null}
+                  <IntentDecisionButtons intentId={intent.id} status={intent.status} />
+                </div>
               </AdminTableCell>
             </AdminTableRow>
           ))}

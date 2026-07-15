@@ -18,7 +18,7 @@ export type AdminMarketingIntentSummary = Pick<
 
 export async function listAdminMarketingIntents(): Promise<readonly AdminMarketingIntentSummary[]> {
   return db.marketingIntent.findMany({
-    where: { status: "PROPOSED" },
+    where: { status: { in: ["PROPOSED", "APPROVED"] } },
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
