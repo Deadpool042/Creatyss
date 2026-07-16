@@ -38,25 +38,26 @@ un canal. Ils ne constituent pas l'intention multicanale source.
 Creatyss reste la source de vérité. Les actions éditoriales ne doivent connaître
 ni newsletter, ni social, ni provider externe.
 
-## État réel observé
+## État réel observé (clôture lots 1-5, revue Cowork du 2026-07-16)
 
 - Le socle `DomainEvent` durable existe pour le blog, la homepage et les pages
   légales ou éditoriales.
-- `DomainEventDelivery` existe dans le modèle de données et peut porter le suivi
-  idempotent d'un consommateur futur.
-- `NewsletterCampaign` existe comme objet de campagne email avec un statut
-  initial `DRAFT`.
-- `SocialPublication` existe comme objet de diffusion sociale avec un statut
-  initial `DRAFT`.
+- `DomainEventDelivery` porte le suivi idempotent de la projection
+  (`consumerCode` stable, statuts `PENDING`/`PUBLISHED`/`FAILED`).
+- `NewsletterCampaign` et `SocialPublication` existent comme objets de
+  brouillon `DRAFT`, matérialisés depuis un `MarketingIntent APPROVED`.
 - `MarketingIntent` existe dans le schéma Prisma avec ses statuts, types,
   canaux suggérés et références vers les `DomainEvent` source.
 - La policy pure `resolveEditorialMarketingIntentPolicy` existe et couvre les
   événements éditoriaux retenus.
-- Aucune projection runtime `DomainEvent -> MarketingIntent` n'existe
-  actuellement.
-- Aucune UI admin dédiée à la revue de `MarketingIntent` n'existe actuellement.
+- La projection runtime `DomainEvent -> MarketingIntent` est implémentée et
+  idempotente (double garde `DomainEventDelivery` unique +
+  `MarketingIntent.deduplicationKey` unique).
+- L'UI admin de revue existe à `/admin/marketing/intents` (liste filtrée sur
+  `PROPOSED`/`APPROVED`, transitions strictes, matérialisation newsletter et
+  social).
 - Aucun provider, aucun job et aucun webhook ne sont branchés pour ce flux
-  `MarketingIntent`.
+  `MarketingIntent` — conforme au périmètre "Hors périmètre" ci-dessus.
 
 ## Hors périmètre
 
@@ -114,12 +115,13 @@ implicite.
 Le modèle conceptuel cible est `MarketingIntent`.
 Il est ajouté au schéma Prisma dans le lot `modèle + policy pure`.
 
-Le runtime associé reste partiel à ce stade :
+Le runtime associé est complet depuis la clôture du lot 5 :
 
 - le stockage existe ;
 - la policy pure existe ;
-- la projection depuis les `DomainEvent` reste à implémenter ;
-- la revue admin et la matérialisation newsletter/social restent à implémenter.
+- la projection depuis les `DomainEvent` est implémentée (lot 2) ;
+- la revue admin (lot 3) et la matérialisation newsletter/social (lots 4-5)
+  sont implémentées.
 
 Champs recommandés :
 
@@ -270,6 +272,28 @@ revue admin.
 Les noms, statuts, identifiants et payloads de providers ne doivent pas entrer
 dans le modèle métier des intents. Les providers restent des dépendances
 externes encapsulées.
+
+## Clôture (lots 1 à 5)
+
+Revue Cowork de clôture effectuée le 2026-07-16. Verdict : chantier clos avec
+dette documentée. Invariants fonctionnels vérifiés conformes (idempotence
+projection et matérialisations, gestion `P2002`, machine à états serveur,
+visibilité admin, feature gating seedé, aucun envoi ni job déclenché par les
+matérialisations).
+
+Dette non bloquante restant à traiter dans un micro-lot ultérieur :
+
+- `review-marketing-intent.service.ts` (machine à états) et
+  `project-pending-editorial-domain-events.service.ts` (rattrapage) n'ont
+  aucun test unitaire, direct ou indirect. Le comportement a été vérifié par
+  lecture de code lors de la revue de clôture, pas par une suite automatisée.
+- `refresh-marketing-intents.action.ts` n'expose à l'admin qu'un compteur
+  `failed: number` ; le détail d'erreur par événement (`errorMessage`,
+  `errorCode`) reste tracé en base via `DomainEventDelivery` mais n'est pas
+  surfacé dans le résultat de l'action.
+
+Les lots ultérieurs d'orchestration/providers restent hors périmètre, comme
+indiqué plus haut.
 
 ## Critères de fin du cadrage
 
