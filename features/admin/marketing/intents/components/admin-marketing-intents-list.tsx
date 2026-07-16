@@ -15,6 +15,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { materializeNewsletterCampaignAction } from "@/features/admin/marketing/intents/actions/materialize-newsletter-campaign.action";
+import { materializeSocialPublicationAction } from "@/features/admin/marketing/intents/actions/materialize-social-publication.action";
 import { reviewMarketingIntentAction } from "@/features/admin/marketing/intents/actions/review-marketing-intent.action";
 import type { AdminMarketingIntentSummary } from "@/features/admin/marketing/intents/queries/list-admin-marketing-intents.query";
 import type { MarketingIntentReviewDecision } from "@/features/marketing/editorial-intents/review-marketing-intent.service";
@@ -174,6 +175,53 @@ function MaterializeNewsletterCampaignButton({ intentId }: { intentId: string })
   );
 }
 
+function MaterializeSocialPublicationButton({ intentId }: { intentId: string }) {
+  const [isPending, startTransition] = useTransition();
+  const [feedback, setFeedback] = useState<
+    | Readonly<{ kind: "error"; message: string }>
+    | Readonly<{ kind: "success"; alreadyMaterialized: boolean }>
+    | null
+  >(null);
+
+  function handleMaterialize() {
+    startTransition(async () => {
+      const result = await materializeSocialPublicationAction(intentId);
+
+      if (!result.ok) {
+        setFeedback({ kind: "error", message: result.error });
+        return;
+      }
+
+      setFeedback({ kind: "success", alreadyMaterialized: result.alreadyMaterialized });
+    });
+  }
+
+  if (feedback?.kind === "success") {
+    return (
+      <p className="text-xs font-medium text-muted-foreground">
+        {feedback.alreadyMaterialized ? "Brouillon social déjà créé" : "Brouillon social créé"}
+      </p>
+    );
+  }
+
+  return (
+    <div className="flex flex-col items-end gap-1">
+      <Button
+        type="button"
+        variant="secondary"
+        size="sm"
+        disabled={isPending}
+        onClick={handleMaterialize}
+      >
+        Créer le brouillon social
+      </Button>
+      {feedback?.kind === "error" ? (
+        <p className="text-xs text-feedback-error-foreground">{feedback.message}</p>
+      ) : null}
+    </div>
+  );
+}
+
 export function AdminMarketingIntentsList({ intents }: AdminMarketingIntentsListProps) {
   if (intents.length === 0) {
     return (
@@ -237,6 +285,9 @@ export function AdminMarketingIntentsList({ intents }: AdminMarketingIntentsList
                   {intent.status === "APPROVED" &&
                   intent.suggestedChannels.includes("NEWSLETTER") ? (
                     <MaterializeNewsletterCampaignButton intentId={intent.id} />
+                  ) : null}
+                  {intent.status === "APPROVED" && intent.suggestedChannels.includes("SOCIAL") ? (
+                    <MaterializeSocialPublicationButton intentId={intent.id} />
                   ) : null}
                   <IntentDecisionButtons intentId={intent.id} status={intent.status} />
                 </div>

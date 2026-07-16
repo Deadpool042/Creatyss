@@ -11,8 +11,9 @@
   flux éditorial).
 - Revue admin (approbation/rejet/archivage) implémentée à
   `/admin/marketing/intents`.
-- Aucune matérialisation `NewsletterCampaign`/`SocialPublication` (lots 4-5).
-- Aucun envoi automatique.
+- Matérialisation `NewsletterCampaign` DRAFT implémentée (lot 4).
+- Matérialisation `SocialPublication` DRAFT implémentée (lot 5).
+- Aucun envoi automatique, aucune publication réelle.
 
 Ce document fixe la frontière entre les faits éditoriaux déjà enregistrés et
 les futures propositions de communication marketing.
@@ -213,11 +214,24 @@ uniquement ; `ARCHIVED` terminal.
   `NewsletterCampaign DRAFT` ;
 - ne créer aucun destinataire et ne déclencher aucun envoi.
 
+Statut observé : implémenté. Idempotence par `code` déterministe +
+contrainte unique existante, aucune relation persistée entre intent et
+campagne (cf. `docs/roadmap/editorial-marketing-intents/lot-4-materialisation-newsletter-cadrage.md`).
+
 ### Lot 5 - Matérialisation sociale
 
 - convertir explicitement un intent approuvé en
   `SocialPublication DRAFT` ;
 - ne contacter aucune plateforme externe.
+
+Statut observé : implémenté. A nécessité une migration Prisma additive
+(`SocialPublication.code` + `@@unique([storeId, code])`, absente
+initialement contrairement à `NewsletterCampaign`) et l'ouverture du
+`FeatureFlag` `engagement.social` (niveau `basic` uniquement), inexistant
+avant ce lot (cf.
+`docs/roadmap/editorial-marketing-intents/lot-5-materialisation-sociale-cadrage.md`).
+`channelCode` est fixé à la valeur neutre `"generic"` — aucun provider
+social n'est branché à ce stade.
 
 ### Lots ultérieurs - Orchestration et providers
 

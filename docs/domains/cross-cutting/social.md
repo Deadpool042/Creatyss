@@ -400,6 +400,31 @@ Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici
 
 ---
 
+## Décisions d'implémentation
+
+### Matérialisation depuis un `MarketingIntent` approuvé (2026-07-16)
+
+Cf. `docs/roadmap/editorial-marketing-intents/lot-5-materialisation-sociale-cadrage.md`.
+
+- `engagement.social` (`FeatureFlag`) seedé (`allowedLevels: ["basic"]`,
+  `defaultLevel: "basic"`, `status: "DRAFT"`, `isEnabledByDefault: false`) —
+  module togglable dans `/admin/settings/advanced`, **inactif par défaut**.
+- Un `MarketingIntent` `APPROVED` dont `suggestedChannels` contient
+  `SOCIAL` peut être matérialisé explicitement (bouton admin, jamais
+  automatique) en `SocialPublication` `DRAFT`
+  (`materializeMarketingIntentAsSocialPublication`). Idempotent via un
+  `code` déterministe (`mi-${intentId}`) et la contrainte
+  `@@unique([storeId, code])`.
+- `channelCode` est fixé à la valeur neutre `"generic"` : aucun provider
+  social (Meta, etc.) n'est branché à ce stade — cf. « Non-responsabilités »
+  ci-dessus.
+- **Aucune relation persistée** entre `MarketingIntent` et
+  `SocialPublication` : le lien est dérivable par le `code`, pas stocké
+  (même compromis que la matérialisation newsletter, lot 4).
+- **Aucune publication réelle, aucun `SocialPublicationAsset`** créé à ce
+  niveau. La `SocialPublication` reste `DRAFT`, éditable, sans surface
+  admin de gestion dédiée à ce stade (hors périmètre de ce lot).
+
 ## Documents liés
 
 - `../../architecture/10-fondations/11-modele-de-classification.md`

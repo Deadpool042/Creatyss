@@ -2554,6 +2554,7 @@ export type RecommendationLinkScalarFieldEnum = (typeof RecommendationLinkScalar
 export const SocialPublicationScalarFieldEnum = {
   id: 'id',
   storeId: 'storeId',
+  code: 'code',
   subjectType: 'subjectType',
   subjectId: 'subjectId',
   channelCode: 'channelCode',

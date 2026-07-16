@@ -27,6 +27,7 @@ export type AggregateSocialPublication = {
 export type SocialPublicationMinAggregateOutputType = {
   id: string | null
   storeId: string | null
+  code: string | null
   subjectType: string | null
   subjectId: string | null
   channelCode: string | null
@@ -50,6 +51,7 @@ export type SocialPublicationMinAggregateOutputType = {
 export type SocialPublicationMaxAggregateOutputType = {
   id: string | null
   storeId: string | null
+  code: string | null
   subjectType: string | null
   subjectId: string | null
   channelCode: string | null
@@ -73,6 +75,7 @@ export type SocialPublicationMaxAggregateOutputType = {
 export type SocialPublicationCountAggregateOutputType = {
   id: number
   storeId: number
+  code: number
   subjectType: number
   subjectId: number
   channelCode: number
@@ -98,6 +101,7 @@ export type SocialPublicationCountAggregateOutputType = {
 export type SocialPublicationMinAggregateInputType = {
   id?: true
   storeId?: true
+  code?: true
   subjectType?: true
   subjectId?: true
   channelCode?: true
@@ -121,6 +125,7 @@ export type SocialPublicationMinAggregateInputType = {
 export type SocialPublicationMaxAggregateInputType = {
   id?: true
   storeId?: true
+  code?: true
   subjectType?: true
   subjectId?: true
   channelCode?: true
@@ -144,6 +149,7 @@ export type SocialPublicationMaxAggregateInputType = {
 export type SocialPublicationCountAggregateInputType = {
   id?: true
   storeId?: true
+  code?: true
   subjectType?: true
   subjectId?: true
   channelCode?: true
@@ -240,6 +246,7 @@ export type SocialPublicationGroupByArgs<ExtArgs extends runtime.Types.Extension
 export type SocialPublicationGroupByOutputType = {
   id: string
   storeId: string | null
+  code: string
   subjectType: string | null
   subjectId: string | null
   channelCode: string
@@ -284,6 +291,7 @@ export type SocialPublicationWhereInput = {
   NOT?: Prisma.SocialPublicationWhereInput | Prisma.SocialPublicationWhereInput[]
   id?: Prisma.StringFilter<"SocialPublication"> | string
   storeId?: Prisma.StringNullableFilter<"SocialPublication"> | string | null
+  code?: Prisma.StringFilter<"SocialPublication"> | string
   subjectType?: Prisma.StringNullableFilter<"SocialPublication"> | string | null
   subjectId?: Prisma.StringNullableFilter<"SocialPublication"> | string | null
   channelCode?: Prisma.StringFilter<"SocialPublication"> | string
@@ -310,6 +318,7 @@ export type SocialPublicationWhereInput = {
 export type SocialPublicationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   storeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  code?: Prisma.SortOrder
   subjectType?: Prisma.SortOrderInput | Prisma.SortOrder
   subjectId?: Prisma.SortOrderInput | Prisma.SortOrder
   channelCode?: Prisma.SortOrder
@@ -335,10 +344,12 @@ export type SocialPublicationOrderByWithRelationInput = {
 
 export type SocialPublicationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  storeId_code?: Prisma.SocialPublicationStoreIdCodeCompoundUniqueInput
   AND?: Prisma.SocialPublicationWhereInput | Prisma.SocialPublicationWhereInput[]
   OR?: Prisma.SocialPublicationWhereInput[]
   NOT?: Prisma.SocialPublicationWhereInput | Prisma.SocialPublicationWhereInput[]
   storeId?: Prisma.StringNullableFilter<"SocialPublication"> | string | null
+  code?: Prisma.StringFilter<"SocialPublication"> | string
   subjectType?: Prisma.StringNullableFilter<"SocialPublication"> | string | null
   subjectId?: Prisma.StringNullableFilter<"SocialPublication"> | string | null
   channelCode?: Prisma.StringFilter<"SocialPublication"> | string
@@ -360,11 +371,12 @@ export type SocialPublicationWhereUniqueInput = Prisma.AtLeast<{
   store?: Prisma.XOR<Prisma.StoreNullableScalarRelationFilter, Prisma.StoreWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   assets?: Prisma.SocialPublicationAssetListRelationFilter
-}, "id">
+}, "id" | "storeId_code">
 
 export type SocialPublicationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   storeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  code?: Prisma.SortOrder
   subjectType?: Prisma.SortOrderInput | Prisma.SortOrder
   subjectId?: Prisma.SortOrderInput | Prisma.SortOrder
   channelCode?: Prisma.SortOrder
@@ -394,6 +406,7 @@ export type SocialPublicationScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SocialPublicationScalarWhereWithAggregatesInput | Prisma.SocialPublicationScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"SocialPublication"> | string
   storeId?: Prisma.StringNullableWithAggregatesFilter<"SocialPublication"> | string | null
+  code?: Prisma.StringWithAggregatesFilter<"SocialPublication"> | string
   subjectType?: Prisma.StringNullableWithAggregatesFilter<"SocialPublication"> | string | null
   subjectId?: Prisma.StringNullableWithAggregatesFilter<"SocialPublication"> | string | null
   channelCode?: Prisma.StringWithAggregatesFilter<"SocialPublication"> | string
@@ -416,6 +429,7 @@ export type SocialPublicationScalarWhereWithAggregatesInput = {
 
 export type SocialPublicationCreateInput = {
   id?: string
+  code: string
   subjectType?: string | null
   subjectId?: string | null
   channelCode: string
@@ -441,6 +455,7 @@ export type SocialPublicationCreateInput = {
 export type SocialPublicationUncheckedCreateInput = {
   id?: string
   storeId?: string | null
+  code: string
   subjectType?: string | null
   subjectId?: string | null
   channelCode: string
@@ -464,6 +479,7 @@ export type SocialPublicationUncheckedCreateInput = {
 
 export type SocialPublicationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -489,6 +505,7 @@ export type SocialPublicationUpdateInput = {
 export type SocialPublicationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -513,6 +530,7 @@ export type SocialPublicationUncheckedUpdateInput = {
 export type SocialPublicationCreateManyInput = {
   id?: string
   storeId?: string | null
+  code: string
   subjectType?: string | null
   subjectId?: string | null
   channelCode: string
@@ -535,6 +553,7 @@ export type SocialPublicationCreateManyInput = {
 
 export type SocialPublicationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -557,6 +576,7 @@ export type SocialPublicationUpdateManyMutationInput = {
 export type SocialPublicationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -587,9 +607,15 @@ export type SocialPublicationOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type SocialPublicationStoreIdCodeCompoundUniqueInput = {
+  storeId: string
+  code: string
+}
+
 export type SocialPublicationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   storeId?: Prisma.SortOrder
+  code?: Prisma.SortOrder
   subjectType?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
   channelCode?: Prisma.SortOrder
@@ -613,6 +639,7 @@ export type SocialPublicationCountOrderByAggregateInput = {
 export type SocialPublicationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   storeId?: Prisma.SortOrder
+  code?: Prisma.SortOrder
   subjectType?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
   channelCode?: Prisma.SortOrder
@@ -636,6 +663,7 @@ export type SocialPublicationMaxOrderByAggregateInput = {
 export type SocialPublicationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   storeId?: Prisma.SortOrder
+  code?: Prisma.SortOrder
   subjectType?: Prisma.SortOrder
   subjectId?: Prisma.SortOrder
   channelCode?: Prisma.SortOrder
@@ -765,6 +793,7 @@ export type SocialPublicationUpdateOneRequiredWithoutAssetsNestedInput = {
 
 export type SocialPublicationCreateWithoutCreatedByInput = {
   id?: string
+  code: string
   subjectType?: string | null
   subjectId?: string | null
   channelCode: string
@@ -789,6 +818,7 @@ export type SocialPublicationCreateWithoutCreatedByInput = {
 export type SocialPublicationUncheckedCreateWithoutCreatedByInput = {
   id?: string
   storeId?: string | null
+  code: string
   subjectType?: string | null
   subjectId?: string | null
   channelCode: string
@@ -841,6 +871,7 @@ export type SocialPublicationScalarWhereInput = {
   NOT?: Prisma.SocialPublicationScalarWhereInput | Prisma.SocialPublicationScalarWhereInput[]
   id?: Prisma.StringFilter<"SocialPublication"> | string
   storeId?: Prisma.StringNullableFilter<"SocialPublication"> | string | null
+  code?: Prisma.StringFilter<"SocialPublication"> | string
   subjectType?: Prisma.StringNullableFilter<"SocialPublication"> | string | null
   subjectId?: Prisma.StringNullableFilter<"SocialPublication"> | string | null
   channelCode?: Prisma.StringFilter<"SocialPublication"> | string
@@ -863,6 +894,7 @@ export type SocialPublicationScalarWhereInput = {
 
 export type SocialPublicationCreateWithoutStoreInput = {
   id?: string
+  code: string
   subjectType?: string | null
   subjectId?: string | null
   channelCode: string
@@ -886,6 +918,7 @@ export type SocialPublicationCreateWithoutStoreInput = {
 
 export type SocialPublicationUncheckedCreateWithoutStoreInput = {
   id?: string
+  code: string
   subjectType?: string | null
   subjectId?: string | null
   channelCode: string
@@ -935,6 +968,7 @@ export type SocialPublicationUpdateManyWithWhereWithoutStoreInput = {
 
 export type SocialPublicationCreateWithoutAssetsInput = {
   id?: string
+  code: string
   subjectType?: string | null
   subjectId?: string | null
   channelCode: string
@@ -959,6 +993,7 @@ export type SocialPublicationCreateWithoutAssetsInput = {
 export type SocialPublicationUncheckedCreateWithoutAssetsInput = {
   id?: string
   storeId?: string | null
+  code: string
   subjectType?: string | null
   subjectId?: string | null
   channelCode: string
@@ -997,6 +1032,7 @@ export type SocialPublicationUpdateToOneWithWhereWithoutAssetsInput = {
 
 export type SocialPublicationUpdateWithoutAssetsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1021,6 +1057,7 @@ export type SocialPublicationUpdateWithoutAssetsInput = {
 export type SocialPublicationUncheckedUpdateWithoutAssetsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1044,6 +1081,7 @@ export type SocialPublicationUncheckedUpdateWithoutAssetsInput = {
 export type SocialPublicationCreateManyCreatedByInput = {
   id?: string
   storeId?: string | null
+  code: string
   subjectType?: string | null
   subjectId?: string | null
   channelCode: string
@@ -1065,6 +1103,7 @@ export type SocialPublicationCreateManyCreatedByInput = {
 
 export type SocialPublicationUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1089,6 +1128,7 @@ export type SocialPublicationUpdateWithoutCreatedByInput = {
 export type SocialPublicationUncheckedUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1112,6 +1152,7 @@ export type SocialPublicationUncheckedUpdateWithoutCreatedByInput = {
 export type SocialPublicationUncheckedUpdateManyWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   storeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1133,6 +1174,7 @@ export type SocialPublicationUncheckedUpdateManyWithoutCreatedByInput = {
 
 export type SocialPublicationCreateManyStoreInput = {
   id?: string
+  code: string
   subjectType?: string | null
   subjectId?: string | null
   channelCode: string
@@ -1155,6 +1197,7 @@ export type SocialPublicationCreateManyStoreInput = {
 
 export type SocialPublicationUpdateWithoutStoreInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1178,6 +1221,7 @@ export type SocialPublicationUpdateWithoutStoreInput = {
 
 export type SocialPublicationUncheckedUpdateWithoutStoreInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1201,6 +1245,7 @@ export type SocialPublicationUncheckedUpdateWithoutStoreInput = {
 
 export type SocialPublicationUncheckedUpdateManyWithoutStoreInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
   subjectType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subjectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channelCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1255,6 +1300,7 @@ export type SocialPublicationCountOutputTypeCountAssetsArgs<ExtArgs extends runt
 export type SocialPublicationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   storeId?: boolean
+  code?: boolean
   subjectType?: boolean
   subjectId?: boolean
   channelCode?: boolean
@@ -1282,6 +1328,7 @@ export type SocialPublicationSelect<ExtArgs extends runtime.Types.Extensions.Int
 export type SocialPublicationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   storeId?: boolean
+  code?: boolean
   subjectType?: boolean
   subjectId?: boolean
   channelCode?: boolean
@@ -1307,6 +1354,7 @@ export type SocialPublicationSelectCreateManyAndReturn<ExtArgs extends runtime.T
 export type SocialPublicationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   storeId?: boolean
+  code?: boolean
   subjectType?: boolean
   subjectId?: boolean
   channelCode?: boolean
@@ -1332,6 +1380,7 @@ export type SocialPublicationSelectUpdateManyAndReturn<ExtArgs extends runtime.T
 export type SocialPublicationSelectScalar = {
   id?: boolean
   storeId?: boolean
+  code?: boolean
   subjectType?: boolean
   subjectId?: boolean
   channelCode?: boolean
@@ -1352,7 +1401,7 @@ export type SocialPublicationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type SocialPublicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "subjectType" | "subjectId" | "channelCode" | "status" | "title" | "body" | "scheduledAt" | "publishedAt" | "failedAt" | "cancelledAt" | "archivedAt" | "provider" | "providerReference" | "errorCode" | "errorMessage" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["socialPublication"]>
+export type SocialPublicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "code" | "subjectType" | "subjectId" | "channelCode" | "status" | "title" | "body" | "scheduledAt" | "publishedAt" | "failedAt" | "cancelledAt" | "archivedAt" | "provider" | "providerReference" | "errorCode" | "errorMessage" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["socialPublication"]>
 export type SocialPublicationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   store?: boolean | Prisma.SocialPublication$storeArgs<ExtArgs>
   createdBy?: boolean | Prisma.SocialPublication$createdByArgs<ExtArgs>
@@ -1378,6 +1427,7 @@ export type $SocialPublicationPayload<ExtArgs extends runtime.Types.Extensions.I
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     storeId: string | null
+    code: string
     subjectType: string | null
     subjectId: string | null
     channelCode: string
@@ -1824,6 +1874,7 @@ export interface Prisma__SocialPublicationClient<T, Null = never, ExtArgs extend
 export interface SocialPublicationFieldRefs {
   readonly id: Prisma.FieldRef<"SocialPublication", 'String'>
   readonly storeId: Prisma.FieldRef<"SocialPublication", 'String'>
+  readonly code: Prisma.FieldRef<"SocialPublication", 'String'>
   readonly subjectType: Prisma.FieldRef<"SocialPublication", 'String'>
   readonly subjectId: Prisma.FieldRef<"SocialPublication", 'String'>
   readonly channelCode: Prisma.FieldRef<"SocialPublication", 'String'>
