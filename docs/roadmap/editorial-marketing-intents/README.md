@@ -281,12 +281,26 @@ projection et matérialisations, gestion `P2002`, machine à états serveur,
 visibilité admin, feature gating seedé, aucun envoi ni job déclenché par les
 matérialisations).
 
-Dette non bloquante restant à traiter dans un micro-lot ultérieur :
+### Dette de tests non bloquante
 
-- `review-marketing-intent.service.ts` (machine à états) et
-  `project-pending-editorial-domain-events.service.ts` (rattrapage) n'ont
-  aucun test unitaire, direct ou indirect. Le comportement a été vérifié par
-  lecture de code lors de la revue de clôture, pas par une suite automatisée.
+- `project-pending-editorial-domain-events.service.ts` (rattrapage) ne
+  possède pas de test dédié couvrant la boucle complète de rattrapage
+  (batch, ordre, résumé, rejeu).
+- `review-marketing-intent.service.ts` (machine à états serveur) ne possède
+  pas de test dédié couvrant les transitions autorisées et interdites.
+- Les services de matérialisation Newsletter et Social vérifient bien que
+  seul `APPROVED` est accepté, mais les tests n'instancient explicitement
+  que `PROPOSED` comme cas refusé ; `REJECTED` et `ARCHIVED` ne sont donc
+  pas exercés individuellement.
+
+Cette dette est non bloquante. Elle ne remet pas en cause les invariants
+observés dans le code — le comportement a été vérifié par lecture directe
+lors de la revue de clôture. Le chantier reste fonctionnellement clos. Ces
+tests seront ajoutés lors d'un futur lot de consolidation ou à l'occasion
+d'une prochaine évolution de ces services.
+
+Dette non bloquante distincte, également issue de la revue de clôture :
+
 - `refresh-marketing-intents.action.ts` n'expose à l'admin qu'un compteur
   `failed: number` ; le détail d'erreur par événement (`errorMessage`,
   `errorCode`) reste tracé en base via `DomainEventDelivery` mais n'est pas
