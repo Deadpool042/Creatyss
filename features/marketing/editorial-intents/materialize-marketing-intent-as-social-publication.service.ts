@@ -83,17 +83,6 @@ function getPublicationTitle(intent: MarketingIntent): string {
   return readContextString(intent.contextJson, "title") ?? intent.subjectId;
 }
 
-// TODO(human): résoudre le lien source à insérer dans le corps du brouillon,
-// pour les deux subjectType compatibles avec le canal SOCIAL (cf. policy
-// éditoriale : BLOG_POST et HOMEPAGE, voir cadrage lot 5 section "Mapping").
-//
-// - BLOG_POST -> `/blog/${slug}`, `slug` lu depuis `contextJson` (même règle
-//   que le service newsletter du lot 4, `getSourceLink`).
-// - HOMEPAGE -> chemin storefront stable `/` (pas de `slug` en `contextJson`
-//   pour ce subjectType).
-// - tout autre subjectType -> `null` (pas de lien, cas non atteignable en
-//   pratique tant que la policy ne suggère SOCIAL que pour ces deux types,
-//   mais la fonction doit rester totale).
 function getSourceLink(intent: MarketingIntent): string | null {
   switch (intent.subjectType) {
     case "BLOG_POST": {
