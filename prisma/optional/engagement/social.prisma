@@ -16,6 +16,8 @@ model SocialPublication {
   id      String  @id @default(cuid())
   storeId String?
 
+  code String
+
   subjectType String?
   subjectId   String?
 
@@ -46,6 +48,7 @@ model SocialPublication {
 
   assets SocialPublicationAsset[]
 
+  @@unique([storeId, code])
   @@index([storeId, status])
   @@index([subjectType, subjectId])
   @@index([channelCode, status])

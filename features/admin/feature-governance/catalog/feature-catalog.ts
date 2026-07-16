@@ -4,6 +4,7 @@ export const FEATURE_LEVELS = {
   ai: ["basic", "assistant", "advanced", "automation"],
   analytics: ["read", "insights", "recommendations"],
   newsletter: ["basic", "segmentation", "automation"],
+  social: ["basic"],
   media: ["basic", "optimization", "generation", "automation"],
   discounts: ["simple", "rules", "automation"],
   inventory: ["manual", "alerts", "forecasting"],
@@ -283,6 +284,25 @@ export const FEATURE_CATALOG = [
         "Souscription à une newsletter déclenche une automation email (si engagement.automations est actif).",
     },
     levels: FEATURE_LEVELS.newsletter,
+  },
+  {
+    key: "engagement.social",
+    label: "Diffusion sociale",
+    description:
+      "Matérialisation de brouillons de publications sociales à partir d'intents éditoriaux approuvés.",
+    family: "optional",
+    module: "engagement",
+    defaultState: "inactive",
+    mutability: "level_selectable",
+    scopes: ["store"],
+    levelLabels: {
+      basic: "Basique",
+    },
+    levelDescriptions: {
+      basic:
+        "Création de brouillons SocialPublication (statut DRAFT) depuis un intent éditorial approuvé, sans publication réelle ni provider externe.",
+    },
+    levels: FEATURE_LEVELS.social,
   },
   {
     key: "engagement.analytics",
