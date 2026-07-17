@@ -11,9 +11,9 @@
 
 Creatyss est un socle e-commerce custom pour une boutique artisanale unique, conçu local-first, strictement typé et destiné à un déploiement sur VPS OVH (`AGENTS.md`). Ce n'est pas un SaaS multi-tenant ni une marketplace.
 
-Le socle fonctionnel est mature : le catalogue des 32 modules du `FEATURE_CATALOG` est documenté à L3 (fonctionnel) depuis l'audit du 2026-06-13, et l'audit transverse le plus récent ne relève aucune régression structurelle sur ce chiffre — seulement des écarts documentaires ponctuels (chemins obsolètes, statuts de flags périmés dans certains documents historiques).
+Les 32 modules du `FEATURE_CATALOG` sont classés L3 (fonctionnels) selon la grille narrative de l'audit du 2026-06-13 (`docs/roadmap/2026-06-13-audit-catalogue-modules.md`). Cette classification est une convention documentaire externe, distincte des niveaux métier déclarés techniquement dans le catalogue (`FEATURE_CATALOG` n'expose aucun champ `level`/`L3` — voir section 6). L'audit transverse le plus récent ne relève aucune régression structurelle sur ce chiffre — seulement des écarts documentaires ponctuels (chemins obsolètes, statuts de flags périmés dans certains documents historiques).
 
-Le socle technique (Next.js App Router, TypeScript strict, Prisma modulaire, Docker de production, exploitation VPS) est stabilisé : le staging (`https://staging.creatyss.lpwebstudio.fr`) est opérationnel avec HTTPS, sauvegardes automatisées et recette prod-like validée (`docs/roadmap/h1-boutique-vendable/README.md`).
+Le dépôt documente un staging (`https://staging.creatyss.lpwebstudio.fr`) opérationnel avec HTTPS, sauvegardes automatisées et une recette prod-like validée (`docs/roadmap/h1-boutique-vendable/README.md`) sur un socle Next.js App Router, TypeScript strict, Prisma modulaire et Docker de production.
 
 Les principaux blocages restants avant ouverture commerciale ne sont pas techniques : compte marchand Stripe réel (mode live), bascule du domaine `creatyss.com`, et validation des taux de TVA par un expert-comptable (`docs/roadmap/h1-boutique-vendable/README.md`, `docs/roadmap/h2-commerce-fiable/README.md`).
 
@@ -54,9 +54,11 @@ Pour le détail complet des principes (10 principes d'architecture, modèle de c
 
 Capacités réellement livrées ou substantielles, par domaine. Documenté = documenté comme livré ; Observé = confirmé par du code lu dans le cadre des audits cités.
 
+« Livré » signifie ici que le code et l'interface correspondant au périmètre annoncé existent et sont activables. Cela ne signifie pas que la feature est active par défaut pour chaque store : l'état effectif d'un store dépend du seed, du statut du flag et d'un éventuel override configuré dans `settings/advanced` (détail section 6). L'état réel d'un store déployé n'est pas observable depuis le dépôt seul.
+
 ### Catalogue et contenu
 
-- Catalogue produits complet (prix, disponibilité, inventaire, médias, variantes, SEO, catégories, produits liés) — 7 sous-modules `catalog.products.*` à L3, `FEATURE_CATALOG`.
+- Catalogue produits complet (prix, disponibilité, inventaire, médias, variantes, SEO, catégories, produits liés) — 7 sous-modules `catalog.products.*` classés L3 selon la grille narrative de l'audit du 2026-06-13 (`docs/roadmap/2026-06-13-audit-catalogue-modules.md`), et non un niveau technique du fichier `feature-catalog.ts`.
 - Blog et homepage éditables, pages de contenu (contact, à-propos, les marchés) — `content.blog`, `content.homepage`.
 - Généralisation `LocalizedValue` (multilangue partiel) sur homepage, copies produit/boutique, pages de contenu, blog — `docs/roadmap/h4-plateforme-automatisation/README.md`.
 - Hygiène de composition storefront livrée (empty states unifiés, formulaires standardisés, valeurs Tailwind arbitraires éliminées) — chantier `hygiene-composition-storefront`, 5 lots, confirmé sans écart par l'audit transverse.
@@ -73,7 +75,7 @@ Capacités réellement livrées ou substantielles, par domaine. Documenté = doc
 - TVA par territoire (métropole + DOM), câblage checkout — implémentation technique validée, bloquée sur validation expert-comptable externe.
 - Documents commerciaux : confirmation de commande, bon de préparation, facture, avoir ; Factur-X (XML CII BASIC + PDF/A-3) livré pour les factures.
 - Fulfillment partiel par ligne/quantité, lien `Shipment` optionnel.
-- Retours/remboursements : sélection lignes/quantités, restock transactionnel, remboursement Stripe réel.
+- Retours/remboursements (périmètre admin) : sélection lignes/quantités, restock transactionnel, remboursement Stripe réel ; le formulaire de demande de retour côté storefront client reste différé (`docs/roadmap/h2-commerce-fiable/README.md`).
 - Remises (`commerce.discounts`) : simple, règles, automation, livraison gratuite, ciblage catalogue — back-office dédié livré 2026-06-25.
 - Zones et méthodes de livraison : CRUD admin complet (périmètre réduit à l'admin, décision produit documentée).
 
@@ -145,7 +147,8 @@ Le système de gouvernance des features repose sur `FEATURE_CATALOG` (`features/
 Points d'état observés à date :
 
 - La majorité des 32 features cataloguées utilisent un guard gradué (`meetsFeatureLevel`) plutôt qu'un flag booléen simple. Seules quatre features restent sur le mécanisme booléen `queryFeatureFlagActive` par choix doctrinal (jamais de `FEATURE_LEVELS` déclaré) : `platform.notifications`, `platform.integrations`, `satellite.search`, `satellite.channels`.
-- `engagement.analytics` et `engagement.tracking` sont `ACTIVE`/`isEnabledByDefault: true` par défaut ; les autres features observées dans `prisma/seed/*-feature-flag.seed.ts` restent en statut `DRAFT` au niveau du flag — ce statut n'implique pas nécessairement une UI absente : la plupart des modules concernés sont exposés via le guard gradué indépendamment de ce statut de flag, et non via le mécanisme booléen bloquant.
+- Les deux mécanismes dépendent tous deux de l'état actif résolu du `FeatureFlag`, pas seulement le booléen : `getFeatureLevelState` (`features/feature-flags/queries/get-feature-level-state.query.ts`) calcule cet état, en l'absence d'override `STORE` actif, comme `status === "ACTIVE" && isEnabledByDefault`. Le guard gradué (`meetsFeatureLevel`) ajoute à cette même résolution une comparaison entre le niveau effectif et le niveau requis ; il n'est donc pas indépendant du statut du flag, contrairement à une lecture rapide du mécanisme de gradation. Un override `STORE` actif peut modifier cet état effectif indépendamment du statut par défaut.
+- `engagement.analytics` et `engagement.tracking` sont `ACTIVE`/`isEnabledByDefault: true` par défaut dans les seeds actuels (`prisma/seed/*-feature-flag.seed.ts`) ; les autres features observées y restent en statut `DRAFT`/`isEnabledByDefault: false`, donc inactives par défaut pour un store fraîchement seedé, qu'elles soient exposées via le guard gradué ou le mécanisme booléen. L'état d'activation réel d'un store de production (override manuel via `settings/advanced`) n'est pas déductible du dépôt seul.
 - `settings.advanced` propose des overrides par store (scope `STORE`) au-dessus du `defaultState`/`allowedLevels` déclarés dans le catalogue.
 - Des placeholders `AdminComingSoon` existent pour les modules préparés mais non encore implémentés en UI, conformément à la doctrine.
 
@@ -201,7 +204,7 @@ Explicitement hors horizon immédiat, ni oubli ni anomalie :
 
 - Intégrations provider concrètes (`platform.integrations` reste lecture seule sans adaptateur).
 - Google Merchant Center et Meta Catalog (`satellite.channels` reste lecture seule sans synchronisation).
-- Multilangue complet sur les champs métier produit réels (au-delà des pilotes livrés).
+- Multilangue complet — extension du périmètre partiellement livré sur les champs métier produit réels, voir section 4 (au-delà des pilotes livrés).
 - CRM avancé (`CrmContact`/`CrmTag`, segmentation comportementale, support tickets).
 - Provider IA externe branché sur un SDK réel (`ai.core` reste câblé sans SDK).
 - OSS UE et export hors-UE (hors périmètre boutique artisanale sans vente hors France significative).
