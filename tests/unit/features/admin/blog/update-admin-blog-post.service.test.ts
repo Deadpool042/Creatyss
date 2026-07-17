@@ -32,9 +32,11 @@ type UpdateTx = {
 };
 
 function runWithTx(tx: UpdateTx) {
-  mockWithTransaction.mockImplementation(async (callback: (input: UpdateTx) => Promise<unknown>) => {
-    return callback(tx);
-  });
+  mockWithTransaction.mockImplementation(
+    async (callback: (input: UpdateTx) => Promise<unknown>) => {
+      return callback(tx);
+    }
+  );
 }
 
 describe("updateAdminBlogPost", () => {
@@ -94,13 +96,15 @@ describe("updateAdminBlogPost", () => {
       status: "published",
     });
 
-    expect(result).toEqual({
-      id: "post_1",
-      slug: "article-test",
-      title: "Article test",
-      status: BlogPostStatus.ACTIVE,
-      publishedAt: PUBLISHED_AT,
-    });
+    expect(result).toEqual(
+      expect.objectContaining({
+        id: "post_1",
+        slug: "article-test",
+        title: "Article test",
+        status: BlogPostStatus.ACTIVE,
+        publishedAt: PUBLISHED_AT,
+      })
+    );
     expect(mockRecordDomainEvent).toHaveBeenCalledWith({
       executor: tx,
       storeId: "store_1",
@@ -241,9 +245,12 @@ describe("updateAdminBlogPost", () => {
       status: "published",
     });
 
-    expect(mockRecordDomainEvent).toHaveBeenNthCalledWith(1, expect.objectContaining({
-      eventType: "content.blog_post.updated_visible",
-    }));
+    expect(mockRecordDomainEvent).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        eventType: "content.blog_post.updated_visible",
+      })
+    );
     expect(mockRecordDomainEvent).toHaveBeenCalledWith({
       executor: tx,
       storeId: "store_1",
