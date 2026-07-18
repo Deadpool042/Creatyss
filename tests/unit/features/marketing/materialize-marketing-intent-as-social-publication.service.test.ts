@@ -128,20 +128,26 @@ describe("materializeMarketingIntentAsSocialPublication", () => {
     expect(mockDb.socialPublication.create).not.toHaveBeenCalled();
   });
 
-  it("refuse un intent qui n'est pas APPROVED", async () => {
-    const intent = buildIntent({ status: MarketingIntentStatus.PROPOSED });
+  describe.each<MarketingIntentStatus>([
+    MarketingIntentStatus.PROPOSED,
+    MarketingIntentStatus.REJECTED,
+    MarketingIntentStatus.ARCHIVED,
+  ])("refuse un intent au statut %s", (status) => {
+    it("retourne invalid_status sans interroger ni écrire SocialPublication", async () => {
+      const intent = buildIntent({ status });
 
-    mockDb.marketingIntent.findUnique.mockResolvedValue(intent);
+      mockDb.marketingIntent.findUnique.mockResolvedValue(intent);
 
-    const result = await materializeMarketingIntentAsSocialPublication({ intentId: intent.id });
+      const result = await materializeMarketingIntentAsSocialPublication({ intentId: intent.id });
 
-    expect(result).toEqual({
-      status: "invalid_status",
-      socialPublication: null,
-      currentStatus: "PROPOSED",
+      expect(result).toEqual({
+        status: "invalid_status",
+        socialPublication: null,
+        currentStatus: status,
+      });
+      expect(mockDb.socialPublication.findFirst).not.toHaveBeenCalled();
+      expect(mockDb.socialPublication.create).not.toHaveBeenCalled();
     });
-    expect(mockDb.socialPublication.findFirst).not.toHaveBeenCalled();
-    expect(mockDb.socialPublication.create).not.toHaveBeenCalled();
   });
 
   it("refuse un intent APPROVED sans le canal SOCIAL suggéré", async () => {

@@ -128,20 +128,26 @@ describe("materializeMarketingIntentAsNewsletterCampaign", () => {
     expect(mockDb.newsletterCampaign.create).not.toHaveBeenCalled();
   });
 
-  it("refuse un intent qui n'est pas APPROVED", async () => {
-    const intent = buildIntent({ status: MarketingIntentStatus.PROPOSED });
+  describe.each<MarketingIntentStatus>([
+    MarketingIntentStatus.PROPOSED,
+    MarketingIntentStatus.REJECTED,
+    MarketingIntentStatus.ARCHIVED,
+  ])("refuse un intent au statut %s", (status) => {
+    it("retourne invalid_status sans interroger ni écrire NewsletterCampaign", async () => {
+      const intent = buildIntent({ status });
 
-    mockDb.marketingIntent.findUnique.mockResolvedValue(intent);
+      mockDb.marketingIntent.findUnique.mockResolvedValue(intent);
 
-    const result = await materializeMarketingIntentAsNewsletterCampaign({ intentId: intent.id });
+      const result = await materializeMarketingIntentAsNewsletterCampaign({ intentId: intent.id });
 
-    expect(result).toEqual({
-      status: "invalid_status",
-      newsletterCampaign: null,
-      currentStatus: "PROPOSED",
+      expect(result).toEqual({
+        status: "invalid_status",
+        newsletterCampaign: null,
+        currentStatus: status,
+      });
+      expect(mockDb.newsletterCampaign.findFirst).not.toHaveBeenCalled();
+      expect(mockDb.newsletterCampaign.create).not.toHaveBeenCalled();
     });
-    expect(mockDb.newsletterCampaign.findFirst).not.toHaveBeenCalled();
-    expect(mockDb.newsletterCampaign.create).not.toHaveBeenCalled();
   });
 
   it("refuse un intent APPROVED sans le canal NEWSLETTER suggéré", async () => {
