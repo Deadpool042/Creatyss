@@ -15,9 +15,10 @@ export function AdminMarketingIntentsRefreshButton() {
     startTransition(async () => {
       const result = await refreshMarketingIntentsAction();
       router.refresh();
-      setSummary(
-        `${result.scanned} événement(s) analysé(s) — ${result.created} créée(s), ${result.merged} fusionnée(s), ${result.ignored} ignorée(s).`
-      );
+      const summaryBase = `${result.scanned} événement(s) analysé(s) — ${result.created} créée(s), ${result.merged} fusionnée(s), ${result.ignored} ignorée(s)`;
+      const ending =
+        result.failed > 0 ? ` — ${result.failed} échec${result.failed > 1 ? "s" : ""}.` : ".";
+      setSummary(`${summaryBase}${ending}`);
     });
   }
 
