@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { clientEnv } from "@/core/config/env";
 import { getUploadsPublicPath } from "@/core/uploads";
+import { buildSeoDescription, pickSeoText } from "@/entities/product/seo-text";
+import { getSeoRobotsFlags } from "@/entities/seo";
 import { getPublishedBlogPostBySlug } from "@/features/storefront/content/blog";
+import { buildBlogPostJsonLd } from "@/features/storefront/content/blog/model/build-blog-post-json-ld";
 
 export const dynamic = "force-dynamic";
 
@@ -19,30 +23,21 @@ type BlogPostPageProps = Readonly<{
 
 type BlogPostMetadataSource = NonNullable<Awaited<ReturnType<typeof getPublishedBlogPostBySlug>>>;
 
-function truncateMetadataDescription(value: string): string {
-  const normalizedValue = value.replace(/\s+/g, " ").trim();
-
-  if (normalizedValue.length <= 160) {
-    return normalizedValue;
-  }
-
-  return `${normalizedValue.slice(0, 157).trimEnd()}...`;
+function getBlogPostMetadataDescription(blogPost: BlogPostMetadataSource): string {
+  return buildSeoDescription({
+    candidates: [blogPost.seoDescription, blogPost.excerpt, blogPost.content],
+    defaultValue: "Article Creatyss.",
+    maxLength: 160,
+  });
 }
 
-function getBlogPostMetadataDescription(blogPost: BlogPostMetadataSource): string {
-  if (blogPost.seoDescription) {
-    return blogPost.seoDescription;
+function getBlogPostCoverImageUrl(blogPost: BlogPostMetadataSource): string | null {
+  if (blogPost.coverImagePath === null) {
+    return null;
   }
 
-  if (blogPost.excerpt) {
-    return blogPost.excerpt;
-  }
-
-  if (blogPost.content) {
-    return truncateMetadataDescription(blogPost.content);
-  }
-
-  return "Article Creatyss.";
+  const uploadsPublicPath = getUploadsPublicPath();
+  return `${uploadsPublicPath}/${blogPost.coverImagePath.replace(/^\/+/, "")}`;
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
@@ -56,9 +51,52 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     };
   }
 
+  const robots = getSeoRobotsFlags(post.seoIndexingMode);
+
+  const canonicalPath = pickSeoText(post.seoCanonicalPath) ?? `/blog/${post.slug}`;
+  const canonical = `${clientEnv.appUrl}${canonicalPath}`;
+
+  const metaDescription = getBlogPostMetadataDescription(post);
+  const metaTitle = pickSeoText(post.seoTitle, post.title) ?? post.title;
+
+  const coverImageUrl = getBlogPostCoverImageUrl(post);
+
+  const ogTitle = pickSeoText(post.seoOpenGraphTitle, post.seoTitle, post.title) ?? metaTitle;
+  const ogDescription = buildSeoDescription({
+    candidates: [post.seoOpenGraphDescription, metaDescription],
+    defaultValue: metaDescription,
+    maxLength: 200,
+  });
+  const ogImageUrl = post.seoOpenGraphImageUrl ?? coverImageUrl ?? undefined;
+
+  const twitterTitle =
+    pickSeoText(post.seoTwitterTitle, post.seoOpenGraphTitle, post.seoTitle, post.title) ??
+    metaTitle;
+  const twitterDescription = buildSeoDescription({
+    candidates: [post.seoTwitterDescription, post.seoOpenGraphDescription, metaDescription],
+    defaultValue: metaDescription,
+    maxLength: 200,
+  });
+  const twitterImageUrl = post.seoTwitterImageUrl ?? post.seoOpenGraphImageUrl ?? ogImageUrl;
+
   return {
-    title: post.seoTitle ?? post.title,
-    description: getBlogPostMetadataDescription(post),
+    title: metaTitle,
+    description: metaDescription,
+    ...(robots !== undefined && { robots }),
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title: ogTitle,
+      description: ogDescription,
+      ...(ogImageUrl !== undefined && { images: [{ url: ogImageUrl }] }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: twitterTitle,
+      description: twitterDescription,
+      ...(twitterImageUrl !== undefined && { images: [twitterImageUrl] }),
+    },
   };
 }
 
@@ -70,13 +108,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  const uploadsPublicPath = getUploadsPublicPath();
-  const coverImagePath = post.coverImagePath
-    ? `${uploadsPublicPath}/${post.coverImagePath.replace(/^\/+/, "")}`
-    : null;
+  const coverImagePath = getBlogPostCoverImageUrl(post);
+
+  const blogPostJsonLd = buildBlogPostJsonLd({
+    post: {
+      slug: post.slug,
+      title: post.title,
+      seoDescription: post.seoDescription,
+      excerpt: post.excerpt,
+      content: post.content,
+      authorName: post.authorName,
+      publishedAt: post.publishedAt,
+      updatedAt: post.updatedAt,
+      imageUrl: post.seoOpenGraphImageUrl ?? coverImagePath,
+    },
+    appUrl: clientEnv.appUrl,
+    jsonLdDefaultDescription: "Article Creatyss.",
+  });
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-8 px-4 py-12 md:px-6 md:py-16 xl:px-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostJsonLd) }}
+      />
       <Link
         href="/blog"
         className="text-xs font-medium uppercase tracking-[0.1em] text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
@@ -86,9 +141,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       <article className="flex flex-col gap-6">
         <header className="flex flex-col gap-3">
-          <p className="text-xs font-medium uppercase tracking-[0.32em] text-brand">
-            Blog
-          </p>
+          <p className="text-xs font-medium uppercase tracking-[0.32em] text-brand">Blog</p>
           <h1 className="font-serif text-3xl font-normal tracking-tight text-foreground min-[700px]:text-[2.4rem]">
             {post.title}
           </h1>
