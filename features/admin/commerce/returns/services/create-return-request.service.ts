@@ -3,6 +3,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 
 import { withTransaction } from "@/core/db/transactions/with-transaction";
+import { ACTIVE_RETURN_REQUEST_STATUSES } from "@/features/commerce/returns/domain/return-active-statuses";
 
 export class CreateReturnRequestError extends Error {
   constructor(message: string) {
@@ -22,14 +23,6 @@ type CreateReturnRequestInput = {
   /** Lignes à retourner. Si absent → toutes les lignes (V1). */
   lines?: ReadonlyArray<ReturnLineInput>;
 };
-
-const ACTIVE_RETURN_STATUSES = [
-  "REQUESTED",
-  "UNDER_REVIEW",
-  "APPROVED",
-  "RECEIVED",
-  "REFUNDED",
-] as const;
 
 function generateReturnNumber(year: number): string {
   return `RET-${year}-${randomUUID().slice(0, 6).toUpperCase()}`;
@@ -62,7 +55,7 @@ export async function createReturnRequest(input: CreateReturnRequestInput) {
     }
 
     const existing = await tx.returnRequest.findFirst({
-      where: { orderId: input.orderId, status: { in: [...ACTIVE_RETURN_STATUSES] } },
+      where: { orderId: input.orderId, status: { in: [...ACTIVE_RETURN_REQUEST_STATUSES] } },
       select: { id: true },
     });
 
