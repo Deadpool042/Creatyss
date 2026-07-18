@@ -4,6 +4,7 @@ import type {
   AdminWebhookEndpointSummary,
   AdminWebhooksSnapshot,
 } from "@/features/admin/settings/queries/get-admin-webhooks-snapshot.query";
+import { ToggleEndpointButton } from "@/features/admin/settings/webhooks/components/toggle-endpoint-button";
 
 const dateTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "medium",
@@ -42,15 +43,7 @@ function getDeliveryStatusVariant(
   }
 }
 
-function OverviewCard({
-  label,
-  value,
-  hint,
-}: {
-  label: string;
-  value: number;
-  hint: string;
-}) {
+function OverviewCard({ label, value, hint }: { label: string; value: number; hint: string }) {
   return (
     <div className="rounded-2xl border border-surface-border/60 bg-surface-subtle/20 p-4">
       <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -62,15 +55,26 @@ function OverviewCard({
   );
 }
 
-function EndpointRow({ endpoint }: { endpoint: AdminWebhookEndpointSummary }) {
+function EndpointRow({
+  endpoint,
+  canManage,
+}: {
+  endpoint: AdminWebhookEndpointSummary;
+  canManage: boolean;
+}) {
   return (
     <div className="flex flex-col gap-3 py-4 first:pt-0 last:pb-0">
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm font-semibold text-foreground">{endpoint.name}</span>
-        <Badge variant={getEndpointStatusVariant(endpoint.status)}>{endpoint.status}</Badge>
-        <Badge variant={endpoint.isEnabled ? "secondary" : "outline"}>
-          {endpoint.isEnabled ? "Enabled" : "Disabled"}
-        </Badge>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm font-semibold text-foreground">{endpoint.name}</span>
+          <Badge variant={getEndpointStatusVariant(endpoint.status)}>{endpoint.status}</Badge>
+          <Badge variant={endpoint.isEnabled ? "secondary" : "outline"}>
+            {endpoint.isEnabled ? "Enabled" : "Disabled"}
+          </Badge>
+        </div>
+        {canManage ? (
+          <ToggleEndpointButton endpointId={endpoint.id} status={endpoint.status} />
+        ) : null}
       </div>
       <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
         <span>Code : {endpoint.code}</span>
@@ -113,7 +117,9 @@ function DeliveryRow({ delivery }: { delivery: AdminWebhookDeliverySummary }) {
         <span>Maj : {formatDateTime(delivery.updatedAt)}</span>
       </div>
       <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-        <span>Request : {delivery.requestMethod} {delivery.requestUrl}</span>
+        <span>
+          Request : {delivery.requestMethod} {delivery.requestUrl}
+        </span>
         <span>Response : {delivery.responseStatusCode ?? "—"}</span>
         <span>Scheduled : {formatDateTime(delivery.scheduledAt)}</span>
         <span>Started : {formatDateTime(delivery.startedAt)}</span>
@@ -126,18 +132,17 @@ function DeliveryRow({ delivery }: { delivery: AdminWebhookDeliverySummary }) {
 
 type WebhooksPanelProps = {
   snapshot: AdminWebhooksSnapshot;
+  canManageEndpoints: boolean;
 };
 
-export function WebhooksPanel({ snapshot }: WebhooksPanelProps) {
+export function WebhooksPanel({ snapshot, canManageEndpoints }: WebhooksPanelProps) {
   return (
     <div className="grid gap-6">
       <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
           Module optionnel
         </p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
-          Webhooks
-        </h1>
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">Webhooks</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Lecture admin du modele reel actuellement present : <code>WebhookEndpoint</code> et{" "}
           <code>WebhookDelivery</code>. Ce lot n&apos;essaie pas de masquer l&apos;ecart entre
@@ -145,11 +150,31 @@ export function WebhooksPanel({ snapshot }: WebhooksPanelProps) {
         </p>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-          <OverviewCard label="Endpoints" value={snapshot.overview.totalEndpoints} hint="Endpoints non archives" />
-          <OverviewCard label="Actifs" value={snapshot.overview.activeEndpoints} hint="Statut ACTIVE" />
-          <OverviewCard label="Enabled" value={snapshot.overview.enabledEndpoints} hint="Flag metier actif" />
-          <OverviewCard label="Deliveries" value={snapshot.overview.deliveries} hint="Journal de deliveries" />
-          <OverviewCard label="Echecs" value={snapshot.overview.failedDeliveries} hint="Deliveries FAILED" />
+          <OverviewCard
+            label="Endpoints"
+            value={snapshot.overview.totalEndpoints}
+            hint="Endpoints non archives"
+          />
+          <OverviewCard
+            label="Actifs"
+            value={snapshot.overview.activeEndpoints}
+            hint="Statut ACTIVE"
+          />
+          <OverviewCard
+            label="Enabled"
+            value={snapshot.overview.enabledEndpoints}
+            hint="Flag metier actif"
+          />
+          <OverviewCard
+            label="Deliveries"
+            value={snapshot.overview.deliveries}
+            hint="Journal de deliveries"
+          />
+          <OverviewCard
+            label="Echecs"
+            value={snapshot.overview.failedDeliveries}
+            hint="Deliveries FAILED"
+          />
         </div>
       </section>
 
@@ -157,7 +182,9 @@ export function WebhooksPanel({ snapshot }: WebhooksPanelProps) {
         <h2 className="text-lg font-semibold tracking-tight text-foreground">Endpoints</h2>
         <div className="mt-4 divide-y divide-surface-border/40">
           {snapshot.endpoints.length > 0 ? (
-            snapshot.endpoints.map((endpoint) => <EndpointRow key={endpoint.id} endpoint={endpoint} />)
+            snapshot.endpoints.map((endpoint) => (
+              <EndpointRow key={endpoint.id} endpoint={endpoint} canManage={canManageEndpoints} />
+            ))
           ) : (
             <p className="py-10 text-center text-sm text-muted-foreground">
               Aucun endpoint webhook n&apos;est present en base pour le moment.
@@ -167,10 +194,14 @@ export function WebhooksPanel({ snapshot }: WebhooksPanelProps) {
       </section>
 
       <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">Deliveries recentes</h2>
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          Deliveries recentes
+        </h2>
         <div className="mt-4 divide-y divide-surface-border/40">
           {snapshot.deliveries.length > 0 ? (
-            snapshot.deliveries.map((delivery) => <DeliveryRow key={delivery.id} delivery={delivery} />)
+            snapshot.deliveries.map((delivery) => (
+              <DeliveryRow key={delivery.id} delivery={delivery} />
+            ))
           ) : (
             <p className="py-10 text-center text-sm text-muted-foreground">
               Aucune delivery webhook n&apos;est presente en base pour le moment.

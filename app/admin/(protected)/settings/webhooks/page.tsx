@@ -97,7 +97,7 @@ export default async function AdminSettingsWebhooksPage({
           <WebhookEndpointCreateForm initialSecret={resolvedSearchParams.secret} />
         ) : null}
 
-        <WebhooksPanel snapshot={snapshot} />
+        <WebhooksPanel snapshot={snapshot} canManageEndpoints={canManageWebhooks} />
 
         {canRetryWebhooks && retryableDeliveries.length > 0 ? (
           <section className="rounded-2xl border border-surface-border/60 bg-surface-panel/60 p-5 shadow-sm">
