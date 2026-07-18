@@ -144,6 +144,23 @@ describe("toggleWebhookEndpointAction", () => {
     expect(mockRevalidatePath).toHaveBeenCalledWith("/admin/settings/webhooks");
   });
 
+  it("bascule DRAFT vers ACTIVE et synchronise isEnabled", async () => {
+    mockDb.webhookEndpoint.findFirst.mockResolvedValue({
+      id: "endpoint_1",
+      status: "DRAFT",
+    });
+
+    await expect(toggleWebhookEndpointAction("endpoint_1")).resolves.toEqual({ ok: true });
+
+    expect(mockDb.webhookEndpoint.update).toHaveBeenCalledWith({
+      where: { id: "endpoint_1" },
+      data: { status: "ACTIVE", isEnabled: true },
+    });
+    expect(mockDb.webhookEndpoint.update).toHaveBeenCalledTimes(1);
+    expect(mockRevalidatePath).toHaveBeenCalledWith("/admin/settings/webhooks");
+    expect(mockRevalidatePath).toHaveBeenCalledTimes(1);
+  });
+
   it("bascule INACTIVE vers ACTIVE et synchronise isEnabled", async () => {
     mockDb.webhookEndpoint.findFirst.mockResolvedValue({
       id: "endpoint_1",
