@@ -20,7 +20,17 @@ Consolider le commerce pour qu'il soit légalement conforme et techniquement fia
 
 - `commerce.taxation` : validation des taux par expert-comptable (externe, non technique), OSS UE absent (hors périmètre)
 - `commerce.documents` : validation Factur-X par un outil de conformité officiel (action humaine restante) ; e-reporting PPF absent (hors périmètre documenté) ; `storageKey` reste `null` pour `DELIVERY_NOTE`/`ORDER_CONFIRMATION` (non requis par ce lot)
-- `commerce.returns` : formulaire de demande de retour côté storefront client différé (périmètre séparé, non requis pour la conformité commerce)
+- `commerce.returns` : formulaire de **demande** de retour côté storefront client (création d'un `ReturnRequest` depuis `/compte`) différé (périmètre séparé, non requis pour la conformité commerce). Le formulaire de **vérification d'éligibilité** (sans création de `ReturnRequest`) est livré — cf. mise à jour 2026-07-19 ci-dessous.
+
+### Mise à jour 2026-07-19 (storefront returns — vérification d'éligibilité)
+
+Formulaire storefront de **vérification d'éligibilité au retour** livré sur `/compte` (PR #16, commit final `18269fed`) : la cliente renseigne référence de commande, email et motif ; le système répond si au moins une ligne de la commande est potentiellement éligible. Distinct de la **demande de retour** (création d'un `ReturnRequest`), qui reste hors périmètre (cf. ligne ci-dessus, non modifiée).
+
+- Gating double : `meetsFeatureLevel("commerce.returns", "manual")` résolu côté Server Component (`app/(public)/compte/page.tsx`, async) pour ne rendre ni le titre, ni la description, ni le formulaire quand la feature n'atteint pas `manual` ; re-vérifié dans la Server Action (`check-storefront-return-eligibility-action.ts`) en défense en profondeur.
+- Contrat public minimal côté Server Action : `{ available: true, eligibility: { outcome: "ELIGIBLE" | "MANUAL_REVIEW" | "INELIGIBLE" } }` ou `{ available: false }`. `code`, `message` (interne) et `details` de l'objet métier `ReturnEligibilityResult` ne sont jamais sérialisés vers le client.
+- `{ available: false }` reste volontairement indiscernable entre : feature inactive, entrée invalide, commande/couple référence-email inconnu, et exception technique inattendue (interceptée côté client via `try/catch`, aucune donnée journalisée, aucun détail technique affiché).
+- UX/accessibilité : résultat effacé à toute modification de champ, champs et bouton désactivés pendant la soumission, erreurs liées via `aria-invalid`/`aria-describedby`, résultat annoncé via `aria-live="polite"`, lien `/contact` proposé.
+- Validations exécutées avant merge : 20 tests unitaires storefront returns passés, `pnpm run typecheck` OK, `pnpm run lint` OK, `git diff --check` OK. Revue indépendante ChatGPT : GO (après une itération NO GO corrigée sur le gating serveur et la gestion des exceptions techniques).
 
 ### Vérifications complémentaires de recette — 2026-07-01
 

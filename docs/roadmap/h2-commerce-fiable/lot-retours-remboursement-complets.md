@@ -2,7 +2,9 @@
 
 ## Statut
 
-Terminé (admin) — implémenté 2026-06-24. Sélection lignes/quantités, restock transactionnel RECEIVED (skip DAMAGED), remboursement Stripe-first REFUNDED, PaymentRefund enregistré. Typecheck et lint verts. Formulaire storefront client différé (périmètre séparé).
+Terminé (admin) — implémenté 2026-06-24. Sélection lignes/quantités, restock transactionnel RECEIVED (skip DAMAGED), remboursement Stripe-first REFUNDED, PaymentRefund enregistré. Typecheck et lint verts. Formulaire storefront de **demande** de retour (création `ReturnRequest`) différé (périmètre séparé).
+
+**Mise à jour 2026-07-19** : le formulaire storefront de **vérification d'éligibilité** (sans création de `ReturnRequest`, distinct de la demande) est livré sur `/compte` — PR #16, commit `18269fed`. Détail : `docs/roadmap/h2-commerce-fiable/README.md` (section « Mise à jour 2026-07-19 »). Le périmètre « demande de retour côté client » listé ci-dessous reste hors de ce lot.
 
 ## Objectif
 
