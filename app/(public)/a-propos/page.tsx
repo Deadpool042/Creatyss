@@ -1,16 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { clientEnv } from "@/core/config/env";
 import { getLocalizedAProposCopy } from "@/features/storefront/content/queries/get-localized-a-propos-copy.query";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const copy = await getLocalizedAProposCopy();
+  const canonical = `${clientEnv.appUrl}/a-propos`;
 
   return {
     title: copy.metadata.title,
     description: copy.metadata.description,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title: copy.metadata.title,
+      description: copy.metadata.description,
+      url: canonical,
+      type: "website",
+    },
   };
 }
 

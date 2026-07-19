@@ -2,16 +2,27 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPinIcon } from "lucide-react";
 
+import { clientEnv } from "@/core/config/env";
 import { getLocalizedLesMarchesCopy } from "@/features/storefront/content/queries/get-localized-les-marches-copy.query";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const copy = await getLocalizedLesMarchesCopy();
+  const canonical = `${clientEnv.appUrl}/les-marches`;
 
   return {
     title: copy.metadata.title,
     description: copy.metadata.description,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title: copy.metadata.title,
+      description: copy.metadata.description,
+      url: canonical,
+      type: "website",
+    },
   };
 }
 

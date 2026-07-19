@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Notice } from "@/components/shared/feedback";
+import { clientEnv } from "@/core/config/env";
 import { getStorefrontStoreContact } from "@/features/storefront/store/queries/get-storefront-store-contact.query";
 import { getLocalizedContactCopy } from "@/features/storefront/content/queries/get-localized-contact-copy.query";
 import { sendContactMessageAction } from "@/features/storefront/contact/actions/send-contact-message-action";
@@ -13,10 +14,20 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const copy = await getLocalizedContactCopy();
+  const canonical = `${clientEnv.appUrl}/contact`;
 
   return {
     title: copy.metadata.title,
     description: copy.metadata.description,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title: copy.metadata.title,
+      description: copy.metadata.description,
+      url: canonical,
+      type: "website",
+    },
   };
 }
 
