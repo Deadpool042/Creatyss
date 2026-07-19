@@ -1630,3 +1630,178 @@ export async function readOrderLifecycleState(
     inventoryOnHand,
   };
 }
+
+// ---------------------------------------------------------------------------
+// Storefront returns eligibility helpers
+// ---------------------------------------------------------------------------
+
+const STOREFRONT_RETURNS_PRODUCT_SLUG = "e2e-storefront-returns-product";
+const STOREFRONT_RETURNS_PRODUCT_NAME = "Produit Retours Storefront E2E";
+const STOREFRONT_RETURNS_VARIANT_SKU = "E2E-STOREFRONT-RETURNS-001";
+const STOREFRONT_RETURNS_VARIANT_NAME = "Version retours storefront E2E";
+const STOREFRONT_RETURNS_DELIVERED_DAYS_AGO = 3;
+
+type StorefrontReturnEligibilityFixture = {
+  orderId: string;
+  reference: string;
+  email: string;
+};
+
+/**
+ * Crée une commande CONFIRMED **fraîche et dédiée** (orderNumber unique par
+ * run, comme `createFreshOrderForLifecycleE2E`) avec un `Shipment` livré
+ * récemment (dans la fenêtre de rétractation de 14 jours), pour couvrir le
+ * cas `ELIGIBLE` du formulaire storefront de vérification d'éligibilité au
+ * retour. Retourne la référence et l'email attendus par
+ * `checkStorefrontReturnEligibilityAction` (contrat : `{ reference, email,
+ * reason }`).
+ */
+export async function createFreshOrderForStorefrontReturnsE2E(): Promise<StorefrontReturnEligibilityFixture> {
+  const store = await readDefaultStore();
+  const now = new Date();
+
+  const product = await prisma.product.upsert({
+    where: {
+      storeId_slug: {
+        storeId: store.id,
+        slug: STOREFRONT_RETURNS_PRODUCT_SLUG,
+      },
+    },
+    update: {
+      name: STOREFRONT_RETURNS_PRODUCT_NAME,
+      status: "ACTIVE",
+      isStandalone: true,
+      catalogPriceCents: 3500,
+      catalogPriceCurrencyCode: "EUR",
+      publishedAt: now,
+      archivedAt: null,
+    },
+    create: {
+      storeId: store.id,
+      slug: STOREFRONT_RETURNS_PRODUCT_SLUG,
+      name: STOREFRONT_RETURNS_PRODUCT_NAME,
+      status: "ACTIVE",
+      isStandalone: true,
+      catalogPriceCents: 3500,
+      catalogPriceCurrencyCode: "EUR",
+      publishedAt: now,
+    },
+    select: { id: true },
+  });
+
+  const variant = await prisma.productVariant.upsert({
+    where: {
+      productId_sku: {
+        productId: product.id,
+        sku: STOREFRONT_RETURNS_VARIANT_SKU,
+      },
+    },
+    update: {
+      name: STOREFRONT_RETURNS_VARIANT_NAME,
+      status: "ACTIVE",
+      isDefault: true,
+      sortOrder: 0,
+      archivedAt: null,
+      publishedAt: now,
+    },
+    create: {
+      productId: product.id,
+      sku: STOREFRONT_RETURNS_VARIANT_SKU,
+      name: STOREFRONT_RETURNS_VARIANT_NAME,
+      status: "ACTIVE",
+      isDefault: true,
+      sortOrder: 0,
+      publishedAt: now,
+    },
+    select: { id: true },
+  });
+
+  // orderNumber unique par run, conforme à `isValidOrderReference`
+  // (`^[A-Z0-9]{1,10}-[A-Z0-9]{10}$` — un seul tiret, 10 caractères après) :
+  // le préfixe et le suffixe ne doivent donc contenir aucun tiret.
+  const rawToken = `${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "");
+  const token = rawToken.slice(-10).padStart(10, "0");
+  const orderNumber = `E2ESR-${token}`;
+  const email = "e2e-storefront-returns@creatyss.test";
+  const deliveredAt = new Date(
+    now.getTime() - STOREFRONT_RETURNS_DELIVERED_DAYS_AGO * 24 * 60 * 60 * 1000
+  );
+
+  const created = await prisma.$transaction(async (tx) => {
+    const newOrder = await tx.order.create({
+      data: {
+        storeId: store.id,
+        orderNumber,
+        status: "CONFIRMED",
+        currencyCode: "EUR",
+        subtotalAmount: 35,
+        shippingAmount: 7,
+        discountAmount: 0,
+        taxAmount: 0,
+        totalAmount: 42,
+        customerEmail: email,
+        customerFirstName: "Storefront",
+        customerLastName: "E2E",
+        placedAt: now,
+        statusHistory: {
+          create: {
+            status: "CONFIRMED",
+            reasonCode: "e2e_storefront_returns_setup",
+            notes: "Created by E2E helper createFreshOrderForStorefrontReturnsE2E.",
+          },
+        },
+      },
+      select: { id: true },
+    });
+
+    await tx.orderLine.create({
+      data: {
+        orderId: newOrder.id,
+        productId: product.id,
+        variantId: variant.id,
+        quantity: 1,
+        unitPriceAmount: 35,
+        lineSubtotalAmount: 35,
+        lineDiscountAmount: 0,
+        lineTaxAmount: 0,
+        lineTotalAmount: 35,
+        productName: STOREFRONT_RETURNS_PRODUCT_NAME,
+        variantName: STOREFRONT_RETURNS_VARIANT_NAME,
+        sku: STOREFRONT_RETURNS_VARIANT_SKU,
+      },
+    });
+
+    await tx.payment.create({
+      data: {
+        orderId: newOrder.id,
+        storeId: store.id,
+        provider: "bank_transfer",
+        methodType: "BANK_TRANSFER",
+        status: "CAPTURED",
+        amountAuthorized: 42,
+        amountCaptured: 42,
+        currencyCode: "EUR",
+        capturedAt: now,
+      },
+    });
+
+    await tx.shipment.create({
+      data: {
+        storeId: store.id,
+        orderId: newOrder.id,
+        status: "DELIVERED",
+        deliveredAt,
+      },
+    });
+
+    return { orderId: newOrder.id };
+  });
+
+  return {
+    orderId: created.orderId,
+    reference: orderNumber,
+    email,
+  };
+}
