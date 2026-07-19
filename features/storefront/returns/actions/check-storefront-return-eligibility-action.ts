@@ -1,13 +1,16 @@
 "use server";
 
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
-import type { ReturnEligibilityResult } from "@/features/commerce/returns/domain/return-eligibility.types";
+import type { ReturnEligibilityOutcome } from "@/features/commerce/returns/domain/return-eligibility.types";
 import { storefrontReturnEligibilitySchema } from "@/features/storefront/returns/schemas/storefront-return-eligibility.schema";
 import { checkStorefrontReturnEligibility } from "@/features/storefront/returns/services/check-storefront-return-eligibility.service";
 
 export type CheckStorefrontReturnEligibilityActionResult =
   | Readonly<{ available: false }>
-  | Readonly<{ available: true; eligibility: ReturnEligibilityResult }>;
+  | Readonly<{
+      available: true;
+      eligibility: Readonly<{ outcome: ReturnEligibilityOutcome }>;
+    }>;
 
 const UNAVAILABLE: CheckStorefrontReturnEligibilityActionResult = { available: false };
 
@@ -35,5 +38,8 @@ export async function checkStorefrontReturnEligibilityAction(
     return UNAVAILABLE;
   }
 
-  return { available: true, eligibility: result.eligibility };
+  return {
+    available: true,
+    eligibility: { outcome: result.eligibility.outcome },
+  };
 }
