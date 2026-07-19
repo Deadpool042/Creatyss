@@ -3,13 +3,16 @@ import Link from "next/link";
 import { RotateCcwIcon, SearchIcon } from "lucide-react";
 import { OrderTrackingForm } from "@/features/commerce/checkout/components/order-tracking-form";
 import { ReturnEligibilityForm } from "@/features/storefront/returns/components/return-eligibility-form";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export const metadata: Metadata = {
   title: "Mon compte — Creatyss",
   description: "Retrouvez vos commandes Creatyss en renseignant votre référence ou votre email.",
 };
 
-export default function ComptePage() {
+export default async function ComptePage() {
+  const returnsAvailable = await meetsFeatureLevel("commerce.returns", "manual");
+
   return (
     <div className="mx-auto w-full max-w-lg px-4 py-12 md:px-6 md:py-20">
       {/* Header */}
@@ -41,22 +44,24 @@ export default function ComptePage() {
       </div>
 
       {/* Vérification d'éligibilité au retour */}
-      <div className="mt-6 rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-6">
-        <div className="mb-5 flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-xl bg-surface-subtle">
-            <RotateCcwIcon className="size-4 text-muted-foreground/60" />
+      {returnsAvailable ? (
+        <div className="mt-6 rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-6">
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex size-9 items-center justify-center rounded-xl bg-surface-subtle">
+              <RotateCcwIcon className="size-4 text-muted-foreground/60" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-foreground">Vérifier un retour</p>
+              <p className="text-xs text-muted-foreground">
+                Indiquez votre référence de commande, votre email et le motif du retour pour
+                vérifier si au moins un article peut être retourné.
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-sm font-semibold text-foreground">Vérifier un retour</p>
-            <p className="text-xs text-muted-foreground">
-              Indiquez votre référence de commande, votre email et le motif du retour pour vérifier
-              si au moins un article peut être retourné.
-            </p>
-          </div>
-        </div>
 
-        <ReturnEligibilityForm />
-      </div>
+          <ReturnEligibilityForm />
+        </div>
+      ) : null}
 
       {/* Aide */}
       <p className="mt-6 text-center text-xs text-muted-foreground">

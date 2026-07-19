@@ -101,12 +101,16 @@ export function ReturnEligibilityForm() {
     }
 
     startTransition(async () => {
-      const nextResult = await checkStorefrontReturnEligibilityAction({
-        reference,
-        email,
-        reason,
-      });
-      setResult(nextResult);
+      try {
+        const nextResult = await checkStorefrontReturnEligibilityAction({
+          reference,
+          email,
+          reason,
+        });
+        setResult(nextResult);
+      } catch {
+        setResult({ available: false });
+      }
     });
   }
 
