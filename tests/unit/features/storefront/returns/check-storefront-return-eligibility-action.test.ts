@@ -86,7 +86,29 @@ describe("checkStorefrontReturnEligibilityAction", () => {
 
     expect(mockCheckStorefrontReturnEligibility).toHaveBeenCalledWith(VALID_INPUT);
     expect(mockCheckStorefrontReturnEligibility).toHaveBeenCalledTimes(1);
-    expect(result).toEqual({ available: true, eligibility: ELIGIBILITY_RESULT });
+    expect(result).toEqual({ available: true, eligibility: { outcome: "ELIGIBLE" } });
+  });
+
+  it("ne projette que outcome dans la réponse publique, sans code ni message interne", async () => {
+    mockMeetsFeatureLevel.mockResolvedValue(true);
+    mockCheckStorefrontReturnEligibility.mockResolvedValue({
+      ok: true,
+      eligibility: {
+        outcome: "INELIGIBLE",
+        code: "ORDER_CANCELLED",
+        message: "message interne",
+        details: { daysSinceDelivery: null, withdrawalPeriodDays: 14 },
+      },
+    });
+
+    const result = await checkStorefrontReturnEligibilityAction(VALID_INPUT);
+
+    expect(result).toEqual({ available: true, eligibility: { outcome: "INELIGIBLE" } });
+    expect(result).not.toHaveProperty("eligibility.code");
+    expect(result).not.toHaveProperty("eligibility.message");
+    expect(result).not.toHaveProperty("eligibility.details");
+    expect(JSON.stringify(result)).not.toContain("ORDER_CANCELLED");
+    expect(JSON.stringify(result)).not.toContain("message interne");
   });
 
   it("transmet au service les données normalisées par le schéma, pas l'entrée brute", async () => {
