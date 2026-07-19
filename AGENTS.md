@@ -157,6 +157,32 @@ Ne jamais présenter une hypothèse, une extrapolation ou une intention future c
 
 ---
 
+## Revalidation des audits et des lots
+
+Un audit ou un constat de non-conformité est un instantané daté, pas une vérité permanente. Sa réutilisation est une nouvelle vérification, jamais l'exécution automatique de sa recommandation.
+
+Sa présence dans une roadmap, un rapport, MemPalace, le RAG, une conversation ou une ancienne sortie d'agent ne constitue pas une preuve qu'il est encore vrai (cf. Règle de factualité).
+
+Avant de transformer un constat d'audit en lot exécutable :
+
+1. exécuter `git status --short` et `git rev-parse --short HEAD` ;
+2. relire directement le code et la documentation réellement concernés — pas seulement le constat ;
+3. si le constat cite une référence (date, commit, fichiers/domaines inspectés, statut confirmé/à revalider/obsolète/exécuté), la reporter telle quelle ; ne jamais fabriquer une date ou un hash inconnus.
+
+Si le constat n'est plus vrai sur le HEAD courant :
+
+- ne modifier aucun code pour ce lot ;
+- ne créer aucun commit artificiel ;
+- classer le lot comme déjà livré, obsolète ou remplacé, en identifiant si possible le commit qui l'a invalidé ;
+- corriger uniquement les sources persistantes qui présentent encore l'ancien état comme courant ;
+- poursuivre vers le lot suivant seulement après validation.
+
+Hiérarchie de preuve pour l'état livré : code courant > Prisma > documentation canonique > MemPalace/RAG. MemPalace et le RAG orientent la recherche ; ils ne remplacent jamais la vérification du HEAD (cf. Usage du RAG, des skills et des sous-agents).
+
+_Exemple historique_ : un constat sur un toggle webhook non câblé à l'UI était vrai avant un correctif donné, puis rendu obsolète par ce correctif — une recommandation issue de ce constat, réutilisée sans revalidation, a proposé à tort de le corriger une seconde fois.
+
+---
+
 ## Doctrine repo
 
 La doctrine du projet est portée par :
