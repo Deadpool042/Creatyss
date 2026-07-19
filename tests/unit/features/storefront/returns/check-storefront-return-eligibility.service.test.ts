@@ -8,12 +8,20 @@ vi.mock("@/features/commerce/returns/domain/determine-return-eligibility", () =>
   determineReturnEligibility: vi.fn(),
 }));
 
+vi.mock("@/features/commerce/returns/domain/determine-any-line-return-eligibility", () => ({
+  determineAnyLineReturnEligibility: vi.fn(),
+}));
+
+import { determineAnyLineReturnEligibility } from "@/features/commerce/returns/domain/determine-any-line-return-eligibility";
 import { determineReturnEligibility } from "@/features/commerce/returns/domain/determine-return-eligibility";
 import { identifyOrderForReturn } from "@/features/commerce/returns/queries/identify-order-for-return.query";
 import { checkStorefrontReturnEligibility } from "@/features/storefront/returns/services/check-storefront-return-eligibility.service";
 
 const mockIdentifyOrderForReturn = identifyOrderForReturn as ReturnType<typeof vi.fn>;
 const mockDetermineReturnEligibility = determineReturnEligibility as ReturnType<typeof vi.fn>;
+const mockDetermineAnyLineReturnEligibility = determineAnyLineReturnEligibility as ReturnType<
+  typeof vi.fn
+>;
 
 const VALID_INPUT = {
   reference: "CRY-ABC2345678",
@@ -117,6 +125,65 @@ describe("checkStorefrontReturnEligibility", () => {
     mockDetermineReturnEligibility.mockReturnValue(ELIGIBILITY_RESULT);
 
     const result = await checkStorefrontReturnEligibility(VALID_INPUT);
+
+    expect(JSON.stringify(result)).not.toContain(IDENTIFIED_ORDER.orderId);
+  });
+
+  it("retourne { ok: false } et n'appelle aucune primitive quand requestedLines est un tableau vide, même avec le reste de l'entrée valide", async () => {
+    const result = await checkStorefrontReturnEligibility({
+      reference: VALID_INPUT.reference,
+      email: VALID_INPUT.email,
+      reason: VALID_INPUT.reason,
+      requestedLines: [],
+    });
+
+    expect(result).toEqual({ ok: false });
+    expect(mockIdentifyOrderForReturn).not.toHaveBeenCalled();
+    expect(mockDetermineReturnEligibility).not.toHaveBeenCalled();
+    expect(mockDetermineAnyLineReturnEligibility).not.toHaveBeenCalled();
+  });
+
+  it("accepte une entrée sans requestedLines et appelle determineAnyLineReturnEligibility, jamais determineReturnEligibility", async () => {
+    mockIdentifyOrderForReturn.mockResolvedValue({
+      outcome: "IDENTIFIED",
+      order: IDENTIFIED_ORDER,
+    });
+    mockDetermineAnyLineReturnEligibility.mockReturnValue(ELIGIBILITY_RESULT);
+
+    const { requestedLines: _omitted, ...inputWithoutLines } = VALID_INPUT;
+    const result = await checkStorefrontReturnEligibility(inputWithoutLines);
+
+    expect(mockIdentifyOrderForReturn).toHaveBeenCalledTimes(1);
+    expect(mockDetermineAnyLineReturnEligibility).toHaveBeenCalledWith({
+      order: { status: IDENTIFIED_ORDER.status, lines: IDENTIFIED_ORDER.lines },
+      shipment: IDENTIFIED_ORDER.shipment,
+      existingReturnRequests: IDENTIFIED_ORDER.existingReturnRequests,
+      reason: VALID_INPUT.reason,
+    });
+    expect(mockDetermineAnyLineReturnEligibility).toHaveBeenCalledTimes(1);
+    expect(mockDetermineReturnEligibility).not.toHaveBeenCalled();
+    expect(result).toEqual({ ok: true, eligibility: ELIGIBILITY_RESULT });
+  });
+
+  it("retourne { ok: false } sans appeler determineAnyLineReturnEligibility si la commande n'est pas identifiée, requestedLines absent", async () => {
+    mockIdentifyOrderForReturn.mockResolvedValue({ outcome: "NOT_IDENTIFIED" });
+
+    const { requestedLines: _omitted, ...inputWithoutLines } = VALID_INPUT;
+    const result = await checkStorefrontReturnEligibility(inputWithoutLines);
+
+    expect(result).toEqual({ ok: false });
+    expect(mockDetermineAnyLineReturnEligibility).not.toHaveBeenCalled();
+  });
+
+  it("n'expose aucun identifiant de commande interne (orderId) quand requestedLines est absent", async () => {
+    mockIdentifyOrderForReturn.mockResolvedValue({
+      outcome: "IDENTIFIED",
+      order: IDENTIFIED_ORDER,
+    });
+    mockDetermineAnyLineReturnEligibility.mockReturnValue(ELIGIBILITY_RESULT);
+
+    const { requestedLines: _omitted, ...inputWithoutLines } = VALID_INPUT;
+    const result = await checkStorefrontReturnEligibility(inputWithoutLines);
 
     expect(JSON.stringify(result)).not.toContain(IDENTIFIED_ORDER.orderId);
   });
