@@ -46,6 +46,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.7,
     },
+    {
+      url: `${serverEnv.appUrl}/a-propos`,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${serverEnv.appUrl}/les-marches`,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${serverEnv.appUrl}/contact`,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
     ...(canPublishBlog
       ? [
           {
