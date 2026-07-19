@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,10 @@ import {
 import { startOrderPaymentAction } from "@/features/commerce/payment";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 type OrderConfirmationPageProps = Readonly<{
   params: Promise<{
@@ -115,7 +120,9 @@ export default async function OrderConfirmationPage({
                 <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
                   Paiement
                 </p>
-                <p className="text-sm text-muted-foreground">{getPaymentStatusLabel(order.payment.status)}</p>
+                <p className="text-sm text-muted-foreground">
+                  {getPaymentStatusLabel(order.payment.status)}
+                </p>
               </div>
 
               <div className="grid gap-1">
@@ -176,7 +183,9 @@ export default async function OrderConfirmationPage({
                 </p>
                 <h2>Adresse de facturation</h2>
                 {order.billingSameAsShipping ? (
-                  <p className="text-sm text-muted-foreground">Identique à l&apos;adresse de livraison.</p>
+                  <p className="text-sm text-muted-foreground">
+                    Identique à l&apos;adresse de livraison.
+                  </p>
                 ) : (
                   <>
                     <p className="text-sm text-muted-foreground">

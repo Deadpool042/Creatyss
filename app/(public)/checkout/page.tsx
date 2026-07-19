@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +30,10 @@ import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-
 import { formatCatalogMoneyFromCents } from "@/features/storefront/catalog/helpers/catalog-pricing";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 type CheckoutPageProps = Readonly<{
   searchParams: Promise<{

@@ -12,6 +12,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Mes favoris — Creatyss",
   description: "Vos pièces mises de côté.",
+  robots: { index: false, follow: false },
 };
 
 export default async function FavoritesPage() {

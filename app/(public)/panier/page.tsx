@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,10 @@ import type { GuestCart } from "@/features/commerce/cart/lib/guest-cart.types";
 import { updateCartItemQuantityAction, removeCartItemAction } from "@/features/commerce/cart";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 type CartPageProps = Readonly<{
   searchParams: Promise<{

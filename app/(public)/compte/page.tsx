@@ -8,6 +8,7 @@ import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-
 export const metadata: Metadata = {
   title: "Mon compte — Creatyss",
   description: "Retrouvez vos commandes Creatyss en renseignant votre référence ou votre email.",
+  robots: { index: false, follow: false },
 };
 
 export default async function ComptePage() {
