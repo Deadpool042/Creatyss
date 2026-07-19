@@ -16,13 +16,13 @@ import { SECONDARY_LOCALE_CODES } from "@/core/localization/supported-locales";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [products, blogPosts, categories, seoSettings, isL3Active, canPublishBlog] =
     await Promise.all([
-    getPublishedProductsForSitemap(),
-    getPublishedBlogPostsForSitemap(),
-    getPublishedCategoriesForSitemap(),
-    getAdminSeoSettings().catch(() => null),
-    meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "localized-routing"),
-    meetsFeatureLevel("content.blog", "publish"),
-  ]);
+      getPublishedProductsForSitemap(),
+      getPublishedBlogPostsForSitemap(),
+      getPublishedCategoriesForSitemap(),
+      getAdminSeoSettings().catch(() => null),
+      meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "localized-routing"),
+      meetsFeatureLevel("content.blog", "publish"),
+    ]);
 
   const includeHomepage = seoSettings?.sitemapIncluded !== false;
 
@@ -40,6 +40,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${serverEnv.appUrl}/boutique`,
       changeFrequency: "daily",
       priority: 0.9,
+    },
+    {
+      url: `${serverEnv.appUrl}/categories`,
+      changeFrequency: "weekly",
+      priority: 0.7,
     },
     ...(canPublishBlog
       ? [
