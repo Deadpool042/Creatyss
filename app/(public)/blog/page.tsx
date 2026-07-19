@@ -1,13 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { StorefrontEmptyState } from "@/components/storefront/storefront-empty-state";
+import { clientEnv } from "@/core/config/env";
 import { listPublishedBlogPosts } from "@/features/storefront/content/blog";
 
 export const dynamic = "force-dynamic";
 
+const blogTitle = "Journal de l'atelier — Creatyss";
+const blogDescription =
+  "Actualités, coulisses et inspirations autour des créations de l'atelier Creatyss.";
+const blogCanonical = `${clientEnv.appUrl}/blog`;
+
 export const metadata: Metadata = {
-  title: "Journal de l'atelier — Creatyss",
-  description: "Actualités, coulisses et inspirations autour des créations de l'atelier Creatyss.",
+  title: blogTitle,
+  description: blogDescription,
+  alternates: {
+    canonical: blogCanonical,
+  },
+  openGraph: {
+    title: blogTitle,
+    description: blogDescription,
+    url: blogCanonical,
+    type: "website",
+  },
 };
 
 const blogDateFormatter = new Intl.DateTimeFormat("fr-FR", {

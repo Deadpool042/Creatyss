@@ -3,11 +3,24 @@ import Link from "next/link";
 
 import { StorefrontEmptyState } from "@/components/storefront/storefront-empty-state";
 import { brandConfig } from "@/core/config/brand";
+import { clientEnv } from "@/core/config/env";
 import { listCatalogFilterCategories } from "@/features/storefront/catalog";
 
+const categoriesTitle = `Catégories — ${brandConfig.name}`;
+const categoriesCanonical = `${clientEnv.appUrl}/categories`;
+
 export const metadata: Metadata = {
-  title: `Catégories — ${brandConfig.name}`,
+  title: categoriesTitle,
   description: brandConfig.categoriesPageDescription,
+  alternates: {
+    canonical: categoriesCanonical,
+  },
+  openGraph: {
+    title: categoriesTitle,
+    description: brandConfig.categoriesPageDescription,
+    url: categoriesCanonical,
+    type: "website",
+  },
 };
 
 export const dynamic = "force-dynamic";
