@@ -17,5 +17,10 @@ export default defineConfig({
     environment: "node",
     include: ["tests/unit/**/*.test.ts"],
     passWithNoTests: true,
+    env: {
+      // Requis par core/config/env/server.ts (APP_RUNTIME_ENV n'a aucun
+      // défaut silencieux) — indépendant de .env.local, non versionné.
+      APP_RUNTIME_ENV: "local",
+    },
   },
 });

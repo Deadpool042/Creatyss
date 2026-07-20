@@ -8,6 +8,8 @@ import { nodeEnvSchema, nonEmptyStringSchema } from "./shared";
 const serverEnvSchema = z.object({
   NODE_ENV: nodeEnvSchema,
 
+  APP_RUNTIME_ENV: z.enum(["local", "staging", "production"]),
+
   APP_URL: z.url().trim().default("http://localhost:3000"),
 
   DATABASE_URL: nonEmptyStringSchema,
@@ -94,6 +96,7 @@ const resolvedEmailProvider: "brevo" | "mailpit" =
 const validatedEnv = data
   ? ({
       nodeEnv: data.NODE_ENV,
+      appRuntimeEnv: data.APP_RUNTIME_ENV,
       appUrl: data.APP_URL,
       databaseUrl: data.DATABASE_URL,
       adminSessionSecret: data.ADMIN_SESSION_SECRET,
