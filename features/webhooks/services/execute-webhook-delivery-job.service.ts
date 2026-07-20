@@ -1,7 +1,9 @@
 import "server-only";
 
 import { db } from "@/core/db";
+import { resolveStoreExecutionPolicy } from "@/core/runtime/resolve-store-execution-policy";
 import { deliverWebhook } from "./deliver-webhook.service";
+import { simulateWebhookDelivery } from "./simulate-webhook-delivery.service";
 import { WEBHOOK_DELIVERY_JOB_TYPE } from "@/features/webhooks/shared/webhook-job.constants";
 
 const DEFAULT_TIMEOUT_MS = 10_000;
@@ -173,7 +175,14 @@ export async function executeWebhookDeliveryJob(
       },
     });
 
-    const outcome = await deliverWebhook({
+    const store = await db.store.findFirst({
+      orderBy: { createdAt: "asc" },
+      select: { isProduction: true },
+    });
+    const policy = resolveStoreExecutionPolicy({ isProduction: store?.isProduction ?? false });
+    const deliver = policy.mode === "LIVE" ? deliverWebhook : simulateWebhookDelivery;
+
+    const outcome = await deliver({
       endpointId: endpoint.id,
       targetUrl: delivery.requestUrl,
       secret: endpoint.secretHash,

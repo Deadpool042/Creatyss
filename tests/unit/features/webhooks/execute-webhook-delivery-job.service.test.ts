@@ -14,15 +14,28 @@ vi.mock("@/core/db", () => ({
     webhookEndpoint: {
       update: vi.fn(),
     },
+    store: {
+      findFirst: vi.fn(),
+    },
   },
+}));
+
+vi.mock("@/core/runtime/resolve-store-execution-policy", () => ({
+  resolveStoreExecutionPolicy: vi.fn(),
 }));
 
 vi.mock("@/features/webhooks/services/deliver-webhook.service", () => ({
   deliverWebhook: vi.fn(),
 }));
 
+vi.mock("@/features/webhooks/services/simulate-webhook-delivery.service", () => ({
+  simulateWebhookDelivery: vi.fn(),
+}));
+
 import { db } from "@/core/db";
+import { resolveStoreExecutionPolicy } from "@/core/runtime/resolve-store-execution-policy";
 import { deliverWebhook } from "@/features/webhooks/services/deliver-webhook.service";
+import { simulateWebhookDelivery } from "@/features/webhooks/services/simulate-webhook-delivery.service";
 import {
   executeWebhookDeliveryJob,
   ExecuteWebhookDeliveryJobError,
@@ -42,8 +55,13 @@ const mockDb = db as unknown as {
   webhookEndpoint: {
     update: ReturnType<typeof vi.fn>;
   };
+  store: {
+    findFirst: ReturnType<typeof vi.fn>;
+  };
 };
 const mockDeliverWebhook = deliverWebhook as ReturnType<typeof vi.fn>;
+const mockSimulateWebhookDelivery = simulateWebhookDelivery as ReturnType<typeof vi.fn>;
+const mockResolveStoreExecutionPolicy = resolveStoreExecutionPolicy as ReturnType<typeof vi.fn>;
 
 const JOB_ID = "job_1";
 const STORE_ID = "store_1";
@@ -92,6 +110,8 @@ describe("executeWebhookDeliveryJob", () => {
     mockDb.job.update.mockResolvedValue({});
     mockDb.webhookDelivery.update.mockResolvedValue({});
     mockDb.webhookEndpoint.update.mockResolvedValue({});
+    mockDb.store.findFirst.mockResolvedValue({ isProduction: true });
+    mockResolveStoreExecutionPolicy.mockReturnValue({ mode: "LIVE" });
   });
 
   it("lève job_not_found si le job n'existe pas", async () => {
@@ -399,5 +419,90 @@ describe("executeWebhookDeliveryJob", () => {
     await expect(
       executeWebhookDeliveryJob({ jobId: JOB_ID, storeId: STORE_ID })
     ).rejects.toBeInstanceOf(ExecuteWebhookDeliveryJobError);
+  });
+
+  it("mode LIVE : appelle deliverWebhook et jamais simulateWebhookDelivery", async () => {
+    mockDb.job.findFirst.mockResolvedValue(baseJob());
+    mockDb.webhookDelivery.findFirst.mockResolvedValue(baseDelivery());
+    mockResolveStoreExecutionPolicy.mockReturnValue({ mode: "LIVE" });
+    mockDeliverWebhook.mockResolvedValue({
+      ok: true,
+      statusCode: 200,
+      responseBody: "ok",
+      errorCode: null,
+      errorMessage: null,
+    });
+
+    await executeWebhookDeliveryJob({ jobId: JOB_ID, storeId: STORE_ID });
+
+    expect(mockDeliverWebhook).toHaveBeenCalledTimes(1);
+    expect(mockSimulateWebhookDelivery).not.toHaveBeenCalled();
+  });
+
+  it("mode TEST : appelle simulateWebhookDelivery et jamais deliverWebhook, aucune requête HTTP", async () => {
+    mockDb.job.findFirst.mockResolvedValue(baseJob());
+    mockDb.webhookDelivery.findFirst.mockResolvedValue(baseDelivery());
+    mockResolveStoreExecutionPolicy.mockReturnValue({ mode: "TEST" });
+    mockSimulateWebhookDelivery.mockResolvedValue({
+      ok: true,
+      statusCode: null,
+      responseBody: "Livraison simulée (mode TEST)",
+      errorCode: null,
+      errorMessage: null,
+    });
+
+    await executeWebhookDeliveryJob({ jobId: JOB_ID, storeId: STORE_ID });
+
+    expect(mockSimulateWebhookDelivery).toHaveBeenCalledTimes(1);
+    expect(mockDeliverWebhook).not.toHaveBeenCalled();
+  });
+
+  it("mode TEST : conserve le cycle SUCCEEDED normal (WebhookDelivery + Job), aucun retry déclenché", async () => {
+    mockDb.job.findFirst.mockResolvedValue(baseJob());
+    mockDb.webhookDelivery.findFirst.mockResolvedValue(baseDelivery());
+    mockResolveStoreExecutionPolicy.mockReturnValue({ mode: "TEST" });
+    mockSimulateWebhookDelivery.mockResolvedValue({
+      ok: true,
+      statusCode: null,
+      responseBody: "Livraison simulée (mode TEST)",
+      errorCode: null,
+      errorMessage: null,
+    });
+
+    await executeWebhookDeliveryJob({ jobId: JOB_ID, storeId: STORE_ID });
+
+    expect(mockDb.webhookDelivery.update).toHaveBeenCalledWith({
+      where: { id: DELIVERY_ID },
+      data: {
+        status: "SUCCEEDED",
+        finishedAt: expect.any(Date),
+        responseStatusCode: null,
+        responseBodyText: "Livraison simulée (mode TEST)",
+        errorCode: null,
+        errorMessage: null,
+      },
+    });
+    expect(mockDb.job.update).toHaveBeenCalledWith({
+      where: { id: JOB_ID },
+      data: expect.objectContaining({ status: "SUCCEEDED" }),
+    });
+  });
+
+  it("mode TEST : utilise store.isProduction=false pour résoudre la policy hors LIVE", async () => {
+    mockDb.job.findFirst.mockResolvedValue(baseJob());
+    mockDb.webhookDelivery.findFirst.mockResolvedValue(baseDelivery());
+    mockDb.store.findFirst.mockResolvedValue({ isProduction: false });
+    mockResolveStoreExecutionPolicy.mockReturnValue({ mode: "TEST" });
+    mockSimulateWebhookDelivery.mockResolvedValue({
+      ok: true,
+      statusCode: null,
+      responseBody: "Livraison simulée (mode TEST)",
+      errorCode: null,
+      errorMessage: null,
+    });
+
+    await executeWebhookDeliveryJob({ jobId: JOB_ID, storeId: STORE_ID });
+
+    expect(mockResolveStoreExecutionPolicy).toHaveBeenCalledWith({ isProduction: false });
   });
 });
