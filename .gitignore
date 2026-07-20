@@ -20,6 +20,8 @@ build/
 .env.development
 .env.test
 .env.production
+.env.backup*
+.env.before-*
 
 # logs
 npm-debug.log*
