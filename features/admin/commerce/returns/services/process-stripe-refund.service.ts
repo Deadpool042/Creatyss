@@ -2,7 +2,9 @@ import "server-only";
 
 import { db } from "@/core/db";
 import { withTransaction } from "@/core/db/transactions/with-transaction";
+import { resolveStoreExecutionPolicy } from "@/core/runtime/resolve-store-execution-policy";
 import { stripe } from "@/core/payments/stripe/server";
+import { simulateStripeRefund } from "./simulate-stripe-refund.service";
 
 export class ProcessStripeRefundError extends Error {
   constructor(message: string) {
@@ -75,11 +77,23 @@ export async function processStripeRefund(input: ProcessStripeRefundInput): Prom
     throw new ProcessStripeRefundError("Montant de remboursement invalide ou déjà remboursé.");
   }
 
-  // Stripe-first : tout échec ici laisse la DB inchangée.
-  const stripeRefund = await stripe.refunds.create({
-    payment_intent: payment.providerPaymentId,
-    amount: refundCents,
+  const store = await db.store.findFirst({
+    orderBy: { createdAt: "asc" },
+    select: { isProduction: true },
   });
+  const policy = resolveStoreExecutionPolicy({ isProduction: store?.isProduction ?? false });
+
+  // Stripe-first : tout échec ici laisse la DB inchangée.
+  const stripeRefund =
+    policy.mode === "LIVE"
+      ? await stripe.refunds.create({
+          payment_intent: payment.providerPaymentId,
+          amount: refundCents,
+        })
+      : await simulateStripeRefund({
+          paymentIntentId: payment.providerPaymentId,
+          amountCents: refundCents,
+        });
 
   // DB update : erreur ici = incohérence Stripe/DB → log d'alerte pour réconciliation.
   try {
