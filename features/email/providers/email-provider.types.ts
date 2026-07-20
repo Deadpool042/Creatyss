@@ -1,4 +1,4 @@
-export type EmailProviderKind = "mailpit" | "brevo";
+export type EmailProviderKind = "mailpit" | "brevo" | "simulated";
 
 export type TransactionalEmailPayload = {
   to: string;
@@ -14,7 +14,5 @@ export type TransactionalEmailResult = {
 };
 
 export interface TransactionalEmailProvider {
-  sendTransactionalEmail(
-    payload: TransactionalEmailPayload
-  ): Promise<TransactionalEmailResult>;
+  sendTransactionalEmail(payload: TransactionalEmailPayload): Promise<TransactionalEmailResult>;
 }

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { brandConfig } from "@/core/config/brand";
 import { db } from "@/core/db";
+import { resolveStoreExecutionPolicy } from "@/core/runtime/resolve-store-execution-policy";
 import { validateContactMessageInput } from "@/entities/contact/contact-message-input";
 import { resolveEmailProvider } from "@/features/email/providers/resolve-email-provider";
 
@@ -38,7 +39,7 @@ export async function sendContactMessageAction(formData: FormData): Promise<void
 
   const store = await db.store.findFirst({
     orderBy: { createdAt: "asc" },
-    select: { name: true, supportEmail: true },
+    select: { name: true, supportEmail: true, isProduction: true },
   });
 
   if (!store?.supportEmail) {
@@ -72,7 +73,8 @@ export async function sendContactMessageAction(formData: FormData): Promise<void
   </body></html>`;
 
   try {
-    const emailProvider = resolveEmailProvider();
+    const policy = resolveStoreExecutionPolicy({ isProduction: store.isProduction });
+    const { provider: emailProvider } = resolveEmailProvider(policy);
     await emailProvider.sendTransactionalEmail({
       to: store.supportEmail,
       subject: emailSubject,

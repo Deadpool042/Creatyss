@@ -3,6 +3,7 @@ import "server-only";
 import { serverEnv } from "@/core/config/env/server";
 import { db } from "@/core/db";
 import { brandConfig } from "@/core/config/brand";
+import { resolveStoreExecutionPolicy } from "@/core/runtime/resolve-store-execution-policy";
 import {
   buildAutomationEmailTemplate,
   isSupportedAutomationEmailTemplateCode,
@@ -333,6 +334,7 @@ export async function executeAutomationJob(input: ExecuteAutomationJobInput): Pr
           name: true,
           supportEmail: true,
           replyToEmail: true,
+          isProduction: true,
         },
       }),
     ]);
@@ -363,7 +365,8 @@ export async function executeAutomationJob(input: ExecuteAutomationJobInput): Pr
       ...(recipient.order ? { order: recipient.order } : {}),
     });
 
-    const emailProvider = resolveEmailProvider();
+    const policy = resolveStoreExecutionPolicy({ isProduction: store?.isProduction ?? false });
+    const { kind: emailProviderKind, provider: emailProvider } = resolveEmailProvider(policy);
     const emailEvent = await createAutomationEmailIfAbsent({
       storeId: input.storeId,
       jobId: input.jobId,
@@ -371,7 +374,7 @@ export async function executeAutomationJob(input: ExecuteAutomationJobInput): Pr
       subjectLine: template.subject,
       bodyText: template.text,
       bodyHtml: template.html,
-      provider: serverEnv.emailProvider,
+      provider: emailProviderKind,
     });
 
     emailEventId = emailEvent.id;

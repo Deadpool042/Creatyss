@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("@/core/config/env/server", () => ({
   serverEnv: {
     appUrl: "http://localhost:3000",
+    appRuntimeEnv: "local",
     emailProvider: "mailpit",
   },
 }));
@@ -99,15 +100,19 @@ describe("executeAutomationJob", () => {
       name: "Creatyss",
       supportEmail: "support@creatyss.com",
       replyToEmail: null,
+      isProduction: false,
     });
     mockCreateAutomationEmailIfAbsent.mockResolvedValue({ id: "email_1" });
     mockMarkAutomationEmailSent.mockResolvedValue(undefined);
     mockMarkAutomationEmailFailed.mockResolvedValue(undefined);
     mockResolveEmailProvider.mockReturnValue({
-      sendTransactionalEmail: vi.fn().mockResolvedValue({
-        provider: "mailpit",
-        providerMessageId: "msg_1",
-      }),
+      kind: "mailpit",
+      provider: {
+        sendTransactionalEmail: vi.fn().mockResolvedValue({
+          provider: "mailpit",
+          providerMessageId: "msg_1",
+        }),
+      },
     });
   });
 

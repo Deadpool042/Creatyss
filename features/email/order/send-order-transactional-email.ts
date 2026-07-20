@@ -7,6 +7,7 @@ import {
 } from "@/features/email/order/order-email.repository";
 import { db } from "@/core/db";
 import { serverEnv } from "@/core/config/env/server";
+import { resolveStoreExecutionPolicy } from "@/core/runtime/resolve-store-execution-policy";
 import { resolveEmailProvider } from "@/features/email/providers/resolve-email-provider";
 import { findOrderEmailContextById } from "@/features/commerce/orders/lib/order.repository";
 import { buildOrderEmailTemplate } from "@/features/email/order/order-email-templates";
@@ -32,17 +33,19 @@ export async function sendOrderTransactionalEmail(input: {
       return;
     }
 
-    const emailProvider = resolveEmailProvider();
-
     const store = await db.store.findFirst({
       orderBy: { createdAt: "asc" },
       select: {
         replyToEmail: true,
         emailConfirmationEnabled: true,
         emailShippingEnabled: true,
+        isProduction: true,
       },
     });
     const replyTo = store?.replyToEmail ?? null;
+
+    const policy = resolveStoreExecutionPolicy({ isProduction: store?.isProduction ?? false });
+    const { kind: emailProviderKind, provider: emailProvider } = resolveEmailProvider(policy);
 
     const emailEnabled =
       input.eventType === "order_created"
@@ -59,7 +62,7 @@ export async function sendOrderTransactionalEmail(input: {
       orderId: order.id,
       eventType: input.eventType,
       recipientEmail: order.customerEmail,
-      provider: serverEnv.emailProvider,
+      provider: emailProviderKind,
     });
 
     if (emailEvent === null) {

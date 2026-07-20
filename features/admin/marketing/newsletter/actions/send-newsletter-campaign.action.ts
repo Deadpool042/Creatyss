@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/core/db";
 import { serverEnv } from "@/core/config/env/server";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { resolveStoreExecutionPolicy } from "@/core/runtime/resolve-store-execution-policy";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { resolveEmailProvider } from "@/features/email/providers/resolve-email-provider";
 import {
@@ -119,7 +120,12 @@ export async function sendNewsletterCampaignAction(
     },
   });
 
-  const emailProvider = resolveEmailProvider();
+  const store = await db.store.findFirst({
+    where: { id: storeId },
+    select: { isProduction: true },
+  });
+  const policy = resolveStoreExecutionPolicy({ isProduction: store?.isProduction ?? false });
+  const { provider: emailProvider } = resolveEmailProvider(policy);
   let sentCount = 0;
   let failedCount = 0;
 

@@ -15,11 +15,14 @@ vi.mock("@/core/db", () => ({
       findMany: vi.fn(),
       update: vi.fn(),
     },
+    store: {
+      findFirst: vi.fn(),
+    },
   },
 }));
 
 vi.mock("@/core/config/env/server", () => ({
-  serverEnv: { appUrl: "https://boutique.test" },
+  serverEnv: { appUrl: "https://boutique.test", appRuntimeEnv: "local" },
 }));
 
 vi.mock("@/core/auth/admin/guard", () => ({
@@ -59,6 +62,7 @@ const mockDb = db as unknown as {
     findMany: ReturnType<typeof vi.fn>;
     update: ReturnType<typeof vi.fn>;
   };
+  store: { findFirst: ReturnType<typeof vi.fn> };
 };
 
 const mockGetCurrentStoreId = getCurrentStoreId as ReturnType<typeof vi.fn>;
@@ -78,7 +82,10 @@ const draftCampaign = {
 
 function mockSendSuccess() {
   const sendTransactionalEmail = vi.fn().mockResolvedValue(undefined);
-  mockResolveEmailProvider.mockReturnValue({ sendTransactionalEmail });
+  mockResolveEmailProvider.mockReturnValue({
+    kind: "mailpit",
+    provider: { sendTransactionalEmail },
+  });
   return sendTransactionalEmail;
 }
 
@@ -101,6 +108,7 @@ describe("sendNewsletterCampaignAction", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockGetCurrentStoreId.mockResolvedValue(STORE_ID);
+    mockDb.store.findFirst.mockResolvedValue({ isProduction: false });
   });
 
   it("refuse une campagne appartenant à un autre store", async () => {
@@ -218,7 +226,10 @@ describe("sendNewsletterCampaignAction", () => {
     mockDb.newsletterCampaignRecipient.update.mockResolvedValue({});
     mockDb.newsletterCampaign.update.mockResolvedValue({});
     mockResolveEmailProvider.mockReturnValue({
-      sendTransactionalEmail: vi.fn().mockRejectedValue(new Error("provider down")),
+      kind: "mailpit",
+      provider: {
+        sendTransactionalEmail: vi.fn().mockRejectedValue(new Error("provider down")),
+      },
     });
 
     const result = await sendNewsletterCampaignAction(CAMPAIGN_ID);

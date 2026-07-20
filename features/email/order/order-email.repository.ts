@@ -15,7 +15,12 @@ import type { EmailMessage, EmailRecipient } from "@/prisma-generated/client";
 type EmailMessageWithRecipients = EmailMessage & { recipients: EmailRecipient[] };
 
 function toAppEmailProvider(provider: string | null): OrderEmailEventProvider {
-  if (provider === "mailpit" || provider === "brevo" || provider === "resend") {
+  if (
+    provider === "mailpit" ||
+    provider === "brevo" ||
+    provider === "resend" ||
+    provider === "simulated"
+  ) {
     return provider;
   }
 
