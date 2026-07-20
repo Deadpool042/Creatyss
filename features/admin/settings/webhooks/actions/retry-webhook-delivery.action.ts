@@ -4,9 +4,11 @@ import { revalidatePath } from "next/cache";
 
 import { db } from "@/core/db";
 import { requireAuthenticatedAdmin } from "@/core/auth/admin/guard";
+import { resolveStoreExecutionPolicy } from "@/core/runtime/resolve-store-execution-policy";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { deliverWebhook } from "@/features/webhooks/services/deliver-webhook.service";
+import { simulateWebhookDelivery } from "@/features/webhooks/services/simulate-webhook-delivery.service";
 
 const DEFAULT_TIMEOUT_MS = 10_000;
 const RETRYABLE_STATUS_VALUES = ["FAILED", "EXPIRED", "CANCELLED"] as const;
@@ -111,9 +113,16 @@ export async function retryWebhookDeliveryAction(
     }
   }
 
+  const store = await db.store.findFirst({
+    orderBy: { createdAt: "asc" },
+    select: { isProduction: true },
+  });
+  const policy = resolveStoreExecutionPolicy({ isProduction: store?.isProduction ?? false });
+  const deliver = policy.mode === "LIVE" ? deliverWebhook : simulateWebhookDelivery;
+
   let outcome: Awaited<ReturnType<typeof deliverWebhook>>;
   try {
-    outcome = await deliverWebhook({
+    outcome = await deliver({
       endpointId: endpoint.id,
       targetUrl: endpoint.targetUrl,
       secret: endpoint.secretHash,

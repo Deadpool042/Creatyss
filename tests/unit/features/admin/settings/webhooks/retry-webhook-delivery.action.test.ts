@@ -10,11 +10,18 @@ vi.mock("@/core/db", () => ({
     webhookEndpoint: {
       update: vi.fn(),
     },
+    store: {
+      findFirst: vi.fn(),
+    },
   },
 }));
 
 vi.mock("@/core/auth/admin/guard", () => ({
   requireAuthenticatedAdmin: vi.fn(),
+}));
+
+vi.mock("@/core/runtime/resolve-store-execution-policy", () => ({
+  resolveStoreExecutionPolicy: vi.fn(),
 }));
 
 vi.mock("@/features/admin/store/queries/get-current-store-id.query", () => ({
@@ -29,14 +36,20 @@ vi.mock("@/features/webhooks/services/deliver-webhook.service", () => ({
   deliverWebhook: vi.fn(),
 }));
 
+vi.mock("@/features/webhooks/services/simulate-webhook-delivery.service", () => ({
+  simulateWebhookDelivery: vi.fn(),
+}));
+
 vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),
 }));
 
 import { db } from "@/core/db";
+import { resolveStoreExecutionPolicy } from "@/core/runtime/resolve-store-execution-policy";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 import { deliverWebhook } from "@/features/webhooks/services/deliver-webhook.service";
+import { simulateWebhookDelivery } from "@/features/webhooks/services/simulate-webhook-delivery.service";
 import { retryWebhookDeliveryAction } from "@/features/admin/settings/webhooks/actions/retry-webhook-delivery.action";
 
 const mockDb = db as unknown as {
@@ -48,11 +61,16 @@ const mockDb = db as unknown as {
   webhookEndpoint: {
     update: ReturnType<typeof vi.fn>;
   };
+  store: {
+    findFirst: ReturnType<typeof vi.fn>;
+  };
 };
 
 const mockGetCurrentStoreId = getCurrentStoreId as ReturnType<typeof vi.fn>;
 const mockMeetsFeatureLevel = meetsFeatureLevel as ReturnType<typeof vi.fn>;
 const mockDeliverWebhook = deliverWebhook as ReturnType<typeof vi.fn>;
+const mockSimulateWebhookDelivery = simulateWebhookDelivery as ReturnType<typeof vi.fn>;
+const mockResolveStoreExecutionPolicy = resolveStoreExecutionPolicy as ReturnType<typeof vi.fn>;
 
 const DELIVERY = {
   id: "delivery_1",
@@ -77,6 +95,8 @@ describe("retryWebhookDeliveryAction", () => {
     mockDb.webhookDelivery.findUnique.mockResolvedValue(DELIVERY);
     mockDb.webhookDelivery.update.mockResolvedValue({});
     mockDb.webhookEndpoint.update.mockResolvedValue({});
+    mockDb.store.findFirst.mockResolvedValue({ isProduction: true });
+    mockResolveStoreExecutionPolicy.mockReturnValue({ mode: "LIVE" });
     mockDeliverWebhook.mockResolvedValue({
       ok: true,
       statusCode: 200,
@@ -260,5 +280,66 @@ describe("retryWebhookDeliveryAction", () => {
     expect(mockDeliverWebhook).toHaveBeenCalledTimes(1);
     // L'action n'a pas mis à jour les timestamps de l'endpoint après l'échec de l'update.
     expect(mockDb.webhookEndpoint.update).not.toHaveBeenCalled();
+  });
+
+  // H. Mode LIVE
+  it("mode LIVE : appelle deliverWebhook et jamais simulateWebhookDelivery", async () => {
+    mockDb.webhookDelivery.updateMany.mockResolvedValue({ count: 1 });
+    mockResolveStoreExecutionPolicy.mockReturnValue({ mode: "LIVE" });
+
+    await expect(retryWebhookDeliveryAction("delivery_1")).resolves.toEqual({ ok: true });
+
+    expect(mockDeliverWebhook).toHaveBeenCalledTimes(1);
+    expect(mockSimulateWebhookDelivery).not.toHaveBeenCalled();
+  });
+
+  // I. Mode TEST
+  it("mode TEST : appelle simulateWebhookDelivery et jamais deliverWebhook, aucune requête HTTP", async () => {
+    mockDb.webhookDelivery.updateMany.mockResolvedValue({ count: 1 });
+    mockResolveStoreExecutionPolicy.mockReturnValue({ mode: "TEST" });
+    mockSimulateWebhookDelivery.mockResolvedValue({
+      ok: true,
+      statusCode: null,
+      responseBody: "Livraison simulée (mode TEST)",
+      errorCode: null,
+      errorMessage: null,
+    });
+
+    await expect(retryWebhookDeliveryAction("delivery_1")).resolves.toEqual({ ok: true });
+
+    expect(mockSimulateWebhookDelivery).toHaveBeenCalledTimes(1);
+    expect(mockDeliverWebhook).not.toHaveBeenCalled();
+  });
+
+  // J. Mode TEST — conservation du cycle métier (réservation + finalisation SUCCEEDED)
+  it("mode TEST : réserve la delivery (RUNNING) puis la finalise en SUCCEEDED, comme un succès réel", async () => {
+    mockDb.webhookDelivery.updateMany.mockResolvedValue({ count: 1 });
+    mockResolveStoreExecutionPolicy.mockReturnValue({ mode: "TEST" });
+    mockSimulateWebhookDelivery.mockResolvedValue({
+      ok: true,
+      statusCode: null,
+      responseBody: "Livraison simulée (mode TEST)",
+      errorCode: null,
+      errorMessage: null,
+    });
+
+    await retryWebhookDeliveryAction("delivery_1");
+
+    expect(mockDb.webhookDelivery.updateMany).toHaveBeenCalledTimes(1);
+    expect(mockDb.webhookDelivery.update).toHaveBeenCalledWith({
+      where: { id: "delivery_1" },
+      data: {
+        status: "SUCCEEDED",
+        finishedAt: expect.any(Date),
+        responseStatusCode: null,
+        responseBodyText: "Livraison simulée (mode TEST)",
+        errorCode: null,
+        errorMessage: null,
+      },
+    });
+    expect(mockDb.webhookEndpoint.update).toHaveBeenCalledWith({
+      where: { id: "endpoint_1" },
+      data: { lastTriggeredAt: expect.any(Date), lastSucceededAt: expect.any(Date) },
+    });
   });
 });

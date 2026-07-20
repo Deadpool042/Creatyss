@@ -55,9 +55,9 @@ Le domaine :
 
 Le domaine ne possède pas et ne décide pas :
 
-- l'implémentation des adaptateurs d'infrastructure (email, webhook, paiement) — ceux-ci restent dans `core/email`, `features/webhooks`, `core/payments` ;
-- la neutralisation effective d'un effet externe en mode `TEST` (provider simulé, court-circuit réseau) — hors périmètre de ce lot, réservé à un lot ultérieur par adaptateur ;
-- la journalisation du mode d'exécution en base (colonne `executionMode`) — hors périmètre de ce lot ;
+- l'implémentation des adaptateurs d'infrastructure (email, webhook, paiement) — ceux-ci restent dans `features/email`, `features/webhooks`, `core/payments` ;
+- la neutralisation effective d'un effet externe en mode `TEST` (provider simulé, court-circuit réseau) — décidée et implémentée par chaque adaptateur (`SimulatedEmailProvider`, `simulateWebhookDelivery`), pas par ce domaine ;
+- la journalisation du mode d'exécution en base (colonne `executionMode`) — décision prise de ne pas en ajouter (email et webhook réutilisent leurs champs existants) ;
 - la gouvernance produit des features (`FeatureFlag`, `FEATURE_CATALOG`) — un effet peut être en mode `TEST` alors que sa feature est active, ce sont deux axes orthogonaux.
 
 ---
@@ -93,9 +93,14 @@ Non applicable. Le domaine ne porte aucune entité à états ; il calcule une va
 
 ## Interfaces et échanges
 
-Point d'entrée unique (ce lot) : `resolveExecutionPolicy(input)`, fonction pure prenant l'environnement technique et le mode boutique, retournant une `ExecutionPolicy`.
+`resolveExecutionPolicy(input)` reste le résolveur pur : il prend l'environnement technique et le mode boutique déjà connus, et retourne une `ExecutionPolicy`. Il n'accède ni à Prisma ni à `serverEnv`.
 
-Aucun adaptateur ne consomme ce point d'entrée dans ce lot — cf. Limites du domaine.
+`resolveStoreExecutionPolicy(input)` est le point de composition réellement consommé par les adaptateurs : il lit `APP_RUNTIME_ENV` via `serverEnv` et combine ce résultat avec le `Store.isProduction` fourni par l'appelant, puis délègue à `resolveExecutionPolicy`. C'est cette fonction que tout adaptateur d'effet externe doit appeler — jamais `resolveExecutionPolicy` directement, sauf test unitaire du résolveur pur lui-même.
+
+Adaptateurs consommant `resolveStoreExecutionPolicy` à ce jour :
+
+- `features/email/**` (email transactionnel, contact, newsletter, automations) ;
+- `features/webhooks/**` (livraison automatique et relance manuelle).
 
 ---
 
@@ -119,7 +124,7 @@ Risque majeur si ce domaine était mal utilisé : un appelant qui contournerait 
 
 ## Limites du domaine
 
-Ce lot pose uniquement la fondation : types stricts, résolveur pur, variable d'environnement, tests couvrant la matrice. Aucun adaptateur existant (email, webhook, Stripe) ne consomme ce résolveur à l'issue de ce lot — le comportement observable de l'application reste strictement identique. Le branchement effectif est un chantier séparé, lot par lot, cf. `docs/roadmap/` (cadrage validé, non encore matérialisé en fichier de lot dédié).
+Le domaine expose uniquement le calcul de politique (`resolveExecutionPolicy`, `resolveStoreExecutionPolicy`). Les adaptateurs email et webhook consomment désormais ce calcul et neutralisent leur propre trafic externe en mode `TEST`. Stripe/paiement ne consomme pas encore ce résolveur — chantier séparé, non cadré à ce jour.
 
 ---
 
