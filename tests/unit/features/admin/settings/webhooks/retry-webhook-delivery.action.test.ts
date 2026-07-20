@@ -244,6 +244,34 @@ describe("retryWebhookDeliveryAction", () => {
     expect(mockDb.webhookEndpoint.update).not.toHaveBeenCalled();
   });
 
+  // F-bis. Exception sur la lecture du store (résolution de policy) —
+  // régression du commit 4e67b485 : la delivery ne doit jamais rester
+  // bloquée en RUNNING si db.store.findFirst lève, même si elle n'a pas
+  // de Job associé pour la recovery automatique.
+  it("finalise en FAILED (pas de RUNNING résiduel) si db.store.findFirst lève une exception", async () => {
+    mockDb.webhookDelivery.updateMany.mockResolvedValue({ count: 1 });
+    mockDb.store.findFirst.mockRejectedValue(new Error("db unavailable"));
+
+    await expect(retryWebhookDeliveryAction("delivery_1")).resolves.toEqual({
+      ok: false,
+      error: "La relance du webhook a échoué.",
+    });
+
+    expect(mockDb.webhookDelivery.update).toHaveBeenCalledTimes(1);
+    expect(mockDb.webhookDelivery.update).toHaveBeenCalledWith({
+      where: { id: "delivery_1" },
+      data: {
+        status: "FAILED",
+        finishedAt: expect.any(Date),
+        errorCode: "retry_execution_failed",
+        errorMessage: "db unavailable",
+      },
+    });
+    expect(mockDeliverWebhook).not.toHaveBeenCalled();
+    expect(mockSimulateWebhookDelivery).not.toHaveBeenCalled();
+    expect(mockDb.webhookEndpoint.update).not.toHaveBeenCalled();
+  });
+
   it("borne le message d'exception à 500 caractères", async () => {
     mockDb.webhookDelivery.updateMany.mockResolvedValue({ count: 1 });
     mockDeliverWebhook.mockRejectedValue(new Error("x".repeat(1000)));

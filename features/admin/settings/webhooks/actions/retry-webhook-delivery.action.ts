@@ -113,15 +113,15 @@ export async function retryWebhookDeliveryAction(
     }
   }
 
-  const store = await db.store.findFirst({
-    orderBy: { createdAt: "asc" },
-    select: { isProduction: true },
-  });
-  const policy = resolveStoreExecutionPolicy({ isProduction: store?.isProduction ?? false });
-  const deliver = policy.mode === "LIVE" ? deliverWebhook : simulateWebhookDelivery;
-
   let outcome: Awaited<ReturnType<typeof deliverWebhook>>;
   try {
+    const store = await db.store.findFirst({
+      orderBy: { createdAt: "asc" },
+      select: { isProduction: true },
+    });
+    const policy = resolveStoreExecutionPolicy({ isProduction: store?.isProduction ?? false });
+    const deliver = policy.mode === "LIVE" ? deliverWebhook : simulateWebhookDelivery;
+
     outcome = await deliver({
       endpointId: endpoint.id,
       targetUrl: endpoint.targetUrl,
@@ -131,10 +131,11 @@ export async function retryWebhookDeliveryAction(
       body,
     });
   } catch (error) {
-    // Issue ambiguë : deliverWebhook ne lève normalement jamais (il capture
-    // ses propres erreurs réseau/timeout). Une exception ici est un
-    // événement inattendu — on ne laisse jamais la delivery bloquée en
-    // RUNNING.
+    // La lecture du store, la résolution de policy et deliverWebhook lui-même
+    // ne lèvent normalement jamais (deliverWebhook capture ses propres
+    // erreurs réseau/timeout). Une exception ici — y compris sur la lecture
+    // du store — est un événement inattendu : on ne laisse jamais la
+    // delivery bloquée en RUNNING.
     await db.webhookDelivery.update({
       where: { id: deliveryId },
       data: {
