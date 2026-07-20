@@ -50,6 +50,8 @@ COPY --from=build --chown=app:app /app/prisma.config.ts ./prisma.config.ts
 COPY --from=build --chown=app:app /app/core/config ./core/config
 COPY --from=build --chown=app:app /app/core/auth ./core/auth
 COPY --from=build --chown=app:app /app/features/admin/navigation ./features/admin/navigation
+# Requis par scripts/validate-feature-levels.ts (job db-validate-levels).
+COPY --from=build --chown=app:app /app/features/admin/feature-governance/catalog ./features/admin/feature-governance/catalog
 COPY --from=build --chown=app:app /app/tsconfig.json ./tsconfig.json
 # Schéma + client généré : requis par les jobs db (push/seed) et par les
 # imports runtime hors bundle.
