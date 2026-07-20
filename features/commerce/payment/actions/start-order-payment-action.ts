@@ -6,8 +6,14 @@ import {
   markPaymentFailedByCheckoutSessionId,
   saveStripeCheckoutSessionForOrder,
 } from "@/features/commerce/payment/lib/payment.repository";
+import { db } from "@/core/db";
 import { serverEnv } from "@/core/config/env";
+import { resolveStoreExecutionPolicy } from "@/core/runtime/resolve-store-execution-policy";
 import { stripe } from "@/core/payments/stripe/server";
+import {
+  simulateStripeCheckoutSessionCreate,
+  simulateStripeCheckoutSessionRetrieve,
+} from "@/features/commerce/payment/services/simulate-stripe-checkout.service";
 import { resolveStripeCheckoutSessionState } from "@/features/commerce/payment/stripe-checkout-session-state";
 
 function moneyStringToCents(value: string): number {
@@ -57,13 +63,22 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
   let redirectTarget: string | null = null;
 
   try {
+    const store = await db.store.findFirst({
+      orderBy: { createdAt: "asc" },
+      select: { isProduction: true },
+    });
+    const policy = resolveStoreExecutionPolicy({ isProduction: store?.isProduction ?? false });
+
     if (
       paymentContext.paymentStatus === "pending" &&
       paymentContext.stripeCheckoutSessionId !== null
     ) {
-      const existingSession = await stripe.checkout.sessions.retrieve(
-        paymentContext.stripeCheckoutSessionId
-      );
+      const existingSession =
+        policy.mode === "LIVE"
+          ? await stripe.checkout.sessions.retrieve(paymentContext.stripeCheckoutSessionId)
+          : await simulateStripeCheckoutSessionRetrieve({
+              sessionId: paymentContext.stripeCheckoutSessionId,
+            });
       const existingSessionState = resolveStripeCheckoutSessionState({
         status: existingSession.status,
         url: existingSession.url ?? null,
@@ -89,31 +104,42 @@ export async function startOrderPaymentAction(formData: FormData): Promise<void>
     }
 
     if (redirectTarget === null) {
-      const session = await stripe.checkout.sessions.create({
-        mode: "payment",
-        payment_method_types: ["card"],
-        ...(paymentContext.customerEmail !== null
-          ? { customer_email: paymentContext.customerEmail }
-          : {}),
-        line_items: [
-          {
-            price_data: {
-              currency: (paymentContext.currencyCode ?? "eur").toLowerCase(),
-              unit_amount: moneyStringToCents(paymentContext.totalAmount),
-              product_data: {
-                name: `Commande ${paymentContext.reference}`,
+      const totalAmountCents = moneyStringToCents(paymentContext.totalAmount);
+      const currencyCode = (paymentContext.currencyCode ?? "eur").toLowerCase();
+
+      const session =
+        policy.mode === "LIVE"
+          ? await stripe.checkout.sessions.create({
+              mode: "payment",
+              payment_method_types: ["card"],
+              ...(paymentContext.customerEmail !== null
+                ? { customer_email: paymentContext.customerEmail }
+                : {}),
+              line_items: [
+                {
+                  price_data: {
+                    currency: currencyCode,
+                    unit_amount: totalAmountCents,
+                    product_data: {
+                      name: `Commande ${paymentContext.reference}`,
+                    },
+                  },
+                  quantity: 1,
+                },
+              ],
+              metadata: {
+                orderId: paymentContext.orderId,
+                orderReference: paymentContext.reference,
               },
-            },
-            quantity: 1,
-          },
-        ],
-        metadata: {
-          orderId: paymentContext.orderId,
-          orderReference: paymentContext.reference,
-        },
-        success_url: `${serverEnv.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=return`,
-        cancel_url: `${serverEnv.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=cancelled`,
-      });
+              success_url: `${serverEnv.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=return`,
+              cancel_url: `${serverEnv.appUrl}/checkout/confirmation/${paymentContext.reference}?payment=cancelled`,
+            })
+          : await simulateStripeCheckoutSessionCreate({
+              orderId: paymentContext.orderId,
+              reference: paymentContext.reference,
+              totalAmountCents,
+              currencyCode,
+            });
 
       if (!session.url) {
         throw new Error("Stripe Checkout session returned no URL.");

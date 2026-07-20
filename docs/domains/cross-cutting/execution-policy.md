@@ -100,7 +100,8 @@ Non applicable. Le domaine ne porte aucune entité à états ; il calcule une va
 Adaptateurs consommant `resolveStoreExecutionPolicy` à ce jour :
 
 - `features/email/**` (email transactionnel, contact, newsletter, automations) ;
-- `features/webhooks/**` (livraison automatique et relance manuelle).
+- `features/webhooks/**` (livraison automatique et relance manuelle) ;
+- `features/commerce/payment/**` et `features/admin/commerce/returns/**` (démarrage de paiement Stripe et remboursement).
 
 ---
 
@@ -124,7 +125,7 @@ Risque majeur si ce domaine était mal utilisé : un appelant qui contournerait 
 
 ## Limites du domaine
 
-Le domaine expose uniquement le calcul de politique (`resolveExecutionPolicy`, `resolveStoreExecutionPolicy`). Les adaptateurs email et webhook consomment désormais ce calcul et neutralisent leur propre trafic externe en mode `TEST`. Stripe/paiement ne consomme pas encore ce résolveur — chantier séparé, non cadré à ce jour.
+Le domaine expose uniquement le calcul de politique (`resolveExecutionPolicy`, `resolveStoreExecutionPolicy`). Les adaptateurs email, webhook et paiement (Stripe : démarrage de paiement, remboursement) consomment désormais ce calcul et neutralisent leur propre trafic externe en mode `TEST`.
 
 ---
 
