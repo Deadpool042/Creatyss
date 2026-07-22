@@ -13,7 +13,7 @@ Creatyss est en bonne santé architecturale. La base est propre, la doctrine est
 Les points d'attention ne remettent pas en cause la structure. Ils concernent :
 
 - **Une dérive de taxonomie doc/Prisma** : une quinzaine de domaines classés `cross-cutting` dans `docs/` sont rangés `optional` dans `prisma/`. Ce n'est pas bloquant mais crée de l'ambiguïté à long terme.
-- **Un pattern try/catch répété** dans les 8 segments de `settings/advanced` (duplications légitimes dues à la contrainte Next.js parallel routes, mais consolidables).
+- ~~Un pattern try/catch répété dans les 8 segments de `settings/advanced`~~ — **résolu (2026-07-22)**, cf. §3.1.
 - **Deux pages quasi-identiques** pour Paiements et Livraison (présentes en `commerce/` et en `settings/`), qui représentent de vraies duplications de surface.
 - **Des fichiers de travail temporaires** (`backups/`, `tmp/`, `.trash/`) qui encombrent le repo sans valeur à long terme.
 - **Un seul hook mobile dupliqué** (`use-mobile.ts` vs `use-is-admin-mobile.ts`), légitime dans son contexte mais à documenter.
@@ -94,6 +94,7 @@ prisma/
 ### 2.3 Settings/advanced — état actuel
 
 Le système est déjà opérationnel :
+
 - `prisma/cross-cutting/feature-flags.prisma` → modèle `FeatureFlag` + `FeatureFlagOverride`
 - `features/admin/pilotage/catalog/feature-catalog.ts` → **21 features cataloguées**
 - `settings/advanced` → split-view avec liste par famille + détail toggleable
@@ -103,29 +104,29 @@ Le système est déjà opérationnel :
 
 Features actuellement dans le catalogue :
 
-| Famille | Module | Feature key | Mutabilité |
-|---|---|---|---|
-| core | catalog | catalog.products.pricing | readonly |
-| core | catalog | catalog.products.availability | readonly |
-| core | catalog | catalog.products.inventory | level_selectable |
-| core | catalog | catalog.products.media | level_selectable |
-| core | catalog | catalog.products.variants | readonly |
-| core | catalog | catalog.products.seo | readonly |
-| core | catalog | catalog.products.categories | readonly |
-| core | catalog | catalog.products.related | toggleable |
-| core | settings | settings.advanced | readonly |
-| satellite | commerce | commerce.payments | toggleable |
-| satellite | commerce | commerce.shipping | toggleable |
-| optional | commerce | commerce.discounts | level_selectable |
-| optional | engagement | engagement.newsletter | level_selectable |
-| optional | engagement | engagement.analytics | level_selectable |
-| optional | ai | ai.core | level_selectable |
-| cross_cutting | content | content.blog | readonly |
-| cross_cutting | content | content.homepage | readonly |
-| cross_cutting | content | content.seo | readonly |
-| cross_cutting | maintenance | maintenance.observability | readonly |
-| cross_cutting | maintenance | maintenance.logs | readonly |
-| cross_cutting | insights | insights.analyticsRead | readonly |
+| Famille       | Module      | Feature key                   | Mutabilité       |
+| ------------- | ----------- | ----------------------------- | ---------------- |
+| core          | catalog     | catalog.products.pricing      | readonly         |
+| core          | catalog     | catalog.products.availability | readonly         |
+| core          | catalog     | catalog.products.inventory    | level_selectable |
+| core          | catalog     | catalog.products.media        | level_selectable |
+| core          | catalog     | catalog.products.variants     | readonly         |
+| core          | catalog     | catalog.products.seo          | readonly         |
+| core          | catalog     | catalog.products.categories   | readonly         |
+| core          | catalog     | catalog.products.related      | toggleable       |
+| core          | settings    | settings.advanced             | readonly         |
+| satellite     | commerce    | commerce.payments             | toggleable       |
+| satellite     | commerce    | commerce.shipping             | toggleable       |
+| optional      | commerce    | commerce.discounts            | level_selectable |
+| optional      | engagement  | engagement.newsletter         | level_selectable |
+| optional      | engagement  | engagement.analytics          | level_selectable |
+| optional      | ai          | ai.core                       | level_selectable |
+| cross_cutting | content     | content.blog                  | readonly         |
+| cross_cutting | content     | content.homepage              | readonly         |
+| cross_cutting | content     | content.seo                   | readonly         |
+| cross_cutting | maintenance | maintenance.observability     | readonly         |
+| cross_cutting | maintenance | maintenance.logs              | readonly         |
+| cross_cutting | insights    | insights.analyticsRead        | readonly         |
 
 ---
 
@@ -134,6 +135,7 @@ Features actuellement dans le catalogue :
 ### 3.1 Pattern try/catch listAdminFeatureFlags (8 occurrences)
 
 **Fichiers concernés :**
+
 ```
 settings/advanced/@list/page.tsx
 settings/advanced/@list/[family]/page.tsx
@@ -146,6 +148,7 @@ settings/advanced/@detail/overview/page.tsx
 ```
 
 **Pattern répété dans chaque segment :**
+
 ```typescript
 let flags: Awaited<ReturnType<typeof listAdminFeatureFlags>> = [] as const;
 try {
@@ -159,30 +162,21 @@ try {
 
 **Risque :** Faible. Si la signature de `listAdminFeatureFlags` change, 8 fichiers sont à mettre à jour.
 
-**Proposition :** Extraire un loader partagé avec typage explicite :
-```typescript
-// features/admin/pilotage/queries/load-feature-flags-safe.ts
-export async function loadFeatureFlagsSafe() {
-  try {
-    return await listAdminFeatureFlags();
-  } catch {
-    return [] as const;
-  }
-}
-```
-Ce serait un micro-lot sûr, non urgent, gain net faible mais propre.
+~~**Proposition :** Extraire un loader partagé avec typage explicite~~ — **résolu (2026-07-22)** : `features/admin/feature-governance/queries/load-feature-flags-safe.query.ts` (colocalisé avec `list-admin-feature-flags.query.ts`, pas sous `pilotage/` comme proposé initialement — ce dossier n'existe pas dans `features/admin/`). Périmètre réel : **14 fichiers**, pas 8 — 6 segments (`[flagSlug]`, `localization/*`) ont été ajoutés depuis cet audit et portaient le même pattern. Deux sous-pages `localization/settings` et `localization/translations` du slot `@detail` vérifiées et **exclues** : elles appellent `listAdminLocalizationLocales()`, une query différente, pas de duplication.
 
 ---
 
 ### 3.2 Pages Paiements dupliquées (commerce vs settings)
 
 **Fichiers :**
+
 - `app/admin/(protected)/commerce/payments/page.tsx`
 - `app/admin/(protected)/settings/payments/page.tsx`
 
 **Différences :** Uniquement le titre, le breadcrumb, la description et la présence d'un `fallbackAction`. Le composant `AdminComingSoon` est le même.
 
 **Même constat pour Livraison :**
+
 - `app/admin/(protected)/commerce/shipping/page.tsx`
 - `app/admin/(protected)/settings/shipping/page.tsx`
 
@@ -197,6 +191,7 @@ Ce serait un micro-lot sûr, non urgent, gain net faible mais propre.
 ### 3.3 Hooks mobile dupliqués
 
 **Fichiers :**
+
 - `hooks/use-mobile.ts` → `useIsMobile()` — breakpoint 768px, basé sur MediaQueryList
 - `hooks/use-is-admin-mobile.ts` → `useIsAdminMobile()` — breakpoint 1024px (ADMIN_SIDEBAR_MOBILE_BREAKPOINT), basé sur `window.innerWidth`
 
@@ -211,6 +206,7 @@ Ce serait un micro-lot sûr, non urgent, gain net faible mais propre.
 ### 3.4 Queries Store dupliquées (get-admin-store-settings vs get-admin-store-config)
 
 **Fichiers :**
+
 - `features/admin/settings/queries/get-admin-store-settings.query.ts`
 - `features/admin/settings/queries/get-admin-store-config.query.ts`
 
@@ -236,12 +232,12 @@ Ce serait un micro-lot sûr, non urgent, gain net faible mais propre.
 
 ### 4.1 Vrais fichiers à nettoyer
 
-| Chemin | Type | Action |
-|---|---|---|
-| `backups/*.dump` (5 fichiers, ~3.5 MB) | Dumps DB pré-refactor | Supprimer après validation que le refactor categories est stable |
-| `backups/creatyss-plain.sql` | SQL brut | Idem |
-| `tmp/` (11 fichiers) | Scripts SQL temporaires, logs de diagnostic | Supprimer |
-| `.trash/features-admin-products/` | Code legacy produits du 2026-03-28 | Supprimer — le refactoring products est manifestement validé |
+| Chemin                                 | Type                                        | Action                                                           |
+| -------------------------------------- | ------------------------------------------- | ---------------------------------------------------------------- |
+| `backups/*.dump` (5 fichiers, ~3.5 MB) | Dumps DB pré-refactor                       | Supprimer après validation que le refactor categories est stable |
+| `backups/creatyss-plain.sql`           | SQL brut                                    | Idem                                                             |
+| `tmp/` (11 fichiers)                   | Scripts SQL temporaires, logs de diagnostic | Supprimer                                                        |
+| `.trash/features-admin-products/`      | Code legacy produits du 2026-03-28          | Supprimer — le refactoring products est manifestement validé     |
 
 Ces fichiers encombrent le repo sans valeur et peuvent induire en erreur un futur contributeur. Nettoyage à faire dans un commit dédié.
 
@@ -249,19 +245,19 @@ Ces fichiers encombrent le repo sans valeur et peuvent induire en erreur un futu
 
 ### 4.2 Placeholders légitimes (à conserver)
 
-| Page/module | Composant | Statut |
-|---|---|---|
-| `marketing/discounts` | AdminComingSoon | **PLACEHOLDER_VALID** — feature flag `commerce.discounts` défini |
-| `marketing/newsletter` | AdminComingSoon | **PLACEHOLDER_VALID** — feature flag `engagement.newsletter` défini |
-| `marketing/automations` | AdminComingSoon | **PLACEHOLDER_VALID** — mention du futur modèle Automation |
-| `commerce/payments` | AdminComingSoon | **PLACEHOLDER_VALID** — feature flag `commerce.payments` défini |
-| `commerce/shipping` | AdminComingSoon | **PLACEHOLDER_VALID** — feature flag `commerce.shipping` défini |
-| `settings/payments` | AdminComingSoon | **PLACEHOLDER_VALID** — même raison |
-| `settings/shipping` | AdminComingSoon | **PLACEHOLDER_VALID** — même raison |
-| `catalog/pricing` | Page partielle | **PLACEHOLDER_VALID** — modèle PriceList live en DB, UI création à venir |
-| `settings/team` | Non vérifié | Probablement PLACEHOLDER_VALID |
-| `settings/api-clients` | Non vérifié | Probablement PLACEHOLDER_VALID (modèle ApiClient live) |
-| `insights/analytics` | AnalyticsOverviewSections | Probablement placeholder partiel |
+| Page/module             | Composant                 | Statut                                                                   |
+| ----------------------- | ------------------------- | ------------------------------------------------------------------------ |
+| `marketing/discounts`   | AdminComingSoon           | **PLACEHOLDER_VALID** — feature flag `commerce.discounts` défini         |
+| `marketing/newsletter`  | AdminComingSoon           | **PLACEHOLDER_VALID** — feature flag `engagement.newsletter` défini      |
+| `marketing/automations` | AdminComingSoon           | **PLACEHOLDER_VALID** — mention du futur modèle Automation               |
+| `commerce/payments`     | AdminComingSoon           | **PLACEHOLDER_VALID** — feature flag `commerce.payments` défini          |
+| `commerce/shipping`     | AdminComingSoon           | **PLACEHOLDER_VALID** — feature flag `commerce.shipping` défini          |
+| `settings/payments`     | AdminComingSoon           | **PLACEHOLDER_VALID** — même raison                                      |
+| `settings/shipping`     | AdminComingSoon           | **PLACEHOLDER_VALID** — même raison                                      |
+| `catalog/pricing`       | Page partielle            | **PLACEHOLDER_VALID** — modèle PriceList live en DB, UI création à venir |
+| `settings/team`         | Non vérifié               | Probablement PLACEHOLDER_VALID                                           |
+| `settings/api-clients`  | Non vérifié               | Probablement PLACEHOLDER_VALID (modèle ApiClient live)                   |
+| `insights/analytics`    | AnalyticsOverviewSections | Probablement placeholder partiel                                         |
 
 Ces placeholders sont **intentionnels, documentés et cohérents** avec la roadmap modulaire. Les supprimer serait une erreur.
 
@@ -269,13 +265,13 @@ Ces placeholders sont **intentionnels, documentés et cohérents** avec la roadm
 
 ### 4.3 `features/admin/` sans dossier queries/ à la racine
 
-| Feature | Observation |
-|---|---|
-| `auth` | Normale — pas de query, logique de session/guard |
-| `insights` | Queries dans les composants inline — acceptable pour le volume actuel |
-| `marketing` | Pas de queries — uniquement des pages placeholder |
-| `navigation` | Normale — helpers de navigation, pas de queries DB |
-| `products` | Queries dans `list/queries/`, `editor/queries/` — architecture verticale délibérée |
+| Feature      | Observation                                                                        |
+| ------------ | ---------------------------------------------------------------------------------- |
+| `auth`       | Normale — pas de query, logique de session/guard                                   |
+| `insights`   | Queries dans les composants inline — acceptable pour le volume actuel              |
+| `marketing`  | Pas de queries — uniquement des pages placeholder                                  |
+| `navigation` | Normale — helpers de navigation, pas de queries DB                                 |
+| `products`   | Queries dans `list/queries/`, `editor/queries/` — architecture verticale délibérée |
 
 Aucun de ces cas n'est du code mort.
 
@@ -285,93 +281,93 @@ Aucun de ces cas n'est du code mort.
 
 ### 5.1 Core (à conserver absolument)
 
-| Modèle / Fichier | Catégorie | Justification | Risque suppression |
-|---|---|---|---|
-| `Store`, `StoreDomain` | KEEP_NOW | Racine de toute l'architecture | Catastrophique |
-| `User`, `Role`, `Permission`, `Session` (identity) | KEEP_NOW | Auth admin live | Catastrophique |
-| `ApiClient`, `ApiClientSecret`, `ApiClientPermission` | KEEP_NOW | API live | Très élevé |
-| `Product`, `ProductVariant`, `ProductType`, `ProductOption`, `ProductOptionValue`, `ProductCharacteristic` | KEEP_NOW | Catalogue live | Catastrophique |
-| `Category` | KEEP_NOW | Catalogue live | Catastrophique |
-| `PriceList`, `ProductPrice`, `ProductVariantPrice` (pricing) | KEEP_NOW | Tarification live | Très élevé |
-| `AvailabilityRecord`, `SellabilityDecision` (availability) | KEEP_NOW | Disponibilité live | Élevé |
-| `Cart`, `CartLine` | KEEP_NOW | Panier storefront live | Très élevé |
-| `Checkout` | KEEP_NOW | Checkout live | Très élevé |
-| `Customer` | KEEP_NOW | Commerce live | Très élevé |
-| `Order`, `OrderLine`, `OrderAddress`, `OrderShippingSelection` | KEEP_NOW | Commandes live | Catastrophique |
-| `Page` | KEEP_NOW | Pages CMS live | Élevé |
+| Modèle / Fichier                                                                                           | Catégorie | Justification                  | Risque suppression |
+| ---------------------------------------------------------------------------------------------------------- | --------- | ------------------------------ | ------------------ |
+| `Store`, `StoreDomain`                                                                                     | KEEP_NOW  | Racine de toute l'architecture | Catastrophique     |
+| `User`, `Role`, `Permission`, `Session` (identity)                                                         | KEEP_NOW  | Auth admin live                | Catastrophique     |
+| `ApiClient`, `ApiClientSecret`, `ApiClientPermission`                                                      | KEEP_NOW  | API live                       | Très élevé         |
+| `Product`, `ProductVariant`, `ProductType`, `ProductOption`, `ProductOptionValue`, `ProductCharacteristic` | KEEP_NOW  | Catalogue live                 | Catastrophique     |
+| `Category`                                                                                                 | KEEP_NOW  | Catalogue live                 | Catastrophique     |
+| `PriceList`, `ProductPrice`, `ProductVariantPrice` (pricing)                                               | KEEP_NOW  | Tarification live              | Très élevé         |
+| `AvailabilityRecord`, `SellabilityDecision` (availability)                                                 | KEEP_NOW  | Disponibilité live             | Élevé              |
+| `Cart`, `CartLine`                                                                                         | KEEP_NOW  | Panier storefront live         | Très élevé         |
+| `Checkout`                                                                                                 | KEEP_NOW  | Checkout live                  | Très élevé         |
+| `Customer`                                                                                                 | KEEP_NOW  | Commerce live                  | Très élevé         |
+| `Order`, `OrderLine`, `OrderAddress`, `OrderShippingSelection`                                             | KEEP_NOW  | Commandes live                 | Catastrophique     |
+| `Page`                                                                                                     | KEEP_NOW  | Pages CMS live                 | Élevé              |
 
 ### 5.2 Cross-cutting (à conserver — infrastructure transverse)
 
-| Modèle / Fichier | Catégorie | Justification |
-|---|---|---|
-| `FeatureFlag`, `FeatureFlagOverride` | KEEP_NOW | settings/advanced live, UI branchée |
-| `AuditLog` | KEEP_NOW | Monitoring live, lu en maintenance |
-| `DomainEvent` | KEEP_NOW | Infrastructure events, lu en monitoring |
-| `Job` | KEEP_NOW | File de jobs, lu en maintenance/logs |
-| `MonitoringCheck`, `MonitoringCheckResult` | KEEP_NOW | Monitoring live |
-| `ObservabilitySignal` | KEEP_NOW | Observabilité live |
-| `SeoMetadata` | KEEP_NOW | SEO transverse live sur produits, blog, pages |
+| Modèle / Fichier                           | Catégorie | Justification                                 |
+| ------------------------------------------ | --------- | --------------------------------------------- |
+| `FeatureFlag`, `FeatureFlagOverride`       | KEEP_NOW  | settings/advanced live, UI branchée           |
+| `AuditLog`                                 | KEEP_NOW  | Monitoring live, lu en maintenance            |
+| `DomainEvent`                              | KEEP_NOW  | Infrastructure events, lu en monitoring       |
+| `Job`                                      | KEEP_NOW  | File de jobs, lu en maintenance/logs          |
+| `MonitoringCheck`, `MonitoringCheckResult` | KEEP_NOW  | Monitoring live                               |
+| `ObservabilitySignal`                      | KEEP_NOW  | Observabilité live                            |
+| `SeoMetadata`                              | KEEP_NOW  | SEO transverse live sur produits, blog, pages |
 
 ### 5.3 Optional — commerce (justification par module)
 
-| Modèle / Fichier | Catégorie | Justification |
-|---|---|---|
-| `Payment`, `PaymentAttempt` | KEEP_SOON | Stripe intégré dans `core/payments/stripe/`, modèle nécessaire dès activation |
-| `Shipment`, `ShippingZone`, `ShippingMethod` | KEEP_SOON | Feature flag `commerce.shipping` live dans catalog |
-| `Discount`, `DiscountCode`, `DiscountRule` | PLACEHOLDER_VALID | Feature flag `commerce.discounts` live, UI placeholder |
-| `Fulfillment`, `FulfillmentItem` | PLACEHOLDER_VALID | Nécessaire dès que shipping actif |
-| `ReturnRequest`, `ReturnItem`, `ReturnDecision` | PLACEHOLDER_VALID | Dépend de fulfillment, cohérent niveau L2 |
-| `Document` (ORDER_CONFIRMATION, INVOICE…) | PLACEHOLDER_VALID | Utile dès que orders/payments actifs |
-| `TaxRule`, `TaxRuleScope` | PLACEHOLDER_VALID | Niveau L2, dépend de catalog+pricing |
-| `InventoryItem`, `InventoryReservation`, `InventoryMovement` | PLACEHOLDER_VALID | Feature `catalog.products.inventory` dans catalog |
-| `Subscription` | PLACEHOLDER_VALID | Niveau L3, prépare un module futur clairement identifié |
-| `LoyaltyAccount`, `LoyaltyTransaction` | PLACEHOLDER_VALID | Niveau L3, structurellement propre |
-| `GiftCard`, `GiftCardTransaction` | PLACEHOLDER_VALID | Niveau L3, dépend orders+payments |
-| `GiftRequest` | PLACEHOLDER_VALID | Niveau L3, dépend gift-cards |
-| `Bundle`, `BundleItem` | PLACEHOLDER_VALID | Niveau L3, doc satellite — cohérent |
-| `SalesPolicy`, `SellabilityDecision` | REVIEW | `SellabilityDecision` déjà dans `availability.prisma` (core) — vérifier doublon potentiel |
+| Modèle / Fichier                                             | Catégorie         | Justification                                                                             |
+| ------------------------------------------------------------ | ----------------- | ----------------------------------------------------------------------------------------- |
+| `Payment`, `PaymentAttempt`                                  | KEEP_SOON         | Stripe intégré dans `core/payments/stripe/`, modèle nécessaire dès activation             |
+| `Shipment`, `ShippingZone`, `ShippingMethod`                 | KEEP_SOON         | Feature flag `commerce.shipping` live dans catalog                                        |
+| `Discount`, `DiscountCode`, `DiscountRule`                   | PLACEHOLDER_VALID | Feature flag `commerce.discounts` live, UI placeholder                                    |
+| `Fulfillment`, `FulfillmentItem`                             | PLACEHOLDER_VALID | Nécessaire dès que shipping actif                                                         |
+| `ReturnRequest`, `ReturnItem`, `ReturnDecision`              | PLACEHOLDER_VALID | Dépend de fulfillment, cohérent niveau L2                                                 |
+| `Document` (ORDER_CONFIRMATION, INVOICE…)                    | PLACEHOLDER_VALID | Utile dès que orders/payments actifs                                                      |
+| `TaxRule`, `TaxRuleScope`                                    | PLACEHOLDER_VALID | Niveau L2, dépend de catalog+pricing                                                      |
+| `InventoryItem`, `InventoryReservation`, `InventoryMovement` | PLACEHOLDER_VALID | Feature `catalog.products.inventory` dans catalog                                         |
+| `Subscription`                                               | PLACEHOLDER_VALID | Niveau L3, prépare un module futur clairement identifié                                   |
+| `LoyaltyAccount`, `LoyaltyTransaction`                       | PLACEHOLDER_VALID | Niveau L3, structurellement propre                                                        |
+| `GiftCard`, `GiftCardTransaction`                            | PLACEHOLDER_VALID | Niveau L3, dépend orders+payments                                                         |
+| `GiftRequest`                                                | PLACEHOLDER_VALID | Niveau L3, dépend gift-cards                                                              |
+| `Bundle`, `BundleItem`                                       | PLACEHOLDER_VALID | Niveau L3, doc satellite — cohérent                                                       |
+| `SalesPolicy`, `SellabilityDecision`                         | REVIEW            | `SellabilityDecision` déjà dans `availability.prisma` (core) — vérifier doublon potentiel |
 
 ### 5.4 Optional — engagement (justification par module)
 
-| Modèle / Fichier | Catégorie | Justification |
-|---|---|---|
-| `BlogCategory`, `BlogPost` | KEEP_NOW | Blog live — feature `content.blog` active |
-| `Homepage`, `HomepageSection` | KEEP_NOW | Homepage admin live |
-| `NewsletterSubscriber`, `NewsletterCampaign` | PLACEHOLDER_VALID | Feature flag `engagement.newsletter` dans catalog, UI placeholder |
-| `AnalyticsMetric`, `AnalyticsSnapshot` | PLACEHOLDER_VALID | Feature flag `engagement.analytics` dans catalog |
-| `CrmContact`, `CrmTag`, `CrmContactTag` | PLACEHOLDER_VALID | Niveau L2, prépare gestion client avancée |
-| `SupportTicket`, `SupportMessage` | PLACEHOLDER_VALID | Niveau L2, cohérent avec roadmap artisanale |
-| `PublicEvent`, `EventRegistration`, `EventReservation` | PLACEHOLDER_VALID | Niveau L2, cohérent avec "marchés" (`app/les-marches/`) |
-| `ConversionFlow`, `ConversionFlowProduct` | PLACEHOLDER_VALID | Niveau L1, prépare cart recovery, upsell |
-| `RecommendationRule` | PLACEHOLDER_VALID | Niveau L3, prépare recommendations produits |
-| `BehaviorSegment`, `BehaviorProfile` | PLACEHOLDER_VALID | Niveau L2, prépare segmentation |
-| `AttributionModel`, `AttributionCredit` | PLACEHOLDER_VALID | Niveau L2, analytics avancé |
-| `SocialPublication`, `SocialPublicationAsset` | PLACEHOLDER_VALID | Niveau L2, contenu éditorial social |
+| Modèle / Fichier                                       | Catégorie         | Justification                                                     |
+| ------------------------------------------------------ | ----------------- | ----------------------------------------------------------------- |
+| `BlogCategory`, `BlogPost`                             | KEEP_NOW          | Blog live — feature `content.blog` active                         |
+| `Homepage`, `HomepageSection`                          | KEEP_NOW          | Homepage admin live                                               |
+| `NewsletterSubscriber`, `NewsletterCampaign`           | PLACEHOLDER_VALID | Feature flag `engagement.newsletter` dans catalog, UI placeholder |
+| `AnalyticsMetric`, `AnalyticsSnapshot`                 | PLACEHOLDER_VALID | Feature flag `engagement.analytics` dans catalog                  |
+| `CrmContact`, `CrmTag`, `CrmContactTag`                | PLACEHOLDER_VALID | Niveau L2, prépare gestion client avancée                         |
+| `SupportTicket`, `SupportMessage`                      | PLACEHOLDER_VALID | Niveau L2, cohérent avec roadmap artisanale                       |
+| `PublicEvent`, `EventRegistration`, `EventReservation` | PLACEHOLDER_VALID | Niveau L2, cohérent avec "marchés" (`app/les-marches/`)           |
+| `ConversionFlow`, `ConversionFlowProduct`              | PLACEHOLDER_VALID | Niveau L1, prépare cart recovery, upsell                          |
+| `RecommendationRule`                                   | PLACEHOLDER_VALID | Niveau L3, prépare recommendations produits                       |
+| `BehaviorSegment`, `BehaviorProfile`                   | PLACEHOLDER_VALID | Niveau L2, prépare segmentation                                   |
+| `AttributionModel`, `AttributionCredit`                | PLACEHOLDER_VALID | Niveau L2, analytics avancé                                       |
+| `SocialPublication`, `SocialPublicationAsset`          | PLACEHOLDER_VALID | Niveau L2, contenu éditorial social                               |
 
 ### 5.5 Optional — platform (justification par module)
 
-| Modèle / Fichier | Catégorie | Justification |
-|---|---|---|
-| `EmailMessage`, `EmailRecipient` | KEEP_SOON | Email transactionnel déjà dans `features/email/`, modèle de traçabilité |
-| `Notification`, `NotificationPreference` | PLACEHOLDER_VALID | Niveau L1, prépare notifications in-app |
-| `Integration`, `IntegrationCredential` | PLACEHOLDER_VALID | Niveau L2, prépare connecteurs tiers |
-| `WebhookEndpoint`, `WebhookDelivery` | PLACEHOLDER_VALID | Niveau L2, prépare API sortante |
-| `ImportDefinition`, `ImportRequest` | PLACEHOLDER_VALID | Script import WooCommerce existe déjà (`scripts/import-woocommerce/`) |
-| `ExportDefinition`, `ExportRequest` | PLACEHOLDER_VALID | Niveau L2, prépare exports CSV/comptabilité |
-| `ConsentPurpose`, `ConsentRecord` | PLACEHOLDER_VALID | Niveau L2, RGPD |
-| `LocalizationLocale`, `LocalizedValue` | PLACEHOLDER_VALID | Niveau L2, prépare multi-langues |
-| `SchedulePlan` | PLACEHOLDER_VALID | Niveau L2, prépare publication programmée |
-| `WorkflowDefinition`, `WorkflowInstance`, `WorkflowStep` | PLACEHOLDER_VALID | Niveau L3, automation avancée |
-| `ApprovalRequest`, `ApprovalDecision` | PLACEHOLDER_VALID | Niveau L3 — **voir note taxonomie** |
-| `FraudRiskAssessment`, `FraudRiskReview` | PLACEHOLDER_VALID | Niveau L3 — **voir note taxonomie** |
+| Modèle / Fichier                                         | Catégorie         | Justification                                                           |
+| -------------------------------------------------------- | ----------------- | ----------------------------------------------------------------------- |
+| `EmailMessage`, `EmailRecipient`                         | KEEP_SOON         | Email transactionnel déjà dans `features/email/`, modèle de traçabilité |
+| `Notification`, `NotificationPreference`                 | PLACEHOLDER_VALID | Niveau L1, prépare notifications in-app                                 |
+| `Integration`, `IntegrationCredential`                   | PLACEHOLDER_VALID | Niveau L2, prépare connecteurs tiers                                    |
+| `WebhookEndpoint`, `WebhookDelivery`                     | PLACEHOLDER_VALID | Niveau L2, prépare API sortante                                         |
+| `ImportDefinition`, `ImportRequest`                      | PLACEHOLDER_VALID | Script import WooCommerce existe déjà (`scripts/import-woocommerce/`)   |
+| `ExportDefinition`, `ExportRequest`                      | PLACEHOLDER_VALID | Niveau L2, prépare exports CSV/comptabilité                             |
+| `ConsentPurpose`, `ConsentRecord`                        | PLACEHOLDER_VALID | Niveau L2, RGPD                                                         |
+| `LocalizationLocale`, `LocalizedValue`                   | PLACEHOLDER_VALID | Niveau L2, prépare multi-langues                                        |
+| `SchedulePlan`                                           | PLACEHOLDER_VALID | Niveau L2, prépare publication programmée                               |
+| `WorkflowDefinition`, `WorkflowInstance`, `WorkflowStep` | PLACEHOLDER_VALID | Niveau L3, automation avancée                                           |
+| `ApprovalRequest`, `ApprovalDecision`                    | PLACEHOLDER_VALID | Niveau L3 — **voir note taxonomie**                                     |
+| `FraudRiskAssessment`, `FraudRiskReview`                 | PLACEHOLDER_VALID | Niveau L3 — **voir note taxonomie**                                     |
 
 ### 5.6 Satellites
 
-| Modèle / Fichier | Catégorie | Justification |
-|---|---|---|
-| `MediaAsset`, `MediaReference` | KEEP_NOW | Bibliothèque médias live |
-| `SearchDocument` | KEEP_SOON | Prépare recherche full-text — infrastructure déjà posée |
-| `Channel`, `ChannelPublication` | PLACEHOLDER_VALID | Niveau L1, prépare Google Shopping, Meta Catalog |
+| Modèle / Fichier                | Catégorie         | Justification                                           |
+| ------------------------------- | ----------------- | ------------------------------------------------------- |
+| `MediaAsset`, `MediaReference`  | KEEP_NOW          | Bibliothèque médias live                                |
+| `SearchDocument`                | KEEP_SOON         | Prépare recherche full-text — infrastructure déjà posée |
+| `Channel`, `ChannelPublication` | PLACEHOLDER_VALID | Niveau L1, prépare Google Shopping, Meta Catalog        |
 
 ---
 
@@ -379,22 +375,22 @@ Aucun de ces cas n'est du code mort.
 
 **Problème identifié :** Une quinzaine de domaines sont classés **`cross-cutting`** dans `docs/domains/` mais rangés **`optional`** dans `prisma/`.
 
-| Domaine | docs/ | prisma/ |
-|---|---|---|
-| analytics | cross-cutting | optional/engagement |
-| approval | cross-cutting | optional/platform |
-| attribution | cross-cutting | optional/engagement |
-| behavior | cross-cutting | optional/engagement |
-| consent | cross-cutting | optional/platform |
-| conversion | cross-cutting | optional/engagement |
-| crm | cross-cutting | optional/engagement |
-| fraud-risk | cross-cutting | optional/platform |
-| newsletter | cross-cutting | optional/engagement |
-| social | cross-cutting | optional/engagement |
-| support | cross-cutting | optional/engagement |
-| monitoring | cross-cutting | cross-cutting ✓ |
-| observability | cross-cutting | cross-cutting ✓ |
-| domain-events | cross-cutting | cross-cutting ✓ |
+| Domaine       | docs/         | prisma/             |
+| ------------- | ------------- | ------------------- |
+| analytics     | cross-cutting | optional/engagement |
+| approval      | cross-cutting | optional/platform   |
+| attribution   | cross-cutting | optional/engagement |
+| behavior      | cross-cutting | optional/engagement |
+| consent       | cross-cutting | optional/platform   |
+| conversion    | cross-cutting | optional/engagement |
+| crm           | cross-cutting | optional/engagement |
+| fraud-risk    | cross-cutting | optional/platform   |
+| newsletter    | cross-cutting | optional/engagement |
+| social        | cross-cutting | optional/engagement |
+| support       | cross-cutting | optional/engagement |
+| monitoring    | cross-cutting | cross-cutting ✓     |
+| observability | cross-cutting | cross-cutting ✓     |
+| domain-events | cross-cutting | cross-cutting ✓     |
 
 **Nature de l'écart :** Ces domaines ont une nature duale — ils sont transverses fonctionnellement (affectent plusieurs domaines), mais optionnels architecturalement (peuvent ne pas être activés). La classification `optional` en Prisma reflète leur activabilité, la classification `cross-cutting` en docs reflète leur portée transverse.
 
@@ -463,6 +459,7 @@ Ces absences sont normales. L'enrichissement du FEATURE_CATALOG se fait progress
 ### 7.4 Settings manquants dans la navigation
 
 La navigation admin actuelle expose :
+
 - `settings/general` ✓
 - `settings/store` ✓
 - `settings/advanced` ✓
@@ -472,6 +469,7 @@ La navigation admin actuelle expose :
 - `settings/api-clients` (non audité)
 
 Sections settings prévues non encore créées (à prévoir progressivement) :
+
 - `settings/catalog` → configuration catalog (types de produits, options par défaut)
 - `settings/seo` → SEO global store
 - `settings/blog` → paramètres blog (si `content.blog` configurable)
@@ -488,6 +486,7 @@ Sections settings prévues non encore créées (à prévoir progressivement) :
 Quand un module Prisma approche de son activation, ajouter son entrée dans `feature-catalog.ts` **avant** de créer l'UI. C'est l'ordre correct.
 
 Exemple pour le prochain module activé (loyalty, gift-cards, ou crm) :
+
 ```typescript
 {
   key: "commerce.loyalty",
@@ -508,6 +507,7 @@ La logique de `levels` est déjà en place dans `FEATURE_LEVELS` et supportée p
 ### 8.3 Settings centralisés — ordre conseillé
 
 Créer les sections settings dans cet ordre de priorité :
+
 1. `settings/orders` → petit, lié à un module live
 2. `settings/catalog` → types de produits, utile rapidement
 3. `settings/media` → limites upload (déjà partiellement dans `core/uploads/`)
@@ -520,6 +520,7 @@ Créer les sections settings dans cet ordre de priorité :
 Le pattern `AdminComingSoon` avec `docRef` et `requirements` est excellent. À conserver et à utiliser systématiquement pour tout nouveau module placeholder.
 
 Convention à respecter :
+
 ```typescript
 <AdminComingSoon
   title="Nom du module"
@@ -537,6 +538,7 @@ Convention à respecter :
 ### Lot 1 — Nettoyage fichiers temporaires (priorité haute, risque nul)
 
 **Périmètre :**
+
 - Supprimer `backups/*.dump` et `backups/creatyss-plain.sql`
 - Supprimer `tmp/` (scripts SQL temporaires, logs)
 - Supprimer `.trash/features-admin-products/`
@@ -547,21 +549,16 @@ Convention à respecter :
 
 ---
 
-### Lot 2 — Extraction loader feature flags (priorité basse, gain modéré)
+### Lot 2 — Extraction loader feature flags — **livré (2026-07-22)**
 
-**Périmètre :**
-- Créer `features/admin/pilotage/queries/load-feature-flags-safe.ts`
-- Remplacer les 8 blocs try/catch identiques dans `settings/advanced/`
-
-**Risque :** Très faible — refactor pur, comportement identique.
-**Impact :** Meilleure maintenabilité du pattern de sécurité DB.
-**Ordre :** Lot autonome, à faire avant l'ajout de nouveaux segments settings/advanced.
+`features/admin/feature-governance/queries/load-feature-flags-safe.query.ts` — 14 blocs try/catch remplacés (pas 8, cf. §3.1 pour le détail des segments ajoutés depuis l'audit). `typecheck`/`lint` verts, mergé dans `main`.
 
 ---
 
 ### Lot 3 — Clarification taxonomie doc (priorité moyenne, risque nul)
 
 **Périmètre :**
+
 - `docs/architecture/10-fondations/11-modele-de-classification.md`
 - Clarifier la distinction `optional` (activabilité) vs `cross-cutting` (portée fonctionnelle)
 
@@ -576,6 +573,7 @@ Convention à respecter :
 **Périmètre :** À chaque module qui approche de l'activation, ajouter son entrée dans `feature-catalog.ts` avant de créer l'UI.
 
 **Prochains candidats naturels :**
+
 1. `commerce.loyalty` (modèle propre, dépendances claires)
 2. `platform.notifications` (notification in-app, dépend email)
 3. `engagement.crm` (si CRM activé)
@@ -589,6 +587,7 @@ Convention à respecter :
 **Périmètre :** Créer progressivement les sections settings manquantes comme placeholders propres avec `AdminComingSoon`.
 
 **Ordre conseillé :**
+
 1. `settings/orders` (faible dépendance)
 2. `settings/catalog` (utile rapidement)
 3. `settings/media` (simple)
@@ -613,17 +612,17 @@ Convention à respecter :
 
 ## 11. Vérifications effectuées vs non effectuées
 
-| Vérification | Statut |
-|---|---|
-| Lecture AGENTS.md | ✓ Effectuée |
-| Cartographie arborescence complète | ✓ Effectuée |
-| Lecture schema.prisma + tous les fichiers .prisma | ✓ Effectuée |
-| Lecture feature-catalog.ts et types | ✓ Effectuée |
-| Lecture settings/advanced (routes, layout, pages) | ✓ Effectuée |
-| Analyse duplications by diff et grep | ✓ Effectuée |
-| Inventaire placeholders AdminComingSoon | ✓ Effectuée |
-| Inventaire fichiers temporaires (backups, tmp, trash) | ✓ Effectuée |
-| Analyse dérive taxonomie doc/Prisma | ✓ Effectuée |
-| pnpm typecheck | ✗ Non effectuée (outil absent) |
-| pnpm lint | ✗ Non effectuée |
-| Tests e2e | ✗ Non effectués |
+| Vérification                                          | Statut                         |
+| ----------------------------------------------------- | ------------------------------ |
+| Lecture AGENTS.md                                     | ✓ Effectuée                    |
+| Cartographie arborescence complète                    | ✓ Effectuée                    |
+| Lecture schema.prisma + tous les fichiers .prisma     | ✓ Effectuée                    |
+| Lecture feature-catalog.ts et types                   | ✓ Effectuée                    |
+| Lecture settings/advanced (routes, layout, pages)     | ✓ Effectuée                    |
+| Analyse duplications by diff et grep                  | ✓ Effectuée                    |
+| Inventaire placeholders AdminComingSoon               | ✓ Effectuée                    |
+| Inventaire fichiers temporaires (backups, tmp, trash) | ✓ Effectuée                    |
+| Analyse dérive taxonomie doc/Prisma                   | ✓ Effectuée                    |
+| pnpm typecheck                                        | ✗ Non effectuée (outil absent) |
+| pnpm lint                                             | ✗ Non effectuée                |
+| Tests e2e                                             | ✗ Non effectués                |
