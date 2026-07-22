@@ -62,7 +62,7 @@ Tout ce qui suit est **Observé** sauf mention contraire (Documenté / Déduit /
 ## Insights
 
 - Shell conforme. Domaine mono-page sans overview ni settings — acceptable en l'état (Déduit).
-- **Écart** : `notFound()` si flag inactif (`analytics/page.tsx` l.14), alors que 3 niveaux sont interrogés ensuite (l.25-27).
+- ~~**Écart** : `notFound()` si flag inactif~~ — **résolu (observé 2026-07-22)** : `app/admin/(protected)/insights/analytics/page.tsx` affiche `AdminFeatureDisabledState` si le flag est inactif, ne fait plus `notFound()`.
 
 ## Maintenance
 
@@ -75,13 +75,13 @@ Tout ce qui suit est **Observé** sauf mention contraire (Documenté / Déduit /
 - Shell conforme sur toutes les pages feuilles ; split advanced porte ses breadcrumbs via layout.
 - **Écart de cohérence interne** : aucune nav secondaire ; circulation uniquement via le hub racine (`buildAdminSettingsHubItems`). Déduit : peut-être voulu (hub = sidebar de facto) — à trancher avant tout lot.
 - Frontière hubs de domaine : conforme et propre (redirects).
-- **Écart** : `settings/{ai,integrations,search,channels,webhooks}` font `notFound()` si flag inactif — le hub masque des capacités au lieu d'afficher un statut. Note (Documenté) : ces features sont volontairement atomiques ; l'écart porte sur la visibilité UI, pas la gradation Prisma.
+- ~~**Écart** : `settings/{ai,integrations,search,channels,webhooks}` font `notFound()` si flag inactif~~ — **résolu (observé 2026-07-22)** : les 5 pages affichent désormais `AdminFeatureDisabledState`, plus de `notFound()`.
 - Pilotage : vit sous `settings/advanced` (feature flags) — conforme, déjà la surface de gouvernance.
 
 ## Écarts structurels hors grille (signalés, non audités à fond)
 
-- Mock statistique en dur dans `content/seo/page.tsx`.
-- Mapping d'erreurs métier dupliqué dans les pages (`getTaxErrorMessage`, `getShippingZoneErrorMessage`) — candidat extraction features.
+- ~~Mock statistique en dur dans `content/seo/page.tsx`~~ — **résolu (observé 2026-07-22)** : les checks `titles`/`blog` sont marqués `mock: false` et lisent `countProductsMissingSeo`/`listAdminBlogPosts` en direct.
+- Mapping d'erreurs métier dupliqué dans les pages (`getTaxErrorMessage`, `getShippingZoneErrorMessage`) — candidat extraction features. **Non vérifié le 2026-07-22** (hors scope de cette relecture ponctuelle).
 
 ## Inconnu
 
