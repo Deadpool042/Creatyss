@@ -400,7 +400,7 @@ Aucun de ces cas n'est du code mort.
 
 **Ce n'est pas un bug.** Mais c'est une ambiguïté documentaire.
 
-**Recommandation :** Dans une prochaine session `docs-keeper`, clarifier dans `docs/architecture/10-fondations/11-modele-de-classification.md` qu'un domaine peut être `optional` du point de vue de l'activation ET `cross-cutting` du point de vue de la portée fonctionnelle. Ces deux axes sont orthogonaux.
+~~**Recommandation :** Dans une prochaine session `docs-keeper`, clarifier dans `docs/architecture/10-fondations/11-modele-de-classification.md` qu'un domaine peut être `optional` du point de vue de l'activation ET `cross-cutting` du point de vue de la portée fonctionnelle. Ces deux axes sont orthogonaux.~~ — **résolu (observé 2026-07-22)** : section "Axes orthogonaux : activabilité et portée" présente dans `docs/architecture/10-fondations/11-modele-de-classification.md` (lignes 174-195), avec les mêmes exemples (`newsletter`, `analytics`, `crm`, `consent`, `support`). Date d'ajout non tracée dans cette session — déjà fait avant ce lot.
 
 ---
 
@@ -539,17 +539,9 @@ Convention à respecter :
 
 ## 9. Plan de refactor par micro-lots
 
-### Lot 1 — Nettoyage fichiers temporaires (priorité haute, risque nul)
+### Lot 1 — Nettoyage fichiers temporaires — **sans objet** (vérifié 2026-07-22)
 
-**Périmètre :**
-
-- Supprimer `backups/*.dump` et `backups/creatyss-plain.sql`
-- Supprimer `tmp/` (scripts SQL temporaires, logs)
-- Supprimer `.trash/features-admin-products/`
-
-**Risque :** Nul — fichiers hors build, hors imports.
-**Impact :** Repo plus propre, moins de confusion pour les agents.
-**Ordre :** Immédiat, commit isolé `chore: clean workspace temp files`.
+Aucun des fichiers listés n'est suivi par git (`git ls-files backups tmp .trash` ne retourne rien) — ce sont des artefacts de working directory local, hors du périmètre d'un commit. État actuel constaté : `backups/` et `.trash/` vides, `tmp/` ne contient plus que 2 fichiers `.md` sans rapport avec les dumps/scripts SQL décrits (probablement des artefacts d'un outil MCP local). Rien à committer — ce nettoyage relève de l'hygiène de poste de travail, pas du repo.
 
 ---
 
@@ -559,16 +551,9 @@ Convention à respecter :
 
 ---
 
-### Lot 3 — Clarification taxonomie doc (priorité moyenne, risque nul)
+### Lot 3 — Clarification taxonomie doc — **livré** (constaté le 2026-07-22)
 
-**Périmètre :**
-
-- `docs/architecture/10-fondations/11-modele-de-classification.md`
-- Clarifier la distinction `optional` (activabilité) vs `cross-cutting` (portée fonctionnelle)
-
-**Agent recommandé :** `docs-keeper`
-**Risque :** Nul — documentation seulement.
-**Impact :** Supprime l'ambiguïté pour les agents IA et les futurs contributeurs.
+Cf. §6 ci-dessus — section déjà présente dans `docs/architecture/10-fondations/11-modele-de-classification.md`.
 
 ---
 
