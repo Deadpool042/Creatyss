@@ -186,6 +186,8 @@ try {
 
 **Verdict :** À conserver. Ne pas fusionner.
 
+**Mise à jour (2026-07-22) :** la prédiction s'est réalisée, sans action de correction nécessaire. `commerce/payments/page.tsx` et `commerce/shipping/page.tsx` sont désormais des vues opérationnelles réelles (listes, capture manuelle, filtres) ; `commerce/payments/settings/page.tsx` et `commerce/shipping/settings/page.tsx` sont des pages de configuration réelles (formulaires, queries dédiées) ; `settings/payments/page.tsx` et `settings/shipping/page.tsx` ne sont plus des placeholders `AdminComingSoon` — ce sont désormais de simples `redirect()` vers la page `commerce/.../settings` correspondante, absents du menu de navigation admin (`admin-navigation.data.ts`). Plus aucune duplication de code, de query ou de composant. Aucun refactor à faire — point clos.
+
 ---
 
 ### 3.3 Hooks mobile dupliqués
@@ -200,6 +202,8 @@ try {
 **Risque :** Nul si les usages ne sont pas confondus.
 
 **Proposition :** Documenter la distinction dans les fichiers (commentaire JSDoc). Vérifier que `use-mobile.ts` est encore utilisé — si ce n'est pas le cas, le supprimer.
+
+**Mise à jour (2026-07-22) :** `hooks/use-is-admin-mobile.ts` n'existe plus dans le repo — supprimé entre-temps, sans qu'on sache si c'est lié à cette proposition. `use-mobile.ts` (`useIsMobile()`) est toujours utilisé (`components/ui/sidebar.tsx`). La pseudo-duplication signalée n'existe donc plus : un seul hook mobile reste, pas de risque de confusion résiduel.
 
 ---
 
