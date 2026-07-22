@@ -363,6 +363,17 @@ export const FEATURE_CATALOG = [
       basic: "Déclencheurs commande passée / inscription newsletter, action email uniquement.",
     },
   },
+  {
+    key: "engagement.public-events",
+    label: "Marchés",
+    description:
+      "Gestion des marchés (titre, dates, lieu) affichés en liste chronologique sur la page publique dédiée.",
+    family: "optional",
+    module: "engagement",
+    defaultState: "inactive",
+    mutability: "toggleable",
+    scopes: ["store"],
+  },
   // Catalog products — core capabilities
   {
     key: "catalog.products.pricing",

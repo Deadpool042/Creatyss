@@ -334,6 +334,22 @@ export const adminNavigationItems: ReadonlyArray<AdminNavigationItem> = [
     },
   },
   {
+    key: "public-events",
+    label: "Marchés",
+    href: "/admin/marketing/marches",
+    iconKey: "tag",
+    group: "marketing",
+    order: 25,
+    visibility: {
+      sidebar: true,
+      mobileMore: true,
+    },
+    access: {
+      featureFlagsAll: [adminNavigationFeatureFlags.engagement.publicEvents],
+      capabilitiesAll: [adminNavigationCapabilities.marketing.publicEventsRead],
+    },
+  },
+  {
     key: "automations",
     label: "Automations",
     href: "/admin/marketing/automations",

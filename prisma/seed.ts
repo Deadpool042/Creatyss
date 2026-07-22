@@ -22,6 +22,7 @@ import { seedLocalizationFeatureFlag } from "./seed/localization-feature-flag.se
 import { seedLocalizationLocales } from "./seed/localization-locales.seed";
 import { seedNewsletterFeatureFlag } from "./seed/newsletter-feature-flag.seed";
 import { seedNotificationsFeatureFlag } from "./seed/notifications-feature-flag.seed";
+import { seedPublicEventsFeatureFlag } from "./seed/public-events-feature-flag.seed";
 import { seedReturnsFeatureFlag } from "./seed/returns-feature-flag.seed";
 import { seedSearchFeatureFlag } from "./seed/search-feature-flag.seed";
 import { seedSocialFeatureFlag } from "./seed/social-feature-flag.seed";
@@ -57,6 +58,7 @@ async function main(): Promise<void> {
   await seedReturnsFeatureFlag(prisma);
   await seedNewsletterFeatureFlag(prisma);
   await seedNotificationsFeatureFlag(prisma);
+  await seedPublicEventsFeatureFlag(prisma);
   await seedSearchFeatureFlag(prisma);
   await seedSocialFeatureFlag(prisma);
   await seedTaxationFeatureFlag(prisma);

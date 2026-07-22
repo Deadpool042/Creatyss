@@ -25,6 +25,7 @@ const permissionCodes = [
   adminNavigationCapabilities.marketing.newsletterRead,
   adminNavigationCapabilities.marketing.discountsRead,
   adminNavigationCapabilities.marketing.automationsRead,
+  adminNavigationCapabilities.marketing.publicEventsRead,
 
   adminNavigationCapabilities.insights.analyticsRead,
 
