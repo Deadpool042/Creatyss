@@ -19,14 +19,14 @@ Permettre à l'admin de créer et d'envoyer des campagnes newsletter réelles à
 
 ## Périmètre
 
-Proposition — non observé comme implémenté à ce jour :
+Livré :
 
 - `features/admin/marketing/newsletter/` — extension de la vue admin existante :
   - Création d'une campagne (`NewsletterCampaign`) : titre, sujet, contenu HTML/texte, liste cible
   - Prévisualisation de la campagne avant envoi
   - Envoi en lot : création des `NewsletterCampaignRecipient` et déclenchement de l'envoi via le provider email
   - Suivi de statut par campagne : envoyés, échecs, en attente
-- Intégration avec le provider email transactionnel déjà en place (Resend, Postmark ou SMTP)
+- Intégration avec `features/email/providers/` : Brevo en production, Mailpit en développement (décision 2026-06-25)
 
 ## Hors périmètre
 
@@ -40,7 +40,7 @@ Proposition — non observé comme implémenté à ce jour :
 
 - Provider email transactionnel configuré avec une réputation suffisante (SPF/DKIM/DMARC sur le domaine d'envoi) — prérequis externe
 - `engagement.newsletter` L3 avec `NewsletterSubscriber` actif (observé comme base)
-- Décision sur le provider : utiliser le provider transactionnel existant ou un service dédié newsletter (Mailchimp, Brevo, etc.) — à trancher en `architect-review`
+- Décision sur le provider — **tranchée (2026-06-25)** : Brevo en production, Mailpit en développement (`features/email/providers/brevo-email-provider.ts`, `mailpit-email-provider.ts`)
 
 ## Invariants
 
