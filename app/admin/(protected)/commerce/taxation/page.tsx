@@ -8,6 +8,7 @@ import { CommerceRouteNav } from "@/features/admin/commerce/components/commerce-
 import { isTaxationFeatureActive } from "@/features/admin/commerce/taxation/queries/is-taxation-feature-active.query";
 import { listAdminTaxRules } from "@/features/admin/commerce/taxation/queries/list-admin-tax-rules.query";
 import { AdminTaxRulesPanel } from "@/features/admin/commerce/taxation/components/admin-tax-rules-panel";
+import { resolveAdminErrorMessage } from "@/features/admin/commerce/shared/resolve-admin-error-message";
 
 export const dynamic = "force-dynamic";
 
@@ -15,17 +16,14 @@ type AdminCommerceTaxationPageProps = Readonly<{
   searchParams: Promise<{ tax_created?: string; tax_error?: string }>;
 }>;
 
+const TAX_ERROR_MESSAGES: Readonly<Record<string, string>> = {
+  duplicate_code: "Une règle avec ce code existe déjà.",
+  invalid_input: "Formulaire invalide — vérifiez les champs.",
+  missing_store: "Aucune boutique trouvée.",
+};
+
 function getTaxErrorMessage(code: string): string {
-  switch (code) {
-    case "duplicate_code":
-      return "Une règle avec ce code existe déjà.";
-    case "invalid_input":
-      return "Formulaire invalide — vérifiez les champs.";
-    case "missing_store":
-      return "Aucune boutique trouvée.";
-    default:
-      return "La création de la règle a échoué.";
-  }
+  return resolveAdminErrorMessage(code, TAX_ERROR_MESSAGES, "La création de la règle a échoué.");
 }
 
 export default async function AdminCommerceTaxationPage({
