@@ -52,6 +52,36 @@ export const ragConfig: RagConfig = {
       corpus: "docs",
     },
     {
+      path: "docs/lots",
+      priority: "high",
+      description: "Cadrages et bilans d'exécution des lots livrés",
+      corpus: "docs",
+    },
+    {
+      path: "docs/exploitation",
+      priority: "high",
+      description: "Documentation d'exploitation et de recette",
+      corpus: "docs",
+    },
+    {
+      path: "docs/audit",
+      priority: "medium",
+      description: "Audits ponctuels de cohérence documentaire",
+      corpus: "docs",
+    },
+    {
+      path: "docs/project-state",
+      priority: "medium",
+      description: "Photographies d'état du projet",
+      corpus: "docs",
+    },
+    {
+      path: "docs/testing",
+      priority: "medium",
+      description: "Stratégie et conventions de tests",
+      corpus: "docs",
+    },
+    {
       path: "docs/ai",
       priority: "high",
       description: "Documentation IA locale",

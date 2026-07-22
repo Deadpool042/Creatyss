@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Ne s'exécute que si des fichiers docs/** sont dans le commit — évite de
+# ralentir les commits qui ne touchent pas la documentation.
+if git diff --cached --name-only --diff-filter=ACMR | grep -q '^docs/'; then
+  pnpm run rag:check-sources
+fi

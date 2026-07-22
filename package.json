@@ -50,7 +50,8 @@
     "catalog:backfill-price-snapshots": "tsx scripts/backfill-product-catalog-price-snapshots.ts",
     "localization:enable-multilingual": "tsx scripts/enable-localization-multilingual.ts --apply",
     "localization:revert-multilingual": "tsx scripts/enable-localization-multilingual.ts --revert",
-    "automations:run-jobs": "tsx scripts/run-automation-jobs.ts"
+    "automations:run-jobs": "tsx scripts/run-automation-jobs.ts",
+    "rag:check-sources": "tsx scripts/rag/check-sources-coverage.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
