@@ -9,6 +9,7 @@ import {
   buildPublishedProductWhereInput,
   matchesStorefrontAvailabilityFilter,
 } from "@/features/storefront/catalog/queries/published-products-filters";
+import { resolveLocalizedProductCopy } from "@/features/storefront/catalog/queries/resolve-localized-product-copy";
 import type { CatalogProductListItem } from "@/features/storefront/catalog/types";
 
 export async function listPublishedProducts(input: {
@@ -19,7 +20,7 @@ export async function listPublishedProducts(input: {
   maxPriceCents: number | null;
   sort: "featured" | "newest" | "name" | "price-asc" | "price-desc";
 }): Promise<CatalogProductListItem[]> {
-  const products = await db.product.findMany({
+  const rawProducts = await db.product.findMany({
     where: buildPublishedProductWhereInput({
       searchQuery: input.searchQuery,
       categorySlugs: input.categorySlugs,
@@ -29,6 +30,8 @@ export async function listPublishedProducts(input: {
     orderBy: getPublishedProductsOrderBy(input.sort),
     select: publishedProductListingSelect,
   });
+
+  const products = await resolveLocalizedProductCopy(rawProducts);
 
   const mapped: CatalogProductListItem[] = [];
 

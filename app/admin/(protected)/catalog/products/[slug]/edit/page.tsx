@@ -2,7 +2,10 @@ import Link from "next/link";
 
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import { AdminPageShell } from "@/components/admin/layout/admin-page-shell";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { Button } from "@/components/ui/button";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 import {
   deleteProductAction,
   updateProductGeneralAction,
@@ -17,6 +20,7 @@ import {
   ProductArchivedBanner,
 } from "@/features/admin/products/components/editor/product-archived-actions";
 import { ProductGeneralTab } from "@/features/admin/products/components/editor/product-general-tab";
+import { ProductTranslationsForm } from "@/features/admin/products/components/editor/product-translations-form";
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
 import {
@@ -28,6 +32,7 @@ import {
   PRODUCT_EDITOR_NAV_COPY,
   PRODUCT_EDITOR_PAGE_COPY,
 } from "@/features/admin/products/config";
+import { listProductTranslations } from "@/features/admin/products/queries/list-product-translations.query";
 import {
   ADMIN_PRODUCTS_CREATE_PATH,
   buildAdminProductBreadcrumbs,
@@ -182,9 +187,14 @@ export default async function ProductDetailEditPage({
     return <ProductArchivedState product={editor.product} />;
   }
 
-  const productTypeOptions = await listAdminProductTypeOptions({
-    storeId: editor.product.storeId,
-  });
+  const [productTypeOptions, multilingualEnabled] = await Promise.all([
+    listAdminProductTypeOptions({ storeId: editor.product.storeId }),
+    meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual"),
+  ]);
+
+  const translationsState = multilingualEnabled
+    ? await listProductTranslations({ productId: editor.product.id })
+    : null;
 
   return (
     <AdminPageShell
@@ -215,6 +225,21 @@ export default async function ProductDetailEditPage({
         product={editor}
         productTypeOptions={productTypeOptions}
       />
+
+      {translationsState !== null && translationsState.hasTargetLocale && (
+        <div className="mx-auto w-full max-w-7xl px-4 pb-6 md:px-6 xl:px-0">
+          <AdminFormSection
+            eyebrow="Localisation"
+            title={`Traductions (${translationsState.targetLocaleName})`}
+          >
+            <ProductTranslationsForm
+              productId={editor.product.id}
+              targetLocaleName={translationsState.targetLocaleName}
+              fields={translationsState.fields}
+            />
+          </AdminFormSection>
+        </div>
+      )}
     </AdminPageShell>
   );
 }

@@ -13,6 +13,7 @@ export type CatalogListingSort = "featured" | "newest" | "name" | "price-asc" | 
 
 export const publishedProductListingSelect = {
   id: true,
+  storeId: true,
   slug: true,
   name: true,
   shortDescription: true,

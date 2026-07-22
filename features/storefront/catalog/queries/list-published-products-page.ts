@@ -13,6 +13,7 @@ import {
   buildPublishedProductWhereInput,
   matchesStorefrontAvailabilityFilter,
 } from "@/features/storefront/catalog/queries/published-products-filters";
+import { resolveLocalizedProductCopy } from "@/features/storefront/catalog/queries/resolve-localized-product-copy";
 import type { CatalogProductListPage } from "@/features/storefront/catalog/types";
 
 type ListPublishedProductsPageInput = {
@@ -86,9 +87,10 @@ export async function listPublishedProductsPage(
 
     const hasMore = products.length > normalizedLimit;
     const sliced = hasMore ? products.slice(0, normalizedLimit) : products;
+    const localizedSliced = await resolveLocalizedProductCopy(sliced);
 
     return {
-      items: sliced.map(mapPublishedProductListingRecord),
+      items: localizedSliced.map(mapPublishedProductListingRecord),
       hasMore,
     };
   }
@@ -122,7 +124,11 @@ export async function listPublishedProductsPage(
       break;
     }
 
-    for (const product of batch) {
+    // Le curseur est encodé depuis `batch` (colonnes canoniques) : il doit
+    // rester aligné avec l'ordre SQL, indépendant de la localisation.
+    const localizedBatch = await resolveLocalizedProductCopy(batch);
+
+    for (const product of localizedBatch) {
       if (seenIds.has(product.id)) continue;
       seenIds.add(product.id);
 

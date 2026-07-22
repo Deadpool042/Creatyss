@@ -2,7 +2,7 @@
 
 ## Statut
 
-En cours — pilotes `product-page`, `boutique-page`, pages de contenu et blog observés, généralisation métier produit restante
+Champs métier produit (`name`, `shortDescription`, `description`) livrés côté code le 2026-07-22 — sujet dynamique `product` branché sur `LocalizedValue`, en miroir du pattern blog. Vérification manuelle navigateur (parcours visiteur multi-locale réel) **non exécutée** dans cette session — cf. section « Vérifications » ci-dessous.
 
 ## Objectif
 
@@ -10,13 +10,13 @@ Poursuivre la généralisation de la convention `LocalizedValue` au-delà des pi
 
 ## Périmètre
 
-État observé au 2026-07-05 :
+État observé au 2026-07-22 :
 
 - `entities/languages/resolve-locale-content.ts` — convention existante observée et déjà réutilisée
 - Pilotes déjà livrés :
   - `homepage`
-  - `features/storefront/catalog/product-page/**` + admin translations associées
-  - `features/storefront/catalog/boutique-page/**` + admin translations associées
+  - `features/storefront/catalog/product-page/**` + admin translations associées (copie statique de la fiche produit, dictionnaire `PRODUCT_PAGE_COPY_FIELDS` — distinct des champs métier `Product`)
+  - `features/storefront/catalog/boutique-page/**` + admin translations associées (idem, dictionnaire de page)
 - Pilote pages de contenu livré côté code :
   - `contact` : lecture storefront localisée + édition admin
   - `a-propos` : lecture storefront localisée + édition admin
@@ -24,13 +24,16 @@ Poursuivre la généralisation de la convention `LocalizedValue` au-delà des pi
 - Pilote blog livré côté code :
   - admin `/admin/content/blog/[id]` : édition des traductions `title` / `excerpt` / `content`
   - storefront `app/(public)/blog/**` : listing + détail localisés avec fallback
-- Cibles restantes non observées :
-  - contenus métier produit au sens large (`name`, `description`, `shortDescription`)
+- Champs métier produit livrés côté code (2026-07-22) :
+  - sujet dynamique `product` (`entities/localization/product-copy-fields.ts`) : `name`, `shortDescription`, `description`
+  - admin `/admin/catalog/products/[slug]/edit` : section « Traductions » (sœur du formulaire général, pas de nouvel onglet, pas de formulaire imbriqué)
+  - storefront : fiche produit (`getPublishedProductBySlug`, alimente aussi `generateMetadata` et le JSON-LD via le même objet), listing boutique (`listPublishedProducts`, `listPublishedProductsPage`), favoris (`findFavoriteProductsByIds`) — tous via le résolveur en lot `resolveLocalizedProductCopy`
+  - hors périmètre de ce lot : cartes de produits associés (`relatedFrom` sur la fiche produit) — restent en valeur canonique, non branchées sur `LocalizedValue`
 
 Poursuite proposée :
 
 - réutiliser le pattern existant sans le redessiner
-- poursuivre sur les vrais champs produit avec un cadrage de migration dédié
+- étendre si besoin aux produits associés (`RelatedProduct`) dans un lot dédié
 
 ## Hors périmètre
 
@@ -59,18 +62,18 @@ Poursuite proposée :
 
 ## Vérifications
 
-- `pnpm run typecheck`
-- `pnpm run lint`
-- `pnpm run test` — vérifier que les tests existants sur les produits et le blog restent verts
-- Test manuel : blog et fiche produit affichés dans chaque locale gérée, fallback vérifié si traduction absente
+- `pnpm run typecheck` — exécuté le 2026-07-22, vert
+- `pnpm run lint` — exécuté le 2026-07-22, vert
+- `pnpm run test` (ciblé : `tests/unit/features/storefront/catalog`, `tests/unit/features/admin/products`, `tests/unit/features/admin/blog`, `tests/unit/entities/localization`) — exécuté le 2026-07-22, 105 tests verts
+- Test manuel : blog et fiche produit affichés dans chaque locale gérée, fallback vérifié si traduction absente — **non exécuté** dans cette session (pas d'accès à un environnement navigateur/DB local dans ce lot ; couverture assurée par les tests unitaires du résolveur et de l'action d'écriture)
 
 ## Critères de fin
 
-- Une nouvelle cible de contenu au-delà des pilotes actuels est branchée sur `LocalizedValue`, ou le lot est explicitement clos après le pilote blog
-- Le storefront ou la surface concernée affiche la traduction correcte selon la locale active, avec fallback
-- Les formulaires admin permettent la saisie des traductions pour cette cible
-- Les données existantes sont préservées après migration si des champs métier sont touchés
-- `typecheck` et `lint` passent sans erreur
+- Une nouvelle cible de contenu au-delà des pilotes actuels est branchée sur `LocalizedValue` — **fait** : `Product.name` / `shortDescription` / `description`
+- Le storefront ou la surface concernée affiche la traduction correcte selon la locale active, avec fallback — **couvert par tests unitaires** (résolveur `resolveLocalizedProductCopy`) ; non revérifié manuellement en navigateur
+- Les formulaires admin permettent la saisie des traductions pour cette cible — **fait** (`/admin/catalog/products/[slug]/edit`)
+- Les données existantes sont préservées après migration si des champs métier sont touchés — **sans objet** : aucune migration Prisma, les colonnes `Product` canoniques ne sont pas modifiées
+- `typecheck` et `lint` passent sans erreur — **fait**
 
 ## Agent recommandé
 

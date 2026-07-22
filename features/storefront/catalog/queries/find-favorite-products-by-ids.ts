@@ -3,6 +3,7 @@ import {
   publishedProductListingSelect,
   mapPublishedProductListingRecord,
 } from "@/features/storefront/catalog/queries/published-products-listing";
+import { resolveLocalizedProductCopy } from "@/features/storefront/catalog/queries/resolve-localized-product-copy";
 import type { CatalogProductListItem } from "@/features/storefront/catalog/types";
 
 export async function findFavoriteProductsByIds(
@@ -14,7 +15,7 @@ export async function findFavoriteProductsByIds(
 
   const ids = productIds.slice(0, 50);
 
-  const products = await db.product.findMany({
+  const rawProducts = await db.product.findMany({
     where: {
       id: { in: [...ids] },
       status: "ACTIVE",
@@ -22,6 +23,8 @@ export async function findFavoriteProductsByIds(
     },
     select: publishedProductListingSelect,
   });
+
+  const products = await resolveLocalizedProductCopy(rawProducts);
 
   const mapped = new Map<string, CatalogProductListItem>();
   for (const product of products) {
