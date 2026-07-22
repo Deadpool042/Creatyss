@@ -4,6 +4,14 @@ import { MapPinIcon } from "lucide-react";
 
 import { clientEnv } from "@/core/config/env";
 import { getLocalizedLesMarchesCopy } from "@/features/storefront/content/queries/get-localized-les-marches-copy.query";
+import { listPublicMarches } from "@/features/storefront/content/queries/list-public-marches.query";
+
+const marcheDateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function LesMarchesPage() {
-  const copy = await getLocalizedLesMarchesCopy();
+  const [copy, marches] = await Promise.all([getLocalizedLesMarchesCopy(), listPublicMarches()]);
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-12 md:px-6 md:py-20 xl:px-0">
@@ -44,13 +52,46 @@ export default async function LesMarchesPage() {
         </p>
       </header>
 
-      {/* Placeholder calendrier */}
-      <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-8 text-center">
-        <MapPinIcon className="mx-auto mb-4 size-8 text-muted-foreground/30" />
-        <p className="font-serif text-xl font-light text-foreground">{copy.placeholder.title}</p>
-        <p className="mt-2 text-sm text-muted-foreground">{copy.placeholder.body}</p>
-        <p className="mt-4 text-xs text-muted-foreground/60">{copy.placeholder.note}</p>
-      </div>
+      {marches.length > 0 ? (
+        <ul className="space-y-4">
+          {marches.map((marche) => (
+            <li
+              key={marche.id}
+              className="rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-6"
+            >
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground/70">
+                {marcheDateFormatter.format(marche.startsAt)}
+              </p>
+              <p className="mt-1 font-serif text-xl font-light text-foreground">{marche.title}</p>
+              {marche.locationName !== null ? (
+                <div className="mt-2 flex items-start gap-2 text-sm text-muted-foreground">
+                  <MapPinIcon className="mt-0.5 size-4 shrink-0 text-muted-foreground/60" />
+                  <span>
+                    {marche.locationName}
+                    {marche.locationAddress !== null ? ` — ${marche.locationAddress}` : null}
+                  </span>
+                </div>
+              ) : null}
+              {marche.shortDescription !== null ? (
+                <p className="mt-2 text-sm text-muted-foreground">{marche.shortDescription}</p>
+              ) : null}
+              {marche.hasSpecialConditions && marche.specialConditionsNote !== null ? (
+                <p className="mt-3 text-xs italic text-muted-foreground/60">
+                  {marche.specialConditionsNote}
+                </p>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        /* Placeholder calendrier */
+        <div className="rounded-2xl border border-surface-border/60 bg-surface-panel/40 p-8 text-center">
+          <MapPinIcon className="mx-auto mb-4 size-8 text-muted-foreground/30" />
+          <p className="font-serif text-xl font-light text-foreground">{copy.placeholder.title}</p>
+          <p className="mt-2 text-sm text-muted-foreground">{copy.placeholder.body}</p>
+          <p className="mt-4 text-xs text-muted-foreground/60">{copy.placeholder.note}</p>
+        </div>
+      )}
 
       {/* Infos atelier */}
       <div className="mt-12 space-y-4 text-sm text-muted-foreground">
