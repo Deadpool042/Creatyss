@@ -1,5 +1,5 @@
 import { FeatureFlagsFamiliesList } from "@/features/admin/feature-governance/components/settings-advanced/feature-flags-families-list";
-import { listAdminFeatureFlags } from "@/features/admin/feature-governance/queries/list-admin-feature-flags.query";
+import { loadFeatureFlagsSafe } from "@/features/admin/feature-governance/queries/load-feature-flags-safe.query";
 import { buildFamilyNavItems } from "@/features/admin/feature-governance/view-models/settings-advanced/feature-flags-split-view.utils";
 
 export const dynamic = "force-dynamic";
@@ -7,13 +7,7 @@ export const dynamic = "force-dynamic";
 const ROOT_PATH = "/admin/settings/advanced";
 
 export default async function AdvancedSettingsListOverviewPage() {
-  let flags: Awaited<ReturnType<typeof listAdminFeatureFlags>> = [] as const;
-
-  try {
-    flags = await listAdminFeatureFlags();
-  } catch (error) {
-    console.error("[settings/advanced] listAdminFeatureFlags failed", error);
-  }
+  const flags = await loadFeatureFlagsSafe();
 
   const navItems = buildFamilyNavItems(flags, ROOT_PATH);
 
