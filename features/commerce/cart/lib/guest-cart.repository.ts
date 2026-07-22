@@ -126,6 +126,7 @@ function getGuestCheckoutIssues(cart: GuestCart | null): GuestCheckoutIssueCode[
 
 export async function findGuestCartById(cartId: string): Promise<string | null> {
   if (!cartId || cartId.trim().length === 0) return null;
+  await reactivateAbandonedCart(cartId);
   const cart = await db.cart.findUnique({
     where: { id: cartId },
     select: { id: true, status: true },
@@ -137,10 +138,14 @@ export async function findGuestCartById(cartId: string): Promise<string | null> 
 export const findGuestCartIdByToken = findGuestCartById;
 
 /**
- * Réactivation explicite d'un panier `ABANDONED` (lien de reprise email —
- * lot 7, cf. `docs/roadmap/analyses-cockpit-analytique/lot-7-panier-abandonne-effet-bord-cadrage.md`).
- * Ne réactive que si le panier est bien `ABANDONED` : un panier déjà
- * `ACTIVE`/`CONVERTED`/`EXPIRED`/`ARCHIVED` n'est pas touché.
+ * Réactivation d'un panier `ABANDONED` — soit explicite (lien de reprise
+ * email, lot 7), soit transparente à la lecture (`findGuestCartById`,
+ * `readGuestCartById` : un client qui revient seul sur un panier scanné
+ * `ABANDONED` par le cron ne doit pas se voir attribuer un panier neuf —
+ * cf. `docs/roadmap/analyses-cockpit-analytique/lot-7-panier-abandonne-effet-bord-cadrage.md`,
+ * option A retenue le 2026-07-22). Ne réactive que si le panier est bien
+ * `ABANDONED` : un panier déjà `ACTIVE`/`CONVERTED`/`EXPIRED`/`ARCHIVED`
+ * n'est pas touché.
  */
 export async function reactivateAbandonedCart(cartId: string): Promise<boolean> {
   if (!cartId || cartId.trim().length === 0) return false;
@@ -338,6 +343,7 @@ export async function removeGuestCartItem(input: {
 
 export async function readGuestCartById(cartId: string): Promise<GuestCart | null> {
   if (!cartId || cartId.trim().length === 0) return null;
+  await reactivateAbandonedCart(cartId);
   const cart = await db.cart.findUnique({
     where: { id: cartId, status: "ACTIVE" },
     include: {
