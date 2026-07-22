@@ -12,6 +12,7 @@ enum MarketingIntentStatus {
 
 enum MarketingIntentType {
   PROMOTE_EDITORIAL_CONTENT
+  PROMOTE_COMMERCE_EVENT
 }
 
 enum MarketingIntentSubjectType {
@@ -19,6 +20,7 @@ enum MarketingIntentSubjectType {
   HOMEPAGE
   EDITORIAL_PAGE
   LEGAL_PAGE
+  PUBLIC_EVENT
 }
 
 enum MarketingIntentChannel {
