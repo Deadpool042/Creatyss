@@ -6,14 +6,16 @@ import {
 
 /**
  * Liste fermée des `eventType` consommés par le pipeline commerce-intents.
- * Nommée volontairement générique ("commerce") pour accueillir plus tard des
- * eventType `product.*` sans ambiguïté, mais ne contient aujourd'hui que les
- * eventType marché (`market.*`).
+ * Nommée volontairement générique ("commerce") pour accueillir des eventType
+ * de plusieurs sous-domaines commerce sans ambiguïté : `market.*` et,
+ * depuis ce lot, `product.*`.
  */
 export const COMMERCE_MARKETING_EVENT_TYPES = [
   "market.created",
   "market.updated",
   "market.cancelled",
+  "product.published",
+  "product.updated_visible",
 ] as const;
 
 export type CommerceMarketingEventType = (typeof COMMERCE_MARKETING_EVENT_TYPES)[number];
@@ -28,6 +30,8 @@ export type CommerceMarketingIntentPolicyReason =
   | "MARKET_CREATED"
   | "MARKET_UPDATED"
   | "MARKET_CANCELLED"
+  | "PRODUCT_PUBLISHED"
+  | "PRODUCT_UPDATED_VISIBLE"
   | "UNSUPPORTED_EVENT_TYPE";
 
 export type CommerceMarketingIntentDeduplicationScope = "PUBLICATION_CYCLE" | "OPEN_INTENT";
@@ -47,22 +51,53 @@ export type CommerceMarketingIntentPolicyResult = Readonly<{
   deduplicationScope?: CommerceMarketingIntentDeduplicationScope;
 }>;
 
-const MARKET_CHANNELS = [MarketingIntentChannel.NEWSLETTER, MarketingIntentChannel.SOCIAL] as const;
+const SUGGESTED_CHANNELS = [
+  MarketingIntentChannel.NEWSLETTER,
+  MarketingIntentChannel.SOCIAL,
+] as const;
+
+/**
+ * Reasons couvertes par `createResult`, associées à leur `intentType` /
+ * `subjectType` Prisma respectifs. Centraliser ce mapping ici évite de
+ * répéter `intentType`/`subjectType` à chaque site d'appel du switch tout en
+ * gardant le typage strict (chaque reason "créatrice" est associée à un
+ * unique couple intentType/subjectType).
+ */
+const CREATE_RESULT_SUBJECT_BY_REASON = {
+  MARKET_CREATED: {
+    intentType: MarketingIntentType.PROMOTE_COMMERCE_EVENT,
+    subjectType: MarketingIntentSubjectType.PUBLIC_EVENT,
+  },
+  MARKET_UPDATED: {
+    intentType: MarketingIntentType.PROMOTE_COMMERCE_EVENT,
+    subjectType: MarketingIntentSubjectType.PUBLIC_EVENT,
+  },
+  PRODUCT_PUBLISHED: {
+    intentType: MarketingIntentType.PROMOTE_PRODUCT,
+    subjectType: MarketingIntentSubjectType.PRODUCT,
+  },
+  PRODUCT_UPDATED_VISIBLE: {
+    intentType: MarketingIntentType.PROMOTE_PRODUCT,
+    subjectType: MarketingIntentSubjectType.PRODUCT,
+  },
+} as const satisfies Record<
+  Exclude<CommerceMarketingIntentPolicyReason, "MARKET_CANCELLED" | "UNSUPPORTED_EVENT_TYPE">,
+  { intentType: MarketingIntentType; subjectType: MarketingIntentSubjectType }
+>;
 
 function createResult(input: {
   action: "CREATE_PROPOSED" | "MERGE_WITH_OPEN_INTENT";
-  reason: Exclude<
-    CommerceMarketingIntentPolicyReason,
-    "MARKET_CANCELLED" | "UNSUPPORTED_EVENT_TYPE"
-  >;
+  reason: keyof typeof CREATE_RESULT_SUBJECT_BY_REASON;
   deduplicationScope: CommerceMarketingIntentDeduplicationScope;
 }): CommerceMarketingIntentPolicyResult {
+  const { intentType, subjectType } = CREATE_RESULT_SUBJECT_BY_REASON[input.reason];
+
   return {
     action: input.action,
     reason: input.reason,
-    intentType: MarketingIntentType.PROMOTE_COMMERCE_EVENT,
-    subjectType: MarketingIntentSubjectType.PUBLIC_EVENT,
-    suggestedChannels: MARKET_CHANNELS,
+    intentType,
+    subjectType,
+    suggestedChannels: SUGGESTED_CHANNELS,
     deduplicationScope: input.deduplicationScope,
   };
 }
@@ -77,7 +112,13 @@ function ignoreResult(
 }
 
 /**
- * `market.created`/`market.updated` proposent une diffusion (newsletter +
+ * Couvre deux sous-domaines commerce : les marchés (`market.*`) et,
+ * depuis ce lot, les produits (`product.*`). Le fichier a été nommé
+ * volontairement générique dès l'origine ("commerce", pas "market") pour
+ * accueillir cette extension sans renommage ni duplication de module.
+ *
+ * `market.created`/`market.updated` et `product.published`/
+ * `product.updated_visible` proposent tous une diffusion (newsletter +
  * social) sur le même modèle que `content.blog_post.published` /
  * `updated_visible` côté éditorial : création d'un intent PROPOSED au
  * premier événement du cycle, puis fusion avec l'intent ouvert pour les
@@ -106,6 +147,18 @@ export function resolveCommerceMarketingIntentPolicy(
       });
     case "market.cancelled":
       return ignoreResult("MARKET_CANCELLED");
+    case "product.published":
+      return createResult({
+        action: "CREATE_PROPOSED",
+        reason: "PRODUCT_PUBLISHED",
+        deduplicationScope: "PUBLICATION_CYCLE",
+      });
+    case "product.updated_visible":
+      return createResult({
+        action: "MERGE_WITH_OPEN_INTENT",
+        reason: "PRODUCT_UPDATED_VISIBLE",
+        deduplicationScope: "OPEN_INTENT",
+      });
     default:
       return ignoreResult("UNSUPPORTED_EVENT_TYPE");
   }

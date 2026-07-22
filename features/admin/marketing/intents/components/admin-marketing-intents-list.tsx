@@ -32,6 +32,7 @@ const SUBJECT_TYPE_LABELS: Record<AdminMarketingIntentSummary["subjectType"], st
   EDITORIAL_PAGE: "Page éditoriale",
   LEGAL_PAGE: "Page légale",
   PUBLIC_EVENT: "Marché",
+  PRODUCT: "Produit",
 };
 
 const CHANNEL_LABELS: Record<AdminMarketingIntentSummary["suggestedChannels"][number], string> = {
