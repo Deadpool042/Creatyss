@@ -18,12 +18,12 @@ Brancher le bloc "Aujourd'hui vs hier" de l'admin analytics sur un pipeline de t
 
 ## Périmètre
 
-Proposition — non observé comme implémenté à ce jour :
+Livré (2026-07-02) :
 
-- `prisma/optional/engagement/analytics.prisma` — modèles `AnalyticsMetric` et `AnalyticsSnapshot` déjà posés, à alimenter
-- `features/admin/insights/` — remplacement du bloc "Aujourd'hui vs hier" mock par une lecture réelle de `AnalyticsSnapshot`
-- Pipeline de collecte minimal : enregistrement des métriques clés (vues produit, sessions storefront, ajouts panier) via des Server Actions ou des API routes
-- Job périodique ou agrégation à la volée pour alimenter `AnalyticsSnapshot`
+- `prisma/optional/engagement/analytics.prisma` — modèles `AnalyticsMetric` et `AnalyticsSnapshot` alimentés
+- `features/admin/insights/` — bloc "Aujourd'hui vs hier" branché sur une lecture réelle de `AnalyticsSnapshot`
+- Pipeline de collecte : `features/analytics/tracking/record-storefront-analytics-event.service.ts`, écriture fire-and-forget gatée par `engagement.analytics`
+- Agrégation à la volée (upsert + increment par jour/métrique), pas de job périodique séparé
 
 ## Hors périmètre
 
@@ -34,8 +34,8 @@ Proposition — non observé comme implémenté à ce jour :
 
 ## Dépendances
 
-- Décision produit sur le périmètre du tracking : quelles métriques collecter (vues produit ? sessions ? ajouts panier ? uniquement les conversions ?) — à trancher avant toute implémentation
-- Si le tracking comporte des données comportementales identifiables : consentement RGPD requis (bandeau cookies ou équivalent)
+- Décision produit sur le périmètre du tracking — **tranchée (2026-07-02)** : vues produit + ajouts panier uniquement, agrégats anonymes sans identifiant (pas de sessions, pas de conversions individuelles)
+- Consentement RGPD — **sans objet** : aucune donnée comportementale identifiable, pas de cookie ni d'identifiant de session (cf. Invariants)
 - `insights.analyticsRead` L3 actif (observé) comme surface de lecture déjà en place
 
 ## Invariants
@@ -46,9 +46,8 @@ Proposition — non observé comme implémenté à ce jour :
 
 ## Risques
 
-- RGPD : le tracking comportemental (vues, clics, sessions) est soumis à consentement si les données sont liées à un identifiant (cookie, IP) — implications légales à ne pas sous-estimer
-- Volumétrie : l'écriture d'une métrique à chaque vue produit peut générer un volume important en DB — agrégation périodique préférable à l'écriture brute en temps réel
-- Absence de décision produit : si le périmètre du tracking n'est pas tranché, ce lot ne peut pas démarrer
+- RGPD : écarté par le choix de collecte anonyme sans identifiant (cf. Dépendances) — à réévaluer si le périmètre s'étend un jour aux sessions/clics identifiables
+- Volumétrie : gérée par l'agrégation upsert + increment par jour/métrique (pas d'écriture brute par événement en base au-delà du snapshot du jour)
 
 ## Vérifications
 
