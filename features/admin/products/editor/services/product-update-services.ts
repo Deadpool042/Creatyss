@@ -9,10 +9,16 @@ import type {
   ValidatedAdminProductCharacteristicInput,
 } from "@/entities/product";
 import { type SeoIndexingMode } from "@/entities/seo";
-import { InventoryItemStatus } from "@/prisma-generated/client";
+import { InventoryItemStatus, ProductStatus } from "@/prisma-generated/client";
 import { withTransaction, type DbExecutor } from "@/core/db";
 import { recomputeProductCatalogPriceSnapshot } from "@/features/catalog/shared";
 import { syncProductSearchDocumentInTx } from "@/features/search/services/sync-product-search-document.service";
+import {
+  getChangedVisibleProductFields,
+  recordProductPublishedDomainEvent,
+  recordProductUpdatedVisibleDomainEvent,
+  type ProductMarketingDomainEventSnapshot,
+} from "@/features/admin/products/services/record-product-marketing-domain-events";
 
 import {
   AdminProductEditorServiceError,
@@ -230,6 +236,13 @@ export async function updateProductGeneral(
       select: {
         isStandalone: true,
         publishedAt: true,
+        status: true,
+        name: true,
+        slug: true,
+        marketingHook: true,
+        shortDescription: true,
+        description: true,
+        careInstructions: true,
         productType: {
           select: {
             code: true,
@@ -319,6 +332,15 @@ export async function updateProductGeneral(
         },
         select: {
           id: true,
+          storeId: true,
+          slug: true,
+          name: true,
+          marketingHook: true,
+          shortDescription: true,
+          description: true,
+          careInstructions: true,
+          status: true,
+          updatedAt: true,
         },
       });
 
@@ -329,6 +351,50 @@ export async function updateProductGeneral(
           "[products] syncProductSearchDocumentInTx failed — update unaffected",
           searchError
         );
+      }
+
+      const nextSnapshot: ProductMarketingDomainEventSnapshot = {
+        id: updated.id,
+        slug: updated.slug,
+        name: updated.name,
+        marketingHook: updated.marketingHook,
+        shortDescription: updated.shortDescription,
+        description: updated.description,
+        careInstructions: updated.careInstructions,
+        updatedAt: updated.updatedAt,
+      };
+
+      if (
+        currentProduct.status !== ProductStatus.ACTIVE &&
+        updated.status === ProductStatus.ACTIVE
+      ) {
+        await recordProductPublishedDomainEvent({
+          executor: tx,
+          storeId: updated.storeId,
+          product: nextSnapshot,
+        });
+      } else if (
+        currentProduct.status === ProductStatus.ACTIVE &&
+        updated.status === ProductStatus.ACTIVE
+      ) {
+        const previousSnapshot: ProductMarketingDomainEventSnapshot = {
+          id: updated.id,
+          slug: currentProduct.slug,
+          name: currentProduct.name,
+          marketingHook: currentProduct.marketingHook,
+          shortDescription: currentProduct.shortDescription,
+          description: currentProduct.description,
+          careInstructions: currentProduct.careInstructions,
+          updatedAt: updated.updatedAt,
+        };
+
+        if (getChangedVisibleProductFields(previousSnapshot, nextSnapshot).length > 0) {
+          await recordProductUpdatedVisibleDomainEvent({
+            executor: tx,
+            storeId: updated.storeId,
+            product: nextSnapshot,
+          });
+        }
       }
 
       return { id: updated.id, wasConvertedToVariable };
