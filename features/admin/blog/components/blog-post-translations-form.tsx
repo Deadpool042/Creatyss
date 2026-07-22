@@ -57,7 +57,7 @@ export function BlogPostTranslationsForm({
             label={field.label}
             htmlFor={inputId}
             description={
-              <div className="flex flex-wrap items-center gap-2">
+              <span className="flex flex-wrap items-center gap-2">
                 <span>
                   Clé : <code className="font-mono">{field.fieldName}</code>
                 </span>
@@ -73,7 +73,7 @@ export function BlogPostTranslationsForm({
                     Fallback source
                   </Badge>
                 )}
-              </div>
+              </span>
             }
             className="rounded-2xl border border-surface-border/50 bg-surface-panel/40 p-4"
           >

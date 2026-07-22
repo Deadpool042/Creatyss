@@ -142,7 +142,7 @@ export function BoutiquePageTranslationsForm({ targetLocaleName, fields }: Props
                 label={field.label}
                 htmlFor={field.fieldName}
                 description={
-                  <div className="flex flex-wrap items-center gap-2">
+                  <span className="flex flex-wrap items-center gap-2">
                     <span>Cle: <code className="font-mono">{field.fieldName}</code></span>
                     {field.multiline ? (
                       <Badge variant="outline" className="text-[10px] text-muted-foreground">
@@ -165,7 +165,7 @@ export function BoutiquePageTranslationsForm({ targetLocaleName, fields }: Props
                         Fallback source
                       </Badge>
                     )}
-                  </div>
+                  </span>
                 }
                 className="rounded-2xl border border-surface-border/50 bg-surface-panel/40 p-4"
               >

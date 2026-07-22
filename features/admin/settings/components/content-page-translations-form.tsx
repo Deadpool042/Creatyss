@@ -157,7 +157,7 @@ export function ContentPageTranslationsForm({ action, targetLocaleName, fields }
                 label={field.label}
                 htmlFor={field.fieldName}
                 description={
-                  <div className="flex flex-wrap items-center gap-2">
+                  <span className="flex flex-wrap items-center gap-2">
                     <span>
                       Cle: <code className="font-mono">{field.fieldName}</code>
                     </span>
@@ -182,7 +182,7 @@ export function ContentPageTranslationsForm({ action, targetLocaleName, fields }
                         Fallback source
                       </Badge>
                     )}
-                  </div>
+                  </span>
                 }
                 className="rounded-2xl border border-surface-border/50 bg-surface-panel/40 p-4"
               >
