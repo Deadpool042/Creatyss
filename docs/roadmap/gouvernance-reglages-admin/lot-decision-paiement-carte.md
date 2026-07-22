@@ -22,11 +22,13 @@ Trancher si le paiement carte (Stripe) doit devenir pilotable depuis l'admin (vi
 - **Aucun écran admin** ne permet aujourd'hui de voir si Stripe est actif, de le désactiver, ou de consulter son statut de connexion.
 - Mécanisme d'activation actuel de Stripe : **non vérifié dans l'audit** (variable d'environnement ? toujours actif ? feature flag ?) — à investiguer en phase 1 de ce lot si la décision est de poursuivre.
 
-## Options à trancher
+## Options envisagées (tranché — cf. Statut)
 
 1. **Exposer un toggle simple** (statut actif/inactif, visible mais non configurable en détail) — cohérent avec le pattern existant `bankTransferEnabled`/`cashOnDeliveryEnabled`, changement minimal.
 2. **Exposer une configuration complète** (clés API, mode test/live, webhooks) — réplique une partie de ce que Stripe Dashboard offre déjà nativement ; à évaluer si la duplication a de la valeur ou si le Dashboard Stripe suffit.
 3. **Ne rien exposer**, documenter explicitement ce choix pour couper court à la confusion future (ex. note dans `docs/domains/core/commerce/payments.md` si ce fichier existe, ou équivalent) — le pilotage de Stripe resterait entièrement dans le Dashboard Stripe et la configuration d'environnement.
+
+Aucune des trois options ne s'appliquait telle quelle — décision hybride retenue (indicateur de statut lecture seule), cf. section Statut ci-dessus.
 
 ## Périmètre de ce lot
 
