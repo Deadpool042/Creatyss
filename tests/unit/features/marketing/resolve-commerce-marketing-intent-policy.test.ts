@@ -54,6 +54,38 @@ describe("resolveCommerceMarketingIntentPolicy", () => {
     });
   });
 
+  it("retient CREATE_PROPOSED NEWSLETTER + SOCIAL pour product.published", () => {
+    expect(
+      resolveCommerceMarketingIntentPolicy({
+        eventType: "product.published",
+        subjectId: "product_1",
+      })
+    ).toEqual({
+      action: "CREATE_PROPOSED",
+      reason: "PRODUCT_PUBLISHED",
+      intentType: MarketingIntentType.PROMOTE_PRODUCT,
+      subjectType: MarketingIntentSubjectType.PRODUCT,
+      suggestedChannels: [MarketingIntentChannel.NEWSLETTER, MarketingIntentChannel.SOCIAL],
+      deduplicationScope: "PUBLICATION_CYCLE",
+    });
+  });
+
+  it("retient MERGE_WITH_OPEN_INTENT NEWSLETTER + SOCIAL pour product.updated_visible", () => {
+    expect(
+      resolveCommerceMarketingIntentPolicy({
+        eventType: "product.updated_visible",
+        subjectId: "product_1",
+      })
+    ).toEqual({
+      action: "MERGE_WITH_OPEN_INTENT",
+      reason: "PRODUCT_UPDATED_VISIBLE",
+      intentType: MarketingIntentType.PROMOTE_PRODUCT,
+      subjectType: MarketingIntentSubjectType.PRODUCT,
+      suggestedChannels: [MarketingIntentChannel.NEWSLETTER, MarketingIntentChannel.SOCIAL],
+      deduplicationScope: "OPEN_INTENT",
+    });
+  });
+
   it("ignore un eventType inconnu", () => {
     expect(
       resolveCommerceMarketingIntentPolicy({
