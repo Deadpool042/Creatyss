@@ -12,6 +12,7 @@ import {
   getAdminPublicEventDetailPath,
 } from "@/features/admin/marketing/public-events/shared/admin-public-events-routes";
 import { recordPublicEventUpdatedDomainEvent } from "@/features/admin/marketing/public-events/services/record-public-event-domain-events";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 
 function isUniqueConstraintError(error: unknown): boolean {
   return typeof error === "object" && error !== null && "code" in error && error.code === "P2002";
@@ -58,12 +59,18 @@ export async function updatePublicEventAction(
     redirect(`${detailPath}?public_event_error=invalid_input`);
   }
 
+  const storeId = await getCurrentStoreId();
+
+  if (storeId === null) {
+    redirect(`${ADMIN_PUBLIC_EVENTS_PATH}?public_event_error=missing_store`);
+  }
+
   const existing = await db.publicEvent.findUnique({
     where: { id: publicEventId },
     select: { id: true, storeId: true, archivedAt: true, status: true },
   });
 
-  if (!existing || existing.archivedAt) {
+  if (!existing || existing.archivedAt || existing.storeId !== storeId) {
     redirect(`${ADMIN_PUBLIC_EVENTS_PATH}?public_event_error=not_found`);
   }
 

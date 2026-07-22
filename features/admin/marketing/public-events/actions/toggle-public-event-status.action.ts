@@ -9,6 +9,7 @@ import {
   getAdminPublicEventDetailPath,
 } from "@/features/admin/marketing/public-events/shared/admin-public-events-routes";
 import { recordPublicEventCreatedDomainEvent } from "@/features/admin/marketing/public-events/services/record-public-event-domain-events";
+import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 
 export type TogglePublicEventStatusResult =
   | { ok: true; newStatus: string }
@@ -23,6 +24,12 @@ export async function togglePublicEventStatusAction(
 ): Promise<TogglePublicEventStatusResult> {
   await requireAuthenticatedAdmin();
 
+  const storeId = await getCurrentStoreId();
+
+  if (storeId === null) {
+    return { ok: false, error: "Boutique introuvable." };
+  }
+
   const publicEvent = await db.publicEvent.findUnique({
     where: { id: publicEventId },
     select: {
@@ -36,7 +43,7 @@ export async function togglePublicEventStatusAction(
     },
   });
 
-  if (!publicEvent || publicEvent.archivedAt) {
+  if (!publicEvent || publicEvent.archivedAt || publicEvent.storeId !== storeId) {
     return { ok: false, error: "Marché introuvable." };
   }
 

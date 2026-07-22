@@ -482,31 +482,51 @@ async function createIntentFromPolicy(
     };
   }
 
-  const marketingIntent = await tx.marketingIntent.create({
-    data: {
-      storeId: input.domainEvent.storeId ?? null,
-      status: "PROPOSED",
-      intentType: input.policy.intentType,
-      subjectType: input.policy.subjectType,
-      subjectId,
-      suggestedChannels: [...(input.policy.suggestedChannels ?? [])],
-      deduplicationKey,
-      sourceDomainEventId: input.domainEvent.id,
-      lastSourceDomainEventId: input.domainEvent.id,
-      contextJson: buildContextJson({
-        domainEvent: input.domainEvent,
-        payload: input.payload,
-        action: input.policy.action,
-        reason: input.policy.reason,
-      }),
-    },
-  });
+  try {
+    const marketingIntent = await tx.marketingIntent.create({
+      data: {
+        storeId: input.domainEvent.storeId ?? null,
+        status: "PROPOSED",
+        intentType: input.policy.intentType,
+        subjectType: input.policy.subjectType,
+        subjectId,
+        suggestedChannels: [...(input.policy.suggestedChannels ?? [])],
+        deduplicationKey,
+        sourceDomainEventId: input.domainEvent.id,
+        lastSourceDomainEventId: input.domainEvent.id,
+        contextJson: buildContextJson({
+          domainEvent: input.domainEvent,
+          payload: input.payload,
+          action: input.policy.action,
+          reason: input.policy.reason,
+        }),
+      },
+    });
 
-  return {
-    status: "created",
-    marketingIntent,
-    optional: input.policy.action === "OPTIONAL_CREATE",
-  };
+    return {
+      status: "created",
+      marketingIntent,
+      optional: input.policy.action === "OPTIONAL_CREATE",
+    };
+  } catch (error: unknown) {
+    // Race concurrente sur deduplicationKey (contrainte unique) : un autre
+    // appelant a créé l'intent entre le findUnique et ce create. On retombe
+    // sur le même chemin que la déduplication anticipée plutôt que de
+    // laisser l'erreur remonter (cf. correction post-revue PR #17).
+    if (!isUniqueConstraintError(error)) {
+      throw error;
+    }
+
+    const concurrentIntent = await tx.marketingIntent.findUniqueOrThrow({
+      where: { deduplicationKey },
+    });
+
+    return {
+      status: "deduplicated",
+      marketingIntent: concurrentIntent,
+      optional: input.policy.action === "OPTIONAL_CREATE",
+    };
+  }
 }
 
 async function mergeWithOpenIntent(
