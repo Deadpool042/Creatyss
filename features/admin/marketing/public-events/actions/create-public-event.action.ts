@@ -9,7 +9,6 @@ import { slugifyLabel } from "@/entities/shared/slug/slugify-label";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
 import { createPublicEventSchema } from "@/features/admin/marketing/public-events/schemas/create-public-event.schema";
 import { ADMIN_PUBLIC_EVENTS_PATH } from "@/features/admin/marketing/public-events/shared/admin-public-events-routes";
-import { recordPublicEventCreatedDomainEvent } from "@/features/admin/marketing/public-events/services/record-public-event-domain-events";
 
 function isUniqueConstraintError(error: unknown): boolean {
   return typeof error === "object" && error !== null && "code" in error && error.code === "P2002";
@@ -61,7 +60,9 @@ export async function createPublicEventAction(formData: FormData): Promise<void>
   const data = parsed.data;
 
   try {
-    const created = await db.publicEvent.create({
+    // Créé en DRAFT (défaut Prisma) : pas de diffusion marketing tant que le
+    // marché n'est pas publié via togglePublicEventStatusAction (ACTIVE).
+    await db.publicEvent.create({
       data: {
         storeId,
         code: data.slug,
@@ -75,17 +76,6 @@ export async function createPublicEventAction(formData: FormData): Promise<void>
         locationAddress: data.locationAddress,
         hasSpecialConditions: data.hasSpecialConditions,
         specialConditionsNote: data.specialConditionsNote,
-      },
-    });
-
-    await recordPublicEventCreatedDomainEvent({
-      storeId,
-      publicEvent: {
-        id: created.id,
-        slug: created.slug,
-        title: created.title,
-        startsAt: created.startsAt,
-        updatedAt: created.updatedAt,
       },
     });
   } catch (error) {

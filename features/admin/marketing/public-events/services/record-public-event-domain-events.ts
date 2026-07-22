@@ -21,12 +21,20 @@ type RecordPublicEventDomainEventInput = Readonly<{
  * Recorder dédié au consumer `marketing-intents.commerce.v1` — parallèle au
  * pipeline éditorial, `aggregateType: "public_event"`.
  *
- * Enregistre un `DomainEvent` lorsqu'un marché est créé ou modifié en admin.
- * Le rattrapage `market.cancelled` n'est pas encore câblé : le toggle de
- * statut actuel (`togglePublicEventStatusAction`) n'alterne qu'entre
- * `ACTIVE`/`INACTIVE`, aucun chemin admin ne produit `CANCELLED`
- * aujourd'hui. Le recorder ci-dessous reste prêt à être branché le jour où
- * une action d'annulation existera (hors périmètre du Lot 4).
+ * `market.created` est déclenché à la publication effective du marché
+ * (premier passage DRAFT/INACTIVE → ACTIVE dans
+ * `togglePublicEventStatusAction`), pas à sa création : un `PublicEvent` est
+ * créé en `DRAFT` par défaut et n'est pas visible côté storefront tant qu'il
+ * n'est pas `ACTIVE` — proposer une diffusion avant ce moment promouvrait un
+ * contenu invisible (cf. correction post-revue PR #17).
+ *
+ * `market.updated` n'est déclenché que si le marché est déjà `ACTIVE` au
+ * moment de la modification (cf. `updatePublicEventAction`).
+ *
+ * Le rattrapage `market.cancelled` n'est pas encore câblé : aucun chemin
+ * admin ne produit le statut `CANCELLED` aujourd'hui. Le recorder ci-dessous
+ * reste prêt à être branché le jour où une action d'annulation existera
+ * (hors périmètre du Lot 4).
  */
 export async function recordPublicEventCreatedDomainEvent(
   input: RecordPublicEventDomainEventInput

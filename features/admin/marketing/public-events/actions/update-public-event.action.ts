@@ -60,7 +60,7 @@ export async function updatePublicEventAction(
 
   const existing = await db.publicEvent.findUnique({
     where: { id: publicEventId },
-    select: { id: true, storeId: true, archivedAt: true },
+    select: { id: true, storeId: true, archivedAt: true, status: true },
   });
 
   if (!existing || existing.archivedAt) {
@@ -87,16 +87,21 @@ export async function updatePublicEventAction(
       },
     });
 
-    await recordPublicEventUpdatedDomainEvent({
-      storeId: existing.storeId,
-      publicEvent: {
-        id: updated.id,
-        slug: updated.slug,
-        title: updated.title,
-        startsAt: updated.startsAt,
-        updatedAt: updated.updatedAt,
-      },
-    });
+    // Diffusion uniquement si le marché est déjà publié (ACTIVE) : un marché
+    // encore DRAFT/INACTIVE n'est pas visible côté storefront, rien à
+    // proposer en diffusion pour un contenu invisible.
+    if (existing.status === "ACTIVE") {
+      await recordPublicEventUpdatedDomainEvent({
+        storeId: existing.storeId,
+        publicEvent: {
+          id: updated.id,
+          slug: updated.slug,
+          title: updated.title,
+          startsAt: updated.startsAt,
+          updatedAt: updated.updatedAt,
+        },
+      });
+    }
   } catch (error) {
     if (isUniqueConstraintError(error)) {
       redirect(`${detailPath}?public_event_error=duplicate_slug`);

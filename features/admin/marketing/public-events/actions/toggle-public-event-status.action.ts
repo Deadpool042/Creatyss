@@ -8,6 +8,7 @@ import {
   ADMIN_PUBLIC_EVENTS_PATH,
   getAdminPublicEventDetailPath,
 } from "@/features/admin/marketing/public-events/shared/admin-public-events-routes";
+import { recordPublicEventCreatedDomainEvent } from "@/features/admin/marketing/public-events/services/record-public-event-domain-events";
 
 export type TogglePublicEventStatusResult =
   | { ok: true; newStatus: string }
@@ -24,19 +25,44 @@ export async function togglePublicEventStatusAction(
 
   const publicEvent = await db.publicEvent.findUnique({
     where: { id: publicEventId },
-    select: { id: true, status: true, archivedAt: true },
+    select: {
+      id: true,
+      status: true,
+      archivedAt: true,
+      storeId: true,
+      slug: true,
+      title: true,
+      startsAt: true,
+    },
   });
 
   if (!publicEvent || publicEvent.archivedAt) {
     return { ok: false, error: "Marché introuvable." };
   }
 
-  const nextStatus = publicEvent.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+  const wasActive = publicEvent.status === "ACTIVE";
+  const nextStatus = wasActive ? "INACTIVE" : "ACTIVE";
 
-  await db.publicEvent.update({
+  const updated = await db.publicEvent.update({
     where: { id: publicEventId },
     data: { status: nextStatus },
   });
+
+  // Premier passage à ACTIVE = publication effective du marché : c'est ce
+  // moment, pas la création (DRAFT par défaut), qui doit proposer une
+  // diffusion newsletter/social — cf. correction post-revue PR #17.
+  if (!wasActive && nextStatus === "ACTIVE") {
+    await recordPublicEventCreatedDomainEvent({
+      storeId: publicEvent.storeId,
+      publicEvent: {
+        id: updated.id,
+        slug: publicEvent.slug,
+        title: publicEvent.title,
+        startsAt: publicEvent.startsAt,
+        updatedAt: updated.updatedAt,
+      },
+    });
+  }
 
   revalidatePath(ADMIN_PUBLIC_EVENTS_PATH);
   revalidatePath(getAdminPublicEventDetailPath(publicEventId));
