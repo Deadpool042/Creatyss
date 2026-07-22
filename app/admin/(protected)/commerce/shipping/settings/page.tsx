@@ -6,24 +6,20 @@ import { ShippingSettingsForm } from "@/features/admin/settings/components/shipp
 import { ShippingZonesManager } from "@/features/admin/settings/components/shipping-zones-manager";
 import { getAdminShippingSettings } from "@/features/admin/settings/queries/get-admin-shipping-settings.query";
 import { listAdminShippingZones } from "@/features/admin/settings/queries/list-admin-shipping-zones.query";
+import { resolveAdminErrorMessage } from "@/features/admin/commerce/shared/resolve-admin-error-message";
+
+const SHIPPING_ZONE_ERROR_MESSAGES: Readonly<Record<string, string>> = {
+  duplicate_code: "Une zone ou méthode avec ce code existe déjà.",
+  invalid_input: "Formulaire invalide — vérifiez les champs.",
+  missing_store: "Zone ou méthode introuvable.",
+  not_found: "Zone ou méthode introuvable.",
+  zone_not_found: "Zone ou méthode introuvable.",
+  zone_archived: "Cette zone est archivée — réactivez-la avant d'y ajouter une méthode.",
+  invalid_transition: "Cette transition de statut n'est pas autorisée.",
+};
 
 function getShippingZoneErrorMessage(code: string): string {
-  switch (code) {
-    case "duplicate_code":
-      return "Une zone ou méthode avec ce code existe déjà.";
-    case "invalid_input":
-      return "Formulaire invalide — vérifiez les champs.";
-    case "missing_store":
-    case "not_found":
-    case "zone_not_found":
-      return "Zone ou méthode introuvable.";
-    case "zone_archived":
-      return "Cette zone est archivée — réactivez-la avant d'y ajouter une méthode.";
-    case "invalid_transition":
-      return "Cette transition de statut n'est pas autorisée.";
-    default:
-      return "L'opération a échoué.";
-  }
+  return resolveAdminErrorMessage(code, SHIPPING_ZONE_ERROR_MESSAGES, "L'opération a échoué.");
 }
 
 type AdminCommerceShippingSettingsPageProps = Readonly<{
