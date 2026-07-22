@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { AdminSplitDetailPaneShell } from "@/components/admin/layout/admin-split-detail-pane-shell";
 import { AdminSplitDetailSectionCard } from "@/components/admin/layout/admin-split-detail-section-card";
 import { FeatureFlagDetail } from "@/features/admin/feature-governance/components/settings-advanced";
-import { listAdminFeatureFlags } from "@/features/admin/feature-governance/queries/list-admin-feature-flags.query";
+import { loadFeatureFlagsSafe } from "@/features/admin/feature-governance/queries/load-feature-flags-safe.query";
 import { findFlagBySlug } from "@/features/admin/feature-governance/view-models/settings-advanced";
 
 export const dynamic = "force-dynamic";
@@ -19,13 +19,7 @@ export default async function AdvancedSettingsDetailLocalizationPage({ params }:
     notFound();
   }
 
-  let flags: Awaited<ReturnType<typeof listAdminFeatureFlags>> = [] as const;
-
-  try {
-    flags = await listAdminFeatureFlags();
-  } catch (error) {
-    console.error("[settings/advanced] listAdminFeatureFlags failed", error);
-  }
+  const flags = await loadFeatureFlagsSafe();
 
   const flag = findFlagBySlug(flags, "optional", "localization");
 
