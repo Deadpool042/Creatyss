@@ -51,6 +51,9 @@ model PublicEvent {
 
   audienceStatus EventAudienceStatus @default(OPEN)
 
+  hasSpecialConditions  Boolean @default(false)
+  specialConditionsNote String?
+
   primaryImageId String?
   coverImageId   String?
 
