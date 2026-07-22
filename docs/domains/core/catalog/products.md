@@ -489,6 +489,40 @@ historique complet quand la feature catalogue est active.
 
 ---
 
+## Diffusion marketing en aval (observé, 2026-07-22)
+
+Un consumer `MarketingIntent` dédié consomme certains `DomainEvent` du
+domaine `products`, sur le modèle déjà en place pour le domaine `events`
+(marchés) — cf. `docs/domains/cross-cutting/events.md`, section
+« Activation partielle observée ». Cette diffusion reste un domaine
+consommateur aval : `products` ne connaît ni `MarketingIntent`, ni
+`NewsletterCampaign`, ni `SocialPublication`.
+
+**Observé dans le code** :
+
+- `features/admin/products/services/record-product-marketing-domain-events.ts`
+  émet `product.published` (première transition `!== "ACTIVE" -> "ACTIVE"`)
+  et `product.updated_visible` (produit déjà `ACTIVE`, avant et après,
+  **et** au moins un champ éditorial whitelisté modifié : `name`, `slug`,
+  `marketingHook`, `shortDescription`, `description`, `careInstructions`),
+  uniquement depuis `updateProductGeneral`
+  (`features/admin/products/editor/services/product-update-services.ts`).
+- Ces deux `DomainEvent` sont projetés par
+  `features/marketing/commerce-intents/` (`consumerCode:
+"marketing-intents.commerce.v1"`), le même consumer parallèle déjà utilisé
+  pour les marchés — pas de nouveau pipeline créé pour les produits.
+- Double garde volontaire (statut + whitelist de champs) : les mutations de
+  stock, prix, disponibilité par variante, catégories, SEO ou variantes
+  passent par des services Prisma distincts, non instrumentés, et ne
+  déclenchent donc jamais de diffusion. Cf.
+  `docs/lots/2026-07-22-commerce-marketing-intents-products-cadrage.md` pour
+  le détail du cadrage et la justification de cette double garde.
+- Aucun nouveau flag `FEATURE_CATALOG` : la matérialisation
+  `NewsletterCampaign`/`SocialPublication` reste gouvernée par les flags
+  existants `engagement.newsletter` / `engagement.social`.
+
+---
+
 ## Documents liés
 
 - `../../../architecture/10-fondations/10-principes-d-architecture.md`
@@ -504,3 +538,4 @@ historique complet quand la feature catalogue est active.
 - `../../satellites/categories.md`
 - `../../satellites/media.md`
 - `../../satellites/catalog-modeling.md`
+- `../../cross-cutting/events.md`
