@@ -370,7 +370,8 @@ export type MarketingIntentStatus = (typeof MarketingIntentStatus)[keyof typeof 
 
 
 export const MarketingIntentType = {
-  PROMOTE_EDITORIAL_CONTENT: 'PROMOTE_EDITORIAL_CONTENT'
+  PROMOTE_EDITORIAL_CONTENT: 'PROMOTE_EDITORIAL_CONTENT',
+  PROMOTE_COMMERCE_EVENT: 'PROMOTE_COMMERCE_EVENT'
 } as const
 
 export type MarketingIntentType = (typeof MarketingIntentType)[keyof typeof MarketingIntentType]
@@ -380,7 +381,8 @@ export const MarketingIntentSubjectType = {
   BLOG_POST: 'BLOG_POST',
   HOMEPAGE: 'HOMEPAGE',
   EDITORIAL_PAGE: 'EDITORIAL_PAGE',
-  LEGAL_PAGE: 'LEGAL_PAGE'
+  LEGAL_PAGE: 'LEGAL_PAGE',
+  PUBLIC_EVENT: 'PUBLIC_EVENT'
 } as const
 
 export type MarketingIntentSubjectType = (typeof MarketingIntentSubjectType)[keyof typeof MarketingIntentSubjectType]

@@ -395,6 +395,51 @@ Il ne doit pas devenir un agenda technique global, un CMS générique ou un orch
 
 ---
 
+## Activation partielle observée (2026-07-22, `engagement.public-events`)
+
+Un premier périmètre du domaine est ouvert sous la clé de feature flag
+`engagement.public-events` (`family: optional`, non gradué, `defaultState:
+inactive`) — cf. `docs/lots/2026-07-22-engagement-public-events-cadrage.md`
+pour le détail du cadrage et du bilan d'exécution.
+
+**Observé dans le code et Prisma** :
+
+- `PublicEvent` (`prisma/optional/engagement/public-events.prisma`) est le
+  seul modèle du domaine effectivement câblé : CRUD admin
+  (`features/admin/marketing/public-events/`, routes `app/admin/(protected)/
+marketing/marches/`) et lecture storefront gated
+  (`features/storefront/content/queries/list-public-marches.query.ts`,
+  page `/les-marches`).
+- Deux champs informatifs ont été ajoutés sur `PublicEvent` :
+  `hasSpecialConditions: Boolean` et `specialConditionsNote: String?`. Ils
+  sont purement déclaratifs côté public (aucun blocage, aucune vérification
+  de capacité, aucun rattachement à une inscription ou réservation réelle).
+- `EventRegistration`, `EventReservation`, `EventAudienceStatus` (au sens
+  d'un workflow d'ouverture/fermeture piloté) restent **posés en Prisma mais
+  non consommés par aucun code applicatif** — situation inchangée par ce
+  lot.
+- La diffusion marketing associée (création, mise à jour) passe par un
+  consumer `MarketingIntent` dédié et parallèle
+  (`features/marketing/commerce-intents/`, `consumerCode:
+"marketing-intents.commerce.v1"`), distinct du pipeline
+  `marketing-intents.editorial.v1` déjà livré et clos pour blog/homepage/
+  pages. Ce point illustre concrètement l'invariant « les diffusions aval
+  restent distinctes de la vérité interne événementielle » : `PublicEvent`
+  ne connaît ni `NewsletterCampaign`, ni `SocialPublication`.
+
+**Non observé / hors périmètre de ce lot** :
+
+- aucun workflow d'inscription ou de réservation réel ;
+- aucune gouvernance de capacité limitée ;
+- aucune ouverture/fermeture d'accès pilotée (`audienceStatus` reste posé
+  sans usage) ;
+- aucune règle métier de blocage liée à `hasSpecialConditions` — l'indicateur
+  est affiché tel quel, sans logique.
+
+Ce périmètre reste donc une **activation partielle** du domaine : `events`
+n'est pas encore « structurant » au sens de la section « Impact de
+maintenance / exploitation » — seule une brique de publication simple existe.
+
 ## Questions ouvertes
 
 À confirmer explicitement dans le projet :
@@ -402,9 +447,15 @@ Il ne doit pas devenir un agenda technique global, un CMS générique ou un orch
 - la frontière exacte entre `events` et `scheduling` ;
 - la frontière exacte entre `events` et `notifications` ;
 - la frontière exacte entre `events` et `newsletter` ;
-- la part exacte des réservations et inscriptions réellement supportées ;
 - la gouvernance des capacités et clôtures d’événements ;
 - la hiérarchie entre vérité interne et systèmes d’événementiel externes éventuels.
+
+**Levée partiellement (2026-07-22)** : la part des réservations et
+inscriptions réellement supportées est désormais connue pour le périmètre
+actuel — **aucune**. `EventRegistration`/`EventReservation` restent non
+câblés ; seul `PublicEvent` (avec un indicateur informatif de conditions
+spéciales, sans logique de blocage) est actif. La question reste ouverte
+pour tout périmètre futur qui activerait ces deux modèles.
 
 Si ces points sont déjà tranchés ailleurs, ils doivent être réinjectés ici et sortir de cette section.
 

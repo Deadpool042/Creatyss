@@ -19,6 +19,7 @@ export const adminNavigationCapabilities = {
     newsletterRead: "admin.marketing.newsletter.read",
     discountsRead: "admin.marketing.discounts.read",
     automationsRead: "admin.marketing.automations.read",
+    publicEventsRead: "admin.marketing.publicEvents.read",
   },
   insights: {
     analyticsRead: "admin.insights.analytics.read",
@@ -77,6 +78,7 @@ export const adminNavigationFeatureFlags = {
     newsletter: "engagement.newsletter",
     analytics: "engagement.analytics",
     automations: "engagement.automations",
+    publicEvents: "engagement.public-events",
   },
   platform: {
     notifications: "platform.notifications",

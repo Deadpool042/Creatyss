@@ -2468,6 +2468,8 @@ export const PublicEventScalarFieldEnum = {
   locationName: 'locationName',
   locationAddress: 'locationAddress',
   audienceStatus: 'audienceStatus',
+  hasSpecialConditions: 'hasSpecialConditions',
+  specialConditionsNote: 'specialConditionsNote',
   primaryImageId: 'primaryImageId',
   coverImageId: 'coverImageId',
   publishedAt: 'publishedAt',

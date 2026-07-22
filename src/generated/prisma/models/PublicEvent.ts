@@ -38,6 +38,8 @@ export type PublicEventMinAggregateOutputType = {
   locationName: string | null
   locationAddress: string | null
   audienceStatus: $Enums.EventAudienceStatus | null
+  hasSpecialConditions: boolean | null
+  specialConditionsNote: string | null
   primaryImageId: string | null
   coverImageId: string | null
   publishedAt: Date | null
@@ -61,6 +63,8 @@ export type PublicEventMaxAggregateOutputType = {
   locationName: string | null
   locationAddress: string | null
   audienceStatus: $Enums.EventAudienceStatus | null
+  hasSpecialConditions: boolean | null
+  specialConditionsNote: string | null
   primaryImageId: string | null
   coverImageId: string | null
   publishedAt: Date | null
@@ -84,6 +88,8 @@ export type PublicEventCountAggregateOutputType = {
   locationName: number
   locationAddress: number
   audienceStatus: number
+  hasSpecialConditions: number
+  specialConditionsNote: number
   primaryImageId: number
   coverImageId: number
   publishedAt: number
@@ -109,6 +115,8 @@ export type PublicEventMinAggregateInputType = {
   locationName?: true
   locationAddress?: true
   audienceStatus?: true
+  hasSpecialConditions?: true
+  specialConditionsNote?: true
   primaryImageId?: true
   coverImageId?: true
   publishedAt?: true
@@ -132,6 +140,8 @@ export type PublicEventMaxAggregateInputType = {
   locationName?: true
   locationAddress?: true
   audienceStatus?: true
+  hasSpecialConditions?: true
+  specialConditionsNote?: true
   primaryImageId?: true
   coverImageId?: true
   publishedAt?: true
@@ -155,6 +165,8 @@ export type PublicEventCountAggregateInputType = {
   locationName?: true
   locationAddress?: true
   audienceStatus?: true
+  hasSpecialConditions?: true
+  specialConditionsNote?: true
   primaryImageId?: true
   coverImageId?: true
   publishedAt?: true
@@ -251,6 +263,8 @@ export type PublicEventGroupByOutputType = {
   locationName: string | null
   locationAddress: string | null
   audienceStatus: $Enums.EventAudienceStatus
+  hasSpecialConditions: boolean
+  specialConditionsNote: string | null
   primaryImageId: string | null
   coverImageId: string | null
   publishedAt: Date | null
@@ -295,6 +309,8 @@ export type PublicEventWhereInput = {
   locationName?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   locationAddress?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFilter<"PublicEvent"> | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFilter<"PublicEvent"> | boolean
+  specialConditionsNote?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   primaryImageId?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   coverImageId?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   publishedAt?: Prisma.DateTimeNullableFilter<"PublicEvent"> | Date | string | null
@@ -323,6 +339,8 @@ export type PublicEventOrderByWithRelationInput = {
   locationName?: Prisma.SortOrderInput | Prisma.SortOrder
   locationAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   audienceStatus?: Prisma.SortOrder
+  hasSpecialConditions?: Prisma.SortOrder
+  specialConditionsNote?: Prisma.SortOrderInput | Prisma.SortOrder
   primaryImageId?: Prisma.SortOrderInput | Prisma.SortOrder
   coverImageId?: Prisma.SortOrderInput | Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -356,6 +374,8 @@ export type PublicEventWhereUniqueInput = Prisma.AtLeast<{
   locationName?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   locationAddress?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFilter<"PublicEvent"> | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFilter<"PublicEvent"> | boolean
+  specialConditionsNote?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   primaryImageId?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   coverImageId?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   publishedAt?: Prisma.DateTimeNullableFilter<"PublicEvent"> | Date | string | null
@@ -384,6 +404,8 @@ export type PublicEventOrderByWithAggregationInput = {
   locationName?: Prisma.SortOrderInput | Prisma.SortOrder
   locationAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   audienceStatus?: Prisma.SortOrder
+  hasSpecialConditions?: Prisma.SortOrder
+  specialConditionsNote?: Prisma.SortOrderInput | Prisma.SortOrder
   primaryImageId?: Prisma.SortOrderInput | Prisma.SortOrder
   coverImageId?: Prisma.SortOrderInput | Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -413,6 +435,8 @@ export type PublicEventScalarWhereWithAggregatesInput = {
   locationName?: Prisma.StringNullableWithAggregatesFilter<"PublicEvent"> | string | null
   locationAddress?: Prisma.StringNullableWithAggregatesFilter<"PublicEvent"> | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusWithAggregatesFilter<"PublicEvent"> | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolWithAggregatesFilter<"PublicEvent"> | boolean
+  specialConditionsNote?: Prisma.StringNullableWithAggregatesFilter<"PublicEvent"> | string | null
   primaryImageId?: Prisma.StringNullableWithAggregatesFilter<"PublicEvent"> | string | null
   coverImageId?: Prisma.StringNullableWithAggregatesFilter<"PublicEvent"> | string | null
   publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PublicEvent"> | Date | string | null
@@ -435,6 +459,8 @@ export type PublicEventCreateInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   publishedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -461,6 +487,8 @@ export type PublicEventUncheckedCreateInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   primaryImageId?: string | null
   coverImageId?: string | null
   publishedAt?: Date | string | null
@@ -485,6 +513,8 @@ export type PublicEventUpdateInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -511,6 +541,8 @@ export type PublicEventUncheckedUpdateInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -536,6 +568,8 @@ export type PublicEventCreateManyInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   primaryImageId?: string | null
   coverImageId?: string | null
   publishedAt?: Date | string | null
@@ -558,6 +592,8 @@ export type PublicEventUpdateManyMutationInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -579,6 +615,8 @@ export type PublicEventUncheckedUpdateManyInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -622,6 +660,8 @@ export type PublicEventCountOrderByAggregateInput = {
   locationName?: Prisma.SortOrder
   locationAddress?: Prisma.SortOrder
   audienceStatus?: Prisma.SortOrder
+  hasSpecialConditions?: Prisma.SortOrder
+  specialConditionsNote?: Prisma.SortOrder
   primaryImageId?: Prisma.SortOrder
   coverImageId?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
@@ -645,6 +685,8 @@ export type PublicEventMaxOrderByAggregateInput = {
   locationName?: Prisma.SortOrder
   locationAddress?: Prisma.SortOrder
   audienceStatus?: Prisma.SortOrder
+  hasSpecialConditions?: Prisma.SortOrder
+  specialConditionsNote?: Prisma.SortOrder
   primaryImageId?: Prisma.SortOrder
   coverImageId?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
@@ -668,6 +710,8 @@ export type PublicEventMinOrderByAggregateInput = {
   locationName?: Prisma.SortOrder
   locationAddress?: Prisma.SortOrder
   audienceStatus?: Prisma.SortOrder
+  hasSpecialConditions?: Prisma.SortOrder
+  specialConditionsNote?: Prisma.SortOrder
   primaryImageId?: Prisma.SortOrder
   coverImageId?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
@@ -857,6 +901,8 @@ export type PublicEventCreateWithoutStoreInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   publishedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -881,6 +927,8 @@ export type PublicEventUncheckedCreateWithoutStoreInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   primaryImageId?: string | null
   coverImageId?: string | null
   publishedAt?: Date | string | null
@@ -935,6 +983,8 @@ export type PublicEventScalarWhereInput = {
   locationName?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   locationAddress?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFilter<"PublicEvent"> | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFilter<"PublicEvent"> | boolean
+  specialConditionsNote?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   primaryImageId?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   coverImageId?: Prisma.StringNullableFilter<"PublicEvent"> | string | null
   publishedAt?: Prisma.DateTimeNullableFilter<"PublicEvent"> | Date | string | null
@@ -957,6 +1007,8 @@ export type PublicEventCreateWithoutRegistrationsInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   publishedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -982,6 +1034,8 @@ export type PublicEventUncheckedCreateWithoutRegistrationsInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   primaryImageId?: string | null
   coverImageId?: string | null
   publishedAt?: Date | string | null
@@ -1021,6 +1075,8 @@ export type PublicEventUpdateWithoutRegistrationsInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1046,6 +1102,8 @@ export type PublicEventUncheckedUpdateWithoutRegistrationsInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1069,6 +1127,8 @@ export type PublicEventCreateWithoutReservationsInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   publishedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1094,6 +1154,8 @@ export type PublicEventUncheckedCreateWithoutReservationsInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   primaryImageId?: string | null
   coverImageId?: string | null
   publishedAt?: Date | string | null
@@ -1133,6 +1195,8 @@ export type PublicEventUpdateWithoutReservationsInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1158,6 +1222,8 @@ export type PublicEventUncheckedUpdateWithoutReservationsInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1181,6 +1247,8 @@ export type PublicEventCreateWithoutPrimaryImageInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   publishedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1206,6 +1274,8 @@ export type PublicEventUncheckedCreateWithoutPrimaryImageInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   coverImageId?: string | null
   publishedAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -1239,6 +1309,8 @@ export type PublicEventCreateWithoutCoverImageInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   publishedAt?: Date | string | null
   cancelledAt?: Date | string | null
   archivedAt?: Date | string | null
@@ -1264,6 +1336,8 @@ export type PublicEventUncheckedCreateWithoutCoverImageInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   primaryImageId?: string | null
   publishedAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -1329,6 +1403,8 @@ export type PublicEventCreateManyStoreInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   primaryImageId?: string | null
   coverImageId?: string | null
   publishedAt?: Date | string | null
@@ -1351,6 +1427,8 @@ export type PublicEventUpdateWithoutStoreInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1375,6 +1453,8 @@ export type PublicEventUncheckedUpdateWithoutStoreInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1399,6 +1479,8 @@ export type PublicEventUncheckedUpdateManyWithoutStoreInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1422,6 +1504,8 @@ export type PublicEventCreateManyPrimaryImageInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   coverImageId?: string | null
   publishedAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -1444,6 +1528,8 @@ export type PublicEventCreateManyCoverImageInput = {
   locationName?: string | null
   locationAddress?: string | null
   audienceStatus?: $Enums.EventAudienceStatus
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: string | null
   primaryImageId?: string | null
   publishedAt?: Date | string | null
   cancelledAt?: Date | string | null
@@ -1465,6 +1551,8 @@ export type PublicEventUpdateWithoutPrimaryImageInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1490,6 +1578,8 @@ export type PublicEventUncheckedUpdateWithoutPrimaryImageInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1514,6 +1604,8 @@ export type PublicEventUncheckedUpdateManyWithoutPrimaryImageInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1535,6 +1627,8 @@ export type PublicEventUpdateWithoutCoverImageInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1560,6 +1654,8 @@ export type PublicEventUncheckedUpdateWithoutCoverImageInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1584,6 +1680,8 @@ export type PublicEventUncheckedUpdateManyWithoutCoverImageInput = {
   locationName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audienceStatus?: Prisma.EnumEventAudienceStatusFieldUpdateOperationsInput | $Enums.EventAudienceStatus
+  hasSpecialConditions?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  specialConditionsNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   primaryImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1646,6 +1744,8 @@ export type PublicEventSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   locationName?: boolean
   locationAddress?: boolean
   audienceStatus?: boolean
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: boolean
   primaryImageId?: boolean
   coverImageId?: boolean
   publishedAt?: boolean
@@ -1675,6 +1775,8 @@ export type PublicEventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   locationName?: boolean
   locationAddress?: boolean
   audienceStatus?: boolean
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: boolean
   primaryImageId?: boolean
   coverImageId?: boolean
   publishedAt?: boolean
@@ -1701,6 +1803,8 @@ export type PublicEventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   locationName?: boolean
   locationAddress?: boolean
   audienceStatus?: boolean
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: boolean
   primaryImageId?: boolean
   coverImageId?: boolean
   publishedAt?: boolean
@@ -1727,6 +1831,8 @@ export type PublicEventSelectScalar = {
   locationName?: boolean
   locationAddress?: boolean
   audienceStatus?: boolean
+  hasSpecialConditions?: boolean
+  specialConditionsNote?: boolean
   primaryImageId?: boolean
   coverImageId?: boolean
   publishedAt?: boolean
@@ -1736,7 +1842,7 @@ export type PublicEventSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PublicEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "code" | "slug" | "title" | "shortDescription" | "description" | "status" | "startsAt" | "endsAt" | "locationName" | "locationAddress" | "audienceStatus" | "primaryImageId" | "coverImageId" | "publishedAt" | "cancelledAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["publicEvent"]>
+export type PublicEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "code" | "slug" | "title" | "shortDescription" | "description" | "status" | "startsAt" | "endsAt" | "locationName" | "locationAddress" | "audienceStatus" | "hasSpecialConditions" | "specialConditionsNote" | "primaryImageId" | "coverImageId" | "publishedAt" | "cancelledAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["publicEvent"]>
 export type PublicEventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   store?: boolean | Prisma.StoreDefaultArgs<ExtArgs>
   primaryImage?: boolean | Prisma.PublicEvent$primaryImageArgs<ExtArgs>
@@ -1779,6 +1885,8 @@ export type $PublicEventPayload<ExtArgs extends runtime.Types.Extensions.Interna
     locationName: string | null
     locationAddress: string | null
     audienceStatus: $Enums.EventAudienceStatus
+    hasSpecialConditions: boolean
+    specialConditionsNote: string | null
     primaryImageId: string | null
     coverImageId: string | null
     publishedAt: Date | null
@@ -2227,6 +2335,8 @@ export interface PublicEventFieldRefs {
   readonly locationName: Prisma.FieldRef<"PublicEvent", 'String'>
   readonly locationAddress: Prisma.FieldRef<"PublicEvent", 'String'>
   readonly audienceStatus: Prisma.FieldRef<"PublicEvent", 'EventAudienceStatus'>
+  readonly hasSpecialConditions: Prisma.FieldRef<"PublicEvent", 'Boolean'>
+  readonly specialConditionsNote: Prisma.FieldRef<"PublicEvent", 'String'>
   readonly primaryImageId: Prisma.FieldRef<"PublicEvent", 'String'>
   readonly coverImageId: Prisma.FieldRef<"PublicEvent", 'String'>
   readonly publishedAt: Prisma.FieldRef<"PublicEvent", 'DateTime'>
