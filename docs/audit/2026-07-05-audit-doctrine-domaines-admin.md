@@ -81,7 +81,7 @@ Tout ce qui suit est **Observé** sauf mention contraire (Documenté / Déduit /
 ## Écarts structurels hors grille (signalés, non audités à fond)
 
 - ~~Mock statistique en dur dans `content/seo/page.tsx`~~ — **résolu (observé 2026-07-22)** : les checks `titles`/`blog` sont marqués `mock: false` et lisent `countProductsMissingSeo`/`listAdminBlogPosts` en direct.
-- Mapping d'erreurs métier dupliqué dans les pages (`getTaxErrorMessage`, `getShippingZoneErrorMessage`) — candidat extraction features. **Non vérifié le 2026-07-22** (hors scope de cette relecture ponctuelle).
+- ~~Mapping d'erreurs métier dupliqué dans les pages (`getTaxErrorMessage`, `getShippingZoneErrorMessage`)~~ — **résolu (2026-07-22)** : extraction de `resolveAdminErrorMessage` (`features/admin/commerce/shared/`), chaque page déclare désormais sa table de codes→messages comme donnée plutôt que comme `switch`.
 
 ## Inconnu
 
