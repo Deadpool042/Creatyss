@@ -2,7 +2,7 @@
 
 ## Statut
 
-Champs métier produit (`name`, `shortDescription`, `description`) livrés côté code le 2026-07-22 — sujet dynamique `product` branché sur `LocalizedValue`, en miroir du pattern blog. Vérification manuelle navigateur (parcours visiteur multi-locale réel) **non exécutée** dans cette session — cf. section « Vérifications » ci-dessous.
+Champs métier produit (`name`, `shortDescription`, `description`) livrés côté code le 2026-07-22 — sujet dynamique `product` branché sur `LocalizedValue`, en miroir du pattern blog. Recette manuelle navigateur exécutée le 2026-07-22 (parcours visiteur multi-locale réel + admin traductions) — cf. section « Vérifications » ci-dessous. Un correctif d'hydratation a été appliqué sur `product-translations-form.tsx` pendant la recette.
 
 ## Objectif
 
@@ -62,16 +62,27 @@ Poursuite proposée :
 
 ## Vérifications
 
-- `pnpm run typecheck` — exécuté le 2026-07-22, vert
-- `pnpm run lint` — exécuté le 2026-07-22, vert
+- `pnpm run typecheck` — exécuté le 2026-07-22, vert (après correctif d'hydratation)
+- `pnpm run lint` — exécuté le 2026-07-22, vert (après correctif d'hydratation)
 - `pnpm run test` (ciblé : `tests/unit/features/storefront/catalog`, `tests/unit/features/admin/products`, `tests/unit/features/admin/blog`, `tests/unit/entities/localization`) — exécuté le 2026-07-22, 105 tests verts
-- Test manuel : blog et fiche produit affichés dans chaque locale gérée, fallback vérifié si traduction absente — **non exécuté** dans cette session (pas d'accès à un environnement navigateur/DB local dans ce lot ; couverture assurée par les tests unitaires du résolveur et de l'action d'écriture)
+- Test manuel navigateur (Playwright, `pnpm dev` local, store Creatyss avec locales `fr-FR` par défaut / `en-GB` secondaire) — exécuté le 2026-07-22 :
+  - Prérequis d'environnement : le niveau d'activation local de `platform.localization` était sur « Géré » (`managed`), donc la section « Traductions » de l'édition produit et les copies traduites côté storefront étaient invisibles avant recette. Relevé via `/admin/settings/advanced/optional/localization`, niveau temporairement monté à « Multilingue » pour la durée de la recette, puis redescendu à « Géré » en fin de session pour restituer l'état initial de la base locale.
+  - Admin `/admin/catalog/products/[slug]/edit` → section Traductions : saisie `name` + `shortDescription` pour deux produits (`cabas-atelier`, `bandouliere-rivoli`), enregistrement, toast de succès, persistance confirmée après rechargement complet de la page.
+  - Storefront, locale visiteur `en-GB` : fiche produit (H1, tagline canonique conservée hors périmètre, description courte traduits), `<title>` et JSON-LD alimentés par le même objet localisé pour un produit sans `SeoMetadata.metaTitle` custom (`bandouliere-rivoli` → « Rivoli Shoulder Bag »), listing boutique (`/boutique`) et favoris (`/favoris`) affichant le nom traduit.
+  - Fallback : traduction `name` vidée et ré-enregistrée pour `bandouliere-rivoli` → fiche produit, `<title>` et listing repassent immédiatement à la valeur canonique française, sans passage par `null`.
+  - Constat hors périmètre (non un bug de ce lot) : pour un produit disposant d'un `SeoMetadata.metaTitle` custom (`cabas-atelier`), le `<title>` reste sur ce titre SEO non traduit même en locale `en-GB`, car `generateMetadata` priorise `product.seoTitle` sur `product.name` (`app/(public)/boutique/[slug]/page.tsx:54`). `SeoMetadata` n'a jamais été dans le périmètre de ce lot (aucune mention dans « Périmètre » ni « Hors périmètre ») — à documenter comme lot séparé si la localisation des métadonnées SEO custom devient un besoin produit.
+
+## Correctif appliqué pendant la recette
+
+- **Bug reproduit** : `features/admin/products/components/editor/product-translations-form.tsx` passait un `<div>` comme `description` à `AdminFormField`, qui le rend dans un `<p>` (`components/ui/field.tsx` → `FieldDescription`). Nesting HTML invalide (`<p><div>…</div></p>`) → erreur d'hydratation React confirmée en console sur `/admin/catalog/products/[slug]/edit` (section Traductions visible).
+- **Correctif** : wrapper changé de `<div>` à `<span className="flex flex-wrap items-center gap-2">` (contenu déjà 100 % inline : `<span>`, `<code>`, `<Badge>` qui rend un `<span>`). Rechargement de la page après correctif : 0 erreur console.
+- **Portée du correctif** : limité au fichier livré par ce lot. Le même pattern (`<div>` en description) existe à l'identique dans 5 formulaires de traduction pré-existants et non modifiés par ce lot (`blog-post-translations-form.tsx`, `homepage-translations-form.tsx`, `contact-page-translations-form.tsx`, `content-page-translations-form.tsx`, `boutique-page-translations-form.tsx`, `product-page-translations-form.tsx`) — non corrigés ici pour rester dans le périmètre de la recette ; candidat à un micro-lot dédié (`repo-refactor`) si confirmé prioritaire.
 
 ## Critères de fin
 
 - Une nouvelle cible de contenu au-delà des pilotes actuels est branchée sur `LocalizedValue` — **fait** : `Product.name` / `shortDescription` / `description`
-- Le storefront ou la surface concernée affiche la traduction correcte selon la locale active, avec fallback — **couvert par tests unitaires** (résolveur `resolveLocalizedProductCopy`) ; non revérifié manuellement en navigateur
-- Les formulaires admin permettent la saisie des traductions pour cette cible — **fait** (`/admin/catalog/products/[slug]/edit`)
+- Le storefront ou la surface concernée affiche la traduction correcte selon la locale active, avec fallback — **fait, recetté manuellement le 2026-07-22** (fiche produit, listing, favoris, metadata/JSON-LD pour un produit sans SEO custom, fallback vérifié)
+- Les formulaires admin permettent la saisie des traductions pour cette cible — **fait et recetté** (`/admin/catalog/products/[slug]/edit`, enregistrement + persistance confirmés)
 - Les données existantes sont préservées après migration si des champs métier sont touchés — **sans objet** : aucune migration Prisma, les colonnes `Product` canoniques ne sont pas modifiées
 - `typecheck` et `lint` passent sans erreur — **fait**
 
