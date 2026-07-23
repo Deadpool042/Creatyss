@@ -11,11 +11,12 @@ import { AdminFormActions } from "@/components/admin/forms/admin-form-actions";
 import { AdminFormField } from "@/components/admin/forms/admin-form-field";
 import { toast } from "@/components/shared";
 import { cn } from "@/lib/utils";
-import {
-  setProductTranslationsAction,
-  type ProductTranslationsFormState,
-} from "@/features/admin/products/actions/set-product-translations.action";
 import type { ProductTranslationFieldState } from "@/features/admin/products/queries/list-product-translations.query";
+
+export type ProductTranslationsFormState = {
+  status: "idle" | "success" | "error";
+  message: string;
+};
 
 const INITIAL: ProductTranslationsFormState = { status: "idle", message: "" };
 
@@ -23,20 +24,26 @@ type ProductTranslationsFormProps = Readonly<{
   productId: string;
   targetLocaleName: string;
   fields: readonly ProductTranslationFieldState[];
+  action: (
+    prevState: ProductTranslationsFormState,
+    formData: FormData
+  ) => Promise<ProductTranslationsFormState>;
 }>;
 
 /**
- * Section traductions de l'éditeur produit (généralisation `LocalizedValue`,
- * sujet dynamique `product`). Formulaire indépendant du formulaire général
- * du produit : les champs vides retombent sur la valeur source (locale par
- * défaut).
+ * Section traductions de l'éditeur produit (généralisation `LocalizedValue`).
+ * Formulaire générique sur la donnée (`fields`) et sur la server action
+ * (`action`) — réutilisé pour le sujet dynamique `product` (page générale)
+ * et `product-seo` (onglet SEO). Les champs vides retombent sur la valeur
+ * source (locale par défaut).
  */
 export function ProductTranslationsForm({
   productId,
   targetLocaleName,
   fields,
+  action: submitAction,
 }: ProductTranslationsFormProps) {
-  const [state, action, isPending] = useActionState(setProductTranslationsAction, INITIAL);
+  const [state, action, isPending] = useActionState(submitAction, INITIAL);
 
   useEffect(() => {
     if (state.status === "success") toast.success(state.message);
