@@ -15,6 +15,7 @@ export const FEATURE_LEVELS = {
   integrations: ["basic"],
   search: ["basic"],
   channels: ["basic"],
+  publicEvents: ["basic"],
   tracking: ["active"],
   returns: ["manual", "partial"],
   taxation: ["store"],
@@ -404,8 +405,15 @@ export const FEATURE_CATALOG = [
     family: "optional",
     module: "engagement",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.publicEvents,
+    levelLabels: {
+      basic: "Basique",
+    },
+    levelDescriptions: {
+      basic: "Liste chronologique des marchés actifs sur la page publique dédiée.",
+    },
   },
   // Catalog products — core capabilities
   {
