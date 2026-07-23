@@ -69,6 +69,7 @@ docker/traefik/certs/*.pem
 # MemPalace local files
 entities.json
 mempalace.yaml
+.mempalace/
 
 # Artefacts recette Playwright MCP
 .playwright-mcp/

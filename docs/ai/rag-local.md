@@ -320,9 +320,11 @@ Remplacer le score lexical par un vecteur sémantique généré localement (ex. 
 
 Stocker les embeddings dans une base vectorielle locale (ChromaDB, Qdrant en mode local). Permet une recherche ANN (Approximate Nearest Neighbors) plus rapide sur un corpus plus grand.
 
-### Niveau 5 — Mémoire conversationnelle
+### Niveau 5 — Mémoire conversationnelle ✅ (MemPalace, wing `creatyss`)
 
-Intégrer un système de mémoire persistante par session IA (MemPalace ou équivalent). Permet à l'IA de retrouver le contexte de conversations précédentes sur le projet.
+MemPalace fournit la mémoire persistante inter-session : décisions, lots et contexte de projet, en complément du RAG (qui reste la référence pour la doctrine et la localisation de fichiers, jamais pour la preuve d'implémentation).
+
+Le mining de `docs/**` et `prisma/**` vers MemPalace est automatisé via `.githooks/post-commit` : après chaque commit touchant l'un de ces répertoires, `mempalace mine` est lancé en arrière-plan (silencieux si le CLI `mempalace` n'est pas installé sur le poste). Le mining est incrémental (mtime-gated côté MemPalace) — un commit qui ne touche pas ces fichiers ne redéclenche rien. `AGENTS.md` reste hors périmètre automatique : `mempalace mine` exige un répertoire, pas un fichier isolé, et miner toute la racine du repo pour ce seul fichier serait disproportionné ; il reste alimenté manuellement en session.
 
 ### Niveau 6 — Graphe de connaissances
 
