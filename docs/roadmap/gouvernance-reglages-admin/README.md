@@ -36,12 +36,13 @@ Audit complet réalisé en lecture seule (Phase 1 du protocole `settings/*`, cf.
 
 ## Lots
 
-| Fichier                                                                          | Description                                                                                                         | Statut             |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| [lot-gouvernance-lisibilite-niveaux.md](./lot-gouvernance-lisibilite-niveaux.md) | Rendre lisible, pour chaque niveau d'une fonctionnalité graduée, ce qu'il fait et ce qu'il apporte, avant sélection | Livré — 2026-07-03 |
-| [lot-nav-avance-clarification.md](./lot-nav-avance-clarification.md)             | Signaler visuellement que "Avancé" est un panneau technique, distinct des réglages métier                           | Livré — 2026-07-03 |
-| [lot-livraison-zones-methodes.md](./lot-livraison-zones-methodes.md)             | UI de gestion de plusieurs zones et méthodes de livraison — périmètre admin, sélection géographique hors périmètre  | Livré — 2026-07-03 |
-| [lot-decision-paiement-carte.md](./lot-decision-paiement-carte.md)               | Décision produit : exposer ou non Stripe/carte dans l'admin — résolu par un indicateur de statut                    | Livré — 2026-07-03 |
+| Fichier                                                                          | Description                                                                                                         | Statut                                                                        |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| [lot-gouvernance-lisibilite-niveaux.md](./lot-gouvernance-lisibilite-niveaux.md) | Rendre lisible, pour chaque niveau d'une fonctionnalité graduée, ce qu'il fait et ce qu'il apporte, avant sélection | Livré — 2026-07-03                                                            |
+| [lot-nav-avance-clarification.md](./lot-nav-avance-clarification.md)             | Signaler visuellement que "Avancé" est un panneau technique, distinct des réglages métier                           | Livré — 2026-07-03                                                            |
+| [lot-livraison-zones-methodes.md](./lot-livraison-zones-methodes.md)             | UI de gestion de plusieurs zones et méthodes de livraison — périmètre admin, sélection géographique hors périmètre  | Livré — 2026-07-03                                                            |
+| [lot-decision-paiement-carte.md](./lot-decision-paiement-carte.md)               | Décision produit : exposer ou non Stripe/carte dans l'admin — résolu par un indicateur de statut                    | Livré — 2026-07-03                                                            |
+| [lot-sales-policy.md](./lot-sales-policy.md)                                     | Formaliser le domaine politique de vente (vendabilité contextuelle)                                                 | A faire — Prisma posé et documenté, jamais scopé jusqu'ici (audit 2026-07-23) |
 
 Taxation par catégorie et historique/RGPD client : non repris ici, déjà cadrés comme "à venir" ailleurs dans le repo (cf. état observé ci-dessus) — pas de nouveau lot nécessaire pour l'instant.
 
