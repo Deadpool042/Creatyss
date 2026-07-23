@@ -4,6 +4,8 @@
 
 Champs métier produit (`name`, `shortDescription`, `description`) livrés côté code le 2026-07-22 — sujet dynamique `product` branché sur `LocalizedValue`, en miroir du pattern blog. Recette manuelle navigateur exécutée le 2026-07-22 (parcours visiteur multi-locale réel + admin traductions) — cf. section « Vérifications » ci-dessous. Un correctif d'hydratation a été appliqué sur `product-translations-form.tsx` pendant la recette.
 
+Champs SEO produit (`metaTitle`, `metaDescription`, `openGraphTitle`, `openGraphDescription`, `twitterTitle`, `twitterDescription`) livrés côté code le 2026-07-23 — sujet dynamique `product-seo`, corrige l'écart repéré pendant la recette du 2026-07-22 (`<title>` non localisé quand un `seoTitle` custom existe). Recette manuelle navigateur exécutée le 2026-07-23 — cf. « Poursuite proposée » ci-dessous.
+
 ## Objectif
 
 Poursuivre la généralisation de la convention `LocalizedValue` au-delà des pilotes déjà observés (`homepage`, `product-page-copy`, `boutique-page-copy`), en l'étendant aux prochains contenus métier pertinents. Le routing localisé est observé comme complet (`platform.localization` L3, lot 5 `localized-routing` fait en 2026-06-16).
@@ -34,6 +36,14 @@ Poursuite proposée :
 
 - réutiliser le pattern existant sans le redessiner
 - étendre si besoin aux produits associés (`RelatedProduct`) dans un lot dédié
+
+SEO produit livré côté code le 2026-07-23 :
+
+- sujet dynamique `product-seo` (`entities/localization/product-seo-copy-fields.ts`) : `metaTitle`, `metaDescription`, `openGraphTitle`, `openGraphDescription`, `twitterTitle`, `twitterDescription` — `subjectId` = `Product.id`, même convention que `SeoMetadata.subjectId` pour un produit
+- résolution storefront (`resolve-localized-product-seo-copy.ts`), branchée dans `getPublishedProductBySlug` — couvre `<title>`, `<meta description>`, Open Graph, Twitter Card et JSON-LD en un seul point d'injection
+- admin `/admin/catalog/products/[slug]/seo` : section « Traductions SEO » (`ProductTranslationsForm` généralisé avec une prop `action`, réutilisé pour les deux sujets dynamiques `product` et `product-seo`)
+- corrige l'écart repéré pendant la recette du 2026-07-22 : un `seoTitle` custom priorisait toujours la version canonique même en locale secondaire — recetté manuellement le 2026-07-23 (`cabas-atelier`, `en-GB` : titre traduit affiché, fallback vérifié sur champ vidé)
+- hors périmètre : `metaKeywords`, `canonicalPath`, `indexingMode`, images OG/Twitter (non textuels)
 
 ## Hors périmètre
 

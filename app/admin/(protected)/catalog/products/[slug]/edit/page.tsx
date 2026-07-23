@@ -21,6 +21,7 @@ import {
 } from "@/features/admin/products/components/editor/product-archived-actions";
 import { ProductGeneralTab } from "@/features/admin/products/components/editor/product-general-tab";
 import { ProductTranslationsForm } from "@/features/admin/products/components/editor/product-translations-form";
+import { setProductTranslationsAction } from "@/features/admin/products/actions/set-product-translations.action";
 import { ProductEditorTopbarMenu } from "@/features/admin/products/components/editor/product-topbar-menus";
 import { ProductSectionEyebrow } from "@/features/admin/products/components/shared/product-section-eyebrow";
 import {
@@ -236,6 +237,7 @@ export default async function ProductDetailEditPage({
               productId={editor.product.id}
               targetLocaleName={translationsState.targetLocaleName}
               fields={translationsState.fields}
+              action={setProductTranslationsAction}
             />
           </AdminFormSection>
         </div>
