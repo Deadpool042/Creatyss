@@ -71,5 +71,8 @@ entities.json
 mempalace.yaml
 .mempalace/
 
+# lean-ctx local tooling config (préférence personnelle, pas du code partagé)
+.lean-ctx.toml
+
 # Artefacts recette Playwright MCP
 .playwright-mcp/
