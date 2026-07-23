@@ -11,6 +11,7 @@ export const FEATURE_LEVELS = {
   localization: ["managed", "multilingual", "localized-routing"],
   fulfillment: ["manual", "partial"],
   automations: ["basic"],
+  notifications: ["basic"],
   tracking: ["active"],
   returns: ["manual", "partial"],
   taxation: ["store"],
@@ -179,8 +180,15 @@ export const FEATURE_CATALOG = [
     family: "optional",
     module: "platform",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.notifications,
+    levelLabels: {
+      basic: "Basique",
+    },
+    levelDescriptions: {
+      basic: "Référentiel interne des notifications opérationnelles et transactionnelles.",
+    },
   },
   {
     key: "platform.integrations",

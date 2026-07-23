@@ -1,7 +1,7 @@
 import "server-only";
 
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export async function isNotificationsFeatureActive(): Promise<boolean> {
-  return queryFeatureFlagActive("platform.notifications");
+  return meetsFeatureLevel("platform.notifications", "basic");
 }
