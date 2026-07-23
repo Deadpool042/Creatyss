@@ -396,6 +396,49 @@ Etat reel apres lot :
 Les questions ouvertes sur `webhooks`, les contrats et les strategies de retry
 restent donc entieres pour les increments suivants.
 
+### Cadrage 2026-07-23 — socle de stockage chiffré réversible
+
+Constat préalable à `lot-integrations-providers.md`
+(`docs/roadmap/h4-plateforme-automatisation/lot-integrations-providers.md`) :
+`IntegrationCredential.secretHash` est un hash irréversible (pattern
+vérification, comme un mot de passe). Un adaptateur provider qui doit
+rappeler l'API tierce a besoin de renvoyer le secret en clair dans ses
+requêtes sortantes — un hash ne le permet jamais. Écart avec le cadrage 2026-06-14
+qui évoquait un « stockage chiffré » sans le câbler.
+
+Décision : étendre `IntegrationCredential` (pas de modèle séparé — un
+credential reste une seule entité, seul son usage varie selon les champs
+renseignés) avec deux champs :
+
+- `encryptedValue String?` — payload opaque AES-256-GCM (iv + authTag +
+  ciphertext encodés ensemble dans un seul champ texte, pas de colonnes
+  séparées — la structure interne n'a pas besoin d'être requêtable) ;
+- `encryptionVersion Int?` — permet une rotation de clé/algorithme future
+  sans migration bloquante.
+
+`secretHash` est conservé tel quel pour les credentials verification-only
+(ex. futur secret de signature webhook sortant). La clé de chiffrement
+elle-même n'a aucun champ en DB — invariant du cadrage 2026-06-14 respecté
+("jamais en DB").
+
+Etat reel apres ce lot (schéma seul) :
+
+- **stockage chiffré réversible** : schéma prêt (`encryptedValue`,
+  `encryptionVersion`), aucune donnée encore écrite ;
+- **utilitaire encrypt/decrypt** : non implémenté — aucun pattern de
+  chiffrement réversible existant ailleurs dans le repo à réutiliser
+  (le repo n'utilise que SHA-256/HMAC, tous irréversibles) ; à créer dans
+  `core/security/` ou `core/crypto/` (primitive transverse, hors boundaries
+  `features/**`), lisant la clé de chiffrement via `serverEnv` (jamais stockée en DB) ;
+- **adaptateur provider** : non — reste bloqué sur la décision produit du
+  premier provider cible (ERP/CRM/marketplace, cf. lot) ;
+- **UI de saisie de credentials** : non.
+
+Point de vigilance pour l'implémentation suivante : une fois l'utilitaire
+encrypt/decrypt en place, vérifier qu'aucune server action ni log n'expose
+`encryptedValue` en clair — même chiffré, le champ ne doit jamais transiter
+vers le client.
+
 ---
 
 ## Documents liés
