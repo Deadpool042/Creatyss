@@ -8,6 +8,8 @@ Champs SEO produit (`metaTitle`, `metaDescription`, `openGraphTitle`, `openGraph
 
 Cartes de produits associés (`relatedFrom`) livrées côté code le 2026-07-23 — réutilisation du sujet `product` existant, aucun nouveau sujet ni écran admin. Recette manuelle navigateur exécutée le 2026-07-23.
 
+Champs métier catégorie (`name`, `shortDescription`, `description`) livrés côté code le 2026-07-23 — sujet dynamique `category` (`entities/localization/category-copy-fields.ts`), miroir strict du pattern `product`. Résolution storefront (`resolve-localized-category-copy.ts`), branchée dans `listCatalogFilterCategories`. Admin : section « Localisation » sur la page d'édition catégorie (`app/admin/(protected)/catalog/categories/@detail/[slug]/page.tsx`), même gate `meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual")`. Recette manuelle navigateur non encore exécutée (typecheck/lint/tests unitaires verts).
+
 ## Objectif
 
 Poursuivre la généralisation de la convention `LocalizedValue` au-delà des pilotes déjà observés (`homepage`, `product-page-copy`, `boutique-page-copy`), en l'étendant aux prochains contenus métier pertinents. Le routing localisé est observé comme complet (`platform.localization` L3, lot 5 `localized-routing` fait en 2026-06-16).
@@ -52,7 +54,7 @@ SEO produit livré côté code le 2026-07-23 :
 
 - Traduction automatique (machine translation via API)
 - Workflow collaboratif de traduction (rôles traducteur, validation)
-- Multilangue pour les catégories, les autres pages statiques et les emails transactionnels (peuvent suivre lot par lot)
+- Multilangue pour les autres pages statiques et les emails transactionnels (peuvent suivre lot par lot)
 - Ajout de nouvelles locales (la gestion des locales supportées est dans `core/localization/supported-locales.ts`, hors périmètre de ce lot)
 
 ## Dépendances
