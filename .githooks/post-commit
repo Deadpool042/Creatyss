@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Alimente MemPalace automatiquement quand un commit touche docs/** ou
+# prisma/** — miroir du pre-commit rag:check-sources, mais côté MemPalace.
+# `mempalace mine` est incrémental (mtime-gated côté palace.py) : ré-exécuter
+# sur tout docs/ ou prisma/ à chaque commit ne re-mine que ce qui a changé.
+#
+# AGENTS.md est hors périmètre : `mempalace mine` exige un répertoire, pas un
+# fichier isolé, et miner toute la racine du repo pour un seul fichier serait
+# disproportionné. Reste alimenté manuellement en session.
+
+command -v mempalace >/dev/null 2>&1 || exit 0
+
+changed_files=$(git diff --name-only HEAD^ HEAD 2>/dev/null || git show --name-only --format="" HEAD)
+
+mine_targets=()
+if echo "$changed_files" | grep -q '^docs/'; then
+  mine_targets+=("docs")
+fi
+if echo "$changed_files" | grep -q '^prisma/'; then
+  mine_targets+=("prisma")
+fi
+
+[ ${#mine_targets[@]} -eq 0 ] && exit 0
+
+mkdir -p .mempalace
+log_file=".mempalace/hook.log"
+
+for dir in "${mine_targets[@]}"; do
+  nohup mempalace mine "$dir" --wing creatyss --agent git-hook >>"$log_file" 2>&1 &
+done
+disown -a 2>/dev/null || true
+
+exit 0
