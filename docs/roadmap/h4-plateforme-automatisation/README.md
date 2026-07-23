@@ -6,7 +6,7 @@
 
 ---
 
-## État au 2026-07-05
+## État au 2026-07-22
 
 ### Observé comme terminé (base)
 
@@ -22,7 +22,7 @@
 - `platform.integrations` : aucun adaptateur provider concret — observé
 - `satellite.channels` : aucune synchronisation vers Google/Meta — observé
 - ~~`satellite.search` : aucun moteur de recherche storefront~~ — livré le 2026-07-05 (FTS french, cf. lot-search-storefront)
-- `platform.localization` : généralisation `LocalizedValue` observée sur `homepage`, `product-page-copy`, `boutique-page-copy`, pages de contenu (`contact`, `a-propos`, `les-marches`) et blog (`title`, `excerpt`, `content`) ; restent hors pilote les vrais champs métier produit
+- ~~`platform.localization` : restent hors pilote les vrais champs métier produit~~ — livré le 2026-07-22 (`Product.name`/`shortDescription`/`description`, recette manuelle faite, cf. lot-multilangue-generalise) ; restent hors périmètre `RelatedProduct` et `SeoMetadata.metaTitle` (non localisé)
 - `ai.core` : aucun provider SDK réel branché — observé
 
 ---
@@ -39,16 +39,16 @@
 
 ## Lots
 
-| Fichier                                                          | Description                                                               | Statut                                                  |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------- |
-| [lot-webhooks-sortants.md](./lot-webhooks-sortants.md)           | Livraison webhook sortante avec signature HMAC et retry                   | Terminé — 2026-07-05                                    |
-| [lot-integrations-providers.md](./lot-integrations-providers.md) | Brancher un premier adaptateur concret sur le modèle Integration          | A faire                                                 |
-| [lot-channels-google-meta.md](./lot-channels-google-meta.md)     | Synchroniser le catalogue vers Google Merchant Center ou Meta Catalog     | A faire                                                 |
-| [lot-search-storefront.md](./lot-search-storefront.md)           | Recherche full-text dans le storefront                                    | Terminé — 2026-07-05 (PostgreSQL FTS french)            |
-| [lot-multilangue-generalise.md](./lot-multilangue-generalise.md) | Étendre la généralisation `LocalizedValue` au-delà des pilotes déjà faits | En cours — blog branché, champs métier produit restants |
-| [lot-ai-sdk-provider.md](./lot-ai-sdk-provider.md)               | Brancher un SDK AI réel sur le modèle AiProvider                          | A faire                                                 |
+| Fichier                                                          | Description                                                               | Statut                                                               |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [lot-webhooks-sortants.md](./lot-webhooks-sortants.md)           | Livraison webhook sortante avec signature HMAC et retry                   | Terminé — 2026-07-05                                                 |
+| [lot-integrations-providers.md](./lot-integrations-providers.md) | Brancher un premier adaptateur concret sur le modèle Integration          | A faire                                                              |
+| [lot-channels-google-meta.md](./lot-channels-google-meta.md)     | Synchroniser le catalogue vers Google Merchant Center ou Meta Catalog     | A faire                                                              |
+| [lot-search-storefront.md](./lot-search-storefront.md)           | Recherche full-text dans le storefront                                    | Terminé — 2026-07-05 (PostgreSQL FTS french)                         |
+| [lot-multilangue-generalise.md](./lot-multilangue-generalise.md) | Étendre la généralisation `LocalizedValue` au-delà des pilotes déjà faits | Terminé — 2026-07-22 (champs métier produit, recette manuelle faite) |
+| [lot-ai-sdk-provider.md](./lot-ai-sdk-provider.md)               | Brancher un SDK AI réel sur le modèle AiProvider                          | A faire                                                              |
 
-Tous ces lots sont relativement indépendants entre eux et peuvent être priorisés selon la valeur métier perçue. `lot-multilangue-generalise` dispose déjà de pilotes observés et peut se poursuivre dès que la prochaine cible de contenu est tranchée. `lot-webhooks-sortants` bénéficie d'un catalogue stable (H2 recommandé).
+Tous ces lots sont relativement indépendants entre eux et peuvent être priorisés selon la valeur métier perçue. `lot-multilangue-generalise` est terminé ; deux extensions restent identifiées mais non scopées en lot dédié : `RelatedProduct` (produits associés, non branchés sur `LocalizedValue`) et `SeoMetadata.metaTitle` (ne respecte pas la locale active, repéré pendant la recette du 2026-07-22). `lot-webhooks-sortants` bénéficie d'un catalogue stable (H2 recommandé).
 
 ---
 
