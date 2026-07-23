@@ -86,6 +86,17 @@ model IntegrationCredential {
   secretPrefix String?
   valueHint    String?
 
+  /// Charge chiffree reversible (AES-256-GCM) permettant a un adaptateur de
+  /// rappeler l'API du fournisseur avec le secret en clair. Payload opaque
+  /// encodant iv + authTag + ciphertext ; la cle de chiffrement vit hors DB
+  /// (variable d'environnement), jamais en base. Absent pour les credentials
+  /// verification-only (secretHash suffit).
+  encryptedValue String?
+
+  /// Version de la cle/algorithme de chiffrement ayant produit encryptedValue,
+  /// pour permettre une rotation de cle sans migration de donnees bloquante.
+  encryptionVersion Int?
+
   status IntegrationCredentialStatus @default(ACTIVE)
 
   expiresAt  DateTime?
