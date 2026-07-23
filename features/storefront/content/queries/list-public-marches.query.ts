@@ -2,7 +2,7 @@ import "server-only";
 
 import { db } from "@/core/db";
 import { getCurrentStoreId } from "@/features/admin/store/queries/get-current-store-id.query";
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 export type PublicMarche = {
   id: string;
@@ -25,7 +25,7 @@ export type PublicMarche = {
  * d'erreur, la page conserve alors son placeholder.
  */
 export async function listPublicMarches(): Promise<PublicMarche[]> {
-  const featureActive = await queryFeatureFlagActive("engagement.public-events");
+  const featureActive = await meetsFeatureLevel("engagement.public-events", "basic");
 
   if (!featureActive) {
     return [];

@@ -2,6 +2,10 @@ import type { PrismaClient } from "@/prisma-generated/client";
 
 export const SEARCH_FEATURE_CODE = "satellite.search";
 
+export const SEARCH_ALLOWED_LEVELS = ["basic"] as const;
+
+export const SEARCH_DEFAULT_LEVEL: string = SEARCH_ALLOWED_LEVELS[0];
+
 export async function seedSearchFeatureFlag(db: PrismaClient): Promise<void> {
   const store = await db.store.findFirst({
     select: { id: true },
@@ -22,6 +26,8 @@ export async function seedSearchFeatureFlag(db: PrismaClient): Promise<void> {
     update: {
       name: "Recherche indexee",
       description: "Referentiel interne des documents indexes pour la recherche.",
+      allowedLevels: [...SEARCH_ALLOWED_LEVELS],
+      defaultLevel: SEARCH_DEFAULT_LEVEL,
     },
     create: {
       storeId: store.id,
@@ -31,6 +37,8 @@ export async function seedSearchFeatureFlag(db: PrismaClient): Promise<void> {
       status: "DRAFT",
       scopeType: "STORE",
       isEnabledByDefault: false,
+      allowedLevels: [...SEARCH_ALLOWED_LEVELS],
+      defaultLevel: SEARCH_DEFAULT_LEVEL,
     },
   });
 }

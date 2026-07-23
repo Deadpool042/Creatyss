@@ -12,12 +12,12 @@ La page se construit dynamiquement à partir du catalogue — aucune modificatio
 
 ## 2. Quatre états distincts à ne pas confondre
 
-| État | Signification |
-|---|---|
-| **Modèle Prisma existant** | La table existe en base, le schéma est défini. Aucune UI ne l'exploite encore. |
-| **Feature cataloguée** | Une entrée est présente dans `FEATURE_CATALOG`. Le système de pilotage connaît le module. |
-| **Feature activée** | `status = ACTIVE` en base. Le module est activé. L'UI peut ne pas encore exister. |
-| **UI implémentée** | Les composants, pages et actions métier sont réellement en place et utilisables. |
+| État                       | Signification                                                                             |
+| -------------------------- | ----------------------------------------------------------------------------------------- |
+| **Modèle Prisma existant** | La table existe en base, le schéma est défini. Aucune UI ne l'exploite encore.            |
+| **Feature cataloguée**     | Une entrée est présente dans `FEATURE_CATALOG`. Le système de pilotage connaît le module. |
+| **Feature activée**        | `status = ACTIVE` en base. Le module est activé. L'UI peut ne pas encore exister.         |
+| **UI implémentée**         | Les composants, pages et actions métier sont réellement en place et utilisables.          |
 
 Ces états sont indépendants. Une feature peut être cataloguée et activable sans que son UI soit développée.
 Un modèle Prisma peut exister en base sans feature correspondante dans le catalogue.
@@ -50,51 +50,53 @@ Un modèle Prisma peut exister en base sans feature correspondante dans le catal
 
 ## 5. Exemples concrets
 
-### `commerce.documents`
+> Ces exemples sont volontairement génériques (clés fictives) pour ne pas dériver de l'état réel
+> du catalogue à chaque lot. Pour l'état courant d'une feature précise (mutability, niveaux,
+> UI implémentée ou non), se référer à `FEATURE_CATALOG`
+> (`features/admin/feature-governance/catalog/feature-catalog.ts`) et à
+> `docs/roadmap/2026-06-13-audit-catalogue-modules.md` — jamais à cette doc, qui ne fait foi que
+> sur la structure du système, pas sur l'état d'une feature donnée.
+
+### État L1 — schéma préparé, feature cataloguée, UI non implémentée
+
 ```ts
 {
-  key: "commerce.documents",
-  label: "Documents commerciaux",
+  key: "module.exemple",
+  label: "Exemple de module",
   family: "satellite",
-  module: "commerce",
+  module: "module",
   defaultState: "inactive",
   mutability: "toggleable",
   scopes: ["store"],
 }
 ```
-Schéma Prisma préparé. Feature cataloguée. UI non implémentée.
+
+Schéma Prisma préparé. Feature cataloguée. UI non implémentée : la page `settings/advanced`
+affiche l'entrée, mais aucune section admin dédiée ne l'exploite encore (pas de placeholder
+`AdminComingSoon` tant que la section n'est pas prévue).
 
 ---
 
-### `platform.notifications`
+### État L3 — feature graduée, UI implémentée
+
 ```ts
 {
-  key: "platform.notifications",
-  label: "Notifications",
+  key: "module.exemple",
+  label: "Exemple de module",
   family: "optional",
-  module: "platform",
+  module: "module",
   defaultState: "inactive",
-  mutability: "toggleable",
+  mutability: "level_selectable",
   scopes: ["store"],
+  levels: FEATURE_LEVELS.exemple,
+  levelLabels: { basic: "Basique" },
+  levelDescriptions: { basic: "Description du niveau basique." },
 }
 ```
-Feature cataloguée. Pas de placeholder settings. UI non implémentée.
 
----
-
-### `satellite.search`
-```ts
-{
-  key: "satellite.search",
-  label: "Recherche avancée",
-  family: "satellite",
-  module: "satellite",
-  defaultState: "inactive",
-  mutability: "toggleable",
-  scopes: ["store"],
-}
-```
-Feature cataloguée. Module satellite optionnel. Pas de placeholder settings. UI non implémentée.
+Feature cataloguée, graduée (au moins un niveau dans `FEATURE_LEVELS`), gating résolu via
+`meetsFeatureLevel(code, level)` (`features/feature-flags/queries/get-feature-level-state.query.ts`).
+UI et logique métier implémentées.
 
 ---
 

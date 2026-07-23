@@ -2,10 +2,10 @@ import type { PrismaClient } from "@/prisma-generated/client";
 
 export const PUBLIC_EVENTS_FEATURE_CODE = "engagement.public-events";
 
-/**
- * Feature flag non gradué (pas de `allowedLevels`/`defaultLevel`) : simple
- * bascule actif/inactif pour le module marchés (`PublicEvent`).
- */
+export const PUBLIC_EVENTS_ALLOWED_LEVELS = ["basic"] as const;
+
+export const PUBLIC_EVENTS_DEFAULT_LEVEL: string = PUBLIC_EVENTS_ALLOWED_LEVELS[0];
+
 export async function seedPublicEventsFeatureFlag(db: PrismaClient): Promise<void> {
   const store = await db.store.findFirst({
     select: { id: true },
@@ -26,6 +26,8 @@ export async function seedPublicEventsFeatureFlag(db: PrismaClient): Promise<voi
     update: {
       name: "Marchés",
       description: "Gestion des marchés (dates, lieux) affichés sur la page publique dédiée.",
+      allowedLevels: [...PUBLIC_EVENTS_ALLOWED_LEVELS],
+      defaultLevel: PUBLIC_EVENTS_DEFAULT_LEVEL,
     },
     create: {
       storeId: store.id,
@@ -35,6 +37,8 @@ export async function seedPublicEventsFeatureFlag(db: PrismaClient): Promise<voi
       status: "DRAFT",
       scopeType: "STORE",
       isEnabledByDefault: false,
+      allowedLevels: [...PUBLIC_EVENTS_ALLOWED_LEVELS],
+      defaultLevel: PUBLIC_EVENTS_DEFAULT_LEVEL,
     },
   });
 }
