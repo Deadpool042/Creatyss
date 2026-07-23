@@ -22,7 +22,7 @@
 - `platform.integrations` : aucun adaptateur provider concret — observé
 - `satellite.channels` : aucune synchronisation vers Google/Meta — observé
 - ~~`satellite.search` : aucun moteur de recherche storefront~~ — livré le 2026-07-05 (FTS french, cf. lot-search-storefront)
-- ~~`platform.localization` : restent hors pilote les vrais champs métier produit~~ — livré le 2026-07-22 (`Product.name`/`shortDescription`/`description`, recette manuelle faite, cf. lot-multilangue-generalise) ; restent hors périmètre `RelatedProduct` et `SeoMetadata.metaTitle` (non localisé)
+- ~~`platform.localization` : restent hors pilote les vrais champs métier produit, SEO et produits associés~~ — livré le 2026-07-22 (`Product.name`/`shortDescription`/`description`) puis le 2026-07-23 (`SeoMetadata` texte, `RelatedProduct`), recettes manuelles faites, cf. lot-multilangue-generalise
 - `ai.core` : aucun provider SDK réel branché — observé
 
 ---

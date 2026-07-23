@@ -16,6 +16,21 @@ export async function getPublishedProductBySlug(
   }
 
   const [localizedProduct] = await resolveLocalizedProductCopy([product]);
+  const resolvedProduct = localizedProduct ?? product;
+
+  const localizedRelatedTargets = await resolveLocalizedProductCopy(
+    resolvedProduct.relatedFrom.map((rel) => rel.targetProduct)
+  );
+  const localizedRelatedTargetsById = new Map(
+    localizedRelatedTargets.map((target) => [target.id, target])
+  );
+  const productWithLocalizedRelated = {
+    ...resolvedProduct,
+    relatedFrom: resolvedProduct.relatedFrom.map((rel) => ({
+      ...rel,
+      targetProduct: localizedRelatedTargetsById.get(rel.targetProduct.id) ?? rel.targetProduct,
+    })),
+  };
 
   const { seoMetadata, galleryReferences } = await readPublishedProductSideData({
     storeId: product.storeId,
@@ -29,7 +44,7 @@ export async function getPublishedProductBySlug(
   );
 
   return mapPublishedProductDetail({
-    product: localizedProduct ?? product,
+    product: productWithLocalizedRelated,
     seoMetadata: localizedSeoMetadata,
     galleryReferences,
     uploadsPublicPath: getUploadsPublicPath(),
