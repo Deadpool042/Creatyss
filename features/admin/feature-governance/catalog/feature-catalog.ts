@@ -12,6 +12,9 @@ export const FEATURE_LEVELS = {
   fulfillment: ["manual", "partial"],
   automations: ["basic"],
   notifications: ["basic"],
+  integrations: ["basic"],
+  search: ["basic"],
+  channels: ["basic"],
   tracking: ["active"],
   returns: ["manual", "partial"],
   taxation: ["store"],
@@ -198,8 +201,16 @@ export const FEATURE_CATALOG = [
     family: "optional",
     module: "platform",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store", "global"],
+    levels: FEATURE_LEVELS.integrations,
+    levelLabels: {
+      basic: "Basique",
+    },
+    levelDescriptions: {
+      basic:
+        "Référentiel interne des intégrations, credentials redacted et états de synchronisation.",
+    },
   },
   {
     key: "platform.webhooks",
@@ -254,8 +265,15 @@ export const FEATURE_CATALOG = [
     family: "satellite",
     module: "satellite",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.search,
+    levelLabels: {
+      basic: "Basique",
+    },
+    levelDescriptions: {
+      basic: "Lecture admin du référentiel de recherche indexé.",
+    },
   },
   {
     key: "satellite.channels",
@@ -265,8 +283,15 @@ export const FEATURE_CATALOG = [
     family: "satellite",
     module: "satellite",
     defaultState: "inactive",
-    mutability: "toggleable",
+    mutability: "level_selectable",
     scopes: ["store"],
+    levels: FEATURE_LEVELS.channels,
+    levelLabels: {
+      basic: "Basique",
+    },
+    levelDescriptions: {
+      basic: "Compteurs et derniers canaux/statuts produit-variante, lecture admin.",
+    },
   },
   // Engagement — optional modules
   {

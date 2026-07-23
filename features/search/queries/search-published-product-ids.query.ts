@@ -1,7 +1,7 @@
 import "server-only";
 
 import { db } from "@/core/db";
-import { queryFeatureFlagActive } from "@/features/feature-flags/queries/query-feature-flag-active";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
 
 import { PRODUCT_SEARCH_SUBJECT_TYPE } from "@/features/search/services/sync-product-search-document.service";
 
@@ -13,7 +13,7 @@ const MAX_SEARCH_RESULTS = 200;
  * alors le fallback ILIKE existant (aucune régression flag OFF).
  */
 export async function searchPublishedProductIds(searchQuery: string): Promise<string[] | null> {
-  const featureActive = await queryFeatureFlagActive("satellite.search");
+  const featureActive = await meetsFeatureLevel("satellite.search", "basic");
 
   if (!featureActive) {
     return null;
