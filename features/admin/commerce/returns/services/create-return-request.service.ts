@@ -22,6 +22,10 @@ type CreateReturnRequestInput = {
   storeId: string;
   /** Lignes à retourner. Si absent → toutes les lignes (V1). */
   lines?: ReadonlyArray<ReturnLineInput>;
+  /** Motif catégorisé de la demande (ex. origine storefront). Optionnel. */
+  reasonCode?: string;
+  /** Note libre associée à la demande. Optionnel. */
+  notes?: string;
 };
 
 function generateReturnNumber(year: number): string {
@@ -104,6 +108,8 @@ export async function createReturnRequest(input: CreateReturnRequestInput) {
         customerId: order.customerId,
         returnNumber: generateReturnNumber(new Date().getFullYear()),
         status: "REQUESTED",
+        reasonCode: input.reasonCode ?? null,
+        notes: input.notes ?? null,
         requestedAt: new Date(),
         items: {
           create: itemsToCreate.map((item) => ({
