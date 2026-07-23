@@ -10,6 +10,7 @@ import {
   checkStorefrontReturnEligibilityAction,
   type CheckStorefrontReturnEligibilityActionResult,
 } from "@/features/storefront/returns/actions/check-storefront-return-eligibility-action";
+import { ReturnSubmissionForm } from "@/features/storefront/returns/components/return-submission-form";
 import { RETURN_REASON_CATEGORY_OPTIONS } from "@/features/storefront/returns/lib/return-reason-labels";
 
 const GENERIC_UNAVAILABLE_MESSAGE =
@@ -139,84 +140,94 @@ export function ReturnEligibilityForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="grid gap-2">
-        <Label htmlFor="return-reference">Référence de commande</Label>
-        <Input
-          id="return-reference"
-          name="reference"
-          type="text"
-          value={reference}
-          onChange={(event) => handleReferenceChange(event.target.value)}
-          placeholder="CRY-XXXXXXXXXX"
-          disabled={isPending}
-          aria-invalid={fieldErrors.reference ? true : undefined}
-          aria-describedby={fieldErrors.reference ? referenceErrorId : undefined}
-        />
-        <p className="text-[11px] text-muted-foreground/60">
-          Disponible dans votre email de confirmation.
-        </p>
-        {fieldErrors.reference ? (
-          <p id={referenceErrorId} className="text-xs text-feedback-error-foreground" role="alert">
-            {fieldErrors.reference}
+    <div className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="grid gap-2">
+          <Label htmlFor="return-reference">Référence de commande</Label>
+          <Input
+            id="return-reference"
+            name="reference"
+            type="text"
+            value={reference}
+            onChange={(event) => handleReferenceChange(event.target.value)}
+            placeholder="CRY-XXXXXXXXXX"
+            disabled={isPending}
+            aria-invalid={fieldErrors.reference ? true : undefined}
+            aria-describedby={fieldErrors.reference ? referenceErrorId : undefined}
+          />
+          <p className="text-[11px] text-muted-foreground/60">
+            Disponible dans votre email de confirmation.
           </p>
-        ) : null}
-      </div>
+          {fieldErrors.reference ? (
+            <p
+              id={referenceErrorId}
+              className="text-xs text-feedback-error-foreground"
+              role="alert"
+            >
+              {fieldErrors.reference}
+            </p>
+          ) : null}
+        </div>
 
-      <div className="grid gap-2">
-        <Label htmlFor="return-email">Email</Label>
-        <Input
-          id="return-email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          value={email}
-          onChange={(event) => handleEmailChange(event.target.value)}
-          placeholder="votre@email.fr"
-          disabled={isPending}
-          aria-invalid={fieldErrors.email ? true : undefined}
-          aria-describedby={fieldErrors.email ? emailErrorId : undefined}
-        />
-        {fieldErrors.email ? (
-          <p id={emailErrorId} className="text-xs text-feedback-error-foreground" role="alert">
-            {fieldErrors.email}
-          </p>
-        ) : null}
-      </div>
+        <div className="grid gap-2">
+          <Label htmlFor="return-email">Email</Label>
+          <Input
+            id="return-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(event) => handleEmailChange(event.target.value)}
+            placeholder="votre@email.fr"
+            disabled={isPending}
+            aria-invalid={fieldErrors.email ? true : undefined}
+            aria-describedby={fieldErrors.email ? emailErrorId : undefined}
+          />
+          {fieldErrors.email ? (
+            <p id={emailErrorId} className="text-xs text-feedback-error-foreground" role="alert">
+              {fieldErrors.email}
+            </p>
+          ) : null}
+        </div>
 
-      <div className="grid gap-2">
-        <Label htmlFor="return-reason">Motif du retour</Label>
-        <select
-          id="return-reason"
-          name="reason"
-          value={reason}
-          onChange={(event) => handleReasonChange(event.target.value)}
-          disabled={isPending}
-          aria-invalid={fieldErrors.reason ? true : undefined}
-          aria-describedby={fieldErrors.reason ? reasonErrorId : undefined}
-          className="h-8 w-full min-w-0 rounded-lg border border-control-border bg-control-surface px-2.5 py-1 text-base shadow-control transition-all outline-none hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50 md:text-sm"
-        >
-          <option value="">Choisissez un motif</option>
-          {RETURN_REASON_CATEGORY_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        {fieldErrors.reason ? (
-          <p id={reasonErrorId} className="text-xs text-feedback-error-foreground" role="alert">
-            {fieldErrors.reason}
-          </p>
-        ) : null}
-      </div>
+        <div className="grid gap-2">
+          <Label htmlFor="return-reason">Motif du retour</Label>
+          <select
+            id="return-reason"
+            name="reason"
+            value={reason}
+            onChange={(event) => handleReasonChange(event.target.value)}
+            disabled={isPending}
+            aria-invalid={fieldErrors.reason ? true : undefined}
+            aria-describedby={fieldErrors.reason ? reasonErrorId : undefined}
+            className="h-8 w-full min-w-0 rounded-lg border border-control-border bg-control-surface px-2.5 py-1 text-base shadow-control transition-all outline-none hover:border-control-border-strong hover:bg-control-surface-hover hover:shadow-control-hover focus-visible:border-focus-ring focus-visible:ring-3 focus-visible:ring-focus-ring/50 md:text-sm"
+          >
+            <option value="">Choisissez un motif</option>
+            {RETURN_REASON_CATEGORY_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          {fieldErrors.reason ? (
+            <p id={reasonErrorId} className="text-xs text-feedback-error-foreground" role="alert">
+              {fieldErrors.reason}
+            </p>
+          ) : null}
+        </div>
 
-      <Button type="submit" disabled={isPending}>
-        {isPending ? "Vérification…" : "Vérifier mon éligibilité"}
-      </Button>
+        <Button type="submit" disabled={isPending}>
+          {isPending ? "Vérification…" : "Vérifier mon éligibilité"}
+        </Button>
 
-      <div aria-live="polite" aria-atomic="true">
-        {result !== null ? <ResultNotice result={result} /> : null}
-      </div>
-    </form>
+        <div aria-live="polite" aria-atomic="true">
+          {result !== null ? <ResultNotice result={result} /> : null}
+        </div>
+      </form>
+
+      {result?.available && result.eligibility.outcome !== "INELIGIBLE" ? (
+        <ReturnSubmissionForm reference={reference} email={email} initialReason={reason} />
+      ) : null}
+    </div>
   );
 }
