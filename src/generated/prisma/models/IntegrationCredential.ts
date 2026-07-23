@@ -20,8 +20,18 @@ export type IntegrationCredentialModel = runtime.Types.Result.DefaultSelection<P
 
 export type AggregateIntegrationCredential = {
   _count: IntegrationCredentialCountAggregateOutputType | null
+  _avg: IntegrationCredentialAvgAggregateOutputType | null
+  _sum: IntegrationCredentialSumAggregateOutputType | null
   _min: IntegrationCredentialMinAggregateOutputType | null
   _max: IntegrationCredentialMaxAggregateOutputType | null
+}
+
+export type IntegrationCredentialAvgAggregateOutputType = {
+  encryptionVersion: number | null
+}
+
+export type IntegrationCredentialSumAggregateOutputType = {
+  encryptionVersion: number | null
 }
 
 export type IntegrationCredentialMinAggregateOutputType = {
@@ -31,6 +41,8 @@ export type IntegrationCredentialMinAggregateOutputType = {
   secretHash: string | null
   secretPrefix: string | null
   valueHint: string | null
+  encryptedValue: string | null
+  encryptionVersion: number | null
   status: $Enums.IntegrationCredentialStatus | null
   expiresAt: Date | null
   lastUsedAt: Date | null
@@ -46,6 +58,8 @@ export type IntegrationCredentialMaxAggregateOutputType = {
   secretHash: string | null
   secretPrefix: string | null
   valueHint: string | null
+  encryptedValue: string | null
+  encryptionVersion: number | null
   status: $Enums.IntegrationCredentialStatus | null
   expiresAt: Date | null
   lastUsedAt: Date | null
@@ -61,6 +75,8 @@ export type IntegrationCredentialCountAggregateOutputType = {
   secretHash: number
   secretPrefix: number
   valueHint: number
+  encryptedValue: number
+  encryptionVersion: number
   status: number
   expiresAt: number
   lastUsedAt: number
@@ -71,6 +87,14 @@ export type IntegrationCredentialCountAggregateOutputType = {
 }
 
 
+export type IntegrationCredentialAvgAggregateInputType = {
+  encryptionVersion?: true
+}
+
+export type IntegrationCredentialSumAggregateInputType = {
+  encryptionVersion?: true
+}
+
 export type IntegrationCredentialMinAggregateInputType = {
   id?: true
   integrationId?: true
@@ -78,6 +102,8 @@ export type IntegrationCredentialMinAggregateInputType = {
   secretHash?: true
   secretPrefix?: true
   valueHint?: true
+  encryptedValue?: true
+  encryptionVersion?: true
   status?: true
   expiresAt?: true
   lastUsedAt?: true
@@ -93,6 +119,8 @@ export type IntegrationCredentialMaxAggregateInputType = {
   secretHash?: true
   secretPrefix?: true
   valueHint?: true
+  encryptedValue?: true
+  encryptionVersion?: true
   status?: true
   expiresAt?: true
   lastUsedAt?: true
@@ -108,6 +136,8 @@ export type IntegrationCredentialCountAggregateInputType = {
   secretHash?: true
   secretPrefix?: true
   valueHint?: true
+  encryptedValue?: true
+  encryptionVersion?: true
   status?: true
   expiresAt?: true
   lastUsedAt?: true
@@ -155,6 +185,18 @@ export type IntegrationCredentialAggregateArgs<ExtArgs extends runtime.Types.Ext
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: IntegrationCredentialAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: IntegrationCredentialSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: IntegrationCredentialMinAggregateInputType
@@ -185,6 +227,8 @@ export type IntegrationCredentialGroupByArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   _count?: IntegrationCredentialCountAggregateInputType | true
+  _avg?: IntegrationCredentialAvgAggregateInputType
+  _sum?: IntegrationCredentialSumAggregateInputType
   _min?: IntegrationCredentialMinAggregateInputType
   _max?: IntegrationCredentialMaxAggregateInputType
 }
@@ -196,6 +240,8 @@ export type IntegrationCredentialGroupByOutputType = {
   secretHash: string | null
   secretPrefix: string | null
   valueHint: string | null
+  encryptedValue: string | null
+  encryptionVersion: number | null
   status: $Enums.IntegrationCredentialStatus
   expiresAt: Date | null
   lastUsedAt: Date | null
@@ -203,6 +249,8 @@ export type IntegrationCredentialGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   _count: IntegrationCredentialCountAggregateOutputType | null
+  _avg: IntegrationCredentialAvgAggregateOutputType | null
+  _sum: IntegrationCredentialSumAggregateOutputType | null
   _min: IntegrationCredentialMinAggregateOutputType | null
   _max: IntegrationCredentialMaxAggregateOutputType | null
 }
@@ -232,6 +280,8 @@ export type IntegrationCredentialWhereInput = {
   secretHash?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
   secretPrefix?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
   valueHint?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
+  encryptedValue?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
+  encryptionVersion?: Prisma.IntNullableFilter<"IntegrationCredential"> | number | null
   status?: Prisma.EnumIntegrationCredentialStatusFilter<"IntegrationCredential"> | $Enums.IntegrationCredentialStatus
   expiresAt?: Prisma.DateTimeNullableFilter<"IntegrationCredential"> | Date | string | null
   lastUsedAt?: Prisma.DateTimeNullableFilter<"IntegrationCredential"> | Date | string | null
@@ -248,6 +298,8 @@ export type IntegrationCredentialOrderByWithRelationInput = {
   secretHash?: Prisma.SortOrderInput | Prisma.SortOrder
   secretPrefix?: Prisma.SortOrderInput | Prisma.SortOrder
   valueHint?: Prisma.SortOrderInput | Prisma.SortOrder
+  encryptedValue?: Prisma.SortOrderInput | Prisma.SortOrder
+  encryptionVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastUsedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -268,6 +320,8 @@ export type IntegrationCredentialWhereUniqueInput = Prisma.AtLeast<{
   secretHash?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
   secretPrefix?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
   valueHint?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
+  encryptedValue?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
+  encryptionVersion?: Prisma.IntNullableFilter<"IntegrationCredential"> | number | null
   status?: Prisma.EnumIntegrationCredentialStatusFilter<"IntegrationCredential"> | $Enums.IntegrationCredentialStatus
   expiresAt?: Prisma.DateTimeNullableFilter<"IntegrationCredential"> | Date | string | null
   lastUsedAt?: Prisma.DateTimeNullableFilter<"IntegrationCredential"> | Date | string | null
@@ -284,6 +338,8 @@ export type IntegrationCredentialOrderByWithAggregationInput = {
   secretHash?: Prisma.SortOrderInput | Prisma.SortOrder
   secretPrefix?: Prisma.SortOrderInput | Prisma.SortOrder
   valueHint?: Prisma.SortOrderInput | Prisma.SortOrder
+  encryptedValue?: Prisma.SortOrderInput | Prisma.SortOrder
+  encryptionVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastUsedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -291,8 +347,10 @@ export type IntegrationCredentialOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.IntegrationCredentialCountOrderByAggregateInput
+  _avg?: Prisma.IntegrationCredentialAvgOrderByAggregateInput
   _max?: Prisma.IntegrationCredentialMaxOrderByAggregateInput
   _min?: Prisma.IntegrationCredentialMinOrderByAggregateInput
+  _sum?: Prisma.IntegrationCredentialSumOrderByAggregateInput
 }
 
 export type IntegrationCredentialScalarWhereWithAggregatesInput = {
@@ -305,6 +363,8 @@ export type IntegrationCredentialScalarWhereWithAggregatesInput = {
   secretHash?: Prisma.StringNullableWithAggregatesFilter<"IntegrationCredential"> | string | null
   secretPrefix?: Prisma.StringNullableWithAggregatesFilter<"IntegrationCredential"> | string | null
   valueHint?: Prisma.StringNullableWithAggregatesFilter<"IntegrationCredential"> | string | null
+  encryptedValue?: Prisma.StringNullableWithAggregatesFilter<"IntegrationCredential"> | string | null
+  encryptionVersion?: Prisma.IntNullableWithAggregatesFilter<"IntegrationCredential"> | number | null
   status?: Prisma.EnumIntegrationCredentialStatusWithAggregatesFilter<"IntegrationCredential"> | $Enums.IntegrationCredentialStatus
   expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"IntegrationCredential"> | Date | string | null
   lastUsedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"IntegrationCredential"> | Date | string | null
@@ -319,6 +379,8 @@ export type IntegrationCredentialCreateInput = {
   secretHash?: string | null
   secretPrefix?: string | null
   valueHint?: string | null
+  encryptedValue?: string | null
+  encryptionVersion?: number | null
   status?: $Enums.IntegrationCredentialStatus
   expiresAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -335,6 +397,8 @@ export type IntegrationCredentialUncheckedCreateInput = {
   secretHash?: string | null
   secretPrefix?: string | null
   valueHint?: string | null
+  encryptedValue?: string | null
+  encryptionVersion?: number | null
   status?: $Enums.IntegrationCredentialStatus
   expiresAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -349,6 +413,8 @@ export type IntegrationCredentialUpdateInput = {
   secretHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secretPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valueHint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptionVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumIntegrationCredentialStatusFieldUpdateOperationsInput | $Enums.IntegrationCredentialStatus
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -365,6 +431,8 @@ export type IntegrationCredentialUncheckedUpdateInput = {
   secretHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secretPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valueHint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptionVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumIntegrationCredentialStatusFieldUpdateOperationsInput | $Enums.IntegrationCredentialStatus
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -380,6 +448,8 @@ export type IntegrationCredentialCreateManyInput = {
   secretHash?: string | null
   secretPrefix?: string | null
   valueHint?: string | null
+  encryptedValue?: string | null
+  encryptionVersion?: number | null
   status?: $Enums.IntegrationCredentialStatus
   expiresAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -394,6 +464,8 @@ export type IntegrationCredentialUpdateManyMutationInput = {
   secretHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secretPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valueHint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptionVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumIntegrationCredentialStatusFieldUpdateOperationsInput | $Enums.IntegrationCredentialStatus
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -409,6 +481,8 @@ export type IntegrationCredentialUncheckedUpdateManyInput = {
   secretHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secretPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valueHint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptionVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumIntegrationCredentialStatusFieldUpdateOperationsInput | $Enums.IntegrationCredentialStatus
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -439,12 +513,18 @@ export type IntegrationCredentialCountOrderByAggregateInput = {
   secretHash?: Prisma.SortOrder
   secretPrefix?: Prisma.SortOrder
   valueHint?: Prisma.SortOrder
+  encryptedValue?: Prisma.SortOrder
+  encryptionVersion?: Prisma.SortOrder
   status?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   lastUsedAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type IntegrationCredentialAvgOrderByAggregateInput = {
+  encryptionVersion?: Prisma.SortOrder
 }
 
 export type IntegrationCredentialMaxOrderByAggregateInput = {
@@ -454,6 +534,8 @@ export type IntegrationCredentialMaxOrderByAggregateInput = {
   secretHash?: Prisma.SortOrder
   secretPrefix?: Prisma.SortOrder
   valueHint?: Prisma.SortOrder
+  encryptedValue?: Prisma.SortOrder
+  encryptionVersion?: Prisma.SortOrder
   status?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   lastUsedAt?: Prisma.SortOrder
@@ -469,12 +551,18 @@ export type IntegrationCredentialMinOrderByAggregateInput = {
   secretHash?: Prisma.SortOrder
   secretPrefix?: Prisma.SortOrder
   valueHint?: Prisma.SortOrder
+  encryptedValue?: Prisma.SortOrder
+  encryptionVersion?: Prisma.SortOrder
   status?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   lastUsedAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type IntegrationCredentialSumOrderByAggregateInput = {
+  encryptionVersion?: Prisma.SortOrder
 }
 
 export type IntegrationCredentialCreateNestedManyWithoutIntegrationInput = {
@@ -529,6 +617,8 @@ export type IntegrationCredentialCreateWithoutIntegrationInput = {
   secretHash?: string | null
   secretPrefix?: string | null
   valueHint?: string | null
+  encryptedValue?: string | null
+  encryptionVersion?: number | null
   status?: $Enums.IntegrationCredentialStatus
   expiresAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -543,6 +633,8 @@ export type IntegrationCredentialUncheckedCreateWithoutIntegrationInput = {
   secretHash?: string | null
   secretPrefix?: string | null
   valueHint?: string | null
+  encryptedValue?: string | null
+  encryptionVersion?: number | null
   status?: $Enums.IntegrationCredentialStatus
   expiresAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -587,6 +679,8 @@ export type IntegrationCredentialScalarWhereInput = {
   secretHash?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
   secretPrefix?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
   valueHint?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
+  encryptedValue?: Prisma.StringNullableFilter<"IntegrationCredential"> | string | null
+  encryptionVersion?: Prisma.IntNullableFilter<"IntegrationCredential"> | number | null
   status?: Prisma.EnumIntegrationCredentialStatusFilter<"IntegrationCredential"> | $Enums.IntegrationCredentialStatus
   expiresAt?: Prisma.DateTimeNullableFilter<"IntegrationCredential"> | Date | string | null
   lastUsedAt?: Prisma.DateTimeNullableFilter<"IntegrationCredential"> | Date | string | null
@@ -601,6 +695,8 @@ export type IntegrationCredentialCreateManyIntegrationInput = {
   secretHash?: string | null
   secretPrefix?: string | null
   valueHint?: string | null
+  encryptedValue?: string | null
+  encryptionVersion?: number | null
   status?: $Enums.IntegrationCredentialStatus
   expiresAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -615,6 +711,8 @@ export type IntegrationCredentialUpdateWithoutIntegrationInput = {
   secretHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secretPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valueHint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptionVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumIntegrationCredentialStatusFieldUpdateOperationsInput | $Enums.IntegrationCredentialStatus
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -629,6 +727,8 @@ export type IntegrationCredentialUncheckedUpdateWithoutIntegrationInput = {
   secretHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secretPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valueHint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptionVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumIntegrationCredentialStatusFieldUpdateOperationsInput | $Enums.IntegrationCredentialStatus
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -643,6 +743,8 @@ export type IntegrationCredentialUncheckedUpdateManyWithoutIntegrationInput = {
   secretHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   secretPrefix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valueHint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  encryptionVersion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumIntegrationCredentialStatusFieldUpdateOperationsInput | $Enums.IntegrationCredentialStatus
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -660,6 +762,8 @@ export type IntegrationCredentialSelect<ExtArgs extends runtime.Types.Extensions
   secretHash?: boolean
   secretPrefix?: boolean
   valueHint?: boolean
+  encryptedValue?: boolean
+  encryptionVersion?: boolean
   status?: boolean
   expiresAt?: boolean
   lastUsedAt?: boolean
@@ -676,6 +780,8 @@ export type IntegrationCredentialSelectCreateManyAndReturn<ExtArgs extends runti
   secretHash?: boolean
   secretPrefix?: boolean
   valueHint?: boolean
+  encryptedValue?: boolean
+  encryptionVersion?: boolean
   status?: boolean
   expiresAt?: boolean
   lastUsedAt?: boolean
@@ -692,6 +798,8 @@ export type IntegrationCredentialSelectUpdateManyAndReturn<ExtArgs extends runti
   secretHash?: boolean
   secretPrefix?: boolean
   valueHint?: boolean
+  encryptedValue?: boolean
+  encryptionVersion?: boolean
   status?: boolean
   expiresAt?: boolean
   lastUsedAt?: boolean
@@ -708,6 +816,8 @@ export type IntegrationCredentialSelectScalar = {
   secretHash?: boolean
   secretPrefix?: boolean
   valueHint?: boolean
+  encryptedValue?: boolean
+  encryptionVersion?: boolean
   status?: boolean
   expiresAt?: boolean
   lastUsedAt?: boolean
@@ -716,7 +826,7 @@ export type IntegrationCredentialSelectScalar = {
   updatedAt?: boolean
 }
 
-export type IntegrationCredentialOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "integrationId" | "key" | "secretHash" | "secretPrefix" | "valueHint" | "status" | "expiresAt" | "lastUsedAt" | "revokedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["integrationCredential"]>
+export type IntegrationCredentialOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "integrationId" | "key" | "secretHash" | "secretPrefix" | "valueHint" | "encryptedValue" | "encryptionVersion" | "status" | "expiresAt" | "lastUsedAt" | "revokedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["integrationCredential"]>
 export type IntegrationCredentialInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   integration?: boolean | Prisma.IntegrationDefaultArgs<ExtArgs>
 }
@@ -739,6 +849,19 @@ export type $IntegrationCredentialPayload<ExtArgs extends runtime.Types.Extensio
     secretHash: string | null
     secretPrefix: string | null
     valueHint: string | null
+    /**
+     * Charge chiffree reversible (AES-256-GCM) permettant a un adaptateur de
+     * rappeler l'API du fournisseur avec le secret en clair. Payload opaque
+     * encodant iv + authTag + ciphertext ; la cle de chiffrement vit hors DB
+     * (variable d'environnement), jamais en base. Absent pour les credentials
+     * verification-only (secretHash suffit).
+     */
+    encryptedValue: string | null
+    /**
+     * Version de la cle/algorithme de chiffrement ayant produit encryptedValue,
+     * pour permettre une rotation de cle sans migration de donnees bloquante.
+     */
+    encryptionVersion: number | null
     status: $Enums.IntegrationCredentialStatus
     expiresAt: Date | null
     lastUsedAt: Date | null
@@ -1175,6 +1298,8 @@ export interface IntegrationCredentialFieldRefs {
   readonly secretHash: Prisma.FieldRef<"IntegrationCredential", 'String'>
   readonly secretPrefix: Prisma.FieldRef<"IntegrationCredential", 'String'>
   readonly valueHint: Prisma.FieldRef<"IntegrationCredential", 'String'>
+  readonly encryptedValue: Prisma.FieldRef<"IntegrationCredential", 'String'>
+  readonly encryptionVersion: Prisma.FieldRef<"IntegrationCredential", 'Int'>
   readonly status: Prisma.FieldRef<"IntegrationCredential", 'IntegrationCredentialStatus'>
   readonly expiresAt: Prisma.FieldRef<"IntegrationCredential", 'DateTime'>
   readonly lastUsedAt: Prisma.FieldRef<"IntegrationCredential", 'DateTime'>

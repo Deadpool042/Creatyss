@@ -68,6 +68,7 @@ export type OrderEmailContext = {
   totalAmount: string;
   trackingReference: string | null;
   paymentMethod: PaymentMethod | null;
+  localeCode: string | null;
 };
 
 export type OrderRepositoryErrorCode =

@@ -10,7 +10,11 @@ import { serverEnv } from "@/core/config/env/server";
 import { resolveStoreExecutionPolicy } from "@/core/runtime/resolve-store-execution-policy";
 import { resolveEmailProvider } from "@/features/email/providers/resolve-email-provider";
 import { findOrderEmailContextById } from "@/features/commerce/orders/lib/order.repository";
-import { buildOrderEmailTemplate } from "@/features/email/order/order-email-templates";
+import {
+  buildOrderEmailTemplate,
+  type OrderEmailCopyOverrides,
+} from "@/features/email/order/order-email-templates";
+import { resolveLocalizedOrderEmailCopy } from "@/features/email/order/resolve-localized-order-email-copy";
 
 import type { OrderEmailEventType } from "./order-email.types";
 
@@ -36,10 +40,12 @@ export async function sendOrderTransactionalEmail(input: {
     const store = await db.store.findFirst({
       orderBy: { createdAt: "asc" },
       select: {
+        id: true,
         replyToEmail: true,
         emailConfirmationEnabled: true,
         emailShippingEnabled: true,
         isProduction: true,
+        defaultLocaleCode: true,
       },
     });
     const replyTo = store?.replyToEmail ?? null;
@@ -73,6 +79,19 @@ export async function sendOrderTransactionalEmail(input: {
       `/checkout/confirmation/${order.reference}`,
       serverEnv.appUrl
     ).toString();
+
+    let copyOverrides: OrderEmailCopyOverrides = {};
+
+    if (store?.id) {
+      const effectiveLocaleCode = order.localeCode ?? store.defaultLocaleCode;
+
+      copyOverrides = await resolveLocalizedOrderEmailCopy({
+        storeId: store.id,
+        eventType: input.eventType,
+        localeCode: effectiveLocaleCode,
+      });
+    }
+
     const template = buildOrderEmailTemplate({
       eventType: input.eventType,
       customerFirstName: order.customerFirstName,
@@ -81,6 +100,7 @@ export async function sendOrderTransactionalEmail(input: {
       orderUrl,
       trackingReference: order.trackingReference,
       paymentMethod: order.paymentMethod,
+      copyOverrides,
     });
 
     try {
