@@ -124,12 +124,14 @@ export const PUBLISHED_PRODUCT_CORE_SELECT = {
       targetProduct: {
         select: {
           id: true,
+          storeId: true,
           slug: true,
           name: true,
           catalogPriceCents: true,
           catalogPriceCurrencyCode: true,
           catalogPriceSource: true,
           shortDescription: true,
+          description: true,
           primaryImage: {
             select: {
               storageKey: true,
