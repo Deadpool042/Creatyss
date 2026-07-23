@@ -47,8 +47,10 @@ Enrichir le back-office pour qu'il soit pleinement exploitable au quotidien par 
 | [lot-automations-worker-general.md](./lot-automations-worker-general.md)   | Worker/scheduler général pour exécuter les jobs automatiquement                | Livré côté code — activation prod VPS + retry ORDER_PLACED conditionnels                        |
 | [lot-analytics-tracking-reel.md](./lot-analytics-tracking-reel.md)         | Brancher le bloc "Aujourd'hui vs hier" sur un pipeline tracking minimal        | Livré — 2026-07-02 (anonyme sans cookie, recette locale)                                        |
 | [lot-settings-manquants.md](./lot-settings-manquants.md)                   | Ouvrir et relocaliser les réglages domaine, resynchroniser le hub settings     | Terminé — routes domaine + redirects de compatibilité + hub settings resynchronisé (2026-07-02) |
+| [lot-gift-cards.md](./lot-gift-cards.md)                                   | Activer le domaine cartes cadeaux (émission, consommation au paiement)         | A faire — Prisma posé et documenté, jamais scopé jusqu'ici (audit 2026-07-23)                   |
+| [lot-loyalty.md](./lot-loyalty.md)                                         | Activer le domaine fidélité (points, paliers, récompenses)                     | A faire — Prisma posé et documenté, jamais scopé jusqu'ici (audit 2026-07-23)                   |
 
-`lot-newsletter-campagnes` nécessite un provider email en production. `lot-automations-worker-general` nécessite une activation VPS explicite (`CRON_SECRET` + cron externe). Le retry automatique `ORDER_PLACED` reste conditionnel à une décision produit.
+`lot-newsletter-campagnes` nécessite un provider email en production. `lot-automations-worker-general` nécessite une activation VPS explicite (`CRON_SECRET` + cron externe). Le retry automatique `ORDER_PLACED` reste conditionnel à une décision produit. `lot-gift-cards` et `lot-loyalty` nécessitent une décision produit préalable sur la priorité et le barème métier avant tout cadrage détaillé — placés en H3 par proximité avec les autres enrichissements back-office (`discounts`, CRM), pas une classification stricte.
 
 ---
 
