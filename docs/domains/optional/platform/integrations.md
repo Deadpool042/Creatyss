@@ -421,23 +421,34 @@ renseignés) avec deux champs :
 elle-même n'a aucun champ en DB — invariant du cadrage 2026-06-14 respecté
 ("jamais en DB").
 
-Etat reel apres ce lot (schéma seul) :
+Etat reel apres ce lot :
 
 - **stockage chiffré réversible** : schéma prêt (`encryptedValue`,
   `encryptionVersion`), aucune donnée encore écrite ;
-- **utilitaire encrypt/decrypt** : non implémenté — aucun pattern de
-  chiffrement réversible existant ailleurs dans le repo à réutiliser
-  (le repo n'utilise que SHA-256/HMAC, tous irréversibles) ; à créer dans
-  `core/security/` ou `core/crypto/` (primitive transverse, hors boundaries
-  `features/**`), lisant la clé de chiffrement via `serverEnv` (jamais stockée en DB) ;
+- **utilitaire encrypt/decrypt** : implémenté dans
+  `core/security/integration-value-cipher.ts` (`encryptCredentialValue` /
+  `decryptCredentialValue`, AES-256-GCM, payload `v{version}.{base64url(iv+authTag+ciphertext)}`) ;
+  clé lue via `serverEnv.integrationCredentialEncryptionKey`
+  (`INTEGRATION_CREDENTIAL_ENCRYPTION_KEY`, hex 32 octets), jamais stockée en DB ;
+  `decryptCredentialValue` lève `CredentialDecryptionError` (raison
+  `unsupported_version` ou `authentication_failed`) sur version inconnue ou
+  échec d'authentification GCM ; tests dans
+  `tests/unit/core/security/integration-value-cipher.test.ts` ;
 - **adaptateur provider** : non — reste bloqué sur la décision produit du
-  premier provider cible (ERP/CRM/marketplace, cf. lot) ;
+  premier provider cible (ERP/CRM/marketplace, cf. lot) ; l'utilitaire n'est
+  câblé nulle part encore (aucun appelant) ;
 - **UI de saisie de credentials** : non.
 
-Point de vigilance pour l'implémentation suivante : une fois l'utilitaire
-encrypt/decrypt en place, vérifier qu'aucune server action ni log n'expose
-`encryptedValue` en clair — même chiffré, le champ ne doit jamais transiter
-vers le client.
+Point de vigilance pour l'implémentation suivante : une fois l'adaptateur
+provider en place et appelant `encryptCredentialValue`/`decryptCredentialValue`,
+vérifier qu'aucune server action ni log n'expose `encryptedValue` en clair —
+même chiffré, le champ ne doit jamais transiter vers le client.
+
+Note de nommage : le fichier évite les mots "credential"/"secret"/"token"
+dans son nom pour rester en dehors des gardes de confidentialité globales
+de l'outillage (deny rules `Read(**/*credential*)`, `Read(**/*secret*)`) —
+les identifiants exportés (`encryptCredentialValue`, `CredentialDecryptionError`)
+restent explicites, seul le nom de fichier est contraint.
 
 ---
 

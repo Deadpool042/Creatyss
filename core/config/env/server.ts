@@ -50,6 +50,8 @@ const serverEnvSchema = z.object({
   MEDIA_IMAGE_PLACEHOLDER: nonEmptyStringSchema.default("creatyss.webp"),
 
   CRON_SECRET: nonEmptyStringSchema.optional(),
+
+  INTEGRATION_CREDENTIAL_ENCRYPTION_KEY: nonEmptyStringSchema.optional(),
 });
 
 const parsedServerEnv = serverEnvSchema.safeParse(process.env);
@@ -119,6 +121,7 @@ const validatedEnv = data
       uploadsDir: data.UPLOADS_DIR,
       mediaImagePlaceholder: data.MEDIA_IMAGE_PLACEHOLDER,
       cronSecret: data.CRON_SECRET ?? null,
+      integrationCredentialEncryptionKey: data.INTEGRATION_CREDENTIAL_ENCRYPTION_KEY ?? null,
     } as const)
   : null;
 
@@ -140,6 +143,7 @@ export const serverEnv: ServerEnv =
           "umamiPassword",
           "umamiWebsiteId",
           "cronSecret",
+          "integrationCredentialEncryptionKey",
         ];
         if (nullableKeys.includes(key as keyof ServerEnv)) return null;
         return "" as never;
