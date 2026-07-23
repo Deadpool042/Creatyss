@@ -16,6 +16,13 @@ Emails transactionnels de commande (`order_created`, `payment_succeeded`, `order
 
 Aucun écran admin de traduction dédié dans ce lot (traductions à saisir via seed ou lot admin suivant). Périmètre explicitement limité aux 3 événements de commande — automation marketing et newsletter hors périmètre, probable même défaut structurel à auditer séparément. Recette manuelle non exécutée (typecheck/lint/tests unitaires verts, 89 tests sur `features/email`+`features/commerce`).
 
+**Chantier mis en pause le 2026-07-23** (décision utilisateur) après ce lot. Repères pour une reprise :
+
+- Reste explicitement hors périmètre et non traité : pages statiques additionnelles, emails d'automation marketing, newsletter.
+- Écart connu à trancher à la reprise : `subject` d'email non traduisible (cf. ci-dessus).
+- Migration `20260723120000_add_order_locale_code` écrite et mergée mais **pas encore appliquée** sur les bases dev/staging/prod (`prisma migrate deploy` à faire).
+- Recettes manuelles navigateur non exécutées pour les lots catégorie et emails (contrairement au lot produit).
+
 ## Objectif
 
 Poursuivre la généralisation de la convention `LocalizedValue` au-delà des pilotes déjà observés (`homepage`, `product-page-copy`, `boutique-page-copy`), en l'étendant aux prochains contenus métier pertinents. Le routing localisé est observé comme complet (`platform.localization` L3, lot 5 `localized-routing` fait en 2026-06-16).
