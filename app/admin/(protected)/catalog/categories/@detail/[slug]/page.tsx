@@ -1,8 +1,11 @@
 import { AdminSplitDetailPaneShell } from "@/components/admin/layout/admin-split-detail-pane-shell";
 import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
+import { AdminFormSection } from "@/components/admin/forms/admin-form-section";
 import { notFound } from "next/navigation";
 import { Notice } from "@/components/shared/feedback";
 import { listAdminMediaAssets } from "@/features/admin/media";
+import { meetsFeatureLevel } from "@/features/feature-flags/queries/get-feature-level-state.query";
+import { LOCALIZATION_FEATURE_CODE } from "@/features/localization/queries/get-localization-feature-state.query";
 import {
   ADMIN_CATEGORIES_DETAIL_CONTENT_CLASS,
   ADMIN_CATEGORIES_DETAIL_CONSTRAIN_CONTENT,
@@ -13,6 +16,9 @@ import {
   listCategoriesForPicker,
   updateCategoryAction,
 } from "@/features/admin/categories";
+import { CategoryTranslationsForm } from "@/features/admin/categories/components/edit/category-translations-form";
+import { setCategoryTranslationsAction } from "@/features/admin/categories/actions/set-category-translations.action";
+import { listCategoryTranslations } from "@/features/admin/categories/queries/list-category-translations.query";
 import {
   CATEGORY_EDIT_PAGE_COPY,
   getCategoryEditFormErrorMessage,
@@ -78,10 +84,15 @@ export default async function EditAdminCategoryPage({
     );
   }
 
-  const [mediaAssets, parentOptions] = await Promise.all([
+  const [mediaAssets, parentOptions, multilingualEnabled] = await Promise.all([
     listAdminMediaAssets(),
     listCategoriesForPicker(),
+    meetsFeatureLevel(LOCALIZATION_FEATURE_CODE, "multilingual"),
   ]);
+
+  const translationsState = multilingualEnabled
+    ? await listCategoryTranslations({ categoryId: category.id })
+    : null;
 
   async function handleUpdateCategory(formData: FormData): Promise<void> {
     "use server";
@@ -113,6 +124,20 @@ export default async function EditAdminCategoryPage({
         parentOptions={parentOptions}
         updateAction={handleUpdateCategory}
       />
+
+      {translationsState !== null && translationsState.hasTargetLocale && (
+        <AdminFormSection
+          eyebrow="Localisation"
+          title={`Traductions (${translationsState.targetLocaleName})`}
+        >
+          <CategoryTranslationsForm
+            categoryId={category.id}
+            targetLocaleName={translationsState.targetLocaleName}
+            fields={translationsState.fields}
+            action={setCategoryTranslationsAction}
+          />
+        </AdminFormSection>
+      )}
     </AdminSplitDetailPaneShell>
   );
 }
