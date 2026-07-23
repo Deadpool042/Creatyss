@@ -59,6 +59,7 @@ export type OrderMinAggregateOutputType = {
   customerEmail: string | null
   customerFirstName: string | null
   customerLastName: string | null
+  localeCode: string | null
   notes: string | null
   sourceSystem: string | null
   sourceId: string | null
@@ -86,6 +87,7 @@ export type OrderMaxAggregateOutputType = {
   customerEmail: string | null
   customerFirstName: string | null
   customerLastName: string | null
+  localeCode: string | null
   notes: string | null
   sourceSystem: string | null
   sourceId: string | null
@@ -113,6 +115,7 @@ export type OrderCountAggregateOutputType = {
   customerEmail: number
   customerFirstName: number
   customerLastName: number
+  localeCode: number
   notes: number
   sourceSystem: number
   sourceId: number
@@ -158,6 +161,7 @@ export type OrderMinAggregateInputType = {
   customerEmail?: true
   customerFirstName?: true
   customerLastName?: true
+  localeCode?: true
   notes?: true
   sourceSystem?: true
   sourceId?: true
@@ -185,6 +189,7 @@ export type OrderMaxAggregateInputType = {
   customerEmail?: true
   customerFirstName?: true
   customerLastName?: true
+  localeCode?: true
   notes?: true
   sourceSystem?: true
   sourceId?: true
@@ -212,6 +217,7 @@ export type OrderCountAggregateInputType = {
   customerEmail?: true
   customerFirstName?: true
   customerLastName?: true
+  localeCode?: true
   notes?: true
   sourceSystem?: true
   sourceId?: true
@@ -326,6 +332,7 @@ export type OrderGroupByOutputType = {
   customerEmail: string | null
   customerFirstName: string | null
   customerLastName: string | null
+  localeCode: string | null
   notes: string | null
   sourceSystem: string | null
   sourceId: string | null
@@ -376,6 +383,7 @@ export type OrderWhereInput = {
   customerEmail?: Prisma.StringNullableFilter<"Order"> | string | null
   customerFirstName?: Prisma.StringNullableFilter<"Order"> | string | null
   customerLastName?: Prisma.StringNullableFilter<"Order"> | string | null
+  localeCode?: Prisma.StringNullableFilter<"Order"> | string | null
   notes?: Prisma.StringNullableFilter<"Order"> | string | null
   sourceSystem?: Prisma.StringNullableFilter<"Order"> | string | null
   sourceId?: Prisma.StringNullableFilter<"Order"> | string | null
@@ -423,6 +431,7 @@ export type OrderOrderByWithRelationInput = {
   customerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   customerFirstName?: Prisma.SortOrderInput | Prisma.SortOrder
   customerLastName?: Prisma.SortOrderInput | Prisma.SortOrder
+  localeCode?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceSystem?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -475,6 +484,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   customerEmail?: Prisma.StringNullableFilter<"Order"> | string | null
   customerFirstName?: Prisma.StringNullableFilter<"Order"> | string | null
   customerLastName?: Prisma.StringNullableFilter<"Order"> | string | null
+  localeCode?: Prisma.StringNullableFilter<"Order"> | string | null
   notes?: Prisma.StringNullableFilter<"Order"> | string | null
   sourceSystem?: Prisma.StringNullableFilter<"Order"> | string | null
   sourceId?: Prisma.StringNullableFilter<"Order"> | string | null
@@ -522,6 +532,7 @@ export type OrderOrderByWithAggregationInput = {
   customerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   customerFirstName?: Prisma.SortOrderInput | Prisma.SortOrder
   customerLastName?: Prisma.SortOrderInput | Prisma.SortOrder
+  localeCode?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceSystem?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -557,6 +568,7 @@ export type OrderScalarWhereWithAggregatesInput = {
   customerEmail?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   customerFirstName?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   customerLastName?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
+  localeCode?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   sourceSystem?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
   sourceId?: Prisma.StringNullableWithAggregatesFilter<"Order"> | string | null
@@ -580,6 +592,7 @@ export type OrderCreateInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -627,6 +640,7 @@ export type OrderUncheckedCreateInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -666,6 +680,7 @@ export type OrderUpdateInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -713,6 +728,7 @@ export type OrderUncheckedUpdateInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -756,6 +772,7 @@ export type OrderCreateManyInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -779,6 +796,7 @@ export type OrderUpdateManyMutationInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -806,6 +824,7 @@ export type OrderUncheckedUpdateManyInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -854,6 +873,7 @@ export type OrderCountOrderByAggregateInput = {
   customerEmail?: Prisma.SortOrder
   customerFirstName?: Prisma.SortOrder
   customerLastName?: Prisma.SortOrder
+  localeCode?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   sourceSystem?: Prisma.SortOrder
   sourceId?: Prisma.SortOrder
@@ -889,6 +909,7 @@ export type OrderMaxOrderByAggregateInput = {
   customerEmail?: Prisma.SortOrder
   customerFirstName?: Prisma.SortOrder
   customerLastName?: Prisma.SortOrder
+  localeCode?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   sourceSystem?: Prisma.SortOrder
   sourceId?: Prisma.SortOrder
@@ -916,6 +937,7 @@ export type OrderMinOrderByAggregateInput = {
   customerEmail?: Prisma.SortOrder
   customerFirstName?: Prisma.SortOrder
   customerLastName?: Prisma.SortOrder
+  localeCode?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   sourceSystem?: Prisma.SortOrder
   sourceId?: Prisma.SortOrder
@@ -1369,6 +1391,7 @@ export type OrderCreateWithoutCartInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -1414,6 +1437,7 @@ export type OrderUncheckedCreateWithoutCartInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -1486,6 +1510,7 @@ export type OrderScalarWhereInput = {
   customerEmail?: Prisma.StringNullableFilter<"Order"> | string | null
   customerFirstName?: Prisma.StringNullableFilter<"Order"> | string | null
   customerLastName?: Prisma.StringNullableFilter<"Order"> | string | null
+  localeCode?: Prisma.StringNullableFilter<"Order"> | string | null
   notes?: Prisma.StringNullableFilter<"Order"> | string | null
   sourceSystem?: Prisma.StringNullableFilter<"Order"> | string | null
   sourceId?: Prisma.StringNullableFilter<"Order"> | string | null
@@ -1509,6 +1534,7 @@ export type OrderCreateWithoutCheckoutInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -1554,6 +1580,7 @@ export type OrderUncheckedCreateWithoutCheckoutInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -1619,6 +1646,7 @@ export type OrderCreateWithoutCustomerInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -1664,6 +1692,7 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -1729,6 +1758,7 @@ export type OrderCreateWithoutLinesInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -1775,6 +1805,7 @@ export type OrderUncheckedCreateWithoutLinesInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -1829,6 +1860,7 @@ export type OrderUpdateWithoutLinesInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1875,6 +1907,7 @@ export type OrderUncheckedUpdateWithoutLinesInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1913,6 +1946,7 @@ export type OrderCreateWithoutAddressesInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -1959,6 +1993,7 @@ export type OrderUncheckedCreateWithoutAddressesInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2013,6 +2048,7 @@ export type OrderUpdateWithoutAddressesInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2059,6 +2095,7 @@ export type OrderUncheckedUpdateWithoutAddressesInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2097,6 +2134,7 @@ export type OrderCreateWithoutShippingSelectionInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2143,6 +2181,7 @@ export type OrderUncheckedCreateWithoutShippingSelectionInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2197,6 +2236,7 @@ export type OrderUpdateWithoutShippingSelectionInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2243,6 +2283,7 @@ export type OrderUncheckedUpdateWithoutShippingSelectionInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2281,6 +2322,7 @@ export type OrderCreateWithoutStatusHistoryInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2327,6 +2369,7 @@ export type OrderUncheckedCreateWithoutStatusHistoryInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2381,6 +2424,7 @@ export type OrderUpdateWithoutStatusHistoryInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2427,6 +2471,7 @@ export type OrderUncheckedUpdateWithoutStatusHistoryInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2465,6 +2510,7 @@ export type OrderCreateWithoutStoreInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2510,6 +2556,7 @@ export type OrderUncheckedCreateWithoutStoreInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2575,6 +2622,7 @@ export type OrderCreateWithoutDiscountRedemptionsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2621,6 +2669,7 @@ export type OrderUncheckedCreateWithoutDiscountRedemptionsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2675,6 +2724,7 @@ export type OrderUpdateWithoutDiscountRedemptionsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2721,6 +2771,7 @@ export type OrderUncheckedUpdateWithoutDiscountRedemptionsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2759,6 +2810,7 @@ export type OrderCreateWithoutDocumentsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2805,6 +2857,7 @@ export type OrderUncheckedCreateWithoutDocumentsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2859,6 +2912,7 @@ export type OrderUpdateWithoutDocumentsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2905,6 +2959,7 @@ export type OrderUncheckedUpdateWithoutDocumentsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2943,6 +2998,7 @@ export type OrderCreateWithoutFulfillmentsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -2989,6 +3045,7 @@ export type OrderUncheckedCreateWithoutFulfillmentsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -3043,6 +3100,7 @@ export type OrderUpdateWithoutFulfillmentsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3089,6 +3147,7 @@ export type OrderUncheckedUpdateWithoutFulfillmentsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3127,6 +3186,7 @@ export type OrderCreateWithoutPurchasedGiftCardsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -3173,6 +3233,7 @@ export type OrderUncheckedCreateWithoutPurchasedGiftCardsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -3227,6 +3288,7 @@ export type OrderUpdateWithoutPurchasedGiftCardsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3273,6 +3335,7 @@ export type OrderUncheckedUpdateWithoutPurchasedGiftCardsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3311,6 +3374,7 @@ export type OrderCreateWithoutGiftCardTransactionsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -3357,6 +3421,7 @@ export type OrderUncheckedCreateWithoutGiftCardTransactionsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -3411,6 +3476,7 @@ export type OrderUpdateWithoutGiftCardTransactionsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3457,6 +3523,7 @@ export type OrderUncheckedUpdateWithoutGiftCardTransactionsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3495,6 +3562,7 @@ export type OrderCreateWithoutGiftRequestsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -3541,6 +3609,7 @@ export type OrderUncheckedCreateWithoutGiftRequestsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -3595,6 +3664,7 @@ export type OrderUpdateWithoutGiftRequestsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3641,6 +3711,7 @@ export type OrderUncheckedUpdateWithoutGiftRequestsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3679,6 +3750,7 @@ export type OrderCreateWithoutInventoryReservationsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -3725,6 +3797,7 @@ export type OrderUncheckedCreateWithoutInventoryReservationsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -3779,6 +3852,7 @@ export type OrderUpdateWithoutInventoryReservationsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3825,6 +3899,7 @@ export type OrderUncheckedUpdateWithoutInventoryReservationsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3863,6 +3938,7 @@ export type OrderCreateWithoutLoyaltyTransactionsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -3909,6 +3985,7 @@ export type OrderUncheckedCreateWithoutLoyaltyTransactionsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -3963,6 +4040,7 @@ export type OrderUpdateWithoutLoyaltyTransactionsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4009,6 +4087,7 @@ export type OrderUncheckedUpdateWithoutLoyaltyTransactionsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4047,6 +4126,7 @@ export type OrderCreateWithoutPaymentsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -4093,6 +4173,7 @@ export type OrderUncheckedCreateWithoutPaymentsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -4147,6 +4228,7 @@ export type OrderUpdateWithoutPaymentsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4193,6 +4275,7 @@ export type OrderUncheckedUpdateWithoutPaymentsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4231,6 +4314,7 @@ export type OrderCreateWithoutReturnRequestsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -4277,6 +4361,7 @@ export type OrderUncheckedCreateWithoutReturnRequestsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -4331,6 +4416,7 @@ export type OrderUpdateWithoutReturnRequestsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4377,6 +4463,7 @@ export type OrderUncheckedUpdateWithoutReturnRequestsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4415,6 +4502,7 @@ export type OrderCreateWithoutShipmentsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -4461,6 +4549,7 @@ export type OrderUncheckedCreateWithoutShipmentsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -4515,6 +4604,7 @@ export type OrderUpdateWithoutShipmentsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4561,6 +4651,7 @@ export type OrderUncheckedUpdateWithoutShipmentsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4599,6 +4690,7 @@ export type OrderCreateWithoutSupportTicketsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -4645,6 +4737,7 @@ export type OrderUncheckedCreateWithoutSupportTicketsInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -4699,6 +4792,7 @@ export type OrderUpdateWithoutSupportTicketsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4745,6 +4839,7 @@ export type OrderUncheckedUpdateWithoutSupportTicketsInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4786,6 +4881,7 @@ export type OrderCreateManyCartInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -4809,6 +4905,7 @@ export type OrderUpdateWithoutCartInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4854,6 +4951,7 @@ export type OrderUncheckedUpdateWithoutCartInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4896,6 +4994,7 @@ export type OrderUncheckedUpdateManyWithoutCartInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4922,6 +5021,7 @@ export type OrderCreateManyCheckoutInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -4945,6 +5045,7 @@ export type OrderUpdateWithoutCheckoutInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4990,6 +5091,7 @@ export type OrderUncheckedUpdateWithoutCheckoutInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5032,6 +5134,7 @@ export type OrderUncheckedUpdateManyWithoutCheckoutInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5058,6 +5161,7 @@ export type OrderCreateManyCustomerInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -5081,6 +5185,7 @@ export type OrderUpdateWithoutCustomerInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5126,6 +5231,7 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5168,6 +5274,7 @@ export type OrderUncheckedUpdateManyWithoutCustomerInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5194,6 +5301,7 @@ export type OrderCreateManyStoreInput = {
   customerEmail?: string | null
   customerFirstName?: string | null
   customerLastName?: string | null
+  localeCode?: string | null
   notes?: string | null
   sourceSystem?: string | null
   sourceId?: string | null
@@ -5217,6 +5325,7 @@ export type OrderUpdateWithoutStoreInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5262,6 +5371,7 @@ export type OrderUncheckedUpdateWithoutStoreInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5304,6 +5414,7 @@ export type OrderUncheckedUpdateManyWithoutStoreInput = {
   customerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerFirstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerLastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localeCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5488,6 +5599,7 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   customerEmail?: boolean
   customerFirstName?: boolean
   customerLastName?: boolean
+  localeCode?: boolean
   notes?: boolean
   sourceSystem?: boolean
   sourceId?: boolean
@@ -5536,6 +5648,7 @@ export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   customerEmail?: boolean
   customerFirstName?: boolean
   customerLastName?: boolean
+  localeCode?: boolean
   notes?: boolean
   sourceSystem?: boolean
   sourceId?: boolean
@@ -5567,6 +5680,7 @@ export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   customerEmail?: boolean
   customerFirstName?: boolean
   customerLastName?: boolean
+  localeCode?: boolean
   notes?: boolean
   sourceSystem?: boolean
   sourceId?: boolean
@@ -5598,6 +5712,7 @@ export type OrderSelectScalar = {
   customerEmail?: boolean
   customerFirstName?: boolean
   customerLastName?: boolean
+  localeCode?: boolean
   notes?: boolean
   sourceSystem?: boolean
   sourceId?: boolean
@@ -5608,7 +5723,7 @@ export type OrderSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "customerId" | "checkoutId" | "cartId" | "orderNumber" | "status" | "currencyCode" | "subtotalAmount" | "shippingAmount" | "discountAmount" | "taxAmount" | "totalAmount" | "customerEmail" | "customerFirstName" | "customerLastName" | "notes" | "sourceSystem" | "sourceId" | "placedAt" | "cancelledAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "storeId" | "customerId" | "checkoutId" | "cartId" | "orderNumber" | "status" | "currencyCode" | "subtotalAmount" | "shippingAmount" | "discountAmount" | "taxAmount" | "totalAmount" | "customerEmail" | "customerFirstName" | "customerLastName" | "localeCode" | "notes" | "sourceSystem" | "sourceId" | "placedAt" | "cancelledAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
 export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   store?: boolean | Prisma.StoreDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.Order$customerArgs<ExtArgs>
@@ -5686,6 +5801,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     customerEmail: string | null
     customerFirstName: string | null
     customerLastName: string | null
+    localeCode: string | null
     notes: string | null
     sourceSystem: string | null
     sourceId: string | null
@@ -6153,6 +6269,7 @@ export interface OrderFieldRefs {
   readonly customerEmail: Prisma.FieldRef<"Order", 'String'>
   readonly customerFirstName: Prisma.FieldRef<"Order", 'String'>
   readonly customerLastName: Prisma.FieldRef<"Order", 'String'>
+  readonly localeCode: Prisma.FieldRef<"Order", 'String'>
   readonly notes: Prisma.FieldRef<"Order", 'String'>
   readonly sourceSystem: Prisma.FieldRef<"Order", 'String'>
   readonly sourceId: Prisma.FieldRef<"Order", 'String'>

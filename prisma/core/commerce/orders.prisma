@@ -39,6 +39,8 @@ model Order {
   customerFirstName String?
   customerLastName  String?
 
+  localeCode String?
+
   notes String?
 
   sourceSystem String?

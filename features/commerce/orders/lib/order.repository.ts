@@ -182,7 +182,8 @@ function mapPublicOrderConfirmation(input: {
 export async function createOrderFromGuestCartToken(
   cartToken: string,
   paymentMethod: CheckoutPaymentMethod,
-  discountCode?: string
+  discountCode?: string,
+  localeCode?: string | null
 ): Promise<CreatedOrderRow> {
   return db.$transaction(async (tx) => {
     const cart = await tx.cart.findUnique({
@@ -419,6 +420,7 @@ export async function createOrderFromGuestCartToken(
             customerEmail: checkout.email,
             customerFirstName: shippingAddress?.firstName ?? null,
             customerLastName: shippingAddress?.lastName ?? null,
+            localeCode: localeCode ?? null,
             placedAt: new Date(),
             lines: {
               create: cart.lines.map((line, index) => {
@@ -709,6 +711,7 @@ export async function findOrderEmailContextById(id: string): Promise<OrderEmailC
       customerEmail: true,
       customerFirstName: true,
       totalAmount: true,
+      localeCode: true,
       shipments: {
         take: 1,
         orderBy: [{ shippedAt: "desc" }, { createdAt: "desc" }],
@@ -731,5 +734,6 @@ export async function findOrderEmailContextById(id: string): Promise<OrderEmailC
     totalAmount: normalizeMoneyString(String(order.totalAmount)),
     trackingReference: order.shipments[0]?.trackingNumber ?? null,
     paymentMethod: mapPaymentMethod(order.payments[0]?.methodType ?? null),
+    localeCode: order.localeCode,
   };
 }
